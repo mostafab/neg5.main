@@ -1,0 +1,98 @@
+extends layout
+
+block content
+
+    div(class="navbar navbar-default header navbar-fixed-top " role="navigation")
+        div(class="container")
+            div(class="navbar-header")
+                button(type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-coll")
+                span(class="sr-only") Toggle Navigation
+                span(class="icon-bar")
+                span(class="icon-bar")
+                span(class="icon-bar")
+                a(class="navbar-brand" href="/" title="About") About Neg 5
+
+
+    div(class="container vertical-center parent")
+        div(class="container span4 text-center child")
+            h1(style="white-space:pre")
+                | #{title}
+                br
+                br
+                | #{message}
+            form(name="logins" id="loginfo" action="/login" role="form" method="post" )
+                div(class="form-group")
+                    input(
+                        type="input",
+                        name="usrname",
+                        placeholder="Email",
+                        class="form-control input-lg center-text no-border-radius"
+                        )
+                div(class="form-group")
+                    input(
+                        type="password",
+                        name="pswd",
+                        placeholder="Password",
+                        class="form-control input-lg center-text infofield"
+                        )
+                div(class="form-group")
+                    div(class="form-group text-center")
+                        button(class="btn btn-success btn-lg center-in-div no-border-radius",
+                            type="button",
+                            id="login")
+                            | Login
+                        button(class="btn btn-warning btn-lg center-in-div no-border-radius",
+                            type="button",
+                            id="register",
+                            data-toggle="modal",
+                            data-target="#registerWindow")
+                            | Register
+                        br
+                        br
+                div(class="form-group")
+                    p(id="errorlabel") Please Enter Your Email Address and Password to Continue.
+
+    div(id="registerWindow" class="modal fade" role="dialog")
+        div(class="modal-dialog")
+            div(class="modal-content")
+                div(class="modal-header")
+                    h4(class="modal-title") Complete the Following Form to Register
+                        li(id="l_name") Name must be between 5 and 15 characters.
+                        li(id="l_email") Email must be in a valid format (example@domain.com).
+                        li(id="l_password") Password must be at least 5 characters long.
+                        li(id="l_match") Passwords must match.
+                div(class="modal-body")
+                    form(name="signup" role="form" action="/users/register" method="post")
+                        div(class="form-group")
+                            input(
+                                type="input",
+                                name="r_name",
+                                placeholder="Name",
+                                class="form-control input-lg center-text no-border-radius",
+                                autocomplete="off"
+                                )
+                        div(class="form-group")
+                            input(
+                                type="input",
+                                name="r_usrname",
+                                placeholder="Email",
+                                class="form-control input-lg center-text no-border-radius",
+                                autocomplete="off"
+                                )
+                        div(class="form-group")
+                            input(
+                                type="password",
+                                name="r_pswd",
+                                placeholder="Password",
+                                class="form-control input-lg center-text infofield"
+                                )
+                        div(class="form-group")
+                            input(
+                                type="password",
+                                name="r_pswd_2",
+                                placeholder="Confirm Password",
+                                class="form-control input-lg center-text infofield"
+                                )
+                        div(class="modal-footer")
+                            button(type="button" id="regbutton" class="btn btn-success no-border-radius") Confirm Registration
+                            button(type="button" class="btn btn-danger no-border-radius" data-dismiss="modal") Close

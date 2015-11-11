@@ -1,0 +1,80 @@
+@import url('http://getbootstrap.com/dist/css/bootstrap.css');
+ html, body, .container-table {
+    height: 100%;
+}
+
+* {
+    font-family: "Raleway", sans-serif;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+a {
+        margin: 10px;
+}
+
+.body {
+    background-color: rgba(0, 153, 153, .7);
+}
+
+.header {
+    border-bottom-width: 10px;
+    border-bottom-color: rgb(102, 153, 255);
+}
+
+.center-text {
+    text-align: center;
+}
+
+.center-in-div {
+    margin: 10px;
+}
+
+
+.no-border-radius {
+    border-radius: 0px;
+}
+
+.vertical-center {
+    min-height: 100%;
+    min-width: 100%
+    display:flex;
+    align-items: center;
+}
+
+.infofield {
+    border-radius: 0px;
+}
+
+.parent {
+  position: relative;
+}
+
+.child {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.modal.fade.in{
+    top:50%;
+    transform: translateY(-50%);
+}
+
+.modal.fade:not(.in) .modal-dialog {
+    -webkit-transform: translate3d(0, 25%, 0);
+    transform: translate3d(0, 50%, 0);
+}
+
+#loginbox {
+    margin-top: 100px;
+}
+
+#errorlabel {
+    color: white;
+    font-size: 24px;
+}
