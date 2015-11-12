@@ -1,0 +1,44 @@
+User {
+    name : String
+    email : String
+    password : String
+
+    tournaments : [
+        {
+            name : String
+            location : String
+            date : ISO_DATE
+            numTeams : NumberInt
+
+            teams : [
+                {
+                    name : String
+
+                    players : [
+                        {
+                            name : String
+                            points : NumberInt
+                        }
+                    ]
+                }
+            ]
+
+            games : [
+                {
+                    round : NumberInt
+                    teams : [
+                        {
+                            name : String
+                            players : [
+                                {
+                                    name : String
+                                    points : NumberInt
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

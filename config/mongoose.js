@@ -8,6 +8,7 @@ module.exports = function() {
     conn.once('open', function(callback) {
         // Nothing needs to go here
     });
+    require("../app/models/tournament");
     require("../app/models/user");
     return db;
 }
