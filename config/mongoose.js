@@ -10,5 +10,9 @@ module.exports = function() {
     });
     require("../app/models/tournament");
     require("../app/models/user");
+    require("../app/models/tournament-director");
+    require("../app/models/player");
+    require("../app/models/team");
+    require("../app/models/game");
     return db;
 }

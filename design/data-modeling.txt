@@ -2,13 +2,18 @@ User {
     name : String
     email : String
     password : String
+}
+
+TournamentDirector {
+
+    name : String
+    email : String
 
     tournaments : [
         {
             name : String
             location : String
-            date : ISO_DATE
-            numTeams : NumberInt
+            date : Date
 
             teams : [
                 {

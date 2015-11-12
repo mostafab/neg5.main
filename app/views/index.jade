@@ -20,7 +20,7 @@ block content
                 br
                 br
                 | #{message}
-            form(name="logins" id="loginfo" action="/login" role="form" method="post" )
+            form(name="logins" id="loginfo" action="/home" role="form" method="post")
                 div(class="form-group")
                     input(
                         type="input",
@@ -50,7 +50,7 @@ block content
                         br
                         br
                 div(class="form-group")
-                    p(id="errorlabel") Please Enter Your Email Address and Password to Continue.
+                    p(id="errorlabel") Enter Your Email Address and Password to Continue.
 
     div(id="registerWindow" class="modal fade" role="dialog")
         div(class="modal-dialog")
@@ -62,7 +62,7 @@ block content
                         li(id="l_password") Password must be at least 5 characters long.
                         li(id="l_match") Passwords must match.
                 div(class="modal-body")
-                    form(name="signup" role="form" action="/users/register" method="post")
+                    form(name="signup" role="form" action="/register" method="post")
                         div(class="form-group")
                             input(
                                 type="input",

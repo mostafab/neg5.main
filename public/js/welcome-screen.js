@@ -1,12 +1,33 @@
 "use strict";
 
+var constants = {
+    MIN_USER_LENGTH : 5,
+    MAX_USER_LENGTH : 15,
+    MIN_PASS_LENGTH : 5,
+    PASS_REGEX : /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+}
+
 $(document).ready(function() {
     $("#login").click(function() {
+        var message = "";
         if (checkEmailInForm()) {
-            submitLogin();
+            console.log("Step 1");
+            if (checkPasswordInForm()) {
+                console.log("Step 2");
+                submitLogin();
+            } else {
+                message += "Please enter a valid password. "
+            }
         } else {
-            console.log("Invalid email");
-            $("h1").text("Not Valid Email.");
+            message += "Please enter a valid email "
+            if (!checkPasswordInForm()) {
+                message += "and password."
+            }
+        }
+        if (message.length != 0) {
+            $("#errorlabel").text(message);
+        } else {
+            $("#errorlabel").text("Enter Your Email Address and Password to Continue.")
         }
     });
     $("#regbutton").click(function() {
@@ -20,7 +41,8 @@ $(document).ready(function() {
         var passwordCopy = document.forms["signup"]["r_pswd_2"].value;
         $("li").css({"color" : "black"});
         var problem = false;
-        if (name.length < 5 || name.length > 15) {
+        if (name.length < constants.MIN_USER_LENGTH
+                || name.length > constants.MAX_USER_LENGTH) {
             $("#l_name").css({"color" : "red"});
             problem = true;
         }
@@ -45,7 +67,12 @@ $(document).ready(function() {
 });
 
 function checkEmailInForm() {
-    return document.forms["logins"]["usrname"].value.length != 0;
+    return document.forms["logins"]["usrname"].value.length >= constants.MIN_USER_LENGTH
+        && document.forms["logins"]["usrname"].value.length < constants.MAX_USER_LENGTH;
+}
+
+function checkPasswordInForm() {
+    return document.forms["logins"]["pswd"].value.length >= constants.MIN_PASS_LENGTH;
 }
 
 function submitLogin() {
@@ -57,12 +84,11 @@ function submitRegistration() {
 }
 
 function checkRegisterEmail(email) {
-    var regex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    return regex.test(email);
+    return regex.test(constants.PASS_REGEX);
 }
 
 function checkRegisterPassword(password) {
-    return password.length >= 5;
+    return password.length >= constants.MIN_PASS_LENGTH;
 }
 
 function checkPasswordsMatch(pass1, pass2) {
