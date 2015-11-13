@@ -14,8 +14,9 @@ module.exports = function() {
 
     require('../app/routes/index.js')(app);
     require("../app/routes/user-route.js")(app);
+    require("../app/routes/tournaments-route.js")(app);
 
     app.use(express.static("./public"));
-    
+
     return app;
 };

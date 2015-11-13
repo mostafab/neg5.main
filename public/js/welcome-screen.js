@@ -84,7 +84,7 @@ function submitRegistration() {
 }
 
 function checkRegisterEmail(email) {
-    return regex.test(constants.PASS_REGEX);
+    return constants.PASS_REGEX.test(email);
 }
 
 function checkRegisterPassword(password) {

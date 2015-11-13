@@ -14,10 +14,15 @@ TournamentDirector {
             name : String
             location : String
             date : Date
+            description : String
 
             teams : [
                 {
                     name : String
+                    win : Number
+                    losses : Number
+                    tie : Number
+                    division : String
 
                     players : [
                         {

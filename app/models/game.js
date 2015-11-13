@@ -8,6 +8,7 @@ var gameSchema = new Schema({
         return Math.round(num);
     }},
     teams : [teamSchema],
+    questions : {type : Number, default : 20},
     score : String
 });
 

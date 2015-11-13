@@ -4,6 +4,9 @@ var User = mongoose.model("User");
 var Tournament = mongoose.model("Tournament");
 var TournamentDirector = mongoose.model("TournamentDirector");
 
+TournamentDirector.count({}, function(err, count) {
+    console.log(count);
+});
 
 exports.create = function(req, res, next) {
     var name = req.body["r_name"];
@@ -11,9 +14,6 @@ exports.create = function(req, res, next) {
     var password = req.body["r_pswd"];
     var user = makeUser(req);
     var td = makeDirector(req);
-    // user.tournaments.push(t);
-    console.log(user);
-    console.log(td);
     user.save(function(err) {
         if (err) {
             return next(err);
@@ -27,7 +27,6 @@ exports.create = function(req, res, next) {
                                 message : "Login to Continue."
             });
         }
-
     });
 };
 

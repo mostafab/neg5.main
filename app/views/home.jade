@@ -1,3 +1,59 @@
 extends layout
 
 block content
+
+    div(id="wrapper")
+        div(id="sidebar-wrapper")
+            ul(class="sidebar-nav")
+
+                li(class="sidebar-brand")
+                    div(class="page-header")
+                        h4 Welcome, User!
+                li
+                    a(class="btn" href="/home/tournaments") Manage Your Tournaments
+                li
+                    a(class="btn" data-toggle="modal" data-target="#createTourney") Create a Tournament
+                li
+                    a(class="btn") Logout
+
+        div(id="page-content-wrapper")
+            div(id="container-fluid")
+
+    div(id="createTourney" class="modal fade in" tabindex="-1" role="dialog")
+        div(class="modal-dialog" style="width:1000px")
+            div(class="modal-content" style="background-color:rgba(0, 0, 0, .3)")
+                div(class=modal-header)
+                    h3(class="modal-title text-center white-text" style="margin:10px") Create a Tournament
+                div(class="modal-body")
+                    form(name="createTournament" role="form" method="post" action="/home/tournaments/create")
+                        div(class="form-group white-text")
+                            h4 Tournament Name:
+                            input(
+                                type="input",
+                                name="t_name",
+                                placeholder="Tournament Name",
+                                class="form-control input-medium center-text no-border-radius"
+                            )
+                            h4 Location:
+                            input(
+                                type="input",
+                                name="t_location",
+                                placeholder="Tournament Location",
+                                class="form-control input-medium center-text no-border-radius"
+                            )
+                            h4 Host Date:
+                            input(
+                                type="date",
+                                name="t_date",
+                                placeholder="Tournament Date",
+                                class="form-control input-medium center-text no-border-radius"
+                            )
+                            h4 Description:
+                            textarea(
+                                name="t_description",
+                                placeholder="Enter any other information about your tournament.",
+                                class="form-control input-medium no-border-radius"
+                            )
+                        div(class="modal-footer")
+                            button(type="submit" id="regtourney" class="btn btn-success no-border-radius") Create Tournament
+                            button(type="button" class="btn btn-danger no-border-radius" data-dismiss="modal") Close

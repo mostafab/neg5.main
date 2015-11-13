@@ -8,6 +8,7 @@ var TournamentSchema = new Schema({
     name : String,
     location : String,
     date : {type : Date, default : Date.now},
+    description : String,
     teams : [teamSchema],
     games : [gameSchema]
 });
