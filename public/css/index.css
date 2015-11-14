@@ -18,12 +18,11 @@ a {
 }
 
 .body {
-    background-color: rgba(0, 102, 153, .7);
+    background-color: rgb(0, 153, 153);
 }
 
 .header {
-    border-bottom-width: 10px;
-    border-bottom-color: rgb(102, 153, 255);
+    border-width: 0px;
 }
 
 .center-text {

@@ -8,9 +8,43 @@ html
     link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
     link(rel="stylesheet" href="/css/index.css")
     link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/custom.css")
+    link(rel="stylesheet" href="/css/font-awesome.css")
     link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+
+    //- Declaration
+    mixin sidebar
+        div(id="wrapper")
+            div(id="sidebar-wrapper")
+                ul(class="sidebar-nav")
+
+                    li(class="sidebar-brand")
+                        div(class="page-header")
+                            h2(class="white-text center-text") Neg 5
+                    li
+                        a(class="btn center-in-div" href="/home/tournaments") Manage Your Tournaments
+                    li
+                        //a(class="btn" data-toggle="modal" data-target="#createTourney") Create a Tournament
+                        a(class="btn" href="/home/tournaments/create") Create a Tournament
+                    li
+                        a(class="btn") Logout
+
+            div(id="page-content-wrapper")
+                div(id="container-fluid")
+    //- Use
+
+    //- Declaration
+    mixin navigationbar
+        div(class="navbar navbar-default header navbar-static-top " role="navigation" style="background-color:grey")
+            div(class="container")
+                div(class="navbar-header")
+                    button(type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-coll")
+                    span(class="sr-only") Toggle Navigation
+                    span(class="icon-bar")
+                    span(class="icon-bar")
+                    span(class="icon-bar")
+                    a(class="navbar-brand" href="/" title="About" style="color:white;background-color:grey;") About Neg 5
+    //- Use
 
   body(class="body")
     block content
-
-  

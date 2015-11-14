@@ -10,6 +10,8 @@ var TournamentSchema = new Schema({
     name : String,
     location : String,
     date : {type : Date, default : Date.now},
+    openRegistration : {type : Boolean, default : true},
+    questionSet : String,
     description : String,
     teams : [teamSchema],
     players : [playerSchema],

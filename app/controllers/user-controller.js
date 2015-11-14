@@ -5,7 +5,6 @@ var Tournament = mongoose.model("Tournament");
 var TournamentDirector = mongoose.model("TournamentDirector");
 var tournamentController = require('../../app/controllers/tournament-controller');
 
-console.log(tournamentController.findTournamentsByDirector("test@domain.com"));
 
 exports.create = function(req, res, next) {
     var name = req.body["r_name"];
