@@ -8,33 +8,34 @@ var Team = mongoose.model("Team");
 * Adds a tournament to the specified td - "tournament director" array of tournaments
 * @return true if adding tournament succeesed, false otherwise
 */
-function addTournament(td, name, date, location, description) {
+function addTournament(directorKey, name, date, location, description) {
     var tourney = new Tournament({
+        director_email : directorKey, // Foreign Key
         name : name,
         location : location,
         date : date,
         description : description
     });
-    TournamentDirector.findOneAndUpdate(
-        {email : "test@domain.com"},
-        {$push : {tournaments : tourney}},
-        {safe : true, upsert : true},
-        function(err, model) {
-            if (err) {
-                console.log("Error: " + err);
-                return false;
-            } else {
-                
-            }
+    tourney.save(function(err) {
+        if (err) {
+            console.log("Unable to save tournament");
+            return false;
+        } else {
+
+        }
     });
     return true;
 }
 
-function addTeam(td, name) {
-    team = new Team({
-        name : name
+function findTournamentsByDirector(directorKey) {
+    var query = Tournament.find({director_email : directorKey}, function(err, result) {
+        getTournaments(result);
     });
+}
 
+function getTournaments(arr) {
+    return arr;
 }
 
 exports.addTournament = addTournament;
+exports.findTournamentsByDirector = findTournamentsByDirector;

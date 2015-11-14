@@ -4,51 +4,43 @@ User {
     password : String
 }
 
-TournamentDirector {
+tournaments : [
+    {
+        name : String
+        location : String
+        date : Date
+        description : String
 
-    name : String
-    email : String
+        teams : [
+            {
+                name : String
+                win : Number
+                losses : Number
+                tie : Number
+                division : String
+            }
+        ]
 
-    tournaments : [
-        {
-            name : String
-            location : String
-            date : Date
-            description : String
+        players : [
+            {
+                name : String
+                points : {}
+                team : Team
+                gamesPlayed : Number
+            }
+        ]
 
-            teams : [
-                {
-                    name : String
-                    win : Number
-                    losses : Number
-                    tie : Number
-                    division : String
+        games : [
+            {
+                round : NumberInt,
+                tossups : NumberInt,
+                winner : team
+                loser : team
+                winnerScore : Number
+                loserScore : Number
 
-                    players : [
-                        {
-                            name : String
-                            points : NumberInt
-                        }
-                    ]
-                }
-            ]
-
-            games : [
-                {
-                    round : NumberInt
-                    teams : [
-                        {
-                            name : String
-                            players : [
-                                {
-                                    name : String
-                                    points : NumberInt
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+            }
+        ]
+    }
+]
 }

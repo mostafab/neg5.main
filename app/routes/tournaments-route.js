@@ -7,7 +7,12 @@ module.exports = function(app) {
             var location = req.body.t_location;
             var description = req.body.t_description;
             var date = req.body.t_date;
-            tournamentController.addTournament(null, name, date, location, description);
+            tournamentController.addTournament("test@domain.com", name, date, location, description);
             res.redirect("/home");
         });
+
+    app.route("/home/tournaments")
+        .get(function(req, res, next) {
+            
+        })
 };
