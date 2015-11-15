@@ -15,6 +15,7 @@ var TournamentSchema = new Schema({
     description : String,
     teams : [teamSchema],
     players : [playerSchema],
+    divisions : [String],
     games : [gameSchema]
 });
 

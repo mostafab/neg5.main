@@ -20,17 +20,53 @@ module.exports = function(app) {
 
     app.route("/home/tournaments")
         .get(function(req, res, next) {
-            tournamentController.findTournamentsByDirector("test@domain.com", function(err, result) {
+            if (checkEmptyQuery(req.query)) {
+                tournamentController.findTournamentsByDirector("test@domain.com", function(err, result) {
+                    if (err) {
+                        // DO STUFF
+                    } else {
+                        res.render("alltournaments", {tournaments : result});
+                    }
+                });
+            } else {
+                tournamentController.findTournamentById(req.query._id, function(err, result) {
+                    if (err || result == null) {
+                        //DO STUFF
+                    } else {
+                        res.render("tournament-view", {tournament : result});
+                    }
+                });
+            }
+        });
+
+    app.route("/home/tournaments/createteam")
+        .post(function(req, res, next) {
+            var id = req.body["tournament_id"];
+            console.log(id);
+            tournamentController.addTeamToTournament(id, req.body, function(err) {
                 if (err) {
                     // DO STUFF
                 } else {
-                    res.render("alltournaments", {tournaments : result});
+                    res.status(200);
                 }
             });
         });
 
-    app.route("/home/tournaments/:id")
-        .get(function(req, res, next) {
-            console.log("Request: " + req.query._id);
+    app.route("/home/tournaments/createplayers")
+        .post(function(req, res, next) {
+            res.send(req.body);
         });
 };
+
+/**
+* Checks if user is going to specific tournament (in which case the query will be filled)
+* or going to all tournaments (in which case query will be empty)
+*/
+function checkEmptyQuery(query) {
+    for (var key in query) {
+        if (key) {
+            return false;
+        }
+    }
+    return true;
+}

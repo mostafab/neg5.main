@@ -5,6 +5,7 @@ html
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
     script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
     script(src="/js/welcome-screen.js")
+    script(src="/js/tournament-configuration.js")
     link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
     link(rel="stylesheet" href="/css/index.css")
     link(rel="stylesheet" href="/css/home.css")
@@ -22,12 +23,11 @@ html
                         div(class="page-header")
                             h2(class="white-text center-text") Neg 5
                     li
-                        a(class="btn center-in-div" href="/home/tournaments") Manage Your Tournaments
+                        a(class="btn center-in-div" href="/home/tournaments" style="color:white") Manage Your Tournaments
                     li
-                        //a(class="btn" data-toggle="modal" data-target="#createTourney") Create a Tournament
-                        a(class="btn" href="/home/tournaments/create") Create a Tournament
+                        a(class="btn" href="/home/tournaments/create" style="color:white") Create a Tournament
                     li
-                        a(class="btn") Logout
+                        a(class="btn" style="color:white") Logout
 
             div(id="page-content-wrapper")
                 div(id="container-fluid")

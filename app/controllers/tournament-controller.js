@@ -15,7 +15,8 @@ function addTournament(directorKey, name, date, location, description, questions
         location : location,
         date : date,
         description : description,
-        questionSet : questionset
+        questionSet : questionset,
+
     });
     tourney.save(function(err) {
         if (err) {
@@ -43,9 +44,39 @@ function findTournamentsByDirector(directorKey, callback) {
     });
 }
 
-function getTournaments(arr) {
-    return arr;
+function findTournamentById(id, callback) {
+    var query = Tournament.findOne({_id : id}).exec(function(err, result) {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, result);
+        }
+    });
+}
+
+function addTeamToTournament(tournamentid, teaminfo, callback) {
+    var newteam = new Team({
+        name : teaminfo["team_name"],
+        email : teaminfo["team_email"],
+        division : teaminfo["team_division"],
+    });
+    var tournament = {_id : tournamentid};
+    var updateQuery = {$push: {teams : newteam}};
+    var options = {safe : true, upsert : true};
+    Tournament.update(tournament, updateQuery, options, function(err) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(null);
+        }
+    })
+}
+
+function addPlayerToTournament(tournamentid, player, callback) {
+
 }
 
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
+exports.findTournamentById = findTournamentById;
+exports.addTeamToTournament = addTeamToTournament;

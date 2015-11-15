@@ -6,7 +6,7 @@ var playerSchema = new Schema({
     name : String,
     team : String,
     gamesPlayed : Number,
-    pointValues : {}
+    pointValues : {type : {}, default: {"15" : 0, "10" : 0, "-5" : 0}}
 });
 
 module.exports = mongoose.model("Player", playerSchema);
