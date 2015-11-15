@@ -7,5 +7,4 @@ module.exports = function(app) {
     app.route("/home")
         .post(users.login)
         .get(users.login);
-        
 };

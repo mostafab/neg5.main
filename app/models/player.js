@@ -5,7 +5,7 @@ var TeamSchema = require("./team").schema;
 var playerSchema = new Schema({
     name : String,
     team : String,
-    gamesPlayed : Number,
+    gamesPlayed : {type : Number, default : 0},
     pointValues : {type : {}, default: {"15" : 0, "10" : 0, "-5" : 0}}
 });
 

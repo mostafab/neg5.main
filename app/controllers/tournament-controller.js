@@ -3,6 +3,7 @@ var mongoose = require("mongoose");
 var Tournament = mongoose.model("Tournament");
 var TournamentDirector = mongoose.model("TournamentDirector");
 var Team = mongoose.model("Team");
+var Player = mongoose.model("Player");
 
 /**
 * Adds a tournament to the specified td - "tournament director" array of tournaments
@@ -72,11 +73,33 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
     })
 }
 
-function addPlayerToTournament(tournamentid, player, callback) {
-
+function addPlayersToTournament(tournamentid, players, callback) {
+    var tournament = {_id : tournamentid};
+    var options = {safe : true, upsert : true};
+    var currentPlayer = 1;
+    var key = "player" + currentPlayer + "_name";
+    while (players[key]) {
+        console.log(key + ": " + players[key]);
+        if (players[key].length != 0)
+            var newplayer = new Player({
+                name : players[key],
+                team : players["players_team"],
+            });
+            var updateQuery = {$push : {players : newplayer}};
+            Tournament.update(tournament, updateQuery, options, function(err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null);
+                }
+            });
+        currentPlayer++;
+        key = "player" + currentPlayer + "_name";
+    }
 }
 
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
 exports.addTeamToTournament = addTeamToTournament;
+exports.addPlayersToTournament = addPlayersToTournament;

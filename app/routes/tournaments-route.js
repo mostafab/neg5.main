@@ -42,7 +42,6 @@ module.exports = function(app) {
     app.route("/home/tournaments/createteam")
         .post(function(req, res, next) {
             var id = req.body["tournament_id"];
-            console.log(id);
             tournamentController.addTeamToTournament(id, req.body, function(err) {
                 if (err) {
                     // DO STUFF
@@ -54,13 +53,21 @@ module.exports = function(app) {
 
     app.route("/home/tournaments/createplayers")
         .post(function(req, res, next) {
-            res.send(req.body);
+            var id = req.body["tournament_id_player"];
+            tournamentController.addPlayersToTournament(id, req.body, function(err) {
+                if (err) {
+                    // DO STUFF
+                } else {
+                    res.status(200);
+                }
+            });
         });
 };
 
 /**
 * Checks if user is going to specific tournament (in which case the query will be filled)
 * or going to all tournaments (in which case query will be empty)
+* @return true if empty query, false otherwise
 */
 function checkEmptyQuery(query) {
     for (var key in query) {
