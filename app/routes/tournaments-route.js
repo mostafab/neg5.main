@@ -39,6 +39,12 @@ module.exports = function(app) {
             }
         });
 
+    app.route("/home/tournaments:_id/teams")
+        .get(function(req, res, next) {
+            console.log("Request got here");
+            res.send("You got here");
+        });
+
     app.route("/home/tournaments/createteam")
         .post(function(req, res, next) {
             var id = req.body["tournament_id"];

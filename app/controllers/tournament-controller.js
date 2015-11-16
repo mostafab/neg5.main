@@ -70,7 +70,7 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
         } else {
             callback(null);
         }
-    })
+    });
 }
 
 function addPlayersToTournament(tournamentid, players, callback) {

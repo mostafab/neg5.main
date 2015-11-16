@@ -39,6 +39,14 @@ block content
                                 div(class="panel-heading") Add a Game
                                 div(class="panel-body")
 
+                                    div(class="input-group")
+                                        select(type="input" class="form-control" placeholder="Team 1")
+                                            each team in tournament.teams
+                                                option #{team.name}
+                                        span(class="input-group-addon") vs
+                                        select(type="input" class="form-control" placeholder="Team 2")
+                                            each team in tournament.teams
+                                                option #{team.name}
                         div(class="panel panel-default")
                                 div(class="panel-heading") List of Games
                                 div(class="panel-body")
