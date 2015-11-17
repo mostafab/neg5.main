@@ -16,15 +16,18 @@ block content
                 br
                 br
                 | #{message}
+                br
+                br
+
             form(name="logins" id="loginfo" action="/home" role="form" method="post")
-                div(class="form-group")
+                div(class="form-group col-md-8 col-md-7 col-md-offset-4")
                     input(
                         type="input",
                         name="usrname",
                         placeholder="Email",
-                        class="form-control input-lg center-text no-border-radius"
+                        class="form-control input-lg center-text no-border-radius infofield"
                         )
-                div(class="form-group")
+                div(class="form-group col-md-8 col-md-7 col-md-offset-4")
                     input(
                         type="password",
                         name="pswd",
@@ -45,36 +48,38 @@ block content
                         br
                         br
                 div(class="form-group")
-                    p(id="errorlabel") Welcome To Your Quizbowl Tournament Management System! Login to Continue.
+                    p(id="errorlabel") Welcome to Neg 5, a Quizbowl tournament management system. Login to continue.
 
 
         div(class="container span4 text-center child userbox" id="registerWindow")
             h1(style="white-space:pre") Complete this form to register
+            br
+            br
             form(name="signup" role="form" id="signupform")
-                div(class="form-group")
+                div(class="form-group col-md-8 col-md-7 col-md-offset-4")
                     input(
                         type="input",
                         name="r_name",
                         placeholder="Name",
-                        class="form-control input-lg center-text no-border-radius",
+                        class="form-control input-lg center-text no-border-radius infofield",
                         autocomplete="off"
                         )
-                div(class="form-group")
+                div(class="form-group col-md-8 col-md-7 col-md-offset-4")
                     input(
                         type="input",
                         name="r_usrname",
                         placeholder="Email",
-                        class="form-control input-lg center-text no-border-radius",
+                        class="form-control input-lg center-text no-border-radius infofield",
                         autocomplete="off"
                         )
-                div(class="form-group")
+                div(class="form-group col-md-8 col-md-7 col-md-offset-4")
                     input(
                         type="password",
                         name="r_pswd",
                         placeholder="Password",
                         class="form-control input-lg center-text infofield"
                         )
-                div(class="form-group")
+                div(class="form-group col-md-8 col-md-7 col-md-offset-4")
                     input(
                         type="password",
                         name="r_pswd_2",

@@ -106,7 +106,6 @@ function submitRegistration() {
         method : "POST",
         data : $("#signupform").serialize(),
         success : function(databack, status, xhr) {
-            console.log("Success");
             document.getElementById("signupform").reset();
         }
     });

@@ -50,6 +50,7 @@ a {
 
 .infofield {
     border-radius: 0px;
+    width: 60%;
 }
 
 .parent {
@@ -79,7 +80,7 @@ a {
 
 .userbox {
     background-color: rgba(10, 10, 10, .8);
-    padding: 50px;
+    padding: 20px;
     position: absolute;
     text-align: center;
 }
