@@ -6,6 +6,10 @@
 
 /* Toggle Styles */
 
+* {
+    font-family: "Raleway", sans-serif;
+}
+
 #wrapper {
     padding-left: 0;
     -webkit-transition: all 0.5s ease;
@@ -46,6 +50,13 @@
 #wrapper.toggled #page-content-wrapper {
     position: absolute;
     margin-right: -250px;
+}
+
+.col-centered {
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 /* Sidebar Styles */

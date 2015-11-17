@@ -1,5 +1,11 @@
 extends layout
 
+block extrascripts
+    script(src="/js/tournament-configuration.js")
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/home.css")
+
 block content
 
     +sidebar
@@ -12,12 +18,12 @@ block content
                     div(class="col-md-12")
                         h3 #{tournament.name}
 
-                div(class="panel panel-default")
-                    div(class="panel-heading") Tournament Dashboard.
+                div(class="panel panel-primary")
+                    div(class="panel-heading") Dashboard for #{tournament.tournament_name}.
 
                     div(class="panel-body")
                         div(class="row")
-                            ul(class="nav nav-pills")
+                            ul(class="nav nav-pills no-border-radius")
                                 li(class="active")
                                     a(href="#overview" data-toggle="tab") Overview
                                 li
@@ -26,32 +32,61 @@ block content
                                     a(href="#teams" data-toggle="tab") Add/Remove/Edit Teams
                 div(class="tab-content")
                     div(class="tab-pane fade" id="overview")
-                        div(class="panel panel-default")
-                                div(class="panel-heading")
+                        div(class="panel panel-info")
+                                div(class="panel-heading") Tournament Overview
                                 div(class="panel-body")
-                                    h4 Tournament Overview
                                     h5 Location: #{tournament.location}
                                     h5 Question Set: #{tournament.questionSet}
                                     h5 Date: #{tournament.date}
                                     h5 Description : #{tournament.description}
+
+                        div(class="panel panel-info")
+
+
+                                div(class="panel-heading") Point Scheme : The default question values are (15) - (10) - (-5). You don't need to change anything if that's what you're using
+                                div(class="panel-body")
+                                    form(id="point-scheme-form" name="change-point-scheme" role="form")
+                                        div(id="point-scheme-dynamic" class="form-group")
+                                        button(type="button" class="btn btn-md btn-success no-border-radius") Add a Custom Point Value
+                                        button(type="button" class="btn btn-md btn-info no-border-radius") Submit Point Value Changes
+
+
+
                     div(class="tab-pane fade" id="games")
-                        div(class="panel panel-default")
+                        div(class="panel panel-info")
                                 div(class="panel-heading") Add a Game
                                 div(class="panel-body")
 
-                                    div(class="input-group")
-                                        select(type="input" class="form-control" placeholder="Team 1")
-                                            each team in tournament.teams
-                                                option #{team.name}
-                                        span(class="input-group-addon") vs
-                                        select(type="input" class="form-control" placeholder="Team 2")
-                                            each team in tournament.teams
-                                                option #{team.name}
-                        div(class="panel panel-default")
+                                        form(role="form")
+                                            div(class="row")
+                                                input(type="hidden" value="#{tournament._id}" id="tournament_id_change")
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(class="panel panel-default")
+                                                        select(id="leftchoice" class="form-control teamselect")
+                                                            option(hidden selected value="") Team 1
+                                                            each team in tournament.teams
+                                                                option(value="#{team.team_name}") #{team.team_name}
+
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(class="panel panel-default")
+                                                        select(id="rightchoice" class="form-control teamselect")
+                                                            option(hidden selected value="") Team 2
+                                                            each team in tournament.teams
+                                                                option(value="#{team.team_name}") #{team.team_name}
+
+                                            div(class="row")
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(id="left-text" class="col-md-7 panel panel-default")
+
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(id="right-text" class="col-md-7 panel panel-default")
+
+
+                        div(class="panel panel-info")
                                 div(class="panel-heading") List of Games
                                 div(class="panel-body")
                     div(class="tab-pane fade" id="teams")
-                        div(class="panel panel-default")
+                        div(class="panel panel-info")
                                 div(class="panel-heading" id="add-team-panel") Add a Team (Click to Collapse or Show Form)
                                 div(class="panel-body" id="add-team-body")
 
@@ -132,6 +167,6 @@ block content
                                             br
                                             button(type="button" class="btn btn-lg btn-info no-border-radius" id="add-team-button") Add Team To Tournament
 
-                        div(class="panel panel-default")
+                        div(class="panel panel-info")
                                 div(class="panel-heading") List of Teams
                                 div(class="panel-body")

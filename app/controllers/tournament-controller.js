@@ -12,7 +12,7 @@ var Player = mongoose.model("Player");
 function addTournament(directorKey, name, date, location, description, questionset) {
     var tourney = new Tournament({
         director_email : directorKey, // Foreign Key
-        name : name,
+        tournament_name : name,
         location : location,
         date : date,
         description : description,
@@ -21,7 +21,7 @@ function addTournament(directorKey, name, date, location, description, questions
     });
     tourney.save(function(err) {
         if (err) {
-            console.log("Unable to save tournament");
+            // console.log("Unable to save tournament");
             return false;
         } else {
 
@@ -57,7 +57,7 @@ function findTournamentById(id, callback) {
 
 function addTeamToTournament(tournamentid, teaminfo, callback) {
     var newteam = new Team({
-        name : teaminfo["team_name"],
+        team_name : teaminfo["team_name"],
         email : teaminfo["team_email"],
         division : teaminfo["team_division"],
     });
@@ -79,10 +79,9 @@ function addPlayersToTournament(tournamentid, players, callback) {
     var currentPlayer = 1;
     var key = "player" + currentPlayer + "_name";
     while (players[key]) {
-        console.log(key + ": " + players[key]);
         if (players[key].length != 0)
             var newplayer = new Player({
-                name : players[key],
+                player_name : players[key],
                 team : players["players_team"],
             });
             var updateQuery = {$push : {players : newplayer}};
@@ -98,8 +97,25 @@ function addPlayersToTournament(tournamentid, players, callback) {
     }
 }
 
+function findTeamMembers(tournamentid, teamname, callback) {
+    var query = Tournament.findOne({_id : tournamentid}).exec(function(err, result) {
+        if (err) {
+            callback(err, []);
+        } else {
+            var members = [];
+            for (var i = 0; i < result.players.length; i++) {
+                if (result.players[i].team == teamname) {
+                    members.push(result.players[i]);
+                }
+            }
+            callback(null, members);
+        }
+    });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
 exports.addTeamToTournament = addTeamToTournament;
 exports.addPlayersToTournament = addPlayersToTournament;
+exports.findTeamMembers = findTeamMembers;

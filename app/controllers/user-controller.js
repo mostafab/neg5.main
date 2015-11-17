@@ -14,16 +14,14 @@ exports.create = function(req, res, next) {
     var td = makeDirector(req);
     user.save(function(err) {
         if (err) {
-            return next(err);
+            res.status(500).send();
         } else {
             td.save(function(err) {
                 if (err) {
-                    return next(err);
+                    res.status(500).send();
                 }
             });
-            res.render("index", {title : "Thanks for Registering, " + name + "!",
-                                message : "Login to Continue."
-            });
+            res.status(200).send();
         }
     });
 };

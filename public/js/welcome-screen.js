@@ -11,9 +11,7 @@ $(document).ready(function() {
     $("#login").click(function() {
         var message = "";
         if (checkEmailInForm()) {
-            console.log("Step 1");
             if (checkPasswordInForm()) {
-                console.log("Step 2");
                 submitLogin();
             } else {
                 message += "Please enter a valid password. "
@@ -61,10 +59,33 @@ $(document).ready(function() {
         if (!problem) {
             submitRegistration();
         }
+    });
 
+    $("#register").click(function() {
+        $("#registerWindow").animate({
+            left : "0%"
+        }, 500);
+        // $("#registerWindow").css("left", "0%");
+        console.log($("#registerWindow").css("left"));
+
+        $("#loginbox").animate({
+            left : "-200%"
+        }, 500);
+    });
+
+    $("#closereg").click(function() {
+        $("#loginbox").animate({
+            left : "0%"
+        }, 500);
+
+        $("#registerWindow").animate({
+            left : "-200%"
+        }, 500);
     });
 
 });
+
+
 
 function checkEmailInForm() {
     return document.forms["logins"]["usrname"].value.length >= constants.MIN_USER_LENGTH
@@ -80,7 +101,15 @@ function submitLogin() {
 }
 
 function submitRegistration() {
-    document.signup.submit();
+    $.ajax({
+        url : "/register",
+        method : "POST",
+        data : $("#signupform").serialize(),
+        success : function(databack, status, xhr) {
+            console.log("Success");
+            document.getElementById("signupform").reset();
+        }
+    });
 }
 
 function checkRegisterEmail(email) {

@@ -39,12 +39,6 @@ module.exports = function(app) {
             }
         });
 
-    app.route("/home/tournaments:_id/teams")
-        .get(function(req, res, next) {
-            console.log("Request got here");
-            res.send("You got here");
-        });
-
     app.route("/home/tournaments/createteam")
         .post(function(req, res, next) {
             var id = req.body["tournament_id"];
@@ -52,7 +46,7 @@ module.exports = function(app) {
                 if (err) {
                     // DO STUFF
                 } else {
-                    res.status(200);
+                    res.end();
                 }
             });
         });
@@ -64,7 +58,22 @@ module.exports = function(app) {
                 if (err) {
                     // DO STUFF
                 } else {
-                    res.status(200);
+                    res.end();
+                }
+            });
+        });
+
+    app.route("/home/tournaments/getplayers")
+        .get(function(req, res, next) {
+            var id = req.query["tournamentid"];
+            var teamname = req.query["teamname"];
+            tournamentController.findTeamMembers(id, teamname, function(err, result) {
+                if (err) {
+                    // DO STUFF
+                    console.log(err.stack);
+                    res.status(500).send("Shiiiiiit");
+                } else {
+                    res.status(200).send(result);
                 }
             });
         });

@@ -1,11 +1,16 @@
 extends layout
 
+block extrastylesheets
+    link(rel="stylesheet" href="/css/index.css")
+
+block extrascripts
+    script(src="/js/welcome-screen.js")
+
 block content
 
-    +navigationbar
+    div(class="container vertical-center parent" id="#masterbox")
 
-    div(class="container vertical-center parent")
-        div(class="container span4 text-center child")
+        div(class="container span4 text-center child userbox" id="loginbox")
             h1(style="white-space:pre")
                 | #{title}
                 br
@@ -35,55 +40,46 @@ block content
                         button(class="btn btn-warning btn-lg center-in-div no-border-radius",
                             type="button",
                             id="register",
-                            data-toggle="modal",
-                            data-target="#registerWindow")
+                            )
                             | Register
                         br
                         br
                 div(class="form-group")
-                    p(id="errorlabel") Enter Your Email Address and Password to Continue.
+                    p(id="errorlabel") Welcome To Your Quizbowl Tournament Management System! Login to Continue.
 
-    div(id="registerWindow" class="modal fade" role="dialog")
-        div(class="modal-dialog")
-            div(class="modal-content")
-                div(class="modal-header")
-                    h4(class="modal-title") Complete the Following Form to Register
-                        li(id="l_name") Name must be between 5 and 15 characters.
-                        li(id="l_email") Email must be in a valid format (example@domain.com).
-                        li(id="l_password") Password must be at least 5 characters long.
-                        li(id="l_match") Passwords must match.
-                div(class="modal-body")
-                    form(name="signup" role="form" action="/register" method="post")
-                        div(class="form-group")
-                            input(
-                                type="input",
-                                name="r_name",
-                                placeholder="Name",
-                                class="form-control input-lg center-text no-border-radius",
-                                autocomplete="off"
-                                )
-                        div(class="form-group")
-                            input(
-                                type="input",
-                                name="r_usrname",
-                                placeholder="Email",
-                                class="form-control input-lg center-text no-border-radius",
-                                autocomplete="off"
-                                )
-                        div(class="form-group")
-                            input(
-                                type="password",
-                                name="r_pswd",
-                                placeholder="Password",
-                                class="form-control input-lg center-text infofield"
-                                )
-                        div(class="form-group")
-                            input(
-                                type="password",
-                                name="r_pswd_2",
-                                placeholder="Confirm Password",
-                                class="form-control input-lg center-text infofield"
-                                )
-                        div(class="modal-footer")
-                            button(type="button" id="regbutton" class="btn btn-success no-border-radius") Confirm Registration
-                            button(type="button" class="btn btn-danger no-border-radius" data-dismiss="modal") Close
+
+        div(class="container span4 text-center child userbox" id="registerWindow")
+            h1(style="white-space:pre") Complete this form to register
+            form(name="signup" role="form" id="signupform")
+                div(class="form-group")
+                    input(
+                        type="input",
+                        name="r_name",
+                        placeholder="Name",
+                        class="form-control input-lg center-text no-border-radius",
+                        autocomplete="off"
+                        )
+                div(class="form-group")
+                    input(
+                        type="input",
+                        name="r_usrname",
+                        placeholder="Email",
+                        class="form-control input-lg center-text no-border-radius",
+                        autocomplete="off"
+                        )
+                div(class="form-group")
+                    input(
+                        type="password",
+                        name="r_pswd",
+                        placeholder="Password",
+                        class="form-control input-lg center-text infofield"
+                        )
+                div(class="form-group")
+                    input(
+                        type="password",
+                        name="r_pswd_2",
+                        placeholder="Confirm Password",
+                        class="form-control input-lg center-text infofield"
+                        )
+                button(type="button" id="regbutton" class="btn btn-success no-border-radius") Confirm Registration
+                button(type="button" class="btn btn-danger no-border-radius" id="closereg") Close

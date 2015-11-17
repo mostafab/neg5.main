@@ -20,6 +20,15 @@ $(document).ready(function() {
     $("#newlineplayer").click(function(e) {
         createPlayerInputField();
     });
+
+    $(".teamselect").change(function(e) {
+        if ($(this).attr("id") == "leftchoice") {
+            findPlayersByTeamnameAndTournament("LEFT");
+        } else {
+            findPlayersByTeamnameAndTournament("RIGHT");
+        }
+
+    })
 });
 
 function sendTeamToServer() {
@@ -28,7 +37,7 @@ function sendTeamToServer() {
         type : "POST",
         data : $("#teamform").serialize(),
         success : function(databack, status, xhr) {
-            console.log("Success");
+
         }
     });
 }
@@ -44,6 +53,30 @@ function sendPlayersToServer() {
     });
 }
 
+function findPlayersByTeamnameAndTournament(side) {
+    if (side == "LEFT") {
+        $.ajax({
+            url : "/home/tournaments/getplayers",
+            type : "GET",
+            data : {tournamentid : $("#tournament_id_change").val(),
+                    teamname : $("#leftchoice").val()},
+            success : function(databack, status, xhr) {
+                printPlayerValues(databack, "LEFT");
+            }
+        });
+    } else {
+        $.ajax({
+            url : "/home/tournaments/getplayers",
+            type : "GET",
+            data : {tournamentid : $("#tournament_id_change").val(),
+                    teamname : $("#rightchoice").val()},
+            success : function(databack, status, xhr) {
+                printPlayerValues(databack, "RIGHT");
+            }
+        });
+    }
+}
+
 function createPlayerInputField() {
     var newInput = "<input type='text'/>";
     var classes = "form-control input-medium center-text no-border-radius";
@@ -53,4 +86,22 @@ function createPlayerInputField() {
     $(newInput).attr("class", classes).attr("name", name).attr("placeholder", placeholder)
         .attr("autocomplete", autocomplete).appendTo("#player-dynamic");
     nextPlayerNum++;
+}
+
+function printPlayerValues(players, side) {
+    if (side == "LEFT") {
+        $("#left-text").empty();
+        for (var i = 0; i < players.length; i++) {
+            // console.log(players[i]);
+            $("#left-text").append("<p>" + players[i].team + "</p>");
+        }
+    } else {
+        $("#right-text").empty();
+        for (var i = 0; i < players.length; i++) {
+            // console.log(players[i]);
+            $("#right-text").append("<p>" + players[i].team + "</p>");
+        }
+    }
+
+
 }

@@ -4,14 +4,17 @@ html
     title Neg 5
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
     script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
-    script(src="/js/welcome-screen.js")
-    script(src="/js/tournament-configuration.js")
+    // script(src="/js/welcome-screen.js")
+    // script(src="/js/tournament-configuration.js")
     link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
-    link(rel="stylesheet" href="/css/index.css")
-    link(rel="stylesheet" href="/css/home.css")
-    link(rel="stylesheet" href="/css/custom.css")
-    link(rel="stylesheet" href="/css/font-awesome.css")
+    // link(rel="stylesheet" href="/css/index.css")
+    // link(rel="stylesheet" href="/css/home.css")
+    //link(rel="stylesheet" href="/css/custom.css")
+    // link(rel="stylesheet" href="/css/font-awesome.css")
     link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+
+    block extrastylesheets
+    block extrascripts
 
     //- Declaration
     mixin sidebar
@@ -23,7 +26,7 @@ html
                         div(class="page-header")
                             h2(class="white-text center-text") Neg 5
                     li
-                        a(class="btn center-in-div" href="/home/tournaments" style="color:white") Manage Your Tournaments
+                        a(class="btn center-in-div" href="/home/tournaments" style="color:white") Your Tournaments
                     li
                         a(class="btn" href="/home/tournaments/create" style="color:white") Create a Tournament
                     li

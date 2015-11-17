@@ -1,5 +1,12 @@
 extends layout
 
+block extrascripts
+    script(src="/js/tournament-configuration.js")
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/custom.css")
+    link(rel="stylesheet" href="/css/home.css")
+
 block content
 
     +sidebar
@@ -34,7 +41,7 @@ block content
                                         each val in tournaments
                                             tr(class="odd")
                                                 td #{val._id}
-                                                td #{val.name}
+                                                td #{val.tournament_name}
                                                 td #{val.location}
                                                 td #{val.date.toString()}
                                                 if val.openRegistration

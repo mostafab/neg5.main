@@ -7,7 +7,7 @@ var playerSchema = require("./player").schema;
 
 var TournamentSchema = new Schema({
     director_email : String, // Foreign key
-    name : String,
+    tournament_name : String,
     location : String,
     date : {type : Date, default : Date.now},
     openRegistration : {type : Boolean, default : true},

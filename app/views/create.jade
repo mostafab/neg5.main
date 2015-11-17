@@ -1,5 +1,11 @@
 extends layout
 
+block extrascripts
+    script(src="/js/tournament-configuration.js")
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/home.css")
+
 block content
 
     +sidebar
