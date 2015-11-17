@@ -1,5 +1,6 @@
 var tournamentController = require('../../app/controllers/tournament-controller');
 
+
 module.exports = function(app) {
 
     app.route('/home/tournaments/create')

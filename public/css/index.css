@@ -10,6 +10,7 @@
 h1 {
     color: white;
     text-align: center;
+    font-size: 36px;
     /*margin-bottom: 100px;*/
 }
 
@@ -49,8 +50,11 @@ a {
 }
 
 .infofield {
-    border-radius: 0px;
+    border-radius: 3px;
     width: 60%;
+    color: black;
+    font-weight: bold;
+    font-size: 24px;
 }
 
 .parent {
@@ -87,6 +91,7 @@ a {
 
 .btn {
     background-color: transparent;
+    border-radius: 3px;
     padding: 15px 22px;
     font-size: 24px;
     line-height: 1.33;
