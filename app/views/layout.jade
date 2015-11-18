@@ -2,51 +2,57 @@ doctype html
 html
   head
     title Neg 5
+    script(src="/js/jquery-2.1.4.js")
+    script(src="/js/modernizr.js")
+    script(src="/js/jquery.menu-aim.js")
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
     script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
     link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
-    link(rel="stylesheet" href="/css/sidebars.css")
     link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+    link(rel="stylesheet" href="/css/reset.css")
+    link(rel="stylesheet" href="/css/style.css")
 
     block extrastylesheets
+
     block extrascripts
 
     //- Declaration
     mixin sidebar
-        div(id="wrapper")
-            div(id="sidebar-wrapper")
-                ul(class="sidebar-nav")
 
-                    li(class="sidebar-brand")
-                        div(class="page-header")
-                            h2(class="white-text center-text") Neg 5
-                    li
-                        a(class="btn center-in-div" href="/home/tournaments" style="color:white") Your Tournaments
-                    li
-                        a(class="btn" href="/home/tournaments/create" style="color:white") Create a Tournament
-                    li
-                        a(class="btn" style="color:white") Logout
+        nav(class="cd-side-nav")
+            ul
+                li(class="cd-label") Dashboard
+                li(class="has-children overview active")
+                    a Tournaments
+                    ul
+                        li
+                            a(href="/home/tournaments") Your Tournaments
+                            a(href="/home/tournaments/create") Create a Tournament
 
-            div(id="page-content-wrapper")
-                div(id="container-fluid")
+            ul
+                li(class="cd-label")
+                li(class="has-children notifications active")
+                    a Forms
+                    ul
+                        li
+                            a(href="#") Generate Invitation Form
+            ul
+                li(class="cd-label") Logout
+                li(class="action-btn")
+                    a(href="/logout") Logout
     //- Use
 
     //- Declaration
     mixin navbar
-        div
-    //- Use
+        header(class="cd-main-header")
+            a(href="#0" class="cd-nav-trigger") Menu
+                span
 
-    //- Declaration
-    mixin navigationbar
-        div(class="navbar navbar-default header navbar-static-top " role="navigation" style="background-color:grey")
-            div(class="container")
-                div(class="navbar-header")
-                    button(type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-coll")
-                    span(class="sr-only") Toggle Navigation
-                    span(class="icon-bar")
-                    span(class="icon-bar")
-                    span(class="icon-bar")
-                    a(class="navbar-brand" href="/" title="About" style="color:white;background-color:grey;") About Neg 5
+            nav(class="cd-nav")
+                ul(class="cd-top-nav")
+
+
+
     //- Use
 
   body(class="body")

@@ -23,8 +23,9 @@ module.exports = function(app) {
         .get(function(req, res, next) {
             if (checkEmptyQuery(req.query)) {
                 tournamentController.findTournamentsByDirector("test@domain.com", function(err, result) {
-                    if (err) {
+                    if (err || result == null) {
                         // DO STUFF
+                        console.log("Result is null");
                     } else {
                         res.render("alltournaments", {tournaments : result});
                     }
@@ -56,6 +57,7 @@ module.exports = function(app) {
         .post(function(req, res, next) {
             var id = req.body["tournament_id_player"];
             tournamentController.addPlayersToTournament(id, req.body, function(err) {
+                console.log("Callback");
                 if (err) {
                     // DO STUFF
                 } else {

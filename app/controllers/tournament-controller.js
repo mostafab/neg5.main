@@ -78,23 +78,47 @@ function addPlayersToTournament(tournamentid, players, callback) {
     var options = {safe : true, upsert : true};
     var currentPlayer = 1;
     var key = "player" + currentPlayer + "_name";
+
+    var newPlayers = [];
     while (players[key]) {
+        console.log(key)
         if (players[key].length != 0)
             var newplayer = new Player({
                 player_name : players[key],
                 team : players["players_team"],
             });
-            var updateQuery = {$push : {players : newplayer}};
-            Tournament.update(tournament, updateQuery, options, function(err) {
-                if (err) {
-                    callback(err);
-                } else {
-                    callback(null);
-                }
-            });
+            newPlayers.push(newplayer);
         currentPlayer++;
         key = "player" + currentPlayer + "_name";
     }
+    var updateQuery = {$push : {players : {$each : newPlayers}}};
+    Tournament.update(tournament, updateQuery, options, function(err) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(null);
+        }
+    });
+
+    // while (players[key]) {
+    //     console.log(key)
+    //     if (players[key].length != 0)
+    //         var newplayer = new Player({
+    //             player_name : players[key],
+    //             team : players["players_team"],
+    //         });
+    //         var updateQuery = {$push : {players : newplayer}};
+    //         Tournament.update(tournament, updateQuery, options, function(err) {
+    //             if (err) {
+    //                 callback(err);
+    //             } else {
+    //                 callback(null);
+    //             }
+    //         });
+    //     currentPlayer++;
+    //     key = "player" + currentPlayer + "_name";
+    // }
+
 }
 
 function findTeamMembers(tournamentid, teamname, callback) {

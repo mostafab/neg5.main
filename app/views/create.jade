@@ -5,63 +5,65 @@ block extrascripts
 
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
 
 block content
 
+    +navbar
     +sidebar
 
-    div(id="page-wrapper")
-        div(id="page-inner")
-            div(class="row")
-                div(class="col-md-12")
-                    h3 Create a Tournament
+    main(class="cd-main-content")
+        div(class="content-wrapper box")
 
             div(class="row")
                 div(class="col-md-12")
-                    div(class="panel panel-default")
-                        div(class="panel-heading") Fill in the information below and hit confirm to create a tournament. You can leave off fields you're not sure of yet.
+                    div(class="panel panel-default table-grey" style="margin:20px; margin-bottom:50px")
+                    h2(class="title" style="width:50%") Create a Tournament. You only need to provide a name.
                     div(class="panel-body")
                         div(class="row")
-                            div(class="col-md-6")
+                            div(class="col-md-6 smallbox")
                                 form(name="createTournament" role="form" method="post" action="/home/tournaments/create/submit")
                                     div(class="form-group")
-                                        label Name*
+                                        label(class="info-label") Name*
                                         input(
                                             type="input",
                                             name="t_name",
                                             placeholder="Tournament Name",
-                                            class="form-control input-medium center-text no-border-radius"
+                                            class="form-control input-lg center-text no-border-radius tournament-info-field"
                                         )
                                     div(class="form-group")
-                                        label Question Set
+                                        label(class="info-label") Question Set
                                         input(
                                             type="input",
                                             name="t_qset",
                                             placeholder="Question Set",
-                                            class="form-control input-medium center-text no-border-radius"
+                                            class="form-control input-lg center-text no-border-radius tournament-info-field"
                                         )
                                     div(class="form-group")
-                                        label Location
+                                        label(class="info-label") Location
                                         input(
                                             type="input",
                                             name="t_location",
                                             placeholder="Institution",
-                                            class="form-control input-medium center-text no-border-radius"
+                                            class="form-control input-lg center-text no-border-radius tournament-info-field"
                                         )
                                     div(class="form-group")
-                                        label Host Date
+                                        label(class="info-label") Host Date
                                         input(
                                             type="date",
                                             name="t_date",
                                             placeholder="Tournament Date",
-                                            class="form-control input-medium center-text no-border-radius"
+                                            id="date-box",
+                                            class="form-control input-lg center-text no-border-radius tournament-info-field"
                                         )
                                     div(class="form-group")
-                                        label Additional Information
+                                        label(class="info-label") Additional Information
                                         textarea(
                                             name="t_description",
                                             placeholder="Enter any other information about your tournament",
-                                            class="form-control input-lg no-border-radius"
+                                            class="form-control input-lg no-border-radius tournament-info-field",
+                                            style="min-height:300px"
                                         )
 
                                     button(type="submit" class="btn btn-lg btn-success no-border-radius") Confirm

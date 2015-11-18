@@ -2,9 +2,9 @@ var nextPlayerNum = 5;
 
 $(document).ready(function() {
 
-    $("#add-team-panel").click(function(e) {
+    $(".collapsable").click(function(e) {
         e.stopImmediatePropagation();
-        $("#add-team-body").toggle(300);
+        $(this).next().toggle(300);
     });
 
     $("#add-team-button").click(function(e) {
@@ -93,13 +93,13 @@ function printPlayerValues(players, side) {
         $("#left-text").empty();
         for (var i = 0; i < players.length; i++) {
             // console.log(players[i]);
-            $("#left-text").append("<p>" + players[i].team + "</p>");
+            $("#left-text").append("<p>" + players[i].player_name + "</p>");
         }
     } else {
         $("#right-text").empty();
         for (var i = 0; i < players.length; i++) {
             // console.log(players[i]);
-            $("#right-text").append("<p>" + players[i].team + "</p>");
+            $("#right-text").append("<p>" + players[i].player_name + "</p>");
         }
     }
 

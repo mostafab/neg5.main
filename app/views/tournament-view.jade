@@ -5,168 +5,160 @@ block extrascripts
 
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
 
 block content
 
+    +navbar
     +sidebar
 
-    div(id="page-wrapper")
+    main(class="cd-main-content")
+        div(class="content-wrapper")
 
-            div(id="page-inner")
-
-                div(class="row")
+            div(class="row")
                     div(class="col-md-12")
-                        h3 #{tournament.name}
+                        div(class="panel panel-default" style="margin:20px; margin-bottom:50px")
+                        h2(class="title" style="width:50%") #{tournament.tournament_name}
 
-                div(class="panel panel-primary")
-                    div(class="panel-heading") Dashboard for #{tournament.tournament_name}.
+                        div(class="panel-body")
+                            div(class="row" style="")
+                                ul(class="nav nav-pills no-border-radius")
+                                    li(class="active")
+                                        a(href="#overview" data-toggle="tab") Overview
+                                    li
+                                        a(href="#games" data-toggle="tab") Add/Remove/Edit Games
+                                    li
+                                        a(href="#teams" data-toggle="tab") Add/Remove/Edit Teams
 
-                    div(class="panel-body")
-                        div(class="row")
-                            ul(class="nav nav-pills no-border-radius")
-                                li(class="active")
-                                    a(href="#overview" data-toggle="tab") Overview
-                                li
-                                    a(href="#games" data-toggle="tab") Add/Remove/Edit Games
-                                li
-                                    a(href="#teams" data-toggle="tab") Add/Remove/Edit Teams
-                div(class="tab-content")
-                    div(class="tab-pane fade" id="overview")
-                        div(class="panel panel-info")
-                                div(class="panel-heading") Tournament Overview
-                                div(class="panel-body")
-                                    h5 Location: #{tournament.location}
-                                    h5 Question Set: #{tournament.questionSet}
-                                    h5 Date: #{tournament.date}
-                                    h5 Description : #{tournament.description}
+                        br
+                        br
 
-                        div(class="panel panel-info")
+                        div(class="tab-content")
+                            div(class="tab-pane fade" id="overview")
+                                div(class="panel panel-default")
+                                        div(class="panel-heading collapsable") Tournament Overview
+                                        div(class="panel-body")
+                                            h5 Location: #{tournament.location}
+                                            h5 Question Set: #{tournament.questionSet}
+                                            h5 Date: #{tournament.date}
+                                            h5 Description : #{tournament.description}
 
+                            div(class="tab-pane fade" id="games")
+                                div(class="panel panel-default")
+                                        div(class="panel-heading collapsable") Add a Game
+                                        div(class="panel-body")
 
-                                div(class="panel-heading") Point Scheme : The default question values are (15) - (10) - (-5). You don't need to change anything if that's what you're using
-                                div(class="panel-body")
-                                    form(id="point-scheme-form" name="change-point-scheme" role="form")
-                                        div(id="point-scheme-dynamic" class="form-group")
-                                        button(type="button" class="btn btn-md btn-success no-border-radius") Add a Custom Point Value
-                                        button(type="button" class="btn btn-md btn-info no-border-radius") Submit Point Value Changes
+                                                form(role="form")
+                                                    div(class="row")
+                                                        input(type="hidden" value="#{tournament._id}" id="tournament_id_change")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(class="panel panel-default")
+                                                                select(id="leftchoice" class="form-control teamselect")
+                                                                    option(hidden selected value="") Team 1
+                                                                    each team in tournament.teams
+                                                                        option(value="#{team.team_name}") #{team.team_name}
 
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(class="panel panel-default")
+                                                                select(id="rightchoice" class="form-control teamselect")
+                                                                    option(hidden selected value="") Team 2
+                                                                    each team in tournament.teams
+                                                                        option(value="#{team.team_name}") #{team.team_name}
 
+                                                    div(class="row")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(id="left-text" class="col-md-7 panel panel-default")
 
-                    div(class="tab-pane fade" id="games")
-                        div(class="panel panel-info")
-                                div(class="panel-heading") Add a Game
-                                div(class="panel-body")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(id="right-text" class="col-md-7 panel panel-default")
 
-                                        form(role="form")
-                                            div(class="row")
-                                                input(type="hidden" value="#{tournament._id}" id="tournament_id_change")
-                                                div(class="col-lg-6 col-md-6 col-sm-6")
-                                                    div(class="panel panel-default")
-                                                        select(id="leftchoice" class="form-control teamselect")
-                                                            option(hidden selected value="") Team 1
-                                                            each team in tournament.teams
-                                                                option(value="#{team.team_name}") #{team.team_name}
+                                div(class="panel panel-default")
+                                        div(class="panel-heading collapsable") List of Games
+                                        div(class="panel-body")
 
-                                                div(class="col-lg-6 col-md-6 col-sm-6")
-                                                    div(class="panel panel-default")
-                                                        select(id="rightchoice" class="form-control teamselect")
-                                                            option(hidden selected value="") Team 2
-                                                            each team in tournament.teams
-                                                                option(value="#{team.team_name}") #{team.team_name}
+                            div(class="tab-pane fade" id="teams")
+                                div(class="panel panel-default")
+                                        div(class="panel-heading collapsable" id="add-team-panel") Add a Team
+                                        div(class="panel-body" id="add-team-body")
 
-                                            div(class="row")
-                                                div(class="col-lg-6 col-md-6 col-sm-6")
-                                                    div(id="left-text" class="col-md-7 panel panel-default")
+                                            div(class="col-md-6")
+                                                form(id="teamform" name="createTeam" role="form")
+                                                    input(
+                                                        type="hidden",
+                                                        name="tournament_id",
+                                                        value="#{tournament._id}"
+                                                    )
+                                                    div(class="form-group")
+                                                        label Name*
+                                                        input(
+                                                            type="input",
+                                                            name="team_name",
+                                                            id="team_name_input",
+                                                            placeholder="Team Name",
+                                                            class="form-control input-medium center-text no-border-radius"
+                                                        )
+                                                    div(class="form-group")
+                                                        label Email
+                                                        input(
+                                                            type="input",
+                                                            name="team_email",
+                                                            placeholder="Contact Email",
+                                                            class="form-control input-medium center-text no-border-radius"
+                                                        )
+                                                    div(class="form-group")
+                                                        label Division
+                                                        select(name="team_division" class="form-control input-medium center-text no-border-radius")
+                                                            if (tournament.divisions.length == 0)
+                                                                option Default Division
+                                                            else
+                                                                each division in tournament.divisions
+                                                                    option #{division}
+                                                form(id="playersform" name="createplayers" role="form")
+                                                    div(id="player-dynamic" class="form-group")
+                                                        label Players
+                                                        button(type="button" class="btn btn-sm btn-success no-border-radius" id="newlineplayer" style="margin: 5px") Add Player
+                                                        input(
+                                                            type="hidden",
+                                                            name="tournament_id_player",
+                                                            value="#{tournament._id}"
+                                                        )
+                                                        input(
+                                                            type="hidden",
+                                                            id="player_team_dynamic",
+                                                            name="players_team",
+                                                        )
+                                                        input(
+                                                            type="input",
+                                                            name="player1_name",
+                                                            placeholder="Player 1",
+                                                            autocomplete="off",
+                                                            class="form-control input-medium center-text no-border-radius"
+                                                        )
+                                                        input(
+                                                            type="input",
+                                                            name="player2_name",
+                                                            autocomplete="off",
+                                                            class="form-control input-medium center-text no-border-radius"
+                                                            placeholder="Player 2",
+                                                        )
+                                                        input(
+                                                            type="input",
+                                                            name="player3_name",
+                                                            placeholder="Player 3",
+                                                            autocomplete="off"
+                                                            class="form-control input-medium center-text no-border-radius"
+                                                        )
+                                                        input(
+                                                            type="input",
+                                                            name="player4_name",
+                                                            placeholder="Player 4",
+                                                            autocomplete="off",
+                                                            class="form-control input-medium center-text no-border-radius"
+                                                        )
+                                                    br
+                                                    button(type="button" class="btn btn-lg btn-info no-border-radius" id="add-team-button") Add Team To Tournament
 
-                                                div(class="col-lg-6 col-md-6 col-sm-6")
-                                                    div(id="right-text" class="col-md-7 panel panel-default")
-
-
-                        div(class="panel panel-info")
-                                div(class="panel-heading") List of Games
-                                div(class="panel-body")
-                    div(class="tab-pane fade" id="teams")
-                        div(class="panel panel-info")
-                                div(class="panel-heading" id="add-team-panel") Add a Team (Click to Collapse or Show Form)
-                                div(class="panel-body" id="add-team-body")
-
-                                    div(class="col-md-6")
-                                        form(id="teamform" name="createTeam" role="form")
-                                            input(
-                                                type="hidden",
-                                                name="tournament_id",
-                                                value="#{tournament._id}"
-                                            )
-                                            div(class="form-group")
-                                                label Name*
-                                                input(
-                                                    type="input",
-                                                    name="team_name",
-                                                    id="team_name_input",
-                                                    placeholder="Team Name",
-                                                    class="form-control input-medium center-text no-border-radius"
-                                                )
-                                            div(class="form-group")
-                                                label Email
-                                                input(
-                                                    type="input",
-                                                    name="team_email",
-                                                    placeholder="Contact Email",
-                                                    class="form-control input-medium center-text no-border-radius"
-                                                )
-                                            div(class="form-group")
-                                                label Division
-                                                select(name="team_division" class="form-control input-medium center-text no-border-radius")
-                                                    if (tournament.divisions.length == 0)
-                                                        option Default Division
-                                                    else
-                                                        each division in tournament.divisions
-                                                            option #{division}
-                                        form(id="playersform" name="createplayers" role="form")
-                                            div(id="player-dynamic" class="form-group")
-                                                label Players
-                                                button(type="button" class="btn btn-sm btn-success no-border-radius" id="newlineplayer" style="margin: 5px") Add Player
-                                                input(
-                                                    type="hidden",
-                                                    name="tournament_id_player",
-                                                    value="#{tournament._id}"
-                                                )
-                                                input(
-                                                    type="hidden",
-                                                    id="player_team_dynamic",
-                                                    name="players_team",
-                                                )
-                                                input(
-                                                    type="input",
-                                                    name="player1_name",
-                                                    placeholder="Player 1",
-                                                    autocomplete="off",
-                                                    class="form-control input-medium center-text no-border-radius"
-                                                )
-                                                input(
-                                                    type="input",
-                                                    name="player2_name",
-                                                    autocomplete="off",
-                                                    class="form-control input-medium center-text no-border-radius"
-                                                    placeholder="Player 2",
-                                                )
-                                                input(
-                                                    type="input",
-                                                    name="player3_name",
-                                                    placeholder="Player 3",
-                                                    autocomplete="off"
-                                                    class="form-control input-medium center-text no-border-radius"
-                                                )
-                                                input(
-                                                    type="input",
-                                                    name="player4_name",
-                                                    placeholder="Player 4",
-                                                    autocomplete="off",
-                                                    class="form-control input-medium center-text no-border-radius"
-                                                )
-                                            br
-                                            button(type="button" class="btn btn-lg btn-info no-border-radius" id="add-team-button") Add Team To Tournament
-
-                        div(class="panel panel-info")
-                                div(class="panel-heading") List of Teams
-                                div(class="panel-body")
+                                div(class="panel panel-default")
+                                        div(class="panel-heading collapsable") List of Teams
+                                        div(class="panel-body")

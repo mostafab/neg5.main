@@ -1,0 +1,133 @@
+.title {
+    font-weight: bold;
+    color: white;
+    font-size: 24px;
+    background: rgba(51, 102, 153, .9);
+    border-width: 10px;
+    padding: 15px;
+    width: 100%;
+}
+
+.title:hover {
+    background-color: rgba(51, 102, 153, .8)
+}
+
+.box {
+    background-color : rgba(190, 190, 190, .7);
+}
+
+.smallbox {
+    background: rgba(51, 102, 153, .5);
+    padding: 40px;
+}
+
+.table-grey {
+    background-color : rgb(190, 190, 190);
+    color:black;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.table-head {
+    background: rgba(0, 0, 0, .8);
+    color: white;
+}
+
+.table-head:hover {
+    background: rgba(0, 0, 0, .5);
+    color: white;
+}
+
+tr {
+    font-size: 18px;
+    font-weight: bold;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.info-label {
+    padding: 10px;
+    font-size: 24px;
+}
+
+::-webkit-input-placeholder {
+   color: white;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: white;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: white;
+}
+
+:-ms-input-placeholder {
+   color: white;
+}
+
+.tournament-info-field {
+    border-radius: 3px;
+    background-color: rgba(32, 32, 32, .8);
+    border-width: 0px;
+    color: white;
+}
+
+.btn {
+    margin: 10px;
+    border-radius: 0px;
+}
+
+.tournament-info-field::-webkit-input-placeholder
+{
+  color: white;
+}
+
+.tournament-info-field:-moz-placeholder
+{
+  color: white;
+}
+
+.tournament-info-field::-moz-placeholder
+{
+  color: white;
+}
+
+.tournament-info-field:-ms-input-placeholder
+{
+  color: white;
+}
+
+.panel {
+    margin-top: : 50px;
+    margin-bottom: 50px;
+}
+
+.tab-pane {
+    margin-top: : 50px;
+    margin-bottom: 50px;
+}
+
+.panel-default > .panel-heading {
+  /*background-color: rgba(50, 50, 50, .9);*/
+  background-color: rgb(60, 60, 60);
+  color : white;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.panel-default:hover > .panel-heading {
+  /*background-color: rgba(50, 50, 50, .9);*/
+  background-color:rgba(60, 60, 60, .8);
+  color : white;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.panel-default > .panel-body {
+    font-size: 24px;
+}
+
+.collapsable:hover {
+    cursor: pointer;
+}
