@@ -44,6 +44,7 @@ module.exports = function(app) {
     app.route("/home/tournaments/createteam")
         .post(function(req, res, next) {
             var id = req.body["tournament_id"];
+            console.log(req.body);
             tournamentController.addTeamToTournament(id, req.body, function(err) {
                 if (err) {
                     // DO STUFF
@@ -53,18 +54,18 @@ module.exports = function(app) {
             });
         });
 
-    app.route("/home/tournaments/createplayers")
-        .post(function(req, res, next) {
-            var id = req.body["tournament_id_player"];
-            tournamentController.addPlayersToTournament(id, req.body, function(err) {
-                console.log("Callback");
-                if (err) {
-                    // DO STUFF
-                } else {
-                    res.end();
-                }
-            });
-        });
+    // app.route("/home/tournaments/createplayers")
+    //     .post(function(req, res, next) {
+    //         var id = req.body["tournament_id_player"];
+    //         tournamentController.addPlayersToTournament(id, req.body, function(err) {
+    //             console.log("Callback");
+    //             if (err) {
+    //                 // DO STUFF
+    //             } else {
+    //                 res.end();
+    //             }
+    //         });
+    //     });
 
     app.route("/home/tournaments/getplayers")
         .get(function(req, res, next) {

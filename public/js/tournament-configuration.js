@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     $("#add-team-button").click(function(e) {
         sendTeamToServer();
-        sendPlayersToServer();
+        // sendPlayersToServer();
     });
 
     $("#team_name_input").keyup(function(e) {
