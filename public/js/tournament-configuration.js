@@ -29,7 +29,9 @@ $(document).ready(function() {
     })
 
     $("#entergamebutton").click(function(e) {
-        console.log($("#gamedataform").serialize());
+        // console.log($("#gamedataform").serialize());
+        // document.getElementById("gamedataform").reset();
+        sendGameToServer();
     });
 });
 
@@ -40,6 +42,17 @@ function sendTeamToServer() {
         data : $("#teamform").serialize(),
         success : function(databack, status, xhr) {
             document.getElementById("teamform").reset();
+        }
+    });
+}
+
+function sendGameToServer() {
+    $.ajax({
+        url : "/home/tournaments/creategame",
+        type : "POST",
+        data : $("#gamedataform").serialize(),
+        success : function(databack, status, xhr) {
+            document.getElementById("gamedataform").reset();
         }
     });
 }
@@ -63,7 +76,7 @@ function findPlayersByTeamnameAndTournament(side) {
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#leftchoice").val()},
             success : function(databack, status, xhr) {
-                showPlayerRows(databack, "LEFT");
+                generatePlayerRows(databack, "LEFT");
             }
         });
     } else {
@@ -73,7 +86,7 @@ function findPlayersByTeamnameAndTournament(side) {
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#rightchoice").val()},
             success : function(databack, status, xhr) {
-                showPlayerRows(databack, "RIGHT");
+                generatePlayerRows(databack, "RIGHT");
             }
         });
     }
@@ -90,7 +103,7 @@ function createPlayerInputField() {
     nextPlayerNum++;
 }
 
-function showPlayerRows(players, side) {
+function generatePlayerRows(players, side) {
     var choice = side == "LEFT" ? "#left-text" : "#right-text";
     $(choice).empty();
     var html = "<table class='table table-striped table-bordered table-hover'><thead><tr>";
@@ -109,14 +122,35 @@ function showPlayerRows(players, side) {
         html += "<td>" + players[i].player_name + "</td>";
         html += "<td> <input class='form-control' type='number' placeholder='GP'" + "value='0' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
         for (key in players[i].pointValues) {
-            var keyNameStr = "name='player" + playerNum + sideText + "_" + key + "val'";
-            html += "<td><input class='form-control' type='number' placeholder='" + key + "'" + keyNameStr + "/></td>";
+            var keyNameStr = "name='player" + playerNum + sideText + "_" + key + "val' ";
+            var keyId = "id='player" + playerNum + "_" + key + sideText + "id' ";
+            var json = JSON.stringify(players[i].pointValues);
+            var onkeyupString = "onkeyup=";
+            onkeyupString += "'updatePoints(";
+            onkeyupString += playerNum + ',' + json + ', "' + sideText + '"' + ")' ";
+            var onchangeString = "onchange=";
+            onchangeString += "'updatePoints(" + playerNum + ',' + json + ', "' + sideText + '"' + ")'";
+            // console.log(onkeyupString);
+            html += "<td><input class='form-control' type='number' placeholder='" + key + "'" + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
         }
-        html += "<td> <input class='form-control' type='input' placeholder='0' disabled /> </td>";
+        var idTag = "id='" + playerNum + sideText + "pts'";
+        html += "<td> <input " + idTag + "class='form-control disabledview' type='input' placeholder='0' disabled /> </td>";
         html += "</tr>";
         playerNum++;
     }
     html += "</tbody><tfoot><tr></tr></tfoot></table>";
     $(choice).append(html);
+}
 
+function updatePoints(num, pointvalues, side) {
+    var total = 0;
+    for (key in pointvalues) {
+        var inputField = "player" + num + "_" + key + side + "id";
+        var inputVal = $("#" + inputField).val();
+        if (!isNaN(parseInt(inputVal))) {
+            total += parseInt(inputVal) * parseInt(key);
+        }
+    }
+    var ptLabelId = "#" + num + side + "pts";
+    $(ptLabelId).val(total);
 }

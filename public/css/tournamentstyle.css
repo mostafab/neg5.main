@@ -154,3 +154,7 @@ tr {
 .table-head:hover {
     background: rgba(51, 102, 153, 1);
 }
+
+.disabledview:hover {
+    cursor : default;
+}

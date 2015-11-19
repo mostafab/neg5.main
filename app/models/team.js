@@ -20,6 +20,10 @@ teamSchema.methods.getWinPercentage = function() {
     }
 }
 
+teamSchema.methods.addWin = function() {
+    wins++;
+}
+
 teamSchema.methods.getTotalPointValues = function(tournamentid) {
     // var Tournament = mongoose.model("Tournament");
 }

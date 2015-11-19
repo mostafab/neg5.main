@@ -54,6 +54,12 @@ module.exports = function(app) {
             });
         });
 
+    app.route("/home/tournaments/creategame")
+        .post(function(req, res, next) {
+            console.log(req.body);
+            res.status(200).send("All good chief");
+        });
+
     // app.route("/home/tournaments/createplayers")
     //     .post(function(req, res, next) {
     //         var id = req.body["tournament_id_player"];
