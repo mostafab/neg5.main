@@ -9,7 +9,6 @@ $(document).ready(function() {
 
     $("#add-team-button").click(function(e) {
         sendTeamToServer();
-        // sendPlayersToServer();
     });
 
     $("#team_name_input").keyup(function(e) {
@@ -27,8 +26,11 @@ $(document).ready(function() {
         } else {
             findPlayersByTeamnameAndTournament("RIGHT");
         }
-
     })
+
+    $("#entergamebutton").click(function(e) {
+        console.log($("#gamedataform").serialize());
+    });
 });
 
 function sendTeamToServer() {
@@ -37,7 +39,7 @@ function sendTeamToServer() {
         type : "POST",
         data : $("#teamform").serialize(),
         success : function(databack, status, xhr) {
-
+            document.getElementById("teamform").reset();
         }
     });
 }
@@ -61,7 +63,7 @@ function findPlayersByTeamnameAndTournament(side) {
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#leftchoice").val()},
             success : function(databack, status, xhr) {
-                printPlayerValues(databack, "LEFT");
+                showPlayerRows(databack, "LEFT");
             }
         });
     } else {
@@ -71,7 +73,7 @@ function findPlayersByTeamnameAndTournament(side) {
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#rightchoice").val()},
             success : function(databack, status, xhr) {
-                printPlayerValues(databack, "RIGHT");
+                showPlayerRows(databack, "RIGHT");
             }
         });
     }
@@ -88,20 +90,33 @@ function createPlayerInputField() {
     nextPlayerNum++;
 }
 
-function printPlayerValues(players, side) {
-    if (side == "LEFT") {
-        $("#left-text").empty();
-        for (var i = 0; i < players.length; i++) {
-            // console.log(players[i]);
-            $("#left-text").append("<p>" + players[i].player_name + "</p>");
+function showPlayerRows(players, side) {
+    var choice = side == "LEFT" ? "#left-text" : "#right-text";
+    $(choice).empty();
+    var html = "<table class='table table-striped table-bordered table-hover'><thead><tr>";
+    html += "<th class='table-head'>Name</th>";
+    html += "<th class='table-head'>GP</th>";
+    html += "<th class='table-head'>10</th>";
+    html += "<th class='table-head'>15</th>";
+    html += "<th class='table-head'>-5</th>";
+    html += "<th class='table-head'>Points</th>";
+    html += "</tr></thead><tbody>";
+    var playerNum = 1;
+    var sideText = side == "LEFT" ? "_left" : "_right";
+    for (var i = 0; i < players.length; i++) {
+        html += "<tr>";
+        html += "<input type='hidden' value='" + players[i]._id +  "' " + "name='" + "player" + playerNum + sideText + "id'" + "/>";
+        html += "<td>" + players[i].player_name + "</td>";
+        html += "<td> <input class='form-control' type='number' placeholder='GP'" + "value='0' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
+        for (key in players[i].pointValues) {
+            var keyNameStr = "name='player" + playerNum + sideText + "_" + key + "val'";
+            html += "<td><input class='form-control' type='number' placeholder='" + key + "'" + keyNameStr + "/></td>";
         }
-    } else {
-        $("#right-text").empty();
-        for (var i = 0; i < players.length; i++) {
-            // console.log(players[i]);
-            $("#right-text").append("<p>" + players[i].player_name + "</p>");
-        }
+        html += "<td> <input class='form-control' type='input' placeholder='0' disabled /> </td>";
+        html += "</tr>";
+        playerNum++;
     }
-
+    html += "</tbody><tfoot><tr></tr></tfoot></table>";
+    $(choice).append(html);
 
 }

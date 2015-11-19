@@ -52,18 +52,22 @@ tr {
 
 ::-webkit-input-placeholder {
    color: white;
+   font-weight: bold;
 }
 
 :-moz-placeholder { /* Firefox 18- */
    color: white;
+   font-weight: bold;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
    color: white;
+   font-weight: bold;
 }
 
 :-ms-input-placeholder {
    color: white;
+   font-weight: bold;
 }
 
 .tournament-info-field {
@@ -130,4 +134,23 @@ tr {
 
 .collapsable:hover {
     cursor: pointer;
+}
+
+.leftscorebox {
+    width: 25%;
+    transform: translateX(300%);
+    border-radius: 0px;
+}
+
+.rightscorebox {
+    width: 25%;
+    border-radius: 0px;
+}
+
+.table-head {
+    background: rgba(51, 102, 153, .9);
+}
+
+.table-head:hover {
+    background: rgba(51, 102, 153, 1);
 }

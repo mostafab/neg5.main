@@ -135,7 +135,7 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
     // }
 // }
 
-function findTeamMembers(tournamentid, teamname, callback) {
+function findTeamMembers(tournamentid, teamid, callback) {
     var query = Tournament.findOne({_id : tournamentid}).exec(function(err, result) {
         if (err) {
             callback(err, []);
@@ -143,7 +143,7 @@ function findTeamMembers(tournamentid, teamname, callback) {
             var found = false;
             var i = 0;
             while (!found) {
-                if (result.teams[i].team_name == teamname) {
+                if (result.teams[i]._id == teamid) {
                     found = true;
                     callback(null, result.teams[i].players);
                 }

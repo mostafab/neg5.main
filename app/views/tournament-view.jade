@@ -49,29 +49,35 @@ block content
                                         div(class="panel-heading collapsable") Add a Game
                                         div(class="panel-body")
 
-                                                form(role="form")
+                                                form(role="form" name="gameinfoform" id="gamedataform")
                                                     div(class="row")
                                                         input(type="hidden" value="#{tournament._id}" id="tournament_id_change")
                                                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(class="panel panel-default")
-                                                                select(id="leftchoice" class="form-control teamselect")
+                                                                select(id="leftchoice" class="form-control teamselect" name="leftteamselect")
                                                                     option(hidden selected value="") Team 1
                                                                     each team in tournament.teams
-                                                                        option(value="#{team.team_name}") #{team.team_name}
+                                                                        option(value="#{team._id}") #{team.team_name}
 
                                                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(class="panel panel-default")
-                                                                select(id="rightchoice" class="form-control teamselect")
+                                                                select(id="rightchoice" class="form-control teamselect" name="rightteamselect")
                                                                     option(hidden selected value="") Team 2
                                                                     each team in tournament.teams
-                                                                        option(value="#{team.team_name}") #{team.team_name}
-
+                                                                        option(value="#{team._id}") #{team.team_name}
+                                                    br
+                                                    div(class="row")
+                                                        div(id="left-text" class="col-lg-6 col-md-6 col-sm-6")
+                                                        div(id="right-text" class="col-lg-6 col-md-6 col-sm-6")
                                                     div(class="row")
                                                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(id="left-text" class="col-md-7 panel panel-default")
-
+                                                            input(type="input" class="form-control leftscorebox" name="leftteamscore" placeholder="Team 1 Score" pattern="[0-9]")
+                                                            br
                                                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(id="right-text" class="col-md-7 panel panel-default")
+                                                            input(type="input" class="form-control rightscorebox" name="rightteamscore" placeholder="Team 2 Score" pattern="[0-9]")
+                                                            br
+                                                    div(class="row")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            input(type="number" class="form-control leftscorebox" name="round" placeholder="Round No.")
+                                                    button(type="button" class="btn btn-lg btn-success" id="entergamebutton") Enter Game
 
                                 div(class="panel panel-default")
                                         div(class="panel-heading collapsable") List of Games
@@ -114,15 +120,9 @@ block content
                                                             else
                                                                 each division in tournament.divisions
                                                                     option #{division}
-                                                    // form(id="playersform" name="createplayers" role="form")
                                                     div(id="player-dynamic" class="form-group")
                                                         label Players
                                                         button(type="button" class="btn btn-sm btn-success no-border-radius" id="newlineplayer" style="margin: 5px") Add Player
-                                                        // input(
-                                                        //     type="hidden",
-                                                        //     name="tournament_id_player",
-                                                        //     value="#{tournament._id}"
-                                                        // )
                                                         input(
                                                             type="hidden",
                                                             id="player_team_dynamic",
