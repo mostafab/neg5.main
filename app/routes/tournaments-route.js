@@ -45,11 +45,11 @@ module.exports = function(app) {
         .post(function(req, res, next) {
             var id = req.body["tournament_id"];
             console.log(req.body);
-            tournamentController.addTeamToTournament(id, req.body, function(err) {
+            tournamentController.addTeamToTournament(id, req.body, function(err, teams) {
                 if (err) {
                     // DO STUFF
                 } else {
-                    res.end();
+                    res.send(teams);
                 }
             });
         });

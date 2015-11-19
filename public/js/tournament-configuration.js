@@ -42,6 +42,7 @@ function sendTeamToServer() {
         data : $("#teamform").serialize(),
         success : function(databack, status, xhr) {
             document.getElementById("teamform").reset();
+            updateTeamList(databack);
         }
     });
 }
@@ -153,4 +154,14 @@ function updatePoints(num, pointvalues, side) {
     }
     var ptLabelId = "#" + num + side + "pts";
     $(ptLabelId).val(total);
+}
+
+function updateTeamList(teams) {
+    $("#leftchoice").empty();
+    $("#rightchoice").empty();
+    for (var i = 0; i < teams.length; i++) {
+        var option = "<option value='" + teams[i]._id + "'>" + teams[i].team_name + "</option>";
+        $("#leftchoice").append(option);
+        $("#rightchoice").append(option);
+    }
 }

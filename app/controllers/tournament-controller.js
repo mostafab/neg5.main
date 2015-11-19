@@ -6,12 +6,6 @@ var Team = mongoose.model("Team");
 var Player = mongoose.model("Player");
 var Game = mongoose.model("Game");
 
-var t = new Game({
-
-});
-t.team1["tossups"] = 20;
-console.log(t.team1["tossups"]);
-
 /**
 * Adds a tournament to the specified td - "tournament director" array of tournaments
 * @return true if adding tournament succeesed, false otherwise
@@ -87,9 +81,15 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
     var options = {safe : true, upsert : true};
     Tournament.update(tournament, updateQuery, options, function(err) {
         if (err) {
-            callback(err);
+            callback(err, null);
         } else {
-            callback(null);
+            Tournament.findOne({_id : tournamentid}).exec(function(err, result) {
+                if (err) {
+                    callback(err, result.teams);
+                } else {
+                    callback(null, result.teams);
+                }
+            });
         }
     });
 }
