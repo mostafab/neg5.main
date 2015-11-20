@@ -4,8 +4,9 @@ var TeamSchema = require("./team").schema;
 
 var playerSchema = new Schema({
     player_name : String,
+    teamID : String,
+    team_name : String,
     gamesPlayed : {type : Number, default : 0},
-    roundGames : {},   // Will hold round info in format Round : % of Game Played
     pointValues : {type : {}, default: {"15" : 0, "10" : 0, "-5" : 0}}
 });
 

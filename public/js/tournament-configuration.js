@@ -33,6 +33,19 @@ $(document).ready(function() {
         // document.getElementById("gamedataform").reset();
         sendGameToServer();
     });
+
+    $(".teamselect").on("change", function(e) {
+        var bothselect = true;
+        $(".teamselect").each(function(i, obj) {
+            if ($(this).val() === "") {
+                $("#entergamebutton").prop("disabled", true);
+                bothselect = false;
+            }
+        });
+        if (bothselect) {
+            $("#entergamebutton").prop("disabled", false);
+        }
+    });
 });
 
 function sendTeamToServer() {
@@ -41,8 +54,10 @@ function sendTeamToServer() {
         type : "POST",
         data : $("#teamform").serialize(),
         success : function(databack, status, xhr) {
-            document.getElementById("teamform").reset();
-            updateTeamList(databack);
+            // document.getElementById("teamform").reset();
+            if (databack !== null) {
+                updateTeamList(databack);
+            }
         }
     });
 }
@@ -131,7 +146,6 @@ function generatePlayerRows(players, side) {
             onkeyupString += playerNum + ',' + json + ', "' + sideText + '"' + ")' ";
             var onchangeString = "onchange=";
             onchangeString += "'updatePoints(" + playerNum + ',' + json + ', "' + sideText + '"' + ")'";
-            // console.log(onkeyupString);
             html += "<td><input class='form-control' type='number' placeholder='" + key + "'" + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
         }
         var idTag = "id='" + playerNum + sideText + "pts'";
@@ -157,8 +171,14 @@ function updatePoints(num, pointvalues, side) {
 }
 
 function updateTeamList(teams) {
+    $("#left-text").empty();
+    $("#right-text").empty();
     $("#leftchoice").empty();
     $("#rightchoice").empty();
+    var defaultChoiceLeft = "<option selected value=''> </option> ";
+    $("#leftchoice").append(defaultChoiceLeft);
+    var defaultChoiceRight = "<option selected value=''>  </option> ";
+    $("#rightchoice").append(defaultChoiceRight);
     for (var i = 0; i < teams.length; i++) {
         var option = "<option value='" + teams[i]._id + "'>" + teams[i].team_name + "</option>";
         $("#leftchoice").append(option);

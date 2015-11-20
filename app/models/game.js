@@ -8,9 +8,17 @@ var gameSchema = new Schema({
     round : {type : Number, default : 0, set : function(num) {
         return Math.floor(num);
     }},
-    team1 : {"id" : ObjectId, "score" : Number, "tossups" : Number, "playerScores" : []},
-    team2 : {"id" : ObjectId, "score" : Number, "tossups" : Number, "playerScores" : []},
-    tossups : {type : Number, default : 20},
+    tossupsheard : {type : Number, default: 20},
+    team1 : {
+        team_id : ObjectId,
+        score : {type : Number, default : 0},
+        playerScores : []
+    },
+    team2 : {
+        team_id : ObjectId,
+        score :  {type : Number, default : 0},
+        playerScores : []
+    }
 });
 
 gameSchema.methods.getWinner = function() {

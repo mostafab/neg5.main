@@ -58,36 +58,42 @@ function findTournamentById(id, callback) {
 function addTeamToTournament(tournamentid, teaminfo, callback) {
     var currentPlayer = 1;
     var key = "player" + currentPlayer + "_name";
-
     var newPlayers = [];
+    var newteam = new Team({
+        team_name : teaminfo["team_name"],
+        email : teaminfo["team_email"],
+        division : teaminfo["team_division"],
+    });
     while (teaminfo[key]) {
-        console.log(key)
         if (teaminfo[key].length != 0)
             var newplayer = new Player({
+                teamID : newteam._id.toString(),
                 player_name : teaminfo[key],
+                team_name : teaminfo["players_team"],
             });
             newPlayers.push(newplayer);
         currentPlayer++;
         key = "player" + currentPlayer + "_name";
     }
-    var newteam = new Team({
-        team_name : teaminfo["team_name"],
-        email : teaminfo["team_email"],
-        division : teaminfo["team_division"],
-        players : newPlayers
-    });
     var tournament = {_id : tournamentid};
     var updateQuery = {$push: {teams : newteam}};
+    var updateQueryPlayers = {$push : {players : {$each : newPlayers}}};
     var options = {safe : true, upsert : true};
-    Tournament.update(tournament, updateQuery, options, function(err) {
+    Tournament.update(tournament, updateQuery, options, function(err) { // Add the team
         if (err) {
             callback(err, null);
         } else {
-            Tournament.findOne({_id : tournamentid}).exec(function(err, result) {
+            Tournament.update(tournament, updateQueryPlayers, options, function(err) { // Add all players
                 if (err) {
-                    callback(err, result.teams);
+                    callback(err, null);
                 } else {
-                    callback(null, result.teams);
+                    Tournament.findOne({_id : tournamentid}).exec(function(err, result) {
+                        if (err) {
+                            callback(err, null);
+                        } else {
+                            callback(null, result.teams);
+                        }
+                    })
                 }
             });
         }
@@ -148,19 +154,20 @@ function findTeamMembers(tournamentid, teamid, callback) {
         } else {
             var found = false;
             var i = 0;
-            while (!found) {
-                if (result.teams[i]._id == teamid) {
-                    found = true;
-                    callback(null, result.teams[i].players);
+            var playersArr = [];
+            for (var i = 0; i < result.players.length; i++) {
+                if (result.players[i].teamID == teamid) {
+                    playersArr.push(result.players[i]);
                 }
-                i++;
             }
-            // for (var i = 0; i < result.teams.length; i++) {
-            //     if (result.teams[i].team == teamname) {
-            //         members.push(result.players[i]);
+            callback(null, playersArr);
+            // while (!found) {
+            //     if (result.teams[i]._id == teamid) {
+            //         found = true;
+            //         callback(null, result.teams[i].players);
             //     }
+            //     i++;
             // }
-            // callback(null, members);
         }
     });
 }
@@ -169,5 +176,4 @@ exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
 exports.addTeamToTournament = addTeamToTournament;
-// exports.addPlayersToTournament = addPlayersToTournament;
 exports.findTeamMembers = findTeamMembers;

@@ -1,5 +1,6 @@
 var tournamentController = require('../../app/controllers/tournament-controller');
-
+var mongoose = require("mongoose");
+var Tournament = mongoose.model("Tournament");
 
 module.exports = function(app) {
 
@@ -80,7 +81,7 @@ module.exports = function(app) {
             tournamentController.findTeamMembers(id, teamname, function(err, result) {
                 if (err) {
                     // DO STUFF
-                    console.log(err.stack);
+                    // console.log(err.stack);
                     res.status(500).send("Shiiiiiit");
                 } else {
                     res.status(200).send(result);

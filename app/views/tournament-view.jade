@@ -51,16 +51,16 @@ block content
 
                                                 form(role="form" name="gameinfoform" id="gamedataform")
                                                     div(class="row")
-                                                        input(type="hidden" value="#{tournament._id}" id="tournament_id_change")
+                                                        input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
                                                         div(class="col-lg-6 col-md-6 col-sm-6")
                                                                 select(id="leftchoice" class="form-control teamselect" name="leftteamselect")
-                                                                    option(hidden selected value="") Team 1
+                                                                    option(selected value="") 
                                                                     each team in tournament.teams
                                                                         option(value="#{team._id}") #{team.team_name}
 
                                                         div(class="col-lg-6 col-md-6 col-sm-6")
                                                                 select(id="rightchoice" class="form-control teamselect" name="rightteamselect")
-                                                                    option(hidden selected value="") Team 2
+                                                                    option(selected value="")
                                                                     each team in tournament.teams
                                                                         option(value="#{team._id}") #{team.team_name}
                                                     br

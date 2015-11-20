@@ -6,7 +6,6 @@ var teamSchema = new Schema({
     team_name : String,
     email : String,
     division : String,
-    players : [playerSchema],
     wins : {type : Number, default : 0},
     losses : {type : Number, default : 0},
     ties : {type : Number, default : 0},
