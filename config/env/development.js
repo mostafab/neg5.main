@@ -2,5 +2,6 @@ var port = 1337;
 
 module.exports = {
     port : port,
-    db : "mongodb://localhost/neg5db"
+    db_local : "mongodb://localhost/neg5db",
+    db_deployment : "mongodb://mostafab:Shakshaq495@ds057224.mongolab.com:57224/neg5database"
 };

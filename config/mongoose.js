@@ -2,7 +2,7 @@ var config = require("./config");
 var mongoose = require("mongoose");
 
 module.exports = function() {
-    var db = mongoose.connect(config.db);
+    var db = mongoose.connect(config.db_deployment);
     var conn = mongoose.connection;
     conn.on('error', console.error.bind(console, "Connection Error: "));
     conn.once('open', function(callback) {

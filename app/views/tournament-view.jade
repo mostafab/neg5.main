@@ -30,7 +30,6 @@ block content
                                         a(href="#games" data-toggle="tab") Add/Remove/Edit Games
                                     li
                                         a(href="#teams" data-toggle="tab") Add/Remove/Edit Teams
-
                         br
                         br
 
@@ -50,6 +49,7 @@ block content
                                         div(class="panel-body")
 
                                                 form(role="form" name="gameinfoform" id="gamedataform")
+                                                    input(type="hidden" value="#{JSON.stringify(tournament.players[0].pointValues)}" name="pointValueForm")
                                                     div(class="row")
                                                         input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
                                                         div(class="col-lg-6 col-md-6 col-sm-6")

@@ -1,6 +1,5 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
 
 var teamSchema = require("./team").schema;
 
@@ -10,14 +9,14 @@ var gameSchema = new Schema({
     }},
     tossupsheard : {type : Number, default: 20},
     team1 : {
-        team_id : ObjectId,
+        team_id : String,
         score : {type : Number, default : 0},
-        playerScores : []
+        playerStats : {}
     },
     team2 : {
-        team_id : ObjectId,
+        team_id : String,
         score :  {type : Number, default : 0},
-        playerScores : []
+        playerStats : {}
     }
 });
 

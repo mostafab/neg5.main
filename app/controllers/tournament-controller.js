@@ -161,15 +161,54 @@ function findTeamMembers(tournamentid, teamid, callback) {
                 }
             }
             callback(null, playersArr);
-            // while (!found) {
-            //     if (result.teams[i]._id == teamid) {
-            //         found = true;
-            //         callback(null, result.teams[i].players);
-            //     }
-            //     i++;
-            // }
         }
     });
+}
+
+function addGameToTournament(tournamentid, gameinfo, callback) {
+    pointsJSONKeys = Object.keys(JSON.parse(gameinfo["pointValueForm"]));
+    console.log(gameinfo);
+    var newGame = new Game({
+        round : gameinfo["round"],
+        tossupsheard : gameinfo["tossupsheard"],
+    });
+    newGame.team1.team_id = gameinfo["leftteamselect"];
+    newGame.team1.score = gameinfo["leftteamscore"] == null ? "0" : gameinfo["leftteamscore"];
+    newGame.team2.team_id = gameinfo["rightteamselect"];
+    newGame.team2.score = gameinfo["rightteamscore"] == null ? "0" : gameinfo["rightteamscore"];
+    var playerNum = 1;
+    var playerleft = "player" + playerNum + "_leftid";
+    newGame.team1.playerStats = {};
+    while (gameinfo[playerleft]) {
+        newGame.team1.playerStats[gameinfo[playerleft]] = {
+                                                        gp : gameinfo["player" + playerNum + "_leftgp"]
+                                                        };
+
+        for (var i = 0; i < pointsJSONKeys.length; i++) {
+            var currentVal = pointsJSONKeys[i];
+            newGame.team1.playerStats[gameinfo[playerleft]][currentVal] = gameinfo["player" + playerNum + "_left_" + currentVal + "val"];
+        }
+        playerNum++;
+        playerleft = "player" + playerNum + "_leftid";
+    }
+    playerNum = 1;
+    var playerright = "player" + playerNum + "_rightid";
+    newGame.team2.playerStats = {};
+    while (gameinfo[playerright]) {
+        newGame.team2.playerStats[gameinfo[playerright]] = {
+                                                        gp : gameinfo["player" + playerNum + "_rightgp"]
+                                                          };
+        for (var i = 0; i < pointsJSONKeys.length; i++) {
+            var currentVal = pointsJSONKeys[i];
+            newGame.team2.playerStats[gameinfo[playerright]][currentVal] = gameinfo["player" + playerNum + "_right_" + currentVal + "val"];
+        }
+        playerNum++;
+        playerright = "player" + playerNum + "_rightid";
+    }
+    console.log(newGame);
+    // console.log(newGame.team1.playerStats);
+    // console.log(newGame.team2.playerStats);
+    callback(null, []);
 }
 
 exports.addTournament = addTournament;
@@ -177,3 +216,4 @@ exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
 exports.addTeamToTournament = addTeamToTournament;
 exports.findTeamMembers = findTeamMembers;
+exports.addGameToTournament = addGameToTournament;

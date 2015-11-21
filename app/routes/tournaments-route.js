@@ -25,14 +25,14 @@ module.exports = function(app) {
                 var questionset = req.body.t_qset;
                 console.log("Session email: " + req.session.director.email);
                 tournamentController.addTournament(req.session.director.email, name, date, location, description, questionset);
-                res.redirect("/home");
+                res.redirect("/home/tournaments");
             }
         })
         .get(function(req, res, next) {
             if (!req.session.director) {
                 res.redirect("/");
             } else {
-                res.redirect("/home");
+                res.redirect("/home/tournaments/create");
             }
         })
 
@@ -85,8 +85,14 @@ module.exports = function(app) {
             if (!req.session.director) {
                 res.redirect("/");
             } else {
-                console.log(req.body);
-                res.status(200).send("All good chief");
+                var id = req.body["tournament_id_form"];
+                tournamentController.addGameToTournament(id, req.body, function(err, games) {
+                    if (err) {
+                        // DO STUFF
+                    } else {
+                        res.status(200).send("All good chief");
+                    }
+                });
             }
         });
 
