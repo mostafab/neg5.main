@@ -12,7 +12,7 @@ var Game = mongoose.model("Game");
 */
 function addTournament(directorKey, name, date, location, description, questionset) {
     var tourney = new Tournament({
-        director_email : directorKey, // Foreign Key
+        director_email : directorKey,
         tournament_name : name,
         location : location,
         date : date,

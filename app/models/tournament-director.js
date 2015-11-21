@@ -6,7 +6,6 @@ var Tournament = mongoose.model("Tournament");
 var TournamentDirectorSchema = new Schema({
     name : String,
     email : String,
-    tournaments : [tournamentSchema]
 });
 
 module.exports = mongoose.model("TournamentDirector", TournamentDirectorSchema);

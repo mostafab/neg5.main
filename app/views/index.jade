@@ -20,7 +20,7 @@ block content
                 br
                 br
 
-            form(name="logins" id="loginfo" action="/home" role="form" method="post")
+            form(name="logins" id="loginfo" role="form" method="post" action="/home")
                 div(class="form-group col-md-8 col-md-7 col-md-offset-4")
                     input(
                         type="input",
@@ -35,25 +35,25 @@ block content
                         placeholder="Password",
                         class="form-control input-lg center-text infofield"
                         )
+            div(class="form-group")
+                div(class="form-group text-center")
+                    button(class="btn btn-info btn-lg center-in-div no-border-radius",
+                        type="button",
+                        id="login")
+                        | Login
+                    button(class="btn btn-warning btn-lg center-in-div no-border-radius",
+                        type="button",
+                        id="register",
+                        )
+                        | Register
+                    br
+                    br
                 div(class="form-group")
-                    div(class="form-group text-center")
-                        button(class="btn btn-info btn-lg center-in-div no-border-radius",
-                            type="button",
-                            id="login")
-                            | Login
-                        button(class="btn btn-warning btn-lg center-in-div no-border-radius",
-                            type="button",
-                            id="register",
-                            )
-                            | Register
-                        br
-                        br
-                div(class="form-group")
-                    p(id="errorlabel") Welcome to Neg 5, a Quizbowl tournament management system. Login to continue.
+                    p(id="errorlabel") #{errormsg}
 
 
         div(class="container span4 text-center child userbox" id="registerWindow")
-            h1(style="white-space:pre") Submit this form to register
+            h1(style="white-space:pre" id="registererror") Submit this form to register
             br
             br
             form(name="signup" role="form" id="signupform")

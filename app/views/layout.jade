@@ -20,15 +20,17 @@ html
     mixin sidebar
 
         nav(class="cd-side-nav")
+            form(name="tdid" role="form")
+                input(type="hidden" value="#{tournamentd}" id="tdid_input")
             ul
-                li(class="cd-label") Dashboard
+                li(class="cd-label") Hi there, #{tournamentd.name}!
                 li(class="has-children overview active")
-                    a Tournaments
+                    a(href="/home") Home
+                    a(href="/home/tournaments") Tournaments
                     ul
                         li
                             a(href="/home/tournaments") Your Tournaments
                             a(href="/home/tournaments/create") Create a Tournament
-
             ul
                 li(class="cd-label")
                 li(class="has-children notifications active")

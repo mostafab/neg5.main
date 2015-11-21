@@ -2,6 +2,9 @@ var nextPlayerNum = 5;
 
 $(document).ready(function() {
 
+    $("#entergamebutton").prop("disabled", true);
+    $("#entergamebutton").removeClass("btn-success").addClass("btn-danger");
+
     $(".collapsable").click(function(e) {
         e.stopImmediatePropagation();
         $(this).next().toggle(300);
@@ -26,7 +29,7 @@ $(document).ready(function() {
         } else {
             findPlayersByTeamnameAndTournament("RIGHT");
         }
-    })
+    });
 
     $("#entergamebutton").click(function(e) {
         // console.log($("#gamedataform").serialize());
@@ -39,11 +42,13 @@ $(document).ready(function() {
         $(".teamselect").each(function(i, obj) {
             if ($(this).val() === "") {
                 $("#entergamebutton").prop("disabled", true);
+                $("#entergamebutton").removeClass("btn-success").addClass("btn-danger");
                 bothselect = false;
             }
         });
         if (bothselect) {
             $("#entergamebutton").prop("disabled", false);
+            $("#entergamebutton").removeClass("btn-danger").addClass("btn-success");
         }
     });
 });

@@ -25,7 +25,7 @@ $(document).ready(function() {
         if (message.length != 0) {
             $("#errorlabel").text(message);
         } else {
-            $("#errorlabel").text("Enter Your Email Address and Password to Continue.")
+            $("#errorlabel").text("Welcome to Neg 5, a Quizbowl tournament management system. Login to continue.")
         }
     });
     $("#regbutton").click(function() {
@@ -88,8 +88,7 @@ $(document).ready(function() {
 
 
 function checkEmailInForm() {
-    return document.forms["logins"]["usrname"].value.length >= constants.MIN_USER_LENGTH
-        && document.forms["logins"]["usrname"].value.length < constants.MAX_USER_LENGTH;
+    return document.forms["logins"]["usrname"].value.length >= constants.MIN_USER_LENGTH;
 }
 
 function checkPasswordInForm() {
@@ -98,6 +97,20 @@ function checkPasswordInForm() {
 
 function submitLogin() {
     document.logins.submit();
+    // $.ajax({
+    //     url : "/login",
+    //     method : "POST",
+    //     data : $("#loginfo").serialize(),
+    //     success : function(databack, status, xhr) {
+    //         // console.log("Databack: " + databack);
+    //         if (databack.length < 40) {
+    //             $("#errorlabel").text(databack);
+    //         } else {
+    //             $("body").html(databack);
+    //             // document.write(databack);
+    //         }
+    //     }
+    // });
 }
 
 function submitRegistration() {
@@ -106,6 +119,7 @@ function submitRegistration() {
         method : "POST",
         data : $("#signupform").serialize(),
         success : function(databack, status, xhr) {
+            $("#registererror").text(databack);
             document.getElementById("signupform").reset();
         }
     });
