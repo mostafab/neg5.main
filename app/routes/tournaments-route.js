@@ -89,11 +89,12 @@ module.exports = function(app) {
                 tournamentController.addGameToTournament(id, req.body, function(err, games) {
                     if (err) {
                         // DO STUFF
+                        res.status(500).send([]);
                     } else {
-                        res.status(200).send("All good chief");
+                        res.status(200).send(games);
                     }
                 });
-            }
+            }  
         });
 
     // app.route("/home/tournaments/createplayers")

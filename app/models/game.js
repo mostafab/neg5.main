@@ -21,10 +21,12 @@ var gameSchema = new Schema({
 });
 
 gameSchema.methods.getWinner = function() {
-    if (team1["score"] > team2["score"]) {
-        return team1["id"];
+    if (this.team1["score"] > this.team2["score"]) {
+        return [this.team1["team_id"], this.team2["team_id"]];
+    } else if (this.team1["score"] < this.team2["score"]) {
+        return [this.team2["team_id"], this.team1["team_id"]];
     } else {
-        return team2["id"];
+        return [this.team1["team_id"], this.team2["team_id"], "TIE"];
     }
 }
 

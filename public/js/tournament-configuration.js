@@ -73,7 +73,8 @@ function sendGameToServer() {
         type : "POST",
         data : $("#gamedataform").serialize(),
         success : function(databack, status, xhr) {
-            document.getElementById("gamedataform").reset();
+            console.log(databack);
+            // document.getElementById("gamedataform").reset();
         }
     });
 }

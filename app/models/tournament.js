@@ -17,7 +17,8 @@ var TournamentSchema = new Schema({
     teams : [teamSchema],
     players : [playerSchema],
     divisions : [String],
-    games : [gameSchema]
+    games : [gameSchema],
+    pointScheme : {type : {}, default : {"15" : 0, "10" : 0, "-5" : 0}}
 });
 
 
