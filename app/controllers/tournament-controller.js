@@ -218,6 +218,7 @@ function addGameToTournament(tournamentid, gameinfo, callback) {
         } else {
             projectGameToTeams(tournamentid, newGame);
             projectGameToPlayers(tournamentid, newGame);
+            getGameFromTournament(tournamentid, newGame._id);
             callback(null, []);
         }
     });
@@ -289,7 +290,7 @@ function projectGameToPlayers(tournamentid, game) {
             var action = {};
             action[valueToIncrement] = game.team1.playerStats[team1PlayerIDKeys[i]][currentPlayerValueKeys[j]];
             var incrementQuery = {"$inc" : action};
-            console.log(incrementQuery);
+            // console.log(incrementQuery);
             // console.log(game.team1.playerStats[team1PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
             Tournament.update(tournamentQuery, incrementQuery, function(err) {
                 if (err) {
@@ -313,7 +314,7 @@ function projectGameToPlayers(tournamentid, game) {
             var action = {};
             action[valueToIncrement] = game.team2.playerStats[team2PlayerIDKeys[i]][currentPlayerValueKeys[j]];
             var incrementQuery = {"$inc" : action};
-            console.log(incrementQuery);
+            // console.log(incrementQuery);
             // console.log(game.team2.playerStats[team2PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
             Tournament.update(tournamentQuery, incrementQuery, function(err) {
                 if (err) {
@@ -324,20 +325,125 @@ function projectGameToPlayers(tournamentid, game) {
     }
 }
 
+/**
+* Function to get a specific game from the tournamentid. The resultant game
+* returned from the query is used to remove the game from the players and
+* teams involved.
+* @param tournamentid id of the tournament the game is associated with
+* @param gameid id of the game to retrieve
+*/
 function getGameFromTournament(tournamentid, gameid) {
     // if get game, then remove game from teams and players, then remove the actual game
+    var tournamentQuery = {_id : tournamentid, "games._id" : gameid};
+    Tournament.findOne(tournamentQuery, function(err, result) {
+        if (err || result == null) {
+            // DO STUFF
+        } else {
+            console.log("Resultant Game: " + result);
+            console.log("GameID: " + gameid);
+            for (var i = 0; i < result.games.length; i++) {
+                if (result.games[i]._id.toString() == gameid) {
+                    console.log("GameID: " + result.games[i]._id.toString() + "| " + gameid)
+                    removeGameFromTeam(tournamentid, result.games[i]);
+                    removeGameFromPlayers(tournamentid, result.games[i]);
+                    removeGameFromTournament(tournamentid, gameid);
+                    i = result.games.length + 1;
+                }
+            }
+        }
+    });
 }
 
 function removeGameFromTournament(tournamentid, gameid) {
-    //
+    var tournamentQuery = {_id : tournamentid, "games._id" : gameid};
 }
 
 function removeGameFromTeam(tournamentid, game) {
-
+    var winnerOrder = game.getWinner();
+    // First, add information about teams themselves
+    if (winnerOrder.length !== 3) {
+        Tournament.update({_id : tournamentid ,"teams._id" : winnerOrder[0]},
+                            {"$inc" : {"teams.$.wins" : -1}}, function(err) {
+                                if (err) {
+                                    console.log("Something bad happenned");
+                                } else {
+                                    Tournament.update({_id : tournamentid, "teams._id" : winnerOrder[1]},
+                                    {"$inc" : {"teams.$.losses" : -1}}, function(err) {
+                                        if (err) {
+                                            console.log("Something bad happened down here");
+                                        }
+                                    });
+                                }
+        });
+    } else {
+        // Handles situation with ties
+        Tournament.update({_id : tournamentid ,"teams._id" : winnerOrder[0]},
+                            {"$inc" : {"teams.$.ties" : -1}}, function(err) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    Tournament.update({_id : tournamentid, "teams._id" : winnerOrder[1]},
+                                    {"$inc" : {"teams.$.ties" : -1}}, function(err) {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                    });
+                                }
+        });
+    }
 }
 
 function removeGameFromPlayers(tournamentid, game) {
-
+    var team1PlayerIDKeys = Object.keys(game.team1.playerStats);
+    // console.log(team1PlayerIDKeys);
+    for (var i = 0; i < team1PlayerIDKeys.length; i++) {
+        // Team on left side
+        // console.log(game.team1.playerStats[team1PlayerIDKeys[i]]);
+        var tournamentQuery = {_id : tournamentid, "players._id" : team1PlayerIDKeys[i]};
+        var currentPlayerValueKeys = Object.keys(game.team1.playerStats[team1PlayerIDKeys[i]]);
+        for (var j = 0; j < currentPlayerValueKeys.length; j++) {
+            var valueToIncrement;
+            if (currentPlayerValueKeys[j] === "gp") {
+                valueToIncrement = "players.$.gamesPlayed";
+            } else {
+                valueToIncrement = "players.$.pointValues." + currentPlayerValueKeys[j];
+            }
+            var action = {};
+            action[valueToIncrement] = -1 * game.team1.playerStats[team1PlayerIDKeys[i]][currentPlayerValueKeys[j]];
+            var incrementQuery = {"$inc" : action};
+            console.log(incrementQuery);
+            // console.log(game.team1.playerStats[team1PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
+            Tournament.update(tournamentQuery, incrementQuery, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        }
+    }
+    var team2PlayerIDKeys = Object.keys(game.team2.playerStats);
+    for (var i = 0; i < team2PlayerIDKeys.length; i++) {
+        // Sliiiiide to the right
+        var tournamentQuery = {_id : tournamentid, "players._id" : team2PlayerIDKeys[i]};
+        var currentPlayerValueKeys = Object.keys(game.team2.playerStats[team2PlayerIDKeys[i]]);
+        for (var j = 0; j < currentPlayerValueKeys.length; j++) {
+            var valueToIncrement;
+            if (currentPlayerValueKeys[j] === "gp") {
+                valueToIncrement = "players.$.gamesPlayed";
+            } else {
+                valueToIncrement = "players.$.pointValues." + currentPlayerValueKeys[j];
+            }
+            var action = {};
+            action[valueToIncrement] = -1 * game.team2.playerStats[team2PlayerIDKeys[i]][currentPlayerValueKeys[j]];
+            var incrementQuery = {"$inc" : action};
+            console.log(incrementQuery);
+            // console.log(game.team2.playerStats[team2PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
+            Tournament.update(tournamentQuery, incrementQuery, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        }
+    }
 }
 
 exports.addTournament = addTournament;

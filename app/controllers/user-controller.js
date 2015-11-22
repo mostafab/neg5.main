@@ -32,7 +32,7 @@ function validateLogin(credentials, callback) {
 
 function register(credentials, callback) {
     console.log(credentials);
-    User.findOne({email : credentials["r_usrname"]}, function(err, result) {
+    User.findOne({email : credentials["r_usrname"].toLowerCase()}, function(err, result) {
         if (err) {
             callback(err, "");
         } else if (result) {
