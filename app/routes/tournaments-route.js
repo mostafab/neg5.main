@@ -94,7 +94,19 @@ module.exports = function(app) {
                         res.status(200).send(games);
                     }
                 });
-            }  
+            }
+        });
+
+    app.route("/home/tournaments/games/remove")
+        .post(function(req, res, next) {
+            if (!req.session.director) {
+                res.redirect("/");
+            } else {
+                var gameid = req.body["gameid_form"];
+                var tournamentid = req.body["tournament_idgame"];
+                tournamentController.getGameFromTournament(tournamentid, gameid);
+                res.status(200).send("Good to go");
+            }
         });
 
     // app.route("/home/tournaments/createplayers")

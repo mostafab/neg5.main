@@ -26,8 +26,11 @@ $(document).ready(function() {
     $(".teamselect").change(function(e) {
         if ($(this).attr("id") == "leftchoice") {
             findPlayersByTeamnameAndTournament("LEFT");
+            $("#leftteamnameID").val($(this).find(":selected").text());
+            // console.log($("#leftteamnameID").val());
         } else {
             findPlayersByTeamnameAndTournament("RIGHT");
+            $("#rightteamnameID").val($(this).find(":selected").text());
         }
     });
 
@@ -50,6 +53,15 @@ $(document).ready(function() {
             $("#entergamebutton").prop("disabled", false);
             $("#entergamebutton").removeClass("btn-danger").addClass("btn-success");
         }
+    });
+
+    $(".editbutton").click(function(e) {
+        console.log($(this).parent().serialize());
+    });
+
+    $(".deletebutton").click(function(e) {
+        console.log($(this).parent().serialize());
+        removeGame($(this).parent().serialize(), $(this));
     });
 });
 
@@ -74,6 +86,7 @@ function sendGameToServer() {
         data : $("#gamedataform").serialize(),
         success : function(databack, status, xhr) {
             console.log(databack);
+            updateGameList(databack);
             // document.getElementById("gamedataform").reset();
         }
     });
@@ -114,6 +127,18 @@ function findPlayersByTeamnameAndTournament(side) {
     }
 }
 
+function removeGame(gameid, button) {
+    $.ajax({
+        url : "/home/tournaments/games/remove",
+        type : "POST",
+        data : gameid,
+        success : function(databack, status, xhr) {
+            console.log("Success : " + databack);
+            $(button).parent().parent().parent().remove();
+        }
+    });
+}
+
 function createPlayerInputField() {
     var newInput = "<input type='text'/>";
     var classes = "form-control input-medium center-text no-border-radius";
@@ -128,7 +153,7 @@ function createPlayerInputField() {
 function generatePlayerRows(players, side) {
     var choice = side == "LEFT" ? "#left-text" : "#right-text";
     $(choice).empty();
-    var html = "<table class='table table-striped table-bordered table-hover'><thead><tr>";
+    var html = "<table class='table table-striped table-bordered table-hover table-condensed'><thead><tr>";
     html += "<th class='table-head'>Name</th>";
     html += "<th class='table-head'>GP</th>";
     html += "<th class='table-head'>10</th>";
@@ -190,4 +215,19 @@ function updateTeamList(teams) {
         $("#leftchoice").append(option);
         $("#rightchoice").append(option);
     }
+}
+
+function updateGameList(game) {
+    var html = "<tr>";
+    html += "<td>" + game.round + "</td>";
+    html += "<td>" + game.team1.team_name + "</td>";
+    html += "<td>" + game.team1.score + "</td>";
+    html += "<td>" + game.team2.team_name + "</td>";
+    html += "<td>" + game.team2.score + "</td>";
+    html += "<td>" + game.tossupsheard + "</td>";
+    html += "<td> <form role='form'> <input type='hidden' name='gameid_form' value=" + game._id + "/>";
+    html += "";
+    html += "</form> </td>";
+    html += "</tr>";
+    $("#gametablebody").append(html);
 }

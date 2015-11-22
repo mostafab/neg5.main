@@ -9,11 +9,13 @@ var gameSchema = new Schema({
     }},
     tossupsheard : {type : Number, default: 20},
     team1 : {
+        team_name : String,
         team_id : String,
         score : {type : Number, default : 0},
         playerStats : {}
     },
     team2 : {
+        team_name : String,
         team_id : String,
         score :  {type : Number, default : 0},
         playerStats : {}
