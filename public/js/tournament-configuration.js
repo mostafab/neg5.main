@@ -1,6 +1,11 @@
 var nextPlayerNum = 5;
+var options;
+var gameList;
 
 $(document).ready(function() {
+
+    options = { valueNames : ["round", "team1name", "team2name"]};
+    gameList = new List("gamediv", options);
 
     $("#entergamebutton").prop("disabled", true);
     $("#entergamebutton").removeClass("btn-success").addClass("btn-danger");
@@ -55,15 +60,22 @@ $(document).ready(function() {
         }
     });
 
-    $(".editbutton").click(function(e) {
-        console.log($(this).parent().serialize());
-    });
-
     $(".deletebutton").click(function(e) {
         console.log($(this).parent().serialize());
         removeGame($(this).parent().serialize(), $(this));
     });
+
+    $(".modal-wide").on("show.bs.modal", function() {
+        var height = $(window).height() - 300;
+        $(this).find(".modal-body").css("max-height", height);
+    });
+
 });
+
+function removeGameSender(button) {
+    console.log($(button).parent().serialize());
+    removeGame($(button).parent().serialize(), button);
+}
 
 function sendTeamToServer() {
     $.ajax({
@@ -111,6 +123,7 @@ function findPlayersByTeamnameAndTournament(side) {
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#leftchoice").val()},
             success : function(databack, status, xhr) {
+                console.log(databack);
                 generatePlayerRows(databack, "LEFT");
             }
         });
@@ -217,7 +230,9 @@ function updateTeamList(teams) {
     }
 }
 
-function updateGameList(game) {
+function updateGameList(gameinfo) {
+    var game = gameinfo.game;
+    var id = gameinfo.tid;
     var html = "<tr>";
     html += "<td>" + game.round + "</td>";
     html += "<td>" + game.team1.team_name + "</td>";
@@ -225,9 +240,12 @@ function updateGameList(game) {
     html += "<td>" + game.team2.team_name + "</td>";
     html += "<td>" + game.team2.score + "</td>";
     html += "<td>" + game.tossupsheard + "</td>";
-    html += "<td> <form role='form'> <input type='hidden' name='gameid_form' value=" + game._id + "/>";
-    html += "";
+    html += "<td> <form role='form'> <input type='hidden' name='gameid_form' value='" + game._id + "'/>";
+    html += "<input type='hidden' name='tournament_idgame' value='" + id + "'/>";
+    html += "<a class='btn btn-sm btn-info editbutton' href='/home/tournaments/" + id + "/games/" + game._id + "'> Details </a>";
+    html += "<button type='button' class='btn btn-sm btn-warning deletebutton' onclick='removeGameSender(this)'> Remove Game </button>";
     html += "</form> </td>";
     html += "</tr>";
     $("#gametablebody").append(html);
+    gameList = new List("gamediv", options);
 }

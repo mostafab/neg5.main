@@ -1,13 +1,17 @@
 var mongoose = require("mongoose");
+var bcryptjs = require("bcryptjs");
 
 var User = mongoose.model("User");
 var Tournament = mongoose.model("Tournament");
 var TournamentDirector = mongoose.model("TournamentDirector");
 var tournamentController = require('../../app/controllers/tournament-controller');
-var crypto = require("./crypto");
 
 function validateLogin(credentials, callback) {
     console.log("Credentials: " + credentials["usrname"].toLowerCase());
+    var testUser = new User({
+        email : credentials["usrname"],
+        password : credentials["pswd"]
+    });
     User.findOne({email : credentials["usrname"].toLowerCase()}, function(err, result) {
         // console.log("RESULT: " + result);
         if (err) {
@@ -16,14 +20,18 @@ function validateLogin(credentials, callback) {
         } else if (result == null) {
             // console.log("RESULT IS NULL");
             callback(null, "NONE", "");
-        } else if (result.password !== crypto.encrypt(credentials["pswd"])) {
-            callback(null, "INVALID", "");
         } else {
-            TournamentDirector.findOne({email : credentials["usrname"].toLowerCase()}, function(err, director) {
-                if (err) {
-                    callback(err, "", "");
+            bcryptjs.compare(credentials["pswd"], result.password, function(err, res) {
+                if (res) {
+                    TournamentDirector.findOne({email : credentials["usrname"]}, function(err, result) {
+                        if (err || result == null) {
+                            callback(null, "NONE", "");
+                        } else {
+                            callback(null, "OK", result);
+                        }
+                    });
                 } else {
-                    callback(null, "OK", director);
+                    callback(null, "INVALID", "");
                 }
             });
         }
@@ -38,45 +46,58 @@ function register(credentials, callback) {
         } else if (result) {
             callback(null, "EXISTS");
         } else {
-            var user = makeUser(credentials);
-            var td = makeDirector(credentials);
-            user.save(function(err) {
+            console.log("Got here");
+            makeUser(credentials, function(err) {
                 if (err) {
                     callback(err, "");
                 } else {
-                    td.save(function(err) {
-                        if (err) {
-                            callback(err, "");
-                        } else {
-                            callback(null, "OK");
-                        }
-                    });
+                    callback(null, "OK");
                 }
             });
         }
     });
 }
 
-function makeUser(req) {
+function makeUser(req, callback) {
     var name = req["r_name"];
     var email = req["r_usrname"].toLowerCase();
-    var password = crypto.encrypt(req["r_pswd"]);
-    var user = new User({
-            name : name,
-            email : email,
-            password : password,
+    var password = req["r_pswd"];
+    bcryptjs.genSalt(10, function(err, salt) {
+        if (err) {
+            console.log("Error: " + err);
+            return false;
+        } else {
+            bcryptjs.hash(password, salt, function(err, hash) {
+                if (err) {
+                    callback(err);
+                } else {
+                    var user = new User({
+                            name : name,
+                            email : email,
+                            password : hash,
+                    });
+                    console.log(user);
+                    user.save(function(err) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            var td = new TournamentDirector({
+                                name : name,
+                                email : email
+                            });
+                            td.save(function(err) {
+                                if (err) {
+                                    callback(err);
+                                } else {
+                                    callback(null);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
     });
-    return user;
-}
-
-function makeDirector(req) {
-    var name = req["r_name"];
-    var email = req["r_usrname"].toLowerCase();
-    var td = new TournamentDirector({
-        name : name,
-        email : email,
-    });
-    return td;
 }
 
 exports.validateLogin = validateLogin;
