@@ -3,11 +3,14 @@ extends layout
 block extrastylesheets
     link(rel="stylesheet" href="/css/index.css")
     link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+    link(rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css")
 
 block extrascripts
     script(src="/js/welcome-screen.js")
 
 block content
+
+    //+navbar
 
     div(class="container vertical-center parent" id="#masterbox")
 
@@ -20,7 +23,7 @@ block content
                 br
                 br
 
-            form(name="logins" id="loginfo" role="form" method="post" action="/home")
+            form(name="logins" id="loginfo" role="form" method="post" action="/auth/local")
                 div(class="form-group col-md-8 col-md-7 col-md-offset-4")
                     input(
                         type="input",
@@ -48,9 +51,13 @@ block content
                         | Register
                     br
                     br
-                div(class="form-group")
-                    p(id="errorlabel") #{errormsg}
-
+                // div(class="form-group")
+                p(id="errorlabel") #{errormsg}
+                p Sign In With Google or Facebook
+                a(href="/auth/google" class="btn btn-danger")
+                    span(class="fa fa-google-plus")
+                a(class="btn btn-info")
+                    span(class="fa fa-facebook")
 
         div(class="container span4 text-center child userbox" id="registerWindow")
             h1(style="white-space:pre" id="registererror") Submit this form to register

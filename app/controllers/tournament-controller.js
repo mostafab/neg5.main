@@ -10,7 +10,7 @@ var Game = mongoose.model("Game");
 * Adds a tournament to the specified td - "tournament director" array of tournaments
 * @return true if adding tournament succeesed, false otherwise
 */
-function addTournament(directorKey, name, date, location, description, questionset) {
+function addTournament(directorKey, name, date, location, description, questionset, callback) {
     var tourney = new Tournament({
         director_email : directorKey,
         tournament_name : name,
@@ -22,12 +22,11 @@ function addTournament(directorKey, name, date, location, description, questions
     tourney.save(function(err) {
         if (err) {
             // console.log("Unable to save tournament");
-            return false;
+            callback(err);
         } else {
-
+            callback(null);
         }
     });
-    return true;
 }
 
 /**
@@ -148,17 +147,31 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
 // }
 
 function findTeamMembers(tournamentid, teamid, callback) {
-    var query = Tournament.findOne({_id : tournamentid}).exec(function(err, result) {
-        if (err) {
+    // var query = Tournament.findOne({_id : tournamentid}).exec(function(err, result) {
+    //     if (err) {
+    //         callback(err, []);
+    //     } else {
+    //         console.log(result.players);
+    //         var found = false;
+    //         var i = 0;
+    //         var playersArr = [];
+    //         for (var i = 0; i < result.players.length; i++) {
+    //             if (result.players[i].teamID == teamid) {
+    //                 playersArr.push(result.players[i]);
+    //             }
+    //         }
+    //         callback(null, playersArr);
+    //     }
+    // });
+    var query = Tournament.find({_id : tournamentid}).limit(1).exec(function(err, result) {
+        if (err || result.length === 0) {
             callback(err, []);
         } else {
-            console.log(result.players);
-            var found = false;
-            var i = 0;
+            console.log(result[0].players);
             var playersArr = [];
-            for (var i = 0; i < result.players.length; i++) {
-                if (result.players[i].teamID == teamid) {
-                    playersArr.push(result.players[i]);
+            for (var i = 0; i < result[0].players.length; i++) {
+                if (result[0].players[i].teamID == teamid) {
+                    playersArr.push(result[0].players[i]);
                 }
             }
             callback(null, playersArr);

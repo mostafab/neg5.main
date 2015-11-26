@@ -2,18 +2,17 @@
     font-weight: bold;
     color: white;
     font-size: 24px;
-    background: rgba(51, 102, 153, .9);
+    background: rgb(0, 136, 136);
     border-width: 10px;
     padding: 15px;
     width: 100%;
 }
 
-.title:hover {
-    background-color: rgba(51, 102, 153, .8)
-}
-
 .box {
     background-color : rgba(190, 190, 190, .7);
+}
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    background-color:rgb(0, 136, 136);
 }
 
 .smallbox {
@@ -79,7 +78,7 @@ tr {
 
 .btn {
     margin: 10px;
-    border-radius: 0px;
+    border-radius: 3px;
 }
 
 .tournament-info-field::-webkit-input-placeholder
@@ -130,6 +129,7 @@ tr {
 
 .panel-default > .panel-body {
     font-size: 24px;
+    background-color: rgb(249, 249, 249);
 }
 
 .collapsable:hover {
@@ -148,13 +148,19 @@ tr {
 }
 
 .table-head {
-    background: rgba(51, 102, 153, .9);
+    background: rgb(0, 136, 136);
 }
 
 .table-head:hover {
-    background: rgba(51, 102, 153, 1);
+    background: rgba(0, 136, 136, .8);
 }
 
 .disabledview:hover {
     cursor : default;
+}
+
+.tab-content {
+    padding: 10px;
+    border-width: 5px;
+    border-color: black;
 }

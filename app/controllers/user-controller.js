@@ -6,27 +6,22 @@ var Tournament = mongoose.model("Tournament");
 var TournamentDirector = mongoose.model("TournamentDirector");
 var tournamentController = require('../../app/controllers/tournament-controller');
 
-function validateLogin(credentials, callback) {
-    console.log("Credentials: " + credentials["usrname"].toLowerCase());
-    var testUser = new User({
-        email : credentials["usrname"],
-        password : credentials["pswd"]
-    });
-    User.findOne({email : credentials["usrname"].toLowerCase()}, function(err, result) {
-        // console.log("RESULT: " + result);
+function validateLocalLogin(credentials, callback) {
+    // console.log("Credentials: " + credentials["usrname"].toLowerCase());
+    User.findOne({"local.email" : credentials["usrname"].toLowerCase()}, function(err, result) {
         if (err) {
             console.log(err);
-            callback(err, "", "");
+            callback(err, "", null);
         } else if (result == null) {
-            // console.log("RESULT IS NULL");
             callback(null, "NONE", "");
         } else {
-            bcryptjs.compare(credentials["pswd"], result.password, function(err, res) {
+            bcryptjs.compare(credentials["pswd"], result.local.password, function(err, res) {
                 if (res) {
                     TournamentDirector.findOne({email : credentials["usrname"]}, function(err, result) {
                         if (err || result == null) {
-                            callback(null, "NONE", "");
+                            callback(null, "NONE", null);
                         } else {
+                            console.log("Tournament director found");
                             callback(null, "OK", result);
                         }
                     });
@@ -40,8 +35,9 @@ function validateLogin(credentials, callback) {
 
 function register(credentials, callback) {
     console.log(credentials);
-    User.findOne({email : credentials["r_usrname"].toLowerCase()}, function(err, result) {
+    User.findOne({"local.email" : credentials["r_usrname"]}, function(err, result) {
         if (err) {
+            console.log(err);
             callback(err, "");
         } else if (result) {
             callback(null, "EXISTS");
@@ -65,28 +61,30 @@ function makeUser(req, callback) {
     bcryptjs.genSalt(10, function(err, salt) {
         if (err) {
             console.log("Error: " + err);
-            return false;
+            callback(err);
         } else {
             bcryptjs.hash(password, salt, function(err, hash) {
                 if (err) {
                     callback(err);
                 } else {
-                    var user = new User({
-                            name : name,
-                            email : email,
-                            password : hash,
-                    });
+                    var user = new User();
+                    user.local.name = name;
+                    user.local.email = email;
+                    user.local.password = hash;
                     console.log(user);
                     user.save(function(err) {
                         if (err) {
+                            console.log(err);
                             callback(err);
                         } else {
+                            // callback(null);
                             var td = new TournamentDirector({
                                 name : name,
                                 email : email
                             });
                             td.save(function(err) {
                                 if (err) {
+                                    console.log(err);
                                     callback(err);
                                 } else {
                                     callback(null);
@@ -100,5 +98,5 @@ function makeUser(req, callback) {
     });
 }
 
-exports.validateLogin = validateLogin;
+exports.validateLocalLogin = validateLocalLogin;
 exports.register = register;

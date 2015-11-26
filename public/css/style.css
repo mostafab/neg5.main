@@ -19,8 +19,9 @@ body {
   font-size: 1.6rem;
   font-family: "Raleway", sans-serif;
   color: #3e454c;
-  background-color: #ffffff;
+  background-color: rgb(98, 98, 98);
 }
+
 body::after {
   clear: both;
   content: "";
@@ -96,7 +97,7 @@ Header
   left: 0;
   height: 45px;
   width: 100%;
-  background: rgb(51, 102, 153);
+  background: rgb(0, 136, 136);
   /*background-image: url("../img/background.jpg");*/
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   -webkit-font-smoothing: antialiased;
@@ -147,7 +148,7 @@ Header
   display: inline-block;
   height: 3px;
   width: 24px;
-  background: #ffffff;
+  background: rgb(98, 98, 98);
 }
 .cd-nav-trigger span {
   /* line in the center */
@@ -280,7 +281,7 @@ Header
     border-radius: 0;
     background-color: #3e454c;
     border-left: 1px solid #51575d;
-    color: #ffffff;
+    color: rgb(98, 98, 98);
   }
   .cd-search input::-webkit-input-placeholder {
     color: #777c81;
@@ -343,7 +344,7 @@ Top Navigation
   .cd-top-nav a {
     display: block;
     font-size: 1.4rem;
-    color: #ffffff;
+    color: rgb(98, 98, 98);
   }
   .cd-top-nav > li {
     display: inline-block;

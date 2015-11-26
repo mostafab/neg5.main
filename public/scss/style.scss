@@ -6,7 +6,7 @@
 
 @import '../partials/layout'; // responsive grid and media queries
 
-/* -------------------------------- 
+/* --------------------------------
 
 Primary style
 
@@ -47,7 +47,7 @@ input[type="search"]::-webkit-search-results-decoration {
   display: none;
 }
 
-/* -------------------------------- 
+/* --------------------------------
 
 Main Page Content
 
@@ -101,7 +101,7 @@ Main Page Content
 	}
 }
 
-/* -------------------------------- 
+/* --------------------------------
 
 Header
 
@@ -179,7 +179,7 @@ Header
 		/* Force Hardware Acceleration in WebKit */
 		@include transform(translateZ(0));
 		@include backface-visibility(hidden);
-		
+
 		@include transform-origin(0% 50%);
 		@include transition(transform .2s);
 	}
@@ -289,14 +289,14 @@ Header
 	}
 }
 
-/* -------------------------------- 
+/* --------------------------------
 
 Top Navigation
 
 -------------------------------- */
 
 .cd-nav {
-	/* top nav - not visible on mobile devices */ 
+	/* top nav - not visible on mobile devices */
 	display: none;
 
 	@include MQ(M) {
@@ -362,7 +362,7 @@ Top Navigation
 	}
 }
 
-/* -------------------------------- 
+/* --------------------------------
 
 Sidebar
 
@@ -392,7 +392,7 @@ Sidebar
 		max-height: none;
 		box-shadow: 0 2px 10px rgba(#000, .2);
 	}
-	
+
 	> ul {
 		padding: 0.6em 0;
 
@@ -482,17 +482,17 @@ Sidebar
 
 	.action-btn a {
 		display: block;
-		margin: 0 5%; 
+		margin: 0 5%;
 		padding: 1em 0;
 		background-color: $color-2;
 		border-radius: .25em;
 		border: none;
 		box-shadow: 0 1px 3px rgba(#000, .3), inset 0 1px 0 rgba(#fff, .2);
-		
+
 		text-align: center;
 		color: $color-3;
 		font-weight: bold;
-		
+
 		&::before {
 			display: none;
 		}
@@ -549,7 +549,7 @@ Sidebar
 			background-color: darken($color-1, 5%);
 		}
 
-		.action-btn a { 
+		.action-btn a {
 			margin: 1em 10% 0;
 		}
 
@@ -622,7 +622,7 @@ Sidebar
 }
 
 .has-children {
-	
+
 	ul {
 		position: relative;
 		width: 100%;
@@ -651,8 +651,8 @@ Sidebar
 
 	@include MQ(M) {
 		position: relative;
-		
-		ul { 
+
+		ul {
 			position: absolute;
 			top: 0;
 			left: 100%;
@@ -671,7 +671,7 @@ Sidebar
 			}
 		}
 
-		> a::after { 
+		> a::after {
 			display: none;
 		}
 
@@ -713,8 +713,8 @@ Sidebar
 	}
 
 	@include MQ(L) {
-		
-		> ul { 
+
+		> ul {
 			width: 100%;
 			z-index: 1;
 		}
@@ -732,7 +732,7 @@ Sidebar
 			box-shadow: none;
 		}
 
-		.no-touch .cd-side-nav &:hover > ul, 
+		.no-touch .cd-side-nav &:hover > ul,
 		.cd-side-nav &.hover > ul {
 			/* show subnavigation on hover */
 			display: block;

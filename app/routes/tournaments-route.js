@@ -69,8 +69,13 @@ module.exports = function(app) {
                 var date = req.body.t_date;
                 var questionset = req.body.t_qset;
                 console.log("Session email: " + req.session.director.email);
-                tournamentController.addTournament(req.session.director.email, name, date, location, description, questionset);
-                res.redirect("/home/tournaments");
+                tournamentController.addTournament(req.session.director.email, name, date, location, description, questionset, function(err) {
+                    if (err) {
+                        res.redirect("/");
+                    } else {
+                        res.redirect("/home/tournaments");
+                    }
+                });
             }
         });
 
@@ -95,7 +100,35 @@ module.exports = function(app) {
 
     app.get("/home/tournaments/:tid/games/:gid", function(req, res) {
         console.log(req.params);
-        res.status(200).send("All good here");
+        tournamentController.findTournamentById(req.params.tid, function(err, result) {
+            var game = null;
+            if (result) {
+                for (var i = 0; i < result.games.length; i++) {
+                    if (result.games[i]._id == req.params.gid) {
+                        game = result.games[i];
+                        i = result.games.length + 1;
+                    }
+                }
+                if (game !== null) {
+                    console.log(result.players);
+                    var team1Players = [];
+                    var team2Players = [];
+                    for (var i = 0; i < result.players.length; i++) {
+                        console.log(game.team1.team_id + " | " + result.players[i].teamID);
+                        if (result.players[i].teamID == game.team1.team_id) {
+
+                            team1Players.push(result.players[i]);
+                        } else if (result.players[i].teamID == game.team2.team_id) {
+                            team2Players.push(result.players[i]);
+                        }
+                    }
+                    res.render("game-view", {tournamentd : req.session.director, game : game, tournamentName : result.tournament_name,
+                        team1Players : team1Players, team2Players : team2Players, tournament : result});
+                } else {
+                    res.status(404).send("Couldn't find that specific page");
+                }
+            }
+        });
     });
 
     app.get("/home/tournaments/:tid", function(req, res, next) {

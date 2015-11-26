@@ -9,10 +9,32 @@ function toLower(string) {
 }
 
 var UserSchema = new Schema({
-    name : {type : String, required : true},
-    email : {type : String, required : true, set : toLower},
-    password : {type : String, required : true},
+    local : {
+        name : String,
+        email : String,
+        password : String
+    },
+    facebook : {
+        id : String,
+        token : String,
+        email : String,
+        name : String
+    },
+    google : {
+        id : String,
+        token : String,
+        email : String,
+        name : String
+    }
 });
+
+UserSchema.methods.generateHash = function(password) {
+    return bcryptjs.hashSync(password, bcryptjs.genSalt(10), null);
+}
+
+UserSchema.methods.validPassword = function(password) {
+    return bcryptjs.compareSync(password, this.local.password);
+}
 
 // UserSchema.pre("save", function(next) {
 //     if (!this.isModified("password")) {

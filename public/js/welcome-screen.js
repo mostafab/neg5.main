@@ -97,25 +97,11 @@ function checkPasswordInForm() {
 
 function submitLogin() {
     document.logins.submit();
-    // $.ajax({
-    //     url : "/login",
-    //     method : "POST",
-    //     data : $("#loginfo").serialize(),
-    //     success : function(databack, status, xhr) {
-    //         // console.log("Databack: " + databack);
-    //         if (databack.length < 40) {
-    //             $("#errorlabel").text(databack);
-    //         } else {
-    //             $("body").html(databack);
-    //             // document.write(databack);
-    //         }
-    //     }
-    // });
 }
 
 function submitRegistration() {
     $.ajax({
-        url : "/register",
+        url : "/register/local",
         method : "POST",
         data : $("#signupform").serialize(),
         success : function(databack, status, xhr) {

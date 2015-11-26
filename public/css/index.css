@@ -14,12 +14,17 @@ h1 {
     /*margin-bottom: 100px;*/
 }
 
+p {
+    color : white;
+}
+
 a {
         margin: 10px;
 }
 
 .body {
-    /*background-color: rgb(0, 153, 153);*/
+    /*background-color: rgb(0, 0, 123);*/
+    /*background-color: rgb(0, 147, 147);*/
     background-image: url("../img/background.jpg");
     /*background-image: url("../img/color_background.jpg");*/
     background-size: cover;
@@ -84,7 +89,11 @@ a {
 
 .userbox {
     background-color: rgba(10, 10, 10, .8);
-    padding: 20px;
+    /*background-color: rgb(0, 128, 128);*/
+    /*background-color: transparent;*/
+    border-radius: 5px;
+    padding: 10px;
+    /*border-width: 10px;*/
     position: absolute;
     text-align: center;
 }

@@ -37,15 +37,6 @@ $(document).ready(function() {
             findPlayersByTeamnameAndTournament("RIGHT");
             $("#rightteamnameID").val($(this).find(":selected").text());
         }
-    });
-
-    $("#entergamebutton").click(function(e) {
-        // console.log($("#gamedataform").serialize());
-        // document.getElementById("gamedataform").reset();
-        sendGameToServer();
-    });
-
-    $(".teamselect").on("change", function(e) {
         var bothselect = true;
         $(".teamselect").each(function(i, obj) {
             if ($(this).val() === "") {
@@ -60,14 +51,15 @@ $(document).ready(function() {
         }
     });
 
+    $("#entergamebutton").click(function(e) {
+        // console.log($("#gamedataform").serialize());
+        // document.getElementById("gamedataform").reset();
+        sendGameToServer();
+    });
+
     $(".deletebutton").click(function(e) {
         console.log($(this).parent().serialize());
         removeGame($(this).parent().serialize(), $(this));
-    });
-
-    $(".modal-wide").on("show.bs.modal", function() {
-        var height = $(window).height() - 300;
-        $(this).find(".modal-body").css("max-height", height);
     });
 
 });

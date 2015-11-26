@@ -1,7 +1,7 @@
 extends layout
 
 block extrascripts
-    script(src="/js/tournament-configuration.js")
+    // script(src="/js/tournament-configuration.js")
 
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
@@ -9,7 +9,7 @@ block extrastylesheets
 
 block content
 
-    +navbar
+    //+navbar
     +sidebar
 
     main(class="cd-main-content")
@@ -17,13 +17,13 @@ block content
 
             div(class="row")
                 div(class="col-md-12")
-                    div(class="panel panel-default table-grey" style="margin:20px; margin-bottom:50px")
+                    div(style="margin:20px; margin-bottom:50px")
                     h2(class="title") Your Tournaments
                     div(class="panel panel-default table-grey")
 
 
                         div(class="table-responsive")
-                            table(class="table table-striped table-bordered table-hover" id="dataTables-example")
+                            table(class="table table-striped table-bordered table-hover table-condensed" id="dataTables-example")
                                 thead
                                     tr
                                         // ID kept for debugging

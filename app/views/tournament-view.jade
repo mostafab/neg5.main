@@ -1,9 +1,5 @@
 extends layout
 
-block extrascripts
-    script(src="/js/tournament-configuration.js")
-
-
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
     link(rel="stylesheet" href="/css/tournamentstyle.css")
@@ -11,15 +7,15 @@ block extrastylesheets
 
 block content
 
-    +navbar
+    //+navbar
     +sidebar
 
     main(class="cd-main-content")
-        div(class="content-wrapper")
+        div(class="content-wrapper box")
 
             div(class="row")
                     div(class="col-md-12")
-                        div(class="panel panel-default" style="margin:20px; margin-bottom:50px")
+                        div(style="margin:20px; margin-bottom:50px")
                         h2(class="title" style="width:50%") #{tournament.tournament_name}
 
                         div(class="panel-body")
@@ -79,11 +75,13 @@ block content
                                                             br
                                                     div(class="row")
                                                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            input(type="number" class="form-control leftscorebox" name="round" placeholder="Round No.")
+                                                            input(type="number" class="form-control leftscorebox" name="round" placeholder="Round")
                                                     div(class="row")
                                                         div(class="col-lg-6 col-md-6 col-sm-6")
                                                             input(type="number" class="form-control leftscorebox" name="tossupsheard" placeholder="Tossups Heard")
                                                     button(type="button" class="btn btn-lg btn-success" id="entergamebutton") Add Game Information
+                                                        span(style="padding-left:10px")
+                                                            i(class="glyphicon glyphicon-plus")
 
                                 div(class="panel panel-default")
                                         div(class="panel-heading collapsable") List of Games
@@ -204,3 +202,4 @@ block content
                                         div(class="panel-body")
 
     script(src="http://listjs.com/no-cdn/list.js")
+    script(src="/js/tournament-configuration.js")

@@ -1,15 +1,19 @@
 var config = require('./config');
 var express = require('express');
 var bodyParser = require("body-parser");
-var session = require("client-sessions");
+var clientsession = require("client-sessions");
+var passport = require("passport");
+var cookieParser = require("cookie-parser");
 
 module.exports = function() {
     var app = express();
+
     app.use(bodyParser.urlencoded({
         extended: true
     }));
+    app.use(cookieParser());
     app.use(bodyParser.json());
-    app.use(session({
+    app.use(clientsession({
         cookieName : "session",
         secret : "TheresAlwaysMoneyInTheBananaStand",
         duration : 180 * 60 * 1000,
@@ -18,12 +22,14 @@ module.exports = function() {
         secure : true,
         ephemeral : true
     }));
+    app.use(passport.initialize());
+    app.use(passport.session());
     app.set("views", "./app/views");
     app.set("view engine", "jade");
 
-    require('../app/routes/index.js')(app);
-    require("../app/routes/user-route.js")(app);
-    require("../app/routes/tournaments-route.js")(app);
+    require('../app/routes/index.js')(app, passport);
+    require("../app/routes/user-route.js")(app, passport);
+    require("../app/routes/tournaments-route.js")(app, passport);
 
     app.use(express.static("./public"));
 
