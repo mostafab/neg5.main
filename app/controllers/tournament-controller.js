@@ -347,7 +347,7 @@ function projectGameToPlayers(tournamentid, game) {
 * @param tournamentid id of the tournament the game is associated with
 * @param gameid id of the game to retrieve
 */
-function getGameFromTournament(tournamentid, gameid) {
+function getGameFromTournament(tournamentid, gameid, callback) {
     // if get game, then remove game from teams and players, then remove the actual game
     var tournamentQuery = {_id : tournamentid, "games._id" : gameid};
     Tournament.findOne(tournamentQuery, function(err, result) {
@@ -363,6 +363,7 @@ function getGameFromTournament(tournamentid, gameid) {
                     removeGameFromPlayers(tournamentid, result.games[i]);
                     removeGameFromTournament(tournamentid, result.games[i]);
                     i = result.games.length + 1;
+                    callback(null);
                 }
             }
         }

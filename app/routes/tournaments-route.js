@@ -53,8 +53,39 @@ module.exports = function(app) {
             } else {
                 var gameid = req.body["gameid_form"];
                 var tournamentid = req.body["tournament_idgame"];
-                tournamentController.getGameFromTournament(tournamentid, gameid);
-                res.status(200).send("Good to go");
+                tournamentController.getGameFromTournament(tournamentid, gameid, function(err) {
+                    if (err) {
+                        res.status(500).end();
+                    } else {
+                        res.status(200).send("Good to go");
+                    }
+                });
+            }
+        });
+
+    app.route("/home/tournaments/games/edit")
+        .post(function(req, res, next) {
+            if (!req.session.director) {
+                res.redirect("/");
+            } else {
+                console.log(req.body);
+                var tournamentid = req.body["tournament_id_form"];
+                var gameid = req.body["oldgameid"];
+                tournamentController.addGameToTournament(tournamentid, req.body, function(err, game) { // Adds in the new game
+                    if (err) {
+                        res.status(500).send([]);
+                        console.log(err);
+                        // DO STUFF
+                    } else {
+                        tournamentController.getGameFromTournament(tournamentid, gameid, function(err) { // Removes the old game
+                            if (err) {
+                                res.status(500).send([]);
+                            } else {
+                                res.status(200).send(game); // Need to send game to update the new gameid field
+                            }
+                        });
+                    }
+                });
             }
         });
 

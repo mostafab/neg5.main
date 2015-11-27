@@ -3,7 +3,6 @@ var options;
 var gameList;
 
 $(document).ready(function() {
-
     options = { valueNames : ["round", "team1name", "team2name"]};
     gameList = new List("gamediv", options);
 
@@ -63,6 +62,10 @@ $(document).ready(function() {
     });
 
 });
+
+function scrollToElement(ele) {
+    $(window).scrollTop(ele.offset().top).scrollLeft(ele.offset().left);
+}
 
 function removeGameSender(button) {
     console.log($(button).parent().serialize());
