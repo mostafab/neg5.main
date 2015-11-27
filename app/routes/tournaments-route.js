@@ -129,8 +129,37 @@ module.exports = function(app) {
             }
         });
 
-    app.get("/home/tournaments/:tid/games/:gid", function(req, res) {
+    app.get("/home/tournaments/:tid/teams/:teamid", function(req, res) {
+        // Add check for session here
         console.log(req.params);
+        tournamentController.findTournamentById(req.params.tid, function(err, result) {
+            var team = null;
+            if (result) {
+                for (var i = 0; i < result.teams.length; i++) {
+                    if (result.teams[i]._id == req.params.teamid) {
+                        team = result.teams[i];
+                        i = result.teams.length + 1;
+                    }
+                }
+                if (team !== null) {
+                    var teamPlayers = [];
+                    for (var i = 0; i < result.players.length; i++) {
+                        if (result.players[i].teamID == team._id) {
+                            teamPlayers.push(result.players[i]);
+                        }
+                    }
+                    res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : result, tournamentd : req.session.director});
+                } else {
+                    res.status(404).send("Couldn't find that page");
+                }
+            } else {
+                res.status(404).send("Couldn't find that tournament");
+            }
+        });
+    });
+
+    app.get("/home/tournaments/:tid/games/:gid", function(req, res) {
+        // console.log(req.params);
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var game = null;
             if (result) {
@@ -141,11 +170,11 @@ module.exports = function(app) {
                     }
                 }
                 if (game !== null) {
-                    console.log(result.players);
+                    // console.log(result.players);
                     var team1Players = [];
                     var team2Players = [];
                     for (var i = 0; i < result.players.length; i++) {
-                        console.log(game.team1.team_id + " | " + result.players[i].teamID);
+                        // console.log(game.team1.team_id + " | " + result.players[i].teamID);
                         if (result.players[i].teamID == game.team1.team_id) {
 
                             team1Players.push(result.players[i]);

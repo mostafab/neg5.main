@@ -201,5 +201,30 @@ block content
                                         div(class="panel-heading collapsable") List of Teams
                                         div(class="panel-body")
 
+                                            div(class="table-responsive" id="teamdiv")
+                                                div(class="row" style="width:95%")
+                                                    div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
+
+                                                        input(type="input" class="form-control search" placeholder="Filter List")
+                                                        span(class="input-group-addon")
+                                                            i(class="glyphicon glyphicon-search")
+                                                table(class="table table-striped table-bordered table-hover table-condensed")
+                                                    thead
+                                                        tr
+                                                            th(class="table-head") Team
+                                                            th(class="table-head") Division
+                                                            th(class="table-head") Edit
+                                                    tbody(id="teamtablebody" class="list")
+                                                        each val, i in tournament.teams
+                                                            tr()
+                                                                td(class="teamname") #{tournament.teams[i].team_name}
+                                                                td(class="division") #{tournament.teams[i].division}
+                                                                td
+                                                                    form(role="form")
+                                                                        input(type="hidden" name="teamid_form" value=tournament.teams[i]._id)
+                                                                        input(type="hidden" name="tournament_idteam" value=tournament._id)
+                                                                        a(class="btn btn-sm btn-info" href="/home/tournaments/" + tournament._id + "/teams/" + tournament.teams[i]._id) Details
+                                                                        button(type="button" class="btn btn-sm btn-warning deletebutton") Remove Team
+
     script(src="http://listjs.com/no-cdn/list.js")
     script(src="/js/tournament-configuration.js")
