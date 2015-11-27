@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var teamSchema = require("./team").schema;
 
 var gameSchema = new Schema({
+    shortID : String,
     round : {type : Number, default : 0, set : function(num) {
         return Math.floor(num);
     }},

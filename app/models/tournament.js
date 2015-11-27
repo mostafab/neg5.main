@@ -8,7 +8,7 @@ var playerSchema = require("./player").schema;
 var TournamentSchema = new Schema({
     director_email : String, // Foreign key
     tournament_name : String,
-    collaborators : [String], // List of ids of collaboraters
+    collaborators : [String], // List of emails of collaboraters
     location : String,
     date : {type : Date, default : Date.now},
     openRegistration : {type : Boolean, default : true},
@@ -18,9 +18,8 @@ var TournamentSchema = new Schema({
     players : [playerSchema],
     divisions : [String],
     games : [gameSchema],
-    pointScheme : {type : {}, default : {"15" : 0, "10" : 0, "-5" : 0}}
+    pointScheme : {type : {}, default : {"15" : 0, "10" : 0, "-5" : 0}},
+    shortID : {type : String, index : true}
 });
-
-
 
 module.exports = mongoose.model("Tournament", TournamentSchema);

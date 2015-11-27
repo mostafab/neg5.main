@@ -15,7 +15,7 @@ function editGame() {
         success : function(databack, status, xhr) {
             console.log(databack);
             console.log("Edited game successfully");
-            $("#oldgameid_input").val(databack._id);
+            $("#oldgameid_input").val(databack.shortID);
         }
     });
 }

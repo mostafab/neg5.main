@@ -235,9 +235,9 @@ function updateGameList(gameinfo) {
     html += "<td>" + game.team2.team_name + "</td>";
     html += "<td>" + game.team2.score + "</td>";
     html += "<td>" + game.tossupsheard + "</td>";
-    html += "<td> <form role='form'> <input type='hidden' name='gameid_form' value='" + game._id + "'/>";
+    html += "<td> <form role='form'> <input type='hidden' name='gameid_form' value='" + game.shortID + "'/>";
     html += "<input type='hidden' name='tournament_idgame' value='" + id + "'/>";
-    html += "<a class='btn btn-sm btn-info editbutton' href='/home/tournaments/" + id + "/games/" + game._id + "'> Details </a>";
+    html += "<a class='btn btn-sm btn-info editbutton' href='/home/tournaments/" + $("#tournamentshortid").val() + "/games/" + game.shortID + "'> Details </a>";
     html += "<button type='button' class='btn btn-sm btn-warning deletebutton' onclick='removeGameSender(this)'> Remove Game </button>";
     html += "</form> </td>";
     html += "</tr>";

@@ -31,7 +31,7 @@ block content
                                 div(class="panel-body" id="updategamepanel")
 
                                         form(role="form" name="gameinfoform" id="changegameform")
-                                            input(type="hidden" value="#{game._id}" name="oldgameid" id="oldgameid_input")
+                                            input(type="hidden" value="#{game.shortID}" name="oldgameid" id="oldgameid_input")
                                             input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
                                             div(class="row")
                                                 input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
@@ -122,6 +122,6 @@ block content
                                             button(type="button" class="btn btn-lg btn-info" id="entergamebutton") Save Changes
                                                 span(style="padding-left:10px")
                                                     i(class="glyphicon glyphicon-check")
-                                            a(class="btn btn-lg btn-danger" href="/home/tournaments/" + tournament._id) Cancel
+                                            a(class="btn btn-lg btn-danger" href="/home/tournaments/" + tournament.shortID) Cancel
                                                 span(style="padding-left:10px")
                                                     i(class="glyphicons glyphicons-remove-2")

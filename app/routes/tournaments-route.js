@@ -52,7 +52,9 @@ module.exports = function(app) {
                 res.redirect("/");
             } else {
                 var gameid = req.body["gameid_form"];
+                console.log(gameid);
                 var tournamentid = req.body["tournament_idgame"];
+                console.log(tournamentid);
                 tournamentController.getGameFromTournament(tournamentid, gameid, function(err) {
                     if (err) {
                         res.status(500).end();
@@ -136,7 +138,7 @@ module.exports = function(app) {
             var team = null;
             if (result) {
                 for (var i = 0; i < result.teams.length; i++) {
-                    if (result.teams[i]._id == req.params.teamid) {
+                    if (result.teams[i].shortID == req.params.teamid) {
                         team = result.teams[i];
                         i = result.teams.length + 1;
                     }
@@ -164,7 +166,7 @@ module.exports = function(app) {
             var game = null;
             if (result) {
                 for (var i = 0; i < result.games.length; i++) {
-                    if (result.games[i]._id == req.params.gid) {
+                    if (result.games[i].shortID == req.params.gid) {
                         game = result.games[i];
                         i = result.games.length + 1;
                     }
@@ -176,7 +178,6 @@ module.exports = function(app) {
                     for (var i = 0; i < result.players.length; i++) {
                         // console.log(game.team1.team_id + " | " + result.players[i].teamID);
                         if (result.players[i].teamID == game.team1.team_id) {
-
                             team1Players.push(result.players[i]);
                         } else if (result.players[i].teamID == game.team2.team_id) {
                             team2Players.push(result.players[i]);

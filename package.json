@@ -23,6 +23,7 @@
     "passport-google-oauth": "^0.2.0",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.3",
-    "remodal": "^1.0.5"
+    "remodal": "^1.0.5",
+    "short-mongo-id": "^0.1.1"
   }
 }

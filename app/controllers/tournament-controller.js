@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var shortid = require("short-mongo-id");
 
 var Tournament = mongoose.model("Tournament");
 var TournamentDirector = mongoose.model("TournamentDirector");
@@ -19,6 +20,7 @@ function addTournament(directorKey, name, date, location, description, questions
         description : description,
         questionSet : questionset,
     });
+    tourney.shortID = shortid(tourney._id);
     tourney.save(function(err) {
         if (err) {
             // console.log("Unable to save tournament");
@@ -45,7 +47,7 @@ function findTournamentsByDirector(directorKey, callback) {
 }
 
 function findTournamentById(id, callback) {
-    var query = Tournament.findOne({_id : id}).exec(function(err, result) {
+    var query = Tournament.findOne({shortID : id}).exec(function(err, result) {
         if (err) {
             callback(err, null);
         } else {
@@ -63,6 +65,7 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
         email : teaminfo["team_email"],
         division : teaminfo["team_division"],
     });
+    newteam.shortID = shortid(newteam._id);
     while (teaminfo[key]) {
         if (teaminfo[key].length != 0)
             var newplayer = new Player({
@@ -186,6 +189,7 @@ function addGameToTournament(tournamentid, gameinfo, callback) {
         round : gameinfo["round"],
         tossupsheard : gameinfo["tossupsheard"],
     });
+    newGame.shortID = shortid(newGame._id);
     newGame.team1.team_id = gameinfo["leftteamselect"];
     newGame.team1.score = gameinfo["leftteamscore"] == null ? "0" : gameinfo["leftteamscore"];
     newGame.team1.team_name = gameinfo["leftteamname"];
@@ -349,16 +353,18 @@ function projectGameToPlayers(tournamentid, game) {
 */
 function getGameFromTournament(tournamentid, gameid, callback) {
     // if get game, then remove game from teams and players, then remove the actual game
-    var tournamentQuery = {_id : tournamentid, "games._id" : gameid};
+    var tournamentQuery = {_id : tournamentid, "games.shortID" : gameid};
     Tournament.findOne(tournamentQuery, function(err, result) {
+        console.log("Result: " + result);
         if (err || result == null) {
             // DO STUFF
+            callback(err);
         } else {
             console.log("Resultant Game: " + result);
-            console.log("GameID: " + gameid);
+            console.log("Game ShortID: " + gameid);
             for (var i = 0; i < result.games.length; i++) {
-                if (result.games[i]._id.toString() == gameid) {
-                    console.log("GameID: " + result.games[i]._id.toString() + "| " + gameid)
+                if (result.games[i].shortID == gameid) {
+                    console.log("GameID: " + result.games[i].shortID + "| " + gameid)
                     removeGameFromTeam(tournamentid, result.games[i]);
                     removeGameFromPlayers(tournamentid, result.games[i]);
                     removeGameFromTournament(tournamentid, result.games[i]);
@@ -371,8 +377,8 @@ function getGameFromTournament(tournamentid, gameid, callback) {
 }
 
 function removeGameFromTournament(tournamentid, game) {
-    var tournamentQuery = {_id : tournamentid, "games._id" : game._id};
-    var pullQuery = {$pull : {games : {_id : game._id}}};
+    var tournamentQuery = {_id : tournamentid, "games.shortID" : game.shortID};
+    var pullQuery = {$pull : {games : {shortID : game.shortID}}};
     console.log(pullQuery);
     Tournament.update(tournamentQuery, pullQuery, function(err) {
         if (err) {

@@ -12,7 +12,7 @@ block content
 
     main(class="cd-main-content")
         div(class="content-wrapper box")
-
+            input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
             div(class="row")
                     div(class="col-md-12")
                         div(style="margin:20px; margin-bottom:50px")
@@ -115,9 +115,9 @@ block content
                                                                 td(class="tuheard") #{tournament.games[i].tossupsheard}
                                                                 td
                                                                     form(role="form")
-                                                                        input(type="hidden" name="gameid_form" value=tournament.games[i]._id)
-                                                                        input(type="hidden" name="tournament_idgame" value=tournament._id)
-                                                                        a(class="btn btn-sm btn-info editbutton" href="/home/tournaments/" + tournament._id + "/games/" + tournament.games[i]._id) Details
+                                                                        input(type="hidden" name="gameid_form" value='#{tournament.games[i].shortID}')
+                                                                        input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
+                                                                        a(class="btn btn-sm btn-info editbutton" href="/home/tournaments/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
                                                                         button(type="button" class="btn btn-sm btn-warning deletebutton") Remove Game
 
 
@@ -221,10 +221,10 @@ block content
                                                                 td(class="division") #{tournament.teams[i].division}
                                                                 td
                                                                     form(role="form")
-                                                                        input(type="hidden" name="teamid_form" value=tournament.teams[i]._id)
-                                                                        input(type="hidden" name="tournament_idteam" value=tournament._id)
-                                                                        a(class="btn btn-sm btn-info" href="/home/tournaments/" + tournament._id + "/teams/" + tournament.teams[i]._id) Details
-                                                                        button(type="button" class="btn btn-sm btn-warning deletebutton") Remove Team
+                                                                        input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
+                                                                        input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
+                                                                        a(class="btn btn-sm btn-info" href="/home/tournaments/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
+                                                                        button(type="button" class="btn btn-sm btn-warning deleteteambutton") Remove Team
 
     script(src="http://listjs.com/no-cdn/list.js")
     script(src="/js/tournament-configuration.js")
