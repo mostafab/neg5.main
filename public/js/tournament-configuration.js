@@ -61,10 +61,15 @@ $(document).ready(function() {
         removeGame($(this).parent().serialize(), $(this));
     });
 
+    $(".deleteteambutton").click(function(e) {
+        console.log($(this).parent().serialize());
+        removeTeam($(this).parent().serialize(), $(this));
+    });
+
 });
 
-function scrollToElement(ele) {
-    $(window).scrollTop(ele.offset().top).scrollLeft(ele.offset().left);
+function removeTeamSender(button) {
+    removeTeam($(button).parent().serialize(), button);
 }
 
 function removeGameSender(button) {
@@ -79,8 +84,9 @@ function sendTeamToServer() {
         data : $("#teamform").serialize(),
         success : function(databack, status, xhr) {
             // document.getElementById("teamform").reset();
-            if (databack !== null) {
-                updateTeamList(databack);
+            if (databack["teams"] && databack["newTeam"]) {
+                updateTeamSelectionList(databack["teams"]);
+                updateTeamList(databack["newTeam"]);
             }
         }
     });
@@ -135,14 +141,25 @@ function findPlayersByTeamnameAndTournament(side) {
     }
 }
 
-function removeGame(gameid, button) {
+function removeGame(forminfo, button) {
     $.ajax({
         url : "/home/tournaments/games/remove",
         type : "POST",
-        data : gameid,
+        data : forminfo,
         success : function(databack, status, xhr) {
             console.log("Success : " + databack);
             $(button).parent().parent().parent().remove();
+        }
+    });
+}
+
+function removeTeam(forminfo, button) {
+    $.ajax({
+        url : "/home/tournaments/teams/remove",
+        type : "POST",
+        data : forminfo,
+        success : function(databack, status, xhr) {
+            console.log("Team Remove Success: " + databack);
         }
     });
 }
@@ -209,7 +226,12 @@ function updatePoints(num, pointvalues, side) {
     $(ptLabelId).val(total);
 }
 
-function updateTeamList(teams) {
+/**
+* Updates the selection drop-down menu of teams after the ajax call
+* to add a new team
+* @param teams list of all teams returned as an array
+*/
+function updateTeamSelectionList(teams) {
     $("#left-text").empty();
     $("#right-text").empty();
     $("#leftchoice").empty();
@@ -243,4 +265,17 @@ function updateGameList(gameinfo) {
     html += "</tr>";
     $("#gametablebody").append(html);
     gameList = new List("gamediv", options);
+}
+
+function updateTeamList(team) {
+    console.log(team);
+    var html = "<tr>";
+    html += "<td>" + team.team_name + "</td>";
+    html += "<td>" + team.division + "</td>";
+    html += "<td> <form role='form'><input type='hidden' name='teamid_form' value='" + team.shortID + "'/>";
+    html += "<input type='hidden' name='tournament_idteam' value='" + $("#tournament_id_change").val() + "'/>";
+    html += "<a class='btn btn-sm btn-info' href='/home/tournaments/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'> Details </a>";
+    html += "<button type='button' class='btn btn-sm btn-warning deleteteambutton' onclick='removeTeamSender(this)'> Remove Team </button>";
+    html += "</form></td></tr>";
+    $("#teamtablebody").append(html);
 }

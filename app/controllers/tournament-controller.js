@@ -57,6 +57,7 @@ function findTournamentById(id, callback) {
 }
 
 function addTeamToTournament(tournamentid, teaminfo, callback) {
+    console.log(teaminfo);
     var currentPlayer = 1;
     var key = "player" + currentPlayer + "_name";
     var newPlayers = [];
@@ -66,14 +67,17 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
         division : teaminfo["team_division"],
     });
     newteam.shortID = shortid(newteam._id);
-    while (teaminfo[key]) {
-        if (teaminfo[key].length != 0)
+    while (teaminfo[key] !== undefined) {
+        console.log(teaminfo[key])
+        if (teaminfo[key].length !== 0) {
             var newplayer = new Player({
                 teamID : newteam._id.toString(),
                 player_name : teaminfo[key],
                 team_name : teaminfo["players_team"],
             });
+            newplayer.shortID = shortid(newplayer._id);
             newPlayers.push(newplayer);
+        }
         currentPlayer++;
         key = "player" + currentPlayer + "_name";
     }
@@ -82,18 +86,20 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
     var updateQueryPlayers = {$push : {players : {$each : newPlayers}}};
     var options = {safe : true, upsert : true};
     Tournament.update(tournament, updateQuery, options, function(err) { // Add the team
+        // console.log("error: " + err);
         if (err) {
-            callback(err, null);
+            callback(err, null, null);
         } else {
             Tournament.update(tournament, updateQueryPlayers, options, function(err) { // Add all players
+                // console.log("error: " + err);
                 if (err) {
-                    callback(err, null);
+                    callback(err, null, null);
                 } else {
                     Tournament.findOne({_id : tournamentid}).exec(function(err, result) {
                         if (err) {
-                            callback(err, null);
+                            callback(err, null, null);
                         } else {
-                            callback(null, result.teams);
+                            callback(null, result.teams, newteam);
                         }
                     })
                 }
@@ -102,70 +108,7 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
     });
 }
 
-// function addPlayersToTournament(tournamentid, players, callback) {
-//     var tournament = {_id : tournamentid};
-//     var options = {safe : true, upsert : true};
-//     var currentPlayer = 1;
-//     var key = "player" + currentPlayer + "_name";
-//
-//     var newPlayers = [];
-//     while (players[key]) {
-//         console.log(key)
-//         if (players[key].length != 0)
-//             var newplayer = new Player({
-//                 player_name : players[key],
-//                 team : players["players_team"],
-//             });
-//             newPlayers.push(newplayer);
-//         currentPlayer++;
-//         key = "player" + currentPlayer + "_name";
-//     }
-//     var updateQuery = {$push : {players : {$each : newPlayers}}};
-//     Tournament.update(tournament, updateQuery, options, function(err) {
-//         if (err) {
-//             callback(err);
-//         } else {
-//             callback(null);
-//         }
-//     });
-
-    // while (players[key]) {
-    //     console.log(key)
-    //     if (players[key].length != 0)
-    //         var newplayer = new Player({
-    //             player_name : players[key],
-    //             team : players["players_team"],
-    //         });
-    //         var updateQuery = {$push : {players : newplayer}};
-    //         Tournament.update(tournament, updateQuery, options, function(err) {
-    //             if (err) {
-    //                 callback(err);
-    //             } else {
-    //                 callback(null);
-    //             }
-    //         });
-    //     currentPlayer++;
-    //     key = "player" + currentPlayer + "_name";
-    // }
-// }
-
 function findTeamMembers(tournamentid, teamid, callback) {
-    // var query = Tournament.findOne({_id : tournamentid}).exec(function(err, result) {
-    //     if (err) {
-    //         callback(err, []);
-    //     } else {
-    //         console.log(result.players);
-    //         var found = false;
-    //         var i = 0;
-    //         var playersArr = [];
-    //         for (var i = 0; i < result.players.length; i++) {
-    //             if (result.players[i].teamID == teamid) {
-    //                 playersArr.push(result.players[i]);
-    //             }
-    //         }
-    //         callback(null, playersArr);
-    //     }
-    // });
     var query = Tournament.find({_id : tournamentid}).limit(1).exec(function(err, result) {
         if (err || result.length === 0) {
             callback(err, []);
@@ -225,9 +168,6 @@ function addGameToTournament(tournamentid, gameinfo, callback) {
         playerNum++;
         playerright = "player" + playerNum + "_rightid";
     }
-    console.log(newGame);
-    // console.log(newGame.team1.playerStats);
-    // console.log(newGame.team2.playerStats);
     var tournament = {_id : tournamentid};
     var updateQuery = {$push: {games : newGame}};
     var options = {safe : true, upsert : true};
@@ -475,6 +415,56 @@ function removeGameFromPlayers(tournamentid, game) {
     }
 }
 
+/**
+* Will remove a team from the tournament given the tournament's ID and a
+* javascript object with information about the tournament and team short ID. The callback is
+* called back with null if no errors arise after deleting the team and players, or with the err
+* if something goes wrong or if the team cannot be found. removeTeamFromTournament works by first
+* retrieving the team._id and then pulling out the players with that teamID and the removing the team
+* @param tournamentid unique ObjectId of the tournament
+* @param teaminfo Javascript object holding information about the team and tournament
+* @param callback callback function called back after function is done
+*/
+function removeTeamFromTournament(tournamentid, teaminfo, callback) {
+    console.log(teaminfo);
+    var tournamentQuery = {_id : tournamentid, "teams.shortID" : teaminfo.teamid_form};
+    console.log(tournamentQuery);
+    Tournament.findOne(tournamentQuery, function(err, result) {
+        if (err || result == null) {
+            callback(err);
+        } else {
+            var teamid = -1;
+            for (var i = 0; i < result.teams.length; i++) {
+                if (result.teams[i].shortID === teaminfo.teamid_form) {
+                    console.log("Short ids match");
+                    teamid = result.teams[i]._id.toString();
+                    console.log(teamid);
+                    i = result.teams.length + 1;
+                }
+            }
+            if (teamid === -1) {
+                callback(err);
+            } else {
+                Tournament.update({_id : tournamentid}, {$pull : {players : {teamID : teamid}}}, function(err) {
+                    if (err) {
+                        console.log(err);
+                        callback(err);
+                    } else {
+                        Tournament.update({_id : tournamentid}, {$pull : {teams : {_id : teamid}}}, function(err) {
+                            if (err) {
+                                console.log(err);
+                                callback(err);
+                            } else {
+                                callback(null);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
@@ -482,3 +472,4 @@ exports.addTeamToTournament = addTeamToTournament;
 exports.findTeamMembers = findTeamMembers;
 exports.addGameToTournament = addGameToTournament;
 exports.getGameFromTournament = getGameFromTournament;
+exports.removeTeamFromTournament = removeTeamFromTournament;

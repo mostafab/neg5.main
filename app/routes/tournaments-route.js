@@ -19,11 +19,11 @@ module.exports = function(app) {
                 res.redirect("/");
             } else {
                 var id = req.body["tournament_id"];
-                tournamentController.addTeamToTournament(id, req.body, function(err, teams) {
+                tournamentController.addTeamToTournament(id, req.body, function(err, teams, newTeam) {
                     if (err) {
                         // DO STUFF
                     } else {
-                        res.send(teams);
+                        res.send({"teams" : teams, "newTeam" : newTeam});
                     }
                 });
             }
@@ -44,6 +44,18 @@ module.exports = function(app) {
                     }
                 });
             }
+        });
+
+    app.route("/home/tournaments/teams/remove")
+        .post(function(req, res, next) {
+            console.log(req.body);
+            tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, function(err) {
+                if (err) {
+                    res.status(500).send({"err" : err});
+                } else {
+                    res.status(200).send({"err" : null});
+                }
+            });
         });
 
     app.route("/home/tournaments/games/remove")
@@ -222,6 +234,10 @@ module.exports = function(app) {
                 }
             });
         }
+    });
+
+    app.get("*", function(req, res, next) {
+        res.status(404).send("Can't find this page");
     });
 
 };

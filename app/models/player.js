@@ -7,7 +7,8 @@ var playerSchema = new Schema({
     teamID : String,
     team_name : String,
     gamesPlayed : {type : Number, default : 0},
-    pointValues : {type : {}, default: {"15" : 0, "10" : 0, "-5" : 0}}
+    pointValues : {type : {}, default: {"15" : 0, "10" : 0, "-5" : 0}},
+    shortID : {type : String, unique : true}
 });
 
 playerSchema.methods.getPointsPerGame = function() {

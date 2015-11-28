@@ -9,7 +9,7 @@ var teamSchema = new Schema({
     wins : {type : Number, default : 0},
     losses : {type : Number, default : 0},
     ties : {type : Number, default : 0},
-    shortID : String
+    shortID : {type : String, unique : true}
 });
 
 teamSchema.methods.getWinPercentage = function() {

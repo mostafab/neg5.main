@@ -24,14 +24,15 @@ module.exports = function() {
     }));
     app.use(passport.initialize());
     app.use(passport.session());
+
     app.set("views", "./app/views");
     app.set("view engine", "jade");
+
+    app.use(express.static("./public"));
 
     require('../app/routes/index.js')(app, passport);
     require("../app/routes/user-route.js")(app, passport);
     require("../app/routes/tournaments-route.js")(app, passport);
-
-    app.use(express.static("./public"));
 
     return app;
 };
