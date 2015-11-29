@@ -4,6 +4,10 @@ $(document).ready(function() {
         // console.log($("#changegameform").serialize());
         editGame();
     });
+
+    $("#editteambutton").click(function(e) {
+        editTeam();
+    });
 });
 
 
@@ -16,6 +20,18 @@ function editGame() {
             console.log(databack);
             console.log("Edited game successfully");
             $("#oldgameid_input").val(databack.shortID);
+        }
+    });
+}
+
+function editTeam() {
+    // console.log($("#teamdetailsform").serialize());
+    $.ajax({
+        url : "/home/tournaments/teams/edit",
+        type : "POST",
+        data : $("#teamdetailsform").serialize(),
+        success : function(databack, status, xhr) {
+            console.log(databack);
         }
     });
 }

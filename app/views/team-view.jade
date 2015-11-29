@@ -13,3 +13,82 @@ block content
 
     main(class="cd-main-content")
         div(class="content-wrapper box")
+
+            div(class="row")
+                div(class="col-md-12")
+                    div(style="margin:20px; margin-bottom:50px")
+                    h2(class="title" style="width:50%") #{team.team_name}
+                    h3(class="title" style="width:50%; font-size:18px") #{tournament.tournament_name}
+                    h3(class="title" style="width:50%; font-size:18px") Change details about #{team.team_name} here. Nothing will be modified until you commit the changes.
+                    h3(class="title" style="width:50%")
+                        a(class="btn btn-sm btn-info" href="/home/tournaments/" + tournament.shortID) Back to #{tournament.tournament_name}
+
+                    br
+                    br
+
+                    div(class="panel panel-default ")
+                            div(class="panel-heading collapsable") Team Details
+                            div(class="panel-body")
+                                form(role="form" id="teamdetailsform")
+                                    input(type="hidden" value="#{tournament._id}" name="tournamentid")
+                                    input(type="hidden" value="#{team._id}" name="teamid")
+                                    div(class="col-md-6")
+                                            label(class="label label-primary col-xs-4") Name
+                                            div(class="form-group col-xs-8")
+                                                input(
+                                                    type="input",
+                                                    name="team_name",
+                                                    value="#{team.team_name}",
+                                                    class="form-control input-medium center-text no-border-radius"
+                                                )
+                                            label(class="label label-primary col-xs-4") Contact Information
+                                            div(class="form-group col-xs-8")
+                                                input(
+                                                    type="input",
+                                                    name="team_email",
+                                                    value="#{team.email}",
+                                                    class="form-control input-medium center-text no-border-radius"
+                                                )
+                                            label(class="label label-primary col-xs-4") Division
+                                            div(class="form-group col-xs-8")
+                                                if tournament.divisions.length === 0
+                                                    select(class="form-control" name="divisionform")
+                                                        option(selected value="Default Division") Default Division
+                                                else
+                                                    select(class="form-control" name="divisionform")
+                                                        each division, i in tournament.divisions
+                                                            if team.division === tournament.divisions[i]
+                                                                option(selected value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
+                                                            else
+                                                                option(value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
+                                            button(type="button" class="btn btn-lg btn-success" id="editteambutton") Save Changes
+
+                    div(class="panel panel-default")
+                            div(class="panel-heading collapsable") #{team.team_name} Player Information
+                            div(class="panel-body")
+
+                                div(class="table-responsive")
+                                    table(class="table table-striped table-bordered table-hover table-condensed" style="width:auto")
+                                        thead
+                                            tr
+                                                th(class="table-head") Name
+                                                th(class="table-head") Edit
+                                        tbody(id="playersbody")
+                                            each player, i in teamPlayers
+                                                tr
+                                                    form(role="form" name="editplayerform")
+                                                        input(type="hidden" name="tournamentidform" value="#{tournament._id}")
+                                                        td
+                                                            input(type="hidden" name="playerid" value="#{teamPlayers[i]._id}")
+                                                            input(type="input" class="form-control" name="playername" value="#{teamPlayers[i].player_name}")
+                                                        td
+                                                            button(type="button" class="btn btn-sm btn-success saveplayerbutton") Save Name
+                                                            button(type="button" class="btn btn-sm btn-danger deleteplayerbutton") Remove Player
+                                div(class="row col-md-3 col-lg-3 col-sm-3")
+                                    form(role="form" name="addplayerform")
+                                        input(type="hidden" name="teamidform" value="#{team._id}")
+                                        input(type="input" class="form-control" name="newplayerform" placeholder="Add a Player")
+
+                                        button(type="button" class="btn btn-sm btn-info") Add Player
+
+    script(src="/js/game-configuration.js")

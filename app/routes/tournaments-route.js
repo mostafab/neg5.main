@@ -103,6 +103,26 @@ module.exports = function(app) {
             }
         });
 
+    app.route("/home/tournaments/teams/edit")
+        .post(function(req, res, next) {
+            if (!req.session.director) {
+                res.status(401).send({team : null, msg : "Hmm, doesn't seem like you're logged in."});
+            } else {
+                var tournamentid = req.body["tournamentid"];
+                var teamid = req.body["teamid"];
+                tournamentController.updateTeam(tournamentid, teamid, req.body, function(err, team) {
+                    if (err) {
+                        res.status(500).send({team : null, msg : "Something went wrong."});
+                        console.log(err);
+                    } else if (!team){
+                        res.status(200).send({team : null, msg : "A team with that name already exists."});
+                    } else {
+                        res.status(200).send({team : team, msg : "Successfully updated team."});
+                    }
+                });
+            }
+        });
+
     app.route("/home/tournaments/create/submit")
         .post(function(req, res, next) {
             if (!req.session.director) {

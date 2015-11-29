@@ -49,6 +49,10 @@ tr {
     font-size: 24px;
 }
 
+.label-primary {
+    background: rgb(0, 136, 136);
+}
+
 ::-webkit-input-placeholder {
    color: white;
    font-weight: bold;

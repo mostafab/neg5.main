@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
-var shortid = require("short-mongo-id");
+var shortid = require("shortid");
+// var shortid = require("short-mongo-id");
 
 var Tournament = mongoose.model("Tournament");
 var TournamentDirector = mongoose.model("TournamentDirector");
@@ -18,9 +19,9 @@ function addTournament(directorKey, name, date, location, description, questions
         location : location,
         date : date,
         description : description,
-        questionSet : questionset,
+        questionSet : questionset
     });
-    tourney.shortID = shortid(tourney._id);
+    tourney.shortID = shortid.generate();
     tourney.save(function(err) {
         if (err) {
             // console.log("Unable to save tournament");
@@ -66,7 +67,7 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
         email : teaminfo["team_email"],
         division : teaminfo["team_division"],
     });
-    newteam.shortID = shortid(newteam._id);
+    newteam.shortID = shortid.generate();
     while (teaminfo[key] !== undefined) {
         console.log(teaminfo[key])
         if (teaminfo[key].length !== 0) {
@@ -75,7 +76,7 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
                 player_name : teaminfo[key],
                 team_name : teaminfo["players_team"],
             });
-            newplayer.shortID = shortid(newplayer._id);
+            newplayer.shortID = shortid.generate();
             newPlayers.push(newplayer);
         }
         currentPlayer++;
@@ -132,7 +133,7 @@ function addGameToTournament(tournamentid, gameinfo, callback) {
         round : gameinfo["round"],
         tossupsheard : gameinfo["tossupsheard"],
     });
-    newGame.shortID = shortid(newGame._id);
+    newGame.shortID = shortid.generate();
     newGame.team1.team_id = gameinfo["leftteamselect"];
     newGame.team1.score = gameinfo["leftteamscore"] == null ? "0" : gameinfo["leftteamscore"];
     newGame.team1.team_name = gameinfo["leftteamname"];
@@ -420,7 +421,7 @@ function removeGameFromPlayers(tournamentid, game) {
 * javascript object with information about the tournament and team short ID. The callback is
 * called back with null if no errors arise after deleting the team and players, or with the err
 * if something goes wrong or if the team cannot be found. removeTeamFromTournament works by first
-* retrieving the team._id and then pulling out the players with that teamID and the removing the team
+* retrieving the team._id and then pulling out the players with that teamID and then removing the team
 * @param tournamentid unique ObjectId of the tournament
 * @param teaminfo Javascript object holding information about the team and tournament
 * @param callback callback function called back after function is done
@@ -465,6 +466,49 @@ function removeTeamFromTournament(tournamentid, teaminfo, callback) {
     });
 }
 
+function updateTeam(tournamentid, teamid, newinfo, callback) {
+    console.log(newinfo);
+    Tournament.findOne({_id : tournamentid}, function(err, result) {
+        if (err || result == null) {
+            console.log(err);
+            callback(err, null);
+        } else {
+            result.teams.forEach(function(team, index, array) {
+                if (team.team_name === newinfo.team_name && team._id != newinfo.teamid) {
+                    // console.log("Match found");
+                    return callback(null, null);
+                }
+            });
+            // console.log("Past first stage");
+            Tournament.update({_id : tournamentid, "teams._id" : newinfo.teamid},
+                        {"$set" : {"teams.$.team_name" : newinfo.team_name, "teams.$.email" : newinfo.team_email, "teams.$.division" : newinfo.divisionform}},
+                    function(err) {
+                        if (err) {
+                            console.log(err);
+                            callback(err, null);
+                        } else {
+                            // console.log("Past 2nd stage");
+                            // console.log(newinfo.teamid);
+                            result.players.forEach(function(player, index, array) {
+                                if (player.teamID == newinfo.teamid) {
+                                    // console.log(player.player_name + "|" + player.teamID + "|" + player._id);
+                                    Tournament.update({_id : tournamentid, "players._id" : player._id},
+                                            {"$set" : {"players.$.team_name" : newinfo.team_name}},
+                                            function(err) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    return callback(err, null);
+                                                }
+                                            });
+                                }
+                            });
+                            callback(null, null);
+                        }
+                    });
+        }
+    });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
@@ -473,3 +517,4 @@ exports.findTeamMembers = findTeamMembers;
 exports.addGameToTournament = addGameToTournament;
 exports.getGameFromTournament = getGameFromTournament;
 exports.removeTeamFromTournament = removeTeamFromTournament;
+exports.updateTeam = updateTeam;
