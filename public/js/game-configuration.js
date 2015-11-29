@@ -31,7 +31,9 @@ function editTeam() {
         type : "POST",
         data : $("#teamdetailsform").serialize(),
         success : function(databack, status, xhr) {
-            console.log(databack);
+            console.log(databack.team);
         }
     });
 }
+
+function

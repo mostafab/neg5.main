@@ -502,7 +502,28 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
                                             });
                                 }
                             });
-                            callback(null, null);
+                            result.games.forEach(function(game, index, array) {
+                                if (game.team1.team_id == newinfo.teamid) {
+                                    Tournament.update({_id : tournamentid, "games._id" : game._id},
+                                            {"$set" : {"games.$.team1.team_name" : newinfo.team_name}},
+                                            function(err) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    return callback(err, null);
+                                                }
+                                            });
+                                } else if (game.team2.team_id == newinfo.teamid) {
+                                    Tournament.update({_id : tournamentid, "games._id" : game._id},
+                                            {"$set" : {"games.$.team2.team_name" : newinfo.team_name}},
+                                            function(err) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    return callback(err, null);
+                                                }
+                                            });
+                                }
+                            });
+                            callback(null, newinfo.team_name);
                         }
                     });
         }
