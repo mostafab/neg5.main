@@ -123,6 +123,16 @@ module.exports = function(app) {
             }
         });
 
+    app.route("/home/tournaments/players/edit")
+        .post(function(req, res, next) {
+            if (!req.session.director) {
+                res.status(401).send({msg : "Hmm, doesn't seem like you're logged in. "});
+            } else {
+                console.log(req.body);
+                res.status(200).send({msg : "Successfully updated player"});
+            }
+        });
+
     app.route("/home/tournaments/create/submit")
         .post(function(req, res, next) {
             if (!req.session.director) {

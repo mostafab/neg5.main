@@ -79,15 +79,16 @@ block content
                                                 th(class="table-head") Edit
                                         tbody(id="playersbody")
                                             each player, i in teamPlayers
-                                                tr
-                                                    form(role="form" name="editplayerform")
-                                                        input(type="hidden" name="tournamentidform" value="#{tournament._id}")
+                                                form(role="form" name="editplayerform")
+                                                    tr
                                                         td
+                                                            input(type="hidden" name="tournamentidform" value="#{tournament._id}")
                                                             input(type="hidden" name="playerid" value="#{teamPlayers[i]._id}")
                                                             input(type="input" class="form-control" name="playername" value="#{teamPlayers[i].player_name}")
                                                         td
                                                             button(type="button" class="btn btn-sm btn-success saveplayerbutton") Save Name
                                                             button(type="button" class="btn btn-sm btn-danger deleteplayerbutton") Remove
+
                                 div(class="row col-md-3 col-lg-3 col-sm-3")
                                     form(role="form" name="addplayerform")
                                         input(type="hidden" name="teamidform" value="#{team._id}")
