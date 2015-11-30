@@ -159,7 +159,14 @@ function removeTeam(forminfo, button) {
         type : "POST",
         data : forminfo,
         success : function(databack, status, xhr) {
-            console.log("Team Remove Success: " + databack);
+            console.log(databack);
+            $(button).parent().parent().parent().remove();
+            var teamid = databack.teamid;
+            console.log(teamid);
+            if (teamid) {
+                $("#leftchoice option[value='" + teamid + "']").remove();
+                $("#rightchoice option[value='" + teamid + "']").remove();
+            }
         }
     });
 }

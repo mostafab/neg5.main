@@ -432,7 +432,7 @@ function removeTeamFromTournament(tournamentid, teaminfo, callback) {
     console.log(tournamentQuery);
     Tournament.findOne(tournamentQuery, function(err, result) {
         if (err || result == null) {
-            callback(err);
+            callback(err, null);
         } else {
             var teamid = -1;
             for (var i = 0; i < result.teams.length; i++) {
@@ -449,14 +449,14 @@ function removeTeamFromTournament(tournamentid, teaminfo, callback) {
                 Tournament.update({_id : tournamentid}, {$pull : {players : {teamID : teamid}}}, function(err) {
                     if (err) {
                         console.log(err);
-                        callback(err);
+                        callback(err, null);
                     } else {
                         Tournament.update({_id : tournamentid}, {$pull : {teams : {_id : teamid}}}, function(err) {
                             if (err) {
                                 console.log(err);
-                                callback(err);
+                                callback(err, null);
                             } else {
-                                callback(null);
+                                callback(null, teamid);
                             }
                         });
                     }
@@ -471,28 +471,25 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
     Tournament.findOne({_id : tournamentid}, function(err, result) {
         if (err || result == null) {
             console.log(err);
-            callback(err, null);
+            return callback(err, null);
         } else {
-            result.teams.forEach(function(team, index, array) {
-                if (team.team_name === newinfo.team_name && team._id != newinfo.teamid) {
+            for (var i = 0; i < result.teams.length; i++) {
+                if (result.teams[i].team_name == newinfo.team_name
+                        && result.teams[i]._id != newinfo.teamid) {
                     // console.log("Match found");
                     return callback(null, null);
                 }
-            });
-            // console.log("Past first stage");
+            }
             Tournament.update({_id : tournamentid, "teams._id" : newinfo.teamid},
                         {"$set" : {"teams.$.team_name" : newinfo.team_name, "teams.$.email" : newinfo.team_email, "teams.$.division" : newinfo.divisionform}},
                     function(err) {
                         if (err) {
                             console.log(err);
-                            callback(err, null);
+                            return callback(err, null);
                         } else {
-                            // console.log("Past 2nd stage");
-                            // console.log(newinfo.teamid);
-                            result.players.forEach(function(player, index, array) {
-                                if (player.teamID == newinfo.teamid) {
-                                    // console.log(player.player_name + "|" + player.teamID + "|" + player._id);
-                                    Tournament.update({_id : tournamentid, "players._id" : player._id},
+                            for (var i = 0; i < result.players.length; i++) {
+                                if (result.players[i].teamID == newinfo.teamid) {
+                                    Tournament.update({_id : tournamentid, "players._id" : result.players[i]._id},
                                             {"$set" : {"players.$.team_name" : newinfo.team_name}},
                                             function(err) {
                                                 if (err) {
@@ -501,10 +498,12 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
                                                 }
                                             });
                                 }
-                            });
-                            result.games.forEach(function(game, index, array) {
-                                if (game.team1.team_id == newinfo.teamid) {
-                                    Tournament.update({_id : tournamentid, "games._id" : game._id},
+                            }
+                            for (var i = 0; i < result.games.length; i++) {
+                                console.log("Game match found");
+                                if (result.games[i].team1.team_id == newinfo.teamid) {
+                                    // console.log("Game match found");
+                                    Tournament.update({_id : tournamentid, "games._id" : result.games[i]._id},
                                             {"$set" : {"games.$.team1.team_name" : newinfo.team_name}},
                                             function(err) {
                                                 if (err) {
@@ -512,8 +511,9 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
                                                     return callback(err, null);
                                                 }
                                             });
-                                } else if (game.team2.team_id == newinfo.teamid) {
-                                    Tournament.update({_id : tournamentid, "games._id" : game._id},
+                                } else if (result.games[i].team2.team_id == newinfo.teamid) {
+                                    console.log("Game match found2");
+                                    Tournament.update({_id : tournamentid, "games._id" : result.games[i]._id},
                                             {"$set" : {"games.$.team2.team_name" : newinfo.team_name}},
                                             function(err) {
                                                 if (err) {
@@ -522,12 +522,12 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
                                                 }
                                             });
                                 }
-                            });
+                            }
                             callback(null, newinfo.team_name);
                         }
                     });
-        }
-    });
+                }
+            });
 }
 
 exports.addTournament = addTournament;

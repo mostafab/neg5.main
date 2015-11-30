@@ -30,7 +30,23 @@ function editTeam() {
         type : "POST",
         data : $("#teamdetailsform").serialize(),
         success : function(databack, status, xhr) {
-            console.log(databack.team);
+            showTeamUpdateMsg(databack);
         }
     });
+}
+
+function showTeamUpdateMsg(databack) {
+    if (databack.err) {
+
+    } else if (!databack.team) {
+        $("#team-update-msgdiv").empty();
+        $("<p style='margin:10px; font-size:18px; color:#ff3300'>" + databack.msg + "</p>").
+            hide().appendTo("#team-update-msgdiv").fadeIn(300);
+    } else {
+        $("#team-update-msgdiv").empty();
+        $("<p style='margin:10px; font-size:18px; color:#009933'>" + databack.msg + "</p>").
+            hide().appendTo("#team-update-msgdiv").fadeIn(300);
+        // $("#team-update-msgdiv").empty().
+        //     append("<p style='margin:10px; font-size:18px; color:#009933'>" + databack.msg + "</p>").delay(200).fadeIn();
+    }
 }

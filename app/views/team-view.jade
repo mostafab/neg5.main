@@ -61,7 +61,11 @@ block content
                                                                 option(selected value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
                                                             else
                                                                 option(value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
-                                            button(type="button" class="btn btn-lg btn-success" id="editteambutton") Save Changes
+                                            div(class="col-md-6")
+                                                button(type="button" class="btn btn-lg btn-success" id="editteambutton") Save Changes
+                                                div(id="team-update-msgdiv")
+                                                    p(style="margin:10px; font-size:18px")
+
 
                     div(class="panel panel-default")
                             div(class="panel-heading collapsable") #{team.team_name} Player Information

@@ -49,11 +49,11 @@ module.exports = function(app) {
     app.route("/home/tournaments/teams/remove")
         .post(function(req, res, next) {
             console.log(req.body);
-            tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, function(err) {
+            tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, function(err, teamid) {
                 if (err) {
-                    res.status(500).send({"err" : err});
+                    res.status(500).send({"err" : err, "teamid" : teamid});
                 } else {
-                    res.status(200).send({"err" : null});
+                    res.status(200).send({"err" : null, "teamid" : teamid});
                 }
             });
         });
@@ -112,7 +112,7 @@ module.exports = function(app) {
                 var teamid = req.body["teamid"];
                 tournamentController.updateTeam(tournamentid, teamid, req.body, function(err, team) {
                     if (err) {
-                        res.status(500).send({team : null, msg : "Something went wrong."});
+                        res.status(500).send({err : err, team : null, msg : "Could not connect."});
                         console.log(err);
                     } else if (!team){
                         res.status(200).send({team : null, msg : "A team with that name already exists."});
@@ -194,6 +194,9 @@ module.exports = function(app) {
 
     app.get("/home/tournaments/:tid/games/:gid", function(req, res) {
         // console.log(req.params);
+        if (!req.session.director) {
+            return res.redirect("/");
+        }
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var game = null;
             if (result) {
