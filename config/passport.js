@@ -21,7 +21,7 @@ module.exports = function(passport) {
     passport.use(new GoogleStrategy({
         clientID : configAuth.googleAuth.clientID,
         clientSecret : configAuth.googleAuth.clientSecret,
-        callbackURL : configAuth.googleAuth.callbackURL
+        callbackURL : configAuth.googleAuth.callbackURLLocal
     }, function(token, refreshToken, profile, done) {
         process.nextTick(function() {
             console.log("Google method was called for some reason");

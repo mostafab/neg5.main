@@ -25,7 +25,6 @@ function editGame() {
 }
 
 function editTeam() {
-    // console.log($("#teamdetailsform").serialize());
     $.ajax({
         url : "/home/tournaments/teams/edit",
         type : "POST",
@@ -35,5 +34,3 @@ function editTeam() {
         }
     });
 }
-
-function
