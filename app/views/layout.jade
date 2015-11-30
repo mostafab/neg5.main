@@ -8,6 +8,7 @@ html
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
     script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js")
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css")
+    link(rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css")
     link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
     link(rel="stylesheet" href="/css/reset.css")
     link(rel="stylesheet" href="/css/style.css")
@@ -23,7 +24,7 @@ html
             form(name="tdid" role="form")
                 input(type="hidden" value="#{tournamentd}" id="tdid_input")
             ul
-                li(class="cd-label") Welcome to Neg 5, #{tournamentd.name}!
+                li(class="cd-label") #{tournamentd.name}
                 li(class="has-children overview active")
 
                     ul
@@ -31,15 +32,9 @@ html
                             a(href="/home") Home
                             a(href="/home/tournaments") Your Tournaments
                             a(href="/home/tournaments/create") Create a Tournament
+
             ul
                 li(class="cd-label")
-                li(class="has-children notifications active")
-                    a() Forms
-                    ul
-                        li
-                            a(href="#") Generate Invitation Form
-            ul
-                li(class="cd-label") Logout
                 li(class="action-btn")
                     a(href="/logout" style="background-color:rgb(0, 136, 136);") Logout
     //- Use

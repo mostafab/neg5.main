@@ -82,7 +82,7 @@ tr {
 
 .btn {
     margin: 10px;
-    border-radius: 3px;
+    border-radius: 0px;
 }
 
 .tournament-info-field::-webkit-input-placeholder
