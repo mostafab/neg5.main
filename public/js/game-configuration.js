@@ -76,9 +76,9 @@ function removePlayerAJAX(playerForm, button) {
         data : playerForm,
         success : function(databack, status, xhr) {
             if (databack.err) {
-
+                console.log(databack.err);
             } else {
-
+                $(button).parent().parent().remove();
             }
         }
     })

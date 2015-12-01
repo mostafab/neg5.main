@@ -83,7 +83,13 @@ module.exports = function(app) {
             if (!req.session.director) {
                 res.status(401).send({msg : "Hmm, doesn't seem like you're logged in."});
             } else {
-                res.status(200).send({msg : "OK"});
+                tournamentController.removePlayer(req.body.tournamentidform, req.body.playerid, function(err) {
+                    if (err) {
+                        res.status(500).send({err : err, msg : "Something went wrong"});
+                    } else {
+                        res.status(200).send({msg : "OK"});
+                    }
+                });
             }
         });
 
