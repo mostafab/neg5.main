@@ -1,10 +1,15 @@
 var nextPlayerNum = 5;
-var options;
+var gameOptions;
+var teamOptions;
 var gameList;
+var teamList;
 
 $(document).ready(function() {
-    options = { valueNames : ["round", "team1name", "team2name"]};
-    gameList = new List("gamediv", options);
+    gameOptions = { valueNames : ["round", "team1name", "team2name"]};
+    gameList = new List("gamediv", gameOptions);
+
+    teamOptions = { valueNames : ["teamname", "division"]};
+    teamList = new List("teamdiv", teamOptions);
 
     $("#entergamebutton").prop("disabled", true);
     $("#entergamebutton").removeClass("btn-success").addClass("btn-danger");
@@ -276,7 +281,7 @@ function updateGameList(gameinfo) {
     html += "</form> </td>";
     html += "</tr>";
     $("#gametablebody").append(html);
-    gameList = new List("gamediv", options);
+    gameList = new List("gamediv", gameOptions);
 }
 
 function updateTeamList(team) {
