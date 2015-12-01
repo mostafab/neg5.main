@@ -110,19 +110,33 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
 }
 
 function findTeamMembers(tournamentid, teamid, callback) {
-    var query = Tournament.find({_id : tournamentid}).limit(1).exec(function(err, result) {
-        if (err || result.length === 0) {
-            callback(err, []);
+    var query = Tournament.findOne({_id : tournamentid}, function(err, result) {
+        if (err || !result) {
+            callback(err, [], null);
         } else {
             var playersArr = [];
-            for (var i = 0; i < result[0].players.length; i++) {
-                if (result[0].players[i].teamID == teamid) {
-                    playersArr.push(result[0].players[i]);
+            for (var i = 0; i < result.players.length; i++) {
+                if (result.players[i].teamID == teamid) {
+                    playersArr.push(result.players[i]);
                 }
             }
-            callback(null, playersArr);
+            callback(null, playersArr, result.pointScheme);
         }
     });
+
+    // var query = Tournament.find({_id : tournamentid}).limit(1).exec(function(err, result) {
+    //     if (err || result.length === 0) {
+    //         callback(err, []);
+    //     } else {
+    //         var playersArr = [];
+    //         for (var i = 0; i < result[0].players.length; i++) {
+    //             if (result[0].players[i].teamID == teamid) {
+    //                 playersArr.push(result[0].players[i]);
+    //             }
+    //         }
+    //         callback(null, playersArr);
+    //     }
+    // });
 }
 
 function addGameToTournament(tournamentid, gameinfo, callback) {

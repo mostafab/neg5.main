@@ -183,13 +183,13 @@ module.exports = function(app) {
             } else {
                 var id = req.query["tournamentid"];
                 var teamname = req.query["teamname"];
-                tournamentController.findTeamMembers(id, teamname, function(err, result) {
+                tournamentController.findTeamMembers(id, teamname, function(err, players, pointScheme) {
                     if (err) {
                         // DO STUFF
                         console.log(err);
-                        res.status(500).send("Shiiiiiit");
+                        res.status(500).send({players : [], pointScheme : null});
                     } else {
-                        res.status(200).send(result);
+                        res.status(200).send({players : players, pointScheme : pointScheme});
                     }
                 });
             }

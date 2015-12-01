@@ -125,7 +125,7 @@ function findPlayersByTeamnameAndTournament(side) {
                     teamname : $("#leftchoice").val()},
             success : function(databack, status, xhr) {
                 console.log(databack);
-                generatePlayerRows(databack, "LEFT");
+                generatePlayerRows(databack.players, databack.pointScheme, "LEFT");
             }
         });
     } else {
@@ -135,7 +135,7 @@ function findPlayersByTeamnameAndTournament(side) {
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#rightchoice").val()},
             success : function(databack, status, xhr) {
-                generatePlayerRows(databack, "RIGHT");
+                generatePlayerRows(databack.players, databack.pointScheme, "RIGHT");
             }
         });
     }
@@ -182,34 +182,39 @@ function createPlayerInputField() {
     nextPlayerNum++;
 }
 
-function generatePlayerRows(players, side) {
+function generatePlayerRows(players, pointScheme, side) {
     var choice = side == "LEFT" ? "#left-text" : "#right-text";
+    var points = Object.keys(pointScheme);
     $(choice).empty();
     var html = "<table class='table table-striped table-bordered table-hover table-condensed'><thead><tr>";
     html += "<th class='table-head'>Name</th>";
     html += "<th class='table-head'>GP</th>";
-    html += "<th class='table-head'>10</th>";
-    html += "<th class='table-head'>15</th>";
-    html += "<th class='table-head'>-5</th>";
+    for (var i = 0; i < points.length; i++) {
+        html += "<th class='table-head'>" + points[i] + "</th>";
+    }
+    // html += "<th class='table-head'>10</th>";
+    // html += "<th class='table-head'>15</th>";
+    // html += "<th class='table-head'>-5</th>";
     html += "<th class='table-head'>Points</th>";
     html += "</tr></thead><tbody>";
     var playerNum = 1;
     var sideText = side == "LEFT" ? "_left" : "_right";
     for (var i = 0; i < players.length; i++) {
+        // console.log(points);
         html += "<tr>";
         html += "<input type='hidden' value='" + players[i]._id +  "' " + "name='" + "player" + playerNum + sideText + "id'" + "/>";
         html += "<td>" + players[i].player_name + "</td>";
         html += "<td> <input class='form-control' type='number' placeholder='GP'" + "value='0' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
-        for (key in players[i].pointValues) {
-            var keyNameStr = "name='player" + playerNum + sideText + "_" + key + "val' ";
-            var keyId = "id='player" + playerNum + "_" + key + sideText + "id' ";
-            var json = JSON.stringify(players[i].pointValues);
+        for (var j = 0; j < points.length; j++) {
+            var keyNameStr = "name='player" + playerNum + sideText + "_" + points[j] + "val' ";
+            var keyId = "id='player" + playerNum + "_" + points[j] + sideText + "id' ";
+            var json = JSON.stringify(pointScheme);
             var onkeyupString = "onkeyup=";
             onkeyupString += "'updatePoints(";
             onkeyupString += playerNum + ',' + json + ', "' + sideText + '"' + ")' ";
             var onchangeString = "onchange=";
             onchangeString += "'updatePoints(" + playerNum + ',' + json + ', "' + sideText + '"' + ")'";
-            html += "<td><input class='form-control' type='number' placeholder='" + key + "'" + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
+            html += "<td><input class='form-control' type='number' placeholder='" + points[j] + "'" + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
         }
         var idTag = "id='" + playerNum + sideText + "pts'";
         html += "<td> <input " + idTag + "class='form-control disabledview' type='input' placeholder='0' disabled /> </td>";

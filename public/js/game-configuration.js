@@ -54,7 +54,6 @@ function editTeamAJAX() {
 }
 
 function editPlayerAJAX(playerForm) {
-    // console.log(playerForm);
     $.ajax({
         url : "/home/tournaments/players/edit",
         type : "POST",
