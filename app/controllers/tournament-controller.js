@@ -202,7 +202,6 @@ function addGameToTournament(tournamentid, gameinfo, callback) {
 * and projects the results to the teams involved
 * @param tournamentid the unique id of the tournament the game took place at
 * @param game the game to project onto involved teams
-* TODO Add support for ties!
 */
 function projectGameToTeams(tournamentid, game) {
     var winnerOrder = game.getWinner();
