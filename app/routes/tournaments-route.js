@@ -77,6 +77,16 @@ module.exports = function(app) {
             }
         });
 
+    app.route("/home/tournaments/players/remove")
+        .post(function(req, res, next) {
+            console.log(req.body);
+            if (!req.session.director) {
+                res.status(401).send({msg : "Hmm, doesn't seem like you're logged in."});
+            } else {
+                res.status(200).send({msg : "OK"});
+            }
+        });
+
     app.route("/home/tournaments/games/edit")
         .post(function(req, res, next) {
             if (!req.session.director) {
@@ -129,7 +139,13 @@ module.exports = function(app) {
                 res.status(401).send({msg : "Hmm, doesn't seem like you're logged in. "});
             } else {
                 console.log(req.body);
-                res.status(200).send({msg : "Successfully updated player"});
+                tournamentController.updatePlayer(req.body.tournamentidform, req.body.playerid, req.body.playername, function(err) {
+                    if (err) {
+                        res.status(500).send({err : err, msg : "Something went wrong"});
+                    } else {
+                        res.status(200).send({err : null, msg : "Successfully updated player"});
+                    }
+                });
             }
         });
 

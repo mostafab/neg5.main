@@ -6,16 +6,23 @@ $(document).ready(function() {
     });
 
     $("#editteambutton").click(function(e) {
+        $(this).prop("disabled", true);
+        $("#team-update-msgdiv").empty().
+            append("<p style='margin:10px; font-size:16px;'>Saving Team <i class='fa fa-spinner fa-spin'></i></p>");
         editTeamAJAX();
     });
 
     $(".saveplayerbutton").click(function(e) {
         // console.log($(this).parent().prev().prev());
-        console.log($(this).parent().parent().parent());
-        console.log($(this).parent().parent().parent().serialize());
-        editPlayerAJAX($(this).parent().parent().parent());
+        var form = $(this).parent().prev().prev();
+        // console.log($(form).serialize());
+        editPlayerAJAX($(form).serialize());
     });
 
+    $(".deleteplayerbutton").click(function(e) {
+        var form = $(this).parent().prev().prev();
+        removePlayerAJAX($(form).serialize(), $(this));
+    });
 });
 
 
@@ -39,6 +46,9 @@ function editTeamAJAX() {
         data : $("#teamdetailsform").serialize(),
         success : function(databack, status, xhr) {
             showTeamUpdateMsg(databack);
+        },
+        complete : function(databack) {
+            $("#editteambutton").prop("disabled", false);
         }
     });
 }
@@ -48,11 +58,30 @@ function editPlayerAJAX(playerForm) {
     $.ajax({
         url : "/home/tournaments/players/edit",
         type : "POST",
-        data : playerForm.serialize(),
+        data : playerForm,
         success : function(databack, status, xhr) {
-
+            if (databack.err) {
+                console.log(databack.msg);
+            } else {
+                console.log(databack.msg);
+            }
         }
     });
+}
+
+function removePlayerAJAX(playerForm, button) {
+    $.ajax({
+        url : "/home/tournaments/players/remove",
+        type : "POST",
+        data : playerForm,
+        success : function(databack, status, xhr) {
+            if (databack.err) {
+
+            } else {
+
+            }
+        }
+    })
 }
 
 function showTeamUpdateMsg(databack) {

@@ -114,7 +114,6 @@ function findTeamMembers(tournamentid, teamid, callback) {
         if (err || result.length === 0) {
             callback(err, []);
         } else {
-            console.log(result[0].players);
             var playersArr = [];
             for (var i = 0; i < result[0].players.length; i++) {
                 if (result[0].players[i].teamID == teamid) {
@@ -500,9 +499,7 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
                                 }
                             }
                             for (var i = 0; i < result.games.length; i++) {
-                                console.log("Game match found");
                                 if (result.games[i].team1.team_id == newinfo.teamid) {
-                                    // console.log("Game match found");
                                     Tournament.update({_id : tournamentid, "games._id" : result.games[i]._id},
                                             {"$set" : {"games.$.team1.team_name" : newinfo.team_name}},
                                             function(err) {
@@ -530,6 +527,29 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
             });
 }
 
+function updatePlayer(tournamentID, playerID, newPlayerName, callback) {
+    Tournament.update({_id : tournamentID, "players._id" : playerID},
+            {"$set" : {"players.$.player_name" : newPlayerName}}, function(err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null);
+                }
+            });
+}
+
+function removePlayer(tournamentID, playerID, callback) {
+    var tournamentQuery = {_id : tournamentID, "players._id" : playerID};
+    var pullQuery = {$pull : {players : {_id : playerID}}};
+    Tournament.update(tournamentQuery, pullQuery, function(err) {
+        if (err) {
+            callback(err)
+        } else {
+            callback(null);
+        }
+    });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
@@ -539,3 +559,5 @@ exports.addGameToTournament = addGameToTournament;
 exports.getGameFromTournament = getGameFromTournament;
 exports.removeTeamFromTournament = removeTeamFromTournament;
 exports.updateTeam = updateTeam;
+exports.updatePlayer = updatePlayer;
+exports.removePlayer = removePlayer;

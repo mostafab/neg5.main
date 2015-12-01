@@ -4,7 +4,7 @@ var constants = {
     MIN_USER_LENGTH : 5,
     MAX_USER_LENGTH : 15,
     MIN_PASS_LENGTH : 5,
-    PASS_REGEX : /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+    EMAIL_REGEX : /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 }
 
 $(document).ready(function() {
@@ -37,7 +37,7 @@ $(document).ready(function() {
         var email = document.forms["signup"]["r_usrname"].value;
         var password = document.forms["signup"]["r_pswd"].value;
         var passwordCopy = document.forms["signup"]["r_pswd_2"].value;
-        $("li").css({"color" : "black"});
+        $("h4").css({"color" : "white"});
         var problem = false;
         if (name.length < constants.MIN_USER_LENGTH
                 || name.length > constants.MAX_USER_LENGTH) {
@@ -112,7 +112,7 @@ function submitRegistration() {
 }
 
 function checkRegisterEmail(email) {
-    return constants.PASS_REGEX.test(email);
+    return constants.EMAIL_REGEX.test(email);
 }
 
 function checkRegisterPassword(password) {
