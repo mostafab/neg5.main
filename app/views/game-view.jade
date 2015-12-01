@@ -20,7 +20,8 @@ block content
                     div(style="margin:20px; margin-bottom:50px")
                     h2(class="title" style="width:50%") #{tournamentName} Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
                     h3(class="title" style="width:50%; font-size:18px") You can edit the game's statistics here. Nothing will be modified until you commit the changes.
-
+                    h3(class="title" style="width:50%")
+                        a(class="btn btn-sm btn-info" href="/home/tournaments/" + tournament.shortID) Back to #{tournament.tournament_name}
                     br
                     br
 
