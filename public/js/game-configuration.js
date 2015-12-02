@@ -33,7 +33,32 @@ $(document).ready(function() {
             $("#rightteamnameID").val($(this).find(":selected").text());
         }
     });
+
+    $("#add-player-button").click(function(e) {
+        var form = $(this).parent().serialize();
+        $(this).prop("disabled", true);
+        $("#player-add-msg").empty().
+            append("<p style='margin:10px; font-size:16px;'>Adding Player <i class='fa fa-spinner fa-spin'></i></p>");
+        addPlayerAJAX(form);
+    });
 });
+
+function savePlayerSender(button) {
+    var form = $(button).parent().prev().prev();
+    console.log($(form).serialize());
+    // editPlayerAJAX($(form).serialize());
+}
+
+function deletePlayerSender(button) {
+    var buttonID = $(button).id();
+    var form = $(button).parent().prev().prev();
+    console.log($(form));
+    console.log($(form).serialize());
+    // console.log(form);
+    // removePlayerAJAX($(button).parent().prev().prev(), button);
+    // console.log($(form).serialize());
+    //removePlayerAJAX($(form).serialize(), button);
+}
 
 
 function editGameAJAX() {
@@ -74,6 +99,25 @@ function editPlayerAJAX(playerForm) {
             } else {
                 console.log(databack.msg);
             }
+        }
+    });
+}
+
+function addPlayerAJAX(playerForm) {
+    $.ajax({
+        url : "/home/tournaments/players/create",
+        type : "POST",
+        data : playerForm,
+        success : function(databack, status, xhr) {
+            console.log(databack);
+            showAddPlayerMsg(databack);
+            if (!databack.err) {
+                addNewPlayerRow(databack.player, databack.tid);
+            }
+        },
+        complete : function(data) {
+            $("#add-player-button").prop("disabled", false);
+
         }
     });
 }
@@ -128,6 +172,32 @@ function showTeamUpdateMsg(databack) {
         $("<p style='margin:10px; font-size:16px; color:#009933'>" + databack.msg + "<i style='margin-left:5px' class='fa fa-check-circle'></i></p>").
             hide().appendTo("#team-update-msgdiv").fadeIn(300);
     }
+}
+
+function showAddPlayerMsg(databack) {
+    if (databack.err) {
+        $("#player-add-msg").empty();
+        $("<p style='margin:10px; font-size:16px; color:#ff3300'>" + databack.msg + "<i style='margin-left:5px' class='fa fa-times-circle'></i></p>").
+            hide().appendTo("#player-add-msg").fadeIn(300);
+    } else {
+        $("#player-add-msg").empty();
+        $("<p style='margin:10px; font-size:16px; color:#009933'>" + databack.msg + "<i style='margin-left:5px' class='fa fa-check-circle'></i></p>").
+            hide().appendTo("#player-add-msg").fadeIn(300);
+    }
+}
+
+function addNewPlayerRow(player, tid) {
+    var html = "<tr> <form role='form' name='editplayerform'>";
+    html += "<td>";
+    html += "<input type='hidden' name='tournamentidform' value='" + tid + "'/>";
+    html += "<input type='hidden' name='playerid' value='" + player._id + "'>";
+    html += "<input type='input' class='form-control' name='playername' value='" + player.player_name + "'/>";
+    html += "</td></form>";
+    html += "<td>";
+    html += "<button type='button' class='btn btn-sm btn-success saveplayerbutton'>Save Name</button>";
+    html += "<button type='button' class='btn btn-sm btn-danger deleteplayerbutton'>Remove</button>";
+    html += "</tr>";
+    $(html).hide().appendTo("#playersbody").fadeIn(300);
 }
 
 function replacePlayerRows(players, pointScheme, side) {

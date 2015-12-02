@@ -58,6 +58,9 @@ $(document).ready(function() {
     $("#entergamebutton").click(function(e) {
         // console.log($("#gamedataform").serialize());
         // document.getElementById("gamedataform").reset();
+        $(this).prop("disabled", true);
+        $("#add-game-message").empty().
+            append("<p style='margin-left:10px; font-size:16px;'>Adding Game <i class='fa fa-spinner fa-spin'></i></p>");
         sendGameToServer();
     });
 
@@ -104,8 +107,18 @@ function sendGameToServer() {
         data : $("#gamedataform").serialize(),
         success : function(databack, status, xhr) {
             console.log(databack);
-            updateGameList(databack);
-            // document.getElementById("gamedataform").reset();
+            $("#add-game-message").empty();
+            if (databack.game) {
+                updateGameList(databack);
+                $("<p style='margin-left:10px; font-size:16px; color:#009933'>Successfully added game <i class='fa fa-check-circle'></i></p>").
+                    hide().appendTo("#add-game-message").fadeIn(300);
+            } else {
+                $("<p style='margin-left:10px; font-size:16px; color:#ff3300'>Couldn't add game<i class='fa fa-times-circle'></i></p>").
+                    hide().appendTo("#add-game-message").fadeIn(300);
+            }
+        },
+        complete : function(databack) {
+            $("#entergamebutton").prop("disabled", false);
         }
     });
 }
@@ -197,9 +210,6 @@ function generatePlayerRows(players, pointScheme, side) {
     for (var i = 0; i < points.length; i++) {
         html += "<th class='table-head'>" + points[i] + "</th>";
     }
-    // html += "<th class='table-head'>10</th>";
-    // html += "<th class='table-head'>15</th>";
-    // html += "<th class='table-head'>-5</th>";
     html += "<th class='table-head'>Points</th>";
     html += "</tr></thead><tbody>";
     var playerNum = 1;

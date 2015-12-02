@@ -563,6 +563,32 @@ function removePlayer(tournamentID, playerID, callback) {
     });
 }
 
+function addPlayer(tournamentID, teamName, teamID, playerName, callback) {
+    var tournamentQuery = {_id : tournamentID};
+    var newPlayer = new Player({
+        player_name : playerName,
+        teamID : teamID,
+        team_name : teamName
+    });
+    newPlayer.shortID = shortid.generate();
+    Tournament.findOne(tournamentQuery, function(err, result) {
+        if (!result) {
+            callback(err, null);
+        } else {
+            newPlayer.pointValues = result.pointScheme;
+            console.log(newPlayer);
+            var pushQuery = {$push : {players : newPlayer}};
+            Tournament.update(tournamentQuery, pushQuery, function(err) {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, newPlayer);
+                }
+            });
+        }
+    });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
@@ -574,3 +600,4 @@ exports.removeTeamFromTournament = removeTeamFromTournament;
 exports.updateTeam = updateTeam;
 exports.updatePlayer = updatePlayer;
 exports.removePlayer = removePlayer;
+exports.addPlayer = addPlayer;

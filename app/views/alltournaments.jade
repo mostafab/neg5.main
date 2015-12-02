@@ -26,8 +26,6 @@ block content
                             table(class="table table-striped table-bordered table-hover table-condensed" id="dataTables-example")
                                 thead
                                     tr
-                                        // ID kept for debugging
-                                        th(class="table-head") ID
                                         th(class="table-head") Name
                                         th(class="table-head") Location
                                         th(class="table-head") Date
@@ -38,7 +36,6 @@ block content
                                 tbody
                                     each val, i in tournaments
                                         tr()
-                                            td #{tournaments[i]._id}
                                             td #{tournaments[i].tournament_name}
                                             td #{tournaments[i].location}
                                             td #{tournaments[i].date}

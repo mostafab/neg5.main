@@ -38,7 +38,7 @@ module.exports = function(app) {
                 tournamentController.addGameToTournament(id, req.body, function(err, games) {
                     if (err) {
                         // DO STUFF
-                        res.status(500).send([]);
+                        res.status(500).send({game : null, tid : id});
                     } else {
                         res.status(200).send({game : games, tid : id});
                     }
@@ -150,6 +150,24 @@ module.exports = function(app) {
                         res.status(500).send({err : err, msg : "Something went wrong"});
                     } else {
                         res.status(200).send({err : null, msg : "Successfully updated player"});
+                    }
+                });
+            }
+        });
+
+    app.route("/home/tournaments/players/create")
+        .post(function(req, res, next) {
+            console.log(req.body);
+            if (!req.session.director) {
+                res.status(401).send({msg : "Hmm, doesn't seem like you're logged in. "});
+            } else {
+                tournamentController.addPlayer(req.body.tournamentidform, req.body.teamnameform, req.body.teamidform, req.body.newplayername, function(err, player) {
+                    if (err) {
+                        console.log("Error");
+                        res.status(500).send({err : err, player : null, msg : "Something went wrong", tid : null});
+                    } else {
+                        console.log("Added player");
+                        res.status(200).send({err : null, player : player, msg : "Successfully added player", tid : req.body.tournamentidform});
                     }
                 });
             }

@@ -69,15 +69,16 @@ block content
                                                                 - var current = team1Players[i]
                                                                 - var inputName = "player" + playerNum + "_leftid"
                                                                 input(type="hidden" value="#{current._id}" name="#{inputName}")
-                                                                tr
-                                                                    td #{current.player_name}
-                                                                    td
-                                                                        - var inputGP = "player" + playerNum + "_leftgp"
-                                                                        input(type="number" name="#{inputGP}" class="form-control" value="#{game.team1.playerStats[current._id]['gp']}")
-                                                                    each score, j in points
+                                                                if game.team1.playerStats[current._id]
+                                                                    tr
+                                                                        td #{current.player_name}
                                                                         td
-                                                                            - var inputPoints = "player" + playerNum + "_left_" + points[j] + "val"
-                                                                            input(type="number" name="#{inputPoints}" class="form-control" value="#{game.team1.playerStats[current._id]['' + points[j]]}")
+                                                                            - var inputGP = "player" + playerNum + "_leftgp"
+                                                                            input(type="number" name="#{inputGP}" class="form-control" value="#{game.team1.playerStats[current._id]['gp']}")
+                                                                        each score, j in points
+                                                                            td
+                                                                                - var inputPoints = "player" + playerNum + "_left_" + points[j] + "val"
+                                                                                input(type="number" name="#{inputPoints}" class="form-control" value="#{game.team1.playerStats[current._id]['' + points[j]]}")
 
                                                                 - playerNum++
                                                 div(id="right-text" class="col-lg-6 col-md-6 col-sm-6")
@@ -95,15 +96,16 @@ block content
                                                                 - var current = team2Players[i]
                                                                 - var inputName = "player" + playerNum + "_rightid"
                                                                 input(type="hidden" value="#{current._id}" name="#{inputName}")
-                                                                tr
-                                                                    td #{current.player_name}
-                                                                    td
-                                                                        - var inputGP = "player" + playerNum + "_rightgp"
-                                                                        input(type="number" name="#{inputGP}" class="form-control" value="#{game.team2.playerStats[current._id]['gp']}")
-                                                                    each score, j in points
+                                                                if game.team2.playerStats[current._id]
+                                                                    tr
+                                                                        td #{current.player_name}
                                                                         td
-                                                                            - var inputPoints = "player" + playerNum + "_right_" + points[j] + "val"
-                                                                            input(type="number" name="#{inputPoints}" class="form-control" value="#{game.team2.playerStats[current._id]['' + points[j]]}")
+                                                                            - var inputGP = "player" + playerNum + "_rightgp"
+                                                                            input(type="number" name="#{inputGP}" class="form-control" value="#{game.team2.playerStats[current._id]['gp']}")
+                                                                        each score, j in points
+                                                                            td
+                                                                                - var inputPoints = "player" + playerNum + "_right_" + points[j] + "val"
+                                                                                input(type="number" name="#{inputPoints}" class="form-control" value="#{game.team2.playerStats[current._id]['' + points[j]]}")
 
                                                                 - playerNum++
                                             div(class="row")
