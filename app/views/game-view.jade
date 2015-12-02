@@ -31,7 +31,7 @@ block content
 
                                 div(class="panel-body" id="updategamepanel")
 
-                                        form(role="form" name="gameinfoform" id="changegameform")
+                                        form(name="gameinfoform" id="changegameform")
                                             input(type="hidden" value="#{game.shortID}" name="oldgameid" id="oldgameid_input")
                                             input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
                                             div(class="row")

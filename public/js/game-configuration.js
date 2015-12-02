@@ -13,14 +13,13 @@ $(document).ready(function() {
     });
 
     $(".saveplayerbutton").click(function(e) {
-        // console.log($(this).parent().prev().prev());
-        var form = $(this).parent().prev().prev();
-        // console.log($(form).serialize());
+        var form = $(this).parent().prev().children("form");
         editPlayerAJAX($(form).serialize());
     });
 
     $(".deleteplayerbutton").click(function(e) {
-        var form = $(this).parent().prev().prev();
+        var form = $(this).parent().prev().children("form");
+        // console.log(form);
         removePlayerAJAX($(form).serialize(), $(this));
     });
 
@@ -44,20 +43,15 @@ $(document).ready(function() {
 });
 
 function savePlayerSender(button) {
-    var form = $(button).parent().prev().prev();
+    var form = $(button).parent().prev().children("form");
     console.log($(form).serialize());
-    // editPlayerAJAX($(form).serialize());
+    editPlayerAJAX($(form).serialize());
 }
 
 function deletePlayerSender(button) {
-    var buttonID = $(button).id();
-    var form = $(button).parent().prev().prev();
-    console.log($(form));
+    var form = $(button).parent().prev().children("form");
     console.log($(form).serialize());
-    // console.log(form);
-    // removePlayerAJAX($(button).parent().prev().prev(), button);
-    // console.log($(form).serialize());
-    //removePlayerAJAX($(form).serialize(), button);
+    removePlayerAJAX($(form).serialize(), button);
 }
 
 
@@ -187,16 +181,16 @@ function showAddPlayerMsg(databack) {
 }
 
 function addNewPlayerRow(player, tid) {
-    var html = "<tr> <form role='form' name='editplayerform'>";
-    html += "<td>";
+    var html = "<tr>";
+    html += "<td><form name='editplayerform'>";
     html += "<input type='hidden' name='tournamentidform' value='" + tid + "'/>";
     html += "<input type='hidden' name='playerid' value='" + player._id + "'>";
-    html += "<input type='input' class='form-control' name='playername' value='" + player.player_name + "'/>";
-    html += "</td></form>";
+    html += "<input type='text' class='form-control' name='playername' value='" + player.player_name + "'/>";
+    html += "</form></td>";
     html += "<td>";
-    html += "<button type='button' class='btn btn-sm btn-success saveplayerbutton'>Save Name</button>";
-    html += "<button type='button' class='btn btn-sm btn-danger deleteplayerbutton'>Remove</button>";
-    html += "</tr>";
+    html += "<button type='button' class='btn btn-sm btn-success saveplayerbutton' onclick='savePlayerSender(this)'>Save Name</button>";
+    html += "<button type='button' class='btn btn-sm btn-danger deleteplayerbutton' onclick='deletePlayerSender(this)'>Remove</button>";
+    html += "</td></tr>";
     $(html).hide().appendTo("#playersbody").fadeIn(300);
 }
 

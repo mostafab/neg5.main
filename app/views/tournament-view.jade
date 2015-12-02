@@ -45,7 +45,7 @@ block content
                                         div(class="panel-heading collapsable") Add a Game
                                         div(class="panel-body" id="addgamepanel")
 
-                                                form(role="form" name="gameinfoform" id="gamedataform")
+                                                form(name="gameinfoform" id="gamedataform")
                                                     input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
                                                     div(class="row")
                                                         input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
@@ -117,7 +117,7 @@ block content
                                                                 td(class="team2score") #{tournament.games[i].team2.score}
                                                                 td(class="tuheard") #{tournament.games[i].tossupsheard}
                                                                 td
-                                                                    form(role="form")
+                                                                    form()
                                                                         input(type="hidden" name="gameid_form" value='#{tournament.games[i].shortID}')
                                                                         input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
                                                                         a(class="btn btn-sm btn-info editbutton" href="/home/tournaments/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
@@ -130,7 +130,7 @@ block content
                                         div(class="panel-body" id="add-team-body")
 
                                             div(class="col-md-6")
-                                                form(id="teamform" name="createTeam" role="form")
+                                                form(id="teamform" name="createTeam")
                                                     input(
                                                         type="hidden",
                                                         name="tournament_id",
@@ -223,7 +223,7 @@ block content
                                                                 td(class="teamname") #{tournament.teams[i].team_name}
                                                                 td(class="division") #{tournament.teams[i].division}
                                                                 td
-                                                                    form(role="form")
+                                                                    form()
                                                                         input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
                                                                         input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
                                                                         a(class="btn btn-sm btn-info" href="/home/tournaments/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details

@@ -284,7 +284,7 @@ function updateGameList(gameinfo) {
     html += "<td>" + game.team2.team_name + "</td>";
     html += "<td>" + game.team2.score + "</td>";
     html += "<td>" + game.tossupsheard + "</td>";
-    html += "<td> <form role='form'> <input type='hidden' name='gameid_form' value='" + game.shortID + "'/>";
+    html += "<td> <form> <input type='hidden' name='gameid_form' value='" + game.shortID + "'/>";
     html += "<input type='hidden' name='tournament_idgame' value='" + id + "'/>";
     html += "<a class='btn btn-sm btn-info editbutton' href='/home/tournaments/" + $("#tournamentshortid").val() + "/games/" + game.shortID + "'> Details </a>";
     html += "<button type='button' class='btn btn-sm btn-warning deletebutton' onclick='removeGameSender(this)'> Remove Game </button>";
@@ -299,7 +299,7 @@ function updateTeamList(team) {
     var html = "<tr>";
     html += "<td>" + team.team_name + "</td>";
     html += "<td>" + team.division + "</td>";
-    html += "<td> <form role='form'><input type='hidden' name='teamid_form' value='" + team.shortID + "'/>";
+    html += "<td> <form><input type='hidden' name='teamid_form' value='" + team.shortID + "'/>";
     html += "<input type='hidden' name='tournament_idteam' value='" + $("#tournament_id_change").val() + "'/>";
     html += "<a class='btn btn-sm btn-info' href='/home/tournaments/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'> Details </a>";
     html += "<button type='button' class='btn btn-sm btn-warning deleteteambutton' onclick='removeTeamSender(this)'> Remove Team </button>";

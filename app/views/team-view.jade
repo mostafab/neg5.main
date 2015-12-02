@@ -29,14 +29,14 @@ block content
                     div(class="panel panel-default ")
                             div(class="panel-heading collapsable") Team Details
                             div(class="panel-body")
-                                form(role="form" id="teamdetailsform")
+                                form(id="teamdetailsform")
                                     input(type="hidden" value="#{tournament._id}" name="tournamentid")
                                     input(type="hidden" value="#{team._id}" name="teamid")
                                     div(class="col-md-6")
                                             label(class="label label-primary col-xs-4") Name
                                             div(class="form-group col-xs-8")
                                                 input(
-                                                    type="input",
+                                                    type="text",
                                                     name="team_name",
                                                     value="#{team.team_name}",
                                                     class="form-control input-medium center-text no-border-radius"
@@ -44,7 +44,7 @@ block content
                                             label(class="label label-primary col-xs-4") Contact Information
                                             div(class="form-group col-xs-8")
                                                 input(
-                                                    type="input",
+                                                    type="text",
                                                     name="team_email",
                                                     value="#{team.email}",
                                                     class="form-control input-medium center-text no-border-radius"
@@ -80,21 +80,21 @@ block content
                                         tbody(id="playersbody")
                                             each player, i in teamPlayers
                                                     tr
-                                                        form(role="form" name="editplayerform")
-                                                                td
-                                                                    input(type="hidden" name="tournamentidform" value="#{tournament._id}")
-                                                                    input(type="hidden" name="playerid" value="#{teamPlayers[i]._id}")
-                                                                    input(type="input" class="form-control" name="playername" value="#{teamPlayers[i].player_name}")
+                                                        td
+                                                            form(name="editplayerform")
+                                                                input(type="hidden" name="tournamentidform" value="#{tournament._id}")
+                                                                input(type="hidden" name="playerid" value="#{teamPlayers[i]._id}")
+                                                                input(type="text" class="form-control" name="playername" value="#{teamPlayers[i].player_name}")
                                                         td
                                                             button(type="button" class="btn btn-sm btn-success saveplayerbutton") Save Name
                                                             button(type="button" class="btn btn-sm btn-danger deleteplayerbutton") Remove
 
                                 div(class="row col-md-3 col-lg-3 col-sm-3")
-                                    form(role="form" name="addplayerform")
+                                    form(name="addplayerform")
                                         input(type="hidden" name="tournamentidform" value="#{tournament._id}")
                                         input(type="hidden" name="teamidform" value="#{team._id}")
                                         input(type="hidden" name="teamnameform" value="#{team.team_name}")
-                                        input(type="input" class="form-control" name="newplayername" placeholder="Add a Player")
+                                        input(type="text" class="form-control" name="newplayername" placeholder="Add a Player")
 
                                         button(type="button" class="btn btn-sm btn-info" id="add-player-button") Add Player
 
