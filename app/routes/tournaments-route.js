@@ -101,27 +101,46 @@ module.exports = function(app) {
                 // console.log(req.body);
                 var tournamentid = req.body["tournament_id_form"];
                 var gameid = req.body["oldgameid"];
-                tournamentController.addGameToTournament(tournamentid, req.body, function(err, game) { // Adds in the new game
+                tournamentController.getGameFromTournament(tournamentid, gameid, function(err) {
                     if (err) {
                         res.status(500).send({err : err});
-                        console.log(err);
                     } else {
-                        console.log(game.shortID);
-                        tournamentController.getGameFromTournament(tournamentid, gameid, function(err) { // Removes the old game
+                        tournamentController.addGameToTournament(tournamentid, req.body, function(err, game) {
                             if (err) {
                                 res.status(500).send({err : err});
                             } else {
-                                tournamentController.changeGameShortID(tournamentid, game.shortID, gameid, function(err) { // Sets the shortID
+                                tournamentController.changeGameShortID(tournamentid, game.shortID, gameid, function(err) {
                                     if (err) {
                                         res.status(500).send({err : err});
                                     } else {
-                                        res.status(200).send({err : null}); // Need to send game to update the new gameid field
+                                        res.status(200).send({err : null});
                                     }
                                 });
                             }
                         });
                     }
                 });
+                // tournamentController.addGameToTournament(tournamentid, req.body, function(err, game) { // Adds in the new game
+                //     if (err) {
+                //         res.status(500).send({err : err});
+                //         console.log(err);
+                //     } else {
+                //         console.log("New game short id: " + game.shortID);
+                //         tournamentController.getGameFromTournament(tournamentid, gameid, function(err) { // Removes the old game
+                //             if (err) {
+                //                 res.status(500).send({err : err});
+                //             } else {
+                //                 tournamentController.changeGameShortID(tournamentid, game.shortID, gameid, function(err) { // Sets the shortID
+                //                     if (err) {
+                //                         res.status(500).send({err : err});
+                //                     } else {
+                //                         res.status(200).send({err : null}); // Need to send game to update the new gameid field
+                //                     }
+                //                 });
+                //             }
+                //         });
+                //     }
+                // });
             }
         });
 
