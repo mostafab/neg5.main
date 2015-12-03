@@ -21,14 +21,14 @@ html
     mixin sidebar
 
         nav(class="cd-side-nav" style="position:fixed")
-            form(name="tdid" role="form")
+            form(name="tdid")
                 input(type="hidden" value="#{tournamentd}" id="tdid_input")
             ul
                 li(class="cd-label") #{tournamentd.name}
                 li(class="has-children overview active")
 
-                    ul
-                        li
+                    ul()
+                        li()
                             a(href="/home") Home
                             a(href="/home/tournaments") Your Tournaments
                             a(href="/home/tournaments/create") Create a Tournament

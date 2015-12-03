@@ -53,7 +53,7 @@ block content
                                             div(class="form-group col-xs-8")
                                                 if tournament.divisions.length === 0
                                                     select(class="form-control" name="divisionform")
-                                                        option(selected value="Default Division") Default Division
+                                                        option(selected value="") No Divisions
                                                 else
                                                     select(class="form-control" name="divisionform")
                                                         each division, i in tournament.divisions

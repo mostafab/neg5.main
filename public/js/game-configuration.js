@@ -14,12 +14,15 @@ $(document).ready(function() {
 
     $(".saveplayerbutton").click(function(e) {
         var form = $(this).parent().prev().children("form");
-        editPlayerAJAX($(form).serialize());
+        $(this).prop("disabled", true);
+        editPlayerAJAX($(form).serialize(), $(this));
     });
 
     $(".deleteplayerbutton").click(function(e) {
         var form = $(this).parent().prev().children("form");
+        $(this).prop("disabled", true);
         // console.log(form);
+        showBeforeSentMessage("Removing Player");
         removePlayerAJAX($(form).serialize(), $(this));
     });
 
@@ -38,19 +41,21 @@ $(document).ready(function() {
         $(this).prop("disabled", true);
         $("#player-add-msg").empty().
             append("<p style='margin:10px; font-size:16px;'>Adding Player <i class='fa fa-spinner fa-spin'></i></p>");
-        addPlayerAJAX(form);
+        addPlayerAJAX(form, $(this));
     });
 });
 
 function savePlayerSender(button) {
     var form = $(button).parent().prev().children("form");
     console.log($(form).serialize());
+    $(button).prop("disabled", true);
     editPlayerAJAX($(form).serialize());
 }
 
 function deletePlayerSender(button) {
     var form = $(button).parent().prev().children("form");
     console.log($(form).serialize());
+    $(button).prop("disabled", true);
     removePlayerAJAX($(form).serialize(), button);
 }
 
@@ -63,7 +68,7 @@ function editGameAJAX() {
         success : function(databack, status, xhr) {
             console.log(databack);
             console.log("Edited game successfully");
-            $("#oldgameid_input").val(databack.shortID);
+            // $("#oldgameid_input").val(databack.shortID);
         }
     });
 }
@@ -82,17 +87,18 @@ function editTeamAJAX() {
     });
 }
 
-function editPlayerAJAX(playerForm) {
+function editPlayerAJAX(playerForm, button) {
+    showBeforeSentMessage("Saving Player");
     $.ajax({
         url : "/home/tournaments/players/edit",
         type : "POST",
         data : playerForm,
         success : function(databack, status, xhr) {
-            if (databack.err) {
-                console.log(databack.msg);
-            } else {
-                console.log(databack.msg);
-            }
+            console.log(databack.msg);
+            showAfterSentMessage(databack.msg, databack.err);
+        },
+        complete : function(databack) {
+            $(button).prop("disabled", false);
         }
     });
 }
@@ -111,12 +117,12 @@ function addPlayerAJAX(playerForm) {
         },
         complete : function(data) {
             $("#add-player-button").prop("disabled", false);
-
         }
     });
 }
 
 function removePlayerAJAX(playerForm, button) {
+    showBeforeSentMessage("Removing Player");
     $.ajax({
         url : "/home/tournaments/players/remove",
         type : "POST",
@@ -127,6 +133,10 @@ function removePlayerAJAX(playerForm, button) {
             } else {
                 $(button).parent().parent().remove();
             }
+            showAfterSentMessage(databack.msg, databack.err);
+        },
+        complete : function(databack) {
+            $(button).prop("disabled", false);
         }
     })
 }
@@ -231,4 +241,20 @@ function replacePlayerRows(players, pointScheme, side) {
     }
     html += "</tbody><tfoot><tr></tr></tfoot></table>";
     $(choice).append(html);
+}
+
+function showAfterSentMessage(message, err) {
+    $("#player-add-msg").empty();
+    if (err) {
+        $("<p style='margin:10px; font-size:16px; color:#ff3300'>" + message + "<i style='margin-left:5px' class='fa fa-times-circle'></i></p>").
+            hide().appendTo("#player-add-msg").fadeIn(300);
+    } else {
+        $("<p style='margin:10px; font-size:16px; color:#009933'>" + message + "<i style='margin-left:5px' class='fa fa-check-circle'></i></p>").
+            hide().appendTo("#player-add-msg").fadeIn(300);
+    }
+}
+
+function showBeforeSentMessage(message) {
+    $("#player-add-msg").empty().
+        append("<p style='margin:10px; font-size:16px;'>" + message + "<i class='fa fa-spinner fa-spin'></i></p>");
 }

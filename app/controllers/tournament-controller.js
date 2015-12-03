@@ -376,54 +376,58 @@ function removeGameFromTeam(tournamentid, game) {
 }
 
 function removeGameFromPlayers(tournamentid, game) {
-    var team1PlayerIDKeys = Object.keys(game.team1.playerStats);
-    // console.log(team1PlayerIDKeys);
-    for (var i = 0; i < team1PlayerIDKeys.length; i++) {
-        // Team on left side
-        // console.log(game.team1.playerStats[team1PlayerIDKeys[i]]);
-        var tournamentQuery = {_id : tournamentid, "players._id" : team1PlayerIDKeys[i]};
-        var currentPlayerValueKeys = Object.keys(game.team1.playerStats[team1PlayerIDKeys[i]]);
-        for (var j = 0; j < currentPlayerValueKeys.length; j++) {
-            var valueToIncrement;
-            if (currentPlayerValueKeys[j] === "gp") {
-                valueToIncrement = "players.$.gamesPlayed";
-            } else {
-                valueToIncrement = "players.$.pointValues." + currentPlayerValueKeys[j];
-            }
-            var action = {};
-            action[valueToIncrement] = -1 * game.team1.playerStats[team1PlayerIDKeys[i]][currentPlayerValueKeys[j]];
-            var incrementQuery = {"$inc" : action};
-            console.log(incrementQuery);
-            // console.log(game.team1.playerStats[team1PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
-            Tournament.update(tournamentQuery, incrementQuery, function(err) {
-                if (err) {
-                    console.log(err);
+    if (game.team1.playerStats) {
+        var team1PlayerIDKeys = Object.keys(game.team1.playerStats);
+        // console.log(team1PlayerIDKeys);
+        for (var i = 0; i < team1PlayerIDKeys.length; i++) {
+            // Team on left side
+            // console.log(game.team1.playerStats[team1PlayerIDKeys[i]]);
+            var tournamentQuery = {_id : tournamentid, "players._id" : team1PlayerIDKeys[i]};
+            var currentPlayerValueKeys = Object.keys(game.team1.playerStats[team1PlayerIDKeys[i]]);
+            for (var j = 0; j < currentPlayerValueKeys.length; j++) {
+                var valueToIncrement;
+                if (currentPlayerValueKeys[j] === "gp") {
+                    valueToIncrement = "players.$.gamesPlayed";
+                } else {
+                    valueToIncrement = "players.$.pointValues." + currentPlayerValueKeys[j];
                 }
-            });
+                var action = {};
+                action[valueToIncrement] = -1 * game.team1.playerStats[team1PlayerIDKeys[i]][currentPlayerValueKeys[j]];
+                var incrementQuery = {"$inc" : action};
+                console.log(incrementQuery);
+                // console.log(game.team1.playerStats[team1PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
+                Tournament.update(tournamentQuery, incrementQuery, function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }
         }
     }
-    var team2PlayerIDKeys = Object.keys(game.team2.playerStats);
-    for (var i = 0; i < team2PlayerIDKeys.length; i++) {
-        // Sliiiiide to the right
-        var tournamentQuery = {_id : tournamentid, "players._id" : team2PlayerIDKeys[i]};
-        var currentPlayerValueKeys = Object.keys(game.team2.playerStats[team2PlayerIDKeys[i]]);
-        for (var j = 0; j < currentPlayerValueKeys.length; j++) {
-            var valueToIncrement;
-            if (currentPlayerValueKeys[j] === "gp") {
-                valueToIncrement = "players.$.gamesPlayed";
-            } else {
-                valueToIncrement = "players.$.pointValues." + currentPlayerValueKeys[j];
-            }
-            var action = {};
-            action[valueToIncrement] = -1 * game.team2.playerStats[team2PlayerIDKeys[i]][currentPlayerValueKeys[j]];
-            var incrementQuery = {"$inc" : action};
-            console.log(incrementQuery);
-            // console.log(game.team2.playerStats[team2PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
-            Tournament.update(tournamentQuery, incrementQuery, function(err) {
-                if (err) {
-                    console.log(err);
+    if (game.team2.playerStats) {
+        var team2PlayerIDKeys = Object.keys(game.team2.playerStats);
+        for (var i = 0; i < team2PlayerIDKeys.length; i++) {
+            // Sliiiiide to the right
+            var tournamentQuery = {_id : tournamentid, "players._id" : team2PlayerIDKeys[i]};
+            var currentPlayerValueKeys = Object.keys(game.team2.playerStats[team2PlayerIDKeys[i]]);
+            for (var j = 0; j < currentPlayerValueKeys.length; j++) {
+                var valueToIncrement;
+                if (currentPlayerValueKeys[j] === "gp") {
+                    valueToIncrement = "players.$.gamesPlayed";
+                } else {
+                    valueToIncrement = "players.$.pointValues." + currentPlayerValueKeys[j];
                 }
-            });
+                var action = {};
+                action[valueToIncrement] = -1 * game.team2.playerStats[team2PlayerIDKeys[i]][currentPlayerValueKeys[j]];
+                var incrementQuery = {"$inc" : action};
+                console.log(incrementQuery);
+                // console.log(game.team2.playerStats[team2PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
+                Tournament.update(tournamentQuery, incrementQuery, function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }
         }
     }
 }
@@ -589,6 +593,15 @@ function addPlayer(tournamentID, teamName, teamID, playerName, callback) {
     });
 }
 
+function changeGameShortID(tournamentid, currentID, newID, callback) {
+    console.log(currentID);
+    console.log(newID);
+    Tournament.update({_id : tournamentid, "games.shortID" : currentID},
+            {"$set" : {"games.$.shortID" : newID}}, function(err) {
+                callback(err);
+            });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
@@ -596,6 +609,7 @@ exports.addTeamToTournament = addTeamToTournament;
 exports.findTeamMembers = findTeamMembers;
 exports.addGameToTournament = addGameToTournament;
 exports.getGameFromTournament = getGameFromTournament;
+exports.changeGameShortID = changeGameShortID;
 exports.removeTeamFromTournament = removeTeamFromTournament;
 exports.updateTeam = updateTeam;
 exports.updatePlayer = updatePlayer;

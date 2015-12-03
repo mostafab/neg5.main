@@ -87,7 +87,7 @@ module.exports = function(app) {
                     if (err) {
                         res.status(500).send({err : err, msg : "Something went wrong"});
                     } else {
-                        res.status(200).send({msg : "OK"});
+                        res.status(200).send({err : null, msg : "Successfully removed player."});
                     }
                 });
             }
@@ -98,20 +98,26 @@ module.exports = function(app) {
             if (!req.session.director) {
                 res.redirect("/");
             } else {
-                console.log(req.body);
+                // console.log(req.body);
                 var tournamentid = req.body["tournament_id_form"];
                 var gameid = req.body["oldgameid"];
                 tournamentController.addGameToTournament(tournamentid, req.body, function(err, game) { // Adds in the new game
                     if (err) {
-                        res.status(500).send([]);
+                        res.status(500).send({err : err});
                         console.log(err);
-                        // DO STUFF
                     } else {
+                        console.log(game.shortID);
                         tournamentController.getGameFromTournament(tournamentid, gameid, function(err) { // Removes the old game
                             if (err) {
-                                res.status(500).send([]);
+                                res.status(500).send({err : err});
                             } else {
-                                res.status(200).send(game); // Need to send game to update the new gameid field
+                                tournamentController.changeGameShortID(tournamentid, game.shortID, gameid, function(err) { // Sets the shortID
+                                    if (err) {
+                                        res.status(500).send({err : err});
+                                    } else {
+                                        res.status(200).send({err : null}); // Need to send game to update the new gameid field
+                                    }
+                                });
                             }
                         });
                     }
