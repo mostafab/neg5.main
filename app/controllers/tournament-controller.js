@@ -250,6 +250,7 @@ function projectGameToPlayers(tournamentid, game) {
     for (var i = 0; i < team1PlayerIDKeys.length; i++) {
         // Team on left side
         // console.log(game.team1.playerStats[team1PlayerIDKeys[i]]);
+        console.log(i);
         var tournamentQuery = {_id : tournamentid, "players._id" : team1PlayerIDKeys[i]};
         var currentPlayerValueKeys = Object.keys(game.team1.playerStats[team1PlayerIDKeys[i]]);
         for (var j = 0; j < currentPlayerValueKeys.length; j++) {
@@ -261,19 +262,23 @@ function projectGameToPlayers(tournamentid, game) {
             }
             var action = {};
             action[valueToIncrement] = game.team1.playerStats[team1PlayerIDKeys[i]][currentPlayerValueKeys[j]];
+            console.log(action);
             var incrementQuery = {"$inc" : action};
             // console.log(incrementQuery);
             // console.log(game.team1.playerStats[team1PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
-            Tournament.update(tournamentQuery, incrementQuery, function(err) {
-                if (err) {
-                    console.log(err);
-                }
-            });
+            if (action[valueToIncrement]) {
+                Tournament.update(tournamentQuery, incrementQuery, function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }
         }
     }
     var team2PlayerIDKeys = Object.keys(game.team2.playerStats);
     for (var i = 0; i < team2PlayerIDKeys.length; i++) {
         // Sliiiiide to the right
+        console.log(i);
         var tournamentQuery = {_id : tournamentid, "players._id" : team2PlayerIDKeys[i]};
         var currentPlayerValueKeys = Object.keys(game.team2.playerStats[team2PlayerIDKeys[i]]);
         for (var j = 0; j < currentPlayerValueKeys.length; j++) {
@@ -285,14 +290,17 @@ function projectGameToPlayers(tournamentid, game) {
             }
             var action = {};
             action[valueToIncrement] = game.team2.playerStats[team2PlayerIDKeys[i]][currentPlayerValueKeys[j]];
+            console.log(action);
             var incrementQuery = {"$inc" : action};
             // console.log(incrementQuery);
             // console.log(game.team2.playerStats[team2PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
-            Tournament.update(tournamentQuery, incrementQuery, function(err) {
-                if (err) {
-                    console.log(err);
-                }
-            });
+            if (action[valueToIncrement]) {
+                Tournament.update(tournamentQuery, incrementQuery, function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }
         }
     }
 }
@@ -380,6 +388,7 @@ function removeGameFromPlayers(tournamentid, game) {
         var team1PlayerIDKeys = Object.keys(game.team1.playerStats);
         // console.log(team1PlayerIDKeys);
         for (var i = 0; i < team1PlayerIDKeys.length; i++) {
+            console.log("Removing game from players left");
             // Team on left side
             // console.log(game.team1.playerStats[team1PlayerIDKeys[i]]);
             var tournamentQuery = {_id : tournamentid, "players._id" : team1PlayerIDKeys[i]};
@@ -396,17 +405,20 @@ function removeGameFromPlayers(tournamentid, game) {
                 var incrementQuery = {"$inc" : action};
                 console.log(incrementQuery);
                 // console.log(game.team1.playerStats[team1PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
-                Tournament.update(tournamentQuery, incrementQuery, function(err) {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
+                if (action[valueToIncrement]) {
+                    Tournament.update(tournamentQuery, incrementQuery, function(err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                }
             }
         }
     }
     if (game.team2.playerStats) {
         var team2PlayerIDKeys = Object.keys(game.team2.playerStats);
         for (var i = 0; i < team2PlayerIDKeys.length; i++) {
+            console.log("Removing game from players right");
             // Sliiiiide to the right
             var tournamentQuery = {_id : tournamentid, "players._id" : team2PlayerIDKeys[i]};
             var currentPlayerValueKeys = Object.keys(game.team2.playerStats[team2PlayerIDKeys[i]]);
@@ -422,11 +434,13 @@ function removeGameFromPlayers(tournamentid, game) {
                 var incrementQuery = {"$inc" : action};
                 console.log(incrementQuery);
                 // console.log(game.team2.playerStats[team2PlayerIDKeys[i]][currentPlayerValueKeys[j]]);
-                Tournament.update(tournamentQuery, incrementQuery, function(err) {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
+                if (action[valueToIncrement]) {
+                    Tournament.update(tournamentQuery, incrementQuery, function(err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                }
             }
         }
     }
