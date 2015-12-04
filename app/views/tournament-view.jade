@@ -10,6 +10,21 @@ block content
     //+navbar
     +sidebar
 
+    - var dateConverter = function(date) {
+    -    var day = date.getDate();
+    -    var month = date.getMonth() + 1;
+    -    var year = date.getFullYear();
+    -
+    -    if (day < 10) {
+    -        day = "0" + day;
+    -    }
+    -    if (month < 10) {
+    -        month = "0" + month;
+    -    }
+    -    var formattedDate = year + "-" + month + "-" + day;
+    -    return formattedDate;
+    - }
+
     main(class="cd-main-content")
         div(class="content-wrapper box")
             input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
@@ -33,12 +48,77 @@ block content
                         div(class="tab-content")
                             div(class="tab-pane fade active in" id="overview")
                                 div(class="panel panel-default")
-                                        div(class="panel-heading collapsable") Tournament Overview
-                                        div(class="panel-body")
-                                            h5 Location: #{tournament.location}
-                                            h5 Question Set: #{tournament.questionSet}
-                                            h5 Date: #{tournament.date}
-                                            h5 Description : #{tournament.description}
+                                    div(class="panel-heading collapsable") Tournament Overview
+                                    div(class="panel-body")
+                                        form()
+                                            input(type="hidden" value="#{tournament._id}" name="tournamentid")
+                                            div(class="col-md-6")
+                                                    label(class="label label-primary col-xs-4") Name
+                                                    div(class="form-group col-xs-8")
+                                                        input(
+                                                            type="text",
+                                                            name="tournament_name",
+                                                            value="#{tournament.tournament_name}",
+                                                            class="form-control input-medium center-text no-border-radius"
+                                                        )
+                                                    label(class="label label-primary col-xs-4") Location
+                                                    div(class="form-group col-xs-8")
+                                                        input(
+                                                            type="text",
+                                                            name="tournament_location",
+                                                            value="#{tournament.location}",
+                                                            class="form-control input-medium center-text no-border-radius"
+                                                        )
+                                                    label(class="label label-primary col-xs-4") Date
+                                                    div(class="form-group col-xs-8")
+                                                        if tournament.date
+                                                            input(
+                                                                type="date",
+                                                                name="tournament_date",
+                                                                value="#{dateConverter(tournament.date)}",
+                                                                class="form-control input-medium center-text no-border-radius"
+                                                            )
+                                                        else
+                                                            input(
+                                                                type="date",
+                                                                name="tournament_date",
+                                                                class="form-control input-medium center-text no-border-radius"
+                                                            )
+                                                    div(class="col-md-6")
+                                                        button(type="button" class="btn btn-lg btn-success" id="edittournamentbutton") Save Changes
+                                                        div(id="tournament-update-msgdiv")
+                                                            p(style="margin:10px; font-size:18px")
+
+                                div(class="panel panel-default")
+                                    div(class="panel-heading collapsable") Divisions and Point Scheme
+                                    div(class="panel-body")
+                                        div(class="col-md-6")
+                                            label(class="label label-primary col-xs-4") Point Scheme
+                                            div(class="form-group col-xs-8")
+                                                form(id="point-schema-form")
+                                                    input(type="hidden" name="tournamentid" value="#{tournament._id}")
+                                                    each num, i in Object.keys(tournament.pointScheme)
+                                                        div(class="form-group")
+                                                            input(type="number" style="width:25%" value="#{num}" class="form-control input-medium no-border-radius" name="val" + num)
+                                            div()
+                                                button(type="button" class="btn btn-md btn-info" style="margin:0;margin-bottom:15px" id="add-point-value-button") Add A Point Value
+                                                button(type="button" class="btn btn-md btn-success" style="margin:0;margin-bottom:15px" id="save-point-schema-button") Save Point Scheme
+                                                        // each divison, i in tournament.divisions
+                                                        //     li(class="list-group-item" style="font-size:14px") #{division[i]}
+                                            label(class="label label-primary col-xs-4") Divisions
+                                            div(class="form-group col-xs-8")
+                                                form(id="divisions-form")
+                                                    input(type="hidden" name="tournamentid" value="#{tournament._id}")
+                                                    each divison, i in tournament.divisions
+                                                        div(class="form-group")
+                                                            input(type='text' style="width:50%" value="#{division[i]} class='fomr-control input-medium no-border-radius'")
+                                            div()
+                                                button(type="button" class="btn btn-md btn-info" style="margin:0") Add Division
+                                                button(type="button" class="btn btn-md btn-success" style="margin:0") Save Divisions
+
+                                        div(class="col-md-6")
+                                            h4(class="title" style="font-size:16px") The default point scheme is {15, 10, -5}. Saving or changing the point scheme will overwrite all player point values!
+                                                i(class="fa fa-exclamation-triangle" style="margin-left:5px")
 
                             div(class="tab-pane fade" id="games")
                                 div(class="panel panel-default")

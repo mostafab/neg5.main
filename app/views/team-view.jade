@@ -17,7 +17,7 @@ block content
             div(class="row")
                 div(class="col-md-12")
                     div(style="margin:20px; margin-bottom:50px")
-                    h2(class="title" style="width:50%") #{team.team_name}
+                    h2(class="title" style="width:50%" id="team-name-header") #{team.team_name}
                     h3(class="title" style="width:50%; font-size:18px") #{tournament.tournament_name}
                     h3(class="title" style="width:50%; font-size:18px") Change details about a team here. Nothing will be modified until you commit the changes.
                     h3(class="title" style="width:50%")
@@ -39,6 +39,7 @@ block content
                                                     type="text",
                                                     name="team_name",
                                                     value="#{team.team_name}",
+                                                    id = "team-name-input",
                                                     class="form-control input-medium center-text no-border-radius"
                                                 )
                                             label(class="label label-primary col-xs-4") Contact Information

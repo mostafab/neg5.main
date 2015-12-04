@@ -80,6 +80,7 @@ function editTeamAJAX() {
         data : $("#teamdetailsform").serialize(),
         success : function(databack, status, xhr) {
             showTeamUpdateMsg(databack);
+            $("#team-name-header").html($("#team-name-input").val());
         },
         complete : function(databack) {
             $("#editteambutton").prop("disabled", false);

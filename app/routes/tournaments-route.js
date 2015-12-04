@@ -13,6 +13,11 @@ module.exports = function(app) {
             }
         });
 
+    app.post("/home/tournaments/editPointSchema", function(req, res, next) {
+        console.log(JSON.stringify(req.body.pointSchema));
+        res.status(200).send({err : null});
+    });
+
     app.route("/home/tournaments/createteam")
         .post(function(req, res, next) {
             if (!req.session.director) {

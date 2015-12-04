@@ -55,6 +55,10 @@ $(document).ready(function() {
         }
     });
 
+    $("#add-point-value-button").click(function(e) {
+        var html = "<div class=''> "
+    });
+
     $("#entergamebutton").click(function(e) {
         // console.log($("#gamedataform").serialize());
         // document.getElementById("gamedataform").reset();
@@ -72,6 +76,15 @@ $(document).ready(function() {
     $(".deleteteambutton").click(function(e) {
         console.log($(this).parent().serialize());
         removeTeam($(this).parent().serialize(), $(this));
+    });
+
+    $("#add-point-value-button").click(function(e) {
+        addPointSchemaRow();
+    });
+
+    $("#save-point-schema-button").click(function(e) {
+        var pointSchemaData = formatPointSchemaForm();
+        changePointSchemeAJAX(pointSchemaData);
     });
 
 });
@@ -185,6 +198,17 @@ function removeTeam(forminfo, button) {
                 $("#leftchoice option[value='" + teamid + "']").remove();
                 $("#rightchoice option[value='" + teamid + "']").remove();
             }
+        }
+    });
+}
+
+function changePointSchemeAJAX(formData) {
+    $.ajax({
+        url : "/home/tournaments/editPointSchema",
+        type : "POST",
+        data : formData,
+        success : function(databack, status, xhr) {
+
         }
     });
 }
@@ -305,4 +329,30 @@ function updateTeamList(team) {
     html += "<button type='button' class='btn btn-sm btn-warning deleteteambutton' onclick='removeTeamSender(this)'> Remove Team </button>";
     html += "</form></td></tr>";
     $("#teamtablebody").append(html);
+}
+
+function addPointSchemaRow() {
+    // div(class="form-group")
+        // input(type="number" style="width:25%" value="#{num}" class="form-control input-medium no-border-radius" name="val" + num)
+    var html = "<div class='form-group'><input type='number' style='width:25%' class='form-control input-medium no-border-radius'/></div>";
+    $("#point-schema-form").append(html);
+    $("#point-schema-form :input").each(function() {
+        console.log($(this).attr("name") === "tournamentid");
+    });
+}
+
+function formatPointSchemaForm() {
+    var formData = {}
+    var newPointScheme = {};
+    $("#point-schema-form :input").each(function() {
+        if ($(this).attr("name") !== "tournamentid" && $(this).val()) {
+            console.log($(this).val());
+            newPointScheme[$(this).val()] = 0;
+        } else if ($(this).attr("name") === "tournamentid" && $(this).val()) {
+            formData.tournamentid = $(this).val();
+        }
+    });
+    formData.pointSchema = newPointScheme;
+    console.log(formData);
+    return formData;
 }
