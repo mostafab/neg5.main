@@ -616,6 +616,14 @@ function changeGameShortID(tournamentid, currentID, newID, callback) {
             });
 }
 
+function changePointScheme(tournamentid, newPointScheme, callback) {
+    console.log(newPointScheme);
+    Tournament.update({_id : tournamentid},
+            {"$set" : {pointScheme : newPointScheme}}, function(err) {
+                callback(err);
+            });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
@@ -629,3 +637,4 @@ exports.updateTeam = updateTeam;
 exports.updatePlayer = updatePlayer;
 exports.removePlayer = removePlayer;
 exports.addPlayer = addPlayer;
+exports.changePointScheme = changePointScheme;

@@ -83,8 +83,8 @@ $(document).ready(function() {
     });
 
     $("#save-point-schema-button").click(function(e) {
-        var pointSchemaData = formatPointSchemaForm();
-        changePointSchemeAJAX(pointSchemaData);
+        formatPointSchemaForm();
+        changePointSchemeAJAX();
     });
 
 });
@@ -202,11 +202,11 @@ function removeTeam(forminfo, button) {
     });
 }
 
-function changePointSchemeAJAX(formData) {
+function changePointSchemeAJAX() {
     $.ajax({
         url : "/home/tournaments/editPointSchema",
         type : "POST",
-        data : formData,
+        data : $("#point-schema-form").serialize(),
         success : function(databack, status, xhr) {
 
         }
@@ -342,17 +342,12 @@ function addPointSchemaRow() {
 }
 
 function formatPointSchemaForm() {
-    var formData = {}
-    var newPointScheme = {};
+    var currentPointNum = 1;
     $("#point-schema-form :input").each(function() {
-        if ($(this).attr("name") !== "tournamentid" && $(this).val()) {
-            console.log($(this).val());
-            newPointScheme[$(this).val()] = 0;
-        } else if ($(this).attr("name") === "tournamentid" && $(this).val()) {
-            formData.tournamentid = $(this).val();
+        if ($(this).attr("name") !== "tournamentid") {
+            $(this).attr("name", "pointval" + currentPointNum);
+            console.log($(this).val() + ", " + $(this).attr("name"));
+            currentPointNum++;
         }
     });
-    formData.pointSchema = newPointScheme;
-    console.log(formData);
-    return formData;
 }

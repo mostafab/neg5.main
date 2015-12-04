@@ -14,8 +14,27 @@ module.exports = function(app) {
         });
 
     app.post("/home/tournaments/editPointSchema", function(req, res, next) {
-        console.log(JSON.stringify(req.body.pointSchema));
-        res.status(200).send({err : null});
+        // console.log(req.body);
+        var newPointValues = {};
+        var playerNum = 1;
+        currentVal = "pointval" + playerNum
+        while (req.body[currentVal] != undefined) {
+            // console.log(req.body[currentVal]);
+            if (req.body[currentVal].length !== 0) {
+                newPointValues[req.body[currentVal]] = 0;
+            }
+            playerNum++;
+            currentVal = "pointval" + playerNum;
+        }
+        // console.log(newPointValues);
+        tournamentController.changePointScheme(req.body["tournamentid"], newPointValues, function(err) {
+            if (err) {
+                res.status(500).send({err : err});
+            } else {
+                res.status(200).send({err : null});
+            }
+        });
+
     });
 
     app.route("/home/tournaments/createteam")
