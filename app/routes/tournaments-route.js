@@ -4,6 +4,17 @@ var Tournament = mongoose.model("Tournament");
 
 module.exports = function(app) {
 
+    app.post("/home/tournaments/edit", function(req, res, next) {
+        console.log(req.body);
+        tournamentController.updateTournamentInformation(req.body.tournamentid, req.body, function(err) {
+            if (err) {
+                res.status(500).send({err : err});
+            } else {
+                res.status(200).send({err : null});
+            }
+        });
+    });
+
     app.route('/home/tournaments/create')
         .get(function(req, res, next) {
             if (!req.session.director) {
@@ -51,9 +62,9 @@ module.exports = function(app) {
         console.log(divisions);
         tournamentController.updateDivisions(req.body["tournamentid"], divisions, function(err) {
             if (err) {
-                res.status(500).send({err : null, divisions : []});
+                res.status(500).send({err : err, divisions : []});
             } else {
-                res.status(200).send({err : null});
+                res.status(200).send({err : null, divisions : divisions});
             }
         });
     });

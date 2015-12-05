@@ -88,6 +88,10 @@ $(document).ready(function() {
         changeDivisionsAJAX();
     });
 
+    $("#edittournamentbutton").click(function(e) {
+        editTournamentAJAX();
+    });
+
 });
 
 function removeTeamSender(button) {
@@ -219,6 +223,17 @@ function changeDivisionsAJAX() {
         url : "/home/tournaments/editDivisions",
         type : "POST",
         data : $("#divisions-form").serialize(),
+        success : function(databack, status, xhr) {
+
+        }
+    });
+}
+
+function editTournamentAJAX() {
+    $.ajax({
+        url : "/home/tournaments/edit",
+        type : "POST",
+        data : $("#tournament-overview-form").serialize(),
         success : function(databack, status, xhr) {
 
         }

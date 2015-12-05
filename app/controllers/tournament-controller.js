@@ -624,6 +624,14 @@ function updateDivisions(tournamentid, divisions, callback) {
             });
 }
 
+function updateTournamentInformation(tournamentid, information, callback) {
+    Tournament.update({_id : tournamentid},
+            {"$set" : {tournament_name : information.tournament_name, location : information.tournament_location,
+                    date : information.tournament_date}}, function(err) {
+                        callback(err);
+                    });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
@@ -639,3 +647,4 @@ exports.removePlayer = removePlayer;
 exports.addPlayer = addPlayer;
 exports.changePointScheme = changePointScheme;
 exports.updateDivisions = updateDivisions;
+exports.updateTournamentInformation = updateTournamentInformation;
