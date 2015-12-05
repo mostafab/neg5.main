@@ -100,25 +100,21 @@ block content
                                                     each num, i in Object.keys(tournament.pointScheme)
                                                         div(class="form-group")
                                                             input(type="number" style="width:25%" value="#{num}" class="form-control input-medium no-border-radius" name="val" + num)
-                                            div()
-                                                button(type="button" class="btn btn-md btn-info" style="margin:0;margin-bottom:15px" id="add-point-value-button") Add A Point Value
+                                            div(class="btn-group" style="margin-top:15px")
+                                                button(type="button" class="btn btn-md btn-info" style="margin:0;margin-bottom:15px" id="add-point-value-button" onclick='addPointSchemaRow()') Add A Point Value
                                                 button(type="button" class="btn btn-md btn-success" style="margin:0;margin-bottom:15px" id="save-point-schema-button") Save Point Scheme
-                                                        // each divison, i in tournament.divisions
-                                                        //     li(class="list-group-item" style="font-size:14px") #{division[i]}
+
+                                        div(class="col-md-6")
                                             label(class="label label-primary col-xs-4") Divisions
                                             div(class="form-group col-xs-8")
                                                 form(id="divisions-form")
                                                     input(type="hidden" name="tournamentid" value="#{tournament._id}")
                                                     each divison, i in tournament.divisions
                                                         div(class="form-group")
-                                                            input(type='text' style="width:50%" value="#{division[i]} class='fomr-control input-medium no-border-radius'")
-                                            div()
-                                                button(type="button" class="btn btn-md btn-info" style="margin:0") Add Division
-                                                button(type="button" class="btn btn-md btn-success" style="margin:0") Save Divisions
-
-                                        div(class="col-md-6")
-                                            h4(class="title" style="font-size:16px") The default point scheme is {15, 10, -5}. Saving or changing the point scheme will overwrite all player point values!
-                                                i(class="fa fa-exclamation-triangle" style="margin-left:5px")
+                                                            input(type='text' style="width:50%" value="#{tournament.divisions[i]}" class='form-control input-medium no-border-radius')
+                                            div(class="btn-group" style="margin-top:15px")
+                                                button(type="button" class="btn btn-md btn-info" style="margin:0" onclick='addDivisionRow()') Add Division
+                                                button(type="button" class="btn btn-md btn-success" style="margin:0" id="save-divisions-button") Save Divisions
 
                             div(class="tab-pane fade" id="games")
                                 div(class="panel panel-default")

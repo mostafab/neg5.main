@@ -34,7 +34,28 @@ module.exports = function(app) {
                 res.status(200).send({err : null});
             }
         });
+    });
 
+    app.post("/home/tournaments/editDivisions", function(req, res, next) {
+        console.log(req.body);
+        var divisions = [];
+        var divNum = 1;
+        currentDivision = "division" + divNum;
+        while (req.body[currentDivision] != undefined) {
+            if (req.body[currentDivision].length != 0) {
+                divisions.push(req.body[currentDivision]);
+            }
+            divNum++;
+            currentDivision = "division" + divNum;
+        }
+        console.log(divisions);
+        tournamentController.updateDivisions(req.body["tournamentid"], divisions, function(err) {
+            if (err) {
+                res.status(500).send({err : null, divisions : []});
+            } else {
+                res.status(200).send({err : null});
+            }
+        });
     });
 
     app.route("/home/tournaments/createteam")

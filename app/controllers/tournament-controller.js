@@ -123,20 +123,6 @@ function findTeamMembers(tournamentid, teamid, callback) {
             callback(null, playersArr, result.pointScheme);
         }
     });
-
-    // var query = Tournament.find({_id : tournamentid}).limit(1).exec(function(err, result) {
-    //     if (err || result.length === 0) {
-    //         callback(err, []);
-    //     } else {
-    //         var playersArr = [];
-    //         for (var i = 0; i < result[0].players.length; i++) {
-    //             if (result[0].players[i].teamID == teamid) {
-    //                 playersArr.push(result[0].players[i]);
-    //             }
-    //         }
-    //         callback(null, playersArr);
-    //     }
-    // });
 }
 
 function addGameToTournament(tournamentid, gameinfo, callback) {
@@ -624,6 +610,20 @@ function changePointScheme(tournamentid, newPointScheme, callback) {
             });
 }
 
+function updateDivisions(tournamentid, divisions, callback) {
+    // Tournament.findOne({_id : tournamentid}, function(err, result) {
+    //     if (err || result == null) {
+    //         callback(err, []);
+    //     } else {
+    //         for (var i = 0; i < divisions.length; )
+    //     }
+    // });
+    Tournament.update({_id : tournamentid},
+            {"$set" : {divisions : divisions}}, function(err) {
+                callback(err);
+            });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
@@ -638,3 +638,4 @@ exports.updatePlayer = updatePlayer;
 exports.removePlayer = removePlayer;
 exports.addPlayer = addPlayer;
 exports.changePointScheme = changePointScheme;
+exports.updateDivisions = updateDivisions;

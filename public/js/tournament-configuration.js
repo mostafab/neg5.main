@@ -78,13 +78,14 @@ $(document).ready(function() {
         removeTeam($(this).parent().serialize(), $(this));
     });
 
-    $("#add-point-value-button").click(function(e) {
-        addPointSchemaRow();
-    });
-
     $("#save-point-schema-button").click(function(e) {
         formatPointSchemaForm();
         changePointSchemeAJAX();
+    });
+
+    $("#save-divisions-button").click(function(e) {
+        formatDivisionsForm();
+        changeDivisionsAJAX();
     });
 
 });
@@ -207,6 +208,17 @@ function changePointSchemeAJAX() {
         url : "/home/tournaments/editPointSchema",
         type : "POST",
         data : $("#point-schema-form").serialize(),
+        success : function(databack, status, xhr) {
+
+        }
+    });
+}
+
+function changeDivisionsAJAX() {
+    $.ajax({
+        url : "/home/tournaments/editDivisions",
+        type : "POST",
+        data : $("#divisions-form").serialize(),
         success : function(databack, status, xhr) {
 
         }
@@ -336,9 +348,11 @@ function addPointSchemaRow() {
         // input(type="number" style="width:25%" value="#{num}" class="form-control input-medium no-border-radius" name="val" + num)
     var html = "<div class='form-group'><input type='number' style='width:25%' class='form-control input-medium no-border-radius'/></div>";
     $("#point-schema-form").append(html);
-    $("#point-schema-form :input").each(function() {
-        console.log($(this).attr("name") === "tournamentid");
-    });
+}
+
+function addDivisionRow() {
+    var html = "<div class='form-group'><input type='text' style='width:50%' class='form-control input-medium no-border-radius'/></div>";
+    $("#divisions-form").append(html);
 }
 
 function formatPointSchemaForm() {
@@ -348,6 +362,17 @@ function formatPointSchemaForm() {
             $(this).attr("name", "pointval" + currentPointNum);
             console.log($(this).val() + ", " + $(this).attr("name"));
             currentPointNum++;
+        }
+    });
+}
+
+function formatDivisionsForm() {
+    var currentDivisonNum = 1;
+    $("#divisions-form :input").each(function() {
+        if ($(this).attr("name") !== "tournamentid") {
+            $(this).attr("name", "division" + currentDivisonNum);
+            console.log($(this).val() + ", " + $(this).attr("name"));
+            currentDivisonNum++;
         }
     });
 }
