@@ -11,12 +11,14 @@ var gameSchema = new Schema({
         team_name : String,
         team_id : String,
         score : {type : Number, default : 0},
+        bouncebacks : {type : Number, default : 0},
         playerStats : {type : {}, default : {}}
     },
     team2 : {
         team_name : String,
         team_id : String,
         score :  {type : Number, default : 0},
+        bouncebacks : {type : Number, default : 0},
         playerStats : {type : {}, default : {}}
     }
 });

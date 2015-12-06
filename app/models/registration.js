@@ -5,7 +5,7 @@ var RegistrationSchema = new Schema({
     teamName : String,
     numTeams : Number,
     contactInformation : {type : {}},
-    tournament : String,
+    tournamentid : String,
     message : String,
     date : {type : Date, default : Date.now}
 });
