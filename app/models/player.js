@@ -26,6 +26,19 @@ playerSchema.methods.getPointsPerGame = function() {
     return sum / this.gamesPlayed;
 }
 
+playerSchema.methods.getTotalPoints = function(tournament) {
+    if (this.gamesPlayed == 0) {
+        return 0;
+    }
+    var sum = 0;
+    for (vals in tournament.pointScheme) {
+        if (tournament.pointScheme.hasOwnProperty(vals) && this.pointValues[vals] != undefined) {
+            sum += parseInt(tournament.pointScheme[vals] * parseInt(this.pointValues[vals]));
+        }
+    }
+    return sum;
+}
+
 playerSchema.methods.getTossupsHeard = function(tournament) {
         var totalTossups = 0;
         for (var i = 0; i < tournament.games.length; i++) {
@@ -43,10 +56,10 @@ playerSchema.methods.getTossupsHeard = function(tournament) {
         return totalTossups;
 }
 
-playerSchema.methods.getTossupsHeardConstraint = function(tournament, maxRound) {
+playerSchema.methods.getTossupsHeardConstraint = function(tournament, bounds) {
 
         function isBelowMaxRound(game) {
-            return game.round <= maxRound;
+            return game.round >= bounds.minRound && game.round <= bounds.maxRound;
         }
 
         var totalTossups = 0;
@@ -64,8 +77,61 @@ playerSchema.methods.getTossupsHeardConstraint = function(tournament, maxRound) 
                 }
             }
         }
-
         return totalTossups;
 }
+
+playerSchema.methods.getPointsPerTossup = function(tournament) {
+    if (this.getTossupsHeard(tournament) == 0) {
+        return 0;
+    }
+    return this.getTotalPoints(tournament) / this.getTossupsHeard(tournament);
+}
+
+playerSchema.methods.getPowersToNegs = function(tournament) {
+    if (this.getTossupsHeard(tournament) == 0) {
+        return 0;
+    }
+    var negs = 0;
+    var powers = 0;
+    for (vals in tournament.pointScheme) {
+        if (tournament.pointScheme.hasOwnProperty(vals) && this.pointValues[vals] != undefined) {
+            if (tournament.pointsTypes[vals] && tournament.pointsTypes[vals] == "N") {
+                negs += this.pointValues[vals];
+            } else if (tournament.pointsTypes[vals] && tournament.pointsTypes[vals] == "P"){
+                powers += this.pointValues[vals];
+            }
+        }
+    }
+
+    if (negs == 0) {
+        return Infinity;
+    } else {
+        return powers / negs;
+    }
+}
+
+playerSchema.methods.getGetsToNegs = function(tournament) {
+    if (this.getTossupsHeard(tournament) == 0) {
+        return 0;
+    }
+    var negs = 0;
+    var gets = 0;
+    for (vals in tournament.pointScheme) {
+        if (tournament.pointScheme.hasOwnProperty(vals) && this.pointValues[vals] != undefined) {
+            if (tournament.pointsTypes[vals] && tournament.pointsTypes[vals] == "N") {
+                negs += this.pointValues[vals];
+            } else if (tournament.pointsTypes[vals] && (tournament.pointsTypes[vals] == "P" || tournament.pointsTypes[vals] == "B")){
+                gets += this.pointValues[vals];
+            }
+        }
+    }
+    if (negs == 0) {
+        return Infinity;
+    } else {
+        return gets / negs;
+    }
+}
+
+
 
 module.exports = mongoose.model("Player", playerSchema);

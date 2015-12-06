@@ -69,7 +69,6 @@ block content
                                                                 - var current = team1Players[i]
                                                                 - var inputName = "player" + playerNum + "_leftid"
                                                                 input(type="hidden" value="#{current._id}" name="#{inputName}")
-                                                                - console.log(current.getPointsPerGame())
                                                                 if game.team1.playerStats[current._id]
                                                                     tr
                                                                         td #{current.player_name}
@@ -97,8 +96,6 @@ block content
                                                                 - var current = team2Players[i]
                                                                 - var inputName = "player" + playerNum + "_rightid"
                                                                 input(type="hidden" value="#{current._id}" name="#{inputName}")
-                                                                //#{console.log(current.getPointsPerGame())}
-                                                                - console.log(current.getPointsPerGame())
                                                                 if game.team2.playerStats[current._id]
                                                                     tr
                                                                         td #{current.player_name}

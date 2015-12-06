@@ -19,6 +19,7 @@ var TournamentSchema = new Schema({
     divisions : [String],
     games : [gameSchema],
     pointScheme : {type : {}, default : {"15" : 0, "10" : 0, "-5" : 0}},
+    pointsTypes : {type : {}, default : {"15" : "P", "10" : "B", "-5" : "N"}},
     shortID : {type : String, index : true, unique : true}
 });
 

@@ -116,7 +116,7 @@ function findTeamMembers(tournamentid, teamid, callback) {
             var playersArr = [];
             for (var i = 0; i < result.players.length; i++) {
                 if (result.players[i].teamID == teamid) {
-                    console.log(result.players[i].getTossupsHeard(result));
+                    console.log(result.players[i].getGetsToNegs(result));
                     playersArr.push(result.players[i]);
                 }
             }

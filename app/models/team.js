@@ -19,12 +19,44 @@ teamSchema.methods.getWinPercentage = function() {
     }
 }
 
-teamSchema.methods.addWin = function() {
-    wins++;
+teamSchema.methods.getPointsPerGame = function(tournament) {
+    totalPoints = 0;
+    totalGames = 0;
+    for (var i = 0; i < tournament.games.length; i++) {
+        var currentGame = tournament.games[i];
+        if (currentGame.team1.team_id == this._id) {
+            totalPoints += currentGame.team1.score;
+            totalGames++;
+        } else if (currentGame.team2.team_id == this._id) {
+            totalPoints += currentGame.team2.score;
+            totalGames++;
+        }
+    }
+    if (totalGames == 0) {
+        return 0;
+    } else {
+        return totalPoints / totalGames;
+    }
 }
 
-teamSchema.methods.getTotalPointValues = function(tournamentid) {
-    // var Tournament = mongoose.model("Tournament");
+teamSchema.getOpponentPPG = function(tournament) {
+    totalPoints = 0;
+    totalGames = 0;
+    for (var i = 0; i < tournament.games.length; i++) {
+        var currentGame = tournament.games[i];
+        if (currentGame.team1.team_id == this._id) {
+            totalPoints += currentGame.team2.score;
+            totalGames++;
+        } else if (currentGame.team2.team_id == this._id) {
+            totalPoints += currentGame.team1.score;
+            totalGames++;
+        }
+    }
+    if (totalGames == 0) {
+        return 0;
+    } else {
+        return totalPoints / totalGames;
+    }
 }
 
 module.exports = mongoose.model("Team", teamSchema);
