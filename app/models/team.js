@@ -4,7 +4,6 @@ var playerSchema = require("./player").schema;
 
 var teamSchema = new Schema({
     team_name : String,
-    email : String,
     division : String,
     wins : {type : Number, default : 0},
     losses : {type : Number, default : 0},

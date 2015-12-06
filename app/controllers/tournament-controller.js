@@ -64,7 +64,6 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
     var newPlayers = [];
     var newteam = new Team({
         team_name : teaminfo["team_name"],
-        email : teaminfo["team_email"],
         division : teaminfo["team_division"],
     });
     newteam.shortID = shortid.generate();
@@ -497,7 +496,7 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
                 }
             }
             Tournament.update({_id : tournamentid, "teams._id" : newinfo.teamid},
-                        {"$set" : {"teams.$.team_name" : newinfo.team_name, "teams.$.email" : newinfo.team_email, "teams.$.division" : newinfo.divisionform}},
+                        {"$set" : {"teams.$.team_name" : newinfo.team_name, "teams.$.division" : newinfo.divisionform}},
                     function(err) {
                         if (err) {
                             console.log(err);

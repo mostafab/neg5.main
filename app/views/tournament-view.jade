@@ -222,21 +222,13 @@ block content
                                                             class="form-control input-medium center-text no-border-radius"
                                                         )
                                                     div(class="form-group")
-                                                        label Email
-                                                        input(
-                                                            type="text",
-                                                            name="team_email",
-                                                            placeholder="Contact Email",
-                                                            class="form-control input-medium center-text no-border-radius"
-                                                        )
-                                                    div(class="form-group")
                                                         label Division
                                                         select(name="team_division" class="form-control input-medium center-text no-border-radius")
                                                             if (tournament.divisions.length == 0)
                                                                 option(value="") No Divisions
                                                             else
-                                                                each division in tournament.divisions
-                                                                    option(value="division") #{division}
+                                                                each division, i in tournament.divisions
+                                                                    option(value="#{tournament.divisions[i]}") #{division}
                                                     div(id="player-dynamic" class="form-group")
                                                         label Players
                                                         button(type="button" class="btn btn-sm btn-success no-border-radius" id="newlineplayer" style="margin: 5px") Add Player
