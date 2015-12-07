@@ -132,6 +132,4 @@ playerSchema.methods.getGetsToNegs = function(tournament) {
     }
 }
 
-
-
 module.exports = mongoose.model("Player", playerSchema);

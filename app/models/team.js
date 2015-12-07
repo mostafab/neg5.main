@@ -59,4 +59,8 @@ teamSchema.getOpponentPPG = function(tournament) {
     }
 }
 
+teamSchema.getAverageMarginOfVictory = function(tournament) {
+    return this.getPointsPerGame(tournament) - this.getOpponentPPG(tournament);
+}
+
 module.exports = mongoose.model("Team", teamSchema);
