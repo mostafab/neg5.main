@@ -82,7 +82,16 @@ teamSchema.methods.getTossupTotals = function(tournament) {
 
 
 teamSchema.methods.getTotalBonusPoints = function(tournament) {
+    var totalBonusPoints = 0;
+    for (var i = 0; i < tournament.games.length; i++) {
+        var currentGame = tournament.games[i];
+        if (currentGame.team1.team_id == this._id) {
 
+        } else if (currentGame.team2.team_id == this._id) {
+
+        }
+    }
+    return totalBonusPoints;
 }
 
 teamSchema.getAverageMarginOfVictory = function(tournament) {
