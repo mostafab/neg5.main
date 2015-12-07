@@ -39,7 +39,7 @@ teamSchema.methods.getPointsPerGame = function(tournament) {
     }
 }
 
-teamSchema.getOpponentPPG = function(tournament) {
+teamSchema.methods.getOpponentPPG = function(tournament) {
     totalPoints = 0;
     totalGames = 0;
     for (var i = 0; i < tournament.games.length; i++) {
@@ -57,6 +57,32 @@ teamSchema.getOpponentPPG = function(tournament) {
     } else {
         return totalPoints / totalGames;
     }
+}
+
+teamSchema.methods.getTossupTotals = function(tournament) {
+    var pointTotals = {};
+    for (var pointValue in tournament.pointScheme) {
+        if (tournament.pointScheme.hasOwnProperty(pointValue)) {
+            pointTotals[pointValue] = 0;
+        }
+    }
+    for (var i = 0; i < tournament.players.length; i++) {
+        var currentPlayer = tournament.players[i];
+        if (currentPlayer.teamID == this._id) {
+            for (var pointValue in tournament.pointScheme) {
+                if (tournament.pointScheme.hasOwnProperty(pointValue) && currentPlayer.pointValues[pointValue] != undefined) {
+                    pointTotals[pointValue] += currentPlayer.pointValues[pointValue];
+                }
+            }
+        }
+    }
+    return pointTotals;
+}
+
+
+
+teamSchema.methods.getTotalBonusPoints = function(tournament) {
+
 }
 
 teamSchema.getAverageMarginOfVictory = function(tournament) {

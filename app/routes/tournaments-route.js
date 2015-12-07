@@ -303,7 +303,7 @@ module.exports = function(app) {
                 for (var i = 0; i < result.teams.length; i++) {
                     if (result.teams[i].shortID == req.params.teamid) {
                         team = result.teams[i];
-                        console.log(team.getPointsPerGame(result));
+                        console.log(team.getTossupTotals(result));
                         i = result.teams.length + 1;
                     }
                 }

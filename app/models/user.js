@@ -36,26 +36,6 @@ UserSchema.methods.validPassword = function(password) {
     return bcryptjs.compareSync(password, this.local.password);
 }
 
-// UserSchema.pre("save", function(next) {
-//     if (!this.isModified("password")) {
-//         return next();
-//     }
-//     bcryptjs.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-//         if (err) {
-//             console.log("Err 1: " + err);
-//             return next(err);
-//         }
-//         bcryptjs.hash(this.password, salt, function(err, hash) {
-//             if (err) {
-//                 console.log("Err 2: " + err);
-//                 return next(err);
-//             }
-//             this.password = hash;
-//             next();
-//         });
-//     });
-// });
-
 UserSchema.methods.comparePassword = function(testingPassword, cb) {
     bcryptjs.compare(testingPassword, this.password, function(err, isMatch) {
         if (err) {
