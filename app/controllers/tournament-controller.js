@@ -58,7 +58,7 @@ function findTournamentById(id, callback) {
 }
 
 function addTeamToTournament(tournamentid, teaminfo, callback) {
-    console.log(teaminfo);
+    // console.log(teaminfo);
     var currentPlayer = 1;
     var key = "player" + currentPlayer + "_name";
     var newPlayers = [];
@@ -68,7 +68,7 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
     });
     newteam.shortID = shortid.generate();
     while (teaminfo[key] !== undefined) {
-        console.log(teaminfo[key])
+        // console.log(teaminfo[key])
         if (teaminfo[key].length !== 0) {
             var newplayer = new Player({
                 teamID : newteam._id.toString(),

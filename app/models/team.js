@@ -79,22 +79,68 @@ teamSchema.methods.getTossupTotals = function(tournament) {
     return pointTotals;
 }
 
-
-
 teamSchema.methods.getTotalBonusPoints = function(tournament) {
-    var totalBonusPoints = 0;
+    var pointTotals = this.getTossupTotals(tournament);
+    var totalPoints = 0;
     for (var i = 0; i < tournament.games.length; i++) {
         var currentGame = tournament.games[i];
         if (currentGame.team1.team_id == this._id) {
-
+            totalPoints += currentGame.team1.score - currentGame.team1.bouncebacks;
         } else if (currentGame.team2.team_id == this._id) {
-
+            totalPoints += currentGame.team2.score - currentGame.team2.bouncebacks;
         }
     }
-    return totalBonusPoints;
+    for (var point in pointTotals) {
+        if (pointTotals.hasOwnProperty(point)) {
+            totalPoints -= parseInt(point) * parseInt(pointTotals[point]);
+        }
+    }
+    return totalPoints;
 }
 
-teamSchema.getAverageMarginOfVictory = function(tournament) {
+teamSchema.methods.getTotalGets = function(tournament) {
+    var pointTotals = this.getTossupTotals(tournament);
+    var totalGets = 0;
+    for (var values in pointTotals) {
+        if (pointTotals.hasOwnProperty(values) && tournament.pointsTypes[values] != "N") {
+            totalGets += pointTotals[values];
+        }
+    }
+    return totalGets;
+}
+
+teamSchema.methods.getTotalNegs = function(tournament) {
+    var pointTotals = this.getTossupTotals(tournament);
+    var totalNegs = 0;
+    for (var values in pointTotals) {
+        if (pointTotals.hasOwnProperty(values) && tournament.pointsTypes[values] == "N") {
+            totalNegs += pointTotals[values];
+        }
+    }
+    return totalNegs;
+}
+
+teamSchema.methods.getTossupsHeard = function(tournament) {
+    totalTossups = 0;
+    for (var i = 0; i < tournament.games.length; i++) {
+        var currentGame = tournament.games[i];
+        if (currentGame.team1.team_id == this._id || currentGame.team2.team_id == this._id) {
+            totalTossups += currentGame.tossupsheard;
+        }
+    }
+    return totalTossups;
+}
+
+teamSchema.methods.getOverallPPB = function(tournament) {
+    var totalBonusPoints = this.getTotalBonusPoints(tournament);
+    var totalGets = this.getTotalGets(tournament);
+    if (totalGets == 0) {
+        return 0;
+    }
+    return totalBonusPoints / totalGets;
+}
+
+teamSchema.methods.getAverageMarginOfVictory = function(tournament) {
     return this.getPointsPerGame(tournament) - this.getOpponentPPG(tournament);
 }
 
