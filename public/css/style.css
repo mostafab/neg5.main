@@ -62,6 +62,7 @@ Main Page Content
   display: none;
   content: 'mobile';
 }
+
 @media only screen and (min-width: 768px) {
   .cd-main-content .content-wrapper {
     margin-left: 110px;

@@ -1,0 +1,64 @@
+extends layout
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+
+block content
+
+    main(class="cd-main-content" style="background-color:white")
+        div(class="box" style="padding:50px;padding-top:0px")
+
+            div(class="row")
+                    div(class="col-md-12")
+                        div(style="margin:20px; margin-bottom:50px")
+                        h2(class="title" style="width:50%") #{tournament.tournament_name} - Team Quick Statistics
+
+                        br
+                        br
+                        if tournament.divisions.length === 0
+                            div(class="table-responsive")
+                                table(class="table table-striped table-bordered table-hover table-condensed")
+                                    thead
+                                        tr
+                                            each name, i in headers
+                                                if headers[i] == "pointTotals"
+                                                    each val, j in pointTypes
+                                                        th(class="table-head") #{pointTypes[j]}
+                                                else
+                                                    th(class="table-head") #{headers[i]}
+
+                                    tbody
+                                        each team, i in teamInfo
+                                            tr
+                                                each name, j in headers
+                                                    if headers[j] == "pointTotals"
+                                                        each val, k in pointTypes
+                                                            td #{teamInfo[i].pointTotals[pointTypes[k]]}
+                                                    else
+                                                        td #{teamInfo[i][name]}
+
+                        else
+                            each division, index in tournament.divisions
+                                h2(class="title" style="width:20%") #{tournament.divisions[index]}
+                                br
+                                div(class="table-responsive")
+                                    table(class="table table-striped table-bordered table-hover table-condensed")
+                                        thead
+                                            tr
+                                                each name, i in headers
+                                                    if headers[i] == "pointTotals"
+                                                        each val, j in pointTypes
+                                                            th(class="table-head") #{pointTypes[j]}
+                                                    else
+                                                        th(class="table-head") #{headers[i]}
+                                        tbody
+                                            each team, i in teamInfo
+                                                if team["Division"] == tournament.divisions[index]
+                                                    tr
+                                                        each name, j in headers
+                                                            if headers[j] == "pointTotals"
+                                                                each val, k in pointTypes
+                                                                    td #{teamInfo[i].pointTotals[pointTypes[k]]}
+                                                            else
+                                                                td #{teamInfo[i][name]}

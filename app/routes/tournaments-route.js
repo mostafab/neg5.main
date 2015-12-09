@@ -123,7 +123,7 @@ module.exports = function(app) {
                 console.log(gameid);
                 var tournamentid = req.body["tournament_idgame"];
                 console.log(tournamentid);
-                tournamentController.getGameFromTournament(tournamentid, gameid, function(err) {
+                tournamentController.removeGameFromTournament(tournamentid, gameid, function(err) {
                     if (err) {
                         res.status(500).end();
                     } else {
@@ -157,7 +157,7 @@ module.exports = function(app) {
                 // console.log(req.body);
                 var tournamentid = req.body["tournament_id_form"];
                 var gameid = req.body["oldgameid"];
-                tournamentController.getGameFromTournament(tournamentid, gameid, function(err) {
+                tournamentController.removeGameFromTournament(tournamentid, gameid, function(err) {
                     if (err) {
                         res.status(500).send({err : err});
                     } else {
@@ -303,7 +303,7 @@ module.exports = function(app) {
                 for (var i = 0; i < result.teams.length; i++) {
                     if (result.teams[i].shortID == req.params.teamid) {
                         team = result.teams[i];
-                        console.log(team.getAverageMarginOfVictory(result));
+                        console.log(team.getAverageInformation(result));
                         i = result.teams.length + 1;
                     }
                 }
@@ -391,9 +391,6 @@ module.exports = function(app) {
         }
     });
 
-    app.get("*", function(req, res, next) {
-        res.status(404).send("Can't find this page");
-    });
 
 };
 

@@ -3,7 +3,6 @@ extends layout
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
     link(rel="stylesheet" href="/css/tournamentstyle.css")
-    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
 
 block content
 
@@ -42,6 +41,8 @@ block content
                                         a(href="#games" data-toggle="tab") Add/Remove/Edit Games
                                     li
                                         a(href="#teams" data-toggle="tab") Add/Remove/Edit Teams
+                                    li
+                                        a(href="#stats" data-toggle="tab") Statistics
                         br
                         br
 
@@ -299,5 +300,24 @@ block content
                                                                         a(class="btn btn-sm btn-info" href="/home/tournaments/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
                                                                         button(type="button" class="btn btn-sm btn-warning deleteteambutton") Remove Team
 
+                            div(class="tab-pane fade" id="stats")
+                                div(class="panel panel-default")
+                                        div(class="panel-heading collapsable") Generate Statistics
+                                        div(class="panel-body")
+
+                                            div()
+                                                ul(class="nav nav-pills no-border-radius")
+                                                    li(class="active")
+                                                        a(target="_blank" href="/home/tournaments/" + tournament.shortID + "/stats/qteam" class="btn btn-lg btn-stats") Quick Team Stats
+                                                    li
+                                                        a(target="_blank" href="/home/tournaments/" + tournament.shortID + "/stats/qplayer" class="btn btn-lg btn-stats") Quick Player Stats
+                                                    li
+                                                        a(target="_blank" href="/home/tournaments/" + tournament.shortID + "/stats/full" class="btn btn-lg btn-stats") Full Report
+
+                                div(class="panel panel-default")
+                                    div(class="panel-heading collapsable") Advanced Statistics Generation
+                                    div(class="panel-body")
+
     script(src="/js/tournament-configuration.js")
+    script(src="/js/stats-configuration.js")
     script(src="/js/listjs/list.js")

@@ -116,7 +116,6 @@ function findTeamMembers(tournamentid, teamid, callback) {
             var playersArr = [];
             for (var i = 0; i < result.players.length; i++) {
                 if (result.players[i].teamID == teamid) {
-                    console.log(result.players[i].getGetsToNegs(result));
                     playersArr.push(result.players[i]);
                 }
             }
@@ -178,8 +177,8 @@ function addGameToTournament(tournamentid, gameinfo, callback) {
             console.log("Something went wrong here");
             callback(err, []);
         } else {
-            projectGameToTeams(tournamentid, newGame);
-            projectGameToPlayers(tournamentid, newGame);
+            // projectGameToTeams(tournamentid, newGame);
+            // projectGameToPlayers(tournamentid, newGame);
             callback(null, newGame);
         }
     });
@@ -295,8 +294,7 @@ function projectGameToPlayers(tournamentid, game) {
 
 /**
 * Function to get a specific game from the tournamentid. The resultant game
-* returned from the query is used to remove the game from the players and
-* teams involved.
+* returned from the query is used to remove the game
 * @param tournamentid id of the tournament the game is associated with
 * @param gameid id of the game to retrieve
 */
@@ -309,13 +307,10 @@ function getGameFromTournament(tournamentid, gameid, callback) {
             // DO STUFF
             callback(err);
         } else {
-            console.log("Resultant Game: " + result);
-            console.log("Game ShortID: " + gameid);
             for (var i = 0; i < result.games.length; i++) {
                 if (result.games[i].shortID == gameid) {
-                    console.log("GameID: " + result.games[i].shortID + "| " + gameid)
-                    removeGameFromTeam(tournamentid, result.games[i]);
-                    removeGameFromPlayers(tournamentid, result.games[i]);
+                    // removeGameFromTeam(tournamentid, result.games[i]);
+                    // removeGameFromPlayers(tournamentid, result.games[i]);
                     removeGameFromTournament(tournamentid, result.games[i]);
                     i = result.games.length + 1;
                     callback(null);
@@ -325,14 +320,12 @@ function getGameFromTournament(tournamentid, gameid, callback) {
     });
 }
 
-function removeGameFromTournament(tournamentid, game) {
-    var tournamentQuery = {_id : tournamentid, "games.shortID" : game.shortID};
-    var pullQuery = {$pull : {games : {shortID : game.shortID}}};
+function removeGameFromTournament(tournamentid, gameShortID, callback) {
+    var tournamentQuery = {_id : tournamentid, "games.shortID" : gameShortID};
+    var pullQuery = {$pull : {games : {shortID : gameShortID}}};
     console.log(pullQuery);
     Tournament.update(tournamentQuery, pullQuery, function(err) {
-        if (err) {
-            console.log(err);
-        }
+        callback(err);
     });
 }
 
@@ -613,13 +606,6 @@ function changePointScheme(tournamentid, newPointScheme, callback) {
 }
 
 function updateDivisions(tournamentid, divisions, callback) {
-    // Tournament.findOne({_id : tournamentid}, function(err, result) {
-    //     if (err || result == null) {
-    //         callback(err, []);
-    //     } else {
-    //         for (var i = 0; i < divisions.length; )
-    //     }
-    // });
     Tournament.update({_id : tournamentid},
             {"$set" : {divisions : divisions}}, function(err) {
                 callback(err);
@@ -640,7 +626,8 @@ exports.findTournamentById = findTournamentById;
 exports.addTeamToTournament = addTeamToTournament;
 exports.findTeamMembers = findTeamMembers;
 exports.addGameToTournament = addGameToTournament;
-exports.getGameFromTournament = getGameFromTournament;
+// exports.getGameFromTournament = getGameFromTournament;
+exports.removeGameFromTournament = removeGameFromTournament;
 exports.changeGameShortID = changeGameShortID;
 exports.removeTeamFromTournament = removeTeamFromTournament;
 exports.updateTeam = updateTeam;

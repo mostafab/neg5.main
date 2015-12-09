@@ -1,8 +1,8 @@
 .title {
     font-weight: bold;
     color: white;
-    font-size: 24px;
-    background: rgb(0, 136, 136);
+    font-size: 18px;
+    background: #2C3136;
     border-width: 10px;
     padding: 15px;
     width: 100%;
@@ -38,10 +38,15 @@
 }
 
 tr {
-    font-size: 18px;
+    font-size: 12px;
     font-weight: bold;
     background-color: white;
     border-radius: 10px;
+    white-space: nowrap;
+}
+
+td {
+    white-space: nowrap;
 }
 
 .info-label {
@@ -167,4 +172,9 @@ tr {
     padding: 10px;
     border-width: 5px;
     border-color: black;
+}
+
+.btn-stats {
+    background: rgb(0, 136, 136);
+    color : white;
 }
