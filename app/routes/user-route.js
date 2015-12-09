@@ -56,11 +56,11 @@ module.exports = function(app, passport) {
 
 
     app.get("/home", function(req, res, next) {
-        console.log(req.session);
+        // console.log(req.session);
         if (!req.session.director) {
             res.redirect("/");
         } else {
-            console.log("About to render home page...");
+            // console.log("About to render home page...");
             res.render("home", {tournamentd : req.session.director});
         }
     });

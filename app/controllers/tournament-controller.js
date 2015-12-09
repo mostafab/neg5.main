@@ -126,7 +126,6 @@ function findTeamMembers(tournamentid, teamid, callback) {
 
 function addGameToTournament(tournamentid, gameinfo, callback) {
     pointsJSONKeys = Object.keys(JSON.parse(gameinfo["pointValueForm"]));
-    console.log(gameinfo);
     var newGame = new Game({
         round : gameinfo["round"],
         tossupsheard : gameinfo["tossupsheard"],
@@ -174,7 +173,6 @@ function addGameToTournament(tournamentid, gameinfo, callback) {
     var options = {safe : true, upsert : true};
     Tournament.update(tournament, updateQuery, options, function(err) {
         if (err) {
-            console.log("Something went wrong here");
             callback(err, []);
         } else {
             // projectGameToTeams(tournamentid, newGame);
@@ -438,9 +436,9 @@ function removeGameFromPlayers(tournamentid, game) {
 * @param callback callback function called back after function is done
 */
 function removeTeamFromTournament(tournamentid, teaminfo, callback) {
-    console.log(teaminfo);
+    // console.log(teaminfo);
     var tournamentQuery = {_id : tournamentid, "teams.shortID" : teaminfo.teamid_form};
-    console.log(tournamentQuery);
+    // console.log(tournamentQuery);
     Tournament.findOne(tournamentQuery, function(err, result) {
         if (err || result == null) {
             callback(err, null);
@@ -448,9 +446,9 @@ function removeTeamFromTournament(tournamentid, teaminfo, callback) {
             var teamid = -1;
             for (var i = 0; i < result.teams.length; i++) {
                 if (result.teams[i].shortID === teaminfo.teamid_form) {
-                    console.log("Short ids match");
+                    // console.log("Short ids match");
                     teamid = result.teams[i]._id.toString();
-                    console.log(teamid);
+                    // console.log(teamid);
                     i = result.teams.length + 1;
                 }
             }
@@ -459,12 +457,12 @@ function removeTeamFromTournament(tournamentid, teaminfo, callback) {
             } else {
                 Tournament.update({_id : tournamentid}, {$pull : {players : {teamID : teamid}}}, function(err) {
                     if (err) {
-                        console.log(err);
+                        // console.log(err);
                         callback(err, null);
                     } else {
                         Tournament.update({_id : tournamentid}, {$pull : {teams : {_id : teamid}}}, function(err) {
                             if (err) {
-                                console.log(err);
+                                // console.log(err);
                                 callback(err, null);
                             } else {
                                 callback(null, teamid);
@@ -478,7 +476,7 @@ function removeTeamFromTournament(tournamentid, teaminfo, callback) {
 }
 
 function updateTeam(tournamentid, teamid, newinfo, callback) {
-    console.log(newinfo);
+    // console.log(newinfo);
     Tournament.findOne({_id : tournamentid}, function(err, result) {
         if (err || result == null) {
             console.log(err);
@@ -521,7 +519,7 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
                                                 }
                                             });
                                 } else if (result.games[i].team2.team_id == newinfo.teamid) {
-                                    console.log("Game match found2");
+                                    // console.log("Game match found2");
                                     Tournament.update({_id : tournamentid, "games._id" : result.games[i]._id},
                                             {"$set" : {"games.$.team2.team_name" : newinfo.team_name}},
                                             function(err) {
@@ -589,8 +587,6 @@ function addPlayer(tournamentID, teamName, teamID, playerName, callback) {
 }
 
 function changeGameShortID(tournamentid, currentID, newID, callback) {
-    console.log(currentID);
-    console.log(newID);
     Tournament.update({_id : tournamentid, "games.shortID" : currentID},
             {"$set" : {"games.$.shortID" : newID}}, function(err) {
                 callback(err);
@@ -598,7 +594,7 @@ function changeGameShortID(tournamentid, currentID, newID, callback) {
 }
 
 function changePointScheme(tournamentid, newPointScheme, callback) {
-    console.log(newPointScheme);
+    // console.log(newPointScheme);
     Tournament.update({_id : tournamentid},
             {"$set" : {pointScheme : newPointScheme}}, function(err) {
                 callback(err);

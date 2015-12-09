@@ -154,7 +154,7 @@ teamSchema.methods.getTotalGets = function(tournament) {
             totalGets += pointTotals[values];
         }
     }
-    console.log("Gets: " + totalGets);
+    // console.log("Gets: " + totalGets);
     return totalGets;
 }
 

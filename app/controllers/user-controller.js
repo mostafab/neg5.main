@@ -21,7 +21,7 @@ function validateLocalLogin(credentials, callback) {
                         if (err || result == null) {
                             callback(null, "NONE", null);
                         } else {
-                            console.log("Tournament director found");
+                            // console.log("Tournament director found");
                             callback(null, "OK", result);
                         }
                     });
@@ -34,7 +34,7 @@ function validateLocalLogin(credentials, callback) {
 }
 
 function register(credentials, callback) {
-    console.log(credentials);
+    // console.log(credentials);
     User.findOne({"local.email" : credentials["r_usrname"]}, function(err, result) {
         if (err) {
             console.log(err);
@@ -42,7 +42,7 @@ function register(credentials, callback) {
         } else if (result) {
             callback(null, "EXISTS");
         } else {
-            console.log("Got here");
+            // console.log("Got here");
             makeUser(credentials, function(err) {
                 if (err) {
                     callback(err, "");
