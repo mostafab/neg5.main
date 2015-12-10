@@ -7,12 +7,22 @@ block extrastylesheets
 block content
 
     main(class="cd-main-content" style="background-color:white")
-        div(class="box" style="padding:50px;padding-top:0px")
+        div(class="box" style="padding:50px;padding-top:20px")
 
             div(class="row")
                     div(class="col-md-12")
-                        div(style="margin:20px; margin-bottom:50px")
-                        h2(class="title" style="width:50%") #{tournament.tournament_name} - Team Quick Statistics
+                        div(class="panel-body")
+                            div(class="row" style="")
+                                ul(class="nav nav-pills no-border-radius")
+                                    li(class="active")
+                                        a(href="/home/tournaments/" + tournament.shortID + "/stats/team") Team Standings
+                                    li
+                                        a(href="/home/tournaments/" + tournament.shortID + "/stats/player") Player Standings
+                                    li
+                                        a(href="/home/tournaments/" + tournament.shortID + "/stats/teamfull") Teams Full
+                                    li
+                                        a(href="/home/tournaments/" + tournament.shortID + "/stats/playerfull") Players Full
+                        h2(class="title" style="width:50%") #{tournament.tournament_name} - Team Standings
 
                         br
                         br
@@ -60,5 +70,8 @@ block content
                                                             if headers[j] == "pointTotals"
                                                                 each val, k in pointTypes
                                                                     td #{teamInfo[i].pointTotals[pointTypes[k]]}
+                                                            else if headers[j] == "Team"
+                                                                td
+                                                                    a(href="/home/tournaments/" + tournament.shortID + "/stats/teamfull#" + teamInfo[i][name].toLowerCase().replace(" ", "_")) #{teamInfo[i][name]}
                                                             else
                                                                 td #{teamInfo[i][name]}

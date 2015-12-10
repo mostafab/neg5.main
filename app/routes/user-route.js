@@ -36,15 +36,15 @@ module.exports = function(app, passport) {
         userController.validateLocalLogin(req.body, function(err, valid, user) {
             if (err) {
                 // res.status(500).send("The validation process isn't working right now");
-                res.status(500).render("index", {title : "Quetzal",
+                res.status(500).render("index", {title : "Neg 5",
                                                 message : "Quizbowl for the Cloud",
                                                 errormsg : "The validation process isn't working right now."});
             } else if (valid === "NONE") {
-                res.status(200).render("index", {title : "Quetzal",
+                res.status(200).render("index", {title : "Neg 5",
                                                 message : "Quizbowl for the Cloud",
                                                 errormsg : "There's no one registered under that email."});
             } else if (valid === "INVALID") {
-                res.status(200).render("index", {title : "Quetzal",
+                res.status(200).render("index", {title : "Neg 5",
                                                 message : "Quizbowl for the Cloud",
                                                 errormsg : "Invalid credentials. Please try again."});
             } else {

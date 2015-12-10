@@ -1,0 +1,72 @@
+extends layout
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+
+block content
+
+    main(class="cd-main-content" style="background-color:white")
+        div(class="box" style="padding:50px;padding-top:20px")
+
+            div(class="row")
+                    div(class="col-md-12")
+                        div(class="panel-body")
+                            div(class="row" style="")
+                                ul(class="nav nav-pills no-border-radius")
+                                    li
+                                        a(href="/home/tournaments/" + tournament.shortID + "/stats/team") Team Standings
+                                    li
+                                        a(href="/home/tournaments/" + tournament.shortID + "/stats/player") Player Standings
+                                    li(class="active")
+                                        a(href="/home/tournaments/" + tournament.shortID + "/stats/teamfull") Teams Full
+                                    li
+                                        a(href="/home/tournaments/" + tournament.shortID + "/stats/playerfull") Players Full
+
+                        h2(class="title" style="width:50%") #{tournament.tournament_name} - Full Team Details
+
+                        br
+                        br
+
+                        each team in teamNames
+                            h2(class="title" style="width:20%" id=team.toLowerCase().replace(" ", "_")) #{team}
+                            - var points = Object.keys(tournament.pointScheme);
+                            div(class="table-responsive")
+                                table(class="table table-striped table-bordered table-hover table-condensed")
+                                    thead
+                                        tr
+                                            each stat,i in teamHeaders
+                                                if stat == "pointValues"
+                                                    each val in points
+                                                        th(class="table-head") #{val}
+                                                else
+                                                    th(class="table-head") #{stat}
+
+                                        each game in teamsGames[team]
+                                            tr
+                                                each stat, i in teamHeaders
+                                                    if stat == "pointValues"
+                                                        each val in points
+                                                            td #{game["pointValues"][val]}
+                                                    else
+                                                        td #{game[stat]}
+
+                            div(class="table-responsive")
+                                table(class="table table-striped table-bordered table-hover table-condensed")
+                                    thead
+                                        tr
+                                            each stat, i in playerHeaders
+                                                if stat == "pointTotals"
+                                                    each val in points
+                                                        th(class="table-head") #{val}
+                                                else
+                                                    th(class="table-head") #{stat}
+
+                                        each player in playersInfo[team]
+                                            tr
+                                                each stat, i in playerHeaders
+                                                    if stat == "pointTotals"
+                                                        each val in points
+                                                            td #{player["pointTotals"][val]}
+                                                    else
+                                                        td #{player[stat]}

@@ -9,7 +9,8 @@
 }
 
 .box {
-    background-color : rgba(190, 190, 190, .7);
+    /*background-color : rgba(190, 190, 190, .7);*/
+    background-color: rgb(240, 240, 240);
 }
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
     background-color:rgb(0, 136, 136);
@@ -38,7 +39,7 @@
 }
 
 tr {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     background-color: white;
     border-radius: 10px;
@@ -177,4 +178,10 @@ td {
 .btn-stats {
     background: rgb(0, 136, 136);
     color : white;
+}
+
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
 }

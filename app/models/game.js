@@ -4,7 +4,10 @@ var Schema = mongoose.Schema;
 var gameSchema = new Schema({
     shortID : String,
     round : {type : Number, default : 0, set : function(num) {
-        return Math.floor(num);
+        if (num == null) {
+            return 0;
+        }
+        return num;
     }},
     tossupsheard : {type : Number, default: 20},
     team1 : {

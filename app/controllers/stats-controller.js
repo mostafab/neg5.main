@@ -43,5 +43,24 @@ function getPlayersInfo(tournamentid, callback) {
     });
 }
 
+function getFullTeamsGameInformation(tournamentid, callback) {
+    var teamsInfo = {};
+    var playersInfo = {};
+    Tournament.findOne({shortID : tournamentid}, function(err, result) {
+        if (err) {
+            callback(err, null, {}, {});
+        } else {
+            for (var i = 0; i < result.teams.length; i++) {
+                // teamsInfo.push(result.teams[i].getAllGamesInformation(result));
+                teamsInfo[result.teams[i].team_name] = result.teams[i].getAllGamesInformation(result);
+                playersInfo[result.teams[i].team_name] = result.teams[i].getPlayerStats(result);
+            }
+            // console.log(playersInfo);
+            callback(null, result, teamsInfo, playersInfo);
+        }
+    });
+}
+
 exports.getTeamsInfo = getTeamsInfo;
 exports.getPlayersInfo = getPlayersInfo;
+exports.getFullTeamsGameInformation = getFullTeamsGameInformation;

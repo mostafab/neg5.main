@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var clientsession = require("client-sessions");
 var passport = require("passport");
 var cookieParser = require("cookie-parser");
+var favicon = require("serve-favicon");
 
 module.exports = function() {
     var app = express();
@@ -29,6 +30,7 @@ module.exports = function() {
     app.set("view engine", "jade");
 
     app.use(express.static("./public"));
+
 
     require('../app/routes/index.js')(app, passport);
     require("../app/routes/user-route.js")(app, passport);

@@ -307,17 +307,16 @@ block content
 
                                             div()
                                                 ul(class="nav nav-pills no-border-radius")
-                                                    li(class="active")
-                                                        a(target="_blank" href="/home/tournaments/" + tournament.shortID + "/stats/qteam" class="btn btn-lg btn-stats") Quick Team Stats
                                                     li
-                                                        a(target="_blank" href="/home/tournaments/" + tournament.shortID + "/stats/qplayer" class="btn btn-lg btn-stats") Quick Player Stats
+                                                        a(target="_blank" href="/home/tournaments/" + tournament.shortID + "/stats/team" class="btn btn-lg btn-stats") Team Stats
                                                     li
-                                                        a(target="_blank" href="/home/tournaments/" + tournament.shortID + "/stats/full" class="btn btn-lg btn-stats") Full Report
+                                                        a(target="_blank" href="/home/tournaments/" + tournament.shortID + "/stats/player" class="btn btn-lg btn-stats") Player Stats
+                                                    li
+                                                        a(target="_blank" href="/home/tournaments/" + tournament.shortID + "/stats/teamfull" class="btn btn-lg btn-stats") Full Report
 
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Advanced Statistics Generation
                                     div(class="panel-body")
 
     script(src="/js/tournament-configuration.js")
-    script(src="/js/stats-configuration.js")
     script(src="/js/listjs/list.js")

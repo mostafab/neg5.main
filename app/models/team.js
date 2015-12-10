@@ -127,6 +127,44 @@ teamSchema.methods.getTossupTotals = function(tournament) {
     return pointTotals;
 }
 
+teamSchema.methods.getTossupTotalsOneGame = function(game, tournament) {
+    var pointTotals = {};
+    for (var pointValue in tournament.pointScheme) {
+        if (tournament.pointScheme.hasOwnProperty(pointValue)) {
+            pointTotals[pointValue] = 0;
+        }
+    }
+    if (game.team1.team_id == this._id && game.team1.playerStats) {
+        for (var player in game.team1.playerStats) {
+            if (game.team1.playerStats.hasOwnProperty(player)) {
+                var stats = game.team1.playerStats[player];
+                for (var pointValue in tournament.pointScheme) {
+                    if (tournament.pointScheme.hasOwnProperty(pointValue)) {
+                        if (stats[pointValue] && pointTotals[pointValue] != undefined) {
+                            pointTotals[pointValue] += parseInt(stats[pointValue]);
+                        }
+                    }
+                }
+            }
+        }
+    } else if (game.team2.team_id == this._id && game.team2.playerStats) {
+        for (var player in game.team2.playerStats) {
+            if (game.team2.playerStats.hasOwnProperty(player)) {
+                var stats = game.team2.playerStats[player];
+                for (var pointValue in tournament.pointScheme) {
+                    if (tournament.pointScheme.hasOwnProperty(pointValue)) {
+                        if (stats[pointValue] && pointTotals[pointValue] != undefined) {
+                            pointTotals[pointValue] += parseInt(stats[pointValue]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return pointTotals;
+
+}
+
 teamSchema.methods.getTotalBonusPoints = function(tournament) {
     var pointTotals = this.getTossupTotals(tournament);
     var totalPoints = 0;
@@ -146,6 +184,23 @@ teamSchema.methods.getTotalBonusPoints = function(tournament) {
     return totalPoints;
 }
 
+teamSchema.methods.getBonusPointsOneGame = function(game, tournament) {
+    var pointTotals = this.getTossupTotalsOneGame(game, tournament);
+    var bonusPoints = 0;
+    if (game.team1.team_id == this._id) {
+        bonusPoints += game.team1.score - game.team1.bouncebacks;
+    } else {
+        bonusPoints += game.team2.score - game.team2.bouncebacks;
+    }
+    for (var point in pointTotals) {
+        if (pointTotals.hasOwnProperty(point)) {
+            bonusPoints -= parseInt(point) * parseInt(pointTotals[point]);
+        }
+    }
+    return bonusPoints;
+
+}
+
 teamSchema.methods.getTotalGets = function(tournament) {
     var pointTotals = this.getTossupTotals(tournament);
     var totalGets = 0;
@@ -155,6 +210,17 @@ teamSchema.methods.getTotalGets = function(tournament) {
         }
     }
     // console.log("Gets: " + totalGets);
+    return totalGets;
+}
+
+teamSchema.methods.getTotalGetsOneGame = function(game, tournament) {
+    var pointTotals = this.getTossupTotalsOneGame(game, tournament);
+    var totalGets = 0;
+    for (var values in pointTotals) {
+        if (pointTotals.hasOwnProperty(values) && tournament.pointsTypes[values] != "N") {
+            totalGets += pointTotals[values];
+        }
+    }
     return totalGets;
 }
 
@@ -187,6 +253,15 @@ teamSchema.methods.getOverallPPB = function(tournament) {
         return 0;
     }
     return +(totalBonusPoints / totalGets).toFixed(2);
+}
+
+teamSchema.methods.getPPBOneGame = function(game, tournament) {
+    var bonusPoints = this.getBonusPointsOneGame(game, tournament);
+    var totalGets = this.getTotalGetsOneGame(game, tournament);
+    if (totalGets == 0) {
+        return 0;
+    }
+    return +(bonusPoints / totalGets).toFixed(2);
 }
 
 teamSchema.methods.getAverageMarginOfVictory = function(tournament) {
@@ -222,8 +297,68 @@ teamSchema.methods.getAverageInformation = function(tournament) {
     teamInfo["TUH"] = this.getTossupsHeard(tournament);
     teamInfo["Bonus Points"] = this.getTotalBonusPoints(tournament);
     teamInfo["PPB"]= this.getOverallPPB(tournament);
-
     return teamInfo;
+}
+
+teamSchema.methods.getAllGamesInformation = function(tournament) {
+    var playedGames = [];
+    for (var i = 0; i < tournament.games.length; i++) {
+        var currentGame = tournament.games[i];
+        if (currentGame.team1.team_id == this._id || currentGame.team2.team_id == this._id) {
+            var formattedGame = this.formatGameInformation(currentGame, tournament);
+            playedGames.push(formattedGame);
+        }
+    }
+    return playedGames;
+}
+
+teamSchema.methods.formatGameInformation = function(game, tournament) {
+    var gameinfo = {};
+    gameinfo["Round"] = game.round;
+    if (game.team1.team_id == this._id) {
+        gameinfo["Opponent"] = game.team2.team_name;
+        if (game.team1.score > game.team2.score) {
+            gameinfo["Result"] = "W";
+        } else if (game.team2.score > game.team1.score) {
+            gameinfo["Result"] = "L";
+        } else {
+            gameinfo["Result"] = "T";
+        }
+        gameinfo["Score"] = game.team1.score;
+        gameinfo["Opponent Score"] = game.team2.score;
+        gameinfo.pointValues = this.getTossupTotalsOneGame(game, tournament);
+        gameinfo["TUH"] = game.tossupsheard;
+        gameinfo["Bonus Points"] = this.getBonusPointsOneGame(game, tournament);
+        gameinfo["PPB"] = this.getPPBOneGame(game, tournament);
+    } else {
+        gameinfo["Opponent"] = game.team1.team_name;
+        if (game.team1.score > game.team2.score) {
+            gameinfo["Result"] = "L";
+        } else if (game.team2.score > game.team1.score) {
+            gameinfo["Result"] = "W";
+        } else {
+            gameinfo["Result"] = "T";
+        }
+        gameinfo["Score"] = game.team2.score;
+        gameinfo["Opponent Score"] = game.team1.score;
+        gameinfo.pointValues = this.getTossupTotalsOneGame(game, tournament);
+        gameinfo["TUH"] = game.tossupsheard;
+        gameinfo["Bonus Points"] = this.getBonusPointsOneGame(game, tournament);
+        gameinfo["PPB"] = this.getPPBOneGame(game, tournament);
+    }
+    return gameinfo;
+}
+
+teamSchema.methods.getPlayerStats = function(tournament) {
+    var playerStats = [];
+    var team = this;
+    var filtered = tournament.players.filter(function(player) {
+        return player.teamID == team._id;
+    });
+    for (var i = 0; i < filtered.length; i++) {
+        playerStats.push(filtered[i].getAllInformation(tournament));
+    }
+    return playerStats;
 }
 
 module.exports = mongoose.model("Team", teamSchema);
