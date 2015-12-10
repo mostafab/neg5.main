@@ -46,17 +46,37 @@ function getPlayersInfo(tournamentid, callback) {
 function getFullTeamsGameInformation(tournamentid, callback) {
     var teamsInfo = {};
     var playersInfo = {};
+    var teamTotals = {};
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
-        if (err) {
+        if (err || result == null) {
             callback(err, null, {}, {});
         } else {
             for (var i = 0; i < result.teams.length; i++) {
                 // teamsInfo.push(result.teams[i].getAllGamesInformation(result));
-                teamsInfo[result.teams[i].team_name] = result.teams[i].getAllGamesInformation(result);
-                playersInfo[result.teams[i].team_name] = result.teams[i].getPlayerStats(result);
+                // teamsInfo[result.teams[i].team_name] = result.teams[i].getAllGamesInformation(result);
+                // playersInfo[result.teams[i].team_name] = result.teams[i].getPlayerStats(result);
+                // teamTotals[result.teams[i].team_name] = result.teams[i].getTotalGameStats(result);
+
+                teamsInfo[result.teams[i].shortID] = {team : result.teams[i].team_name, games : result.teams[i].getAllGamesInformation(result)};
+                playersInfo[result.teams[i].shortID] = {team : result.teams[i].team_name, stats : result.teams[i].getPlayerStats(result)};
+                teamTotals[result.teams[i].shortID] = {team : result.teams[i].team_name, stats : result.teams[i].getTotalGameStats(result)};
             }
-            // console.log(playersInfo);
-            callback(null, result, teamsInfo, playersInfo);
+            // console.log(teamTotals);
+            callback(null, result, teamsInfo, playersInfo, teamTotals);
+        }
+    });
+}
+
+function getFullPlayersGameInformation(tournamentid, callback) {
+    var playersInfo = {};
+    Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
+        if (err || tournament == null) {
+
+        } else {
+            for (var i = 0; i < tournament.players.length; i++) {
+                playersInfo[tournament.players[i].shortID] = {name : tournament.players[i].player_name, team : tournament.players[i].team_name, games : tournament.players[i].getAllGamesInformation(tournament)};
+            }
+            callback(null, tournament, playersInfo);
         }
     });
 }
@@ -64,3 +84,4 @@ function getFullTeamsGameInformation(tournamentid, callback) {
 exports.getTeamsInfo = getTeamsInfo;
 exports.getPlayersInfo = getPlayersInfo;
 exports.getFullTeamsGameInformation = getFullTeamsGameInformation;
+exports.getFullPlayersGameInformation = getFullPlayersGameInformation;

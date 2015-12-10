@@ -103,7 +103,7 @@ teamSchema.methods.getTossupTotals = function(tournament) {
                     for (var pointValue in tournament.pointScheme) {
                         if (tournament.pointScheme.hasOwnProperty(pointValue)) {
                             if (stats[pointValue] && pointTotals[pointValue] != undefined) {
-                                pointTotals[pointValue] += parseInt(stats[pointValue]);
+                                pointTotals[pointValue] += parseFloat(stats[pointValue]);
                             }
                         }
                     }
@@ -116,7 +116,7 @@ teamSchema.methods.getTossupTotals = function(tournament) {
                     for (var pointValue in tournament.pointScheme) {
                         if (tournament.pointScheme.hasOwnProperty(pointValue)) {
                             if (stats[pointValue] && pointTotals[pointValue] != undefined) {
-                                pointTotals[pointValue] += parseInt(stats[pointValue]);
+                                pointTotals[pointValue] += parseFloat(stats[pointValue]);
                             }
                         }
                     }
@@ -141,7 +141,7 @@ teamSchema.methods.getTossupTotalsOneGame = function(game, tournament) {
                 for (var pointValue in tournament.pointScheme) {
                     if (tournament.pointScheme.hasOwnProperty(pointValue)) {
                         if (stats[pointValue] && pointTotals[pointValue] != undefined) {
-                            pointTotals[pointValue] += parseInt(stats[pointValue]);
+                            pointTotals[pointValue] += parseFloat(stats[pointValue]);
                         }
                     }
                 }
@@ -154,7 +154,7 @@ teamSchema.methods.getTossupTotalsOneGame = function(game, tournament) {
                 for (var pointValue in tournament.pointScheme) {
                     if (tournament.pointScheme.hasOwnProperty(pointValue)) {
                         if (stats[pointValue] && pointTotals[pointValue] != undefined) {
-                            pointTotals[pointValue] += parseInt(stats[pointValue]);
+                            pointTotals[pointValue] += parseFloat(stats[pointValue]);
                         }
                     }
                 }
@@ -178,7 +178,7 @@ teamSchema.methods.getTotalBonusPoints = function(tournament) {
     }
     for (var point in pointTotals) {
         if (pointTotals.hasOwnProperty(point)) {
-            totalPoints -= parseInt(point) * parseInt(pointTotals[point]);
+            totalPoints -= parseFloat(point) * parseFloat(pointTotals[point]);
         }
     }
     return totalPoints;
@@ -194,7 +194,7 @@ teamSchema.methods.getBonusPointsOneGame = function(game, tournament) {
     }
     for (var point in pointTotals) {
         if (pointTotals.hasOwnProperty(point)) {
-            bonusPoints -= parseInt(point) * parseInt(pointTotals[point]);
+            bonusPoints -= parseFloat(point) * parseFloat(pointTotals[point]);
         }
     }
     return bonusPoints;
@@ -309,6 +309,9 @@ teamSchema.methods.getAllGamesInformation = function(tournament) {
             playedGames.push(formattedGame);
         }
     }
+    playedGames.sort(function(first, second) {
+        return first["Round"] - second["Round"];
+    });
     return playedGames;
 }
 
@@ -359,6 +362,23 @@ teamSchema.methods.getPlayerStats = function(tournament) {
         playerStats.push(filtered[i].getAllInformation(tournament));
     }
     return playerStats;
+}
+
+teamSchema.methods.getTotalGameStats = function(tournament) {
+    var totals = this.getAverageInformation(tournament);
+    var record = this.getRecord(tournament);
+    var gp = 0;
+    // console.log(record);
+    for (var total in record) {
+        if (record.hasOwnProperty(total)) {
+            gp += record[total];
+        }
+    }
+    totals["Score"] = totals["PPG"] * gp;
+    totals["Opponent Score"] = totals["PAPG"] * gp;
+    totals.pointValues = totals.pointTotals;
+    // console.log(totals);
+    return totals;
 }
 
 module.exports = mongoose.model("Team", teamSchema);

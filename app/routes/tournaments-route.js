@@ -78,6 +78,7 @@ module.exports = function(app) {
                 tournamentController.addTeamToTournament(id, req.body, function(err, teams, newTeam) {
                     if (err) {
                         // DO STUFF
+                        res.send({"teams" : [], "newTeam" : {}});
                     } else {
                         res.send({"teams" : teams, "newTeam" : newTeam});
                     }
@@ -267,7 +268,7 @@ module.exports = function(app) {
                 // console.log("Session email: " + req.session.director.email);
                 tournamentController.addTournament(req.session.director.email, name, date, location, description, questionset, function(err) {
                     if (err) {
-                        res.redirect("/");
+                        res.redirect("/home/tournaments/create");
                     } else {
                         res.redirect("/home/tournaments");
                     }
@@ -278,7 +279,7 @@ module.exports = function(app) {
     app.route("/home/tournaments/getplayers")
         .get(function(req, res, next) {
             if (!req.session.director) {
-                res.redirect("/");
+                res.status(401).send({players : [], pointScheme : null});
             } else {
                 var id = req.query["tournamentid"];
                 var teamname = req.query["teamname"];
@@ -296,7 +297,6 @@ module.exports = function(app) {
 
     app.get("/home/tournaments/:tid/teams/:teamid", function(req, res) {
         // Add check for session here
-        // console.log(req.params);
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var team = null;
             if (result) {

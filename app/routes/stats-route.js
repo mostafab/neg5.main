@@ -37,21 +37,21 @@ module.exports = function(app) {
     });
 
     app.get("/home/tournaments/:tid/stats/teamfull", function(req, res, next) {
-        statsController.getFullTeamsGameInformation(req.params.tid, function(err, tournament, teamsGames, playersInfo) {
+        statsController.getFullTeamsGameInformation(req.params.tid, function(err, tournament, teamsGames, playersInfo, teamTotals) {
             if (err) {
                 res.send(err);
             } else {
                 // console.log(teamsGames);
                 var teamNames = Object.keys(teamsGames);
                 if (teamNames.length == 0) {
-                    res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, tournament : tournament, teamNames : [], teamHeaders : [], playerHeaders : []});
+                    res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals, tournament : tournament, teamNames : [], teamHeaders : [], playerHeaders : []});
                 } else {
                     if (teamsGames[teamNames[0]].length == 0) {
-                        res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, tournament : tournament, teamNames : [], teamHeaders : [], playerHeaders : []});
+                        res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals, tournament : tournament, teamNames : [], teamHeaders : [], playerHeaders : []});
                     } else {
                         var teamHeaders = Object.keys(teamsGames[teamNames[0]][0]);
                         if (playersInfo[teamNames[0]].length == 0) {
-                            res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, tournament : tournament, teamNames : teamNames, teamHeaders : teamHeaders, playerHeaders : []});
+                            res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals, tournament : tournament, teamNames : teamNames, teamHeaders : teamHeaders, playerHeaders : []});
                         } else {
                             var playerHeaders = [];
                             var i = 0;
@@ -67,11 +67,21 @@ module.exports = function(app) {
                                 }
                             }
                             //console.log(playerHeaders);
-                            res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, tournament : tournament, teamNames : teamNames, teamHeaders : teamHeaders, playerHeaders : playerHeaders});
+                            res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals, tournament : tournament, teamNames : teamNames, teamHeaders : teamHeaders, playerHeaders : playerHeaders});
                         }
                     }
 
                 }
+            }
+        });
+    });
+
+    app.get("/home/tournaments/:tid/stats/playerfull", function(req, res, next) {
+        statsController.getFullPlayersGameInformation(req.params.tid, function(err, tournament, playersInfo) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.render("full-player", {playersInfo : playersInfo, tournament : tournament});
             }
         });
     });

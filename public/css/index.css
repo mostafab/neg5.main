@@ -59,7 +59,7 @@ a {
 }
 
 .infofield {
-    border-radius: 3px;
+    border-radius: 14px;
     width: 60%;
     color: black;
     font-weight: bold;
@@ -103,8 +103,8 @@ a {
 }
 
 .btn {
-    background-color: transparent;
-    border-radius: 3px;
+    /*background-color: transparent;*/
+    border-radius: 14px;
     padding: 15px 22px;
     font-size: 24px;
     line-height: 1.33;
