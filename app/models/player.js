@@ -246,7 +246,7 @@ playerSchema.methods.getAllInformation = function(tournament) {
     playerInfo["TUH"] = this.getTossupsHeard(tournament);
     playerInfo["Pts"] = this.getTotalPoints(tournament);
     playerInfo["PPG"] = this.getPointsPerGame(tournament);
-    
+
     return {id : this.shortID, stats : playerInfo};
 }
 
@@ -292,6 +292,11 @@ playerSchema.methods.formatGameInformation = function(game, tournament) {
     gameinfo["TUH"] = this.getTossupHeardOneGame(game);
     gameinfo["Pts"] = this.getTotalPointsOneGame(game, tournament);
     return gameinfo;
+}
+
+playerSchema.methods.getTotalGameStats = function(tournament) {
+    var stats = this.getAllInformation(tournament).stats;
+    return stats;
 }
 
 module.exports = mongoose.model("Player", playerSchema);

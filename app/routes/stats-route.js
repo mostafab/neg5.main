@@ -38,11 +38,12 @@ module.exports = function(app) {
     });
 
     app.get("/home/tournaments/:tid/stats/playerfull", function(req, res, next) {
-        statsController.getFullPlayersGameInformation(req.params.tid, function(err, tournament, playersInfo) {
+        statsController.getFullPlayersGameInformation(req.params.tid, function(err, tournament, playersInfo, playerTotals) {
             if (err) {
                 res.send(err);
             } else {
-                res.render("full-player", {playersInfo : playersInfo, tournament : tournament});
+                // console.log(playerTotals);
+                res.render("full-player", {playersInfo : playersInfo, tournament : tournament, playerTotals : playerTotals});
             }
         });
     });

@@ -378,7 +378,7 @@ teamSchema.methods.getTotalGameStats = function(tournament) {
     totals.stats["Score"] = totals.stats["PPG"] * gp;
     totals.stats["Opponent Score"] = totals.stats["PAPG"] * gp;
     totals.stats.pointValues = totals.stats.pointTotals;
-    console.log(totals.stats);
+    // console.log(totals.stats);
     return totals.stats;
 }
 

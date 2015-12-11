@@ -57,8 +57,6 @@ function getFullTeamsGameInformation(tournamentid, callback) {
                 playersInfo[result.teams[i].shortID] = {team : result.teams[i].team_name, stats : result.teams[i].getPlayerStats(result)};
                 teamTotals[result.teams[i].shortID] = {team : result.teams[i].team_name, stats : result.teams[i].getTotalGameStats(result)};
             }
-            // console.log("Team Totals:");
-            // console.log(teamTotals);
             callback(null, result, teamsInfo, playersInfo, teamTotals);
         }
     });
@@ -66,14 +64,16 @@ function getFullTeamsGameInformation(tournamentid, callback) {
 
 function getFullPlayersGameInformation(tournamentid, callback) {
     var playersInfo = {};
+    var playerTotals = {};
     Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
         if (err || tournament == null) {
 
         } else {
             for (var i = 0; i < tournament.players.length; i++) {
                 playersInfo[tournament.players[i].shortID] = {name : tournament.players[i].player_name, team : tournament.players[i].team_name, games : tournament.players[i].getAllGamesInformation(tournament)};
+                playerTotals[tournament.players[i].shortID] = tournament.players[i].getTotalGameStats(tournament);
             }
-            callback(null, tournament, playersInfo);
+            callback(null, tournament, playersInfo, playerTotals);
         }
     });
 }
