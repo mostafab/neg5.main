@@ -62,11 +62,10 @@ td {
 
 .statbox {
     margin:20px;
-    padding:10px;
-    padding-right:20px;
-    padding-left:20px;
-    background-color:#2C3136;
-    border-radius:10px
+    padding:20px;
+    padding-bottom: 0px;
+    background-color:rgb(212, 212, 212);
+    border-radius: 5px;
 }
 
 ::-webkit-input-placeholder {
