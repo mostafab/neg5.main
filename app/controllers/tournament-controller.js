@@ -52,6 +52,12 @@ function findTournamentById(id, callback) {
         if (err) {
             callback(err, null);
         } else {
+            result.games.sort(function(game1, game2) {
+                return game1.round - game2.round;
+            });
+            result.teams.sort(function(team1, team2) {
+                return team1.team_name.localeCompare(team2.team_name);
+            });
             callback(null, result);
         }
     });

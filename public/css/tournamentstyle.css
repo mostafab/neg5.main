@@ -60,6 +60,15 @@ td {
     background: rgb(0, 136, 136);
 }
 
+.statbox {
+    margin:20px;
+    padding:10px;
+    padding-right:20px;
+    padding-left:20px;
+    background-color:#2C3136;
+    border-radius:10px
+}
+
 ::-webkit-input-placeholder {
    color: white;
    font-weight: bold;
