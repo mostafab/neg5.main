@@ -42,13 +42,18 @@ html
     //- Declaration
     mixin navbar
         header(class="cd-main-header")
-            a(href="#0" class="cd-nav-trigger") Menu
+            a(href="#0" class="") Menu
                 span
 
             nav(class="cd-nav")
-                ul(class="cd-top-nav")
-                    li()
-                        a(href="/about") About
+                ul
+                    li(class="has-children overview active")
+                        ul()
+                            li(style="padding:15px;background-color:transparent")
+                                a(href="/about") About Neg 5
+
+                                a()
+                                    i(class="fa fa-github")
 
 
 

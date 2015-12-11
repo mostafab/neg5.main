@@ -54,6 +54,10 @@ module.exports = function(app, passport) {
         });
     });
 
+    app.get("/auth/local", function(req, res, next) {
+        res.redirect("/");
+    });
+
 
     app.get("/home", function(req, res, next) {
         // console.log(req.session);

@@ -66,7 +66,7 @@ $(document).ready(function() {
             left : "0%"
         }, 500);
         // $("#registerWindow").css("left", "0%");
-        console.log($("#registerWindow").css("left"));
+        // console.log($("#registerWindow").css("left"));
 
         $("#loginbox").animate({
             left : "-200%"
