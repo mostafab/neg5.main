@@ -246,8 +246,8 @@ playerSchema.methods.getAllInformation = function(tournament) {
     playerInfo["TUH"] = this.getTossupsHeard(tournament);
     playerInfo["Pts"] = this.getTotalPoints(tournament);
     playerInfo["PPG"] = this.getPointsPerGame(tournament);
-
-    return playerInfo;
+    
+    return {id : this.shortID, stats : playerInfo};
 }
 
 playerSchema.methods.getAllGamesInformation = function(tournament) {

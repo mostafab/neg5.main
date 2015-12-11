@@ -297,7 +297,7 @@ teamSchema.methods.getAverageInformation = function(tournament) {
     teamInfo["TUH"] = this.getTossupsHeard(tournament);
     teamInfo["Bonus Points"] = this.getTotalBonusPoints(tournament);
     teamInfo["PPB"]= this.getOverallPPB(tournament);
-    return teamInfo;
+    return {id : this.shortID, stats : teamInfo};
 }
 
 teamSchema.methods.getAllGamesInformation = function(tournament) {
@@ -374,11 +374,12 @@ teamSchema.methods.getTotalGameStats = function(tournament) {
             gp += record[total];
         }
     }
-    totals["Score"] = totals["PPG"] * gp;
-    totals["Opponent Score"] = totals["PAPG"] * gp;
-    totals.pointValues = totals.pointTotals;
-    // console.log(totals);
-    return totals;
+    // console.log(gp);
+    totals.stats["Score"] = totals.stats["PPG"] * gp;
+    totals.stats["Opponent Score"] = totals.stats["PAPG"] * gp;
+    totals.stats.pointValues = totals.stats.pointTotals;
+    console.log(totals.stats);
+    return totals.stats;
 }
 
 module.exports = mongoose.model("Team", teamSchema);

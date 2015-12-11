@@ -9,13 +9,8 @@ module.exports = function(app) {
             if (err) {
                 res.send(err);
             } else {
-                if (teamInfo.length == 0) {
-                    res.render("quick-teams", {teamInfo : teamInfo, tournament : tournament, headers : [], pointTypes : []});
-                } else {
-                    var headers = Object.keys(teamInfo[0]);
-                    var pointTypes = Object.keys(teamInfo[0].pointTotals);
-                    res.render("quick-teams", {teamInfo : teamInfo, tournament : tournament, headers : headers, pointTypes : pointTypes});
-                }
+                // console.log(teamInfo);
+                res.render("quick-teams", {tournament : tournament, teamInfo : teamInfo});
             }
         });
     });
@@ -25,13 +20,8 @@ module.exports = function(app) {
             if (err) {
                 res.send(err);
             } else {
-                if (playersInfo.length == 0) {
-                    res.render("quick-players", {playersInfo : playersInfo, tournament : tournament, headers : [], pointTypes : []});
-                } else {
-                    var headers = Object.keys(playersInfo[0]);
-                    var pointTypes = Object.keys(playersInfo[0].pointTotals);
-                    res.render("quick-players", {playersInfo : playersInfo, tournament : tournament, headers : headers, pointTypes : pointTypes});
-                }
+                // console.log(playersInfo);
+                res.render("quick-players", {tournament : tournament, playersInfo : playersInfo});
             }
         });
     });
@@ -41,37 +31,8 @@ module.exports = function(app) {
             if (err) {
                 res.send(err);
             } else {
-                // console.log(teamsGames);
-                var teamNames = Object.keys(teamsGames);
-                if (teamNames.length == 0) {
-                    res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals, tournament : tournament, teamNames : [], teamHeaders : [], playerHeaders : []});
-                } else {
-                    if (teamsGames[teamNames[0]].length == 0) {
-                        res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals, tournament : tournament, teamNames : [], teamHeaders : [], playerHeaders : []});
-                    } else {
-                        var teamHeaders = Object.keys(teamsGames[teamNames[0]][0]);
-                        if (playersInfo[teamNames[0]].length == 0) {
-                            res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals, tournament : tournament, teamNames : teamNames, teamHeaders : teamHeaders, playerHeaders : []});
-                        } else {
-                            var playerHeaders = [];
-                            var i = 0;
-                            var emptyPlayers = true;
-                            while (emptyPlayers) {
-                                if (playersInfo[teamNames[i]].length != 0) {
-                                    playerHeaders = Object.keys(playersInfo[teamNames[i]][0]);
-                                    emptyPlayers = false;
-                                }
-                                i++;
-                                if (i == teamNames.length) {
-                                    emptyPlayers = false;
-                                }
-                            }
-                            //console.log(playerHeaders);
-                            res.render("full-teams", {teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals, tournament : tournament, teamNames : teamNames, teamHeaders : teamHeaders, playerHeaders : playerHeaders});
-                        }
-                    }
-
-                }
+                // console.log(teamTotals);
+                res.render("full-teams", {tournament : tournament, teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals});
             }
         });
     });

@@ -11,14 +11,15 @@ function getTeamsInfo(tournamentid, callback) {
             for (var i = 0; i < result.teams.length; i++) {
                 teamInfo.push(result.teams[i].getAverageInformation(result));
             }
+            // console.log(teamInfo);
             teamInfo.sort(function(first, second) {
-                if (second["Win %"] == first["Win %"]) {
-                    if (second["PPG"] == first["PPG"]) {
-                        return second["PPB"] - first["PPB"];
+                if (second.stats["Win %"] == first.stats["Win %"]) {
+                    if (second.stats["PPG"] == first.stats["PPG"]) {
+                        return second.stats["PPB"] - first.stats["PPB"];
                     }
-                    return second["PPG"] - first["PPG"];
+                    return second.stats["PPG"] - first.stats["PPG"];
                 } else {
-                    return second["Win %"] - first["Win %"];
+                    return second.stats["Win %"] - first.stats["Win %"];
                 }
             });
             callback(null, result, teamInfo);
@@ -36,7 +37,7 @@ function getPlayersInfo(tournamentid, callback) {
                 playersInfo.push(result.players[i].getAllInformation(result));
             }
             playersInfo.sort(function(first, second) {
-                return second["PPG"] - first["PPG"];
+                return second.stats["PPG"] - first.stats["PPG"];
             });
             callback(null, result, playersInfo);
         }
@@ -52,15 +53,11 @@ function getFullTeamsGameInformation(tournamentid, callback) {
             callback(err, null, {}, {});
         } else {
             for (var i = 0; i < result.teams.length; i++) {
-                // teamsInfo.push(result.teams[i].getAllGamesInformation(result));
-                // teamsInfo[result.teams[i].team_name] = result.teams[i].getAllGamesInformation(result);
-                // playersInfo[result.teams[i].team_name] = result.teams[i].getPlayerStats(result);
-                // teamTotals[result.teams[i].team_name] = result.teams[i].getTotalGameStats(result);
-
                 teamsInfo[result.teams[i].shortID] = {team : result.teams[i].team_name, games : result.teams[i].getAllGamesInformation(result)};
                 playersInfo[result.teams[i].shortID] = {team : result.teams[i].team_name, stats : result.teams[i].getPlayerStats(result)};
                 teamTotals[result.teams[i].shortID] = {team : result.teams[i].team_name, stats : result.teams[i].getTotalGameStats(result)};
             }
+            // console.log("Team Totals:");
             // console.log(teamTotals);
             callback(null, result, teamsInfo, playersInfo, teamTotals);
         }
