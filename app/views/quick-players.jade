@@ -32,7 +32,12 @@ block content
                             - var statHeaders = Object.keys(playersInfo[0].stats)
                             - var points = Object.keys(tournament.pointScheme);
 
-                            div(class="panel panel-default" id="players")
+                            div(class="panel panel-default" id="players" style="background-color:transparent;border-width:0")
+                                div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
+
+                                    input(type="text" class="form-control search" placeholder="Filter List")
+                                    span(class="input-group-addon")
+                                        i(class="glyphicon glyphicon-search")
                                 table(class="table table-striped table-bordered table-hover table-condensed" id="playerstatstable")
                                     thead
                                         tr

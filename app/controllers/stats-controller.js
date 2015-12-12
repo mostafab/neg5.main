@@ -27,6 +27,41 @@ function getTeamsInfo(tournamentid, callback) {
     });
 }
 
+function getFilteredTeamsInformation(tournamentid, constraints, callback) {
+    // console.log(constraints);
+    var teamInfo = [];
+    Tournament.findOne({shortID : tournamentid}, function(err, result) {
+        if (err) {
+            callback(err, result, {});
+        } else {
+            if (constraints.teams) {
+                for (var i = 0; i < result.teams.length; i++) {
+                    if (constraints.teams.indexOf(result.teams[i].shortID) != -1) {
+                        // console.log(result.teams[i].team_name);
+                        teamInfo.push(result.teams[i].getAverageInformationFiltered(result, constraints));
+                    }
+                }
+            } else {
+                for (var i = 0; i < result.teams.length; i++) {
+                    teamInfo.push(result.teams[i].getAverageInformationFiltered(result, constraints));
+                }
+            }
+            teamInfo.sort(function(first, second) {
+                if (second.stats["Win %"] == first.stats["Win %"]) {
+                    if (second.stats["PPG"] == first.stats["PPG"]) {
+                        return second.stats["PPB"] - first.stats["PPB"];
+                    }
+                    return second.stats["PPG"] - first.stats["PPG"];
+                } else {
+                    return second.stats["Win %"] - first.stats["Win %"];
+                }
+            });
+            callback(null, result, teamInfo);
+        }
+    });
+
+}
+
 function getPlayersInfo(tournamentid, callback) {
     var playersInfo = [];
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
@@ -82,3 +117,4 @@ exports.getTeamsInfo = getTeamsInfo;
 exports.getPlayersInfo = getPlayersInfo;
 exports.getFullTeamsGameInformation = getFullTeamsGameInformation;
 exports.getFullPlayersGameInformation = getFullPlayersGameInformation;
+exports.getFilteredTeamsInformation = getFilteredTeamsInformation;

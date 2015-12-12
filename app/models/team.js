@@ -29,6 +29,27 @@ teamSchema.methods.getRecord = function(tournament) {
     return record;
 }
 
+teamSchema.methods.getRecordFiltered = function(tournament, constraints) {
+    var record = {"wins" : 0, "losses" : 0, "ties" : 0};
+    var filteredGames = tournament.games.filter(function(game) {
+        return game.round >= constraints.minround && game.round <= constraints.maxround;
+    });
+    for (var i = 0; i < filteredGames.length; i++) {
+        var current = filteredGames[i];
+        if ((current.team1.team_id == this._id && current.team1.score > current.team2.score)
+                || (current.team2.team_id == this._id && current.team2.score > current.team1.score)) {
+            record.wins++;
+        } else if ((current.team1.team_id == this._id && current.team1.score < current.team2.score)
+                || (current.team2.team_id == this._id && current.team2.score < current.team1.score)) {
+            record.losses++;
+        } else if ((current.team1.team_id == this._id && current.team1.score == current.team2.score)
+                || (current.team2.team_id == this._id && current.team2.score == current.team1.score)) {
+            record.ties++;
+        }
+    }
+    return record;
+}
+
 teamSchema.methods.getWinPercentage = function(record) {
     if (record.wins + record.losses == 0) {
         return 0;
@@ -42,6 +63,29 @@ teamSchema.methods.getPointsPerGame = function(tournament) {
     totalGames = 0;
     for (var i = 0; i < tournament.games.length; i++) {
         var currentGame = tournament.games[i];
+        if (currentGame.team1.team_id == this._id) {
+            totalPoints += currentGame.team1.score;
+            totalGames++;
+        } else if (currentGame.team2.team_id == this._id) {
+            totalPoints += currentGame.team2.score;
+            totalGames++;
+        }
+    }
+    if (totalGames == 0) {
+        return 0;
+    } else {
+        return (totalPoints / totalGames).toFixed(2);
+    }
+}
+
+teamSchema.methods.getPointsPerGameFiltered = function(tournament, constraints) {
+    totalPoints = 0;
+    totalGames = 0;
+    var filteredGames = tournament.games.filter(function(game) {
+        return game.round >= constraints.minround && game.round <= constraints.maxround;
+    });
+    for (var i = 0; i < filteredGames.length; i++) {
+        var currentGame = filteredGames[i];
         if (currentGame.team1.team_id == this._id) {
             totalPoints += currentGame.team1.score;
             totalGames++;
@@ -77,6 +121,29 @@ teamSchema.methods.getOpponentPPG = function(tournament) {
     }
 }
 
+teamSchema.methods.getOpponentPPGFiltered = function(tournament, constraints) {
+    totalPoints = 0;
+    totalGames = 0;
+    var filteredGames = tournament.games.filter(function(game) {
+        return game.round >= constraints.minround && game.round <= constraints.maxround;
+    });
+    for (var i = 0; i < filteredGames.length; i++) {
+        var currentGame = filteredGames[i];
+        if (currentGame.team1.team_id == this._id) {
+            totalPoints += currentGame.team2.score;
+            totalGames++;
+        } else if (currentGame.team2.team_id == this._id) {
+            totalPoints += currentGame.team1.score;
+            totalGames++;
+        }
+    }
+    if (totalGames == 0) {
+        return 0;
+    } else {
+        return +(totalPoints / totalGames).toFixed(2);
+    }
+}
+
 teamSchema.methods.getTossupTotals = function(tournament) {
     var pointTotals = {};
     for (var pointValue in tournament.pointScheme) {
@@ -84,18 +151,51 @@ teamSchema.methods.getTossupTotals = function(tournament) {
             pointTotals[pointValue] = 0;
         }
     }
-    // for (var i = 0; i < tournament.players.length; i++) {
-    //     var currentPlayer = tournament.players[i];
-    //     if (currentPlayer.teamID == this._id) {
-    //         for (var pointValue in tournament.pointScheme) {
-    //             if (tournament.pointScheme.hasOwnProperty(pointValue) && currentPlayer.pointValues && currentPlayer.pointValues[pointValue] != null) {
-    //                 pointTotals[pointValue] += currentPlayer.pointValues[pointValue];
-    //             }
-    //         }
-    //     }
-    // }
     for (var i = 0; i < tournament.games.length; i++) {
         var current = tournament.games[i];
+        if (current.team1.team_id == this._id && current.team1.playerStats) {
+            for (var player in current.team1.playerStats) {
+                if (current.team1.playerStats.hasOwnProperty(player)) {
+                    var stats = current.team1.playerStats[player];
+                    for (var pointValue in tournament.pointScheme) {
+                        if (tournament.pointScheme.hasOwnProperty(pointValue)) {
+                            if (stats[pointValue] && pointTotals[pointValue] != undefined) {
+                                pointTotals[pointValue] += parseFloat(stats[pointValue]);
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (current.team2.team_id == this._id && current.team2.playerStats) {
+            for (var player in current.team2.playerStats) {
+                if (current.team2.playerStats.hasOwnProperty(player)) {
+                    var stats = current.team2.playerStats[player];
+                    for (var pointValue in tournament.pointScheme) {
+                        if (tournament.pointScheme.hasOwnProperty(pointValue)) {
+                            if (stats[pointValue] && pointTotals[pointValue] != undefined) {
+                                pointTotals[pointValue] += parseFloat(stats[pointValue]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return pointTotals;
+}
+
+teamSchema.methods.getTossupTotalsFiltered = function(tournament, constraints) {
+    var pointTotals = {};
+    for (var pointValue in tournament.pointScheme) {
+        if (tournament.pointScheme.hasOwnProperty(pointValue)) {
+            pointTotals[pointValue] = 0;
+        }
+    }
+    var filteredGames = tournament.games.filter(function(game) {
+        return game.round >= constraints.minround && game.round <= constraints.maxround;
+    });
+    for (var i = 0; i < filteredGames.length; i++) {
+        var current = filteredGames[i];
         if (current.team1.team_id == this._id && current.team1.playerStats) {
             for (var player in current.team1.playerStats) {
                 if (current.team1.playerStats.hasOwnProperty(player)) {
@@ -184,6 +284,28 @@ teamSchema.methods.getTotalBonusPoints = function(tournament) {
     return totalPoints;
 }
 
+teamSchema.methods.getTotalBonusPointsFiltered = function(tournament, constraints) {
+    var filteredGames = tournament.games.filter(function(game) {
+        return game.round >= constraints.minround && game.round <= constraints.maxround;
+    });
+    var pointTotals = this.getTossupTotalsFiltered(tournament, constraints);
+    var totalPoints = 0;
+    for (var i = 0; i < filteredGames.length; i++) {
+        var currentGame = filteredGames[i];
+        if (currentGame.team1.team_id == this._id) {
+            totalPoints += currentGame.team1.score - currentGame.team1.bouncebacks;
+        } else if (currentGame.team2.team_id == this._id) {
+            totalPoints += currentGame.team2.score - currentGame.team2.bouncebacks;
+        }
+    }
+    for (var point in pointTotals) {
+        if (pointTotals.hasOwnProperty(point)) {
+            totalPoints -= parseFloat(point) * parseFloat(pointTotals[point]);
+        }
+    }
+    return totalPoints;
+}
+
 teamSchema.methods.getBonusPointsOneGame = function(game, tournament) {
     var pointTotals = this.getTossupTotalsOneGame(game, tournament);
     var bonusPoints = 0;
@@ -203,6 +325,18 @@ teamSchema.methods.getBonusPointsOneGame = function(game, tournament) {
 
 teamSchema.methods.getTotalGets = function(tournament) {
     var pointTotals = this.getTossupTotals(tournament);
+    var totalGets = 0;
+    for (var values in pointTotals) {
+        if (pointTotals.hasOwnProperty(values) && tournament.pointsTypes[values] != "N") {
+            totalGets += pointTotals[values];
+        }
+    }
+    // console.log("Gets: " + totalGets);
+    return totalGets;
+}
+
+teamSchema.methods.getTotalGetsFiltered = function(tournament, constraints) {
+    var pointTotals = this.getTossupTotalsFiltered(tournament, constraints);
     var totalGets = 0;
     for (var values in pointTotals) {
         if (pointTotals.hasOwnProperty(values) && tournament.pointsTypes[values] != "N") {
@@ -246,9 +380,32 @@ teamSchema.methods.getTossupsHeard = function(tournament) {
     return totalTossups;
 }
 
+teamSchema.methods.getTossupsHeardFiltered = function(tournament, constraints) {
+    totalTossups = 0;
+    var filteredGames = tournament.games.filter(function(game) {
+        return game.round >= constraints.minround && game.round <= constraints.maxround;
+    });
+    for (var i = 0; i < filteredGames.length; i++) {
+        var currentGame = filteredGames[i];
+        if (currentGame.team1.team_id == this._id || currentGame.team2.team_id == this._id) {
+            totalTossups += currentGame.tossupsheard;
+        }
+    }
+    return totalTossups;
+}
+
 teamSchema.methods.getOverallPPB = function(tournament) {
     var totalBonusPoints = this.getTotalBonusPoints(tournament);
     var totalGets = this.getTotalGets(tournament);
+    if (totalGets == 0) {
+        return 0;
+    }
+    return +(totalBonusPoints / totalGets).toFixed(2);
+}
+
+teamSchema.methods.getOverallPPBFiltered = function(tournament, constraints) {
+    var totalBonusPoints = this.getTotalBonusPointsFiltered(tournament, constraints);
+    var totalGets = this.getTotalGetsFiltered(tournament, constraints);
     if (totalGets == 0) {
         return 0;
     }
@@ -268,6 +425,10 @@ teamSchema.methods.getAverageMarginOfVictory = function(tournament) {
     return +(this.getPointsPerGame(tournament) - this.getOpponentPPG(tournament)).toFixed(3);
 }
 
+teamSchema.methods.getAverageMarginOfVictoryFiltered = function(tournament, constraints) {
+    return +(this.getPointsPerGameFiltered(tournament, constraints) - this.getOpponentPPGFiltered(tournament, constraints)).toFixed(3);
+}
+
 teamSchema.methods.getTotalBouncebackPoints = function(tournament) {
     var totalBouncebackPoints = 0;
     for (var i = 0; i < tournament.games.length; i++) {
@@ -279,6 +440,25 @@ teamSchema.methods.getTotalBouncebackPoints = function(tournament) {
         }
     }
     return totalBouncebackPoints;
+}
+
+teamSchema.methods.getAverageInformationFiltered = function(tournament, constraints) {
+    var record = this.getRecordFiltered(tournament, constraints);
+    var teamInfo = {};
+    teamInfo["Team"] = this.team_name;
+    teamInfo["Division"] = this.division;
+    teamInfo["W"] = record.wins;
+    teamInfo["L"] = record.losses;
+    teamInfo["T"] = record.ties;
+    teamInfo["Win %"] = this.getWinPercentage(record);
+    teamInfo["PPG"] = this.getPointsPerGameFiltered(tournament, constraints);
+    teamInfo["PAPG"] = this.getOpponentPPGFiltered(tournament, constraints);
+    teamInfo["Margin"] = this.getAverageMarginOfVictoryFiltered(tournament, constraints);
+    teamInfo.pointTotals = this.getTossupTotalsFiltered(tournament, constraints);
+    teamInfo["TUH"] = this.getTossupsHeardFiltered(tournament, constraints);
+    teamInfo["Bonus Points"] = this.getTotalBonusPointsFiltered(tournament, constraints);
+    teamInfo["PPB"] = this.getOverallPPBFiltered(tournament, constraints);
+    return {id : this.shortID, stats : teamInfo};
 }
 
 teamSchema.methods.getAverageInformation = function(tournament) {

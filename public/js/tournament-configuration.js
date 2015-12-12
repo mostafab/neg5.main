@@ -78,7 +78,7 @@ $(document).ready(function() {
     });
 
     $(".deleteteambutton").click(function(e) {
-        console.log($(this).parent().serialize());
+        // console.log($(this).parent().serialize());
         removeTeam($(this).parent().serialize(), $(this));
     });
 
@@ -96,13 +96,17 @@ $(document).ready(function() {
         editTournamentAJAX();
     });
 
+    $(".custombutton").click(function(e) {
+        generateCustomStatsAJAX(e);
+    });
+
     $("#playerstatstable th").each(function(index, head) {
         // console.log($(head).text());
         playerOptions.valueNames.push($(head).text());
     });
     playerList = new List("players", playerOptions);
 
-    
+
 
 });
 
@@ -250,6 +254,27 @@ function editTournamentAJAX() {
 
         }
     });
+}
+
+function generateCustomStatsAJAX(e) {
+    var eventID = e.target.id;
+    if (eventID == "customteam") {
+        var action = $("#filterstatsform").attr("action").replace("players", "teams");
+        $("#filterstatsform").attr("action", action);
+    } else {
+        var action = $("#filterstatsform").attr("action").replace("teams", "players");
+        $("#filterstatsform").attr("action", action);
+    }
+    console.log($("#filterstatsform").attr("action"));
+    $.ajax({
+        url : $("#filterstatsform").attr("action"),
+        type : "POST",
+        data : $("#filterstatsform").serialize(),
+        success : function(databack, status, xhr) {
+            displayTeamCustomStats(databack);
+        }
+    });
+    // $("#filterstatsform").submit();
 }
 
 function createPlayerInputField() {
@@ -402,4 +427,80 @@ function formatDivisionsForm() {
             currentDivisonNum++;
         }
     });
+}
+
+function displayTeamCustomStats(teamData) {
+    $("#customstatsdiv").empty();
+    var teamInfo = teamData.teamInfo;
+    var tournament = teamData.tournament;
+    var points = Object.keys(tournament.pointScheme);
+    var html = "";
+    if (tournament.divisions.length == 0) {
+        if (teamInfo.length != 0) {
+            var statHeaders = Object.keys(teamInfo[0].stats);
+            html += "<div class='panel panel-default'><table class='table table-striped table-bordered table-hover table-condensed'>";
+            html += "<thead><tr>";
+            for (var i = 0; i < statHeaders.length; i++) {
+                if (statHeaders[i] == "pointTotals") {
+                    for (var j = 0; j < points.length; j++) {
+                        html += "<th class='table-head'>" + points[j] + "</th>";
+                    }
+                } else {
+                    html += "<th class='table-head'>" + statHeaders[i] + "</th>";
+                }
+            }
+            html += "</tr></thead><tbody>";
+            for (var i = 0; i < teamInfo.length; i++) {
+                html += "<tr>";
+                for (var j = 0; j < statHeaders.length; j++) {
+                    if (statHeaders[j] == "pointTotals") {
+                        for (var k = 0; k < points.length; k++) {
+                            html  += "<td>" + teamInfo[i].stats.pointTotals[points[k]] + "</td>";
+                        }
+                    } else {
+                        html += "<td>" + teamInfo[i].stats[statHeaders[j]] + "</td>";
+                    }
+                }
+                html += "</tr>";
+            }
+            html += "</tbody></table></div>";
+        }
+    } else {
+        for (var x = 0; x < tournament.divisions.length; x++) {
+            html += "<h2 class='title' style='width:20%';border-radius:0px>" + tournament.divisions[x] + "</h2>";
+            if (teamInfo.length != 0) {
+                var statHeaders = Object.keys(teamInfo[0].stats);
+                html += "<div class='panel panel-default'><table class='table table-striped table-bordered table-hover table-condensed'>";
+                html += "<thead><tr>";
+                for (var i = 0; i < statHeaders.length; i++) {
+                    if (statHeaders[i] == "pointTotals") {
+                        for (var j = 0; j < points.length; j++) {
+                            html += "<th class='table-head'>" + points[j] + "</th>";
+                        }
+                    } else {
+                        html += "<th class='table-head'>" + statHeaders[i] + "</th>";
+                    }
+                }
+                html += "</tr></thead>";
+                html += "<tbody>"
+                for (var i = 0; i < teamInfo.length; i++) {
+                    if (teamInfo[i].stats["Division"] == tournament.divisions[x]) {
+                        html += "<tr>";
+                        for (var j = 0; j < statHeaders.length; j++) {
+                            if (statHeaders[j] == "pointTotals") {
+                                for (var k = 0; k < points.length; k++) {
+                                    html  += "<td>" + teamInfo[i].stats.pointTotals[points[k]] + "</td>";
+                                }
+                            } else {
+                                html += "<td>" + teamInfo[i].stats[statHeaders[j]] + "</td>";
+                            }
+                        }
+                        html += "</tr>";
+                    }
+                }
+                html += "</tbody></table></div>"
+            }
+        }
+    }
+    $(html).hide().appendTo("#customstatsdiv").fadeIn(300);
 }

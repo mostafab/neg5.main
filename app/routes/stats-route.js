@@ -48,7 +48,30 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/home/tournaments/:tid/stats/full/filter', function(req, res) {
+    app.post('/home/tournaments/:tid/stats/filter/teams', function(req, res) {
+        var constraints = {};
+        constraints.teams = req.body.teams;
+        if (req.body.minround.length == 0) {
+            constraints.minround = Number.NEGATIVE_INFINITY;
+        } else {
+            constraints.minround = req.body.minround;
+        }
+        if (req.body.maxround.length == 0) {
+            constraints.maxround = Number.POSITIVE_INFINITY;
+        } else {
+            constraints.maxround = req.body.maxround;
+        }
+        statsController.getFilteredTeamsInformation(req.params.tid, constraints, function(err, tournament, teamInfo) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.send({teamInfo: teamInfo, tournament : tournament});
+                // res.render("quick-teams", {tournament : tournament, teamInfo : teamInfo});
+            }
+        });
+    });
+
+    app.post("/home/tournaments/:tid/stats/filter/players", function(req, res) {
         res.send(req.body);
     });
 
