@@ -65,7 +65,11 @@ td {
     padding:20px;
     padding-bottom: 0px;
     background-color:rgb(212, 212, 212);
-    border-radius: 5px;
+    border-radius: 10px;
+}
+
+.statbox:hover {
+    background-color:rgb(217, 217, 217);
 }
 
 ::-webkit-input-placeholder {

@@ -48,6 +48,10 @@ module.exports = function(app) {
         });
     });
 
+    app.post('/home/tournaments/:tid/stats/full/filter', function(req, res) {
+        res.send(req.body);
+    });
+
     app.get("*", function(req, res, next) {
         res.status(404).send("Can't find this page");
     });

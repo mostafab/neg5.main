@@ -320,6 +320,23 @@ block content
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Advanced Statistics Generation
                                     div(class="panel-body")
+                                        div(class="col-md-6")
+                                            form(method="post" action="/home/tournaments/" + tournament.shortID + "/stats/full/filter")
+                                                div(class="form-group")
+                                                    label Teams
+                                                    br
+                                                    br
+                                                    select(name="teams[]" class="form-control" size="#{tournament.teams.length}" multiple)
+                                                        each val, i in tournament.teams
+                                                            option(value="#{tournament.teams[i].shortID}") #{tournament.teams[i].team_name}
+                                                div(class="form-group")
+                                                    div(class="col-xs-4")
+                                                        input(class="form-control" type="number" name="minround" placeholder="Min Round")
+                                                        input(class="form-control" type="number" name="maxround" placeholder="Max Round")
+                                                div(class="row")
+                                                    div(class="col-md-6")
+                                                        ul(class="nav nav-pills no-border-radius")
+                                                            li
+                                                                button(type="submit" class="btn btn-lg btn-stats" style="border-radius:5px") Generate Stats
 
     script(src="/js/tournament-configuration.js")
-    script(src="/js/listjs/list.js")

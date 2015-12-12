@@ -1,8 +1,10 @@
 var nextPlayerNum = 5;
 var gameOptions;
 var teamOptions;
+var playerOptions;
 var gameList;
 var teamList;
+var playerList;
 
 $(document).ready(function() {
     gameOptions = { valueNames : ["round", "team1name", "team2name"]};
@@ -10,6 +12,8 @@ $(document).ready(function() {
 
     teamOptions = { valueNames : ["teamname", "division"]};
     teamList = new List("teamdiv", teamOptions);
+
+    playerOptions = { valueNames : []};
 
     $("#entergamebutton").prop("disabled", true);
     $("#entergamebutton").removeClass("btn-success").addClass("btn-danger");
@@ -91,6 +95,14 @@ $(document).ready(function() {
     $("#edittournamentbutton").click(function(e) {
         editTournamentAJAX();
     });
+
+    $("#playerstatstable th").each(function(index, head) {
+        // console.log($(head).text());
+        playerOptions.valueNames.push($(head).text());
+    });
+    playerList = new List("players", playerOptions);
+
+    
 
 });
 

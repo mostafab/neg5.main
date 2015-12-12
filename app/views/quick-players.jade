@@ -31,28 +31,31 @@ block content
                         if playersInfo.length != 0
                             - var statHeaders = Object.keys(playersInfo[0].stats)
                             - var points = Object.keys(tournament.pointScheme);
-                            div(class="panel panel-default")
-                                table(class="table table-striped table-bordered table-hover table-condensed")
+
+                            div(class="panel panel-default" id="players")
+                                table(class="table table-striped table-bordered table-hover table-condensed" id="playerstatstable")
                                     thead
                                         tr
-                                            th(class="table-head") Rank
+                                            th(class="table-head sort" data-sort="Rank") Rank
                                             each name, i in statHeaders
                                                 if statHeaders[i] == "pointTotals"
                                                     each val, j in points
-                                                        th(class="table-head") #{points[j]}
+                                                        th(class="table-head sort" data-sort=points[j]) #{points[j]}
                                                 else
-                                                    th(class="table-head") #{statHeaders[i]}
+                                                    th(class="table-head sort" data-sort=statHeaders[i]) #{statHeaders[i]}
 
-                                    tbody
+                                    tbody(class="list")
                                         each player, i in playersInfo
                                             tr
-                                                td #{i + 1}
+                                                td(class="Rank") #{i + 1}
                                                 each name, j in statHeaders
                                                     if statHeaders[j] == "pointTotals"
                                                         each val, k in points
-                                                            td #{playersInfo[i].stats.pointTotals[val]}
+                                                            td(class=val) #{playersInfo[i].stats.pointTotals[val]}
                                                     else if statHeaders[j] == "Player"
-                                                        td
-                                                            a(href="/home/tournaments/" + tournament.shortID + "/stats/playerfull#" + playersInfo[i].id) #{playersInfo[i].stats[name]}
+                                                        td()
+                                                            a(class="Player" href="/home/tournaments/" + tournament.shortID + "/stats/playerfull#" + playersInfo[i].id) #{playersInfo[i].stats[name]}
                                                     else
-                                                        td #{playersInfo[i].stats[name]}
+                                                        td(class=statHeaders[j]) #{playersInfo[i].stats[name]}
+
+    script(src="/js/tournament-configuration.js")
