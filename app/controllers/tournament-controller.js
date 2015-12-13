@@ -39,7 +39,7 @@ function addTournament(directorKey, name, date, location, description, questions
 */
 function findTournamentsByDirector(directorKey, callback) {
     var query = Tournament.find({director_email : directorKey}).exec(function(err, result) {
-        if (err) {
+        if (err || result == null) {
             callback(err, null);
         } else {
             callback(null, result);
@@ -49,7 +49,7 @@ function findTournamentsByDirector(directorKey, callback) {
 
 function findTournamentById(id, callback) {
     var query = Tournament.findOne({shortID : id}).exec(function(err, result) {
-        if (err) {
+        if (err || result == null) {
             callback(err, null);
         } else {
             result.games.sort(function(game1, game2) {
