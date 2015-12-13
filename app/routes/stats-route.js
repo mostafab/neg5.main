@@ -10,7 +10,7 @@ module.exports = function(app) {
                 res.send(err);
             } else {
                 // console.log(teamInfo);
-                res.render("quick-teams", {tournament : tournament, teamInfo : teamInfo});
+                res.render("quick-teams", {tournament : tournament, teamInfo : teamInfo, custom : false});
             }
         });
     });
@@ -21,7 +21,7 @@ module.exports = function(app) {
                 res.send(err);
             } else {
                 // console.log(playersInfo);
-                res.render("quick-players", {tournament : tournament, playersInfo : playersInfo});
+                res.render("quick-players", {tournament : tournament, playersInfo : playersInfo, custom : false});
             }
         });
     });
@@ -65,14 +65,33 @@ module.exports = function(app) {
             if (err) {
                 res.send(err);
             } else {
-                res.send({teamInfo: teamInfo, tournament : tournament});
-                // res.render("quick-teams", {tournament : tournament, teamInfo : teamInfo});
+                // res.send({type : "team", teamInfo: teamInfo, tournament : tournament});
+                res.render("quick-teams", {tournament : tournament, teamInfo : teamInfo, custom : true});
             }
         });
     });
 
     app.post("/home/tournaments/:tid/stats/filter/players", function(req, res) {
-        res.send(req.body);
+        var constraints = {};
+        constraints.teams = req.body.teams;
+        if (req.body.minround.length == 0) {
+            constraints.minround = Number.NEGATIVE_INFINITY;
+        } else {
+            constraints.minround = req.body.minround;
+        }
+        if (req.body.maxround.length == 0) {
+            constraints.maxround = Number.POSITIVE_INFINITY;
+        } else {
+            constraints.maxround = req.body.maxround;
+        }
+        statsController.getFilteredPlayersInformation(req.params.tid, constraints, function(err, tournament, playersInfo) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.render("quick-players", {tournament : tournament, playersInfo : playersInfo, custom : true});
+                // res.send({type : "player", playerInfo : playerInfo, tournament : tournament});
+            }
+        });
     });
 
     app.get("*", function(req, res, next) {

@@ -321,15 +321,15 @@ block content
                                     div(class="panel-heading collapsable") Advanced Team Statistics
 
                                     div(class="panel-body")
-                                            div(class="col-md-6")
-                                                form(method="post" action="/home/tournaments/" + tournament.shortID + "/stats/filter/teams" id="filterstatsform")
+                                            div(class="col-md-12")
+                                                form(target="_blank" method="post" action="/home/tournaments/" + tournament.shortID + "/stats/filter/teams" id="filterstatsform")
                                                     div(class="form-group")
                                                         label Teams
                                                         br
                                                         br
                                                         select(name="teams[]" class="form-control" size="#{tournament.teams.length}" multiple)
                                                             each val, i in tournament.teams
-                                                                option(value="#{tournament.teams[i].shortID}") #{tournament.teams[i].team_name}
+                                                                option(value="#{tournament.teams[i]._id}") #{tournament.teams[i].team_name}
                                                     div(class="form-group")
                                                         input(class="form-control" type="number" name="minround" placeholder="Min Round" style="width:40%")
                                                     div(class="form-group")
@@ -337,15 +337,15 @@ block content
                                                     div(class="form-group")
                                                         ul(class="nav nav-pills no-border-radius")
                                                             li
-                                                                button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" id="customteam" class="custombutton") Generate Team Stats
+                                                                button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/home/tournaments/" + tournament.shortID + "/stats/filter/teams") Team Stats
                                                             li
-                                                                button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" id="customplayer" class="custombutton") Generate Player Stats
+                                                                button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/home/tournaments/" + tournament.shortID + "/stats/filter/players") Player Stats
 
-                                div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") Custom Stats Will Display Here
-
-                                    div(class="panel-body")
-                                        div(class="col-md-12" id="customstatsdiv" style="margin-top:20px")
+                                // div(class="panel panel-default")
+                                //     div(class="panel-heading collapsable") Custom Stats Will Display Here
+                                //
+                                //     div(class="panel-body")
+                                //         div(class="col-md-12" id="customstatsdiv" style="margin-top:20px")
 
 
     script(src="/js/tournament-configuration.js")

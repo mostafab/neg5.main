@@ -495,6 +495,25 @@ teamSchema.methods.getAllGamesInformation = function(tournament) {
     return playedGames;
 }
 
+teamSchema.methods.getAllGamesInformationFiltered = function(tournament) {
+    var playedGames = [];
+    var filteredGames = tournament.games.filter(function(game) {
+        return game.round >= constraints.minround && game.round <= constraints.maxround;
+    });
+    for (var i = 0; i < filteredGames.length; i++) {
+        var currentGame = filteredGames[i];
+        if (currentGame.team1.team_id == this._id || currentGame.team2.team_id == this._id) {
+            var formattedGame = this.formatGameInformation(currentGame, tournament);
+            playedGames.push(formattedGame);
+        }
+    }
+    playedGames.sort(function(first, second) {
+        return first["Round"] - second["Round"];
+    });
+    return playedGames;
+}
+
+
 teamSchema.methods.formatGameInformation = function(game, tournament) {
     var gameinfo = {};
     gameinfo["Round"] = game.round;

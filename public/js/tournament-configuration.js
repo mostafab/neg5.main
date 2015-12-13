@@ -97,7 +97,11 @@ $(document).ready(function() {
     });
 
     $(".custombutton").click(function(e) {
-        generateCustomStatsAJAX(e);
+        // generateCustomStatsAJAX($(this));
+        var postURL = $(this).attr("data-post-url");
+        console.log(postURL);
+        $("#filterstatsform").attr("action", postURL);
+        $("#filterstatsform").submit();
     });
 
     $("#playerstatstable th").each(function(index, head) {
@@ -256,25 +260,23 @@ function editTournamentAJAX() {
     });
 }
 
-function generateCustomStatsAJAX(e) {
-    var eventID = e.target.id;
-    if (eventID == "customteam") {
-        var action = $("#filterstatsform").attr("action").replace("players", "teams");
-        $("#filterstatsform").attr("action", action);
-    } else {
-        var action = $("#filterstatsform").attr("action").replace("teams", "players");
-        $("#filterstatsform").attr("action", action);
-    }
-    console.log($("#filterstatsform").attr("action"));
+function generateCustomStatsAJAX(button) {
+    var postURL = $(button).attr("data-post-url");
+    $("#customstatsdiv").empty().
+        append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Generating Stats <i class='fa fa-spinner fa-spin'></i></p>");
+
     $.ajax({
-        url : $("#filterstatsform").attr("action"),
+        url : postURL,
         type : "POST",
         data : $("#filterstatsform").serialize(),
         success : function(databack, status, xhr) {
-            displayTeamCustomStats(databack);
+            if (databack.type == "team") {
+                displayTeamCustomStats(databack);
+            } else if (databack.type == "player") {
+                console.log(databack);
+            }
         }
     });
-    // $("#filterstatsform").submit();
 }
 
 function createPlayerInputField() {
@@ -303,11 +305,10 @@ function generatePlayerRows(players, pointScheme, side) {
     var playerNum = 1;
     var sideText = side == "LEFT" ? "_left" : "_right";
     for (var i = 0; i < players.length; i++) {
-        // console.log(points);
         html += "<tr>";
         html += "<input type='hidden' value='" + players[i]._id +  "' " + "name='" + "player" + playerNum + sideText + "id'" + "/>";
         html += "<td>" + players[i].player_name + "</td>";
-        html += "<td> <input class='form-control' type='number' placeholder='GP'" + "value='0' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
+        html += "<td> <input class='form-control' type='number' placeholder='GP'" + "value='1' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
         for (var j = 0; j < points.length; j++) {
             var keyNameStr = "name='player" + playerNum + sideText + "_" + points[j] + "val' ";
             var keyId = "id='player" + playerNum + "_" + points[j] + sideText + "id' ";

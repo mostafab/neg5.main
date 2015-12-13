@@ -36,8 +36,7 @@ function getFilteredTeamsInformation(tournamentid, constraints, callback) {
         } else {
             if (constraints.teams) {
                 for (var i = 0; i < result.teams.length; i++) {
-                    if (constraints.teams.indexOf(result.teams[i].shortID) != -1) {
-                        // console.log(result.teams[i].team_name);
+                    if (constraints.teams.indexOf(result.teams[i]._id.toString()) != -1) {
                         teamInfo.push(result.teams[i].getAverageInformationFiltered(result, constraints));
                     }
                 }
@@ -70,6 +69,31 @@ function getPlayersInfo(tournamentid, callback) {
         } else {
             for (var i = 0; i < result.players.length; i++) {
                 playersInfo.push(result.players[i].getAllInformation(result));
+            }
+            playersInfo.sort(function(first, second) {
+                return second.stats["PPG"] - first.stats["PPG"];
+            });
+            callback(null, result, playersInfo);
+        }
+    });
+}
+
+function getFilteredPlayersInformation(tournamentid, constraints, callback) {
+    var playersInfo = [];
+    Tournament.findOne({shortID : tournamentid}, function(err, result) {
+        if (err) {
+            callback(err, null, []);
+        } else {
+            if (constraints.teams) {
+                for (var i = 0; i < result.players.length; i++) {
+                    if (constraints.teams.indexOf(result.players[i].teamID) != -1) {
+                        playersInfo.push(result.players[i].getAllInformationFiltered(result, constraints));
+                    }
+                }
+            } else {
+                for (var i = 0; i < result.players.length; i++) {
+                    playersInfo.push(result.players[i].getAllInformationFiltered(result, constraints));
+                }
             }
             playersInfo.sort(function(first, second) {
                 return second.stats["PPG"] - first.stats["PPG"];
@@ -113,8 +137,11 @@ function getFullPlayersGameInformation(tournamentid, callback) {
     });
 }
 
+
+
 exports.getTeamsInfo = getTeamsInfo;
 exports.getPlayersInfo = getPlayersInfo;
 exports.getFullTeamsGameInformation = getFullTeamsGameInformation;
 exports.getFullPlayersGameInformation = getFullPlayersGameInformation;
 exports.getFilteredTeamsInformation = getFilteredTeamsInformation;
+exports.getFilteredPlayersInformation = getFilteredPlayersInformation;
