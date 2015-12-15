@@ -370,6 +370,12 @@ module.exports = function(app) {
             var game = null;
             if (result) {
                 if (hasPermission(result, req.session.director)) {
+                    for (var i = 0; i < result.games.length; i++) {
+                        if (result.games[i].shortID == req.params.gid) {
+                            game = result.games[i];
+                            break;
+                        }
+                    }
                     if (game !== null) {
                         // console.log(result.players);
                         var team1Players = [];
@@ -401,9 +407,10 @@ module.exports = function(app) {
             res.redirect("/");
         } else {
             tournamentController.findTournamentById(req.params.tid, function(err, result) {
-                if (err || result == null) {
-                    //DO STUFF
-                    res.status(200).send("Couldn't find anything");
+                if (err) {
+                    res.status(500).send(err);
+                } else if (result == null) {
+                    res.status(401).send("Couldn't find this tournament");
                 } else {
                     if (hasPermission(result, req.session.director)) {
                         res.render("tournament-view", {tournament : result, tournamentd : req.session.director});
