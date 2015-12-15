@@ -334,22 +334,26 @@ module.exports = function(app) {
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var team = null;
             if (result) {
-                for (var i = 0; i < result.teams.length; i++) {
-                    if (result.teams[i].shortID == req.params.teamid) {
-                        team = result.teams[i];
-                        i = result.teams.length + 1;
-                    }
-                }
-                if (team !== null) {
-                    var teamPlayers = [];
-                    for (var i = 0; i < result.players.length; i++) {
-                        if (result.players[i].teamID == team._id) {
-                            teamPlayers.push(result.players[i]);
+                if (hasPermission(result, req.session.director)) {
+                    for (var i = 0; i < result.teams.length; i++) {
+                        if (result.teams[i].shortID == req.params.teamid) {
+                            team = result.teams[i];
+                            i = result.teams.length + 1;
                         }
                     }
-                    res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : result, tournamentd : req.session.director});
+                    if (team !== null) {
+                        var teamPlayers = [];
+                        for (var i = 0; i < result.players.length; i++) {
+                            if (result.players[i].teamID == team._id) {
+                                teamPlayers.push(result.players[i]);
+                            }
+                        }
+                        res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : result, tournamentd : req.session.director});
+                    } else {
+                        res.status(404).send("Couldn't find that page");
+                    }
                 } else {
-                    res.status(404).send("Couldn't find that page");
+                    res.status(401).send("You don't have permission to view this tournament");
                 }
             } else {
                 res.status(404).send("Couldn't find that tournament");
@@ -365,29 +369,29 @@ module.exports = function(app) {
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var game = null;
             if (result) {
-                for (var i = 0; i < result.games.length; i++) {
-                    if (result.games[i].shortID == req.params.gid) {
-                        game = result.games[i];
-                        i = result.games.length + 1;
-                    }
-                }
-                if (game !== null) {
-                    // console.log(result.players);
-                    var team1Players = [];
-                    var team2Players = [];
-                    for (var i = 0; i < result.players.length; i++) {
-                        // console.log(game.team1.team_id + " | " + result.players[i].teamID);
-                        if (result.players[i].teamID == game.team1.team_id) {
-                            team1Players.push(result.players[i]);
-                        } else if (result.players[i].teamID == game.team2.team_id) {
-                            team2Players.push(result.players[i]);
+                if (hasPermission(result, req.session.director)) {
+                    if (game !== null) {
+                        // console.log(result.players);
+                        var team1Players = [];
+                        var team2Players = [];
+                        for (var i = 0; i < result.players.length; i++) {
+                            // console.log(game.team1.team_id + " | " + result.players[i].teamID);
+                            if (result.players[i].teamID == game.team1.team_id) {
+                                team1Players.push(result.players[i]);
+                            } else if (result.players[i].teamID == game.team2.team_id) {
+                                team2Players.push(result.players[i]);
+                            }
                         }
+                        res.render("game-view", {tournamentd : req.session.director, game : game, tournamentName : result.tournament_name,
+                            team1Players : team1Players, team2Players : team2Players, tournament : result});
+                    } else {
+                        res.status(404).send("Couldn't find that specific page");
                     }
-                    res.render("game-view", {tournamentd : req.session.director, game : game, tournamentName : result.tournament_name,
-                        team1Players : team1Players, team2Players : team2Players, tournament : result});
                 } else {
-                    res.status(404).send("Couldn't find that specific page");
+                    res.status(401).send("You don't have permission to view this tournament");
                 }
+            } else {
+                res.status(404).send("Couldn't find that specific page");
             }
         });
     });
@@ -401,7 +405,11 @@ module.exports = function(app) {
                     //DO STUFF
                     res.status(200).send("Couldn't find anything");
                 } else {
-                    res.render("tournament-view", {tournament : result, tournamentd : req.session.director});
+                    if (hasPermission(result, req.session.director)) {
+                        res.render("tournament-view", {tournament : result, tournamentd : req.session.director});
+                    } else {
+                        res.status(401).send("You don't have permission to view this tournament");
+                    }
                 }
             });
         }
@@ -438,4 +446,16 @@ function checkEmptyQuery(query) {
         }
     }
     return true;
+}
+
+function hasPermission(tournament, director) {
+    if (tournament.directorid == director._id) {
+        return true;
+    }
+    for (var i = 0; i < tournament.collaborators.length; i++) {
+        if (director._id == tournament.collaborators[i].id) {
+            return true;
+        }
+    }
+    return false;
 }

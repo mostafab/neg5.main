@@ -10,7 +10,7 @@ var TournamentSchema = new Schema({
     tournament_name : String,
     collaborators : [{}], // List of emails of collaborators
     location : String,
-    date : {type : Date, default : Date.now},
+    date : {type : Date, set : setDate},
     openRegistration : {type : Boolean, default : true},
     questionSet : String,
     description : String,
@@ -22,5 +22,13 @@ var TournamentSchema = new Schema({
     pointsTypes : {type : {}, default : {"15" : "P", "10" : "B", "-5" : "N"}},
     shortID : {type : String, index : true, unique : true}
 });
+
+function setDate(date) {
+    if (!date) {
+        return new Date();
+    } else {
+        return date;
+    }
+}
 
 module.exports = mongoose.model("Tournament", TournamentSchema);
