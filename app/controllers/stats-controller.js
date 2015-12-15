@@ -5,8 +5,11 @@ var Tournament = mongoose.model("Tournament");
 function getTeamsInfo(tournamentid, callback) {
     var teamInfo = [];
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
+
         if (err) {
             callback(err, null, []);
+        } else if (result == null) {
+            callback(null, null, []);
         } else {
             for (var i = 0; i < result.teams.length; i++) {
                 teamInfo.push(result.teams[i].getAverageInformation(result));
@@ -32,7 +35,9 @@ function getFilteredTeamsInformation(tournamentid, constraints, callback) {
     var teamInfo = [];
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
         if (err) {
-            callback(err, result, {});
+            callback(err, null, []);
+        } else if (result == null) {
+            callback(null, null, [])
         } else {
             if (constraints.teams) {
                 for (var i = 0; i < result.teams.length; i++) {
@@ -66,6 +71,8 @@ function getPlayersInfo(tournamentid, callback) {
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
         if (err) {
             callback(err, null, []);
+        } else if (result == null) {
+            callback(null, null, []);
         } else {
             for (var i = 0; i < result.players.length; i++) {
                 playersInfo.push(result.players[i].getAllInformation(result));
@@ -83,6 +90,8 @@ function getFilteredPlayersInformation(tournamentid, constraints, callback) {
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
         if (err) {
             callback(err, null, []);
+        } else if (result == null) {
+            callback(null, null, []);
         } else {
             if (constraints.teams) {
                 for (var i = 0; i < result.players.length; i++) {
@@ -108,8 +117,10 @@ function getFullTeamsGameInformation(tournamentid, callback) {
     var playersInfo = {};
     var teamTotals = {};
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
-        if (err || result == null) {
+        if (err) {
             callback(err, null, {}, {});
+        } else if (result == null) {
+            callback(null, null, {}, {});
         } else {
             for (var i = 0; i < result.teams.length; i++) {
                 teamsInfo[result.teams[i].shortID] = {team : result.teams[i].team_name, games : result.teams[i].getAllGamesInformation(result)};
@@ -125,8 +136,10 @@ function getFullPlayersGameInformation(tournamentid, callback) {
     var playersInfo = {};
     var playerTotals = {};
     Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
-        if (err || tournament == null) {
-
+        if (err) {
+            callback(err, null, {}, {});
+        } else if (tournament == null) {
+            callback(null, null, {}, {});
         } else {
             for (var i = 0; i < tournament.players.length; i++) {
                 playersInfo[tournament.players[i].shortID] = {name : tournament.players[i].player_name, team : tournament.players[i].team_name, games : tournament.players[i].getAllGamesInformation(tournament)};

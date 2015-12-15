@@ -8,8 +8,10 @@ module.exports = function(app) {
         statsController.getTeamsInfo(req.params.tid, function(err, tournament, teamInfo) {
             if (err) {
                 res.send(err);
-            } else {
+            } else if (tournament == null) {
                 // console.log(teamInfo);
+                res.send("Couldn't find that tournament");
+            } else {
                 res.render("quick-teams", {tournament : tournament, teamInfo : teamInfo, custom : false});
             }
         });
@@ -19,6 +21,8 @@ module.exports = function(app) {
         statsController.getPlayersInfo(req.params.tid, function(err, tournament, playersInfo) {
             if (err) {
                 res.send(err);
+            } else if (tournament == null) {
+                res.send("Couldn't find that tournament");
             } else {
                 // console.log(playersInfo);
                 res.render("quick-players", {tournament : tournament, playersInfo : playersInfo, custom : false});
@@ -30,6 +34,8 @@ module.exports = function(app) {
         statsController.getFullTeamsGameInformation(req.params.tid, function(err, tournament, teamsGames, playersInfo, teamTotals) {
             if (err) {
                 res.send(err);
+            } else if (tournament == null) {
+                res.send("Couldn't find that tournament");
             } else {
                 // console.log(teamTotals);
                 res.render("full-teams", {tournament : tournament, teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals});
@@ -41,6 +47,8 @@ module.exports = function(app) {
         statsController.getFullPlayersGameInformation(req.params.tid, function(err, tournament, playersInfo, playerTotals) {
             if (err) {
                 res.send(err);
+            } else if (tournament == null) {
+                res.send("Couldn't find that tournament");
             } else {
                 // console.log(playerTotals);
                 res.render("full-player", {playersInfo : playersInfo, tournament : tournament, playerTotals : playerTotals});
@@ -64,6 +72,8 @@ module.exports = function(app) {
         statsController.getFilteredTeamsInformation(req.params.tid, constraints, function(err, tournament, teamInfo) {
             if (err) {
                 res.send(err);
+            } else if (tournament == null) {
+                res.send("Couldn't find that tournament");
             } else {
                 // res.send({type : "team", teamInfo: teamInfo, tournament : tournament});
                 res.render("quick-teams", {tournament : tournament, teamInfo : teamInfo, custom : true});
@@ -87,6 +97,8 @@ module.exports = function(app) {
         statsController.getFilteredPlayersInformation(req.params.tid, constraints, function(err, tournament, playersInfo) {
             if (err) {
                 res.send(err);
+            } else if (tournament == null) {
+                res.send("Couldn't find that tournament");
             } else {
                 res.render("quick-players", {tournament : tournament, playersInfo : playersInfo, custom : true});
                 // res.send({type : "player", playerInfo : playerInfo, tournament : tournament});
