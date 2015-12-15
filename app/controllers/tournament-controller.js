@@ -14,7 +14,7 @@ var Game = mongoose.model("Game");
 */
 function addTournament(directorKey, name, date, location, description, questionset, callback) {
     var tourney = new Tournament({
-        director_email : directorKey,
+        directorid : directorKey,
         tournament_name : name,
         location : location,
         date : date,
@@ -38,12 +38,15 @@ function addTournament(directorKey, name, date, location, description, questions
 * returns an empty list if result is empty
 */
 function findTournamentsByDirector(directorKey, callback) {
-    var query = Tournament.find({director_email : directorKey}).exec(function(err, result) {
-        if (err || result == null) {
-            callback(err, null);
-        } else {
-            callback(null, result);
-        }
+    var query = Tournament.find({$or : [{directorid : directorKey.toString()}, {"collaborators.id" : directorKey}]}, function(err, result) {
+            if (err || result == null) {
+                callback(err, null);
+            } else {
+                result.sort(function(first, second) {
+                    return second.date - first.date;
+                });
+                callback(null, result);
+            }
     });
 }
 
@@ -622,20 +625,71 @@ function updateTournamentInformation(tournamentid, information, callback) {
                     });
 }
 
+function findDirectors(email, callback) {
+    email = email.trim();
+    var rex = new RegExp(".*" + email + ".*", "i");
+
+    // var query = {$regex : rex};
+    TournamentDirector.find({$or : [{email : rex}, {name : rex}]}, function(err, directors) {
+        if (err) {
+            console.log(err);
+            callback(err, []);
+        } else {
+            directors.sort(function(first, second) {
+                return first.name.localeCompare(second.name);
+            });
+            callback(null, directors);
+        }
+    });
+}
+
+function addCollaborator(tournamentid, collaborator, callback) {
+    Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
+        if (err || tournament == null) {
+            callback(err);
+        } else {
+            for (var j = 0; j < tournament.collaborators.length; j++) {
+                if (tournament.collaborators[j].id == collaborator.id || collaborator.id == tournament.directorid) {
+                    return callback(null, true);
+                }
+            }
+            Tournament.update({shortID : tournamentid}, {$push : {collaborators : collaborator}}, function(err) {
+                if (err) {
+                    return callback(err, false);
+                } else {
+                    return callback(null, false);
+                }
+            });
+        }
+    });
+}
+
+function findCollaborators(tournamentid, callback) {
+    Tournament.findOne({shortID : tournamentid}, function(err, result) {
+        if (err || result == null) {
+            callback(err, []);
+        } else {
+            callback(null, result.collaborators);
+        }
+    });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
 exports.addTeamToTournament = addTeamToTournament;
 exports.findTeamMembers = findTeamMembers;
 exports.addGameToTournament = addGameToTournament;
-// exports.getGameFromTournament = getGameFromTournament;
 exports.removeGameFromTournament = removeGameFromTournament;
 exports.changeGameShortID = changeGameShortID;
 exports.removeTeamFromTournament = removeTeamFromTournament;
 exports.updateTeam = updateTeam;
+exports.findDirectors = findDirectors;
 exports.updatePlayer = updatePlayer;
 exports.removePlayer = removePlayer;
 exports.addPlayer = addPlayer;
 exports.changePointScheme = changePointScheme;
 exports.updateDivisions = updateDivisions;
 exports.updateTournamentInformation = updateTournamentInformation;
+exports.addCollaborator = addCollaborator;
+exports.findCollaborators = findCollaborators;

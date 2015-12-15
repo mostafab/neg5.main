@@ -31,12 +31,14 @@ block content
                                         th(class="table-head") Date
                                         th(class="table-head") Open Registration
                                         th(class="table-head") Question set
-                                        th(class="table-head") Number of Teams Registered
-                                        th(class="table-head") Edit This Tournament
+                                        th(class="table-head") Number of Teams Added
+                                        //th(class="table-head") Edit This Tournament
                                 tbody
                                     each val, i in tournaments
                                         tr()
-                                            td #{tournaments[i].tournament_name}
+                                            td
+                                                a(href="/home/tournaments/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
+                                                    i(class="fa fa-pencil" style="margin:5px")
                                             td #{tournaments[i].location}
                                             td #{tournaments[i].date}
                                             if tournaments[i].openRegistration
@@ -45,40 +47,5 @@ block content
                                                 td No
                                             td #{tournaments[i].questionSet}
                                             td #{tournaments[i].teams.length}
-                                            td
-                                                a(class="btn btn-lg btn-warning glyphicon glyphicon-edit no-border-radius" href="/home/tournaments/" + tournaments[i].shortID)
-
-            // div(class="row")
-            //     div(class="col-md-12")
-            //         div(class="panel panel-default")
-            //             div(class="panel-heading") You can view all your tournaments on this page. Click the edit link next to each tournament to add games, add scores, or change information about it.
-            //
-            //             div(class="panel-body")
-            //                 div(class="table-responsive")
-            //                     table(class="table table-striped table-bordered table-hover" id="dataTables-example")
-            //                         thead
-            //                             tr
-            //                                 // ID kept for debugging
-            //                                 th ID
-            //                                 th Name
-            //                                 th Location
-            //                                 th Date
-            //                                 th Open Registration
-            //                                 th Question set
-            //                                 th Number of Teams Registered
-            //                                 th Edit This Tournament
-            //                         tbody
-            //                             each val, i in tournaments
-            //                                 tr(class="odd")
-            //                                     td #{tournaments[i]._id}
-            //                                     td #{tournaments[i].tournament_name}
-            //                                     td #{tournaments[i].location}
-            //                                     td #{tournaments[i].date.toString()}
-            //                                     if tournaments[i].openRegistration
-            //                                         td Yes
-            //                                     else
-            //                                         td No
-            //                                     td #{tournaments[i].questionSet}
-            //                                     td #{tournaments[i].teams.length}
-            //                                     td
-            //                                         a(class="btn btn-sm btn-info glyphicon glyphicon-pencil no-border-radius" href="/home/tournaments?_id=" + tournaments[i]._id)
+                                            //td
+                                            //    a(class="btn btn-lg btn-warning glyphicon glyphicon-edit no-border-radius" href="/home/tournaments/" + tournaments[i].shortID)

@@ -104,15 +104,31 @@ $(document).ready(function() {
         $("#filterstatsform").submit();
     });
 
+    $("#searchcollabbutton").click(function() {
+        findDirectorsAJAX()
+    });
+
+    $("#searchcollabinput").keypress(function(e) {
+        if (e.which == 13) {
+            e.preventDefault();
+            findDirectorsAJAX();
+        }
+    });
+
+    $("#addcollabbutton").click(function() {
+        // console.log($("#addcollabform").serializeArray());
+        addCollaboratorsAJAX();
+    });
+
     $("#playerstatstable th").each(function(index, head) {
         // console.log($(head).text());
         playerOptions.valueNames.push($(head).text());
     });
     playerList = new List("players", playerOptions);
 
-
-
 });
+
+
 
 function removeTeamSender(button) {
     removeTeam($(button).parent().serialize(), button);
@@ -277,6 +293,52 @@ function generateCustomStatsAJAX(button) {
             }
         }
     });
+}
+
+function findDirectorsAJAX() {
+    $.ajax({
+        url : "/tournaments/findDirectors",
+        type : "GET",
+        data : $("#searchcollabform").serialize(),
+        success : function(databack, status, xhr) {
+            $("#directorsoptions").empty();
+            var html = "";
+            for (var i = 0; i < databack.directors.length; i++) {
+                var obj = {name : databack.directors[i].name, email : databack.directors[i].email, id : databack.directors[i]._id};
+                // html += "<option value="{'name' : " + databack.directors[i].name + ", email : " + databack.directors[i].email + "}">";
+                html += "<option value='" + JSON.stringify(obj) + "'>";
+                html += databack.directors[i].name + " (" + databack.directors[i].email + ")";
+                html += "</option>";
+            }
+            $("#directorsoptions").append(html);
+        }
+    });
+}
+
+function addCollaboratorsAJAX() {
+    $.ajax({
+        url : "/tournaments/addCollaborator",
+        type : "POST",
+        data : $("#addcollabform").serialize(),
+        success : function(databack, status, xhr) {
+            if (!databack.err && !databack.duplicate) {
+                addCollaboratorBox(databack.collab)
+            } else if (databack.err) {
+
+            } else {
+
+            }
+        }
+    });
+}
+
+function addCollaboratorBox(collaborator) {
+    var html = "<div class='col-md-3 statbox' style='border-radius:0;padding-bottom:20px'>";
+    html += "<p>Name : " + collaborator.name + "</p>";
+    html += "<p>Email : " + collaborator.email + "</p>";
+    html += "<button class='btn btn-md btn-danger' style='margin-top:20px'>Remove</button>";
+    html += "</div>";
+    $(html).hide().appendTo("#collaboratorsdiv").fadeIn(300);
 }
 
 function createPlayerInputField() {

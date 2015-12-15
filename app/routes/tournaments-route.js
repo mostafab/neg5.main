@@ -24,6 +24,40 @@ module.exports = function(app) {
             }
         });
 
+    app.get("/tournaments/findDirectors", function(req, res, next) {
+        tournamentController.findDirectors(req.query.collab, function(err, directors) {
+            if (err) {
+                res.status(500).send({err : err});
+            } else {
+                res.status(200).send({directors : directors});
+            }
+        });
+    });
+
+    app.post("/tournaments/addCollaborator", function(req, res, next) {
+        // console.log(req.body);
+        var collaborator = JSON.parse(req.body.collaborators);
+        tournamentController.addCollaborator(req.body.tournamentid, collaborator, function(err, duplicate) {
+            if (err) {
+                res.status(500).send({err : err});
+            } else {
+                res.status(200).send({duplicate : duplicate, collab : collaborator});
+            }
+        });
+    });
+
+    app.get("/tournaments/findCollaborators", function(req, res, next) {
+        // console.log(req.query);
+        tournamentController.findCollaborators(req.query.tournamentid, function(err, collaborators) {
+            if (err) {
+                return res.status(500).send({collabs : []});
+            } else {
+                console.log(collaborators);
+                return res.status(200).send({collabs : collaborators});
+            }
+        });
+    });
+
     app.post("/home/tournaments/editPointSchema", function(req, res, next) {
         // console.log(req.body);
         var newPointValues = {};
@@ -89,7 +123,7 @@ module.exports = function(app) {
     app.route("/home/tournaments/creategame")
         .post(function(req, res, next) {
             if (!req.session.director) {
-                res.redirect("/");
+                res.status(401).send({game : null, tid : id});
             } else {
                 var id = req.body["tournament_id_form"];
                 tournamentController.addGameToTournament(id, req.body, function(err, games) {
@@ -266,7 +300,7 @@ module.exports = function(app) {
                 var date = req.body.t_date;
                 var questionset = req.body.t_qset;
                 // console.log("Session email: " + req.session.director.email);
-                tournamentController.addTournament(req.session.director.email, name, date, location, description, questionset, function(err) {
+                tournamentController.addTournament(req.session.director._id, name, date, location, description, questionset, function(err) {
                     if (err) {
                         res.redirect("/home/tournaments/create");
                     } else {
@@ -377,7 +411,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             res.redirect("/");
         } else {
-            tournamentController.findTournamentsByDirector(req.session.director.email, function(err, result) {
+            tournamentController.findTournamentsByDirector(req.session.director._id, function(err, result) {
                 if (err || result == null) {
                     // DO STUFF
                     // console.log("Result is null");

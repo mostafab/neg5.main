@@ -6,7 +6,8 @@
     border-width: 10px;
     padding: 15px;
     width: 100%;
-    border-radius: 15px 15px 0 0;
+    /*border-radius: 15px 15px 0 0;*/
+    border-radius: 0px;
 }
 
 .box {
@@ -27,16 +28,6 @@
     color:black;
     border-radius: 5px;
     text-align: center;
-}
-
-.table-head {
-    background: rgba(0, 0, 0, .8);
-    color: white;
-}
-
-.table-head:hover {
-    background: rgba(0, 0, 0, .5);
-    color: white;
 }
 
 tr {
@@ -172,10 +163,12 @@ td {
 
 .table-head {
     background: rgb(0, 136, 136);
+    color : white;
 }
 
 .table-head:hover {
     background: rgba(0, 136, 136, .8);
+    color : white;
 }
 
 .disabledview:hover {

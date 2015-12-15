@@ -38,6 +38,8 @@ block content
                                     li(class="active")
                                         a(href="#overview" data-toggle="tab") Overview
                                     li
+                                        a(href="#divisions" data-toggle="tab") Divisions/Point Scheme
+                                    li
                                         a(href="#games" data-toggle="tab") Add/Remove/Edit Games
                                     li
                                         a(href="#teams" data-toggle="tab") Add/Remove/Edit Teams
@@ -47,6 +49,7 @@ block content
                         br
 
                         div(class="tab-content")
+
                             div(class="tab-pane fade active in" id="overview")
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Tournament Overview
@@ -90,6 +93,33 @@ block content
                                                         div(id="tournament-update-msgdiv")
                                                             p(style="margin:10px; font-size:18px")
 
+                                div(class="panel panel-default")
+                                    div(class="panel-heading collapsable") Collaborators
+
+                                    div(class="panel-body")
+                                        div(class="row")
+                                            div(class="col-md-4" style='background-color:transparent')
+                                                form(id="searchcollabform")
+                                                    input(id="searchcollabinput" type="text" class="form-control" placeholder="Add Collaborator" name="collab")
+                                                    button(type="button" class="btn btn-sm btn-info" id="searchcollabbutton") Search
+
+                                            div(class="col-md-6" style="background-color:transparent;margin-top:0")
+                                                form(name="collabs" id="addcollabform")
+                                                    input(type='hidden' name="tournamentid" value="#{tournament.shortID}")
+                                                    select(name="collaborators" class="form-control" size="5" id="directorsoptions")
+                                                        option(value="" disabled) Directors will show here.
+                                                button(type="button" class="btn btn-sm btn-success" id="addcollabbutton") Add Selected
+
+                                        div(class="row")
+                                            div(id="collaboratorsdiv")
+                                                each person, i in tournament.collaborators
+                                                    div(class="col-md-3 statbox" style='border-radius:0;padding-bottom:20px;')
+                                                        p Name : #{person.name}
+                                                        p Email : #{person.email}
+                                                        button(class="btn btn-md btn-danger" style='margin-top:20px') Remove
+
+
+                            div(class="tab-pane fade" id="divisions")
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Divisions and Point Scheme
                                     div(class="panel-body")

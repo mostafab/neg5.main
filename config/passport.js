@@ -42,14 +42,22 @@ module.exports = function(passport) {
                         if (err) {
                             return done(err);
                         } else {
-                            var td = new TournamentDirector();
-                            td.name = profile.displayName;
-                            td.email = profile.emails[0].value;
-                            td.save(function(err) {
+                            TournamentDirector.findOne({email : profile.emails[0].value}, function(err, director) {
                                 if (err) {
                                     return done(err);
+                                } else if (director) {
+                                    return done(null, director);
                                 } else {
-                                    return done(null, td);
+                                    var td = new TournamentDirector();
+                                    td.name = profile.displayName;
+                                    td.email = profile.emails[0].value;
+                                    td.save(function(err) {
+                                        if (err) {
+                                            return done(err);
+                                        } else {
+                                            return done(null, td);
+                                        }
+                                    });
                                 }
                             });
                         }
