@@ -24,7 +24,7 @@ module.exports = function(passport) {
         callbackURL : configAuth.googleAuth.callbackURLLocal
     }, function(token, refreshToken, profile, done) {
         process.nextTick(function() {
-            console.log("Google method was called for some reason");
+            // console.log("Google method was called for some reason");
             User.findOne({"google.id" : profile.id}, function(err, user) {
                 if (err) {
                     return done(err);
