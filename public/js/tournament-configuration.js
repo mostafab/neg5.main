@@ -271,12 +271,18 @@ function changeDivisionsAJAX() {
 }
 
 function editTournamentAJAX() {
+    $("#tournament-update-msgdiv").empty().
+        append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Editing<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
         url : "/home/tournaments/edit",
         type : "POST",
         data : $("#tournament-overview-form").serialize(),
         success : function(databack, status, xhr) {
-
+            if (databack.err) {
+                showMessageInDiv("#tournament-update-msgdiv", "Couldn't update tournament", err);
+            } else {
+                showMessageInDiv("#tournament-update-msgdiv", "Successfully updated tournament", null);
+            }
         }
     });
 }
@@ -350,6 +356,17 @@ function removeCollabAJAX(button) {
             }
         }
     });
+}
+
+function showMessageInDiv(div, message, err) {
+    var html = "";
+    $(div).empty();
+    if (err) {
+        html = "<p style='margin-left:10px;font-size:16px;color:#ff3300'>" + message + "<i class='fa fa-times-circle'></i></p>";
+    } else {
+        html = "<p style='margin-left:10px;font-size:16px;color:#009933'>" + message + "<i class='fa fa-check-circle'></i></p>";
+    }
+    $(html).hide().appendTo(div).fadeIn(300);
 }
 
 function removeCollabBox(button) {
