@@ -120,6 +120,11 @@ $(document).ready(function() {
         addCollaboratorsAJAX();
     });
 
+    $(".removcollab").click(function() {
+        removeCollabAJAX(this);
+    });
+
+
     $("#playerstatstable th").each(function(index, head) {
         // console.log($(head).text());
         playerOptions.valueNames.push($(head).text());
@@ -332,11 +337,33 @@ function addCollaboratorsAJAX() {
     });
 }
 
+function removeCollabAJAX(button) {
+    $.ajax({
+        url : "/tournaments/removeCollab",
+        type : "POST",
+        data : {tournamentid : $("#tournamentshortid").val(), collab : $(button).attr("data-collabid")},
+        success : function(databack, status, xhr) {
+            if (databack.err == null) {
+                removeCollabBox(button);
+            } else {
+
+            }
+        }
+    });
+}
+
+function removeCollabBox(button) {
+    $(button).parent().fadeOut(300, function() {
+        $(this).remove();
+    });
+}
+
 function addCollaboratorBox(collaborator) {
     var html = "<div class='col-md-3 statbox' style='border-radius:0;padding-bottom:20px'>";
     html += "<p>Name : " + collaborator.name + "</p>";
     html += "<p>Email : " + collaborator.email + "</p>";
-    html += "<button class='btn btn-md btn-danger' style='margin-top:20px'>Remove</button>";
+    html += "<button class='btn btn-md btn-danger' style='margin-top:20px' onclick='removeCollabAJAX(this)' data-collabid='"
+        + collaborator.id + "'>Remove</button>";
     html += "</div>";
     $(html).hide().appendTo("#collaboratorsdiv").fadeIn(300);
 }

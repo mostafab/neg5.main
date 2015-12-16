@@ -14,5 +14,6 @@ module.exports = function() {
     require("../app/models/player");
     require("../app/models/team");
     require("../app/models/game");
+    require("../app/models/registration");
     return db;
 }

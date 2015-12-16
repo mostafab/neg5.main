@@ -12,9 +12,10 @@ var Game = mongoose.model("Game");
 * Adds a tournament to the specified td - "tournament director" array of tournaments
 * @return true if adding tournament succeesed, false otherwise
 */
-function addTournament(directorKey, name, date, location, description, questionset, callback) {
+function addTournament(director, name, date, location, description, questionset, callback) {
     var tourney = new Tournament({
-        directorid : directorKey,
+        directorid : director._id,
+        directoremail : director.email,
         tournament_name : name,
         location : location,
         date : date,
@@ -618,9 +619,10 @@ function updateDivisions(tournamentid, divisions, callback) {
 }
 
 function updateTournamentInformation(tournamentid, information, callback) {
+    var registration = information.register == undefined ? false : true;
     Tournament.update({_id : tournamentid},
             {"$set" : {tournament_name : information.tournament_name, location : information.tournament_location,
-                    date : information.tournament_date}}, function(err) {
+                    date : information.tournament_date, openRegistration : registration}}, function(err) {
                         callback(err);
                     });
 }
@@ -664,6 +666,12 @@ function addCollaborator(tournamentid, collaborator, callback) {
     });
 }
 
+function removeCollaborator(tournamentid, collaboratorid, callback) {
+    Tournament.update({shortID : tournamentid}, {$pull : {collaborators : {id : collaboratorid}}}, function(err) {
+        callback(err);
+    });
+}
+
 function findCollaborators(tournamentid, callback) {
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
         if (err || result == null) {
@@ -693,3 +701,4 @@ exports.updateDivisions = updateDivisions;
 exports.updateTournamentInformation = updateTournamentInformation;
 exports.addCollaborator = addCollaborator;
 exports.findCollaborators = findCollaborators;
+exports.removeCollaborator = removeCollaborator;

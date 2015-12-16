@@ -6,8 +6,9 @@ var RegistrationSchema = new Schema({
     numTeams : Number,
     contactInformation : {type : {}},
     tournamentid : String,
+    directorid : String,
     message : String,
-    date : {type : Date, default : Date.now}
+    signupTime : {type : Date, default : Date.now}
 });
 
 module.exports = mongoose.model("Registration", RegistrationSchema);

@@ -3,6 +3,7 @@ extends layout
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
     link(rel="stylesheet" href="/css/tournamentstyle.css")
+    link(href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet")
 
 block content
 
@@ -88,6 +89,27 @@ block content
                                                                 name="tournament_date",
                                                                 class="form-control input-medium center-text no-border-radius"
                                                             )
+                                                    label(class="label label-primary col-xs-4") Registration
+                                                    div(class="form-group col-xs-8")
+                                                        if tournament.openRegistration
+                                                            input(
+                                                                checked,
+                                                                type="checkbox",
+                                                                name="register",
+                                                                data-toggle="toggle",
+                                                                data-on="Open",
+                                                                data-onstyle="success",
+                                                                data-off="Closed"
+                                                            )
+                                                        else
+                                                            input(
+                                                                type="checkbox",
+                                                                name="register",
+                                                                data-toggle="toggle",
+                                                                data-on="Open",
+                                                                data-onstyle="success",
+                                                                data-off="Closed"
+                                                            )
                                                     div(class="col-md-6")
                                                         button(type="button" class="btn btn-lg btn-success" id="edittournamentbutton") Save Changes
                                                         div(id="tournament-update-msgdiv")
@@ -116,7 +138,7 @@ block content
                                                     div(class="col-md-3 statbox" style='border-radius:0;padding-bottom:20px;')
                                                         p Name : #{person.name}
                                                         p Email : #{person.email}
-                                                        button(class="btn btn-md btn-danger" style='margin-top:20px') Remove
+                                                        button(class="btn btn-md btn-danger removcollab" style='margin-top:20px' data-collabid="#{person.id}") Remove
 
 
                             div(class="tab-pane fade" id="divisions")
@@ -379,3 +401,4 @@ block content
 
 
     script(src="/js/tournament-configuration.js")
+    script(src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js")

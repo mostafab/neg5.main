@@ -23,6 +23,10 @@
     padding: 40px;
 }
 
+div p {
+    word-wrap: break-word;
+}
+
 .table-grey {
     background-color : rgb(190, 190, 190);
     color:black;

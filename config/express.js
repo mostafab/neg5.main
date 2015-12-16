@@ -35,6 +35,7 @@ module.exports = function() {
     require('../app/routes/index.js')(app, passport);
     require("../app/routes/user-route.js")(app, passport);
     require("../app/routes/tournaments-route.js")(app, passport);
+    require("../app/routes/signup-route.js")(app, passport);
     require("../app/routes/stats-route.js")(app,passport);
 
     return app;

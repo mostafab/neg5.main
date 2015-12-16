@@ -19,12 +19,12 @@ html
 
     //- Declaration
     mixin sidebar
-
         nav(class="cd-side-nav" style="position:fixed")
             form(name="tdid")
                 input(type="hidden" value="#{tournamentd}" id="tdid_input")
             ul
                 li(class="cd-label") #{tournamentd.name}
+
                 li(class="has-children overview active")
 
                     ul()
@@ -37,6 +37,7 @@ html
                 li(class="cd-label")
                 li(class="action-btn")
                     a(href="/logout" style="background-color:rgb(0, 136, 136);") Logout
+
     //- Use
 
     //- Declaration

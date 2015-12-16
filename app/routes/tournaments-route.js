@@ -5,7 +5,7 @@ var Tournament = mongoose.model("Tournament");
 module.exports = function(app) {
 
     app.post("/home/tournaments/edit", function(req, res, next) {
-        console.log(req.body);
+        // console.log(req.body);
         tournamentController.updateTournamentInformation(req.body.tournamentid, req.body, function(err) {
             if (err) {
                 res.status(500).send({err : err});
@@ -42,6 +42,16 @@ module.exports = function(app) {
                 res.status(500).send({err : err});
             } else {
                 res.status(200).send({duplicate : duplicate, collab : collaborator});
+            }
+        });
+    });
+
+    app.post("/tournaments/removeCollab", function(req, res, next) {
+        tournamentController.removeCollaborator(req.body.tournamentid, req.body.collab, function(err) {
+            if (err) {
+                res.status(500).send({err : err});
+            } else {
+                res.status(200).send({err : null});
             }
         });
     });
@@ -300,7 +310,7 @@ module.exports = function(app) {
                 var date = req.body.t_date;
                 var questionset = req.body.t_qset;
                 // console.log("Session email: " + req.session.director.email);
-                tournamentController.addTournament(req.session.director._id, name, date, location, description, questionset, function(err) {
+                tournamentController.addTournament(req.session.director, name, date, location, description, questionset, function(err) {
                     if (err) {
                         res.redirect("/home/tournaments/create");
                     } else {
