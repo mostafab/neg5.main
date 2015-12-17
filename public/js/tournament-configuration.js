@@ -133,6 +133,7 @@ $(document).ready(function() {
     $("#submitregistration").click(function() {
         var empty = checkTournamentRegistration();
         if (!empty) {
+            $(this).prop("disabled", true);
             submitTournamentRegistration();
         } else {
             $("#tregmessage").empty().
@@ -169,10 +170,17 @@ function submitTournamentRegistration() {
         type : "POST",
         data : $("#submitsignup").serialize(),
         success : function(databack, status, xhr) {
-            showMessageInDiv("#tregmessage", "All good to go!", null);
+            if (databack.closed) {
+                showMessageInDiv("#tregmessage", "Registration for this tournament is closed!", "CLOSED");
+            } else {
+                showMessageInDiv("#tregmessage", "All good to go!", null);
+            }
         },
         error : function(xhr, status, err) {
-            showMessageInDiv("#tregmessage", "Couldn't register for tournament!", err);
+            showMessageInDiv("#tregmessage", "Couldn't connect to the server!", err);
+        },
+        complete : function(xhr, status) {
+            $("#submitregistration").prop("disabled", false);
         }
     });
 }

@@ -32,6 +32,7 @@ a {
     background-color: #EEEEEE;
 }
 
+
 .header {
     border-width: 0px;
 }
@@ -147,24 +148,30 @@ a {
         width: 300px;
         text-align: center;
         background-color: transparent;
-
     }
+    
     .navbar>.container .navbar-brand-centered,
     .navbar>.container-fluid .navbar-brand-centered {
         margin-left: -80px;
     }
 
 
-.navbar-nav>li>a {padding-top: 5px;padding-bottom: 15px;
-}
+    .navbar-nav>li>a {padding-top: 5px;padding-bottom: 15px;
+    }
 
+    .navbar-brand{top: 0px;}
 
+    .navbar-brand-centered{height:120px;}
 
-.navbar-brand{top: 0px;}
+    .navbar-default {
+        background-color:transparent;
+        border-color:transparent;
+        padding-top: 0px;
+    }
 
-.navbar-brand-centered{height:120px;}
-
-.navbar-default {background-color:transparent; border-color:transparent; padding-top: 0px;}
+    .navbar-default:hover {
+        background-color: #008888;
+    }
 }
 
 @media (max-width: 801px) {

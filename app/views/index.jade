@@ -17,54 +17,55 @@ block content
     div(class="jumbotron vertical-center")
         div(class="container")
             div(style="margin:20px; margin-bottom:50px;margin-top:10%")
+            
+            div(id="loginpanel")
+                div(class="row")
+                    div(class="col-xs-12" style="text-align:center")
+                        h2(class="title") Login
 
-            div(class="row")
-                div(class="col-xs-12" style="text-align:center")
-                    h2(class="title") Login
+                div(class="row")
+                    div(class="col-xs-12")
+                        div(class="panel-body")
+                            div(class="row")
+                                div(class="smallbox")
+                                    form(name="logins" id="loginfo" method="post" action="/auth/local")
+                                        div(class="row")
+                                            div(class="col-md-4")
+                                            div(class="form-group col-md-4")
+                                                input(
+                                                    type="text",
+                                                    name="usrname",
+                                                    placeholder="Email"
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40")
+                                            div(class="col-md-4")
+                                        div(class="row")
+                                            div(class="col-md-4")
+                                            div(class="form-group col-md-4")
+                                                input(
+                                                    type="password",
+                                                    name="pswd"
+                                                    placeholder="Password",
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40")
 
-            div(class="row")
-                div(class="col-xs-12")
-                    div(class="panel-body")
-                        div(class="row")
-                            div(class="smallbox")
-                                form(name="logins" id="loginfo" method="post" action="/auth/local")
-                                    div(class="row")
-                                        div(class="col-md-4")
-                                        div(class="form-group col-md-4")
-                                            input(
-                                                type="text",
-                                                name="usrname",
-                                                placeholder="Email"
-                                                class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                                style="background-color:#363B40")
-                                        div(class="col-md-4")
-                                    div(class="row")
-                                        div(class="col-md-4")
-                                        div(class="form-group col-md-4")
-                                            input(
-                                                type="password",
-                                                name="pswd"
-                                                placeholder="Password",
-                                                class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                                style="background-color:#363B40")
+                                        div(class="form-group")
+                                            div(class="form-group text-center")
+                                                button(class="btn btn-info btn-md center-in-div no-border-radius",
+                                                    type="button",
+                                                    id="login")
+                                                    | Login
+                                                button(class="btn btn-warning btn-md center-in-div no-border-radius",
+                                                    type="button",
+                                                    id="gotoregister",
+                                                    )
+                                                    | Register
 
-                                    div(class="form-group")
-                                        div(class="form-group text-center")
-                                            button(class="btn btn-info btn-md center-in-div no-border-radius",
-                                                type="button",
-                                                id="login")
-                                                | Login
-                                            button(class="btn btn-warning btn-md center-in-div no-border-radius",
-                                                type="button",
-                                                id="gotoregister",
-                                                )
-                                                | Register
-
-                                            a(href="/auth/google" class="btn btn-danger circle")
-                                                span(class="fa fa-google-plus")
-                                            br
-                                            br
-                                            p(id="errorlabel") #{errormsg}
+                                                a(href="/auth/google" class="btn btn-danger circle")
+                                                    span(class="fa fa-google-plus")
+                                                br
+                                                br
+                                                p(id="errorlabel") #{errormsg}
 
             div(id="registerpanel" style="display:none")
                 div(class="row")

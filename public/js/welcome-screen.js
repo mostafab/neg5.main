@@ -62,11 +62,13 @@ $(document).ready(function() {
     });
 
     $("#gotoregister").click(function() {
-        $("#registerpanel").fadeIn(600);
+        $("#registerpanel").slideDown(300);
+        $("#loginpanel").slideUp(300);
     });
 
     $("#closereg").click(function() {
-        $("#registerpanel").fadeOut(600);
+        $("#registerpanel").slideUp(300);
+        $("#loginpanel").slideDown(300);
     });
 
 });

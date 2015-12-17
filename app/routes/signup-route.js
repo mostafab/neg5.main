@@ -14,15 +14,13 @@ module.exports = function(app) {
     });
 
     app.post("/:tid/signup/submit", function(req, res) {
-        // console.log(req.params.tid);
-        // console.log(req.body);
         var directorid = req.session.director == null ? null : req.session.director._id;
         var tournamentid = req.params.tid;
-        signupController.createRegistration(tournamentid, directorid, req.body, function(err) {
+        signupController.createRegistration(tournamentid, directorid, req.body, function(err, closed) {
             if (err) {
                 res.status(500).send({err : err});
             } else {
-                res.status(200).send({err : null});
+                res.status(200).send({err : null, closed : closed});
             }
         });
     });

@@ -101,9 +101,14 @@ block content
 
                 div(class="col-xs-6")
                     if director != null
-                        h2(class="title") Sign up for #{tournament.tournament_name} here.
+                        h2(class="title")
+                            | Sign up for #{tournament.tournament_name} here.
+                            | If you've previously registered for this tournament, this registration will update any previous registration associated with this account and this tournament.
                     else
-                        h2(class="title") Sign up here. Since you're not logged in, we'll try to link this registration to the account with the email entered below.
+                        h2(class="title")
+                            | Sign up here. Since you're not logged in, we'll try to link this registration to the account with the email entered below.
+                            | If you've previously registered for this tournament under the email you enter below, that previous registration will be updated.
+
                     div(class="panel-body")
                         div(class="row")
                             div(class="smallbox")
@@ -149,7 +154,7 @@ block content
                                             br
                                             br
                                             div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="tregmessage")
-                                                
+
 
                                 else
                                     div(class="form-group")
