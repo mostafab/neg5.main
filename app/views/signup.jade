@@ -23,6 +23,15 @@ block content
                         div(class="alert alert-danger")
                             p Registration for this tournament is closed!
 
+                    if director != null
+                        div(class="alert alert-success")
+                            p Currently logged in as: #{director.name} (#{director.email})
+
+                    else
+                        div(class="alert alert-info")
+                            p Not logged in
+                                a(href="/" class="btn btn-md btn-stats" target="_blank") Login
+
             div(class="row")
                 div(class="col-xs-12" style="text-align:center")
                     h2(class="title") #{tournament.tournament_name}
@@ -57,7 +66,7 @@ block content
 
                                 div(class="form-group")
                                     if tournament.date != null
-                                        - var date = tournament.date.getMonth() + "/" + tournament.date.getDay() + "/" + tournament.date.getFullYear()
+                                        - var date = tournament.date.getMonth() + "/" + tournament.date.getDate() + "/" + tournament.date.getFullYear()
                                         input(readonly,
                                             type="text",
                                             value="Date: #{date}",
@@ -88,20 +97,18 @@ block content
                                 div(class="form-group")
                                     textarea(readonly,
                                         class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                        style="background-color:#363B40") Description:&#10#{tournament.description}
+                                        style="background-color:#363B40", rows="10") Description:&#10#{tournament.description}
 
                 div(class="col-xs-6")
                     if director != null
                         h2(class="title") Sign up for #{tournament.tournament_name} here.
                     else
-                        h2(class="title") Sign up here. You can access this signup later if you log in.
-                            a(href="/" class="btn btn-md btn-stats" target="_blank") Login
-
+                        h2(class="title") Sign up here. Since you're not logged in, we'll try to link this registration to the account with the email entered below.
                     div(class="panel-body")
                         div(class="row")
                             div(class="smallbox")
                                 if tournament.openRegistration
-                                    form()
+                                    form(id="signupform" method="post" action="/" + tournament.shortID + "/signup/submit")
                                         div(class="form-group")
                                             input(
                                                 type="text",
@@ -117,18 +124,27 @@ block content
                                                 class="form-control input-lg center-text no-border-radius tournament-info-field"
                                             )
                                         div(class="form-group")
-                                            input(
-                                                class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                                placeholder="Email",
-                                                name="email"
-                                            )
+                                            if director != null
+                                                input(
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    placeholder="Email",
+                                                    value="#{director.email}",
+                                                    name="email"
+                                                )
+                                            else
+                                                input(
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    placeholder="Email",
+                                                    name="email"
+                                                )
                                         div(class="form-group")
                                             textarea(
                                                 class="form-control input-lg center-text no-border-radius tournament-info-field",
                                                 placeholder="Other Information",
-                                                name="otherinfo"
+                                                name="otherinfo",
+                                                rows="10"
                                             )
-                                        button(type="button" class="btn btn-lg btn-stats no-border-radius") Confirm Registration
+                                        button(type="submit" class="btn btn-lg btn-stats no-border-radius" id="submitregistration") Confirm Registration
 
                                 else
                                     div(class="form-group")

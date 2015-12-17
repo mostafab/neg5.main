@@ -1,4 +1,5 @@
 var tournamentController = require('../../app/controllers/tournament-controller');
+var registrationController = require("../../app/controllers/registration-controller");
 var mongoose = require("mongoose");
 var Tournament = mongoose.model("Tournament");
 
@@ -423,7 +424,13 @@ module.exports = function(app) {
                     res.status(401).send("Couldn't find this tournament");
                 } else {
                     if (hasPermission(result, req.session.director)) {
-                        res.render("tournament-view", {tournament : result, tournamentd : req.session.director});
+                        registrationController.findRegistrationsByTournament(req.params.tid, function(err, regs) {
+                            if (err) {
+                                res.status(500).send(err);
+                            } else {
+                                res.render("tournament-view", {tournament : result, tournamentd : req.session.director, registrations : regs});
+                            }
+                        });
                     } else {
                         res.status(401).send("You don't have permission to view this tournament");
                     }

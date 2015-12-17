@@ -98,9 +98,9 @@ Header
   left: 0;
   height: 45px;
   width: 100%;
-  background: rgb(0, 136, 136);
+  background: transparent;
   /*background-image: url("../img/background.jpg");*/
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  /*box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);*/
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -20,8 +20,7 @@ module.exports = function() {
         duration : 180 * 60 * 1000,
         activeDuration : 180 * 60 * 1000,
         httpOnly : true,
-        secure : true,
-        ephemeral : true
+        secure : true
     }));
     app.use(passport.initialize());
     app.use(passport.session());

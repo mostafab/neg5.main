@@ -278,11 +278,10 @@ function editTournamentAJAX() {
         type : "POST",
         data : $("#tournament-overview-form").serialize(),
         success : function(databack, status, xhr) {
-            if (databack.err) {
-                showMessageInDiv("#tournament-update-msgdiv", "Couldn't update tournament", err);
-            } else {
-                showMessageInDiv("#tournament-update-msgdiv", "Successfully updated tournament", null);
-            }
+            showMessageInDiv("#tournament-update-msgdiv", "Successfully updated tournament", null);
+        },
+        error : function(xhr, status, err) {
+            showMessageInDiv("#tournament-update-msgdiv", "Couldn't update tournament", err);
         }
     });
 }

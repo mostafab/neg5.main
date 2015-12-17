@@ -1,4 +1,12 @@
 module.exports = function(app) {
+
     var index = require('../controllers/index-controller');
-    app.get('/', index.render);
+
+    app.get('/', function(req, res) {
+        if (req.session.director) {
+            res.redirect("/home");
+        } else {
+            index.render(req, res);
+        }
+    });
 };
