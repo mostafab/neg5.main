@@ -21,7 +21,7 @@ function createRegistration(tournamentid, directorid, information, callback) {
             callback(null, "CLOSED");
         } else {
             if (reg.directorid == null) {
-                TournamentDirector.findOne({email : information.email}, function(err, result) {
+                TournamentDirector.findOne({email : information.email.toLowerCase()}, function(err, result) {
                     if (err) {
                         callback(err, null);
                     } else {

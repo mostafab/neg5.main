@@ -4,7 +4,9 @@ var Schema = mongoose.Schema;
 var RegistrationSchema = new Schema({
     teamName : String,
     numTeams : Number,
-    email : String,
+    email : {type : String, set : function(email) {
+        return email.toLowerCase();
+    }},
     tournamentid : String,
     directorid : String,
     message : String,
