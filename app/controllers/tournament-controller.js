@@ -622,7 +622,7 @@ function updateTournamentInformation(tournamentid, information, callback) {
     var registration = information.register == undefined ? false : true;
     Tournament.update({_id : tournamentid},
             {"$set" : {tournament_name : information.tournament_name, location : information.tournament_location,
-                    date : information.tournament_date, openRegistration : registration}}, function(err) {
+                    date : information.tournament_date, description : information.tournament_description, openRegistration : registration}}, function(err) {
                         callback(err);
                     });
 }

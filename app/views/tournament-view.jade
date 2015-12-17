@@ -59,63 +59,74 @@ block content
                                     div(class="panel-body")
                                         form(id="tournament-overview-form")
                                             input(type="hidden" value="#{tournament._id}" name="tournamentid")
-                                            div(class="col-md-6")
-                                                    label(class="label label-primary col-xs-4") Name
-                                                    div(class="form-group col-xs-8")
-                                                        input(
-                                                            type="text",
-                                                            name="tournament_name",
-                                                            value="#{tournament.tournament_name}",
-                                                            class="form-control input-medium center-text no-border-radius"
-                                                        )
-                                                    label(class="label label-primary col-xs-4") Location
-                                                    div(class="form-group col-xs-8")
-                                                        input(
-                                                            type="text",
-                                                            name="tournament_location",
-                                                            value="#{tournament.location}",
-                                                            class="form-control input-medium center-text no-border-radius"
-                                                        )
-                                                    label(class="label label-primary col-xs-4") Date
-                                                    div(class="form-group col-xs-8")
-                                                        if tournament.date
+                                            div(class="row")
+                                                div(class="col-md-6")
+                                                        label(class="label label-primary col-xs-4") Name
+                                                        div(class="form-group col-xs-8")
                                                             input(
-                                                                type="date",
-                                                                name="tournament_date",
-                                                                value="#{dateConverter(tournament.date)}",
+                                                                type="text",
+                                                                name="tournament_name",
+                                                                value="#{tournament.tournament_name}",
                                                                 class="form-control input-medium center-text no-border-radius"
                                                             )
-                                                        else
+                                                        label(class="label label-primary col-xs-4") Location
+                                                        div(class="form-group col-xs-8")
                                                             input(
-                                                                type="date",
-                                                                name="tournament_date",
+                                                                type="text",
+                                                                name="tournament_location",
+                                                                value="#{tournament.location}",
                                                                 class="form-control input-medium center-text no-border-radius"
                                                             )
-                                                    label(class="label label-primary col-xs-4") Registration
+                                                        label(class="label label-primary col-xs-4") Date
+                                                        div(class="form-group col-xs-8")
+                                                            if tournament.date
+                                                                input(
+                                                                    type="date",
+                                                                    name="tournament_date",
+                                                                    value="#{dateConverter(tournament.date)}",
+                                                                    class="form-control input-medium center-text no-border-radius"
+                                                                )
+                                                            else
+                                                                input(
+                                                                    type="date",
+                                                                    name="tournament_date",
+                                                                    class="form-control input-medium center-text no-border-radius"
+                                                                )
+                                                        label(class="label label-primary col-xs-4") Registration
+                                                        div(class="form-group col-xs-8")
+                                                            if tournament.openRegistration
+                                                                input(
+                                                                    checked,
+                                                                    type="checkbox",
+                                                                    name="register",
+                                                                    data-toggle="toggle",
+                                                                    data-on="Open",
+                                                                    data-onstyle="success",
+                                                                    data-off="Closed"
+                                                                )
+                                                            else
+                                                                input(
+                                                                    type="checkbox",
+                                                                    name="register",
+                                                                    data-toggle="toggle",
+                                                                    data-on="Open",
+                                                                    data-onstyle="success",
+                                                                    data-off="Closed"
+                                                                )
+
+
+                                            div(class="row")
+                                                div(class="col-md-12")
+                                                    label(class="label label-primary col-xs-2") Description
                                                     div(class="form-group col-xs-8")
-                                                        if tournament.openRegistration
-                                                            input(
-                                                                checked,
-                                                                type="checkbox",
-                                                                name="register",
-                                                                data-toggle="toggle",
-                                                                data-on="Open",
-                                                                data-onstyle="success",
-                                                                data-off="Closed"
-                                                            )
-                                                        else
-                                                            input(
-                                                                type="checkbox",
-                                                                name="register",
-                                                                data-toggle="toggle",
-                                                                data-on="Open",
-                                                                data-onstyle="success",
-                                                                data-off="Closed"
-                                                            )
+                                                        textarea(name="tournament_description" class="form-control" rows="10") #{tournament.description}
+
                                                     div(class="col-md-6")
                                                         button(type="button" class="btn btn-lg btn-success" id="edittournamentbutton") Save Changes
                                                         div(id="tournament-update-msgdiv")
                                                             p(style="margin:10px; font-size:18px")
+
+
 
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Collaborators
