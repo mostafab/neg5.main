@@ -42,20 +42,35 @@ html
 
     //- Declaration
     mixin navbar
-        header(class="cd-main-header")
+        // header(class="cd-main-header")
+        //
+        //     div(class="is-hidden")
+        //
+        //
+        //     nav(class="cd-nav")
+        //         li(class="has-children overview active")
+        //             ul()
+        //                 li(style="padding:15px;background-color:transparent;")
+        //                     a(href="/about") About Neg 5
+        //
+        //                     a()
+        //                         i(class="fa fa-github")
 
-            nav(class="cd-nav")
-                ul
-                    li(class="has-children overview active")
-                        ul()
-                            li(style="padding:15px;background-color:transparent")
-                                a(href="/about") About Neg 5
+        nav(class="navbar navbar-default" style="background-color:rgb(0, 136, 136)")
+            div(class="container")
+                div(class="navbar-header")
 
-                                a()
-                                    i(class="fa fa-github")
+                    div(class="navbar-brand navbar-brand-centered" style="color:white") Neg 5 : Quizbowl for the Cloud
+                        // img(src="http://dev.girliestgeek.com/img/girliest-geek-logo.png")
+                        div(style="clear:both")
 
-
-
+                div(class="collapse navbar-collapse navbar-right")
+                    ul(class="nav navbar-nav" )
+                        li
+                            a(href="/about" style="color:white") About Neg 5
+                        li
+                            a(href="#" style="color:white")
+                                 i(class="fa fa-github")
     //- Use
 
     //- Declaration

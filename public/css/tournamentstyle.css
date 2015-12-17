@@ -10,6 +10,7 @@
     border-radius: 0px;
 }
 
+
 .box {
     /*background-color : rgba(190, 190, 190, .7);*/
     background-color: rgb(240, 240, 240);
@@ -21,6 +22,7 @@
 .smallbox {
     background: rgba(51, 102, 153, .5);
     padding: 40px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 div p {

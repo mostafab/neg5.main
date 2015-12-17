@@ -27,8 +27,9 @@ a {
 }
 
 .body {
-    background-image: url("../img/background.jpg");
+    /*background-image: url("../img/background.jpg");*/
     background-size: cover;
+    background-color: #EEEEEE;
 }
 
 .header {
@@ -101,11 +102,16 @@ a {
 
 .btn {
     /*background-color: transparent;*/
-    border-radius: 19px 1px;
+    border-radius: 19px;
     padding: 15px 22px;
-    font-size: 24px;
     line-height: 1.33;
     margin: 10px;
+    font-size: 20px;
+}
+
+.list-group-item {
+    border-width: 0;
+    font-size: 18px;
 }
 
 .circle {
@@ -124,4 +130,46 @@ a {
     width: 100%;
     height: 100%;
     overflow: hidden;
+}
+
+.btn-round {
+    border-radius: 5px;
+}
+
+
+.navbar-brand img{height:100%;}
+
+@media screen and (min-width:767px){
+    .navbar-brand-centered {
+        position: absolute;
+        /*left: 50%;*/
+        display: block;
+        width: 300px;
+        text-align: center;
+        background-color: transparent;
+
+    }
+    .navbar>.container .navbar-brand-centered,
+    .navbar>.container-fluid .navbar-brand-centered {
+        margin-left: -80px;
+    }
+
+
+.navbar-nav>li>a {padding-top: 5px;padding-bottom: 15px;
+}
+
+
+
+.navbar-brand{top: 0px;}
+
+.navbar-brand-centered{height:120px;}
+
+.navbar-default {background-color:transparent; border-color:transparent; padding-top: 0px;}
+}
+
+@media (max-width: 801px) {
+.navbar-default{padding-top:0;}
+.navbar-brand{padding: 10px 10px;}
+.navbar-brand-centered{height:100px;}
+.navbar-toggle{bottom:-20px;}
 }

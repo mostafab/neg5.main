@@ -37,7 +37,7 @@ $(document).ready(function() {
         var email = document.forms["signup"]["r_usrname"].value;
         var password = document.forms["signup"]["r_pswd"].value;
         var passwordCopy = document.forms["signup"]["r_pswd_2"].value;
-        $("h4").css({"color" : "white"});
+        $(".list-group-item").css({"color" : "white"});
         var problem = false;
         if (name.length < constants.MIN_USER_LENGTH
                 || name.length > constants.MAX_USER_LENGTH) {
@@ -61,31 +61,15 @@ $(document).ready(function() {
         }
     });
 
-    $("#register").click(function() {
-        $("#registerWindow").animate({
-            left : "0%"
-        }, 500);
-        // $("#registerWindow").css("left", "0%");
-        // console.log($("#registerWindow").css("left"));
-
-        $("#loginbox").animate({
-            left : "-200%"
-        }, 500);
+    $("#gotoregister").click(function() {
+        $("#registerpanel").fadeIn(600);
     });
 
     $("#closereg").click(function() {
-        $("#loginbox").animate({
-            left : "0%"
-        }, 500);
-
-        $("#registerWindow").animate({
-            left : "-200%"
-        }, 500);
+        $("#registerpanel").fadeOut(600);
     });
 
 });
-
-
 
 function checkEmailInForm() {
     return document.forms["logins"]["usrname"].value.length >= constants.MIN_USER_LENGTH;

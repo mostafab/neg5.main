@@ -14,8 +14,8 @@ module.exports = function(app) {
     });
 
     app.post("/:tid/signup/submit", function(req, res) {
-        console.log(req.params.tid);
-        console.log(req.body);
+        // console.log(req.params.tid);
+        // console.log(req.body);
         var directorid = req.session.director == null ? null : req.session.director._id;
         var tournamentid = req.params.tid;
         signupController.createRegistration(tournamentid, directorid, req.body, function(err) {

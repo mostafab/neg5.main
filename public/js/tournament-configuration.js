@@ -124,16 +124,33 @@ $(document).ready(function() {
         removeCollabAJAX(this);
     });
 
-
     $("#playerstatstable th").each(function(index, head) {
         // console.log($(head).text());
         playerOptions.valueNames.push($(head).text());
     });
     playerList = new List("players", playerOptions);
 
+    $("#submitregistration").click(function() {
+        var empty = checkTournamentRegistration();
+        if (!empty) {
+            submitTournamentRegistration();
+        } else {
+            $("#tregmessage").empty().
+                append("<p style='margin-left:10px; font-size:18px;'>Fill in all forms, please.</p>");
+        }
+    });
 });
 
-
+function checkTournamentRegistration() {
+    var empty = false;
+    $("#submitsignup input, #submitsignup textarea").each(function(index, input) {
+        if ($(input).val().length == 0) {
+            empty = true;
+        }
+    });
+    console.log(empty);
+    return empty;
+}
 
 function removeTeamSender(button) {
     removeTeam($(button).parent().serialize(), button);
@@ -143,6 +160,23 @@ function removeGameSender(button) {
     console.log($(button).parent().serialize());
     removeGame($(button).parent().serialize(), button);
 }
+
+function submitTournamentRegistration() {
+    $("#tregmessage").empty().
+        append("<p style='margin-left:10px; font-size:18px;'>Submitting Information <i class='fa fa-spinner fa-spin' style='margin-left:5px'></i></p>");
+    $.ajax({
+        url : $("#submitsignup").attr("action"),
+        type : "POST",
+        data : $("#submitsignup").serialize(),
+        success : function(databack, status, xhr) {
+            showMessageInDiv("#tregmessage", "All good to go!", null);
+        },
+        error : function(xhr, status, err) {
+            showMessageInDiv("#tregmessage", "Couldn't register for tournament!", err);
+        }
+    });
+}
+
 
 function sendTeamToServer() {
     $.ajax({
@@ -361,9 +395,9 @@ function showMessageInDiv(div, message, err) {
     var html = "";
     $(div).empty();
     if (err) {
-        html = "<p style='margin-left:10px;font-size:16px;color:#ff3300'>" + message + "<i class='fa fa-times-circle'></i></p>";
+        html = "<p style='margin-left:10px;font-size:18px;color:#ff3300'>" + message + "<i class='fa fa-times-circle' style='margin-left:5px'></i></p>";
     } else {
-        html = "<p style='margin-left:10px;font-size:16px;color:#009933'>" + message + "<i class='fa fa-check-circle'></i></p>";
+        html = "<p style='margin-left:10px;font-size:18px;color:#009933'>" + message + "<i class='fa fa-check-circle' style='margin-left:5px'></i></p>";
     }
     $(html).hide().appendTo(div).fadeIn(300);
 }
