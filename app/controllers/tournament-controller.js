@@ -603,10 +603,10 @@ function changeGameShortID(tournamentid, currentID, newID, callback) {
             });
 }
 
-function changePointScheme(tournamentid, newPointScheme, callback) {
+function changePointScheme(tournamentid, newPointScheme, newPointTypes, callback) {
     // console.log(newPointScheme);
     Tournament.update({_id : tournamentid},
-            {"$set" : {pointScheme : newPointScheme}}, function(err) {
+            {"$set" : {pointScheme : newPointScheme, pointsTypes : newPointTypes}}, function(err) {
                 callback(err);
             });
 }

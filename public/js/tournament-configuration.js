@@ -60,7 +60,7 @@ $(document).ready(function() {
     });
 
     $("#add-point-value-button").click(function(e) {
-        var html = "<div class=''> "
+
     });
 
     $("#entergamebutton").click(function(e) {
@@ -83,8 +83,9 @@ $(document).ready(function() {
     });
 
     $("#save-point-schema-button").click(function(e) {
-        formatPointSchemaForm();
-        changePointSchemeAJAX();
+        var pointTypes = formatPointTypes();
+        formatPointSchemaForm(pointTypes);
+        changePointSchemeAJAX(pointTypes);
     });
 
     $("#save-divisions-button").click(function(e) {
@@ -140,7 +141,22 @@ $(document).ready(function() {
                 append("<p style='margin-left:10px; font-size:18px;'>Fill in all forms, please.</p>");
         }
     });
+
+    $(".pointgroup").click(function() {
+        uncheckBoxes($(this));
+    });
+
 });
+
+function uncheckBoxes(checkbox) {
+    var parentDiv = $(checkbox).parent().parent();
+    parentDiv.find(".pointgroup").each(function(index, radio) {
+        console.log($(radio)[0] === $(checkbox)[0]);
+        if ($(radio)[0] !== $(checkbox)[0]) {
+            $(radio).prop("checked", false);
+        }
+    });
+}
 
 function checkTournamentRegistration() {
     var empty = false;
@@ -290,13 +306,14 @@ function removeTeam(forminfo, button) {
     });
 }
 
-function changePointSchemeAJAX() {
+function changePointSchemeAJAX(pointTypes) {
+
     $.ajax({
         url : "/home/tournaments/editPointSchema",
         type : "POST",
         data : $("#point-schema-form").serialize(),
         success : function(databack, status, xhr) {
-
+            // console.log("HERE");
         }
     });
 }
@@ -544,9 +561,19 @@ function updateTeamList(team) {
 }
 
 function addPointSchemaRow() {
-    // div(class="form-group")
-        // input(type="number" style="width:25%" value="#{num}" class="form-control input-medium no-border-radius" name="val" + num)
-    var html = "<div class='form-group'><input type='number' style='width:25%' class='form-control input-medium no-border-radius'/></div>";
+    var arr = ["B", "N", "P"];
+    var html = "<div class='row'><div class='form-group col-md-3'><input type='number style='width:100%' class='form-control pointval input-medium no-border-radius'/></div>";
+    html += "<div class='col-md-9'>";
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] == "P") {
+            html += "<label class='radio-inline btn-sm btn-warning'>Power<input type='checkbox' value='" + arr[i] + "' class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
+        } else if (arr[i] == "N") {
+            html += "<label class='radio-inline btn-sm btn-danger'>Neg<input type='checkbox' value='" + arr[i] + "' class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
+        } else {
+            html += "<label class='radio-inline btn-sm btn-info'>Base<input checked type='checkbox' value='" + arr[i] + "' class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
+        }
+    }
+    html += "</div>";
     $("#point-schema-form").append(html);
 }
 
@@ -555,15 +582,33 @@ function addDivisionRow() {
     $("#divisions-form").append(html);
 }
 
-function formatPointSchemaForm() {
+function formatPointSchemaForm(pointTypes) {
     var currentPointNum = 1;
-    $("#point-schema-form :input").each(function() {
+    $("#point-schema-form .pointval").each(function() {
         if ($(this).attr("name") !== "tournamentid") {
             $(this).attr("name", "pointval" + currentPointNum);
             console.log($(this).val() + ", " + $(this).attr("name"));
             currentPointNum++;
         }
     });
+    $("#pointtypesfield").val(JSON.stringify(pointTypes));
+}
+
+function formatPointTypes() {
+    var pointTypes = {};
+    $("#point-schema-form .pointval").each(function(index) {
+        if ($(this).val() != "") {
+            var pointValue = $(this).val();
+            console.log($(this).val());
+            $(this).parent().next().find(".pointgroup").each(function(index, radio) {
+                if ($(radio).is(":checked")) {
+                    pointTypes[pointValue] = $(radio).val();
+                }
+            });
+        }
+    });
+    // console.log(pointTypes);
+    return pointTypes;
 }
 
 function formatDivisionsForm() {

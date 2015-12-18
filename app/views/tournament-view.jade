@@ -195,12 +195,40 @@ block content
                                     div(class="panel-body")
                                         div(class="col-md-6")
                                             label(class="label label-primary col-xs-4") Point Scheme
-                                            div(class="form-group col-xs-8")
+                                            br
+                                            br
+                                            div(class="form-group col-md-12")
                                                 form(id="point-schema-form")
-                                                    input(type="hidden" name="tournamentid" value="#{tournament._id}")
+                                                    input(type="hidden" name="tournamentid" value="#{tournament._id}" id="tournamentidajax")
+                                                    input(type="hidden" name="pointtypes" id="pointtypesfield")
                                                     each num, i in Object.keys(tournament.pointScheme)
-                                                        div(class="form-group")
-                                                            input(type="number" style="width:25%" value="#{num}" class="form-control input-medium no-border-radius" name="val" + num)
+                                                        div(class='row')
+                                                            div(class="form-group col-md-3")
+                                                                input(type="number" style="width:100%" value="#{num}" class="form-control input-medium no-border-radius pointval" name="val" + num)
+
+                                                            div(class="col-md-9")
+                                                                each type, j in ["B", "N", "P"]
+
+                                                                    if type == "P"
+                                                                        label(class="radio-inline btn-sm btn-warning") Power
+                                                                            if tournament.pointsTypes[num] == "P"
+                                                                                input(checked type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                                                                            else
+                                                                                input(type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                                                                    else if type == "N"
+                                                                        label(class="radio-inline btn-sm btn-danger") Neg
+                                                                            if tournament.pointsTypes[num] == "N"
+                                                                                input(checked type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                                                                            else
+                                                                                input(type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+
+                                                                    else
+                                                                        label(class="radio-inline btn-sm btn-info") Base
+                                                                            if tournament.pointsTypes[num] == "B"
+                                                                                input(checked type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                                                                            else
+                                                                                input(type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+
                                             div(class="btn-group" style="margin-top:15px")
                                                 button(type="button" class="btn btn-md btn-info" style="margin:0;margin-bottom:15px" id="add-point-value-button" onclick='addPointSchemaRow()') Add A Point Value
                                                 button(type="button" class="btn btn-md btn-success" style="margin:0;margin-bottom:15px" id="save-point-schema-button") Save Point Scheme

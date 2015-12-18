@@ -71,7 +71,9 @@ module.exports = function(app) {
 
     app.post("/home/tournaments/editPointSchema", function(req, res, next) {
         // console.log(req.body);
+        console.log(JSON.parse(req.body.pointtypes));
         var newPointValues = {};
+        var newPointTypes = JSON.parse(req.body.pointtypes);
         var playerNum = 1;
         currentVal = "pointval" + playerNum
         while (req.body[currentVal] != undefined) {
@@ -83,7 +85,7 @@ module.exports = function(app) {
             currentVal = "pointval" + playerNum;
         }
         // console.log(newPointValues);
-        tournamentController.changePointScheme(req.body["tournamentid"], newPointValues, function(err) {
+        tournamentController.changePointScheme(req.body["tournamentid"], newPointValues, newPointTypes, function(err) {
             if (err) {
                 res.status(500).send({err : err});
             } else {
