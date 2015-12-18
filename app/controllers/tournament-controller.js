@@ -137,17 +137,17 @@ function findTeamMembers(tournamentid, teamid, callback) {
 function addGameToTournament(tournamentid, gameinfo, callback) {
     pointsJSONKeys = Object.keys(JSON.parse(gameinfo["pointValueForm"]));
     var newGame = new Game({
-        round : gameinfo["round"],
-        tossupsheard : gameinfo["tossupsheard"],
+        round : !gameinfo["round"] ? 0 : gameinfo["round"],
+        tossupsheard : !gameinfo["tossupsheard"] ? 0 : gameinfo["tossupsheard"],
     });
     newGame.shortID = shortid.generate();
     newGame.team1.team_id = gameinfo["leftteamselect"];
-    newGame.team1.score = gameinfo["leftteamscore"] == null ? "0" : gameinfo["leftteamscore"];
-    newGame.team1.bouncebacks = gameinfo["leftbounceback"] == null ? 0 : gameinfo["leftbounceback"];
+    newGame.team1.score = !gameinfo["leftteamscore"] ? "0" : gameinfo["leftteamscore"];
+    newGame.team1.bouncebacks = !gameinfo["leftbounceback"] ? 0 : gameinfo["leftbounceback"];
     newGame.team1.team_name = gameinfo["leftteamname"];
     newGame.team2.team_id = gameinfo["rightteamselect"];
-    newGame.team2.score = gameinfo["rightteamscore"] == null ? "0" : gameinfo["rightteamscore"];
-    newGame.team2.bouncebacks = gameinfo["rightbounceback"] == null ? 0 : gameinfo["rightbounceback"];
+    newGame.team2.score = !gameinfo["rightteamscore"] ? "0" : gameinfo["rightteamscore"];
+    newGame.team2.bouncebacks = !gameinfo["rightbounceback"] ? 0 : gameinfo["rightbounceback"];
     newGame.team2.team_name = gameinfo["rightteamname"];
     var playerNum = 1;
     var playerleft = "player" + playerNum + "_leftid";
@@ -185,8 +185,6 @@ function addGameToTournament(tournamentid, gameinfo, callback) {
         if (err) {
             callback(err, []);
         } else {
-            // projectGameToTeams(tournamentid, newGame);
-            // projectGameToPlayers(tournamentid, newGame);
             callback(null, newGame);
         }
     });

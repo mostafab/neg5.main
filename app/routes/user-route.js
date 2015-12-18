@@ -23,11 +23,11 @@ module.exports = function(app, passport) {
     app.post("/register/local", function(req, res, next) {
         userController.register(req.body, function(err, message) {
             if (err) {
-                return res.send("The registration process isn't working right now.");
+                return res.status(500).send({err : err});
             } else if (message === "EXISTS") {
-                return res.send("A user with that email already exists.");
+                return res.send({msg : "A user with that email already exists.", exists : true});
             } else {
-                return res.send("You're good to go! You can login now.");
+                return res.send({msg : "You're good to go! You can login now."});
             }
         });
     });

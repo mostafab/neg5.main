@@ -86,16 +86,37 @@ function submitLogin() {
 }
 
 function submitRegistration() {
+    $("#registererror").empty().
+        append("<p style='margin-left:10px; font-size:18px;'>Working... <i class='fa fa-spinner fa-spin' style='margin-left:5px'></i></p>");
     $.ajax({
         url : "/register/local",
         method : "POST",
         data : $("#signupform").serialize(),
         success : function(databack, status, xhr) {
-            $("#registererror").text(databack);
+            if (databack.exists) {
+                showMessageInDiv("#registererror", databack.msg, "exists");
+            } else {
+                showMessageInDiv("#registererror", databack.msg, null);
+            }
             document.getElementById("signupform").reset();
+        },
+        error : function(xhr, status, err) {
+            showMessageInDiv("#registererror", "Registration isn't working right now", err);
         }
     });
 }
+
+function showMessageInDiv(div, message, err) {
+    var html = "";
+    $(div).empty();
+    if (err) {
+        html = "<p style='margin-left:10px;font-size:18px;color:#ff3300'>" + message + "<i class='fa fa-times-circle' style='margin-left:5px'></i></p>";
+    } else {
+        html = "<p style='margin-left:10px;font-size:18px;color:#009933'>" + message + "<i class='fa fa-check-circle' style='margin-left:5px'></i></p>";
+    }
+    $(html).hide().appendTo(div).fadeIn(300);
+}
+
 
 function checkRegisterEmail(email) {
     return constants.EMAIL_REGEX.test(email);

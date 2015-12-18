@@ -78,16 +78,24 @@ function makeUser(req, callback) {
                             callback(err);
                         } else {
                             // callback(null);
-                            var td = new TournamentDirector({
-                                name : name,
-                                email : email
-                            });
-                            td.save(function(err) {
+                            TournamentDirector.findOne({email : email}, function(err, result) {
                                 if (err) {
-                                    console.log(err);
                                     callback(err);
-                                } else {
+                                } else if (result) {
                                     callback(null);
+                                } else {
+                                    var td = new TournamentDirector({
+                                        name : name,
+                                        email : email
+                                    });
+                                    td.save(function(err) {
+                                        if (err) {
+                                            console.log(err);
+                                            callback(err);
+                                        } else {
+                                            callback(null);
+                                        }
+                                    });
                                 }
                             });
                         }

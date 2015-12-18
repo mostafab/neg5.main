@@ -9,19 +9,32 @@ var gameSchema = new Schema({
         }
         return num;
     }},
-    tossupsheard : {type : Number, default: 20},
+    tossupsheard : {type : Number, default: 20, set : function(tossups) {
+        if (tossups == null) {
+            return 20;
+        }
+        return tossups;
+    }},
     team1 : {
         team_name : String,
         team_id : String,
-        score : {type : Number, default : 0},
-        bouncebacks : {type : Number, default : 0},
+        score : {type : Number, default : 0, set : function(score) {
+            return score == null ? 0 : score;
+        }},
+        bouncebacks : {type : Number, default : 0, set : function(bb) {
+            return bb == null ? 0 : bb;
+        }},
         playerStats : {type : {}, default : {}}
     },
     team2 : {
         team_name : String,
         team_id : String,
-        score :  {type : Number, default : 0},
-        bouncebacks : {type : Number, default : 0},
+        score : {type : Number, default : 0, set : function(score) {
+            return score == null ? 0 : score;
+        }},
+        bouncebacks : {type : Number, default : 0, set : function(bb) {
+            return bb == null ? 0 : bb;
+        }},
         playerStats : {type : {}, default : {}}
     }
 });
