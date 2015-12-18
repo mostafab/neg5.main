@@ -307,24 +307,33 @@ function removeTeam(forminfo, button) {
 }
 
 function changePointSchemeAJAX(pointTypes) {
-
+    $("#pointdivmsg").empty().
+        append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Working...<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
         url : "/home/tournaments/editPointSchema",
         type : "POST",
         data : $("#point-schema-form").serialize(),
         success : function(databack, status, xhr) {
-            // console.log("HERE");
+            showMessageInDiv("#pointdivmsg", "Updated point scheme successfully", null);
+        },
+        error : function(xhr, status, err) {
+            showMessageInDiv("#pointdivmsg", "Could not update point scheme", err);
         }
     });
 }
 
 function changeDivisionsAJAX() {
+    $("#pointdivmsg").empty().
+        append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Working...<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
         url : "/home/tournaments/editDivisions",
         type : "POST",
         data : $("#divisions-form").serialize(),
         success : function(databack, status, xhr) {
-
+            showMessageInDiv("#pointdivmsg", "Updated divisions successfully", null);
+        },
+        error : function(xhr, status, err) {
+            showMessageInDiv("#pointdivmsg", "Could not update divisions", err);
         }
     });
 }
