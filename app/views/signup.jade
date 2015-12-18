@@ -13,6 +13,7 @@ block extrastylesheets
 
 
 block content
+    +navbar
 
     div(class="jumbotron vertical-center")
         div(class="container")
@@ -26,14 +27,14 @@ block content
                         div(class="alert alert-danger")
                             p Registration for this tournament is closed!
 
-                    if director != null
+                    if tournamentd != null
                         div(class="alert alert-success")
-                            p Currently logged in as: #{director.name} (#{director.email})
+                            p Currently logged in as: #{tournamentd.name} (#{tournamentd.email})
 
                     else
                         div(class="alert alert-info")
                             p Not logged in
-                                a(href="/" class="btn btn-md btn-stats" target="_blank") Login
+
 
             div(class="row")
                 div(class="col-xs-12" style="text-align:center")
@@ -57,7 +58,7 @@ block content
                                 div(class="form-group")
                                     input(readonly,
                                         type="text",
-                                        value="Director Email: #{tournament.directoremail}",
+                                        value="tournamentd Email: #{tournament.tournamentdemail}",
                                         class="form-control input-lg center-text no-border-radius tournament-info-field",
                                         style="background-color:#363B40")
                                 div(class="form-group")
@@ -103,7 +104,7 @@ block content
                                         style="background-color:#363B40", rows="10") Description:&#10#{tournament.description}
 
                 div(class="col-xs-6")
-                    if director != null
+                    if tournamentd != null
                         h2(class="title")
                             | Sign up for #{tournament.tournament_name} here.
                             | If you've previously registered for this tournament, this registration will update any previous registration associated with this account and this tournament.
@@ -132,11 +133,11 @@ block content
                                                 class="form-control input-lg center-text no-border-radius tournament-info-field"
                                             )
                                         div(class="form-group")
-                                            if director != null
+                                            if tournamentd != null
                                                 input(
                                                     class="form-control input-lg center-text no-border-radius tournament-info-field",
                                                     placeholder="Email",
-                                                    value="#{director.email}",
+                                                    value="#{tournamentd.email}",
                                                     name="email"
                                                 )
                                             else

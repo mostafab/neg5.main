@@ -12,124 +12,123 @@ block extrastylesheets
 
 block content
 
-    //+navbar
-    +sidebar
+    +navbar
+    // +sidebar
 
-    main(class="cd-main-content")
-        div(class="content-wrapper box")
+    // div(class="content-wrapper box" style='padding-left:50px;padding-right:50px;')
 
-            div(class="row")
-                div(class="col-md-12")
-                    div(style="margin:20px; margin-bottom:50px")
-                    h2(class="title" style="width:50%;") #{tournamentName} Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
-                    h3(class="title" style="width:50%; font-size:18px;border-radius:0") You can edit the game's statistics here. Nothing will be modified until you commit the changes.
-                    h3(class="title" style="width:50%;border-radius:0")
-                        a(class="btn btn-sm btn-info" href="/home/tournaments/" + tournament.shortID) Back to #{tournament.tournament_name}
-                    br
-                    br
+    div(class="row" style="padding-left:100px;padding-right:100px;padding-top:75px")
+        div(class="col-md-12")
+            div(style="margin:20px; margin-bottom:50px")
+            h2(class="title" style="width:50%;") #{tournamentName} Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
+            h3(class="title" style="width:50%; font-size:18px;border-radius:0") You can edit the game's statistics here. Nothing will be modified until you commit the changes.
+            h3(class="title" style="width:50%;border-radius:0")
+                a(class="btn btn-sm btn-info" href="/home/tournaments/" + tournament.shortID) Back to #{tournament.tournament_name}
+            br
+            br
 
-                    div(class="panel panel-default")
-                            div(class="panel-heading collapsable") Game Details
-                            div(class="panel-body")
+            div(class="panel panel-default")
+                    div(class="panel-heading collapsable") Game Details
+                    div(class="panel-body")
 
-                                div(class="panel-body" id="updategamepanel")
+                        div(class="panel-body" id="updategamepanel")
 
-                                        form(name="gameinfoform" id="changegameform")
-                                            input(type="hidden" value="#{game.shortID}" name="oldgameid" id="oldgameid_input")
-                                            input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
-                                            div(class="row")
-                                                input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
-                                                div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        input(type="hidden" name="leftteamname" id="leftteamnameID" value="#{game.team1.team_name}")
-                                                        select(id="leftchoice" class="form-control teamselect" name="leftteamselect")
-                                                            each team in tournament.teams
-                                                                if team._id == game.team1.team_id
-                                                                    option(selected value="#{team._id}") #{team.team_name}
-                                                                else
-                                                                    option(value="#{team._id}") #{team.team_name}
-                                                div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        input(type="hidden" name="rightteamname" id="rightteamnameID" value="#{game.team2.team_name}")
-                                                        select(id="rightchoice" class="form-control teamselect" name="rightteamselect")
-                                                            each team in tournament.teams
-                                                                if team._id == game.team2.team_id
-                                                                    option(selected value="#{team._id}") #{team.team_name}
-                                                                else
-                                                                    option(value="#{team._id}") #{team.team_name}
+                                form(name="gameinfoform" id="changegameform")
+                                    input(type="hidden" value="#{game.shortID}" name="oldgameid" id="oldgameid_input")
+                                    input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
+                                    div(class="row")
+                                        input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
+                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                input(type="hidden" name="leftteamname" id="leftteamnameID" value="#{game.team1.team_name}")
+                                                select(id="leftchoice" class="form-control teamselect" name="leftteamselect")
+                                                    each team in tournament.teams
+                                                        if team._id == game.team1.team_id
+                                                            option(selected value="#{team._id}") #{team.team_name}
+                                                        else
+                                                            option(value="#{team._id}") #{team.team_name}
+                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                input(type="hidden" name="rightteamname" id="rightteamnameID" value="#{game.team2.team_name}")
+                                                select(id="rightchoice" class="form-control teamselect" name="rightteamselect")
+                                                    each team in tournament.teams
+                                                        if team._id == game.team2.team_id
+                                                            option(selected value="#{team._id}") #{team.team_name}
+                                                        else
+                                                            option(value="#{team._id}") #{team.team_name}
+                                    br
+                                    div(class="row")
+                                        div(id="left-text" class="col-lg-6 col-md-6 col-sm-6")
+                                            table(class='table table-striped table-bordered table-hover table-condensed')
+                                                - var points = Object.keys(tournament.pointScheme)
+                                                thead
+                                                    tr
+                                                        td(class="table-head") Name
+                                                        td(class="table-head") GP
+                                                        each val, i in points
+                                                            td(class="table-head") #{points[i]}
+                                                tbody
+                                                    - var playerNum = 1
+                                                    each val, i in team1Players
+                                                        - var current = team1Players[i]
+                                                        - var inputName = "player" + playerNum + "_leftid"
+                                                        input(type="hidden" value="#{current._id}" name="#{inputName}")
+                                                        if game.team1.playerStats[current._id]
+                                                            tr
+                                                                td #{current.player_name}
+                                                                td
+                                                                    - var inputGP = "player" + playerNum + "_leftgp"
+                                                                    input(type="number" name="#{inputGP}" class="form-control" value="#{game.team1.playerStats[current._id]['gp']}")
+                                                                each score, j in points
+                                                                    td
+                                                                        - var inputPoints = "player" + playerNum + "_left_" + points[j] + "val"
+                                                                        input(type="number" name="#{inputPoints}" class="form-control" value="#{game.team1.playerStats[current._id]['' + points[j]]}")
+
+                                                        - playerNum++
+                                        div(id="right-text" class="col-lg-6 col-md-6 col-sm-6")
+                                            table(class='table table-striped table-bordered table-hover table-condensed')
+                                                - var points = Object.keys(tournament.pointScheme)
+                                                thead
+                                                    tr
+                                                        td(class="table-head") Name
+                                                        td(class="table-head") GP
+                                                        each val, i in points
+                                                            td(class="table-head") #{points[i]}
+                                                tbody
+                                                    - var playerNum = 1
+                                                    each val, i in team2Players
+                                                        - var current = team2Players[i]
+                                                        - var inputName = "player" + playerNum + "_rightid"
+                                                        input(type="hidden" value="#{current._id}" name="#{inputName}")
+                                                        if game.team2.playerStats[current._id]
+                                                            tr
+                                                                td #{current.player_name}
+                                                                td
+                                                                    - var inputGP = "player" + playerNum + "_rightgp"
+                                                                    input(type="number" name="#{inputGP}" class="form-control" value="#{game.team2.playerStats[current._id]['gp']}")
+                                                                each score, j in points
+                                                                    td
+                                                                        - var inputPoints = "player" + playerNum + "_right_" + points[j] + "val"
+                                                                        input(type="number" name="#{inputPoints}" class="form-control" value="#{game.team2.playerStats[current._id]['' + points[j]]}")
+
+                                                        - playerNum++
+                                    div(class="row")
+                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                            input(type="number" class="form-control leftscorebox" name="leftteamscore" placeholder="Team 1 Score" pattern="[0-9]" value="#{game.team1.score}")
+                                            input(type="number" class="form-control leftscorebox" name="leftbounceback" placeholder="Bounceback Points" value="#{game.team1.bouncebacks}")
                                             br
-                                            div(class="row")
-                                                div(id="left-text" class="col-lg-6 col-md-6 col-sm-6")
-                                                    table(class='table table-striped table-bordered table-hover table-condensed')
-                                                        - var points = Object.keys(tournament.pointScheme)
-                                                        thead
-                                                            tr
-                                                                td(class="table-head") Name
-                                                                td(class="table-head") GP
-                                                                each val, i in points
-                                                                    td(class="table-head") #{points[i]}
-                                                        tbody
-                                                            - var playerNum = 1
-                                                            each val, i in team1Players
-                                                                - var current = team1Players[i]
-                                                                - var inputName = "player" + playerNum + "_leftid"
-                                                                input(type="hidden" value="#{current._id}" name="#{inputName}")
-                                                                if game.team1.playerStats[current._id]
-                                                                    tr
-                                                                        td #{current.player_name}
-                                                                        td
-                                                                            - var inputGP = "player" + playerNum + "_leftgp"
-                                                                            input(type="number" name="#{inputGP}" class="form-control" value="#{game.team1.playerStats[current._id]['gp']}")
-                                                                        each score, j in points
-                                                                            td
-                                                                                - var inputPoints = "player" + playerNum + "_left_" + points[j] + "val"
-                                                                                input(type="number" name="#{inputPoints}" class="form-control" value="#{game.team1.playerStats[current._id]['' + points[j]]}")
+                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                            input(type="number" class="form-control rightscorebox" name="rightteamscore" placeholder="Team 2 Score" pattern="[0-9]" value="#{game.team2.score}")
+                                            input(type="number" class="form-control rightscorebox" name="rightbounceback" placeholder="Bounceback Points" value="#{game.team2.bouncebacks}")
+                                            br
+                                    div(class="row")
+                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                            input(type="number" class="form-control leftscorebox" name="round" placeholder="Round" value="#{game.round}")
+                                    div(class="row")
+                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                            input(type="number" class="form-control leftscorebox" name="tossupsheard" placeholder="Tossups Heard" value="#{game.tossupsheard}")
 
-                                                                - playerNum++
-                                                div(id="right-text" class="col-lg-6 col-md-6 col-sm-6")
-                                                    table(class='table table-striped table-bordered table-hover table-condensed')
-                                                        - var points = Object.keys(tournament.pointScheme)
-                                                        thead
-                                                            tr
-                                                                td(class="table-head") Name
-                                                                td(class="table-head") GP
-                                                                each val, i in points
-                                                                    td(class="table-head") #{points[i]}
-                                                        tbody
-                                                            - var playerNum = 1
-                                                            each val, i in team2Players
-                                                                - var current = team2Players[i]
-                                                                - var inputName = "player" + playerNum + "_rightid"
-                                                                input(type="hidden" value="#{current._id}" name="#{inputName}")
-                                                                if game.team2.playerStats[current._id]
-                                                                    tr
-                                                                        td #{current.player_name}
-                                                                        td
-                                                                            - var inputGP = "player" + playerNum + "_rightgp"
-                                                                            input(type="number" name="#{inputGP}" class="form-control" value="#{game.team2.playerStats[current._id]['gp']}")
-                                                                        each score, j in points
-                                                                            td
-                                                                                - var inputPoints = "player" + playerNum + "_right_" + points[j] + "val"
-                                                                                input(type="number" name="#{inputPoints}" class="form-control" value="#{game.team2.playerStats[current._id]['' + points[j]]}")
-
-                                                                - playerNum++
-                                            div(class="row")
-                                                div(class="col-lg-6 col-md-6 col-sm-6")
-                                                    input(type="number" class="form-control leftscorebox" name="leftteamscore" placeholder="Team 1 Score" pattern="[0-9]" value="#{game.team1.score}")
-                                                    input(type="number" class="form-control leftscorebox" name="leftbounceback" placeholder="Bounceback Points" value="#{game.team1.bouncebacks}")
-                                                    br
-                                                div(class="col-lg-6 col-md-6 col-sm-6")
-                                                    input(type="number" class="form-control rightscorebox" name="rightteamscore" placeholder="Team 2 Score" pattern="[0-9]" value="#{game.team2.score}")
-                                                    input(type="number" class="form-control rightscorebox" name="rightbounceback" placeholder="Bounceback Points" value="#{game.team2.bouncebacks}")
-                                                    br
-                                            div(class="row")
-                                                div(class="col-lg-6 col-md-6 col-sm-6")
-                                                    input(type="number" class="form-control leftscorebox" name="round" placeholder="Round" value="#{game.round}")
-                                            div(class="row")
-                                                div(class="col-lg-6 col-md-6 col-sm-6")
-                                                    input(type="number" class="form-control leftscorebox" name="tossupsheard" placeholder="Tossups Heard" value="#{game.tossupsheard}")
-
-                                            button(type="button" class="btn btn-lg btn-info" id="entergamebutton") Save Changes
-                                                span(style="padding-left:10px")
-                                                    i(class="glyphicon glyphicon-check")
-                                            a(class="btn btn-lg btn-danger" href="/home/tournaments/" + tournament.shortID) Cancel
-                                                span(style="padding-left:10px")
-                                                    i(class="glyphicons glyphicons-remove-2")
+                                    button(type="button" class="btn btn-lg btn-info" id="entergamebutton") Save Changes
+                                        span(style="padding-left:10px")
+                                            i(class="glyphicon glyphicon-check")
+                                    a(class="btn btn-lg btn-danger" href="/home/tournaments/" + tournament.shortID) Cancel
+                                        span(style="padding-left:10px")
+                                            i(class="glyphicons glyphicons-remove-2")

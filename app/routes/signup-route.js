@@ -8,7 +8,7 @@ module.exports = function(app) {
             if (err) {
                 res.send(err);
             } else {
-                res.render("signup", {tournament : result, director : req.session.director});
+                res.render("signup", {tournament : result, tournamentd : req.session.director});
             }
         });
     });

@@ -582,6 +582,7 @@ function addPointSchemaRow() {
             html += "<label class='radio-inline btn-sm btn-info'>Base<input checked type='checkbox' value='" + arr[i] + "' class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
         }
     }
+    html += "<br><br>";
     html += "</div>";
     $("#point-schema-form").append(html);
 }

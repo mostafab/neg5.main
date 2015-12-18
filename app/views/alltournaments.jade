@@ -12,43 +12,43 @@ block extrastylesheets
 
 block content
 
-    //+navbar
-    +sidebar
+    +navbar
+    // +sidebar
 
-    main(class="cd-main-content")
-        div(class="content-wrapper box")
+    // main(class="cd-main-content")
+    div(class="content-wrapper box" style='padding-left:50px;padding-right:50px;padding-top:75px')
 
-            div(class="row")
-                div(class="col-md-12")
-                    div(style="margin:20px; margin-bottom:50px")
-                    h2(class="title") Your Tournaments
-                    div(class="panel panel-default table-grey")
+        div(class="row")
+            div(class="col-md-12")
+                div(style="margin:20px; margin-bottom:50px")
+                h2(class="title") Your Tournaments
+                div(class="panel panel-default table-grey")
 
 
-                        div(class="table-responsive")
-                            table(class="table table-striped table-bordered table-hover table-condensed" id="dataTables-example")
-                                thead
-                                    tr
-                                        th(class="table-head") Name
-                                        th(class="table-head") Location
-                                        th(class="table-head") Date
-                                        th(class="table-head") Open Registration
-                                        th(class="table-head") Question set
-                                        th(class="table-head") Number of Teams Added
-                                        //th(class="table-head") Edit This Tournament
-                                tbody
-                                    each val, i in tournaments
-                                        tr()
-                                            td
-                                                a(href="/home/tournaments/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
-                                                    i(class="fa fa-pencil" style="margin:5px")
-                                            td #{tournaments[i].location}
-                                            td #{tournaments[i].date}
-                                            if tournaments[i].openRegistration
-                                                td Yes
-                                            else
-                                                td No
-                                            td #{tournaments[i].questionSet}
-                                            td #{tournaments[i].teams.length}
-                                            //td
-                                            //    a(class="btn btn-lg btn-warning glyphicon glyphicon-edit no-border-radius" href="/home/tournaments/" + tournaments[i].shortID)
+                    div(class="table-responsive")
+                        table(class="table table-striped table-bordered table-hover table-condensed" id="dataTables-example")
+                            thead
+                                tr
+                                    th(class="table-head") Name
+                                    th(class="table-head") Location
+                                    th(class="table-head") Date
+                                    th(class="table-head") Open Registration
+                                    th(class="table-head") Question set
+                                    th(class="table-head") Number of Teams Added
+                                    //th(class="table-head") Edit This Tournament
+                            tbody
+                                each val, i in tournaments
+                                    tr()
+                                        td
+                                            a(href="/home/tournaments/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
+                                                i(class="fa fa-pencil" style="margin:5px")
+                                        td #{tournaments[i].location}
+                                        td #{tournaments[i].date}
+                                        if tournaments[i].openRegistration
+                                            td Yes
+                                        else
+                                            td No
+                                        td #{tournaments[i].questionSet}
+                                        td #{tournaments[i].teams.length}
+                                        //td
+                                        //    a(class="btn btn-lg btn-warning glyphicon glyphicon-edit no-border-radius" href="/home/tournaments/" + tournaments[i].shortID)
