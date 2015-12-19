@@ -119,15 +119,14 @@ module.exports = function(app) {
     app.route("/home/tournaments/createteam")
         .post(function(req, res, next) {
             if (!req.session.director) {
-                res.redirect("/");
+                res.status(401).end();
             } else {
                 var id = req.body["tournament_id"];
                 tournamentController.addTeamToTournament(id, req.body, function(err, teams, newTeam) {
                     if (err) {
-                        // DO STUFF
-                        res.send({"teams" : [], "newTeam" : {}});
+                        res.status(500).end();
                     } else {
-                        res.send({"teams" : teams, "newTeam" : newTeam});
+                        res.status(200).send({"teams" : teams, "newTeam" : newTeam});
                     }
                 });
             }
@@ -200,7 +199,7 @@ module.exports = function(app) {
     app.route("/home/tournaments/games/edit")
         .post(function(req, res, next) {
             if (!req.session.director) {
-                res.redirect("/");
+                res.status(401).send({msg : "Unauthorized"});
             } else {
                 // console.log(req.body);
                 var tournamentid = req.body["tournament_id_form"];
@@ -224,40 +223,19 @@ module.exports = function(app) {
                         });
                     }
                 });
-                // tournamentController.addGameToTournament(tournamentid, req.body, function(err, game) { // Adds in the new game
-                //     if (err) {
-                //         res.status(500).send({err : err});
-                //         console.log(err);
-                //     } else {
-                //         console.log("New game short id: " + game.shortID);
-                //         tournamentController.getGameFromTournament(tournamentid, gameid, function(err) { // Removes the old game
-                //             if (err) {
-                //                 res.status(500).send({err : err});
-                //             } else {
-                //                 tournamentController.changeGameShortID(tournamentid, game.shortID, gameid, function(err) { // Sets the shortID
-                //                     if (err) {
-                //                         res.status(500).send({err : err});
-                //                     } else {
-                //                         res.status(200).send({err : null}); // Need to send game to update the new gameid field
-                //                     }
-                //                 });
-                //             }
-                //         });
-                //     }
-                // });
             }
         });
 
     app.route("/home/tournaments/teams/edit")
         .post(function(req, res, next) {
             if (!req.session.director) {
-                res.status(401).send({team : null, msg : "Hmm, doesn't seem like you're logged in."});
+                res.status(401).end();
             } else {
                 var tournamentid = req.body["tournamentid"];
                 var teamid = req.body["teamid"];
                 tournamentController.updateTeam(tournamentid, teamid, req.body, function(err, team) {
                     if (err) {
-                        res.status(500).send({err : err, team : null, msg : "Could not connect."});
+                        res.status(500).end();
                         console.log(err);
                     } else if (!team){
                         res.status(200).send({team : null, msg : "A team with that name already exists."});
@@ -271,12 +249,12 @@ module.exports = function(app) {
     app.route("/home/tournaments/players/edit")
         .post(function(req, res, next) {
             if (!req.session.director) {
-                res.status(401).send({msg : "Hmm, doesn't seem like you're logged in. "});
+                res.status(401).end();
             } else {
                 // console.log(req.body);
                 tournamentController.updatePlayer(req.body.tournamentidform, req.body.playerid, req.body.playername, function(err) {
                     if (err) {
-                        res.status(500).send({err : err, msg : "Something went wrong"});
+                        res.status(500).end();
                     } else {
                         res.status(200).send({err : null, msg : "Successfully updated player"});
                     }
@@ -286,16 +264,16 @@ module.exports = function(app) {
 
     app.route("/home/tournaments/players/create")
         .post(function(req, res, next) {
-            console.log(req.body);
+            // console.log(req.body);
             if (!req.session.director) {
-                res.status(401).send({msg : "Hmm, doesn't seem like you're logged in. "});
+                res.status(401).end();
             } else {
                 tournamentController.addPlayer(req.body.tournamentidform, req.body.teamnameform, req.body.teamidform, req.body.newplayername, function(err, player) {
                     if (err) {
                         console.log(err);
-                        res.status(500).send({err : err, player : null, msg : "Something went wrong", tid : null});
+                        res.status(500).end();
                     } else {
-                        console.log("Added player");
+                        // console.log("Added player");
                         res.status(200).send({err : null, player : player, msg : "Successfully added player", tid : req.body.tournamentidform});
                     }
                 });
@@ -344,6 +322,9 @@ module.exports = function(app) {
 
     app.get("/home/tournaments/:tid/teams/:teamid", function(req, res) {
         // Add check for session here
+        if (!req.session.director) {
+            return res.redirect("/");
+        }
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var team = null;
             if (result) {
@@ -475,6 +456,9 @@ function checkEmptyQuery(query) {
 }
 
 function hasPermission(tournament, director) {
+    if (!director) {
+        return false;
+    }
     if (tournament.directorid == director._id) {
         return true;
     }

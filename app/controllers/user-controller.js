@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require("mongoose");
 var bcryptjs = require("bcryptjs");
 
@@ -7,7 +9,6 @@ var TournamentDirector = mongoose.model("TournamentDirector");
 var tournamentController = require('../../app/controllers/tournament-controller');
 
 function validateLocalLogin(credentials, callback) {
-    // console.log("Credentials: " + credentials["usrname"].toLowerCase());
     User.findOne({"local.email" : credentials["usrname"].toLowerCase()}, function(err, result) {
         if (err) {
             console.log(err);
@@ -17,7 +18,7 @@ function validateLocalLogin(credentials, callback) {
         } else {
             bcryptjs.compare(credentials["pswd"], result.local.password, function(err, res) {
                 if (res) {
-                    TournamentDirector.findOne({email : credentials["usrname"]}, function(err, result) {
+                    TournamentDirector.findOne({usertoken : result._id}, function(err, result) {
                         if (err || result == null) {
                             callback(null, "NONE", null);
                         } else {
@@ -86,8 +87,10 @@ function makeUser(req, callback) {
                                 } else {
                                     var td = new TournamentDirector({
                                         name : name,
-                                        email : email
+                                        email : email,
+                                        usertoken : user._id
                                     });
+                                    console.log(td);
                                     td.save(function(err) {
                                         if (err) {
                                             console.log(err);
@@ -106,5 +109,83 @@ function makeUser(req, callback) {
     });
 }
 
+/**
+* Updates a user's email and name. First checks if another user who is NOT the same user
+* already has this email. If no one does, proceed as normal and change user's email and name and
+* propapage changes to the TournamentDirector collection.
+*/
+function updateEmailAndName(director, newName, newEmail, callback) {
+    TournamentDirector.findOne({email : newEmail, _id : {$ne : director._id}}, function(err, result) {
+        // console.log(result);
+        if (err) {
+            console.log(err);
+            callback(err, null, false);
+        } else if (result) {
+            callback(null, null, true);
+        } else {
+            User.update({_id : director.usertoken}, {"local.name" : newName, "local.email" : newEmail}, function(err) {
+                if (err) {
+                    callback(err, null, false);
+                } else {
+                    TournamentDirector.update({_id : director._id}, {name : newName, email : newEmail}, function(err) {
+                        if (err) {
+                            callback(err, null, false);
+                        } else {
+                            TournamentDirector.findOne({_id : director._id}, function(err, result) {
+                                if (err) {
+                                    callback(err, null, false);
+                                } else {
+                                    callback(null, result, false);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
+function updateUserPassword(director, oldPassword, newPassword, callback) {
+    console.log(oldPassword);
+    User.findOne({_id : director.usertoken}, function(err, result) {
+        // console.log(result);
+        if (err) {
+            callback(err, false);
+        } else if (result) {
+            bcryptjs.compare(oldPassword, result.local.password, function(err, res) {
+                if (err) {
+                    callback(err, false);
+                } else if (!res) {
+                    callback(null, true);
+                } else {
+                    bcryptjs.genSalt(10, function(err, salt) {
+                        if (err) {
+                            callback(err, false);
+                        } else {
+                            bcryptjs.hash(newPassword, salt, function(err, hash) {
+                                if (err) {
+                                    callback(err, false);
+                                } else {
+                                    console.log(hash);
+                                    User.update({_id : director.usertoken}, {"local.password" : hash}, function(err) {
+                                        if (err) {
+                                            callback(err, false);
+                                        } else {
+                                            callback(null, false);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
 exports.validateLocalLogin = validateLocalLogin;
 exports.register = register;
+exports.updateEmailAndName = updateEmailAndName;
+exports.updateUserPassword = updateUserPassword;

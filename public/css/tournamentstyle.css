@@ -36,6 +36,7 @@ div p {
     text-align: center;
 }
 
+
 tr {
     font-size: 16px;
     /*font-weight: bold;*/
@@ -190,6 +191,7 @@ td {
     background: rgb(0, 136, 136);
     color : white;
 }
+
 
 @media print {
   a[href]:after {

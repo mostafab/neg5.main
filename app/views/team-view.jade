@@ -89,11 +89,12 @@ block content
                                     input(type="hidden" name="tournamentidform" value="#{tournament._id}")
                                     input(type="hidden" name="teamidform" value="#{team._id}")
                                     input(type="hidden" name="teamnameform" value="#{team.team_name}")
-                                    input(type="text" class="form-control" name="newplayername" placeholder="Add a Player")
+                                    input(type="text" class="form-control" name="newplayername" placeholder="Add a Player" id="newplayerinput")
 
                                     button(type="button" class="btn btn-sm btn-info" id="add-player-button") Add Player
-
-                                div(id="player-add-msg")
+                                br
+                                br
+                                div(class="col-md-12 input-lg center-text no-border-radius tournament-info-field" id="player-add-msg" style="text-align:center")
 
 
     script(src="/js/game-configuration.js")

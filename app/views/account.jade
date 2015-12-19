@@ -1,0 +1,140 @@
+extends layout
+
+block titleContent
+    title Account | Neg 5
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+
+block content
+
+    +navbar
+
+    div(class="jumbotron vertical-center")
+        div(class="container")
+            div(style="margin:20px; margin-bottom:50px")
+
+            div(class="row")
+                div(class="col-md-12")
+                    div(style="margin:20px; margin-bottom:50px")
+                    h2(class="title" style="width:50%") Neg 5 Account | #{tournamentd.name}
+                    div(class="panel-body")
+                        div(class="row")
+                            div(class="col-md-12 smallbox")
+
+                                div(class="row")
+                                    div(class="col-xs-12" style="text-align:center")
+                                        h2(class="title") Account Settings
+                                br
+                                br
+                                form(method="post" action="/auth/local/edit" id="editaccountgeneral")
+                                    div(class="row")
+                                        div(class="col-md-6")
+                                            div(class="col-xs-12" style="text-align:center")
+                                                h2(class="title") Name
+                                                    i(class="fa fa-user" style='margin-left:10px')
+                                        div(class="col-md-6")
+                                            div(class="form-group")
+                                                input(
+                                                    type="text",
+                                                    value="#{tournamentd.name}",
+                                                    name="dname"
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    id="namein"
+                                                    style="background-color:rgb(255, 255, 204);color:black;")
+
+                                    div(class="row")
+                                        div(class="col-md-6")
+                                            div(class="col-xs-12" style="text-align:center")
+                                                h2(class="title") Email
+                                                    i(class="fa fa-envelope" style="margin-left:10px")
+                                        div(class="col-md-6")
+                                            div(class="form-group")
+                                                input(
+                                                    type="text",
+                                                    value="#{tournamentd.email}",
+                                                    name="demail",
+                                                    id="emailin",
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:rgb(255, 255, 204);color:black")
+                                    div(class="row")
+                                        div(class="col-md-6")
+                                        div(class="col-md-6")
+                                            div(class="col-xs-12" style="text-align:center")
+                                                h2(class="title" style='background-color:transparent')
+                                                    button(type='button' class='btn btn-md btn-success' id="confirmname") Confirm
+                                                        i(class="fa fa-check-square" style="margin-left:10px")
+
+                                    div(class="row")
+                                        div(class="col-md-6")
+                                        div(class="col-md-6")
+                                            div(class="col-xs-12" style="text-align:center")
+                                                h2(class="title" id="updatenamemsg")
+
+                                br
+                                br
+
+                                div(class="row")
+                                    div(class="col-xs-12" style="text-align:center")
+                                        h2(class="title") Change Password
+                                br
+                                br
+                                form(method="post" action="/auth/local/pass" id="editpassform")
+                                    div(class="row")
+                                        div(class="col-md-6")
+                                            div(class="col-xs-12" style="text-align:center")
+                                                h2(class="title") Old Password
+                                                    i(class="fa fa-key" style="margin-left:10px")
+                                        div(class="col-md-6")
+                                            div(class="form-group")
+                                                input(
+                                                    type="password",
+                                                    name="oldpass"
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    id="oldpassin",
+                                                    style="background-color:rgb(255, 255, 204);color:black")
+                                    div(class="row")
+                                        div(class="col-md-6")
+                                            div(class="col-xs-12" style="text-align:center")
+                                                h2(class="title") New Password
+                                                    i(class="fa fa-lock" style="margin-left:10px")
+                                        div(class="col-md-6")
+                                            div(class="form-group")
+                                                input(
+                                                    type="password",
+                                                    name="newpass"
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    id="newpassin1",
+                                                    style="background-color:rgb(255, 255, 204);color:black")
+
+                                    div(class="row")
+                                        div(class="col-md-6")
+                                            div(class="col-xs-12" style="text-align:center")
+                                                h2(class="title") Confirm New Password
+                                                    i(class="fa fa-lock" style="margin-left:10px")
+                                        div(class="col-md-6")
+                                            div(class="form-group")
+                                                input(
+                                                    type="password",
+                                                    name="newpass2"
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    id="newpassin2",
+                                                    style="background-color:rgb(255, 255, 204);color:black")
+
+                                    div(class="row")
+                                        div(class="col-md-6")
+                                        div(class="col-md-6")
+                                            div(class="col-xs-12" style="text-align:center")
+                                                h2(class="title" style='background-color:transparent')
+                                                    button(type='button' class='btn btn-md btn-success' id="confirmpass") Confirm New Password
+                                                        i(class="fa fa-check-square" style="margin-left:10px")
+
+                                    div(class="row")
+                                        div(class="col-md-6")
+                                        div(class="col-md-6")
+                                            div(class="col-xs-12" style="text-align:center")
+                                                h2(class="title" id="updatepassmsg")
+
+    script(src="/js/account.js")

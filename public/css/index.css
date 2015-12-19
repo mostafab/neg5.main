@@ -169,7 +169,7 @@ a {
         padding-top: 0px;
     }
 
-    .navbar-default:hover {
+    nav:hover {
         background-color: #008888;
     }
 }

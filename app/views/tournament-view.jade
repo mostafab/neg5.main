@@ -147,14 +147,17 @@ block content
                                                 select(name="collaborators" class="form-control" size="5" id="directorsoptions")
                                                     option(value="" disabled) Directors will show here.
                                             button(type="button" class="btn btn-sm btn-success" id="addcollabbutton") Add Selected
+                                    br
+                                    br
 
                                     div(class="row")
                                         div(id="collaboratorsdiv" style="margin-left:25px")
                                             each person, i in tournament.collaborators
-                                                div(class="col-md-3 center-text no-border-radius tournament-info-field" style='border-radius:0;padding-bottom:20px;')
+                                                div(class="col-md-3 center-text no-border-radius tournament-info-field" style='border-radius:0;padding:20px;')
                                                     p Name : #{person.name}
                                                     p Email : #{person.email}
-                                                    button(class="btn btn-md btn-danger removcollab" style='margin-top:20px' data-collabid="#{person.id}") Remove
+                                                    div(class="col-md-1")
+                                                        button(class="btn btn-md btn-danger removcollab" style='margin-top:20px' data-collabid="#{person.id}") Remove
 
                         div(class="tab-pane fade" id="registrations")
                             div(class="row")
@@ -413,6 +416,10 @@ block content
                                                     )
                                                 br
                                                 button(type="button" class="btn btn-lg btn-info no-border-radius" id="add-team-button") Add Team To Tournament
+                                                br
+                                                br
+                                                div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="addteammsg")
+
 
                             div(class="panel panel-default")
                                     div(class="panel-heading collapsable") List of Teams

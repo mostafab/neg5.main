@@ -58,8 +58,8 @@ html
         //                     a()
         //                         i(class="fa fa-github")
 
-        nav(class="navbar navbar-default navbar-fixed-top" style="background-color:rgba(200, 200, 200, .7)")
-            div(class="container")
+        nav(class="navbar navbar-default navbar-fixed-top" style="background-color:rgba(200, 200, 200, .7); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);")
+            div(class="container navmiddle")
                 if !tournamentd
                     div(class="navbar-header")
                         div(class="navbar-brand navbar-brand-centered" style="color:white") Neg 5 : Quizbowl for the Cloud
@@ -78,7 +78,7 @@ html
 
                         ul(class="nav navbar-nav navbar-right")
                             li
-                                a(href="/account" style='color:white') #{tournamentd.name}
+                                a(href="/account" style='color:white') #{tournamentd.name} (#{tournamentd.email})
                                     i(class="fa fa-user" style='margin-left:10px')
                             li
                                 a(href="/logout" style='color:white') Logout

@@ -8,6 +8,7 @@ function toLower(string) {
 }
 
 var TournamentDirectorSchema = new Schema({
+    usertoken : {type : String, required : true},
     name : {type : String, required : true},
     email : {type : String, required : true, set : toLower}
 });

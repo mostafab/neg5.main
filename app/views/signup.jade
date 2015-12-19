@@ -58,12 +58,6 @@ block content
                                 div(class="form-group")
                                     input(readonly,
                                         type="text",
-                                        value="tournamentd Email: #{tournament.tournamentdemail}",
-                                        class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                        style="background-color:#363B40")
-                                div(class="form-group")
-                                    input(readonly,
-                                        type="text",
                                         value="Location: #{tournament.location}",
                                         class="form-control input-lg center-text no-border-radius tournament-info-field",
                                         style="background-color:#363B40")
@@ -104,7 +98,7 @@ block content
                                         style="background-color:#363B40", rows="10") Description:&#10#{tournament.description}
 
                 div(class="col-xs-6")
-                    if tournamentd != null
+                    if director != null
                         h2(class="title")
                             | Sign up for #{tournament.tournament_name} here.
                             | If you've previously registered for this tournament, this registration will update any previous registration associated with this account and this tournament.
@@ -133,11 +127,11 @@ block content
                                                 class="form-control input-lg center-text no-border-radius tournament-info-field"
                                             )
                                         div(class="form-group")
-                                            if tournamentd != null
+                                            if director != null
                                                 input(
                                                     class="form-control input-lg center-text no-border-radius tournament-info-field",
                                                     placeholder="Email",
-                                                    value="#{tournamentd.email}",
+                                                    value="#{director.email}",
                                                     name="email"
                                                 )
                                             else

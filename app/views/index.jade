@@ -50,6 +50,7 @@ block content
                                                     name="pswd"
                                                     placeholder="Password",
                                                     class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    id="passwordinput"
                                                     style="background-color:#363B40")
 
                                         div(class="form-group")
@@ -63,9 +64,9 @@ block content
                                                     id="gotoregister",
                                                     )
                                                     | Register
-
-                                                a(href="/auth/google" class="btn btn-danger circle")
-                                                    span(class="fa fa-google-plus")
+                                                //
+                                                // a(href="/auth/google" class="btn btn-danger circle")
+                                                //     span(class="fa fa-google-plus")
                                                 br
                                                 br
                                                 if errormsg
@@ -87,7 +88,7 @@ block content
                                         div(class="col-md-12")
                                             div(class="form-group" style="color:white;background-color:#363B40")
                                                 li(class="form-control input-lg center-text no-border-radius tournament-info-field" style="background-color:#363B40") Complete the form to the right to register
-                                                li(class="form-control input-lg center-text no-border-radius tournament-info-field" id="l_name" style="background-color:#363B40") Name Must be Between 5 and 15 characters
+                                                li(class="form-control input-lg center-text no-border-radius tournament-info-field" id="l_name" style="background-color:#363B40") Name Must be Between 5 and 25 characters
                                                 li(class="form-control input-lg center-text no-border-radius tournament-info-field" id="l_email" style="background-color:#363B40") Email must be in a valid format (example@domain.com)
                                                 li(class="form-control input-lg center-text no-border-radius tournament-info-field" id="l_password" style="background-color:#363B40") Password must be at least 5 characters long
                                                 li(class="form-control input-lg center-text no-border-radius tournament-info-field" id="l_match" style="background-color:#363B40") Passwords must match

@@ -37,11 +37,15 @@ $(document).ready(function() {
     });
 
     $("#add-player-button").click(function(e) {
-        var form = $(this).parent().serialize();
-        $(this).prop("disabled", true);
-        $("#player-add-msg").empty().
-            append("<p style='margin:10px; font-size:16px;'>Adding Player <i class='fa fa-spinner fa-spin'></i></p>");
-        addPlayerAJAX(form, $(this));
+        if ($("#newplayerinput").val().length == 0) {
+            showMessageInDiv("#player-add-msg", "Enter a name, please", "zero");
+        } else {
+            var form = $(this).parent().serialize();
+            $(this).prop("disabled", true);
+            $("#player-add-msg").empty().
+                append("<p style='margin:10px; font-size:16px;'>Adding Player <i class='fa fa-spinner fa-spin'></i></p>");
+            addPlayerAJAX(form, $(this));
+        }
     });
 });
 
@@ -59,8 +63,20 @@ function deletePlayerSender(button) {
     removePlayerAJAX($(form).serialize(), button);
 }
 
+function showMessageInDiv(div, message, err) {
+    var html = "";
+    $(div).empty();
+    if (err) {
+        html = "<p style='margin-left:10px;font-size:18px;color:#ff3300'>" + message + "<i class='fa fa-times-circle' style='margin-left:5px'></i></p>";
+    } else {
+        html = "<p style='margin-left:10px;font-size:18px;color:#009933'>" + message + "<i class='fa fa-check-circle' style='margin-left:5px'></i></p>";
+    }
+    $(html).hide().appendTo(div).fadeIn(300);
+}
 
 function editGameAJAX() {
+    $("#updategamediv").empty().
+        append("<p style='margin-left:10px; font-size:16px;'>Updating Game <i class='fa fa-spinner fa-spin'></i></p>");
     $.ajax({
         url : "/home/tournaments/games/edit",
         type : "POST",
@@ -68,7 +84,14 @@ function editGameAJAX() {
         success : function(databack, status, xhr) {
             console.log(databack);
             console.log("Edited game successfully");
-            // $("#oldgameid_input").val(databack.shortID);
+            showMessageInDiv("#updategamediv", "Game updated successfully", null);
+        },
+        error : function(xhr, status, err) {
+            if (err == "Unauthorized") {
+                showMessageInDiv("#updategamediv", "Hmm, doesn't seem like you're logged in", err);
+            } else {
+                showMessageInDiv("#updategamediv", "Couldn't connnect to the server!", err);
+            }
         }
     });
 }
@@ -79,8 +102,19 @@ function editTeamAJAX() {
         type : "POST",
         data : $("#teamdetailsform").serialize(),
         success : function(databack, status, xhr) {
-            showTeamUpdateMsg(databack);
-            $("#team-name-header").html($("#team-name-input").val());
+            // showTeamUpdateMsg(databack);
+            if (databack.team) {
+                showMessageInDiv("#team-update-msgdiv", "Success!", null);
+            } else {
+                showMessageInDiv("#team-update-msgdiv", "A team with that name already exists!", "exists");
+            }
+        },
+        error : function(xhr, status, err) {
+            if (err == "Unauthorized") {
+                showMessageInDiv("#team-update-msgdiv", "Doesn't look like you're logged in", err);
+            } else {
+                showMessageInDiv("#team-update-msgdiv", "Couldn't update team!", err);
+            }
         },
         complete : function(databack) {
             $("#editteambutton").prop("disabled", false);
@@ -98,6 +132,13 @@ function editPlayerAJAX(playerForm, button) {
             console.log(databack.msg);
             showAfterSentMessage(databack.msg, databack.err);
         },
+        error : function(xhr, status, err) {
+            if (err == "Unauthorized") {
+                showMessageInDiv("#player-add-msg", "Not logged in", err);
+            } else {
+                showMessageInDiv("#player-add-msg", "Could not update player", err);
+            }
+        },
         complete : function(databack) {
             $(button).prop("disabled", false);
         }
@@ -114,6 +155,13 @@ function addPlayerAJAX(playerForm) {
             showAddPlayerMsg(databack);
             if (!databack.err) {
                 addNewPlayerRow(databack.player, databack.tid);
+            }
+        },
+        error : function(xhr, status, err) {
+            if (err == "Unauthorized") {
+                showMessageInDiv("#player-add-msg", "Doesn't look like you're logged in", err);
+            } else {
+                showMessageInDiv("#player-add-msg", "Couldn't add player", err);
             }
         },
         complete : function(data) {

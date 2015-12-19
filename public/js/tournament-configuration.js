@@ -24,6 +24,7 @@ $(document).ready(function() {
     });
 
     $("#add-team-button").click(function(e) {
+        $(this).prop("disabled", true);
         sendTeamToServer();
     });
 
@@ -68,6 +69,8 @@ $(document).ready(function() {
         // document.getElementById("gamedataform").reset();
         $(this).prop("disabled", true);
         $("#add-game-message").empty().
+            append("<p style='margin-left:10px; font-size:16px;'>Adding Game <i class='fa fa-spinner fa-spin'></i></p>");
+        $("#updategamediv").empty().
             append("<p style='margin-left:10px; font-size:16px;'>Adding Game <i class='fa fa-spinner fa-spin'></i></p>");
         sendGameToServer();
     });
@@ -203,16 +206,29 @@ function submitTournamentRegistration() {
 
 
 function sendTeamToServer() {
+    $("#addteammsg").empty().
+        append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Editing<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
         url : "/home/tournaments/createteam",
         type : "POST",
         data : $("#teamform").serialize(),
         success : function(databack, status, xhr) {
-            // document.getElementById("teamform").reset();
             if (databack["teams"] && databack["newTeam"]) {
                 updateTeamSelectionList(databack["teams"]);
                 updateTeamList(databack["newTeam"]);
+                document.getElementById("teamform").reset();
+                showMessageInDiv("#addteammsg", "Successfully added team", null);
             }
+        },
+        error : function(xhr, status, err) {
+            if (err == "Unauthorized") {
+                showMessageInDiv("#addteammsg", "Please log in!", err);
+            } else {
+                showMessageInDiv("#addteammsg", "Could not add team!", err);
+            }
+        },
+        complete : function(xhr, status) {
+            $("#add-team-button").prop("disabled", false);
         }
     });
 }
@@ -552,7 +568,7 @@ function updateGameList(gameinfo) {
     html += "<button type='button' class='btn btn-sm btn-warning deletebutton' onclick='removeGameSender(this)'> Remove Game </button>";
     html += "</form> </td>";
     html += "</tr>";
-    $("#gametablebody").append(html);
+    $(html).hide().appendTo("#gametablebody").fadeIn(300);
     gameList = new List("gamediv", gameOptions);
 }
 
@@ -566,7 +582,8 @@ function updateTeamList(team) {
     html += "<a class='btn btn-sm btn-info' href='/home/tournaments/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'> Details </a>";
     html += "<button type='button' class='btn btn-sm btn-warning deleteteambutton' onclick='removeTeamSender(this)'> Remove Team </button>";
     html += "</form></td></tr>";
-    $("#teamtablebody").append(html);
+    $(html).hide().appendTo("#teamtablebody").fadeIn(300);
+    // $("#teamtablebody").append(html);
 }
 
 function addPointSchemaRow() {
@@ -617,7 +634,6 @@ function formatPointTypes() {
             });
         }
     });
-    // console.log(pointTypes);
     return pointTypes;
 }
 

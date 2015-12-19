@@ -4,6 +4,13 @@ var passport = require("../../config/passport")(passportP);
 
 module.exports = function(app, passport) {
 
+    app.get("/account", function(req, res, next) {
+        if (!req.session.director) {
+            res.redirect("/");
+        } else {
+            res.render("account", {tournamentd : req.session.director});
+        }
+    });
 
     app.get("/auth/google", passport.authenticate("google", {scope : ["profile", "email"]}));
 
@@ -58,6 +65,41 @@ module.exports = function(app, passport) {
         res.redirect("/");
     });
 
+    app.post("/auth/local/edit", function(req, res, next) {
+        // console.log(req.body);
+        if (!req.session.director) {
+            res.status(401).end();
+        } else {
+            userController.updateEmailAndName(req.session.director, req.body.dname, req.body.demail.toLowerCase(), function(err, newDirector, duplicate) {
+                if (err) {
+                    res.status(500).end();
+                } else if (duplicate) {
+                    res.status(403).end();
+                } else {
+                    req.session.director = newDirector;
+                    // console.log(req.session.director);
+                    res.status(200).end();
+                }
+            });
+        }
+    });
+
+    app.post("/auth/local/pass", function(req, res, next) {
+        if (!req.session.director) {
+            res.status(401).end();
+        } else {
+            console.log(req.body);
+            userController.updateUserPassword(req.session.director, req.body.oldpass, req.body.newpass, function(err, wrong) {
+                if (err) {
+                    res.status(500).end();
+                } else if (wrong) {
+                    res.status(403).end();
+                } else {
+                    res.status(200).end();
+                }
+            });
+        }
+    });
 
     app.get("/home", function(req, res, next) {
         // console.log(req.session);

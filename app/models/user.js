@@ -14,12 +14,6 @@ var UserSchema = new Schema({
         email : String,
         password : String
     },
-    facebook : {
-        id : String,
-        token : String,
-        email : String,
-        name : String
-    },
     google : {
         id : String,
         token : String,
