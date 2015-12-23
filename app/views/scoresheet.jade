@@ -1,0 +1,110 @@
+extends layout
+
+block titleContent
+    title Scoresheet | #{tournament.tournament_name} | Neg 5
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+    link(rel="stylesheet" href="/css/scoresheet.css")
+
+block content
+
+    +navbar
+
+    div(class="content-wrapper box" style='padding-left:50px;padding-right:50px;padding-top:10px')
+        input(type="hidden" value="#{tournament._id}" id="tournamentid")
+        div(class="row")
+            div(class="col-md-6 col-lg-6 col-sm-6")
+                div(style="margin:10px; margin-bottom:50px")
+                div(style="text-align:center")
+                    h2(class="title" style="width:100%") Teams Select
+
+                div(class="row" id="team-select-div")
+                    div(class="row")
+                        div(class="col-md-12 col-lg-12 col-sm-12")
+                            div(class="col-md-6 col-lg-6 col-sm-6")
+                                div(style="text-align:left")
+                                    // h2(class="title" style="width:100%")
+                                    br
+                                    br
+                                    select(class="form-control input-lg center-text no-border-radius tournament-info-field teamselect" id='leftselect')
+                                        option(selected value="") Select Team 1
+                                        each team in tournament.teams
+                                            option(value="#{team._id}") #{team.team_name}
+
+                            div(class="col-md-6 col-lg-6 col-sm-6")
+                                div(style="text-align:center")
+                                    // h2(class="title" style="width:100%")
+                                    br
+                                    br
+                                    select(class="form-control input-lg center-text no-border-radius tournament-info-field teamselect" id='rightselect')
+                                        option(selected value="") Select Team 2
+                                        each team in tournament.teams
+                                            option(value="#{team._id}") #{team.team_name}
+
+                div(class="row col-md-12" id='lock-teams-div')
+                    button(type='button' class='btn btn-lg btn-danger' id='lock-teams') Lock Teams
+
+                br
+                div(class="row" id="tossups-div")
+
+                    div(class="col-md-6 col-lg-6 col-sm-6" id="left-team-players")
+                        div(class="panel panel-default" style="text-align:center")
+                            div(class="panel-heading" style="font-size:20px" id="team-1-name") Team 1
+                            div(class="panel-body")
+                                div(id="leftplayerlist")
+
+
+                    div(class="col-md-6 col-lg-6 col-sm-6" id="right-team-players")
+                        div(class="panel panel-default" style="text-align:center")
+                            div(class="panel-heading" style="font-size:20px" id="team-2-name") Team 2
+                            div(class="panel-body")
+                                div(id="rightplayerlist")
+
+                div(class="row" id="bonus-div" style='display:none')
+
+                    div(class="col-md-12 col-lg-12 col-sm-12")
+                        div(class="panel panel-default" style="text-align:center")
+                            div(class="panel-heading" style="font-size:20px" id="team-bonus-name") Team 1
+                            div(class="panel-body")
+                                div(class="row")
+
+                                div(class="row")
+                                    div(class="col-md-12")
+                                        div(class="col-md-6")
+                                            button(class="btn btn-lg btn-danger btn-block" style='margin:0px') Undo
+                                        div(class="col-md-6")
+                                            button(class="btn btn-lg btn-success btn-block" style='margin:0px' id="next-tossup") Next Tossup
+
+                div()
+
+            div(class="col-md-6 col-lg-6 col-sm-6")
+                div(style="margin:20px; margin-bottom:50px")
+                div(class="row")
+                    div(class="col-md-12")
+                        div(style="text-align:center")
+                            h2(class="title" style="width:100%") Scoresheet
+
+                br
+
+                div(class="row")
+                    div(class="col-md-12")
+                        div(class="panel panel-default")
+                            table(class="table table-bordered table-hover table-condensed"  id="scoresheet")
+
+                div(class="row")
+                    div(class="col-md-12")
+                        br
+                        div(class="col-md-6")
+                            div(class="panel panel-default")
+                                table(class="table table-bordered table-hover table-condensed" id="leftplayertable")
+
+                        div(class="col-md-6")
+                            div(class="panel panel-default")
+                                table(class="table table-bordered table-hover table-condensed" id="rightplayertable")
+
+
+
+    // script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
+    script(src="/js/scoresheet.js")

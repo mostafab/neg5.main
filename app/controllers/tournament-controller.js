@@ -121,7 +121,7 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
 function findTeamMembers(tournamentid, teamid, callback) {
     var query = Tournament.findOne({_id : tournamentid}, function(err, result) {
         if (err || !result) {
-            callback(err, [], null);
+            callback(err, [], null, null);
         } else {
             var playersArr = [];
             for (var i = 0; i < result.players.length; i++) {
@@ -129,7 +129,7 @@ function findTeamMembers(tournamentid, teamid, callback) {
                     playersArr.push(result.players[i]);
                 }
             }
-            callback(null, playersArr, result.pointScheme);
+            callback(null, playersArr, result.pointScheme, result.pointsTypes);
         }
     });
 }

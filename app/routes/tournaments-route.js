@@ -226,6 +226,27 @@ module.exports = function(app) {
             }
         });
 
+    app.get("/tournaments/:tid/scoresheet", function(req, res, next) {
+        if (!req.session.director) {
+            res.redirect("/");
+        } else {
+            tournamentController.findTournamentById(req.params.tid, function(err, tournament) {
+                if (err) {
+                    res.status(500).send({err : err});
+                } else if (!tournament) {
+                    res.status(404).send("Could not find this tournament");
+                } else {
+                    if (hasPermission(tournament, req.session.director)) {
+                        res.render("scoresheet", {tournamentd : req.session.director, tournament : tournament});
+                    } else {
+                        res.status(401).send("You don't have permission to view this tournament");
+                    }
+                }
+            });
+
+        }
+    });
+
     app.route("/home/tournaments/teams/edit")
         .post(function(req, res, next) {
             if (!req.session.director) {
@@ -304,17 +325,18 @@ module.exports = function(app) {
     app.route("/home/tournaments/getplayers")
         .get(function(req, res, next) {
             if (!req.session.director) {
-                res.status(401).send({players : [], pointScheme : null});
+                res.status(401).end();
             } else {
+                // console.log(req.query);
                 var id = req.query["tournamentid"];
                 var teamname = req.query["teamname"];
-                tournamentController.findTeamMembers(id, teamname, function(err, players, pointScheme) {
+                tournamentController.findTeamMembers(id, teamname, function(err, players, pointScheme, pointTypes) {
                     if (err) {
                         // DO STUFF
                         console.log(err);
-                        res.status(500).send({players : [], pointScheme : null});
+                        res.status(500).end();
                     } else {
-                        res.status(200).send({players : players, pointScheme : pointScheme});
+                        res.status(200).send({players : players, pointScheme : pointScheme, pointTypes : pointTypes});
                     }
                 });
             }

@@ -25,6 +25,7 @@
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
+
 div p {
     word-wrap: break-word;
 }
@@ -141,7 +142,7 @@ td {
 
 .panel-default:hover > .panel-heading {
   /*background-color: rgba(50, 50, 50, .9);*/
-  background-color:rgba(60, 60, 60, .8);
+  /*background-color:rgba(60, 60, 60, .8);*/
   color : white;
   font-weight: bold;
   font-size: 24px;
