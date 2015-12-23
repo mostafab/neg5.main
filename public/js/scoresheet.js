@@ -187,6 +187,33 @@ class Game {
         return score;
     }
 
+    getTeamScoreUpToPhase(teamid, maxPhase) {
+        var score = 0;
+        for (var i = 0; i < this.phases.length; i++) {
+            if (this.phases[i].getNumber() <= maxPhase) {
+                var currentTossup = this.phases[i].getTossup();
+                var currentBonus = this.phases[i].getBonus();
+                for (var j = 0; j < currentTossup.getAnswers().length; j++) {
+                    var currentAnswer = currentTossup.getAnswers()[j];
+                    if (currentAnswer.team == teamid) {
+                        score += currentAnswer.value;
+                    }
+                }
+            }
+        }
+        if (this.currentPhase.getNumber() <= maxPhase) {
+            var tossup = this.currentPhase.getTossup();
+            var bonus = this.currentPhase.getBonus();
+            for (var j = 0; j < tossup.getAnswers().length; j++) {
+                var currentAnswer = tossup.getAnswers()[j];
+                if (currentAnswer.team == teamid) {
+                    score += currentAnswer.value;
+                }
+            }
+        }
+        return score;
+    }
+
 }
 
 var game = new Game();
@@ -200,11 +227,15 @@ $(document).ready(function() {
     $("body").on("click", ".btn-point", function() {
         if (game.team1 != null && game.team2 != null) {
             game.getCurrentPhase().addAnswerToTossup($(this).attr("data-team"), $(this).attr("data-player"), parseFloat($(this).attr("data-point-value")));
-            console.log(game.currentPhase);
             showAnswersOnScoresheet(game.currentPhase);
-            // console.log($(this).data("neg"));
-            console.log(game.getTeamScore(game.team1.id) + ", " + game.getTeamScore(game.team2.id));
+            // console.log(game.getTeamScore(game.team1.id) + ", " + game.getTeamScore(game.team2.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), $(this).attr("data-team"), game.getTeamScore($(this).attr("data-team")));
+            // var i = 1;
+            // while (i <= game.getCurrentPhase().getNumber()) {
+            //     showTotalOnScoresheetOneRow(i, $(this).attr("data-team"), game.getTeamScoreUpToPhase($(this).attr("data-team"), i));
+            //     // console.log(game.getTeamScoreUpToPhase($(this).attr("data-team"), i));
+            //     i++;
+            // }
             // showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getTeamScore(game.team2.id));
             if (!$(this).data("neg")) {
                 if ($(this).attr("data-team") == game.team1.id) {
@@ -212,6 +243,7 @@ $(document).ready(function() {
                 } else {
                     showBonusScreen(game.team2);
                 }
+                $("#next-tossup").attr("data-team", $(this).attr('data-team'));
             }
         }
     });
@@ -219,11 +251,18 @@ $(document).ready(function() {
     $("body").on("click", "#next-tossup", function() {
         console.log("Going to next tossup")
         game.stashPhase();
-        console.log(game);
         showTossupDiv();
         setActiveRow(game.getCurrentPhase());
         showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
         showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
+        // var i = 1;
+        // while (i <= game.getCurrentPhase().getNumber()) {
+        //     showTotalOnScoresheetOneRow(i, game.team1.id, game.getTeamScoreUpToPhase(game.team1.id, i));
+        //     showTotalOnScoresheetOneRow(i, game.team2.id, game.getTeamScoreUpToPhase(game.team2.id, i));
+        //     // console.log(game.getTeamScoreUpToPhase(game.team1.id, i));
+        //     // console.log(game.getTeamScoreUpToPhase(game.team2.id, i));
+        //     i++;
+        // }
         console.log(game.getTeamScore(game.team1.id) + ", " + game.getTeamScore(game.team2.id));
     });
 
@@ -383,29 +422,14 @@ function showTotalOnScoresheetOneRow(row, teamid, total) {
     $(td).text(total);
 }
 
+function showBonusOnScoresheetOneRow(row, teamid, bonusTotal) {
+    var td = $(".bonus-td[data-team=" + teamid + "][data-row=" + row + "]");
+    $(td).text(bonusTotal);
+}
+
 function setActiveRow(phase) {
     var activeTD = $("tr[data-row=" + phase.getNumber() + "]");
     var unactiveRows = $("tr[data-row!=" + phase.getNumber() + "]");
     $(activeTD).addClass("active-row");
     $(unactiveRows).removeClass("active-row");
 }
-
-// var app = angular.module("scoresheetApp", []);
-//
-// app.controller("scoresheetController", function($scope, $http) {
-//
-//     $scope.leftplayers = [{player_name : "Mostafa"}, {player_name : "Hernan"}];
-//     $scope.rightplayers = [{player_name : "Michael"}, {player_name : "Joey"}];
-//
-//     $scope.getPlayers = function() {
-        // $http.get({
-        //     url: "/home/tournaments/getplayers",
-        //     method: "GET",
-        //     params: {tournamentid: "SD",
-        //             teamname: $scope.leftTeamID}
-        // }).then(function(response) {
-        //     $scope.leftplayers = response.players;
-        // });
-//     };
-//
-// });
