@@ -54,6 +54,30 @@ class Bonus {
         this.againstTeamPoints = 0;
     }
 
+    setForTeam(teamid) {
+        this.forTeam = teamid;
+    }
+
+    setForTeamPoints(points) {
+        this.forTeamPoints = points;
+    }
+
+    setAgainstTeamPoints(points) {
+        this.againstTeamPoints = points;
+    }
+
+    getForTeam() {
+        return this.forTeam;
+    }
+
+    getForTeamPoints() {
+        return this.forTeamPoints;
+    }
+
+    getAgainstTeamPoints() {
+        return this.againstTeamPoints;
+    }
+
 
 }
 
@@ -85,14 +109,7 @@ class Phase {
     }
 
     getBounceBackPoints(teamid) {
-        var pointsEarned = 0;
-        var bonusParts = this.bonus.getBonusParts();
-        for (var i = 0; i < bonusParts.length; i++) {
-            if (bonusParts[i].answeringTeamID == teamid && BonusParts[i].forTeamID != teamid) {
-                pointsEarned += 10;
-            }
-        }
-        return pointsEarned;
+        return 0;
     }
 
     getTossup() {
@@ -105,6 +122,20 @@ class Phase {
 
     addAnswerToTossup(teamid, playerid, value) {
         this.tossup.addAnswer(teamid, playerid, value);
+    }
+
+    getBonusPointsForTeam(teamid) {
+        if (this.bonus.getForTeam() == teamid) {
+            return this.bonus.getForTeamPoints();
+        } else {
+            return this.bonus.getAgainstTeamPoints();
+        }
+    }
+
+    addBonusPoints(forTeamID, forTeamPoints, otherTeamPoints) {
+        this.bonus.setForTeam(forTeamID);
+        this.bonus.setForTeamPoints(forTeamPoints);
+        this.bonus.setAgainstTeamPoints(otherTeamPoints);
     }
 
     removeLastTossup() {
@@ -122,6 +153,10 @@ class Game {
 
     getCurrentPhase() {
         return this.currentPhase;
+    }
+
+    deadTossup() {
+        this.stashPhase();
     }
 
     nextPhase() {
@@ -175,6 +210,11 @@ class Game {
                     score += currentAnswer.value;
                 }
             }
+            if (currentBonus.getForTeam() == teamid) {
+                score += currentBonus.getForTeamPoints();
+            } else {
+                score += currentBonus.getAgainstTeamPoints();
+            }
         }
         var tossup = this.currentPhase.getTossup();
         var bonus = this.currentPhase.getBonus();
@@ -183,6 +223,11 @@ class Game {
             if (currentAnswer.team == teamid) {
                 score += currentAnswer.value;
             }
+        }
+        if (bonus.getForTeam() == teamid) {
+            score += bonus.getForTeamPoints();
+        } else {
+            score += bonus.getAgainstTeamPoints();
         }
         return score;
     }
@@ -249,12 +294,29 @@ $(document).ready(function() {
     });
 
     $("body").on("click", "#next-tossup", function() {
-        console.log("Going to next tossup")
-        game.stashPhase();
-        showTossupDiv();
-        setActiveRow(game.getCurrentPhase());
-        showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
-        showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
+        if (game.team1 != null && game.team2 != null)
+            console.log("Going to next tossup");
+            var bonusLeft = $("#left-gotten-bonus li").size() * 10;
+            var bonusRight = $("#right-gotten-bonus li").size() * 10;
+            var forTeamPoints;
+            var againstPoints;
+            if ($("#left-gotten-bonus").attr("data-team") == $(this).attr('data-team')) {
+                forTeamPoints = bonusLeft;
+                againstPoints = bonusRight;
+            } else {
+                forTeamPoints = bonusRight;
+                againstPoints = bonusLeft;
+            }
+            game.getCurrentPhase().addBonusPoints($(this).attr("data-team"), forTeamPoints, againstPoints);
+            showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team1.id, game.getCurrentPhase().getBonusPointsForTeam(game.team1.id));
+            showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
+            console.log(game.getCurrentPhase());
+            game.stashPhase();
+            showTossupDiv();
+            setActiveRow(game.getCurrentPhase());
+            showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
+            showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
+            destroyBonusLabels();
         // var i = 1;
         // while (i <= game.getCurrentPhase().getNumber()) {
         //     showTotalOnScoresheetOneRow(i, game.team1.id, game.getTeamScoreUpToPhase(game.team1.id, i));
@@ -263,12 +325,34 @@ $(document).ready(function() {
         //     // console.log(game.getTeamScoreUpToPhase(game.team2.id, i));
         //     i++;
         // }
-        console.log(game.getTeamScore(game.team1.id) + ", " + game.getTeamScore(game.team2.id));
+        // console.log(game.getTeamScore(game.team1.id) + ", " + game.getTeamScore(game.team2.id));
+    });
+
+    $("body").on("click", ".remove-bonus", function() {
+        console.log("Removing bonus");
+        $(this).parent().remove();
+    });
+
+    $("body").on("click", "#dead-tossup", function() {
+        console.log("dead tossup");
+        if (game.team1 != null && game.team2 != null) {
+            showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team1.id, game.getCurrentPhase().getBonusPointsForTeam(game.team1.id));
+            showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
+            game.deadTossup();
+            setActiveRow(game.getCurrentPhase());
+            showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
+            showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
+        }
     });
 
     $("#lock-teams").click(function() {
         $("#team-select-div").slideUp("fast");
         $("#lock-teams-div").slideUp("fast");
+    });
+
+    $(".add-bonus").click(function() {
+        var list = $(this).attr("data-list");
+        addBonusRow(list);
     });
 
 });
@@ -285,7 +369,6 @@ function findPlayers(side) {
             var pointValues = Object.keys(databack.pointScheme);
             createPlayerLabels(side, databack.players, pointValues, databack.pointTypes);
             createPlayerTable(side, databack.players, pointValues);
-
             if ($(side).attr("id") == "leftselect") {
                 game.setTeam(1, $("#leftselect").find(":selected").text(), $("#leftselect").val(), databack.players);
             } else {
@@ -294,20 +377,29 @@ function findPlayers(side) {
 
             if (game.team1 != null && game.team2 != null) {
                 createScoresheet(game.team1, game.team2);
+                editAddBonusAttributes(game.team1, game.team2);
+                createDeadTossupButton();
             }
         }
     });
 }
 
-function showBonusScreen(team) {
+function createDeadTossupButton() {
+    var html = "<button type='button' class='btn btn-md btn-block' id='dead-tossup'> Dead Tossup </button>";
+    $("#dead-tossup-div").append(html);
+}
+
+function showBonusScreen(primaryTeam) {
     $("#tossups-div").fadeOut(0);
     $("#bonus-div").fadeIn(0);
-    $("#team-bonus-name").text("Bonus for " + team.name + ", Question " + game.getCurrentPhase().getNumber());
+    $("#team-bonus-name").text("Bonus for " + primaryTeam.name + ", Question " + game.getCurrentPhase().getNumber());
+    $("#dead-tossup-div").fadeOut(0);
 }
 
 function showTossupDiv() {
     $("#tossups-div").fadeIn(0);
     $("#bonus-div").fadeOut(0);
+    $("#dead-tossup-div").fadeIn(0);
 
 }
 
@@ -348,6 +440,15 @@ function createScoresheet(team1, team2) {
     $(html).hide().appendTo("#scoresheet").fadeIn(300);
 }
 
+function createScoresheetRow(team1, team2) {
+
+}
+
+function destroyBonusLabels() {
+    $("#left-gotten-bonus").empty();
+    $("#right-gotten-bonus").empty();
+}
+
 function changeTeamLabels(side) {
     if ($(side).attr("id") === "leftselect") {
         $("#team-1-name").html($(side).find(":selected").text());
@@ -367,11 +468,14 @@ function createPlayerLabels(side, players, pointValues, pointTypes) {
         html += "<div class='row'>";
         for (var j = 0; j < pointValues.length; j++) {
             if (pointTypes[pointValues[j]] === "N") {
-                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='true' data-point-value='" + pointValues[j] + "' data-player='" + players[i]._id + "' class='btn btn-md btn-danger btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='true' data-point-value='" + pointValues[j]
+                    + "' data-player='" + players[i]._id + "' class='btn btn-md btn-danger btn-point'>" + pointValues[j] + "</button>";
             } else if (pointTypes[pointValues[j]] === "P") {
-                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='false' data-point-value='" + pointValues[j] + "' data-player='" + players[i]._id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='false' data-point-value='" + pointValues[j]
+                    + "' data-player='" + players[i]._id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
             } else {
-                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='false' data-point-value='" + pointValues[j] + "' data-player='" + players[i]._id + "' class='btn btn-md btn-info btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='false' data-point-value='" + pointValues[j]
+                    + "' data-player='" + players[i]._id + "' class='btn btn-md btn-info btn-point'>" + pointValues[j] + "</button>";
             }
         }
         html += "</div>";
@@ -432,4 +536,17 @@ function setActiveRow(phase) {
     var unactiveRows = $("tr[data-row!=" + phase.getNumber() + "]");
     $(activeTD).addClass("active-row");
     $(unactiveRows).removeClass("active-row");
+}
+
+function addBonusRow(list) {
+    var html = "<li class='list-group-item'>10<button class='btn btn-sm btn-danger fa fa-times remove-bonus'></button></li>";
+    $(html).hide().appendTo(list).fadeIn(200);
+    console.log($(list + " .list-group-item").size());
+}
+
+function editAddBonusAttributes(team1, team2) {
+    $("#left-bonus-info").text("+10 for " + team1.name);
+    $("#right-bonus-info").text("+10 for " + team2.name);
+    $("#left-gotten-bonus").attr("data-team", team1.id);
+    $("#right-gotten-bonus").attr("data-team", team2.id);
 }

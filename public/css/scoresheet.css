@@ -33,6 +33,12 @@
     color: white;
 }
 
+.list-group-item {
+    padding:0px;
+    font-size: 16px;
+    background: #F0F0F0;
+}
+
 td {
     text-align: center;
     font-size: 14px;
@@ -52,4 +58,9 @@ thead th {
 
 .active-row {
     background-color: #DFF0D8;
+}
+
+#dead-tossup {
+    background-color: rgba(20, 20, 20, .7);
+    color: white;
 }

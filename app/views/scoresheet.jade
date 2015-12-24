@@ -47,6 +47,7 @@ block content
                     button(type='button' class='btn btn-lg btn-danger' id='lock-teams') Lock Teams
 
                 br
+
                 div(class="row" id="tossups-div")
 
                     div(class="col-md-6 col-lg-6 col-sm-6" id="left-team-players")
@@ -62,6 +63,9 @@ block content
                             div(class="panel-body")
                                 div(id="rightplayerlist")
 
+                div(class="row col-md-12" id="dead-tossup-div")
+                    
+
                 div(class="row" id="bonus-div" style='display:none')
 
                     div(class="col-md-12 col-lg-12 col-sm-12")
@@ -69,15 +73,25 @@ block content
                             div(class="panel-heading" style="font-size:20px" id="team-bonus-name") Team 1
                             div(class="panel-body")
                                 div(class="row")
+                                    div(class="col-md-6")
+                                        ul(class="list-group" id='left-gotten-bonus')
+
+                                    div(class="col-md-6")
+                                        ul(class="list-group" id='right-gotten-bonus')
 
                                 div(class="row")
-                                    div(class="col-md-12")
-                                        div(class="col-md-6")
-                                            button(class="btn btn-lg btn-danger btn-block" style='margin:0px') Undo
-                                        div(class="col-md-6")
-                                            button(class="btn btn-lg btn-success btn-block" style='margin:0px' id="next-tossup") Next Tossup
+                                    div(class="col-md-6")
+                                        button(class="btn btn-md btn-info btn-block add-bonus" style='margin:0px' data-list="#left-gotten-bonus" id='left-bonus-info')
+                                    div(class="col-md-6")
+                                        button(class="btn btn-md btn-info btn-block add-bonus" style='margin:0px' data-list="#right-gotten-bonus" id='right-bonus-info')
 
-                div()
+                                br
+
+                                div(class="row")
+                                    div(class="col-md-6")
+                                        button(class="btn btn-lg btn-danger btn-block" style='margin:0px') Undo this Tossup
+                                    div(class="col-md-6")
+                                        button(class="btn btn-lg btn-success btn-block" style='margin:0px' id="next-tossup") Next Tossup
 
             div(class="col-md-6 col-lg-6 col-sm-6")
                 div(style="margin:20px; margin-bottom:50px")
@@ -104,7 +118,4 @@ block content
                             div(class="panel panel-default")
                                 table(class="table table-bordered table-hover table-condensed" id="rightplayertable")
 
-
-
-    // script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
     script(src="/js/scoresheet.js")
