@@ -2,18 +2,21 @@
     font-weight: bold;
     color: white;
     font-size: 18px;
-    background: #2C3136;
+    /*background: #2C3136;*/
+    /*background-image: url("/img/backgrounds/brushed.png");*/
+    background-color: black;
     border-width: 10px;
     padding: 15px;
     width: 100%;
     /*border-radius: 15px 15px 0 0;*/
-    border-radius: 0px;
+    border-radius: 3px;
 }
 
 
 .box {
     /*background-color : rgba(190, 190, 190, .7);*/
-    background-color: rgb(240, 240, 240);
+    background-color: transparent;
+    /*background-color: rgba(30, 30, 30, .05);*/
 }
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
     background-color:rgb(0, 136, 136);
@@ -25,6 +28,9 @@
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
+.jumbotron {
+    background-color: transparent;
+}
 
 div p {
     word-wrap: break-word;
@@ -64,6 +70,7 @@ td {
     padding-bottom: 0px;
     background-color:rgb(212, 212, 212);
     border-radius: 10px;
+    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
 .statbox:hover {
@@ -92,9 +99,22 @@ td {
 
 .tournament-info-field {
     border-radius: 3px;
-    background-color: rgba(32, 32, 32, .8);
-    border-width: 0px;
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    background-color: #E6E6E6;
+    /*background-image: url("/img/backgrounds/tweed.png");*/
+    /*border-width: 0px;*/
     color: white;
+}
+
+.collab-box {
+    border-radius: 3px;
+    border-width: .05px;
+    border-color: grey;
+    border-style: solid;
+    background-color: #E6E6E6;
+    color: black;
 }
 
 .btn {
@@ -134,7 +154,7 @@ td {
 
 .panel-default > .panel-heading {
   /*background-color: rgba(50, 50, 50, .9);*/
-  background-color: rgb(60, 60, 60);
+  background-color: black;
   color : white;
   font-weight: bold;
   font-size: 24px;
@@ -151,6 +171,7 @@ td {
 .panel-default > .panel-body {
     font-size: 24px;
     background-color: rgb(249, 249, 249);
+    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
 }
 
 .collapsable:hover {

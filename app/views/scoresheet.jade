@@ -28,8 +28,8 @@ block content
                                     // h2(class="title" style="width:100%")
                                     br
                                     br
-                                    select(class="form-control input-lg center-text no-border-radius tournament-info-field teamselect" id='leftselect')
-                                        option(selected value="") Select Team 1
+                                    select(class="form-control input-lg center-text teamselect" id='leftselect')
+                                        option(disabled selected value="") Select Team 1
                                         each team in tournament.teams
                                             option(value="#{team._id}") #{team.team_name}
 
@@ -38,8 +38,8 @@ block content
                                     // h2(class="title" style="width:100%")
                                     br
                                     br
-                                    select(class="form-control input-lg center-text no-border-radius tournament-info-field teamselect" id='rightselect')
-                                        option(selected value="") Select Team 2
+                                    select(class="form-control input-lg center-text teamselect" id='rightselect')
+                                        option(disabled selected value="") Select Team 2
                                         each team in tournament.teams
                                             option(value="#{team._id}") #{team.team_name}
 
@@ -65,6 +65,7 @@ block content
 
                 div(class="row col-md-12" id="dead-tossup-div")
 
+                div(class="row col-md-12" id='submit-game-div')
 
                 div(class="row" id="bonus-div" style='display:none')
 
@@ -89,7 +90,7 @@ block content
 
                                 div(class="row")
                                     div(class="col-md-6")
-                                        button(class="btn btn-lg btn-danger btn-block" style='margin:0px') Undo this Tossup
+                                        button(class="btn btn-lg btn-danger btn-block" style='margin:0px' id="undo-tossup") Undo this Tossup
                                     div(class="col-md-6")
                                         button(class="btn btn-lg btn-success btn-block" style='margin:0px' id="next-tossup") Next Tossup
 
@@ -105,7 +106,7 @@ block content
                 div(class="row")
                     div(class="col-md-12")
                         div(class="panel panel-default")
-                            table(class="table table-bordered table-hover table-condensed"  id="scoresheet")
+                            table(class="table table-hover table-condensed"  id="scoresheet")
 
                 div(class="row")
                     div(class="col-md-12")

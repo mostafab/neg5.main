@@ -19,7 +19,8 @@ var UserSchema = new Schema({
         token : String,
         email : String,
         name : String
-    }
+    },
+    createdAt : {type : Date, default : Date.now()}
 });
 
 UserSchema.methods.generateHash = function(password) {

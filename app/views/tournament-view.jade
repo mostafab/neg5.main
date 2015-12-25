@@ -46,7 +46,7 @@ block content
                                 li
                                     a(href="#divisions" data-toggle="tab") Divisions/Point Scheme
                                 li
-                                    a(href="#games" data-toggle="tab") Games
+                                    a(href="#games" data-toggle="tab") Games/Scoresheet
                                 li
                                     a(href="#teams" data-toggle="tab") Teams
                                 li
@@ -153,7 +153,7 @@ block content
                                     div(class="row")
                                         div(id="collaboratorsdiv" style="margin-left:25px")
                                             each person, i in tournament.collaborators
-                                                div(class="col-md-3 center-text no-border-radius tournament-info-field" style='border-radius:0;padding:20px;')
+                                                div(class="col-md-3 center-text no-border-radius statbox" style='border-radius:0;padding:20px;')
                                                     p Name : #{person.name}
                                                     p Email : #{person.email}
                                                     div(class="col-md-1")

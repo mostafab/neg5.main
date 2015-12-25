@@ -41,9 +41,10 @@ class Tossup {
     }
 
     removeLastAnswer() {
-        if (this.answers.length != 0) {
-            this.answers.pop();
+        if (this.answers.length !== 0) {
+            return this.answers.pop();
         }
+        return null;
     }
 }
 
@@ -139,7 +140,7 @@ class Phase {
     }
 
     removeLastTossup() {
-        this.tossup.removeLastAnswer();
+        return this.tossup.removeLastAnswer();
     }
 }
 
@@ -149,6 +150,10 @@ class Game {
         this.team2 = null;
         this.phases = [];
         this.currentPhase = new Phase(1);
+    }
+
+    getPhases() {
+        return this.phases;
     }
 
     getCurrentPhase() {
@@ -275,6 +280,7 @@ $(document).ready(function() {
             showAnswersOnScoresheet(game.currentPhase);
             // console.log(game.getTeamScore(game.team1.id) + ", " + game.getTeamScore(game.team2.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), $(this).attr("data-team"), game.getTeamScore($(this).attr("data-team")));
+            console.log(game.getCurrentPhase());
             // var i = 1;
             // while (i <= game.getCurrentPhase().getNumber()) {
             //     showTotalOnScoresheetOneRow(i, $(this).attr("data-team"), game.getTeamScoreUpToPhase($(this).attr("data-team"), i));
@@ -353,9 +359,25 @@ $(document).ready(function() {
         }
     });
 
+    $("body").on("click", "#submit-game", function() {
+        console.log(parseScoresheet(game));
+    });
+
     $("body").on("click", ".add-player-button", function() {
-        $(this).prop("disabled", true);
-        addPlayer($(this).prev(".player-name-input").val(), $(this).attr("data-team"), $(this).attr("data-team-name"), $(this).attr("side"));
+        $(this).prev(".player-name-input").css("border-color", "transparent");
+        if ($(this).prev(".player-name-input").val().length !== 0) {
+            $(this).prop("disabled", true);
+            addPlayer($(this).prev(".player-name-input").val(), $(this).attr("data-team"), $(this).attr("data-team-name"), $(this).attr("side"));
+        } else {
+            $(this).prev(".player-name-input").css("border-color", "red");
+        }
+    });
+
+    $("body").on("click", "#undo-tossup", function() {
+        var lastAnswer = game.getCurrentPhase().removeLastTossup();
+        revertPlayerAnswerOnScoresheet(lastAnswer, game.getCurrentPhase().getNumber());
+        showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), lastAnswer.team, game.getTeamScore(lastAnswer.team));
+        showTossupDiv();
     });
 
     $("#lock-teams").click(function() {
@@ -392,6 +414,7 @@ function findPlayers(side) {
                 createScoresheet(game.team1, game.team2);
                 editAddBonusAttributes(game.team1, game.team2);
                 createDeadTossupButton();
+                createSubmitGameButton();
             }
         }
     });
@@ -423,6 +446,7 @@ function addPlayer(playerName, teamid, teamName, side) {
                     addPlayerColumn("right", databack.player);
                 }
             }
+            $(".player-name-input").val("");
         },
         complete : function(xhr, status) {
             $(".add-player-button").prop("disabled", false);
@@ -430,9 +454,29 @@ function addPlayer(playerName, teamid, teamName, side) {
     });
 }
 
+function parseScoresheet(submittedGame) {
+    var gameToAdd = {};
+    gameToAdd.team1 = {};
+    gameToAdd.team2 = {};
+    gameToAdd.team1.team_id = submittedGame.team1.id;
+    gameToAdd.team1.team_name = submittedGame.team1.name;
+    gameToAdd.team1.score = submittedGame.getTeamScore(submittedGame.team1.id);
+    gameToAdd.team2.team_id = submittedGame.team2.id;
+    gameToAdd.team2.team_name = submittedGame.team2.name;
+    gameToAdd.team2.score = submittedGame.getTeamScore(submittedGame.team2.id);
+    gameToAdd.tossupsheard = submittedGame.getPhases().length;
+
+    return gameToAdd;
+}
+
 function createDeadTossupButton() {
     var html = "<button type='button' class='btn btn-md btn-block' id='dead-tossup'> Dead Tossup </button>";
     $("#dead-tossup-div").empty().append(html);
+}
+
+function createSubmitGameButton() {
+    var html = "<button type='button' class='btn btn-lg btn-block btn-warning' id='submit-game'> Submit Game </button>";
+    $("#submit-game-div").empty().append(html);
 }
 
 function showBonusScreen(primaryTeam) {
@@ -440,13 +484,14 @@ function showBonusScreen(primaryTeam) {
     $("#bonus-div").fadeIn(0);
     $("#team-bonus-name").text("Bonus for " + primaryTeam.name + ", Question " + game.getCurrentPhase().getNumber());
     $("#dead-tossup-div").fadeOut(0);
+    $("#submit-game-div").fadeOut(0);
 }
 
 function showTossupDiv() {
     $("#tossups-div").fadeIn(0);
     $("#bonus-div").fadeOut(0);
     $("#dead-tossup-div").fadeIn(0);
-
+    $("#submit-game-div").fadeIn(0);
 }
 
 function createScoresheet(team1, team2) {
@@ -615,6 +660,10 @@ function showAnswersOnScoresheet(phase) {
         var td = $("td[data-player=" + answers[i].player + "][data-row=" + row + "]");
         $(td).text(answers[i].value);
     }
+}
+
+function revertPlayerAnswerOnScoresheet(answer, row) {
+    $("#scoresheet-body tr td[data-row='" + row + "'][data-player='" + answer.player + "']").text("-");
 }
 
 function showTotalOnScoresheetOneRow(row, teamid, total) {

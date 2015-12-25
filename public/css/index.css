@@ -27,11 +27,11 @@ a {
 }
 
 .body {
-    background-image: url("../img/background.jpg");
-    background-size: cover;
+    background-image: url("../img/backgrounds/gplaypattern.png");
+    /*background-image: url("../img/background.jpg");*/
+    /*background-size: cover;*/
     /*background-color: #EEEEEE;*/
 }
-
 
 .header {
     border-width: 0px;

@@ -6,6 +6,7 @@ var gameSchema = require("./game").schema;
 var playerSchema = require("./player").schema;
 
 var TournamentSchema = new Schema({
+    createdAt : {type : Date, default : Date.now()},
     directorid : String, // Foreign key,
     tournament_name : String,
     collaborators : [{}], // List of emails of collaborators
