@@ -99,11 +99,10 @@ td {
 
 .tournament-info-field {
     border-radius: 3px;
-    border-width: 1px;
-    border-color: black;
-    border-style: solid;
-    background-color: #E6E6E6;
-    /*background-image: url("/img/backgrounds/tweed.png");*/
+    border-color: transparent;
+    /*border-style: solid;*/
+    /*background-color: #E6E6E6;*/
+    background-image: url("/img/backgrounds/tweed.png");
     /*border-width: 0px;*/
     color: white;
 }
