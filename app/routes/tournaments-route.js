@@ -289,13 +289,13 @@ module.exports = function(app) {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
-                tournamentController.addPlayer(req.body.tournamentidform, req.body.teamnameform, req.body.teamidform, req.body.newplayername, function(err, player) {
+                tournamentController.addPlayer(req.body.tournamentidform, req.body.teamnameform, req.body.teamidform, req.body.newplayername, function(err, player, pointScheme, pointTypes) {
                     if (err) {
                         console.log(err);
                         res.status(500).end();
                     } else {
                         // console.log("Added player");
-                        res.status(200).send({err : null, player : player, msg : "Successfully added player", tid : req.body.tournamentidform});
+                        res.status(200).send({err : null, player : player, msg : "Successfully added player", tid : req.body.tournamentidform, pointScheme : pointScheme, pointTypes : pointTypes});
                     }
                 });
             }

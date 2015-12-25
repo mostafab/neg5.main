@@ -1,6 +1,6 @@
 'use strict';
 
-var STARTING_TOSSUPS = 20;
+var MAX_TOSSUPS = 20;
 
 class Player {
     constructor(name, id, teamid) {
@@ -186,8 +186,8 @@ class Game {
         }
     }
 
-    addPlayer(id, teamid) {
-        var player = new Player(id, teamid);
+    addPlayer(name, id, teamid) {
+        var player = new Player(name, id, teamid);
         if (teamid == this.team1.id) {
             this.team1.players.push(player);
         } else {
@@ -313,6 +313,10 @@ $(document).ready(function() {
             console.log(game.getCurrentPhase());
             game.stashPhase();
             showTossupDiv();
+            if (game.getCurrentPhase().getNumber() > MAX_TOSSUPS) {
+                createScoresheetRow(game.team1, game.team2, MAX_TOSSUPS + 1);
+                MAX_TOSSUPS++;
+            }
             setActiveRow(game.getCurrentPhase());
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
@@ -339,10 +343,19 @@ $(document).ready(function() {
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team1.id, game.getCurrentPhase().getBonusPointsForTeam(game.team1.id));
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
             game.deadTossup();
+            if (game.getCurrentPhase().getNumber() > MAX_TOSSUPS) {
+                createScoresheetRow(game.team1, game.team2, MAX_TOSSUPS + 1);
+                MAX_TOSSUPS++;
+            }
             setActiveRow(game.getCurrentPhase());
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
         }
+    });
+
+    $("body").on("click", ".add-player-button", function() {
+        $(this).prop("disabled", true);
+        addPlayer($(this).prev(".player-name-input").val(), $(this).attr("data-team"), $(this).attr("data-team-name"), $(this).attr("side"));
     });
 
     $("#lock-teams").click(function() {
@@ -384,9 +397,42 @@ function findPlayers(side) {
     });
 }
 
+function addPlayer(playerName, teamid, teamName, side) {
+    var data = {
+            tournamentidform : $("#tournamentid").val(),
+            teamnameform : teamName,
+            teamidform : teamid,
+            newplayername : playerName
+    };
+    $.ajax({
+        url : "/home/tournaments/players/create",
+        type : "POST",
+        data : data,
+        success : function(databack, status, xhr) {
+            console.log(databack);
+            if (game.team1.id == teamid) {
+                appendPlayerLabel("#leftplayerlist", databack.player, Object.keys(databack.pointScheme), databack.pointTypes);
+                game.addPlayer(databack.player.player_name, databack.player._id, game.team1.id);
+                if ($("#scoresheet").length !== 0) {
+                    addPlayerColumn("left", databack.player);
+                }
+            } else {
+                appendPlayerLabel("#rightplayerlist", databack.player, Object.keys(databack.pointScheme), databack.pointTypes);
+                game.addPlayer(databack.player.player_name, databack.player._id, game.team2.id);
+                if ($("#scoresheet").length !== 0) {
+                    addPlayerColumn("right", databack.player);
+                }
+            }
+        },
+        complete : function(xhr, status) {
+            $(".add-player-button").prop("disabled", false);
+        }
+    });
+}
+
 function createDeadTossupButton() {
     var html = "<button type='button' class='btn btn-md btn-block' id='dead-tossup'> Dead Tossup </button>";
-    $("#dead-tossup-div").append(html);
+    $("#dead-tossup-div").empty().append(html);
 }
 
 function showBonusScreen(primaryTeam) {
@@ -415,8 +461,8 @@ function createScoresheet(team1, team2) {
         html += "<th class='player-header' title='" + team2.players[i].name + "'>" + team2.players[i].name.slice(0,2).toUpperCase() + "</th>";
     }
     html += "</tr></thead>";
-    html += "<tbody>";
-    for (var i = 0; i < STARTING_TOSSUPS; i++) {
+    html += "<tbody id='scoresheet-body'>";
+    for (var i = 0; i < MAX_TOSSUPS; i++) {
         if (i + 1 === game.getCurrentPhase().getNumber()) {
             html += "<tr class='active-row' data-row='" + (i + 1) + "'>";
         } else {
@@ -425,23 +471,38 @@ function createScoresheet(team1, team2) {
         for (var j = 0; j < team1.players.length; j++) {
             html += "<td data-player='" + team1.players[j].id + "' data-row='" + (i + 1) + "'>-</td>";
         }
-        html += "<td class='bonus-td' data-team='" + game.team1.id + "' data-row='" + (i + 1) + "'>-</td>";
-        html += "<td class='total-td' data-team='" + game.team1.id + "' data-row='" + (i + 1) + "'>-</td>";
+        html += "<td class='bonus-td' data-team='" + team1.id + "' data-row='" + (i + 1) + "'>-</td>";
+        html += "<td class='total-td' data-team='" + team1.id + "' data-row='" + (i + 1) + "'>-</td>";
         html += "<td class='alert alert-info'><strong>" + (i + 1) + "</strong></td>";
-        html += "<td class='total-td' data-team='" + game.team2.id + "' data-row='" + (i + 1) + "'>-</td>";
-        html += "<td class='bonus-td' data-team='" + game.team2.id + "' data-row='" + (i + 1) + "'>-</td>";
+        html += "<td class='total-td' data-team='" + team2.id + "' data-row='" + (i + 1) + "'>-</td>";
+        html += "<td class='bonus-td' data-team='" + team2.id + "' data-row='" + (i + 1) + "'>-</td>";
         for (var j = 0; j < team2.players.length; j++) {
             html += "<td data-player='" + team2.players[j].id + "' data-row='" + (i + 1) + "'>-</td>";
         }
         html += "</tr>";
     }
     html += "</tbody>";
+    var colspan = team1.players.length + team2.players.length + 5;
+    html += "<tfoot><tr class='alert alert-warning'><td id='tfoot-msg' colspan='" + colspan + "'>More rows will appear as needed.</td></tr></tfoot>";
     $("#scoresheet").empty();
     $(html).hide().appendTo("#scoresheet").fadeIn(300);
 }
 
-function createScoresheetRow(team1, team2) {
-
+function createScoresheetRow(team1, team2, number) {
+    var html = "<tr data-row='" + number + "'>";
+    for (var j = 0; j < team1.players.length; j++) {
+        html += "<td data-player='" + team1.players[j].id + "' data-row='" + number + "'>-</td>";
+    }
+    html += "<td class='bonus-td' data-team='" + team1.id + "' data-row='" + number + "'>-</td>";
+    html += "<td class='total-td' data-team='" + team1.id + "' data-row='" + number + "'>-</td>";
+    html += "<td class='alert alert-info'><strong>" + number + "</strong></td>";
+    html += "<td class='total-td' data-team='" + team2.id + "' data-row='" + number + "'>-</td>";
+    html += "<td class='bonus-td' data-team='" + team2.id + "' data-row='" + number + "'>-</td>";
+    for (var j = 0; j < team2.players.length; j++) {
+        html += "<td data-player='" + team2.players[j].id + "' data-row='" + number + "'>-</td>";
+    }
+    html += "</tr>";
+    $("#scoresheet-body").append(html);
 }
 
 function destroyBonusLabels() {
@@ -456,6 +517,38 @@ function changeTeamLabels(side) {
         $("#team-2-name").html($(side).find(":selected").text());
     }
 }
+
+function appendPlayerLabel(side, player, pointValues, pointTypes) {
+    console.log(pointValues);
+    var html = "<div class='row cell'>";
+    html += "<div class='col-md-5'>";
+    html += "<div class='playerbox'><strong style='color:white'>" + player.player_name + "</strong></div></div>";
+    html += "<div class='col-md-7'>";
+    html += "<div class='row'>";
+    for (var j = 0; j < pointValues.length; j++) {
+        if (pointTypes[pointValues[j]] === "N") {
+            html += "<button" + " data-team='" + player.teamID + "' data-neg='true' data-point-value='" + pointValues[j]
+                + "' data-player='" + player._id + "' class='btn btn-md btn-danger btn-point'>" + pointValues[j] + "</button>";
+        } else if (pointTypes[pointValues[j]] === "P") {
+            html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j]
+                + "' data-player='" + player._id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
+        } else {
+            html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j]
+                + "' data-player='" + player._id + "' class='btn btn-md btn-info btn-point'>" + pointValues[j] + "</button>";
+        }
+    }
+    html += "</div>";
+    html += "</div>";
+    html += "</div>";
+    if ($(side + " .cell").size() === 0) {
+        $(side).prepend(html);
+        console.log("No players before");
+    } else {
+        console.log("Players before");
+        $(html).insertAfter($(side + " .cell").last());
+    }
+}
+
 
 function createPlayerLabels(side, players, pointValues, pointTypes) {
     var list = $(side).attr("id") === "leftselect" ? "#leftplayerlist" : "#rightplayerlist";
@@ -482,7 +575,10 @@ function createPlayerLabels(side, players, pointValues, pointTypes) {
         html += "</div>";
         html += "</div>";
     }
-    html += "<br><input type='text' class='form-control' placeholder='New Player'/><button class='btn btn-md btn-success'> Add a Player </button>";
+    var teamid = $(side).val();
+    var teamname = $(side).find(":selected").text();
+    html += "<br><input type='text' class='form-control player-name-input' placeholder='New Player'/><button class='btn btn-md btn-success add-player-button' data-team='"
+        + teamid + "' data-team-name='" + teamname + "'> Add a Player </button>";
     $(list).empty().append(html);
 }
 
@@ -549,4 +645,26 @@ function editAddBonusAttributes(team1, team2) {
     $("#right-bonus-info").text("+10 for " + team2.name);
     $("#left-gotten-bonus").attr("data-team", team1.id);
     $("#right-gotten-bonus").attr("data-team", team2.id);
+}
+
+function addPlayerColumn(side, player) {
+    if (side == "right") {
+        $("#scoresheet thead tr").append("<th class='player-header' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
+        $("#scoresheet tbody tr").each(function(index, tableRow) {
+            var row = index + 1;
+            $(this).append("<td data-player='" + player._id + "' data-row='" + row + "'>-</td>");
+        });
+    } else {
+        $("#scoresheet thead tr").prepend("<th class='player-header' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
+        $("#scoresheet tbody tr").each(function(index, tableRow) {
+            var row = index + 1;
+            $(this).prepend("<td data-player='" + player._id + "' data-row='" + row + "'>-</td>");
+        });
+    }
+    var colspan = game.team1.players.length + game.team2.players.length + 5;
+    changeFooterColSpan(colspan);
+}
+
+function changeFooterColSpan(colspan) {
+    $("#tfoot-msg").attr("colspan", colspan);
 }

@@ -585,9 +585,9 @@ function addPlayer(tournamentID, teamName, teamID, playerName, callback) {
             var pushQuery = {$push : {players : newPlayer}};
             Tournament.update(tournamentQuery, pushQuery, function(err) {
                 if (err) {
-                    callback(err, null);
+                    callback(err, null, null, null);
                 } else {
-                    callback(null, newPlayer);
+                    callback(null, newPlayer, result.pointScheme, result.pointsTypes);
                 }
             });
         }
