@@ -13,10 +13,19 @@
     box-shadow: 0 0px 2px rgba(0, 0, 0, 0.5);
 }
 
+.btn {
+    border-radius: 2px;
+    box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: translateY(2px);
+}
+
 .btn-point {
     margin:2px;
     border-radius: 2px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);
     /*transform: translateY(-15px);*/
 }
 

@@ -295,6 +295,8 @@ $(document).ready(function() {
                     showBonusScreen(game.team2);
                 }
                 $("#next-tossup").attr("data-team", $(this).attr('data-team'));
+            } else {
+                lockOutTeam();
             }
         }
     });
@@ -377,6 +379,7 @@ $(document).ready(function() {
         var lastAnswer = game.getCurrentPhase().removeLastTossup();
         revertPlayerAnswerOnScoresheet(lastAnswer, game.getCurrentPhase().getNumber());
         showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), lastAnswer.team, game.getTeamScore(lastAnswer.team));
+        destroyBonusLabels();
         showTossupDiv();
     });
 
