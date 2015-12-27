@@ -29,8 +29,5 @@
     "serve-favicon": "^2.3.0",
     "short-mongo-id": "^0.1.1",
     "shortid": "^2.2.4"
-  },
-  "devDependencies": {
-    "gulp": "^3.9.0"
   }
 }
