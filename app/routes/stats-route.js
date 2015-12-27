@@ -4,7 +4,7 @@ var statsController = require("../../app/controllers/stats-controller");
 
 module.exports = function(app) {
 
-    app.get("/home/tournaments/:tid/stats/team", function(req, res, next) {
+    app.get("/:tid/stats/team", function(req, res, next) {
         statsController.getTeamsInfo(req.params.tid, function(err, tournament, teamInfo) {
             if (err) {
                 res.send(err);
@@ -17,7 +17,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/home/tournaments/:tid/stats/player", function(req, res, next) {
+    app.get("/:tid/stats/player", function(req, res, next) {
         statsController.getPlayersInfo(req.params.tid, function(err, tournament, playersInfo) {
             if (err) {
                 res.send(err);
@@ -30,7 +30,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/home/tournaments/:tid/stats/teamfull", function(req, res, next) {
+    app.get("/:tid/stats/teamfull", function(req, res, next) {
         statsController.getFullTeamsGameInformation(req.params.tid, function(err, tournament, teamsGames, playersInfo, teamTotals) {
             if (err) {
                 res.send(err);
@@ -43,7 +43,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/home/tournaments/:tid/stats/playerfull", function(req, res, next) {
+    app.get("/:tid/stats/playerfull", function(req, res, next) {
         statsController.getFullPlayersGameInformation(req.params.tid, function(err, tournament, playersInfo, playerTotals) {
             if (err) {
                 res.send(err);
@@ -56,7 +56,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/home/tournaments/:tid/stats/filter/teams', function(req, res) {
+    app.post('/:tid/stats/filter/teams', function(req, res) {
         var constraints = {};
         constraints.teams = req.body.teams;
         if (req.body.minround.length == 0) {
@@ -81,7 +81,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/home/tournaments/:tid/stats/filter/players", function(req, res) {
+    app.post("/:tid/stats/filter/players", function(req, res) {
         var constraints = {};
         constraints.teams = req.body.teams;
         if (req.body.minround.length == 0) {

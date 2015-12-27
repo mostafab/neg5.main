@@ -78,7 +78,7 @@ function editGameAJAX() {
     $("#updategamediv").empty().
         append("<p style='margin-left:10px; font-size:16px;'>Updating Game <i class='fa fa-spinner fa-spin'></i></p>");
     $.ajax({
-        url : "/home/tournaments/games/edit",
+        url : "/tournaments/games/edit",
         type : "POST",
         data : $("#changegameform").serialize(),
         success : function(databack, status, xhr) {
@@ -98,7 +98,7 @@ function editGameAJAX() {
 
 function editTeamAJAX() {
     $.ajax({
-        url : "/home/tournaments/teams/edit",
+        url : "/tournaments/teams/edit",
         type : "POST",
         data : $("#teamdetailsform").serialize(),
         success : function(databack, status, xhr) {
@@ -125,7 +125,7 @@ function editTeamAJAX() {
 function editPlayerAJAX(playerForm, button) {
     showBeforeSentMessage("Saving Player");
     $.ajax({
-        url : "/home/tournaments/players/edit",
+        url : "/tournaments/players/edit",
         type : "POST",
         data : playerForm,
         success : function(databack, status, xhr) {
@@ -147,7 +147,7 @@ function editPlayerAJAX(playerForm, button) {
 
 function addPlayerAJAX(playerForm) {
     $.ajax({
-        url : "/home/tournaments/players/create",
+        url : "/tournaments/players/create",
         type : "POST",
         data : playerForm,
         success : function(databack, status, xhr) {
@@ -173,7 +173,7 @@ function addPlayerAJAX(playerForm) {
 function removePlayerAJAX(playerForm, button) {
     showBeforeSentMessage("Removing Player");
     $.ajax({
-        url : "/home/tournaments/players/remove",
+        url : "/tournaments/players/remove",
         type : "POST",
         data : playerForm,
         success : function(databack, status, xhr) {
@@ -193,7 +193,7 @@ function removePlayerAJAX(playerForm, button) {
 function getTeamPlayersAJAX(side) {
     if (side == "LEFT") {
         $.ajax({
-            url : "/home/tournaments/getplayers",
+            url : "/tournaments/getplayers",
             type : "GET",
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#leftchoice").val()},
@@ -204,7 +204,7 @@ function getTeamPlayersAJAX(side) {
         });
     } else {
         $.ajax({
-            url : "/home/tournaments/getplayers",
+            url : "/tournaments/getplayers",
             type : "GET",
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#rightchoice").val()},

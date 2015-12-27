@@ -209,7 +209,7 @@ function sendTeamToServer() {
     $("#addteammsg").empty().
         append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Editing<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
-        url : "/home/tournaments/createteam",
+        url : "/tournaments/createteam",
         type : "POST",
         data : $("#teamform").serialize(),
         success : function(databack, status, xhr) {
@@ -235,7 +235,7 @@ function sendTeamToServer() {
 
 function sendGameToServer() {
     $.ajax({
-        url : "/home/tournaments/creategame",
+        url : "/tournaments/creategame",
         type : "POST",
         data : $("#gamedataform").serialize(),
         success : function(databack, status, xhr) {
@@ -258,7 +258,7 @@ function sendGameToServer() {
 
 function sendPlayersToServer() {
     $.ajax({
-        url : "/home/tournaments/createplayers",
+        url : "/tournaments/createplayers",
         type : "POST",
         data : $("#playersform").serialize(),
         success : function(databack, status, xhr) {
@@ -270,7 +270,7 @@ function sendPlayersToServer() {
 function findPlayersByTeamnameAndTournament(side) {
     if (side == "LEFT") {
         $.ajax({
-            url : "/home/tournaments/getplayers",
+            url : "/tournaments/getplayers",
             type : "GET",
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#leftchoice").val()},
@@ -281,7 +281,7 @@ function findPlayersByTeamnameAndTournament(side) {
         });
     } else {
         $.ajax({
-            url : "/home/tournaments/getplayers",
+            url : "/tournaments/getplayers",
             type : "GET",
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#rightchoice").val()},
@@ -294,7 +294,7 @@ function findPlayersByTeamnameAndTournament(side) {
 
 function removeGame(forminfo, button) {
     $.ajax({
-        url : "/home/tournaments/games/remove",
+        url : "/tournaments/games/remove",
         type : "POST",
         data : forminfo,
         success : function(databack, status, xhr) {
@@ -306,7 +306,7 @@ function removeGame(forminfo, button) {
 
 function removeTeam(forminfo, button) {
     $.ajax({
-        url : "/home/tournaments/teams/remove",
+        url : "/tournaments/teams/remove",
         type : "POST",
         data : forminfo,
         success : function(databack, status, xhr) {
@@ -326,7 +326,7 @@ function changePointSchemeAJAX(pointTypes) {
     $("#pointdivmsg").empty().
         append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Working...<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
-        url : "/home/tournaments/editPointSchema",
+        url : "/tournaments/editPointSchema",
         type : "POST",
         data : $("#point-schema-form").serialize(),
         success : function(databack, status, xhr) {
@@ -342,7 +342,7 @@ function changeDivisionsAJAX() {
     $("#pointdivmsg").empty().
         append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Working...<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
-        url : "/home/tournaments/editDivisions",
+        url : "/tournaments/editDivisions",
         type : "POST",
         data : $("#divisions-form").serialize(),
         success : function(databack, status, xhr) {
@@ -358,7 +358,7 @@ function editTournamentAJAX() {
     $("#tournament-update-msgdiv").empty().
         append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Editing<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
-        url : "/home/tournaments/edit",
+        url : "/tournaments/edit",
         type : "POST",
         data : $("#tournament-overview-form").serialize(),
         success : function(databack, status, xhr) {
@@ -588,7 +588,7 @@ function updateTeamList(team) {
 
 function addPointSchemaRow() {
     var arr = ["B", "N", "P"];
-    var html = "<div class='row'><div class='form-group col-md-3'><input type='number style='width:100%' class='form-control pointval input-medium no-border-radius'/></div>";
+    var html = "<div class='row'><div class='form-group col-md-3'><input type='number' style='width:100%' class='form-control pointval input-medium no-border-radius'/></div>";
     html += "<div class='col-md-9'>";
     for (var i = 0; i < arr.length; i++) {
         if (arr[i] == "P") {

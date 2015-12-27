@@ -22,7 +22,7 @@ module.exports = function(app, passport) {
                 res.redirect("/");
             } else {
                 req.session.director = director;
-                res.redirect("/home/tournaments");
+                res.redirect("/home");
             }
         })(req, res, next);
     });
@@ -56,7 +56,7 @@ module.exports = function(app, passport) {
                                                 errormsg : "Invalid credentials. Please try again."});
             } else {
                 req.session.director = user;
-                res.redirect("/home/tournaments");
+                res.redirect("/home");
             }
         });
     });
@@ -108,7 +108,7 @@ module.exports = function(app, passport) {
         } else {
             // console.log("About to render home page...");
             // res.render("home", {tournamentd : req.session.director});
-            res.redirect("/home/tournaments");
+            res.redirect("/tournaments");
         }
     });
 

@@ -40,7 +40,7 @@ block content
                             each val, i in tournaments
                                 tr()
                                     td
-                                        a(href="/home/tournaments/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
+                                        a(href="/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
                                             i(class="fa fa-pencil" style="margin:5px")
                                     td #{tournaments[i].location}
                                     td #{tournaments[i].date}

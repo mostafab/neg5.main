@@ -179,7 +179,7 @@ class Game {
         if (this.phases.length < this.currentPhase.getNumber()) {
             this.phases.push(this.currentPhase);
         } else {
-            this.phases[this.currentPhase().getNumber() - 1] = this.currentPhase;
+            this.phases[this.currentPhase.getNumber() - 1] = this.currentPhase;
         }
         console.log(this.phases);
         this.nextPhase();
@@ -481,7 +481,7 @@ $(document).ready(function() {
 function findPlayers(side) {
     console.log(game);
     $.ajax({
-        url : "/home/tournaments/getplayers",
+        url : "/tournaments/getplayers",
         type : "GET",
         data : {tournamentid : $("#tournamentid").val(),
                 teamname : $(side).val()},
@@ -514,7 +514,7 @@ function addPlayer(playerName, teamid, teamName, side) {
             newplayername : playerName
     };
     $.ajax({
-        url : "/home/tournaments/players/create",
+        url : "/tournaments/players/create",
         type : "POST",
         data : data,
         success : function(databack, status, xhr) {

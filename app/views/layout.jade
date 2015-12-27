@@ -32,8 +32,8 @@ html
                     ul()
                         li()
                             a(href="/home") Home
-                            a(href="/home/tournaments") Your Tournaments
-                            a(href="/home/tournaments/create") Create a Tournament
+                            a(href="/tournaments") Your Tournaments
+                            a(href="/create") Create a Tournament
 
             ul
                 li(class="cd-label")
@@ -57,10 +57,10 @@ html
                     div(class="collapse navbar-collapse")
                         ul(class="nav navbar-nav")
                             li(class='list-element')
-                                a(href="/home/tournaments" style="color:black") Your Tournaments
+                                a(href="/tournaments" style="color:black") Your Tournaments
                                     i(class="fa fa-list" style='margin-left:10px')
                             li(class="list-element")
-                                a(href="/home/tournaments/create" style="color:black") New Tournament
+                                a(href="/create" style="color:black") New Tournament
                                      i(class="fa fa-plus" style='margin-left:10px')
 
                         ul(class="nav navbar-nav navbar-right")
@@ -89,13 +89,13 @@ html
             div(class="row" style="")
                 ul(class="nav nav-pills no-border-radius")
                     li
-                        a(href="/home/tournaments/" + tournament.shortID + "/stats/team") Team Standings
+                        a(href="/" + tournament.shortID + "/stats/team") Team Standings
                     li
-                        a(href="/home/tournaments/" + tournament.shortID + "/stats/player") Player Standings
+                        a(href="/" + tournament.shortID + "/stats/player") Player Standings
                     li(class="active")
-                        a(href="/home/tournaments/" + tournament.shortID + "/stats/teamfull") Teams Full
+                        a(href="/" + tournament.shortID + "/stats/teamfull") Teams Full
                     li
-                        a(href="/home/tournaments/" + tournament.shortID + "/stats/playerfull") Players Full
+                        a(href="/" + tournament.shortID + "/stats/playerfull") Players Full
     //- Use
 
   body(class="body")
