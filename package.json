@@ -1,7 +1,7 @@
 {
   "name": "neg_five",
   "version": "1.0.0",
-  "description": "",
+  "description": "Quiz Bowl for the Cloud!",
   "main": "server.js",
   "scripts": {
     "test": "test"

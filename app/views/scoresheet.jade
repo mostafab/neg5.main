@@ -53,15 +53,19 @@ block content
                     div(class="col-md-6 col-lg-6 col-sm-6" id="left-team-players")
                         div(class="panel panel-default" style="text-align:center")
                             div(class="panel-heading" style="font-size:20px" id="team-1-name") Team 1
-                            div(class="panel-body")
-                                div(id="leftplayerlist")
-
+                            div(class="panel-body" style='position:relative')
+                                div(id="leftplayerlist" class='player-list')
+                                div(class="neg-box")
+                                    button(class='btn btn-lg btn-stats btn-block undo-neg') Undo Neg
 
                     div(class="col-md-6 col-lg-6 col-sm-6" id="right-team-players")
                         div(class="panel panel-default" style="text-align:center")
                             div(class="panel-heading" style="font-size:20px" id="team-2-name") Team 2
-                            div(class="panel-body")
-                                div(id="rightplayerlist")
+                            div(class="panel-body" style='position:relative')
+                                div(id="rightplayerlist" class='player-list')
+                                div(class="neg-box")
+                                    button(class='btn btn-lg btn-stats btn-block undo-neg') Undo Neg
+
 
                 div(class="row col-md-12" id="dead-tossup-div")
 
@@ -113,10 +117,10 @@ block content
                         br
                         div(class="col-md-6")
                             div(class="panel panel-default")
-                                table(class="table table-bordered table-hover table-condensed" id="leftplayertable")
+                                table(class="table table-striped table-hover table-condensed player-table" id="leftplayertable")
 
                         div(class="col-md-6")
                             div(class="panel panel-default")
-                                table(class="table table-bordered table-hover table-condensed" id="rightplayertable")
+                                table(class="table table-striped table-hover table-condensed player-table" id="rightplayertable")
 
     script(src="/js/scoresheet.js")

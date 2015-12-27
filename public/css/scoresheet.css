@@ -10,7 +10,25 @@
 .cell {
     background-color:rgb(236, 236, 236);
     padding:5px;
-    box-shadow: 0 0px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 .05px .05px rgba(0, 0, 0, 0.5);
+}
+
+.neg-box {
+    position:absolute;
+    top: 5px;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    background-color:rgba(200, 200, 200, .9);
+    border-radius: 3px;
+    padding:50px;
+    text-align: center;
+    display: none;
+}
+
+.undo-neg {
+    vertical-align: middle;
+    padding: 25px;
 }
 
 .btn {

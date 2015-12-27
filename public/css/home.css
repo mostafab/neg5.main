@@ -12,5 +12,16 @@
 
 .body {
     /*background-color: white;*/
-    background-image: url("../img/backgrounds/double_lined.png");
+    background-image: url("../img/backgrounds/brushed.png");
+}
+
+.list-element {
+    border-color:grey;
+    border-style:solid;
+    border-width:0px .1em 0 .1em;
+}
+
+.list-element:hover {
+    background: rgba(100, 100, 100, .1);
+    /*background: rgba(0, 136, 136, .1);*/
 }

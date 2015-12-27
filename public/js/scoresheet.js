@@ -105,8 +105,7 @@ class Phase {
     }
 
     getBonusPointsEarned(teamid) {
-        if (this.bonus)
-        return pointsEarned;
+        return 0;
     }
 
     getBounceBackPoints(teamid) {
@@ -142,6 +141,7 @@ class Phase {
     removeLastTossup() {
         return this.tossup.removeLastAnswer();
     }
+
 }
 
 class Game {
@@ -202,6 +202,73 @@ class Game {
 
     addAnswerToTossup(teamid, playerid, value) {
         this.currentPhase.addAnswerToTossup(teamid, playerid, value);
+    }
+
+    getAllPlayerScores() {
+        var playerScores = {};
+        var allPlayers = this.team1.players.concat(this.team2.players);
+        for (var i = 0; i < allPlayers.length; i++) {
+            playerScores[allPlayers[i].id] = {total : 0};
+        }
+        for (var i = 0; i < this.phases.length; i++) {
+            var currentTossup = this.phases[i].getTossup();
+            for (var j = 0; j < currentTossup.getAnswers().length; j++) {
+                var answer = currentTossup.getAnswers()[j];
+                if (!playerScores[answer.player]) {
+                    playerScores[answer.player] = {};
+                }
+                if (!playerScores[answer.player]["total"]) {
+                    playerScores[answer.player]["total"] = answer.value;
+                } else {
+                    playerScores[answer.player]["total"] += answer.value;
+                }
+                if (!playerScores[answer.player][answer.value + ""]) {
+                    playerScores[answer.player][answer.value + ""] = 1;
+                } else {
+                    playerScores[answer.player][answer.value + ""]++;
+                }
+            }
+        }
+        var currentTossup = this.currentPhase.getTossup();
+        for (var j = 0; j < currentTossup.getAnswers().length; j++) {
+            var answer = currentTossup.getAnswers()[j];
+            if (!playerScores[answer.player]) {
+                playerScores[answer.player] = {};
+            }
+            if (!playerScores[answer.player]["total"]) {
+                playerScores[answer.player]["total"] = answer.value;
+            } else {
+                playerScores[answer.player]["total"] += answer.value;
+            }
+            if (!playerScores[answer.player][answer.value + ""]) {
+                playerScores[answer.player][answer.value + ""] = 1;
+            } else {
+                playerScores[answer.player][answer.value + ""]++;
+            }
+        }
+        return playerScores;
+    }
+
+    getPlayerScore(player) {
+        var playerid = player.id;
+        var score = 0;
+        for (var i = 0; i < this.phases.length; i++) {
+            var currentTossup = this.phases[i].getTossup();
+            for (var j = 0; j < currentTossup.getAnswers().length; j++) {
+                var answer = currentTossup.getAnswers()[j];
+                if (answer.player == playerid) {
+                    score += answer.value;
+                }
+            }
+        }
+        var tossup = this.currentPhase.getTossup();
+        for (var j = 0; j < tossup.getAnswers().length; j++) {
+            var currentAnswer = tossup.getAnswers()[j];
+            if (currentAnswer.player == playerid) {
+                score += currentAnswer.value;
+            }
+        }
+        return score;
     }
 
     getTeamScore(teamid) {
@@ -296,13 +363,15 @@ $(document).ready(function() {
                 }
                 $("#next-tossup").attr("data-team", $(this).attr('data-team'));
             } else {
-                lockOutTeam();
+                setNegButtonPlayer($(this).parent(".player-list").next(".neg-box").find(".undo-neg"), $(this).attr("data-player"));
+                lockOutTeam($(this));
             }
+            showPlayerPointTotals(game);
         }
     });
 
     $("body").on("click", "#next-tossup", function() {
-        if (game.team1 != null && game.team2 != null)
+        if (game.team1 !== null && game.team2 !== null)
             console.log("Going to next tossup");
             var bonusLeft = $("#left-gotten-bonus li").size() * 10;
             var bonusRight = $("#right-gotten-bonus li").size() * 10;
@@ -318,7 +387,7 @@ $(document).ready(function() {
             game.getCurrentPhase().addBonusPoints($(this).attr("data-team"), forTeamPoints, againstPoints);
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team1.id, game.getCurrentPhase().getBonusPointsForTeam(game.team1.id));
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
-            console.log(game.getCurrentPhase());
+            // console.log(game.getCurrentPhase());
             game.stashPhase();
             showTossupDiv();
             if (game.getCurrentPhase().getNumber() > MAX_TOSSUPS) {
@@ -329,15 +398,8 @@ $(document).ready(function() {
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
             destroyBonusLabels();
-        // var i = 1;
-        // while (i <= game.getCurrentPhase().getNumber()) {
-        //     showTotalOnScoresheetOneRow(i, game.team1.id, game.getTeamScoreUpToPhase(game.team1.id, i));
-        //     showTotalOnScoresheetOneRow(i, game.team2.id, game.getTeamScoreUpToPhase(game.team2.id, i));
-        //     // console.log(game.getTeamScoreUpToPhase(game.team1.id, i));
-        //     // console.log(game.getTeamScoreUpToPhase(game.team2.id, i));
-        //     i++;
-        // }
-        // console.log(game.getTeamScore(game.team1.id) + ", " + game.getTeamScore(game.team2.id));
+            unlockBothTeams();
+            showPlayerPointTotals(game);
     });
 
     $("body").on("click", ".remove-bonus", function() {
@@ -347,7 +409,7 @@ $(document).ready(function() {
 
     $("body").on("click", "#dead-tossup", function() {
         console.log("dead tossup");
-        if (game.team1 != null && game.team2 != null) {
+        if (game.team1 !== null && game.team2 !== null) {
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team1.id, game.getCurrentPhase().getBonusPointsForTeam(game.team1.id));
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
             game.deadTossup();
@@ -358,6 +420,8 @@ $(document).ready(function() {
             setActiveRow(game.getCurrentPhase());
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
+            unlockBothTeams();
+            showPlayerPointTotals(game);
         }
     });
 
@@ -381,6 +445,11 @@ $(document).ready(function() {
         showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), lastAnswer.team, game.getTeamScore(lastAnswer.team));
         destroyBonusLabels();
         showTossupDiv();
+        // showPlayerPointTotals(game);
+    });
+
+    $("body").on("click", "#scoresheet-body td", function() {
+        console.log($(this).attr("data-player"));
     });
 
     $("#lock-teams").click(function() {
@@ -391,6 +460,14 @@ $(document).ready(function() {
     $(".add-bonus").click(function() {
         var list = $(this).attr("data-list");
         addBonusRow(list);
+    });
+
+    $(".undo-neg").click(function() {
+        var lastAnswer = game.getCurrentPhase().removeLastTossup();
+        revertPlayerAnswerOnScoresheet(lastAnswer, game.getCurrentPhase().getNumber());
+        showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), lastAnswer.team, game.getTeamScore(lastAnswer.team));
+        unlockTeam($(this));
+        // showPlayerPointTotals();
     });
 
 });
@@ -413,7 +490,7 @@ function findPlayers(side) {
                 game.setTeam(2, $("#rightselect").find(":selected").text(), $("#rightselect").val(), databack.players);
             }
 
-            if (game.team1 != null && game.team2 != null) {
+            if (game.team1 !== null && game.team2 !== null) {
                 createScoresheet(game.team1, game.team2);
                 editAddBonusAttributes(game.team1, game.team2);
                 createDeadTossupButton();
@@ -575,14 +652,14 @@ function appendPlayerLabel(side, player, pointValues, pointTypes) {
     html += "<div class='row'>";
     for (var j = 0; j < pointValues.length; j++) {
         if (pointTypes[pointValues[j]] === "N") {
-            html += "<button" + " data-team='" + player.teamID + "' data-neg='true' data-point-value='" + pointValues[j]
-                + "' data-player='" + player._id + "' class='btn btn-md btn-danger btn-point'>" + pointValues[j] + "</button>";
+            html += "<button" + " data-team='" + player.teamID + "' data-neg='true' data-point-value='" + pointValues[j] +
+                "' data-player='" + player._id + "' class='btn btn-md btn-danger btn-point'>" + pointValues[j] + "</button>";
         } else if (pointTypes[pointValues[j]] === "P") {
-            html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j]
-                + "' data-player='" + player._id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
+            html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j] +
+                "' data-player='" + player._id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
         } else {
-            html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j]
-                + "' data-player='" + player._id + "' class='btn btn-md btn-info btn-point'>" + pointValues[j] + "</button>";
+            html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j] +
+                "' data-player='" + player._id + "' class='btn btn-md btn-info btn-point'>" + pointValues[j] + "</button>";
         }
     }
     html += "</div>";
@@ -609,14 +686,14 @@ function createPlayerLabels(side, players, pointValues, pointTypes) {
         html += "<div class='row'>";
         for (var j = 0; j < pointValues.length; j++) {
             if (pointTypes[pointValues[j]] === "N") {
-                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='true' data-point-value='" + pointValues[j]
-                    + "' data-player='" + players[i]._id + "' class='btn btn-md btn-danger btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='true' data-point-value='" + pointValues[j] +
+                    "' data-player='" + players[i]._id + "' class='btn btn-md btn-danger btn-point'>" + pointValues[j] + "</button>";
             } else if (pointTypes[pointValues[j]] === "P") {
-                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='false' data-point-value='" + pointValues[j]
-                    + "' data-player='" + players[i]._id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='false' data-point-value='" + pointValues[j] +
+                    "' data-player='" + players[i]._id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
             } else {
-                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='false' data-point-value='" + pointValues[j]
-                    + "' data-player='" + players[i]._id + "' class='btn btn-md btn-info btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='false' data-point-value='" + pointValues[j] +
+                    "' data-player='" + players[i]._id + "' class='btn btn-md btn-info btn-point'>" + pointValues[j] + "</button>";
             }
         }
         html += "</div>";
@@ -625,8 +702,8 @@ function createPlayerLabels(side, players, pointValues, pointTypes) {
     }
     var teamid = $(side).val();
     var teamname = $(side).find(":selected").text();
-    html += "<br><input type='text' class='form-control player-name-input' placeholder='New Player'/><button class='btn btn-md btn-success add-player-button' data-team='"
-        + teamid + "' data-team-name='" + teamname + "'> Add a Player </button>";
+    html += "<br><input type='text' class='form-control player-name-input' placeholder='New Player'/><button class='btn btn-md btn-success add-player-button' data-team='" +
+        teamid + "' data-team-name='" + teamname + "'> Add a Player </button>";
     $(list).empty().append(html);
 }
 
@@ -634,25 +711,40 @@ function createPlayerTable(side, players, pointScheme) {
     var table = $(side).attr("id") === "leftselect" ? "#leftplayertable" : "#rightplayertable";
     var html = "<tr><th></th>";
     for (var i = 0; i < pointScheme.length; i++) {
-        html += "<th class='table-head' scope='col'>" + pointScheme[i] + "</th>";
+        html += "<th class='table-head' scope='col' style='text-align:center'>" + pointScheme[i] + "</th>";
     }
-    html += "<th class='table-head' scope='col'>Totals</th>";
+    html += "<th class='table-head' scope='col' style='text-align:center'>Totals</th>";
     html += "</tr>";
     for (var i = 0; i < players.length; i++) {
         html += "<tr>";
         html += "<th>" + players[i].player_name; + "</th>";
         for (var j = 0; j < pointScheme.length; j++) {
-            html += "<td data-player='" + players[i]._id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
+            html += "<td class='player-point' data-player='" + players[i]._id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
         }
-        html += "<td>0</td>";
+        html += "<td class='player-total' data-player='" + players[i]._id + "'>0</td>";
         html += "</tr>";
     }
     $(table).empty().append(html);
 }
 
-function lockOutTeam() {
-    $("#left-team-players").css("opacity", .3);
-    $("#left-team-players :input").prop("disabled", true);
+function setNegButtonPlayer(button, player) {
+    console.log(button);
+    $(button).attr("data-player", player);
+}
+
+function lockOutTeam(button) {
+    $(button).parents(".player-list").find(":input").prop("disabled", true);
+    $(button).parents(".player-list").next(".neg-box").fadeIn(50);
+}
+
+function unlockTeam(button) {
+    $(button).parent().prev(".player-list").find(":input").prop("disabled", false);
+    $(button).parent(".neg-box").fadeOut(50);
+}
+
+function unlockBothTeams() {
+    $(".undo-neg").parent().prev(".player-list").find(":input").prop("disabled", false);
+    $(".undo-neg").parent(".neg-box").fadeOut(50);
 }
 
 function showAnswersOnScoresheet(phase) {
@@ -663,6 +755,30 @@ function showAnswersOnScoresheet(phase) {
         var td = $("td[data-player=" + answers[i].player + "][data-row=" + row + "]");
         $(td).text(answers[i].value);
     }
+}
+
+function showOnePlayerPointTotals() {
+
+}
+
+function showPlayerPointTotals(gameObj) {
+    $(".player-table td").text("0");
+    var playerTotals = gameObj.getAllPlayerScores();
+    for (var playerid in playerTotals) {
+        if (playerTotals.hasOwnProperty(playerid)) {
+            var tdTotal = $(".player-total[data-player=" + playerid + "]");
+            var pointTotal = playerTotals[playerid]["total"];
+            for (var pointValue in playerTotals[playerid]) {
+                if (playerTotals[playerid].hasOwnProperty(pointValue) && pointValue !== "total") {
+                    var td = $("td[data-player='" + playerid + "'][data-point-value='" + pointValue + "']");
+                    $(td).text(playerTotals[playerid][pointValue]);
+                }
+            }
+            $(tdTotal).text(pointTotal);
+        }
+    }
+    console.log(playerTotals);
+
 }
 
 function revertPlayerAnswerOnScoresheet(answer, row) {
