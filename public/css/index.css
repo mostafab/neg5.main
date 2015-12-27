@@ -114,7 +114,7 @@ a {
 
 .btn {
     /*background-color: transparent;*/
-    border-radius: 19px;
+    border-radius: 5px;
     padding: 15px 22px;
     line-height: 1.33;
     margin: 10px;
@@ -143,11 +143,6 @@ a {
     height: 100%;
     overflow: hidden;
 }
-
-.btn-round {
-    border-radius: 5px;
-}
-
 
 .navbar-brand img{height:100%;}
 

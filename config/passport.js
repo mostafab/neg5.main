@@ -25,11 +25,13 @@ module.exports = function(passport) {
     }, function(token, refreshToken, profile, done) {
         process.nextTick(function() {
             // console.log("Google method was called for some reason");
-            User.findOne({"google.id" : profile.id}, function(err, user) {
+            User.findOne({ $or : [{"google.id" : profile.id}, {"local.email" : profile.emails[0].value}]}, function(err, user) {
+                console.log(user);
                 if (err) {
                     return done(err);
                 } else if (user) {
-                    TournamentDirector.findOne({email : user.google.email}, function(err, director) {
+                    TournamentDirector.findOne({ usertoken : user._id}, function(err, director) {
+                        console.log(director);
                         return done(null, director);
                     });
                 } else {
@@ -38,6 +40,7 @@ module.exports = function(passport) {
                     newUser.google.token = token;
                     newUser.google.name = profile.displayName;
                     newUser.google.email = profile.emails[0].value;
+                    // newUser.local.email = profile.emails[0].value;
                     newUser.save(function(err) {
                         if (err) {
                             return done(err);
@@ -51,6 +54,7 @@ module.exports = function(passport) {
                                     var td = new TournamentDirector();
                                     td.name = profile.displayName;
                                     td.email = profile.emails[0].value;
+                                    td.usertoken = newUser._id;
                                     td.save(function(err) {
                                         if (err) {
                                             return done(err);
