@@ -166,13 +166,21 @@ class Game {
 
     nextPhase() {
         var nextPhaseNum = this.currentPhase.getNumber() + 1;
-        this.currentPhase = new Phase(nextPhaseNum);
+        if (nextPhaseNum > this.phases.length) {
+            this.currentPhase = new Phase(nextPhaseNum);
+        } else {
+            this.currentPhase = this.phases[nextPhaseNum - 1];
+        }
     }
 
     stashPhase() {
         console.log("Stashing phase");
         console.log(this.currentPhase);
-        this.phases.push(this.currentPhase);
+        if (this.phases.length < this.currentPhase.getNumber()) {
+            this.phases.push(this.currentPhase);
+        } else {
+            this.phases[this.currentPhase().getNumber() - 1] = this.currentPhase;
+        }
         console.log(this.phases);
         this.nextPhase();
     }
@@ -399,7 +407,6 @@ $(document).ready(function() {
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
             destroyBonusLabels();
             unlockBothTeams();
-            showPlayerPointTotals(game);
     });
 
     $("body").on("click", ".remove-bonus", function() {
@@ -421,7 +428,6 @@ $(document).ready(function() {
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
             unlockBothTeams();
-            showPlayerPointTotals(game);
         }
     });
 
@@ -445,7 +451,7 @@ $(document).ready(function() {
         showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), lastAnswer.team, game.getTeamScore(lastAnswer.team));
         destroyBonusLabels();
         showTossupDiv();
-        // showPlayerPointTotals(game);
+        showPlayerPointTotals(game);
     });
 
     $("body").on("click", "#scoresheet-body td", function() {
@@ -467,7 +473,7 @@ $(document).ready(function() {
         revertPlayerAnswerOnScoresheet(lastAnswer, game.getCurrentPhase().getNumber());
         showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), lastAnswer.team, game.getTeamScore(lastAnswer.team));
         unlockTeam($(this));
-        // showPlayerPointTotals();
+        showPlayerPointTotals(game);
     });
 
 });
@@ -483,13 +489,13 @@ function findPlayers(side) {
             changeTeamLabels(side);
             var pointValues = Object.keys(databack.pointScheme);
             createPlayerLabels(side, databack.players, pointValues, databack.pointTypes);
-            createPlayerTable(side, databack.players, pointValues);
             if ($(side).attr("id") == "leftselect") {
                 game.setTeam(1, $("#leftselect").find(":selected").text(), $("#leftselect").val(), databack.players);
+                createPlayerTable(side, game.team1.players, pointValues);
             } else {
                 game.setTeam(2, $("#rightselect").find(":selected").text(), $("#rightselect").val(), databack.players);
+                createPlayerTable(side, game.team2.players, pointValues);
             }
-
             if (game.team1 !== null && game.team2 !== null) {
                 createScoresheet(game.team1, game.team2);
                 editAddBonusAttributes(game.team1, game.team2);
@@ -717,11 +723,11 @@ function createPlayerTable(side, players, pointScheme) {
     html += "</tr>";
     for (var i = 0; i < players.length; i++) {
         html += "<tr>";
-        html += "<th>" + players[i].player_name; + "</th>";
+        html += "<th>" + players[i].name; + "</th>";
         for (var j = 0; j < pointScheme.length; j++) {
-            html += "<td class='player-point' data-player='" + players[i]._id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
+            html += "<td class='player-point' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
         }
-        html += "<td class='player-total' data-player='" + players[i]._id + "'>0</td>";
+        html += "<td class='player-total' data-player='" + players[i].id + "'>0</td>";
         html += "</tr>";
     }
     $(table).empty().append(html);
@@ -777,7 +783,7 @@ function showPlayerPointTotals(gameObj) {
             $(tdTotal).text(pointTotal);
         }
     }
-    console.log(playerTotals);
+    // console.log(playerTotals);
 
 }
 
