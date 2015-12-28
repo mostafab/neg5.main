@@ -689,7 +689,11 @@ function addScoresheetAsGame(tournamentid, scoresheet, callback) {
     newGame = scoresheet;
     newGame.shortID = shortid.generate();
     Tournament.update({_id : tournamentid}, {$push : {games : newGame}}, function(err) {
-        callback(err);
+        if (err) {
+            callback(err, "");
+        } else {
+            callback(null, newGame.shortID);
+        }
     });
 }
 

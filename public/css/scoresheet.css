@@ -89,6 +89,19 @@ thead th {
     background-color: #DFF0D8;
 }
 
+.active-player {
+    background-color: #DFF0D8;
+}
+
+.btn-xl {
+    padding: 18px 28px;
+    font-size: 22px;
+    line-height: normal;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
 .input-xs {
       /*height: 22px;*/
       padding: 2px 2px;
@@ -96,6 +109,10 @@ thead th {
       line-height: 1.5;
       border-radius: 2px;
   }
+
+.player-table tr:hover {
+    cursor: pointer;
+}
 
 .input-scoresheet {display: block; padding: 0; margin: 0; border: 0; width: 100%; text-align: center;}
 

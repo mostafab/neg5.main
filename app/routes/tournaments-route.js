@@ -167,13 +167,17 @@ module.exports = function(app) {
 
     app.post("/tournaments/scoresheet/submit", function(req, res) {
         console.log(req.body);
-        tournamentController.addScoresheetAsGame(req.body.tournamentid, req.body.scoresheet, function(err) {
-            if (err) {
-                res.status(500).end();
-            } else {
-                res.status(200).send("OK");
-            }
-        });
+        if (!req.session.director) {
+            res.status(401).end();
+        } else {
+            tournamentController.addScoresheetAsGame(req.body.tournamentid, req.body.scoresheet, function(err, gameid) {
+                if (err) {
+                    res.status(500).end();
+                } else {
+                    res.status(200).send({gameid : gameid});
+                }
+            });
+        }
     });
 
     app.route("/tournaments/teams/remove")

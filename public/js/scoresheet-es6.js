@@ -191,11 +191,18 @@ class Game {
             for (var i = 0; i < players.length; i++) {
                 this.team1.players.push(new Player(players[i].player_name, players[i]._id, players[i].teamID));
             }
+            console.log("sorting");
+            this.team1.players.sort(function(player1, player2) {
+                return player1.name.localeCompare(player2.name);
+            });
         } else {
             this.team2 = new Team(name, id);
             for (var i = 0; i < players.length; i++) {
                 this.team2.players.push(new Player(players[i].player_name, players[i]._id, players[i].teamID));
             }
+            this.team2.players.sort(function(player1, player2) {
+                return player1.name.localeCompare(player2.name);
+            });
         }
     }
 
@@ -203,6 +210,10 @@ class Game {
         var player = new Player(name, id, teamid);
         if (teamid == this.team1.id) {
             this.team1.players.push(player);
+            console.log("Adding player");
+            this.team1.players.sort(function(player1, player2) {
+                return player2.name.localeCompare(player1.name);
+            });
         } else {
             this.team2.players.push(player);
         }
@@ -537,6 +548,12 @@ $(document).ready(function() {
         showPlayerPointTotals(game);
     });
 
+    $("body").on("click", ".player-table tr", function() {
+        console.log("toggling class...");
+        $(this).find("th").toggleClass("active-player");
+        $(this).find("td").toggleClass("active-player");
+    });
+
 });
 
 function findPlayers(side) {
@@ -616,9 +633,18 @@ function submitScoresheet(scoresheet) {
         data : data,
         success : function(databack, status, xhr) {
             console.log(xhr);
-            $("#submit-game").prop("disabled", false);
+            $("#dead-tossup-div").slideUp(400);
+            $("#submit-game-div").slideUp(400);
+            setGameAnchorTag(databack.gameid);
+            $("#goto-game-div").slideDown(400);
         }
     });
+}
+
+function setGameAnchorTag(gameid) {
+    var tournament = $("#goto-game").attr("data-tournament");
+    var href = "/" + tournament + "/games/" + gameid;
+    $("#goto-game").attr("href", href);
 }
 
 function parseScoresheet(submittedGame) {
@@ -666,7 +692,7 @@ function parseScoresheet(submittedGame) {
 
 function incrementTossupsHeardForPlayers() {
     console.log("Incrementing tossups heard...");
-    $(".player-tossups input").each(function(index, input) {
+    $(".player-table .active-player input").each(function(index, input) {
         var currentTUH = parseFloat($(input).val());
         $(input).val((currentTUH + 1) + "");
     });
@@ -841,7 +867,7 @@ function createPlayerTable(side, players, pointScheme) {
         html += "<th class='table-head' scope='col' style='text-align:center'>" + pointScheme[i] + "</th>";
     }
     html += "<th class='table-head' scope='col' style='text-align:center'>Totals</th>";
-    html += "<th class='alert alert-info' scope='col' style='text-align:center' width='75'>TUH</th>"
+    html += "<th class='table-head' scope='col' style='text-align:center' width='75'>TUH</th>"
     html += "</tr>";
     for (var i = 0; i < players.length; i++) {
         html += "<tr>";
