@@ -544,11 +544,11 @@ $(document).ready(function () {
         }
     });
 
-    // $("body").on("click", "#submit-game", function() {
-    //     var scoresheet = parseScoresheet(game);
-    //     submitScoresheet(scoresheet);
-    //     console.log(scoresheet);
-    // });
+    $("body").on("click", "#submit-game", function () {
+        var scoresheet = parseScoresheet(game);
+        console.log(scoresheet);
+        // submitScoresheet(scoresheet);
+    });
 
     $("body").on("click", ".add-player-button", function () {
         $(this).prev(".player-name-input").css("border-color", "transparent");
