@@ -36,7 +36,11 @@ var gameSchema = new Schema({
             return bb == null ? 0 : bb;
         }},
         playerStats : {type : {}, default : {}}
-    }
+    },
+    room : String,
+    moderator : String,
+    packet : String,
+    notes : String
 });
 
 gameSchema.methods.getWinner = function() {

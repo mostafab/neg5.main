@@ -564,7 +564,7 @@ function updateGameList(gameinfo) {
     html += "<td>" + game.tossupsheard + "</td>";
     html += "<td> <form> <input type='hidden' name='gameid_form' value='" + game.shortID + "'/>";
     html += "<input type='hidden' name='tournament_idgame' value='" + id + "'/>";
-    html += "<a class='btn btn-sm btn-info editbutton' href='/home/tournaments/" + $("#tournamentshortid").val() + "/games/" + game.shortID + "'> Details </a>";
+    html += "<a class='btn btn-sm btn-info editbutton' href='/" + $("#tournamentshortid").val() + "/games/" + game.shortID + "'> Details </a>";
     html += "<button type='button' class='btn btn-sm btn-warning deletebutton' onclick='removeGameSender(this)'> Remove Game </button>";
     html += "</form> </td>";
     html += "</tr>";
@@ -579,7 +579,7 @@ function updateTeamList(team) {
     html += "<td>" + team.division + "</td>";
     html += "<td> <form><input type='hidden' name='teamid_form' value='" + team.shortID + "'/>";
     html += "<input type='hidden' name='tournament_idteam' value='" + $("#tournament_id_change").val() + "'/>";
-    html += "<a class='btn btn-sm btn-info' href='/home/tournaments/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'> Details </a>";
+    html += "<a class='btn btn-sm btn-info' href='/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'> Details </a>";
     html += "<button type='button' class='btn btn-sm btn-warning deleteteambutton' onclick='removeTeamSender(this)'> Remove Team </button>";
     html += "</form></td></tr>";
     $(html).hide().appendTo("#teamtablebody").fadeIn(300);
@@ -592,7 +592,7 @@ function addPointSchemaRow() {
     html += "<div class='col-md-9'>";
     for (var i = 0; i < arr.length; i++) {
         if (arr[i] == "P") {
-            html += "<label class='radio-inline btn-sm btn-warning'>Power<input type='checkbox' value='" + arr[i] + "' class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
+            html += "<label class='radio-inline btn-sm btn-success'>Power<input type='checkbox' value='" + arr[i] + "' class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
         } else if (arr[i] == "N") {
             html += "<label class='radio-inline btn-sm btn-danger'>Neg<input type='checkbox' value='" + arr[i] + "' class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
         } else {

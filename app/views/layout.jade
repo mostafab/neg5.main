@@ -57,18 +57,18 @@ html
                     div(class="collapse navbar-collapse")
                         ul(class="nav navbar-nav")
                             li(class='list-element')
-                                a(href="/tournaments" style="color:black") Your Tournaments
-                                    i(class="fa fa-list" style='margin-left:10px')
+                                a(href="/tournaments" style="color:black;font-size:14px") Your Tournaments
+                                    i(class="fa fa-list" style='margin-left:10px;')
                             li(class="list-element")
-                                a(href="/create" style="color:black") New Tournament
+                                a(href="/create" style="color:black;font-size:14px") New Tournament
                                      i(class="fa fa-plus" style='margin-left:10px')
 
                         ul(class="nav navbar-nav navbar-right")
                             li(class="list-element")
-                                a(href="/account" style='color:black') #{tournamentd.name} (#{tournamentd.email})
+                                a(href="/account" style='color:black;font-size:14px') #{tournamentd.name} (#{tournamentd.email})
                                     i(class="fa fa-user" style='margin-left:10px')
                             li(class="list-element")
-                                a(href="/logout" style='color:black') Logout
+                                a(href="/logout" style='color:black;font-size:14px') Logout
                                     i(class="fa fa-sign-out" style='margin-left:10px')
                 if !tournamentd
                     div(class="collapse navbar-collapse navbar-right")

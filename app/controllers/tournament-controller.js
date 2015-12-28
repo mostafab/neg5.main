@@ -139,6 +139,10 @@ function addGameToTournament(tournamentid, gameinfo, callback) {
     var newGame = new Game({
         round : !gameinfo["round"] ? 0 : gameinfo["round"],
         tossupsheard : !gameinfo["tossupsheard"] ? 0 : gameinfo["tossupsheard"],
+        room : !gameinfo["room"] ? "-" : gameinfo["room"],
+        moderator : !gameinfo["moderator"] ? "-" : gameinfo["moderator"],
+        packet : !gameinfo["packet"] ? "-" : gameinfo["packet"],
+        notes : !gameinfo["notes"] ? "-" : gameinfo["notes"]
     });
     newGame.shortID = shortid.generate();
     newGame.team1.team_id = gameinfo["leftteamselect"];
@@ -680,6 +684,15 @@ function findCollaborators(tournamentid, callback) {
     });
 }
 
+function addScoresheetAsGame(tournamentid, scoresheet, callback) {
+    var newGame = new Game();
+    newGame = scoresheet;
+    newGame.shortID = shortid.generate();
+    Tournament.update({_id : tournamentid}, {$push : {games : newGame}}, function(err) {
+        callback(err);
+    });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
@@ -700,3 +713,4 @@ exports.updateTournamentInformation = updateTournamentInformation;
 exports.addCollaborator = addCollaborator;
 exports.findCollaborators = findCollaborators;
 exports.removeCollaborator = removeCollaborator;
+exports.addScoresheetAsGame = addScoresheetAsGame;

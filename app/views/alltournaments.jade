@@ -43,7 +43,10 @@ block content
                                         a(href="/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
                                             i(class="fa fa-pencil" style="margin:5px")
                                     td #{tournaments[i].location}
-                                    td #{tournaments[i].date}
+                                    if tournaments[i].date
+                                        td #{tournaments[i].date.getMonth() + "/" + tournaments[i].date.getDate() + "/" + tournaments[i].date.getFullYear()}
+                                    else
+                                        td #{tournaments[i].date}
                                     if tournaments[i].openRegistration
                                         td Yes
                                     else

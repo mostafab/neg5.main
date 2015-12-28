@@ -101,18 +101,39 @@ block content
             div(class="col-md-6 col-lg-6 col-sm-6")
                 div(style="margin:20px; margin-bottom:50px")
                 div(class="row")
-                    div(class="col-md-12")
+                    div(class="col-md-12 col-sm-12 col-lg-12")
                         div(style="text-align:center")
                             h2(class="title" style="width:100%") Scoresheet
 
                 br
 
                 div(class="row")
+                    div(class="col-md-12 col-sm-12 col-lg-12")
+                        div(class="panel panel-default")
+                            table(class="table table-hover table-bordered table-condensed" id="game-metadata")
+                                th(class="table-head" style='text-align:center') Round
+                                th(class="table-head" style='text-align:center') Room
+                                th(class="table-head" style='text-align:center') Moderator
+                                th(class='table-head' style='text-align:center') Packet
+                                th(class="table-head" style="text-align:center") Notes
+                                tr(id="tr-metadata")
+                                    td(class='td-scoresheet')
+                                        input(type='number' class='input-scoresheet' id="round-number" value="0")
+                                    td(class="td-scoresheet")
+                                        input(type='text' class='input-scoresheet' value="-" id="room-number")
+                                    td(class="td-scoresheet")
+                                        input(type='text' class='input-scoresheet' value="-" id='moderator')
+                                    td(class="td-scoresheet")
+                                        input(type='text' class='input-scoresheet' value='-' id='packet')
+                                    td(class+'td-scoresheet' width='300')
+                                        textarea(type='text' class='input-scoresheet' value='-' id='notes' style='text-align:left')
+
+                div(class="row")
                     div(class="col-md-12")
                         div(class="panel panel-default")
                             table(class="table table-hover table-condensed"  id="scoresheet")
 
-                div(class="row")
+                div(class="row" style="margin-bottom:5px")
                     div(class="col-md-12")
                         br
                         div(class="col-md-6")
@@ -122,5 +143,6 @@ block content
                         div(class="col-md-6")
                             div(class="panel panel-default")
                                 table(class="table table-striped table-hover table-condensed player-table" id="rightplayertable")
+
 
     script(src="/js/scoresheet-es5.js")

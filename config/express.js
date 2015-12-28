@@ -4,7 +4,6 @@ var bodyParser = require("body-parser");
 var clientsession = require("client-sessions");
 var passport = require("passport");
 var cookieParser = require("cookie-parser");
-var favicon = require("serve-favicon");
 
 module.exports = function() {
     var app = express();

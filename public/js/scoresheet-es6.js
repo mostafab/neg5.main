@@ -212,6 +212,45 @@ class Game {
         this.currentPhase.addAnswerToTossup(teamid, playerid, value);
     }
 
+    getPlayersPointValues(team) {
+        var teamid = team.id;
+        var playerScores = {};
+        var allPlayers = teamid == this.team1.id ? this.team1.players : this.team2.players;
+        for (var i = 0; i < allPlayers.length; i++) {
+            playerScores[allPlayers[i].id] = {};
+            playerScores[allPlayers[i].id].gp = 1;
+        }
+
+        for (var i = 0; i < this.phases.length; i++) {
+            var currentTossup = this.phases[i].getTossup();
+            for (var j = 0; j < currentTossup.getAnswers().length; j++) {
+                var answer = currentTossup.getAnswers()[j];
+                if (answer.team == teamid) {
+                    if (!playerScores[answer.player]) {
+                        playerScores[answer.player] = {};
+                    }
+                    if (!playerScores[answer.player][answer.value + ""]) {
+                        playerScores[answer.player][answer.value + ""] = 1;
+                    } else {
+                        playerScores[answer.player][answer.value + ""]++;
+                    }
+                }
+            }
+        }
+        var currentTossup = this.currentPhase.getTossup();
+        for (var j = 0; j < currentTossup.getAnswers().length; j++) {
+            var answer = currentTossup.getAnswers()[j];
+            if (answer.team == teamid) {
+                if (!playerScores[answer.player][answer.value + ""]) {
+                    playerScores[answer.player][answer.value + ""] = 1;
+                } else {
+                    playerScores[answer.player][answer.value + ""]++;
+                }
+            }
+        }
+        return playerScores;
+    }
+
     getAllPlayerScores() {
         var playerScores = {};
         var allPlayers = this.team1.players.concat(this.team2.players);
@@ -312,6 +351,22 @@ class Game {
         return score;
     }
 
+    getTeamBouncebacks(teamid) {
+        var points = 0;
+        for (var i = 0; i < this.phases.length; i++) {
+            var currentBonus = this.phases[i].getBonus();
+            if (currentBonus.getForTeam() != teamid) {
+                points += currentBonus.getAgainstTeamPoints();
+            }
+        }
+        var tossup = this.currentPhase.getTossup();
+        var bonus = this.currentPhase.getBonus();
+        if (bonus.getForTeam() != teamid) {
+            points += bonus.getAgainstTeamPoints();
+        }
+        return points;
+    }
+
     getTeamScoreUpToPhase(teamid, maxPhase) {
         var score = 0;
         for (var i = 0; i < this.phases.length; i++) {
@@ -344,6 +399,8 @@ class Game {
 var game = new Game();
 
 $(document).ready(function() {
+
+    $("#game-metadata").hide(0);
 
     $(".teamselect").change(function() {
         findPlayers($(this));
@@ -431,9 +488,11 @@ $(document).ready(function() {
         }
     });
 
-    $("body").on("click", "#submit-game", function() {
-        console.log(parseScoresheet(game));
-    });
+    // $("body").on("click", "#submit-game", function() {
+    //     var scoresheet = parseScoresheet(game);
+    //     submitScoresheet(scoresheet);
+    //     console.log(scoresheet);
+    // });
 
     $("body").on("click", ".add-player-button", function() {
         $(this).prev(".player-name-input").css("border-color", "transparent");
@@ -497,6 +556,7 @@ function findPlayers(side) {
                 createPlayerTable(side, game.team2.players, pointValues);
             }
             if (game.team1 !== null && game.team2 !== null) {
+                $("#game-metadata").slideDown(0);
                 createScoresheet(game.team1, game.team2);
                 editAddBonusAttributes(game.team1, game.team2);
                 createDeadTossupButton();
@@ -518,24 +578,42 @@ function addPlayer(playerName, teamid, teamName, side) {
         type : "POST",
         data : data,
         success : function(databack, status, xhr) {
-            console.log(databack);
+            // console.log(databack);
+            var pointScheme = Object.keys(databack.pointScheme);
             if (game.team1.id == teamid) {
-                appendPlayerLabel("#leftplayerlist", databack.player, Object.keys(databack.pointScheme), databack.pointTypes);
+                appendPlayerLabel("#leftplayerlist", databack.player, pointScheme, databack.pointTypes);
                 game.addPlayer(databack.player.player_name, databack.player._id, game.team1.id);
                 if ($("#scoresheet").length !== 0) {
                     addPlayerColumn("left", databack.player);
                 }
+                addPlayerTableRow("left", game.team1.players[game.team1.players.length - 1], pointScheme);
             } else {
-                appendPlayerLabel("#rightplayerlist", databack.player, Object.keys(databack.pointScheme), databack.pointTypes);
+                appendPlayerLabel("#rightplayerlist", databack.player, pointScheme, databack.pointTypes);
                 game.addPlayer(databack.player.player_name, databack.player._id, game.team2.id);
                 if ($("#scoresheet").length !== 0) {
                     addPlayerColumn("right", databack.player);
                 }
+                addPlayerTableRow("right", game.team2.players[game.team2.players.length - 1], pointScheme);
             }
             $(".player-name-input").val("");
         },
         complete : function(xhr, status) {
             $(".add-player-button").prop("disabled", false);
+        }
+    });
+}
+
+function submitScoresheet(scoresheet) {
+    var data = {
+                tournamentid : $("#tournamentid").val(),
+                scoresheet : scoresheet
+    };
+    $.ajax({
+        url : "/tournaments/scoresheet/submit",
+        type : "POST",
+        data : data,
+        success : function(databack, status, xhr) {
+            console.log(xhr);
         }
     });
 }
@@ -547,10 +625,20 @@ function parseScoresheet(submittedGame) {
     gameToAdd.team1.team_id = submittedGame.team1.id;
     gameToAdd.team1.team_name = submittedGame.team1.name;
     gameToAdd.team1.score = submittedGame.getTeamScore(submittedGame.team1.id);
+    gameToAdd.team1.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team1.id);
+    gameToAdd.team1.playerStats = submittedGame.getPlayersPointValues(submittedGame.team1);
     gameToAdd.team2.team_id = submittedGame.team2.id;
     gameToAdd.team2.team_name = submittedGame.team2.name;
     gameToAdd.team2.score = submittedGame.getTeamScore(submittedGame.team2.id);
+    gameToAdd.team2.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team2.id);
+    gameToAdd.team2.playerStats = submittedGame.getPlayersPointValues(submittedGame.team2);
+    gameToAdd.round = $("#round-number").val();
     gameToAdd.tossupsheard = submittedGame.getPhases().length;
+
+    gameToAdd.room = $("#room-number").val();
+    gameToAdd.moderator = $("#moderator").val();
+    gameToAdd.packet = $("#packet").val();
+    gameToAdd.notes = $("#notes").val();
 
     return gameToAdd;
 }
@@ -616,7 +704,7 @@ function createScoresheet(team1, team2) {
     var colspan = team1.players.length + team2.players.length + 5;
     html += "<tfoot><tr class='alert alert-warning'><td id='tfoot-msg' colspan='" + colspan + "'>More rows will appear as needed.</td></tr></tfoot>";
     $("#scoresheet").empty();
-    $(html).hide().appendTo("#scoresheet").fadeIn(300);
+    $(html).hide().appendTo("#scoresheet").fadeIn(500);
 }
 
 function createScoresheetRow(team1, team2, number) {
@@ -731,6 +819,18 @@ function createPlayerTable(side, players, pointScheme) {
         html += "</tr>";
     }
     $(table).empty().append(html);
+}
+
+function addPlayerTableRow(side, player, pointScheme) {
+    var table = side == "left" ? "#leftplayertable" : "#rightplayertable";
+    var html = "<tr>";
+    html += "<th>" + player.name; + "</th>";
+    for (var j = 0; j < pointScheme.length; j++) {
+        html += "<td class='player-point' data-player='" + player.id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
+    }
+    html += "<td class='player-total' data-player='" + player.id + "'>0</td>";
+    html += "</tr>";
+    $(table).append(html);
 }
 
 function setNegButtonPlayer(button, player) {

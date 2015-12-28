@@ -125,6 +125,18 @@ block content
                                     div(class="row")
                                         div(class="col-lg-6 col-md-6 col-sm-6")
                                             input(type="number" class="form-control leftscorebox" name="tossupsheard" placeholder="Tossups Heard" value="#{game.tossupsheard}")
+                                            br
+
+                                    div(class="row")
+                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                            input(type="text" class="form-control leftscorebox" name="room" placeholder="Room Number" value="#{game.room}")
+                                            input(type="text" class="form-control leftscorebox" name="moderator" placeholder="Moderator" value="#{game.moderator}")
+                                            input(type="text" class="form-control leftscorebox" name="packet" placeholder="Packet" value="#{game.packet}")
+                                            br
+
+                                    div(class='row')
+                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                            textarea(class="form-control leftscorebox" name="notes" placeholder="Notes") #{game.notes}
 
                                     button(type="button" class="btn btn-lg btn-info" id="entergamebutton") Save Changes
                                         span(style="padding-left:10px")

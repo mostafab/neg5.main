@@ -165,6 +165,17 @@ module.exports = function(app) {
             }
         });
 
+    app.post("/tournaments/scoresheet/submit", function(req, res) {
+        console.log(req.body);
+        tournamentController.addScoresheetAsGame(req.body.tournamentid, req.body.scoresheet, function(err) {
+            if (err) {
+                res.status(500).end();
+            } else {
+                res.status(200).send("OK");
+            }
+        });
+    });
+
     app.route("/tournaments/teams/remove")
         .post(function(req, res, next) {
             // console.log(req.body);
