@@ -218,7 +218,6 @@ class Game {
         var allPlayers = teamid == this.team1.id ? this.team1.players : this.team2.players;
         for (var i = 0; i < allPlayers.length; i++) {
             playerScores[allPlayers[i].id] = {};
-            playerScores[allPlayers[i].id].gp = 1;
         }
 
         for (var i = 0; i < this.phases.length; i++) {
@@ -464,6 +463,7 @@ $(document).ready(function() {
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
             destroyBonusLabels();
             unlockBothTeams();
+            incrementTossupsHeardForPlayers();
     });
 
     $("body").on("click", ".remove-bonus", function() {
@@ -485,12 +485,14 @@ $(document).ready(function() {
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
             unlockBothTeams();
+            incrementTossupsHeardForPlayers();
         }
     });
 
     $("body").on("click", "#submit-game", function() {
         var scoresheet = parseScoresheet(game);
         console.log(scoresheet);
+        $(this).prop("disabled", true);
         submitScoresheet(scoresheet);
     });
 
@@ -614,6 +616,7 @@ function submitScoresheet(scoresheet) {
         data : data,
         success : function(databack, status, xhr) {
             console.log(xhr);
+            $("#submit-game").prop("disabled", false);
         }
     });
 }
@@ -634,13 +637,39 @@ function parseScoresheet(submittedGame) {
     gameToAdd.team2.playerStats = submittedGame.getPlayersPointValues(submittedGame.team2);
     gameToAdd.round = $("#round-number").val();
     gameToAdd.tossupsheard = submittedGame.getPhases().length;
-
     gameToAdd.room = $("#room-number").val();
     gameToAdd.moderator = $("#moderator").val();
     gameToAdd.packet = $("#packet").val();
     gameToAdd.notes = $("#notes").val();
 
+    for (var playerid in gameToAdd.team1.playerStats) {
+        if (gameToAdd.team1.playerStats.hasOwnProperty(playerid)) {
+            if (gameToAdd.tossupsheard !== 0) {
+                // console.log(findTossupsHeardForPlayer(playerid));
+                gameToAdd.team1.playerStats[playerid].gp = (findTossupsHeardForPlayer(playerid) / gameToAdd.tossupsheard).toFixed(2);
+            } else {
+                gameToAdd.team1.playerStats[playerid].gp = 0;
+            }
+        }
+    }
+    for (var playerid in gameToAdd.team2.playerStats) {
+        if (gameToAdd.team2.playerStats.hasOwnProperty(playerid)) {
+            if (gameToAdd.tossupsheard !== 0) {
+                gameToAdd.team2.playerStats[playerid].gp = (findTossupsHeardForPlayer(playerid) / gameToAdd.tossupsheard).toFixed(2);
+            } else {
+                gameToAdd.team2.playerStats[playerid].gp = 0;
+            }
+        }
+    }
     return gameToAdd;
+}
+
+function incrementTossupsHeardForPlayers() {
+    console.log("Incrementing tossups heard...");
+    $(".player-tossups input").each(function(index, input) {
+        var currentTUH = parseFloat($(input).val());
+        $(input).val((currentTUH + 1) + "");
+    });
 }
 
 function createDeadTossupButton() {
@@ -666,6 +695,10 @@ function showTossupDiv() {
     $("#bonus-div").fadeOut(0);
     $("#dead-tossup-div").fadeIn(0);
     $("#submit-game-div").fadeIn(0);
+}
+
+function findTossupsHeardForPlayer(playerid) {
+    return parseFloat($(".player-tossups[data-player=" + playerid + "] input").val());
 }
 
 function createScoresheet(team1, team2) {
@@ -808,6 +841,7 @@ function createPlayerTable(side, players, pointScheme) {
         html += "<th class='table-head' scope='col' style='text-align:center'>" + pointScheme[i] + "</th>";
     }
     html += "<th class='table-head' scope='col' style='text-align:center'>Totals</th>";
+    html += "<th class='alert alert-info' scope='col' style='text-align:center' width='75'>TUH</th>"
     html += "</tr>";
     for (var i = 0; i < players.length; i++) {
         html += "<tr>";
@@ -816,6 +850,7 @@ function createPlayerTable(side, players, pointScheme) {
             html += "<td class='player-point' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
         }
         html += "<td class='player-total' data-player='" + players[i].id + "'>0</td>";
+        html += "<td class='player-tossups td-scoresheet' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet' value='0' style='font-size:14px'/></td>";
         html += "</tr>";
     }
     $(table).empty().append(html);
@@ -829,6 +864,7 @@ function addPlayerTableRow(side, player, pointScheme) {
         html += "<td class='player-point' data-player='" + player.id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
     }
     html += "<td class='player-total' data-player='" + player.id + "'>0</td>";
+    html += "<td class='player-tossups td-scoresheet' data-player='" + player.id + "' width='75'><input type='number' class='input-scoresheet' value='0' style='font-size:14px'/></td>";
     html += "</tr>";
     $(table).append(html);
 }
@@ -863,12 +899,8 @@ function showAnswersOnScoresheet(phase) {
     }
 }
 
-function showOnePlayerPointTotals() {
-
-}
-
 function showPlayerPointTotals(gameObj) {
-    $(".player-table td").text("0");
+    $(".player-table td").not(".player-tossups").text("0");
     var playerTotals = gameObj.getAllPlayerScores();
     for (var playerid in playerTotals) {
         if (playerTotals.hasOwnProperty(playerid)) {
