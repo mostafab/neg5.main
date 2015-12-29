@@ -1,6 +1,7 @@
 'use strict';
 
 var MAX_TOSSUPS = 20;
+var BONUS_POINT_VALUE = 10;
 
 class Player {
     constructor(name, id, teamid) {
@@ -37,7 +38,7 @@ class Tossup {
 
     addAnswer(teamid, playerid, value) {
         this.answers.push(new Answer(teamid, playerid, value));
-        console.log(this.answers);
+        // console.log(this.answers);
     }
 
     removeLastAnswer() {
@@ -174,14 +175,14 @@ class Game {
     }
 
     stashPhase() {
-        console.log("Stashing phase");
-        console.log(this.currentPhase);
+        // console.log("Stashing phase");
+        // console.log(this.currentPhase);
         if (this.phases.length < this.currentPhase.getNumber()) {
             this.phases.push(this.currentPhase);
         } else {
             this.phases[this.currentPhase.getNumber() - 1] = this.currentPhase;
         }
-        console.log(this.phases);
+        // console.log(this.phases);
         this.nextPhase();
     }
 
@@ -191,7 +192,7 @@ class Game {
             for (var i = 0; i < players.length; i++) {
                 this.team1.players.push(new Player(players[i].player_name, players[i]._id, players[i].teamID));
             }
-            console.log("sorting");
+            // console.log("sorting");
             this.team1.players.sort(function(player1, player2) {
                 return player1.name.localeCompare(player2.name);
             });
@@ -210,7 +211,7 @@ class Game {
         var player = new Player(name, id, teamid);
         if (teamid == this.team1.id) {
             this.team1.players.push(player);
-            console.log("Adding player");
+            // console.log("Adding player");
         } else {
             this.team2.players.push(player);
         }
@@ -419,7 +420,7 @@ $(document).ready(function() {
             showAnswersOnScoresheet(game.currentPhase);
             // console.log(game.getTeamScore(game.team1.id) + ", " + game.getTeamScore(game.team2.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), $(this).attr("data-team"), game.getTeamScore($(this).attr("data-team")));
-            console.log(game.getCurrentPhase());
+            // console.log(game.getCurrentPhase());
             // var i = 1;
             // while (i <= game.getCurrentPhase().getNumber()) {
             //     showTotalOnScoresheetOneRow(i, $(this).attr("data-team"), game.getTeamScoreUpToPhase($(this).attr("data-team"), i));
@@ -444,9 +445,9 @@ $(document).ready(function() {
 
     $("body").on("click", "#next-tossup", function() {
         if (game.team1 !== null && game.team2 !== null)
-            console.log("Going to next tossup");
-            var bonusLeft = $("#left-gotten-bonus li").size() * 10;
-            var bonusRight = $("#right-gotten-bonus li").size() * 10;
+            // console.log("Going to next tossup");
+            var bonusLeft = $("#left-gotten-bonus li").size() * BONUS_POINT_VALUE;
+            var bonusRight = $("#right-gotten-bonus li").size() * BONUS_POINT_VALUE;
             var forTeamPoints;
             var againstPoints;
             if ($("#left-gotten-bonus").attr("data-team") == $(this).attr('data-team')) {
@@ -570,7 +571,7 @@ $(document).ready(function() {
 });
 
 function findPlayers(side) {
-    console.log(game);
+    // console.log(game);
     $.ajax({
         url : "/tournaments/getplayers",
         type : "GET",
@@ -645,7 +646,7 @@ function submitScoresheet(scoresheet) {
         type : "POST",
         data : data,
         success : function(databack, status, xhr) {
-            console.log(xhr);
+            // console.log(xhr);
             $("#dead-tossup-div").slideUp(400);
             $("#submit-game-div").slideUp(400);
             setGameAnchorTag(databack.gameid);
@@ -830,7 +831,7 @@ function changeTeamLabels(side) {
 }
 
 function appendPlayerLabel(side, player, pointValues, pointTypes) {
-    console.log(pointValues);
+    // console.log(pointValues);
     var html = "<div class='row cell' data-player='" + player._id + "'>";
     html += "<div class='col-md-5'>";
     html += "<div class='playerbox'><strong style='color:white'>" + player.player_name + "</strong></div></div>";
@@ -853,9 +854,9 @@ function appendPlayerLabel(side, player, pointValues, pointTypes) {
     html += "</div>";
     if ($(side + " .cell").size() === 0) {
         $(side).prepend(html);
-        console.log("No players before");
+        // console.log("No players before");
     } else {
-        console.log("Players before");
+        // console.log("Players before");
         $(html).insertAfter($(side + " .cell").last());
     }
 }
@@ -916,7 +917,7 @@ function createPlayerTable(side, players, pointScheme) {
 }
 
 function addPlayerTableRow(side, player, pointScheme) {
-    console.log(player);
+    // console.log(player);
     var table = side == "left" ? "#leftplayertable" : "#rightplayertable";
     var html = "<tr class='player-body' data-player='" + player.id + "'>";
     html += "<th class='unactive-player'>" + player.name; + "</th>";
@@ -930,7 +931,7 @@ function addPlayerTableRow(side, player, pointScheme) {
 }
 
 function setNegButtonPlayer(button, player) {
-    console.log(button);
+    // console.log(button);
     $(button).attr("data-player", player);
 }
 
@@ -950,7 +951,7 @@ function unlockBothTeams() {
 }
 
 function showAnswersOnScoresheet(phase) {
-    console.log(phase.getNumber());
+    // console.log(phase.getNumber());
     var row = phase.getNumber();
     var answers = phase.getTossup().getAnswers();
     for (var i = 0; i < answers.length; i++) {
@@ -1003,7 +1004,7 @@ function setActiveRow(phase) {
 function addBonusRow(list) {
     var html = "<li class='list-group-item'>10<button class='btn btn-sm btn-danger fa fa-times remove-bonus'></button></li>";
     $(html).hide().appendTo(list).fadeIn(200);
-    console.log($(list + " .list-group-item").size());
+    // console.log($(list + " .list-group-item").size());
 }
 
 function editAddBonusAttributes(team1, team2) {
