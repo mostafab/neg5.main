@@ -90,8 +90,14 @@ thead th {
 }
 
 .active-player {
-    background-color: #DFF0D8;
+    background-color: rgb(198, 228, 184);
+    color : #3C763D;
 }
+
+/*.unactive-player {
+    background-color: #F2DEDE;
+    color : #A94442;
+}*/
 
 .btn-xl {
     padding: 18px 28px;

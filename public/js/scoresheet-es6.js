@@ -551,10 +551,15 @@ $(document).ready(function() {
         showPlayerPointTotals(game);
     });
 
-    $("body").on("click", ".player-table .player-body", function() {
-        console.log("toggling class...");
-        $(this).find("th").toggleClass("active-player");
-        $(this).find("td").toggleClass("active-player");
+    $("body").on("click", ".player-table .player-body", function(e) {
+        // console.log("toggling class...");
+        if (!$(e.target).is("input")) {
+            // console.log($(this).attr("data-player"));
+            $(this).find("th").toggleClass("active-player");
+            $(this).find("td").toggleClass("active-player");
+            var playerid = $(this).attr("data-player");
+            $(".player-list > .cell[data-player='" + playerid + "']").toggleClass("active-player");
+        }
     });
 
     $("#undo-game").click(function() {
@@ -670,7 +675,7 @@ function undoGameSubmission(tournament, game) {
 
 function setGameAnchorTag(gameid) {
     var tournament = $("#goto-game").attr("data-tournament");
-    var href = "/t" + tournament + "/games/" + gameid;
+    var href = "/t/" + tournament + "/games/" + gameid;
     $("#goto-game").attr("href", href);
     $("#undo-game").attr('data-game', gameid);
 }
@@ -826,7 +831,7 @@ function changeTeamLabels(side) {
 
 function appendPlayerLabel(side, player, pointValues, pointTypes) {
     console.log(pointValues);
-    var html = "<div class='row cell'>";
+    var html = "<div class='row cell' data-player='" + player._id + "'>";
     html += "<div class='col-md-5'>";
     html += "<div class='playerbox'><strong style='color:white'>" + player.player_name + "</strong></div></div>";
     html += "<div class='col-md-7'>";
@@ -860,7 +865,7 @@ function createPlayerLabels(side, players, pointValues, pointTypes) {
     var list = $(side).attr("id") === "leftselect" ? "#leftplayerlist" : "#rightplayerlist";
     var html = "";
     for (var i = 0; i < players.length; i++) {
-        html += "<div class='row cell'>";
+        html += "<div class='row cell' data-player='" + players[i]._id + "'>";
         html += "<div class='col-md-5'>";
         html += "<div class='playerbox'><strong style='color:white'>" + players[i].player_name + "</strong></div></div>";
         html += "<div class='col-md-7'>";
@@ -898,7 +903,7 @@ function createPlayerTable(side, players, pointScheme) {
     html += "<th class='table-head' scope='col' style='text-align:center' width='75'>TUH</th>"
     html += "</tr>";
     for (var i = 0; i < players.length; i++) {
-        html += "<tr class='player-body'>";
+        html += "<tr class='player-body' data-player='" + players[i].id + "'>";
         html += "<th>" + players[i].name; + "</th>";
         for (var j = 0; j < pointScheme.length; j++) {
             html += "<td class='player-point' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
@@ -913,8 +918,8 @@ function createPlayerTable(side, players, pointScheme) {
 function addPlayerTableRow(side, player, pointScheme) {
     console.log(player);
     var table = side == "left" ? "#leftplayertable" : "#rightplayertable";
-    var html = "<tr class='player-body'>";
-    html += "<th>" + player.name; + "</th>";
+    var html = "<tr class='player-body' data-player='" + player.id + "'>";
+    html += "<th class='unactive-player'>" + player.name; + "</th>";
     for (var j = 0; j < pointScheme.length; j++) {
         html += "<td class='player-point' data-player='" + player.id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
     }
