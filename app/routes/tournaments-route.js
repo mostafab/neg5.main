@@ -203,6 +203,7 @@ module.exports = function(app) {
                 // console.log(tournamentid);
                 tournamentController.removeGameFromTournament(tournamentid, gameid, function(err) {
                     if (err) {
+                        console.log(err);
                         res.status(500).end();
                     } else {
                         res.status(200).send("Good to go");

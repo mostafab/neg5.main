@@ -530,6 +530,12 @@ $(document).ready(function() {
         console.log($(this).attr("data-player"));
     });
 
+    $('body').ajaxStart(function() {
+            $(this).css({'cursor' : 'wait'});
+        }).ajaxStop(function() {
+            $(this).css({'cursor' : 'default'});
+        });
+
     $("#lock-teams").click(function() {
         $("#team-select-div").slideUp("fast");
         $("#lock-teams-div").slideUp("fast");
@@ -548,10 +554,15 @@ $(document).ready(function() {
         showPlayerPointTotals(game);
     });
 
-    $("body").on("click", ".player-table tr", function() {
+    $("body").on("click", ".player-table .player-body", function() {
         console.log("toggling class...");
         $(this).find("th").toggleClass("active-player");
         $(this).find("td").toggleClass("active-player");
+    });
+
+    $("#undo-game").click(function() {
+        $(this).prop("disabled", true);
+        undoGameSubmission($(this).attr("data-tournament"), $(this).attr("data-game"));
     });
 
 });
@@ -637,6 +648,25 @@ function submitScoresheet(scoresheet) {
             $("#submit-game-div").slideUp(400);
             setGameAnchorTag(databack.gameid);
             $("#goto-game-div").slideDown(400);
+            $("#submit-game").prop("disabled", false);
+        }
+    });
+}
+
+function undoGameSubmission(tournament, game) {
+    $.ajax({
+        url : "/tournaments/games/remove",
+        type : "POST",
+        data : {
+            gameid_form : game,
+            tournament_idgame : tournament
+        },
+        success : function(databack, status, xhr) {
+            console.log(databack);
+            $("#dead-tossup-div").slideDown(400);
+            $("#submit-game-div").slideDown(400);
+            $("#goto-game-div").slideUp(400);
+            $("#undo-game").prop("disabled", false);
         }
     });
 }
@@ -645,6 +675,7 @@ function setGameAnchorTag(gameid) {
     var tournament = $("#goto-game").attr("data-tournament");
     var href = "/" + tournament + "/games/" + gameid;
     $("#goto-game").attr("href", href);
+    $("#undo-game").attr('data-game', gameid);
 }
 
 function parseScoresheet(submittedGame) {
@@ -704,7 +735,7 @@ function createDeadTossupButton() {
 }
 
 function createSubmitGameButton() {
-    var html = "<button type='button' class='btn btn-lg btn-block btn-warning' id='submit-game'> Submit Game </button>";
+    var html = "<button type='button' class='btn btn-lg btn-block btn-stats' id='submit-game'> Submit Game </button>";
     $("#submit-game-div").empty().append(html);
 }
 
@@ -870,7 +901,7 @@ function createPlayerTable(side, players, pointScheme) {
     html += "<th class='table-head' scope='col' style='text-align:center' width='75'>TUH</th>"
     html += "</tr>";
     for (var i = 0; i < players.length; i++) {
-        html += "<tr>";
+        html += "<tr class='player-body'>";
         html += "<th>" + players[i].name; + "</th>";
         for (var j = 0; j < pointScheme.length; j++) {
             html += "<td class='player-point' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
