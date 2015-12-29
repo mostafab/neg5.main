@@ -11,6 +11,6 @@ module.exports = function(app) {
     });
 
     app.get("/about", function(req, res) {
-        res.render("about");
+        res.render("about", {tournamentd : req.session.director});
     });
 };
