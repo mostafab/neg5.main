@@ -211,9 +211,6 @@ class Game {
         if (teamid == this.team1.id) {
             this.team1.players.push(player);
             console.log("Adding player");
-            this.team1.players.sort(function(player1, player2) {
-                return player2.name.localeCompare(player1.name);
-            });
         } else {
             this.team2.players.push(player);
         }
@@ -914,6 +911,7 @@ function createPlayerTable(side, players, pointScheme) {
 }
 
 function addPlayerTableRow(side, player, pointScheme) {
+    console.log(player);
     var table = side == "left" ? "#leftplayertable" : "#rightplayertable";
     var html = "<tr class='player-body'>";
     html += "<th>" + player.name; + "</th>";
