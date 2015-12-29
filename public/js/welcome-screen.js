@@ -56,7 +56,9 @@ function submitRegistration() {
             if (databack.exists) {
                 showMessageInDiv("#registererror", databack.msg, "exists");
             } else {
-                showMessageInDiv("#registererror", databack.msg, null);
+                document.forms["logins"]["usrname"].value = document.forms["signup"]["r_usrname"].value;
+                document.forms["logins"]["pswd"].value = document.forms["signup"]["r_pswd"].value;
+                submitLogin();
             }
             document.getElementById("signupform").reset();
         },
