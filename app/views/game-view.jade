@@ -3,9 +3,6 @@ extends layout
 block titleContent
     title #{game.team1.team_name} vs #{game.team2.team_name} | #{tournament.tournament_name} | Neg 5
 
-block extrascripts
-    script(src="/js/game-configuration.js")
-
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
     link(rel="stylesheet" href="/css/tournamentstyle.css")
@@ -149,3 +146,6 @@ block content
                                     br
 
                                     div(class="col-md-6 input-lg center-text no-border-radius tournament-info-field" id="updategamediv" style="text-align:center")
+
+block scripts
+    script(src="/js/game-configuration.js")

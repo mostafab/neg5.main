@@ -3,9 +3,6 @@ extends layout
 block titleContent
     title Signup for #{tournament.tournament_name} | Neg 5
 
-block extrascripts
-    script(src="/js/tournament-configuration.js")
-
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
     link(rel="stylesheet" href="/css/tournamentstyle.css")
@@ -162,3 +159,6 @@ block content
                                             class="form-control input-lg center-text no-border-radius tournament-info-field",
                                             style="background-color:#363B40"
                                         )
+
+block scripts
+    script(src="/js/tournament-configuration.js")
