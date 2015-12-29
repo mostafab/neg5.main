@@ -5,6 +5,10 @@ var Tournament = mongoose.model("Tournament");
 
 module.exports = function(app) {
 
+    app.get("/t", function(req, res, next) {
+        res.redirect("/tournaments");
+    });
+
     app.get("/tournaments", function(req, res, next) {
         if (!req.session.director) {
             res.redirect("/");
@@ -258,7 +262,7 @@ module.exports = function(app) {
             }
         });
 
-    app.get("/:tid/scoresheet", function(req, res, next) {
+    app.get("/t/:tid/scoresheet", function(req, res, next) {
         if (!req.session.director) {
             res.redirect("/");
         } else {
@@ -266,7 +270,7 @@ module.exports = function(app) {
                 if (err) {
                     res.status(500).send({err : err});
                 } else if (!tournament) {
-                    res.status(404).send("Could not find this tournament");
+                    res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
                 } else {
                     if (hasPermission(tournament, req.session.director)) {
                         res.render("scoresheet", {tournamentd : req.session.director, tournament : tournament});
@@ -374,7 +378,7 @@ module.exports = function(app) {
             }
         });
 
-    app.get("/:tid/teams/:teamid", function(req, res) {
+    app.get("/t/:tid/teams/:teamid", function(req, res) {
         // Add check for session here
         if (!req.session.director) {
             return res.redirect("/");
@@ -398,18 +402,18 @@ module.exports = function(app) {
                         }
                         res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : result, tournamentd : req.session.director});
                     } else {
-                        res.status(404).send("Couldn't find that page");
+                        res.status(404).render("not-found", {tournamentd: req.session.director, msg : "Could not find that team."})
                     }
                 } else {
                     res.status(401).send("You don't have permission to view this tournament");
                 }
             } else {
-                res.status(404).send("Couldn't find that tournament");
+                res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
             }
         });
     });
 
-    app.get("/:tid/games/:gid", function(req, res) {
+    app.get("/t/:tid/games/:gid", function(req, res) {
         // console.log(req.params);
         if (!req.session.director) {
             return res.redirect("/");
@@ -439,18 +443,18 @@ module.exports = function(app) {
                         res.render("game-view", {tournamentd : req.session.director, game : game, tournamentName : result.tournament_name,
                             team1Players : team1Players, team2Players : team2Players, tournament : result});
                     } else {
-                        res.status(404).send("Couldn't find that specific page");
+                        res.status(404).render("not-found", {tournamentd: req.session.director, msg : "That game doesn't exist."})
                     }
                 } else {
                     res.status(401).send("You don't have permission to view this tournament");
                 }
             } else {
-                res.status(404).send("Couldn't find that specific page");
+                res.status(404).render("not-found", {tournamentd: req.session.director, msg : "That tournament doesn't exist."})
             }
         });
     });
 
-    app.get("/:tid", function(req, res, next) {
+    app.get("/t/:tid", function(req, res, next) {
         if (!req.session.director) {
             res.redirect("/");
         } else {
@@ -458,7 +462,7 @@ module.exports = function(app) {
                 if (err) {
                     res.status(500).send(err);
                 } else if (result == null) {
-                    res.status(401).send("Couldn't find this tournament");
+                    res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
                 } else {
                     if (hasPermission(result, req.session.director)) {
                         registrationController.findRegistrationsByTournament(req.params.tid, function(err, regs) {

@@ -1,0 +1,37 @@
+extends layout
+
+block titleContent
+    title Where'd you go? | Neg 5
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/index.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+
+block content
+
+    +navbar
+
+    div(class="jumbotron vertical-center" style='background-color:transparent')
+        div(class="container")
+            div(style="margin:20px; margin-bottom:50px;")
+
+            div(class="row")
+                div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center")
+                    h2(class="title btn-stats")
+                            | "Two roads diverged in a wood, and I—
+                            | I took the one less traveled by,
+                            | And that has made all the difference."
+                            | - Robert Frost
+
+            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brushed" style="text-align:center;")
+                h4(style='font-size:18px;color:black;padding:30px')
+                    | Yup, that definitely made all the difference. You've gone on a road to nowhere, so you've been redirected here
+                    | because :
+                    strong
+                        | #{msg}
+                    br
+                    | Try a different route?
+
+            div(class="row col-md-12 col-lg-12 col-sm-12")
+                    a(class="btn btn-stats btn-block btn-md" href="/tournaments") Back to Tournaments

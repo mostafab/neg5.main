@@ -40,7 +40,7 @@ block content
                             each val, i in tournaments
                                 tr()
                                     td
-                                        a(href="/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
+                                        a(href="/t/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
                                             i(class="fa fa-pencil" style="margin:5px")
                                     td #{tournaments[i].location}
                                     if tournaments[i].date
@@ -53,5 +53,4 @@ block content
                                         td No
                                     td #{tournaments[i].questionSet}
                                     td #{tournaments[i].teams.length}
-                                    //td
-                                    //    a(class="btn btn-lg btn-warning glyphicon glyphicon-edit no-border-radius" href="/home/tournaments/" + tournaments[i].shortID)
+                                

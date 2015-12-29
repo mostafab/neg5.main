@@ -111,7 +111,7 @@ block content
                         div(class="row")
                             div(class="smallbox")
                                 if tournament.openRegistration
-                                    form(id="submitsignup" method="post" action="/" + tournament.shortID + "/signup/submit")
+                                    form(id="submitsignup" method="post" action="/t/" + tournament.shortID + "/signup/submit")
                                         div(class="form-group")
                                             input(
                                                 type="text",

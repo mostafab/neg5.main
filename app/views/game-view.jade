@@ -23,7 +23,7 @@ block content
             h2(class="title" style="width:50%;") #{tournamentName} Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
             h3(class="title" style="width:50%; font-size:18px;border-radius:0") You can edit the game's statistics here. Nothing will be modified until you commit the changes.
             h3(class="title" style="width:50%;border-radius:0")
-                a(class="btn btn-sm btn-info" href="/" + tournament.shortID) Back to #{tournament.tournament_name}
+                a(class="btn btn-sm btn-info" href="/t/" + tournament.shortID) Back to #{tournament.tournament_name}
             br
             br
 
@@ -141,7 +141,7 @@ block content
                                     button(type="button" class="btn btn-lg btn-info" id="entergamebutton") Save Changes
                                         span(style="padding-left:10px")
                                             i(class="glyphicon glyphicon-check")
-                                    a(class="btn btn-lg btn-danger" href="/" + tournament.shortID) Cancel
+                                    a(class="btn btn-lg btn-danger" href="/t/" + tournament.shortID) Cancel
                                         span(style="padding-left:10px")
                                             i(class="glyphicons glyphicons-remove-2")
 

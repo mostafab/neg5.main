@@ -3,7 +3,7 @@ var tournamentController = require("../../app/controllers/tournament-controller"
 
 module.exports = function(app) {
 
-    app.get("/:tid/signup", function(req, res) {
+    app.get("/t/:tid/signup", function(req, res) {
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             if (err) {
                 res.send(err);
@@ -13,7 +13,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/:tid/signup/submit", function(req, res) {
+    app.post("/t/:tid/signup/submit", function(req, res) {
         var directorid = req.session.director == null ? null : req.session.director._id;
         var tournamentid = req.params.tid;
         signupController.createRegistration(tournamentid, directorid, req.body, function(err, closed) {

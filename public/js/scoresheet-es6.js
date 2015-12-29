@@ -670,7 +670,7 @@ function undoGameSubmission(tournament, game) {
 
 function setGameAnchorTag(gameid) {
     var tournament = $("#goto-game").attr("data-tournament");
-    var href = "/" + tournament + "/games/" + gameid;
+    var href = "/t" + tournament + "/games/" + gameid;
     $("#goto-game").attr("href", href);
     $("#undo-game").attr('data-game', gameid);
 }

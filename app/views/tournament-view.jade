@@ -165,7 +165,7 @@ block content
                                     div(class="panel panel-default")
                                         div(class="panel-heading collapsable") Registration Form
                                         div(class="panel-body")
-                                                a(target="_blank" href="/" + tournament.shortID + "/signup" class="btn btn-lg btn-stats") View Registration Form
+                                                a(target="_blank" href="/t/" + tournament.shortID + "/signup" class="btn btn-lg btn-stats") View Registration Form
                                                 br
                                                 br
                                                 div(class="row")
@@ -266,7 +266,7 @@ block content
                             div(class="panel panel-default")
                                 div(class="panel-heading collapsable") Scoresheet
                                 div(class="panel-body")
-                                    a(class="btn btn-lg btn-stats" target="_blank" href="/" + tournament.shortID + "/scoresheet") Go to Scoresheet
+                                    a(class="btn btn-lg btn-stats" target="_blank" href="/t/" + tournament.shortID + "/scoresheet") Go to Scoresheet
 
                             div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Add a Game
@@ -366,7 +366,7 @@ block content
                                                                     form()
                                                                         input(type="hidden" name="gameid_form" value='#{tournament.games[i].shortID}')
                                                                         input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
-                                                                        a(class="btn btn-sm btn-info editbutton" href="/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
+                                                                        a(class="btn btn-sm btn-info editbutton" href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
                                                                         button(type="button" class="btn btn-sm btn-warning deletebutton") Remove Game
 
 
@@ -470,7 +470,7 @@ block content
                                                                     form()
                                                                         input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
                                                                         input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
-                                                                        a(class="btn btn-sm btn-info" href="/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
+                                                                        a(class="btn btn-sm btn-info" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
                                                                         button(type="button" class="btn btn-sm btn-warning deleteteambutton") Remove Team
 
                         div(class="tab-pane fade" id="stats")
@@ -481,18 +481,18 @@ block content
                                         div()
                                             ul(class="nav nav-pills no-border-radius")
                                                 li
-                                                    a(target="_blank" href="/" + tournament.shortID + "/stats/team" class="btn btn-lg btn-stats") Team Stats
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/team" class="btn btn-lg btn-stats") Team Stats
                                                 li
-                                                    a(target="_blank" href="/" + tournament.shortID + "/stats/player" class="btn btn-lg btn-stats") Player Stats
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/player" class="btn btn-lg btn-stats") Player Stats
                                                 li
-                                                    a(target="_blank" href="/" + tournament.shortID + "/stats/teamfull" class="btn btn-lg btn-stats") Full Report
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull" class="btn btn-lg btn-stats") Full Report
 
                             div(class="panel panel-default")
-                                div(class="panel-heading collapsable") Advanced Team Statistics
+                                div(class="panel-heading collapsable") Custom Team Statistics
 
                                 div(class="panel-body")
                                         div(class="col-md-12")
-                                            form(target="_blank" method="post" action="/home/tournaments/" + tournament.shortID + "/stats/filter/teams" id="filterstatsform")
+                                            form(target="_blank" method="post" action="/t/" + tournament.shortID + "/stats/filter/teams" id="filterstatsform")
                                                 div(class="form-group")
                                                     label Teams
                                                     br
@@ -507,9 +507,9 @@ block content
                                                 div(class="form-group")
                                                     ul(class="nav nav-pills no-border-radius")
                                                         li
-                                                            button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/" + tournament.shortID + "/stats/filter/teams") Team Stats
+                                                            button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/teams") Team Stats
                                                         li
-                                                            button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/" + tournament.shortID + "/stats/filter/players") Player Stats
+                                                            button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/players") Player Stats
 
                             // div(class="panel panel-default")
                             //     div(class="panel-heading collapsable") Custom Stats Will Display Here
