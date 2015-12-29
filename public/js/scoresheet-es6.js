@@ -915,7 +915,7 @@ function createPlayerTable(side, players, pointScheme) {
 
 function addPlayerTableRow(side, player, pointScheme) {
     var table = side == "left" ? "#leftplayertable" : "#rightplayertable";
-    var html = "<tr>";
+    var html = "<tr class='player-body'>";
     html += "<th>" + player.name; + "</th>";
     for (var j = 0; j < pointScheme.length; j++) {
         html += "<td class='player-point' data-player='" + player.id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
