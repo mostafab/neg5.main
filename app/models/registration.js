@@ -8,6 +8,7 @@ var RegistrationSchema = new Schema({
         return email.toLowerCase();
     }},
     tournamentid : String,
+    tournamentName : String,
     directorid : String,
     message : String,
     signupTime : {type : Date, default : Date.now()}

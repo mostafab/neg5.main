@@ -108,48 +108,85 @@ block content
                         div(class="row")
                             div(class="smallbox")
                                 if tournament.openRegistration
-                                    form(id="submitsignup" method="post" action="/t/" + tournament.shortID + "/signup/submit")
-                                        div(class="form-group")
-                                            input(
-                                                type="text",
-                                                name="team_name",
-                                                placeholder="Team Name",
-                                                class="form-control input-lg center-text no-border-radius tournament-info-field"
-                                            )
-                                        div(class="form-group")
-                                            input(
-                                                type="number",
-                                                name="teamnumber",
-                                                placeholder="Number of Teams",
-                                                class="form-control input-lg center-text no-border-radius tournament-info-field"
-                                            )
-                                        div(class="form-group")
-                                            if director != null
+                                    if !prevReg
+                                        form(id="submitsignup" method="post" action="/t/" + tournament.shortID + "/signup/submit")
+                                            div(class="form-group")
+                                                input(
+                                                    type="text",
+                                                    name="team_name",
+                                                    placeholder="Team Name",
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field"
+                                                )
+                                            div(class="form-group")
+                                                input(
+                                                    type="number",
+                                                    name="teamnumber",
+                                                    placeholder="Number of Teams",
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field"
+                                                )
+                                            div(class="form-group")
+                                                if director != null
+                                                    input(
+                                                        class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                        placeholder="Email",
+                                                        value="#{director.email}",
+                                                        name="email"
+                                                    )
+                                                else
+                                                    input(
+                                                        class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                        placeholder="Email",
+                                                        name="email"
+                                                    )
+                                            div(class="form-group")
+                                                textarea(
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    placeholder="Other Information",
+                                                    name="otherinfo",
+                                                    rows="10"
+                                                )
+                                            button(type="button" class="btn btn-lg btn-stats no-border-radius" id="submitregistration") Confirm Registration
+                                            div(class="form-group" style="text-align:center")
+                                                br
+                                                br
+                                                div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="tregmessage")
+                                    else
+                                        form(id="submitsignup" method="post" action="/t/" + tournament.shortID + "/signup/submit")
+                                            div(class="form-group")
+                                                input(
+                                                    type="text",
+                                                    name="team_name",
+                                                    placeholder="Team Name",
+                                                    value="#{prevReg.teamName}",
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field"
+                                                )
+                                            div(class="form-group")
+                                                input(
+                                                    type="number",
+                                                    name="teamnumber",
+                                                    placeholder="Number of Teams",
+                                                    value="#{prevReg.numTeams}",
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field"
+                                                )
+                                            div(class="form-group")
                                                 input(
                                                     class="form-control input-lg center-text no-border-radius tournament-info-field",
                                                     placeholder="Email",
-                                                    value="#{director.email}",
+                                                    value="#{prevReg.email}",
                                                     name="email"
                                                 )
-                                            else
-                                                input(
+                                            div(class="form-group")
+                                                textarea(
                                                     class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                                    placeholder="Email",
-                                                    name="email"
-                                                )
-                                        div(class="form-group")
-                                            textarea(
-                                                class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                                placeholder="Other Information",
-                                                name="otherinfo",
-                                                rows="10"
-                                            )
-                                        button(type="button" class="btn btn-lg btn-stats no-border-radius" id="submitregistration") Confirm Registration
-                                        div(class="form-group" style="text-align:center")
-                                            br
-                                            br
-                                            div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="tregmessage")
-
+                                                    placeholder="Other Information",
+                                                    name="otherinfo",
+                                                    rows="10"
+                                                ) #{prevReg.message}
+                                            button(type="button" class="btn btn-lg btn-stats no-border-radius" id="submitregistration") Confirm Registration
+                                            div(class="form-group" style="text-align:center")
+                                                br
+                                                br
+                                                div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="tregmessage")
 
                                 else
                                     div(class="form-group")

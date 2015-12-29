@@ -12,7 +12,6 @@
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.14.1",
     "client-sessions": "^0.7.0",
-    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.0",
     "express": "^4.13.3",
     "express-session": "^1.12.1",
@@ -25,8 +24,6 @@
     "passport-google-oauth": "^0.2.0",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.3",
-    "remodal": "^1.0.5",
-    "serve-favicon": "^2.3.0",
     "short-mongo-id": "^0.1.1",
     "shortid": "^2.2.4"
   }

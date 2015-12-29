@@ -58,8 +58,13 @@ html
                 if tournamentd
                     div(class="collapse navbar-collapse")
                         ul(class="nav navbar-nav")
+                            li(class="list-element")
+                                a(href="/registrations" style='color:black;font-size:14px') My Registrations
+                                    i(class="fa fa-pencil-square" style='margin-left:10px;')
+
+                        ul(class="nav navbar-nav")
                             li(class='list-element')
-                                a(href="/tournaments" style="color:black;font-size:14px") Your Tournaments
+                                a(href="/tournaments" style="color:black;font-size:14px") My Tournaments
                                     i(class="fa fa-list" style='margin-left:10px;')
                             li(class="list-element")
                                 a(href="/create" style="color:black;font-size:14px") New Tournament
@@ -83,21 +88,6 @@ html
                             li(class="list-element")
                                 a(href="#" style="color:black") Want to Contribute?
                                      i(class="fa fa-github" style="margin-left:10px")
-    //- Use
-
-    //- Declaration
-    mixin statsbar
-        div(class="panel-body")
-            div(class="row" style="")
-                ul(class="nav nav-pills no-border-radius")
-                    li
-                        a(href="/" + tournament.shortID + "/stats/team") Team Standings
-                    li
-                        a(href="/" + tournament.shortID + "/stats/player") Player Standings
-                    li(class="active")
-                        a(href="/" + tournament.shortID + "/stats/teamfull") Teams Full
-                    li
-                        a(href="/" + tournament.shortID + "/stats/playerfull") Players Full
     //- Use
 
   body(class="body")

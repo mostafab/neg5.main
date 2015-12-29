@@ -12,11 +12,11 @@ function createRegistration(tournamentid, directorid, information, callback) {
         tournamentid : tournamentid,
         directorid : directorid
     });
-    Tournament.findOne({shortID : tournamentid}, function(err, result) {
+    Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
         // console.log(result.tournament_name);
-        if (err || result == null) {
+        if (err || tournament == null) {
             callback(err, null);
-        } else if (!result.openRegistration) {
+        } else if (!tournament.openRegistration) {
             // console.log()
             callback(null, "CLOSED");
         } else {
@@ -33,7 +33,7 @@ function createRegistration(tournamentid, directorid, information, callback) {
                         if (reg.directorid == null) {
                             var query = {tournamentid : reg.tournamentid, email : reg.email};
                             var update = {teamName : reg.teamName, numTeams : reg.numTeams, email : reg.email,
-                                message : reg.message, tournamentid : reg.tournamentid, directorid : reg.directorid, signupTime : Date.now()};
+                                message : reg.message, tournamentid : reg.tournamentid, directorid : reg.directorid, signupTime : Date.now(), tournamentName : tournament.tournament_name};
                             var options = {upsert : true};
                             Registration.update(query, update, options, function(err) {
                                 callback(err, null);
@@ -44,7 +44,7 @@ function createRegistration(tournamentid, directorid, information, callback) {
                         } else {
                             var query = {tournamentid : reg.tournamentid, directorid : reg.directorid};
                             var update = {teamName : reg.teamName, numTeams : reg.numTeams, email : reg.email,
-                                message : reg.message, tournamentid : reg.tournamentid, directorid : reg.directorid, signupTime : Date.now()};
+                                message : reg.message, tournamentid : reg.tournamentid, directorid : reg.directorid, signupTime : Date.now(), tournamentName : tournament.tournament_name};
                             var options = {upsert : true};
                             Registration.update(query, update, options, function(err) {
                                 callback(err, null);
@@ -56,7 +56,7 @@ function createRegistration(tournamentid, directorid, information, callback) {
                 // console.log(reg);
                 var query = {tournamentid : reg.tournamentid, directorid : reg.directorid};
                 var update = {teamName : reg.teamName, numTeams : reg.numTeams, email : reg.email,
-                    message : reg.message, tournamentid : reg.tournamentid, directorid : reg.directorid, signupTime : Date.now()};
+                    message : reg.message, tournamentid : reg.tournamentid, directorid : reg.directorid, signupTime : Date.now(), tournamentName : tournament.tournament_name};
                 var options = {upsert : true};
                 Registration.update(query, update, options, function(err) {
                     callback(err, null);
@@ -79,5 +79,37 @@ function findRegistrationsByTournament(tournamentid, callback) {
     });
 }
 
+function findDirectorRegistrations(director, callback) {
+    Registration.find({directorid : director._id}, function(err, registrations) {
+        if (err) {
+            return callback(err, []);
+        } else {
+            registrations.sort(function(first, second) {
+                return second.signupTime - first.signupTime;
+            });
+            callback(null, registrations);
+        }
+    });
+}
+
+function findOneRegistration(tournamentid, directorid, callback) {
+    Registration.findOne({tournamentid : tournamentid, directorid : directorid}, function(err, registration) {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, registration);
+        }
+    });
+}
+
+function removeRegistration(regid, callback) {
+    Registration.remove({_id : regid}, function(err) {
+        callback(err);
+    });
+}
+
 exports.createRegistration = createRegistration;
 exports.findRegistrationsByTournament = findRegistrationsByTournament;
+exports.findDirectorRegistrations = findDirectorRegistrations;
+exports.findOneRegistration = findOneRegistration;
+exports.removeRegistration = removeRegistration;

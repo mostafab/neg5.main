@@ -149,6 +149,18 @@ $(document).ready(function() {
         uncheckBoxes($(this));
     });
 
+    $(".cancel-reg").click(function() {
+        $(this).parents("tr").next("tr").slideDown(0);
+    });
+
+    $(".cancel-delete-reg").click(function() {
+        $(this).parents("tr").slideUp(0);
+    });
+
+    $(".confirm-delete-reg").click(function() {
+        deleteRegistrationAJAX($(this));
+    });
+
 });
 
 function uncheckBoxes(checkbox) {
@@ -179,6 +191,27 @@ function removeTeamSender(button) {
 function removeGameSender(button) {
     console.log($(button).parent().serialize());
     removeGame($(button).parent().serialize(), button);
+}
+
+function deleteRegistrationAJAX(button) {
+    $(button).prop("disabled", true);
+    $.ajax({
+        url : "/signup/delete",
+        type : "POST",
+        data : {regid : $(button).attr("data-reg")},
+        success : function(databack, status, xhr) {
+            var tdParent = $(button).parents("tr");
+            var tdPrev = $(button).parents("tr").prev("tr");
+            $(tdParent).remove();
+            $(tdPrev).remove();
+        },
+        error : function(xhr, status, err) {
+            console.log(err);
+        },
+        complete : function(xhr, status) {
+            $(button).prop("disabled", false);
+        }
+    });
 }
 
 function submitTournamentRegistration() {
