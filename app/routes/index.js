@@ -9,4 +9,8 @@ module.exports = function(app) {
             index.render(req, res);
         }
     });
+
+    app.get("/about", function(req, res) {
+        res.render("about");
+    });
 };

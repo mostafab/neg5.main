@@ -149,6 +149,10 @@ td {
     margin-bottom: 50px;
 }
 
+.brushed {
+     background-image: url("/img/backgrounds/brushed.png");
+}
+
 .panel-default > .panel-heading {
   /*background-color: rgba(50, 50, 50, .9);*/
   /*background-color: black;*/
