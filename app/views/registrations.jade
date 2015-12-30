@@ -1,0 +1,60 @@
+extends layout
+
+block titleContent
+    title Your Registrations | Neg 5
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+
+block content
+
+    +navbar
+
+    div(class="content-wrapper box" style='padding-left:50px;padding-right:50px;padding-top:0px')
+
+        div(class="row")
+            div(class="col-md-12")
+                div(style="margin:20px; margin-bottom:50px")
+                h2(class="title" style='width:50%') Your Tournament Registrations
+                br
+                div(class="panel panel-default table-grey")
+
+                    table(class="table table-hover table-condensed")
+                        thead
+                            tr()
+                                th(class="table-head" style='text-align:center') Tournament
+                                th(class="table-head" style='text-align:center') Team Name
+                                th(class="table-head" style='text-align:center') Number of Teams
+                                th(class="table-head" style='text-align:center') Provided Email
+                                th(class="table-head" style='text-align:center') Information
+                                th(class="table-head" style='text-align:center') Day of Signup
+                                th(class="table-head" style='text-align:center') View Signup
+                                th(class="table-head" style='text-align:center') Cancel Signup
+                        tbody
+
+                            each reg, i in registrations
+
+                                tr
+                                    td #{reg.tournamentName}
+                                    td #{reg.teamName}
+                                    td #{reg.numTeams}
+                                    td #{reg.email}
+                                    td #{reg.message}
+                                    td #{reg.signupTime.getMonth() + "/" + reg.signupTime.getDate() + "/" + reg.signupTime.getFullYear()}
+                                    td
+                                        a(href="/t/" + reg.tournamentid + "/signup") #{reg.tournamentName}
+                                            i(class="fa fa-pencil" style="margin:5px")
+                                    td
+                                        button(class="btn btn-xs btn-danger cancel-reg")
+                                            i(class="fa fa-times" style='margin:5px')
+
+                                tr(style='display:none')
+                                    td(colspan='8')
+                                        div(class="col-md-6 col-lg-6 col-sm-6")
+                                            button(class="btn btn-stats btn-sm btn-block cancel-delete-reg") Never Mind
+                                        div(class="col-md-6 col-lg-6 col-sm-6")
+                                            button(class="btn btn-danger btn-sm btn-block confirm-delete-reg" data-reg="#{reg._id}") Confirm
+
+block scripts
+    script(src="/js/tournament-configuration.js")

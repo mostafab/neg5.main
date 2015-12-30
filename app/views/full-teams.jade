@@ -1,0 +1,103 @@
+extends layout
+
+block titleContent
+    title Teams Full | #{tournament.tournament_name} | Neg 5
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+
+block content
+
+    main(class="cd-main-content")
+        div(class="box" style="padding:50px;padding-top:20px")
+
+            div(class="row")
+                    div(class="col-md-12")
+                        div(class="panel-body")
+                            div(class="row" style="")
+                                ul(class="nav nav-pills no-border-radius")
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/team") Team Standings
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/player") Player Standings
+                                    li(class="active")
+                                        a(href="/t/" + tournament.shortID + "/stats/teamfull") Teams Full
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/playerfull") Players Full
+
+                        h2(class="title" style="width:50%") #{tournament.tournament_name} - Full Team Details
+
+                        br
+                        br
+
+                        each teamid in Object.keys(teamsGames)
+                            div(class="row" class="statbox")
+                                h2(class="title" style="width:20%" id=teamid) #{teamsGames[teamid].team}
+                                - var points = Object.keys(tournament.pointScheme);
+                                if teamsGames[teamid].games.length != 0
+                                    div(class="panel panel-default")
+                                        table(class="table table-striped table-hover table-condensed")
+                                            - var gameHeaders = Object.keys(teamsGames[teamid].games[0])
+                                            thead
+                                                tr
+                                                    each stat,i in gameHeaders
+                                                        if stat == "pointValues"
+                                                            each val in points
+                                                                th(class="table-head") #{val}
+                                                        else
+                                                            th(class="table-head") #{stat}
+                                            tbody
+                                                each game in teamsGames[teamid].games
+                                                    tr
+                                                        each stat, i in gameHeaders
+                                                            if stat == "pointValues"
+                                                                each val in points
+                                                                    td #{game["pointValues"][val]}
+                                                            else
+                                                                td #{game[stat]}
+
+                                            tfoot
+
+                                                tr(class="info" style="font-size:16px")
+                                                    each stat, i in gameHeaders
+                                                        if i == 0
+                                                            td Totals
+                                                        else
+                                                            if teamTotals[teamid].stats
+                                                                if stat == "pointValues"
+                                                                    each val in points
+                                                                        td #{teamTotals[teamid].stats.pointValues[val]}
+                                                                else
+                                                                    if teamTotals[teamid].stats[stat]
+                                                                        td #{teamTotals[teamid].stats[stat]}
+                                                                    else
+                                                                        td
+                                                            else
+                                                                td
+
+                                div(class="panel panel-default")
+                                    table(class="table table-striped table-hover table-condensed")
+                                        if playersInfo[teamid].stats.length != 0
+                                            // - console.log(playersInfo[teamid].stats)
+                                            - var playerHeaders = Object.keys(playersInfo[teamid].stats[0].stats)
+                                            thead
+                                                tr
+                                                    each stat, i in playerHeaders
+                                                        if stat == "pointTotals"
+                                                            each val in points
+                                                                th(class="table-head") #{val}
+                                                        else
+                                                            th(class="table-head") #{stat}
+                                            tbody
+                                                each player in playersInfo[teamid].stats
+                                                    tr
+                                                        each stat, i in playerHeaders
+                                                            if stat == "pointTotals"
+                                                                each val in points
+                                                                    td #{player.stats["pointTotals"][val]}
+                                                            else if stat == "Player"
+                                                                td
+                                                                    a(href="/t/" + tournament.shortID + "/stats/playerfull#" + player.id) #{player.stats[stat]}
+                                                            else
+                                                                td #{player.stats[stat]}

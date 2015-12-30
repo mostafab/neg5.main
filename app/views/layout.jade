@@ -1,0 +1,103 @@
+doctype html
+html
+  head
+    meta(name="description" content="Neg5 is a quiz bowl tournament management system. It is meant to help tournament directors automate their registrations, game inputs, and statistis generation so that they can focus on running their tournament.")
+    block titleContent
+        title Neg 5
+
+    // script(src="/js/jquery-2.1.4.js")
+    // script(src="/js/modernizr.js")
+    // script(src="/js/jquery.menu-aim.js")
+    // script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
+    // script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js")
+
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css")
+    link(rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css")
+    link(href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css')
+    link(rel="stylesheet" href="/css/reset.css")
+    link(rel="stylesheet" href="/css/style.css")
+
+    block extrastylesheets
+
+    block extrascripts
+
+    //- Declaration
+    mixin sidebar
+        nav(class="cd-side-nav" style="position:fixed")
+            form(name="tdid")
+                input(type="hidden" value="#{tournamentd}" id="tdid_input")
+            ul
+                li(class="cd-label") #{tournamentd.name}
+
+                li(class="has-children overview active")
+
+                    ul()
+                        li()
+                            a(href="/home") Home
+                            a(href="/tournaments") Your Tournaments
+                            a(href="/create") Create a Tournament
+
+            ul
+                li(class="cd-label")
+                li(class="action-btn")
+                    a(href="/logout" style="background-color:rgb(0, 136, 136);") Logout
+
+    //- Use
+
+    //- Declaration
+    mixin navbar
+
+        nav(class="navbar navbar-default" style="background-image: url('/img/backgrounds/gplaypattern.png');box-shadow: 0 0px 4px rgba(0, 0, 0, 0.8);")
+            div(class="container navmiddle")
+                if !tournamentd
+                    div(class="navbar-header")
+                        div(class="navbar-brand navbar-brand-centered" style="color:black") Neg 5 : Quizbowl for the Cloud
+                            // img(src="http://dev.girliestgeek.com/img/girliest-geek-logo.png")
+                            div(style="clear:both")
+
+                if tournamentd
+                    div(class="collapse navbar-collapse")
+                        ul(class="nav navbar-nav")
+                            li(class="list-element")
+                                a(href="/registrations" style='color:black;font-size:14px') My Registrations
+                                    i(class="fa fa-pencil-square" style='margin-left:10px;')
+
+                        ul(class="nav navbar-nav")
+                            li(class='list-element')
+                                a(href="/tournaments" style="color:black;font-size:14px") My Tournaments
+                                    i(class="fa fa-list" style='margin-left:10px;')
+                            li(class="list-element")
+                                a(href="/create" style="color:black;font-size:14px") New Tournament
+                                     i(class="fa fa-plus" style='margin-left:10px')
+
+                        ul(class="nav navbar-nav navbar-right")
+                            li(class="list-element")
+                                a(href="/account" style='color:black;font-size:14px') #{tournamentd.name} (#{tournamentd.email})
+                                    i(class="fa fa-user" style='margin-left:10px')
+                            li(class="list-element")
+                                a(href="/logout" style='color:black;font-size:14px') Logout
+                                    i(class="fa fa-sign-out" style='margin-left:10px')
+                if !tournamentd
+                    div(class="collapse navbar-collapse navbar-right")
+                        ul(class="nav navbar-nav")
+                            li(class="list-element")
+                                a(href="/" style="color:black") Login
+                                    i(class="fa fa-sign-in" style='margin-left:10px')
+                            li(class="list-element")
+                                a(href="/about" style="color:black") About Neg 5
+                            li(class="list-element")
+                                a(href="#" style="color:black") Want to Contribute?
+                                     i(class="fa fa-github" style="margin-left:10px")
+    //- Use
+
+  body(class="body")
+    block content
+
+    script(src="/js/jquery-2.1.4.js")
+    script(src="/js/modernizr.js")
+    script(src="/js/jquery.menu-aim.js")
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js")
+    script(src="/js/listjs/list.js")
+
+    block scripts

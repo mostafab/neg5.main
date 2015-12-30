@@ -1,0 +1,37 @@
+Tournament Director Collection
+
+    tournament-directors
+        name
+        email
+        id :
+
+
+Tournaments Collection
+
+    name
+    location
+    date
+    description
+    tournament-director-id : id
+    tournament-id
+
+Teams Collection
+
+    name
+    win
+    losses
+    ties
+    tournament-id : tournament-id
+    team-id : id
+
+Games Collection
+
+    tournament-id : tournament=id
+    team-id[]
+
+Players Collection
+
+    team
+    name
+    pointvalues
+    tournament-id : tournament-id

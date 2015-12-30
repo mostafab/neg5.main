@@ -1,0 +1,77 @@
+extends layout
+
+block titleContent
+    title Create a Tournament | Neg 5
+
+block extrascripts
+    //script(src="/js/tournament-configuration.js")
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+
+block content
+
+    +navbar
+    // +sidebar
+
+    // main(class="cd-main-content")
+    // div(class="content-wrapper box" style='padding-left:50px;padding-right:50px;padding-top:25px')
+
+    div(class="jumbotron vertical-center")
+        div(class="container")
+            div(style="margin:20px; margin-bottom:50px")
+
+            div(class="row")
+                div(class="col-md-12")
+                    // div(style="margin:20px; margin-bottom:50px")
+                    h2(class="title" style="width:50%") Create a Tournament. You only need to provide a name.
+                    div(class="panel-body")
+                        div(class="row")
+                            div(class="col-md-12 smallbox")
+                                form(name="createTournament" method="post" action="/create/submit")
+                                    div(class="form-group")
+                                        label(class="info-label") Name*
+                                        input(
+                                            type="text",
+                                            name="t_name",
+                                            placeholder="Tournament Name",
+                                            class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                        )
+                                    div(class="form-group")
+                                        label(class="info-label") Question Set
+                                        input(
+                                            type="text",
+                                            name="t_qset",
+                                            placeholder="Question Set",
+                                            class="form-control input-lg center-text no-border-radius tournament-info-field"
+                                        )
+                                    div(class="form-group")
+                                        label(class="info-label") Location
+                                        input(
+                                            type="text",
+                                            name="t_location",
+                                            placeholder="Institution",
+                                            class="form-control input-lg center-text no-border-radius tournament-info-field"
+                                        )
+                                    div(class="form-group")
+                                        label(class="info-label") Host Date
+                                        input(
+                                            type="date",
+                                            name="t_date",
+                                            placeholder="Tournament Date",
+                                            id="date-box",
+                                            class="form-control input-lg center-text no-border-radius tournament-info-field"
+                                        )
+                                    div(class="form-group")
+                                        label(class="info-label") Additional Information
+                                        textarea(
+                                            name="t_description",
+                                            placeholder="Enter any other important information about the tournament here. Teams who register for your tournament will see this description.",
+                                            class="form-control input-lg no-border-radius tournament-info-field",
+                                            style="min-height:300px"
+                                        )
+
+                                    button(type="submit" class="btn btn-lg btn-success no-border-radius") Confirm
+                                    button(type="button" class="btn btn-lg btn-info no-border-radius") Clear Fields

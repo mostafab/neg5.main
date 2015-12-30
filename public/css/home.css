@@ -1,0 +1,27 @@
+/*!
+ * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+/* Toggle Styles */
+
+* {
+    font-family: 'Lato', sans-serif;
+}
+
+.body {
+    /*background-color: white;*/
+    background-image: url("../img/backgrounds/brushed.png");
+}
+
+.list-element {
+    border-color:grey;
+    border-style:solid;
+    border-width:0px .1em 0 .1em;
+}
+
+.list-element:hover {
+    background: rgba(100, 100, 100, .1);
+    /*background: rgba(0, 136, 136, .1);*/
+}

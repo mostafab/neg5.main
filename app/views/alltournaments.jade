@@ -1,0 +1,52 @@
+extends layout
+
+block titleContent
+    title Your Tournaments | Neg 5
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+
+block content
+
+    +navbar
+    // +sidebar
+
+    // main(class="cd-main-content")
+    div(class="content-wrapper box" style='padding-left:50px;padding-right:50px;padding-top:0px')
+
+        div(class="row")
+            div(class="col-md-12")
+                div(style="margin:20px; margin-bottom:50px")
+                h2(class="title" style='width:50%') Your Tournaments
+                br
+                div(class="panel panel-default table-grey")
+
+
+                    // div(class="pane")
+                    table(class="table table-hover table-condensed")
+                        thead
+                            tr()
+                                th(class="table-head" style='text-align:center') Name
+                                th(class="table-head" style='text-align:center') Location
+                                th(class="table-head" style='text-align:center') Date
+                                th(class="table-head" style='text-align:center') Open Registration
+                                th(class="table-head" style='text-align:center') Question set
+                                th(class="table-head" style='text-align:center') Number of Teams Added
+                        tbody
+                            each val, i in tournaments
+                                tr()
+                                    td
+                                        a(href="/t/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
+                                            i(class="fa fa-pencil" style="margin:5px")
+                                    td #{tournaments[i].location}
+                                    if tournaments[i].date
+                                        td #{tournaments[i].date.getMonth() + "/" + tournaments[i].date.getDate() + "/" + tournaments[i].date.getFullYear()}
+                                    else
+                                        td #{tournaments[i].date}
+                                    if tournaments[i].openRegistration
+                                        td Yes
+                                    else
+                                        td No
+                                    td #{tournaments[i].questionSet}
+                                    td #{tournaments[i].teams.length}

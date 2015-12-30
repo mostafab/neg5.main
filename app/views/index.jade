@@ -1,0 +1,146 @@
+extends layout
+
+block titleContent
+    title Neg 5 | Quizbowl for the Cloud
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/index.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+
+block content
+
+    +navbar
+
+    div(class="jumbotron vertical-center" style='background-color:transparent')
+        div(class="container")
+            div(style="margin:20px; margin-bottom:50px;margin-top:10%")
+
+            div(id="loginpanel")
+                div(class="row")
+                    div(class="col-xs-12" style="text-align:center")
+                        h2(class="title") Login
+
+                div(class="row")
+                    div(class="col-xs-12")
+                        div(class="panel-body")
+                            div(class="row" style="background-color:rgba(0, 132, 132, .9)")
+                                div(class="smallbox")
+                                    form(name="logins" id="loginfo" method="post" action="/auth/local")
+                                        div(class="row")
+                                            div(class="col-md-4")
+                                            div(class="form-group col-md-4")
+                                                input(
+                                                    type="text",
+                                                    name="usrname",
+                                                    placeholder="Email"
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40")
+                                            div(class="col-md-4")
+                                        div(class="row")
+                                            div(class="col-md-4")
+                                            div(class="form-group col-md-4")
+                                                input(
+                                                    type="password",
+                                                    name="pswd"
+                                                    placeholder="Password",
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    id="passwordinput"
+                                                    style="background-color:#363B40")
+
+                                        div(class="form-group")
+                                            div(class="form-group text-center")
+                                                button(class="btn btn-info btn-md center-in-div",
+                                                    type="button",
+                                                    id="login")
+                                                    | Login
+                                                button(class="btn btn-warning btn-md center-in-div",
+                                                    type="button",
+                                                    id="gotoregister",
+                                                    )
+                                                    | Register
+
+                                                br
+                                                br
+                                                if errormsg
+                                                    p(id="errorlabel") #{errormsg}
+                                                else
+                                                    p(id="errorlabel") Welcome to Neg 5, a Quizbowl tournament management system. Login to continue.
+
+            div(id="registerpanel" style="display:none")
+                div(class="row")
+                    div(class="col-xs-12" style="text-align:center")
+                        h2(class="title") Register
+
+                div(class="row")
+                    div(class="col-xs-6 col-sm-6 col-md-6 col-lg-6")
+                        div(class="panel-body")
+                            div(class="row")
+                                div(class="smallbox" style='background-color:rgba(0, 132, 132, .9)')
+                                    div(class="row")
+                                        div(class="col-md-12")
+                                            div(class="form-group" style="color:white;background-color:#363B40")
+                                                li(class="form-control input-lg center-text no-border-radius tournament-info-field" style="background-color:#363B40") Complete the form to the right to register
+                                                li(class="form-control input-lg center-text no-border-radius tournament-info-field" id="l_name" style="background-color:#363B40") Name Must be Between 5 and 25 characters
+                                                li(class="form-control input-lg center-text no-border-radius tournament-info-field" id="l_email" style="background-color:#363B40") Email must be in a valid format (example@domain.com)
+                                                li(class="form-control input-lg center-text no-border-radius tournament-info-field" id="l_password" style="background-color:#363B40") Password must be at least 5 characters long
+                                                li(class="form-control input-lg center-text no-border-radius tournament-info-field" id="l_match" style="background-color:#363B40") Passwords must match
+
+                    div(class="col-xs-6 col-sm-6 col-md-6 col-lg-6")
+                        div(class="panel-body")
+                            div(class="row" style='background-color:rgba(0, 132, 132, .9)')
+                                div(class="smallbox")
+                                    form(name="signup" id="signupform")
+                                        div(class="row")
+                                            div(class="col-md-2")
+                                            div(class="form-group col-md-8")
+                                                input(
+                                                    type="text",
+                                                    name="r_name",
+                                                    placeholder="Name"
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40",
+                                                    autocomplete="off")
+
+
+                                        div(class="row")
+                                            div(class="col-md-2")
+                                            div(class="form-group col-md-8")
+                                                input(
+                                                    type="text",
+                                                    name="r_usrname"
+                                                    placeholder="Email",
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40")
+
+                                        div(class="row")
+                                            div(class="col-md-2")
+                                            div(class="form-group col-md-8")
+                                                input(
+                                                    type="password",
+                                                    name="r_pswd"
+                                                    placeholder="Password",
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40")
+
+                                        div(class="row")
+                                            div(class="col-md-2")
+                                            div(class="form-group col-md-8")
+                                                input(
+                                                    type="password",
+                                                    name="r_pswd_2"
+                                                    placeholder="Confirm Password",
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40")
+
+                                        div(class="form-group")
+                                            div(class="form-group text-center")
+                                                button(type="button" id="regbutton" class="btn btn-info no-border-radius") Confirm Registration
+                                                button(type="button" id="closereg" class="btn btn-stats no-border-radius") Cancel
+
+                                        div(class="row")
+                                            div(class="col-md-2")
+                                            div(class="form-group col-md-8 input-lg no-border-radius tournament-info-field" style="text-align:center;background-color:#363B40" id="registererror")
+
+block scripts
+    script(src="/js/welcome-screen.js")
