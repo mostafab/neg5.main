@@ -1,3 +1,5 @@
+'use strict';
+
 var nextPlayerNum = 5;
 var gameOptions;
 var teamOptions;

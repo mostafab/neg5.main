@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require("mongoose");
 var Tournament = mongoose.model("Tournament");
 var statsController = require("../../app/controllers/stats-controller");

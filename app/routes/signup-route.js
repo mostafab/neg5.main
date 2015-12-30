@@ -1,3 +1,5 @@
+'use strict';
+
 var signupController = require('../../app/controllers/registration-controller');
 var tournamentController = require("../../app/controllers/tournament-controller");
 

@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var TeamSchema = require("./team").schema;

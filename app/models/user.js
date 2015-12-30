@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var bcryptjs = require("bcryptjs");
@@ -10,7 +12,7 @@ function toLower(string) {
 
 /**
 * Schema representing a user of the application. Password and email are saved here.
-* Future support for google authentication added 
+* Future support for google authentication added
 */
 var UserSchema = new Schema({
     local : {

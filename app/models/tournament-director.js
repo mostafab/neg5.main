@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var tournamentSchema = require("./tournament").schema;
@@ -8,7 +10,7 @@ function toLower(string) {
 }
 
 /**
-* Schema for a tournament director. 
+* Schema for a tournament director.
 */
 var TournamentDirectorSchema = new Schema({
     usertoken : {type : String, required : true},

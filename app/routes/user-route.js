@@ -1,3 +1,5 @@
+'use strict';
+
 var userController = require('../../app/controllers/user-controller');
 var passportP = require("passport");
 var passport = require("../../config/passport")(passportP);

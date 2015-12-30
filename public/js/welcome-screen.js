@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var constants = {
     MIN_USER_LENGTH : 5,

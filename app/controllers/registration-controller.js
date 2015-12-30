@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require("mongoose");
 var Tournament = mongoose.model("Tournament");
 var TournamentDirector = mongoose.model("TournamentDirector");

@@ -1,3 +1,5 @@
+'use strict';
+
 $(document).ready(function() {
 
     $("#entergamebutton").click(function(e) {

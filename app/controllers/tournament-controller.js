@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require("mongoose");
 var shortid = require("shortid");
 // var shortid = require("short-mongo-id");
