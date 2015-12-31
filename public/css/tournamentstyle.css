@@ -69,8 +69,8 @@ td {
     padding:20px;
     padding-bottom: 0px;
     background-color:rgb(212, 212, 212);
-    border-radius: 5px;
-    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    /*box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2);*/
 }
 
 .statbox:hover {

@@ -1,6 +1,11 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
+/**
+* Schema representing a game in the mongoDB database
+* Each game has a round, tossupsheard, two teams, and
+* other miscellaneous information
+*/
 var gameSchema = new Schema({
     shortID : String,
     round : {type : Number, default : 0, set : function(num) {
@@ -43,6 +48,10 @@ var gameSchema = new Schema({
     notes : String
 });
 
+/**
+* Returns the id of the team that won this game
+* @deprecated
+*/
 gameSchema.methods.getWinner = function() {
     if (this.team1["score"] > this.team2["score"]) {
         return [this.team1["team_id"], this.team2["team_id"]];

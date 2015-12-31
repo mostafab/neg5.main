@@ -39,23 +39,28 @@ block content
                                     table(class="table table-hover table-condensed")
                                         thead
                                             tr
+                                                th(class="table-head") Rank
                                                 each name, i in statHeaders
                                                     if statHeaders[i] == "pointTotals"
                                                         each val, j in points
                                                             th(class="table-head") #{val}
-                                                    else
+                                                    else if name != "Rank"
                                                         th(class="table-head") #{statHeaders[i]}
                                         tbody
                                             each team, i in teamInfo
                                                 tr
+                                                    td #{teamInfo[i].stats["Rank"]}
                                                     each name, j in statHeaders
                                                         if statHeaders[j] == "pointTotals"
                                                             each val, k in points
                                                                 td  #{teamInfo[i].stats.pointTotals[val]}
-                                                        else
+                                                        else if name != "Rank"
                                                             td #{teamInfo[i].stats[name]}
 
                         else
+                            - var noDivisionTeams = []
+                            - var addedTeams = {}
+                            // - console.log(noDivisionTeams)
                             each division, index in tournament.divisions
                                 h2(class="title" style="width:20%") #{tournament.divisions[index]}
                                 br
@@ -65,16 +70,20 @@ block content
                                         table(class="table table-hover table-condensed")
                                             thead
                                                 tr
+                                                    th(class="table-head") Rank
                                                     each name, i in statHeaders
                                                         if statHeaders[i] == "pointTotals"
                                                             each val, j in points
                                                                 th(class="table-head") #{val}
-                                                        else
+                                                        else if name != "Rank"
                                                             th(class="table-head") #{statHeaders[i]}
                                             tbody
                                                 each team, i in teamInfo
+                                                    // - console.log(teamInfo)
+                                                    // - console.log(team.stats["Division"].length)
                                                     if team.stats["Division"] == tournament.divisions[index]
                                                         tr
+                                                            td #{teamInfo[i].stats["Rank"]}
                                                             each name, j in statHeaders
                                                                 if statHeaders[j] == "pointTotals"
                                                                     each val, k in points
@@ -82,5 +91,41 @@ block content
                                                                 else if statHeaders[j] == "Team"
                                                                     td
                                                                         a(href="/t/" + tournament.shortID + "/stats/teamfull#" + teamInfo[i].id) #{teamInfo[i].stats["Team"]}
-                                                                else
+                                                                else if name != "Rank"
                                                                     td #{teamInfo[i].stats[name]}
+
+                                                    else if team.stats["Division"].length == 0
+                                                        // - console.log(team)
+                                                        // - console.log("Length 0 div")
+                                                        if !addedTeams[team.id]
+                                                            - noDivisionTeams.push(team)
+                                                            - addedTeams[team.id] = true
+                                                        // - console.log(noDivisionTeams)
+
+                            if noDivisionTeams.length !== 0
+                                h2(class="title" style='width:20%') No Division Assigned
+                                - var statHeaders = Object.keys(noDivisionTeams[0].stats)
+                                div(class="panel panel-default")
+                                    table(class="table table-hover table-condensed")
+                                        thead
+                                            tr
+                                                th(class="table-head") Rank
+                                                each name, i in statHeaders
+                                                    if statHeaders[i] == "pointTotals"
+                                                        each val, j in points
+                                                            th(class="table-head") #{val}
+                                                    else if name != "Rank"
+                                                        th(class="table-head") #{statHeaders[i]}
+                                        tbody
+                                            each team, i in noDivisionTeams
+                                                tr
+                                                    td #{noDivisionTeams[i].stats["Rank"]}
+                                                    each name, j in statHeaders
+                                                        if statHeaders[j] == "pointTotals"
+                                                            each val, k in points
+                                                                td #{noDivisionTeams[i].stats.pointTotals[val]}
+                                                        else if statHeaders[j] == "Team"
+                                                            td
+                                                                a(href="/t/" + tournament.shortID + "/stats/teamfull#" + noDivisionTeams[i].id) #{noDivisionTeams[i].stats["Team"]}
+                                                        else if statHeaders[j] != "Rank"
+                                                            td #{noDivisionTeams[i].stats[name]}

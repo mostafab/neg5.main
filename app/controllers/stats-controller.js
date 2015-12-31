@@ -1,7 +1,14 @@
 var mongoose = require("mongoose");
 var Tournament = mongoose.model("Tournament");
 
-
+/**
+* Responsible for gathering basic statistics information about a tournament's teams
+* and calling the given callback with an err if needed, the tournament found, and
+* the array of team statistics
+* @param tournamentid id of the tournament to get team statistics from
+* @param callback asynchronous callback function called after this function is done with the
+* list of team statistics
+*/
 function getTeamsInfo(tournamentid, callback) {
     var teamInfo = [];
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
@@ -25,11 +32,24 @@ function getTeamsInfo(tournamentid, callback) {
                     return second.stats["Win %"] - first.stats["Win %"];
                 }
             });
+            for (var i = 0; i < teamInfo.length; i++) {
+                teamInfo[i].stats["Rank"] = i + 1;
+            }
+            // console.log(teamInfo);
             callback(null, result, teamInfo);
         }
     });
 }
 
+/**
+* Responsible for gathering statistics information given constraints about a tournament's teams
+* and calling the given callback with an err if needed, the tournament found, and
+* the array of team statistics
+* @param tournamentid id of the tournament to get team statistics from
+* @param constraints limits on the teams to get, min and max round
+* @param callback asynchronous callback function called after this function is done with the
+* list of team statistics
+*/
 function getFilteredTeamsInformation(tournamentid, constraints, callback) {
     // console.log(constraints);
     var teamInfo = [];
@@ -66,6 +86,14 @@ function getFilteredTeamsInformation(tournamentid, constraints, callback) {
 
 }
 
+/**
+* Responsible for gathering basic statistics information about a tournament's players
+* and calling the given callback with an err if needed, the tournament found, and
+* the array of player statistics
+* @param tournamentid id of the tournament to get player statistics from
+* @param callback asynchronous callback function called after this function is done with the
+* list of player statistics
+*/
 function getPlayersInfo(tournamentid, callback) {
     var playersInfo = [];
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
@@ -85,6 +113,15 @@ function getPlayersInfo(tournamentid, callback) {
     });
 }
 
+/**
+* Responsible for gathering statistics information about a tournament's players given a set of constraints
+* and calling the given callback with an err if needed, the tournament found, and
+* the array of player statistics
+* @param tournamentid id of the tournament to get player statistics from
+* @param constraints  constraints on teams, and min and max round
+* @param callback asynchronous callback function called after this function is done with the
+* list of player statistics
+*/
 function getFilteredPlayersInformation(tournamentid, constraints, callback) {
     var playersInfo = [];
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
@@ -112,6 +149,14 @@ function getFilteredPlayersInformation(tournamentid, constraints, callback) {
     });
 }
 
+/**
+* Responsible for gathering full statistics information about a tournament's teams
+* and calling the given callback with an err if needed, the tournament found, and
+* the array of team statistics
+* @param tournamentid id of the tournament to get team statistics from
+* @param callback asynchronous callback function called after this function is done with the
+* list of team statistics
+*/
 function getFullTeamsGameInformation(tournamentid, callback) {
     var teamsInfo = {};
     var playersInfo = {};
@@ -132,6 +177,14 @@ function getFullTeamsGameInformation(tournamentid, callback) {
     });
 }
 
+/**
+* Responsible for gathering full statistics information about a tournament's players
+* and calling the given callback with an err if needed, the tournament found, and
+* the array of player statistics
+* @param tournamentid id of the tournament to get player statistics from
+* @param callback asynchronous callback function called after this function is done with the
+* list of player statistics
+*/
 function getFullPlayersGameInformation(tournamentid, callback) {
     var playersInfo = {};
     var playerTotals = {};
@@ -149,8 +202,6 @@ function getFullPlayersGameInformation(tournamentid, callback) {
         }
     });
 }
-
-
 
 exports.getTeamsInfo = getTeamsInfo;
 exports.getPlayersInfo = getPlayersInfo;

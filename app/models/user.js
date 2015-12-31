@@ -8,6 +8,10 @@ function toLower(string) {
     return string.toLowerCase();
 }
 
+/**
+* Schema representing a user of the application. Password and email are saved here.
+* Future support for google authentication added 
+*/
 var UserSchema = new Schema({
     local : {
         name : String,

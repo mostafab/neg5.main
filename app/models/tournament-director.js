@@ -7,6 +7,9 @@ function toLower(string) {
     return string.toLowerCase();
 }
 
+/**
+* Schema for a tournament director.
+*/
 var TournamentDirectorSchema = new Schema({
     usertoken : {type : String, required : true},
     name : {type : String, required : true},

@@ -8,6 +8,11 @@ var Tournament = mongoose.model("Tournament");
 var TournamentDirector = mongoose.model("TournamentDirector");
 var tournamentController = require('../../app/controllers/tournament-controller');
 
+/**
+* Validates a login given a username and password
+* @param credentials username and password
+* @param callback callback with an error (or null) and indication of login
+*/
 function validateLocalLogin(credentials, callback) {
     User.findOne({"local.email" : credentials["usrname"].toLowerCase()}, function(err, result) {
         if (err) {
@@ -34,6 +39,12 @@ function validateLocalLogin(credentials, callback) {
     });
 }
 
+/**
+* Registers a user
+* @param credentials username and password
+* @param callback callback with error (or null) and indication of whether or not
+* registration was successful
+*/
 function register(credentials, callback) {
     // console.log(credentials);
     User.findOne({"local.email" : credentials["r_usrname"]}, function(err, result) {
@@ -55,6 +66,11 @@ function register(credentials, callback) {
     });
 }
 
+/**
+* Makes a user and tournament director
+* @param req username, password, and name
+* @param callback
+*/
 function makeUser(req, callback) {
     var name = req["r_name"];
     var email = req["r_usrname"].toLowerCase();
@@ -146,6 +162,14 @@ function updateEmailAndName(director, newName, newEmail, callback) {
     });
 }
 
+/**
+* Updates a user's password if credentials match
+* @param director director to update
+* @param oldPassword old password to check
+* @param newPassword new password to check
+* @param callback callback with an error (or null) and a boolean indicating
+* success or failure
+*/
 function updateUserPassword(director, oldPassword, newPassword, callback) {
     console.log(oldPassword);
     User.findOne({_id : director.usertoken}, function(err, result) {

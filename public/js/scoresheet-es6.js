@@ -580,13 +580,16 @@ function findPlayers(side) {
         success : function(databack, status, xhr) {
             changeTeamLabels(side);
             var pointValues = Object.keys(databack.pointScheme);
-            createPlayerLabels(side, databack.players, pointValues, databack.pointTypes);
+            // createPlayerLabels(side, databack.players, pointValues, databack.pointTypes);
             if ($(side).attr("id") == "leftselect") {
                 game.setTeam(1, $("#leftselect").find(":selected").text(), $("#leftselect").val(), databack.players);
+                console.log(game.team1.players);
                 createPlayerTable(side, game.team1.players, pointValues);
+                createPlayerLabels(side, game.team1.players, pointValues, databack.pointTypes);
             } else {
                 game.setTeam(2, $("#rightselect").find(":selected").text(), $("#rightselect").val(), databack.players);
                 createPlayerTable(side, game.team2.players, pointValues);
+                createPlayerLabels(side, game.team2.players, pointValues, databack.pointTypes);
             }
             if (game.team1 !== null && game.team2 !== null) {
                 $("#game-metadata").slideDown(0);
@@ -866,21 +869,21 @@ function createPlayerLabels(side, players, pointValues, pointTypes) {
     var list = $(side).attr("id") === "leftselect" ? "#leftplayerlist" : "#rightplayerlist";
     var html = "";
     for (var i = 0; i < players.length; i++) {
-        html += "<div class='row cell' data-player='" + players[i]._id + "'>";
+        html += "<div class='row cell' data-player='" + players[i].id + "'>";
         html += "<div class='col-md-5'>";
-        html += "<div class='playerbox'><strong style='color:white'>" + players[i].player_name + "</strong></div></div>";
+        html += "<div class='playerbox'><strong style='color:white'>" + players[i].name + "</strong></div></div>";
         html += "<div class='col-md-7'>";
         html += "<div class='row'>";
         for (var j = 0; j < pointValues.length; j++) {
             if (pointTypes[pointValues[j]] === "N") {
-                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='true' data-point-value='" + pointValues[j] +
-                    "' data-player='" + players[i]._id + "' class='btn btn-md btn-danger btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + players[i].teamid + "' data-neg='true' data-point-value='" + pointValues[j] +
+                    "' data-player='" + players[i].id + "' class='btn btn-md btn-danger btn-point'>" + pointValues[j] + "</button>";
             } else if (pointTypes[pointValues[j]] === "P") {
-                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='false' data-point-value='" + pointValues[j] +
-                    "' data-player='" + players[i]._id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + players[i].teamid + "' data-neg='false' data-point-value='" + pointValues[j] +
+                    "' data-player='" + players[i].id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
             } else {
-                html += "<button" + " data-team='" + players[i].teamID + "' data-neg='false' data-point-value='" + pointValues[j] +
-                    "' data-player='" + players[i]._id + "' class='btn btn-md btn-info btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + players[i].teamid + "' data-neg='false' data-point-value='" + pointValues[j] +
+                    "' data-player='" + players[i].id + "' class='btn btn-md btn-info btn-point'>" + pointValues[j] + "</button>";
             }
         }
         html += "</div>";

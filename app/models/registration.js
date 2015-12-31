@@ -1,6 +1,9 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
+/**
+* Schema for a registration
+*/
 var RegistrationSchema = new Schema({
     teamName : String,
     numTeams : Number,

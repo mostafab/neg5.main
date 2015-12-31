@@ -2,6 +2,9 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var playerSchema = require("./player").schema;
 
+/**
+* Schema for a team
+*/
 var teamSchema = new Schema({
     team_name : String,
     division : String,
@@ -11,6 +14,11 @@ var teamSchema = new Schema({
     shortID : String
 });
 
+/**
+* Gets a team's record
+* @param tournament tournament to check
+* @return team record
+*/
 teamSchema.methods.getRecord = function(tournament) {
     var record = {"wins" : 0, "losses" : 0, "ties" : 0};
     for (var i = 0; i < tournament.games.length; i++) {
@@ -29,6 +37,11 @@ teamSchema.methods.getRecord = function(tournament) {
     return record;
 }
 
+/**
+* Get's a team's record given constraints
+* @param tournament tournament to check
+* @param constraints bounds on rounds
+*/
 teamSchema.methods.getRecordFiltered = function(tournament, constraints) {
     var record = {"wins" : 0, "losses" : 0, "ties" : 0};
     var filteredGames = tournament.games.filter(function(game) {
@@ -50,6 +63,11 @@ teamSchema.methods.getRecordFiltered = function(tournament, constraints) {
     return record;
 }
 
+/**
+* Gets win percentage given a team's record
+* @param record team's record
+* @param team's win %
+*/
 teamSchema.methods.getWinPercentage = function(record) {
     if (record.wins + record.losses == 0) {
         return 0;
@@ -58,6 +76,11 @@ teamSchema.methods.getWinPercentage = function(record) {
     }
 }
 
+/**
+* Gets a team's ppg
+* @param tournament tournament to check
+* @return team ppg
+*/
 teamSchema.methods.getPointsPerGame = function(tournament) {
     totalPoints = 0;
     totalGames = 0;
@@ -78,6 +101,11 @@ teamSchema.methods.getPointsPerGame = function(tournament) {
     }
 }
 
+/**
+* Gets a team's ppg given constraints
+* @param tournament tournament to check
+* @param constraints limits on rounds
+*/
 teamSchema.methods.getPointsPerGameFiltered = function(tournament, constraints) {
     totalPoints = 0;
     totalGames = 0;
@@ -101,6 +129,11 @@ teamSchema.methods.getPointsPerGameFiltered = function(tournament, constraints) 
     }
 }
 
+/**
+* Get a team's opponent ppg
+* @param tournament tournament to check
+* @return opponent ppg
+*/
 teamSchema.methods.getOpponentPPG = function(tournament) {
     totalPoints = 0;
     totalGames = 0;
@@ -121,6 +154,11 @@ teamSchema.methods.getOpponentPPG = function(tournament) {
     }
 }
 
+/**
+* Get a team's opponent ppg given constraints
+* @param tournament tournament to check
+* @param constraints bounds on rounds
+*/
 teamSchema.methods.getOpponentPPGFiltered = function(tournament, constraints) {
     totalPoints = 0;
     totalGames = 0;
@@ -144,6 +182,11 @@ teamSchema.methods.getOpponentPPGFiltered = function(tournament, constraints) {
     }
 }
 
+/**
+* Get a team's total tossups
+* @param tournament tournament to check
+* @return a team's total tossups in JSON
+*/
 teamSchema.methods.getTossupTotals = function(tournament) {
     var pointTotals = {};
     for (var pointValue in tournament.pointScheme) {
@@ -184,6 +227,12 @@ teamSchema.methods.getTossupTotals = function(tournament) {
     return pointTotals;
 }
 
+/**
+* Get a team's total tossups
+* @param tournament tournament to check
+* @param constraints limits on rounds
+* @return a team's total tossups in JSON
+*/
 teamSchema.methods.getTossupTotalsFiltered = function(tournament, constraints) {
     var pointTotals = {};
     for (var pointValue in tournament.pointScheme) {
@@ -227,6 +276,12 @@ teamSchema.methods.getTossupTotalsFiltered = function(tournament, constraints) {
     return pointTotals;
 }
 
+/**
+* Get a team's tossups in one game by summing the player totals
+* @param game game to check
+* @param tournament to check
+* @return tossup totals for one game
+*/
 teamSchema.methods.getTossupTotalsOneGame = function(game, tournament) {
     var pointTotals = {};
     for (var pointValue in tournament.pointScheme) {
@@ -265,6 +320,11 @@ teamSchema.methods.getTossupTotalsOneGame = function(game, tournament) {
 
 }
 
+/**
+* Get a team's total bous points
+* @param tournament tournament to check
+* @return total bonus points
+*/
 teamSchema.methods.getTotalBonusPoints = function(tournament) {
     var pointTotals = this.getTossupTotals(tournament);
     var totalPoints = 0;
@@ -284,6 +344,12 @@ teamSchema.methods.getTotalBonusPoints = function(tournament) {
     return totalPoints;
 }
 
+/**
+* Get a team's total bous points given constraints
+* @param tournament tournament to check
+* @param constraints bounds on rounds
+* @return total bonus points
+*/
 teamSchema.methods.getTotalBonusPointsFiltered = function(tournament, constraints) {
     var filteredGames = tournament.games.filter(function(game) {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
@@ -306,6 +372,12 @@ teamSchema.methods.getTotalBonusPointsFiltered = function(tournament, constraint
     return totalPoints;
 }
 
+/**
+* Gets a team's bonus points for one game
+* @param game game to check
+* @param tournament tournament to check
+* @return bonus points for team
+*/
 teamSchema.methods.getBonusPointsOneGame = function(game, tournament) {
     var pointTotals = this.getTossupTotalsOneGame(game, tournament);
     var bonusPoints = 0;
@@ -323,6 +395,11 @@ teamSchema.methods.getBonusPointsOneGame = function(game, tournament) {
 
 }
 
+/**
+* Get total tossups a team has gotten
+* @param tournament tournament to check
+* @return team's total gets
+*/
 teamSchema.methods.getTotalGets = function(tournament) {
     var pointTotals = this.getTossupTotals(tournament);
     var totalGets = 0;
@@ -335,6 +412,12 @@ teamSchema.methods.getTotalGets = function(tournament) {
     return totalGets;
 }
 
+/**
+* Get total tossups a team has gotten given constraints
+* @param tournament tournament to check
+* @param constraints bounds on rounds
+* @return team's total gets
+*/
 teamSchema.methods.getTotalGetsFiltered = function(tournament, constraints) {
     var pointTotals = this.getTossupTotalsFiltered(tournament, constraints);
     var totalGets = 0;
@@ -347,6 +430,12 @@ teamSchema.methods.getTotalGetsFiltered = function(tournament, constraints) {
     return totalGets;
 }
 
+/**
+* Get total gets for one game
+* @param game game to check
+* @param tournament tournament to check
+* @return total gets for one game
+*/
 teamSchema.methods.getTotalGetsOneGame = function(game, tournament) {
     var pointTotals = this.getTossupTotalsOneGame(game, tournament);
     var totalGets = 0;
@@ -358,6 +447,11 @@ teamSchema.methods.getTotalGetsOneGame = function(game, tournament) {
     return totalGets;
 }
 
+/**
+* Get a team's total negs
+* @param tournament tournament to check
+* @return a team's total negs
+*/
 teamSchema.methods.getTotalNegs = function(tournament) {
     var pointTotals = this.getTossupTotals(tournament);
     var totalNegs = 0;
@@ -369,6 +463,11 @@ teamSchema.methods.getTotalNegs = function(tournament) {
     return totalNegs;
 }
 
+/**
+* Get total tossups a team has heard
+* @param tournament tournament to check
+* @return tossups heard
+*/
 teamSchema.methods.getTossupsHeard = function(tournament) {
     totalTossups = 0;
     for (var i = 0; i < tournament.games.length; i++) {
@@ -380,6 +479,12 @@ teamSchema.methods.getTossupsHeard = function(tournament) {
     return totalTossups;
 }
 
+/**
+* Get total tossups a team has heard given constraints
+* @param tournament tournament to check
+* @param constraints bounds on rounds
+* @return tossups heard
+*/
 teamSchema.methods.getTossupsHeardFiltered = function(tournament, constraints) {
     totalTossups = 0;
     var filteredGames = tournament.games.filter(function(game) {
@@ -394,6 +499,11 @@ teamSchema.methods.getTossupsHeardFiltered = function(tournament, constraints) {
     return totalTossups;
 }
 
+/**
+* Get a team's points per bonus
+* @param tournament tournament to check
+* @return team's overall points-per-bonus
+*/
 teamSchema.methods.getOverallPPB = function(tournament) {
     var totalBonusPoints = this.getTotalBonusPoints(tournament);
     var totalGets = this.getTotalGets(tournament);
@@ -403,6 +513,12 @@ teamSchema.methods.getOverallPPB = function(tournament) {
     return +(totalBonusPoints / totalGets).toFixed(2);
 }
 
+/**
+* Get a team's points per bonus given constraints
+* @param tournament tournament to check
+* @param constraints bounds on rounds
+* @return team's overall points-per-bonus
+*/
 teamSchema.methods.getOverallPPBFiltered = function(tournament, constraints) {
     var totalBonusPoints = this.getTotalBonusPointsFiltered(tournament, constraints);
     var totalGets = this.getTotalGetsFiltered(tournament, constraints);
@@ -412,6 +528,12 @@ teamSchema.methods.getOverallPPBFiltered = function(tournament, constraints) {
     return +(totalBonusPoints / totalGets).toFixed(2);
 }
 
+/**
+* Get a team's ppb for one game
+* @param game game to check
+* @param tournament tournament to check
+* @return points-per-bonus for one game
+*/
 teamSchema.methods.getPPBOneGame = function(game, tournament) {
     var bonusPoints = this.getBonusPointsOneGame(game, tournament);
     var totalGets = this.getTotalGetsOneGame(game, tournament);
@@ -421,14 +543,30 @@ teamSchema.methods.getPPBOneGame = function(game, tournament) {
     return +(bonusPoints / totalGets).toFixed(2);
 }
 
+/**
+* Get team's margin of victory
+* @param tournament tournament to check
+* @return avg margin of victory
+*/
 teamSchema.methods.getAverageMarginOfVictory = function(tournament) {
     return +(this.getPointsPerGame(tournament) - this.getOpponentPPG(tournament)).toFixed(3);
 }
 
+/**
+* Get team's margin of victory given constraints
+* @param tournament tournament to check
+* @param constraints bounds on rounds
+* @return avg margin of victory
+*/
 teamSchema.methods.getAverageMarginOfVictoryFiltered = function(tournament, constraints) {
     return +(this.getPointsPerGameFiltered(tournament, constraints) - this.getOpponentPPGFiltered(tournament, constraints)).toFixed(3);
 }
 
+/**
+* Get all of a team's bounceback points
+* @param tournament tournament to check
+* @return total bounceback points
+*/
 teamSchema.methods.getTotalBouncebackPoints = function(tournament) {
     var totalBouncebackPoints = 0;
     for (var i = 0; i < tournament.games.length; i++) {
@@ -442,6 +580,12 @@ teamSchema.methods.getTotalBouncebackPoints = function(tournament) {
     return totalBouncebackPoints;
 }
 
+/**
+* Get all of a team's overall statistical information given constraints
+* @param tournament tournament to check
+* @param constraints bounds on rounds
+* @return average information about a team's stats
+*/
 teamSchema.methods.getAverageInformationFiltered = function(tournament, constraints) {
     var record = this.getRecordFiltered(tournament, constraints);
     var teamInfo = {};
@@ -461,6 +605,11 @@ teamSchema.methods.getAverageInformationFiltered = function(tournament, constrai
     return {id : this.shortID, stats : teamInfo};
 }
 
+/**
+* Get all of a team's overall statistical information
+* @param tournament tournament to check
+* @return average information about a team's stats
+*/
 teamSchema.methods.getAverageInformation = function(tournament) {
     var record = this.getRecord(tournament);
     var teamInfo = {};
@@ -480,6 +629,11 @@ teamSchema.methods.getAverageInformation = function(tournament) {
     return {id : this.shortID, stats : teamInfo};
 }
 
+/**
+* Get all of a team's overall statistical info about all games played
+* @param tournament tournament to check
+* @return all information about a team's games
+*/
 teamSchema.methods.getAllGamesInformation = function(tournament) {
     var playedGames = [];
     for (var i = 0; i < tournament.games.length; i++) {
@@ -495,7 +649,13 @@ teamSchema.methods.getAllGamesInformation = function(tournament) {
     return playedGames;
 }
 
-teamSchema.methods.getAllGamesInformationFiltered = function(tournament) {
+/**
+* Get all of a team's overall statistical info about all games played given constraints
+* @param tournament tournament to check
+* @param constraints bounds on rounds
+* @return all information about a team's games
+*/
+teamSchema.methods.getAllGamesInformationFiltered = function(tournament, constraints) {
     var playedGames = [];
     var filteredGames = tournament.games.filter(function(game) {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
@@ -513,7 +673,12 @@ teamSchema.methods.getAllGamesInformationFiltered = function(tournament) {
     return playedGames;
 }
 
-
+/**
+* Formats a team's game information to get ready for presentation
+* @param game game to check
+* @param tournament tournament to check
+* @return formatted info about a game
+*/
 teamSchema.methods.formatGameInformation = function(game, tournament) {
     var gameinfo = {};
     gameinfo["Round"] = game.round;
@@ -551,6 +716,11 @@ teamSchema.methods.formatGameInformation = function(game, tournament) {
     return gameinfo;
 }
 
+/**
+* Gets stats about players on this team
+* @param tournament tournament to get players from
+* @return array of player statistics
+*/
 teamSchema.methods.getPlayerStats = function(tournament) {
     var playerStats = [];
     var team = this;
@@ -563,6 +733,11 @@ teamSchema.methods.getPlayerStats = function(tournament) {
     return playerStats;
 }
 
+/**
+* Gets total statistics about a game
+* @param tournament tournament to check
+* @return statistics about all a team's games
+*/
 teamSchema.methods.getTotalGameStats = function(tournament) {
     var totals = this.getAverageInformation(tournament);
     var record = this.getRecord(tournament);

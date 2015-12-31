@@ -5,6 +5,15 @@ var teamSchema = require("./team").schema;
 var gameSchema = require("./game").schema;
 var playerSchema = require("./player").schema;
 
+/**
+* Schema for a tournament. Tournaments include a list of collaborators,
+* teams, players, games, and other information like pointScheme and pointsTypes
+* used to generate statistics.
+* For pointsTypes, there are three possible options:
+*                   "P" : Power
+*                   "B" : Base Point Value
+*                   "N" : Neg
+*/
 var TournamentSchema = new Schema({
     createdAt : {type : Date, default : Date.now()},
     directorid : String, // Foreign key,

@@ -2,6 +2,10 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var TeamSchema = require("./team").schema;
 
+/**
+* Schema for a player stored in a database.
+* Each player has a name, a teamID to link to the team and the team's name
+*/
 var playerSchema = new Schema({
     player_name : String,
     teamID : String,
@@ -11,6 +15,11 @@ var playerSchema = new Schema({
     shortID : String
 });
 
+/**
+* Get a player's points per game
+* @param tournament tournament to check
+* @return ppg for a player
+*/
 playerSchema.methods.getPointsPerGame = function(tournament) {
     var totalPoints = this.getTotalPoints(tournament);
     var games = this.getTotalGamesPlayed(tournament);
@@ -20,6 +29,12 @@ playerSchema.methods.getPointsPerGame = function(tournament) {
     return +(totalPoints / games).toFixed(2);
 }
 
+/**
+* Gets a player's points per game given constraints
+* @param tournament tournament to check
+* @param constraints limits on rounds
+* @return ppg for a player
+*/
 playerSchema.methods.getPointsPerGameFiltered = function(tournament, constraints) {
     var totalPoints = this.getTotalPointsFiltered(tournament, constraints);
     var games = this.getTotalGamesPlayedFiltered(tournament, constraints);
@@ -29,6 +44,11 @@ playerSchema.methods.getPointsPerGameFiltered = function(tournament, constraints
     return +(totalPoints / games).toFixed(2);
 }
 
+/**
+* Returns a player's total point values as a Javascript object, e.g. {15 : 1, 10 : 2 : -5 : 23}
+* @param tournament tournament to check
+* @return a player's total point values
+*/
 playerSchema.methods.getTotalPointValues = function(tournament) {
     var pointValues = {};
     for (var pv in tournament.pointScheme) {
@@ -57,6 +77,13 @@ playerSchema.methods.getTotalPointValues = function(tournament) {
     return pointValues;
 }
 
+/**
+* Returns a player's total point values as a Javascript object, e.g. {15 : 1, 10 : 2 : -5 : 23}
+* given constraints
+* @param tournament tournament to check
+* @param constraints limits on rounds to check
+* @return a player's total point values
+*/
 playerSchema.methods.getTotalPointValuesFiltered = function(tournament, constraints) {
     var pointValues = {}
     for (var pv in tournament.pointScheme) {
@@ -88,6 +115,12 @@ playerSchema.methods.getTotalPointValuesFiltered = function(tournament, constrai
     return pointValues;
 }
 
+/**
+* Gets a player's total tossups for one game as Javascript object
+* @param game game to check
+* @param tournament tournament to check
+* @return tossup totals for a game
+*/
 playerSchema.methods.getTossupTotalsOneGame = function(game, tournament) {
     var pointValues = {};
     for (var pv in tournament.pointScheme) {
@@ -114,6 +147,11 @@ playerSchema.methods.getTossupTotalsOneGame = function(game, tournament) {
 
 }
 
+/**
+* Get a player's total game's played
+* @param tournament tournament to check
+* @return a player's total games
+*/
 playerSchema.methods.getTotalGamesPlayed = function(tournament) {
     var totalGames = 0;
     for (var i = 0; i < tournament.games.length; i++) {
@@ -133,6 +171,12 @@ playerSchema.methods.getTotalGamesPlayed = function(tournament) {
     return totalGames;
 }
 
+/**
+* Get a player's total game's played given constraints
+* @param tournament tournament to check
+* @param constraints limits on rounds
+* @return a player's total games
+*/
 playerSchema.methods.getTotalGamesPlayedFiltered = function(tournament, constraints) {
     var totalGames = 0;
     var filteredGames = tournament.games.filter(function(game) {
@@ -155,6 +199,11 @@ playerSchema.methods.getTotalGamesPlayedFiltered = function(tournament, constrai
     return totalGames;
 }
 
+/**
+* Get's a player's game played for one game
+* @param game game to check
+* @return game played
+*/
 playerSchema.methods.getGamePlayedOneGame = function(game) {
     if (game.team1.team_id == this.teamID && game.team1.playerStats[this._id]) {
         var playerPoints = game.team1.playerStats[this._id];
@@ -170,6 +219,11 @@ playerSchema.methods.getGamePlayedOneGame = function(game) {
     return 0;
 }
 
+/**
+* Get a player's total points
+* @param tournament tournament to check
+* @return player's total points
+*/
 playerSchema.methods.getTotalPoints = function(tournament) {
     var total = 0;
     var pointTotals = this.getTotalPointValues(tournament);
@@ -181,6 +235,12 @@ playerSchema.methods.getTotalPoints = function(tournament) {
     return total;
 }
 
+/**
+* Gets a player's total points given constraints
+* @param tournament tournament to check
+* @param constraints limits on rounds
+* @return player's total point values
+*/
 playerSchema.methods.getTotalPointsFiltered = function(tournament, constraints) {
     var total = 0;
     var pointTotals = this.getTotalPointValuesFiltered(tournament, constraints);
@@ -192,6 +252,12 @@ playerSchema.methods.getTotalPointsFiltered = function(tournament, constraints) 
     return total;
 }
 
+/**
+* Gets a player's points for one game
+* @param game game to check
+* @param tournament tournament to check
+* @return player's point total for one game
+*/
 playerSchema.methods.getTotalPointsOneGame = function(game, tournament) {
     var total = 0;
     var pointTotals = this.getTossupTotalsOneGame(game, tournament);
@@ -203,6 +269,11 @@ playerSchema.methods.getTotalPointsOneGame = function(game, tournament) {
     return total;
 }
 
+/**
+* Gets a player's total tossups heard
+* @param tournament tournament to check
+* @return total tossups heard
+*/
 playerSchema.methods.getTossupsHeard = function(tournament) {
         var totalTossups = 0;
         for (var i = 0; i < tournament.games.length; i++) {
@@ -220,6 +291,12 @@ playerSchema.methods.getTossupsHeard = function(tournament) {
         return totalTossups;
 }
 
+/**
+* Gets a player's total tossups heard given constraints
+* @param tournament tournament to check
+* @param constraints limits on rounds
+* @return tossups heard
+*/
 playerSchema.methods.getTossupsHeardFiltered = function(tournament, constraints) {
     var totalTossups = 0;
     var filteredGames = tournament.games.filter(function(game) {
@@ -240,6 +317,11 @@ playerSchema.methods.getTossupsHeardFiltered = function(tournament, constraints)
     return totalTossups;
 }
 
+/**
+* Gets a player's total tosusps for one game
+* @param game game to check
+* @return tossups heard
+*/
 playerSchema.methods.getTossupHeardOneGame = function(game) {
     if (game.team1.team_id == this.teamID) {
         if (game.team1.playerStats[this._id]) {
@@ -253,6 +335,11 @@ playerSchema.methods.getTossupHeardOneGame = function(game) {
     return 0;
 }
 
+/**
+* Gets a player's tossups heard given constraints
+* @param tournament tournament to check
+* @param bounds limits on rounds
+*/
 playerSchema.methods.getTossupsHeardConstraint = function(tournament, bounds) {
 
         function isBelowMaxRound(game) {
@@ -277,6 +364,11 @@ playerSchema.methods.getTossupsHeardConstraint = function(tournament, bounds) {
         return totalTossups;
 }
 
+/**
+* Gets a player's points per tossup
+* @param tournament tournament to check
+* @return points per tossup
+*/
 playerSchema.methods.getPointsPerTossup = function(tournament) {
     if (this.getTossupsHeard(tournament) == 0) {
         return 0;
@@ -284,51 +376,11 @@ playerSchema.methods.getPointsPerTossup = function(tournament) {
     return this.getTotalPoints(tournament) / this.getTossupsHeard(tournament);
 }
 
-playerSchema.methods.getPowersToNegs = function(tournament) {
-    // if (this.getTossupsHeard(tournament) == 0) {
-    //     return 0;
-    // }
-    // var negs = 0;
-    // var powers = 0;
-    // for (vals in tournament.pointScheme) {
-    //     if (tournament.pointScheme.hasOwnProperty(vals) && this.pointValues[vals] != undefined) {
-    //         if (tournament.pointsTypes[vals] && tournament.pointsTypes[vals] == "N") {
-    //             negs += this.pointValues[vals];
-    //         } else if (tournament.pointsTypes[vals] && tournament.pointsTypes[vals] == "P"){
-    //             powers += this.pointValues[vals];
-    //         }
-    //     }
-    // }
-    //
-    // if (negs == 0) {
-    //     return Infinity;
-    // } else {
-    //     return powers / negs;
-    // }
-}
-
-playerSchema.methods.getGetsToNegs = function(tournament) {
-    // if (this.getTossupsHeard(tournament) == 0) {
-    //     return 0;
-    // }
-    // var negs = 0;
-    // var gets = 0;
-    // for (vals in tournament.pointScheme) {
-    //     if (tournament.pointScheme.hasOwnProperty(vals) && this.pointValues[vals] != undefined) {
-    //         if (tournament.pointsTypes[vals] && tournament.pointsTypes[vals] == "N") {
-    //             negs += this.pointValues[vals];
-    //         } else if (tournament.pointsTypes[vals] && (tournament.pointsTypes[vals] == "P" || tournament.pointsTypes[vals] == "B")){
-    //             gets += this.pointValues[vals];
-    //         }
-    //     }
-    // }
-    // if (negs == 0) {
-    //     return Infinity;
-    // } else {
-    //     return gets / negs;
-    // }
-}
-
+/**
+* Returns all statistics information about a player in a javascript object
+* @param tournament tournament to check
+* @return all statistics information about a player
+*/
 playerSchema.methods.getAllInformation = function(tournament) {
     var playerInfo = {};
     playerInfo["Player"] = this.player_name;
@@ -342,6 +394,12 @@ playerSchema.methods.getAllInformation = function(tournament) {
     return {id : this.shortID, stats : playerInfo};
 }
 
+/**
+* Returns all statistics information about a player in a javascript object given constraints
+* @param tournament tournament to check
+* @param constraints limits on rounds
+* @return all statistics information about a player
+*/
 playerSchema.methods.getAllInformationFiltered = function(tournament, constraints) {
     var playerInfo = {};
     playerInfo["Player"] = this.player_name;
@@ -354,6 +412,11 @@ playerSchema.methods.getAllInformationFiltered = function(tournament, constraint
     return {id : this.shortID, stats : playerInfo};
 }
 
+/**
+* Returns all information about a player's games as an array
+* @param tournament tournament to check
+* @return array of information about player's games
+*/
 playerSchema.methods.getAllGamesInformation = function(tournament) {
     var playedGames = [];
     for (var i = 0; i < tournament.games.length; i++) {
@@ -369,6 +432,12 @@ playerSchema.methods.getAllGamesInformation = function(tournament) {
     return playedGames;
 }
 
+/**
+* Format's one game's information for a player
+* @param game game to check
+* @param tournament tournament to check
+* @return information about a single game
+*/
 playerSchema.methods.formatGameInformation = function(game, tournament) {
     var gameinfo = {};
     gameinfo["Round"] = game.round;
@@ -398,6 +467,11 @@ playerSchema.methods.formatGameInformation = function(game, tournament) {
     return gameinfo;
 }
 
+/**
+* Gets all of a player's game information
+* @param tournament tournament to check
+* @return statistics information about a player
+*/
 playerSchema.methods.getTotalGameStats = function(tournament) {
     var stats = this.getAllInformation(tournament).stats;
     return stats;
