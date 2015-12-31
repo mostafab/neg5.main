@@ -1,5 +1,3 @@
-'use strict';
-
 var mongoose = require("mongoose");
 var shortid = require("shortid");
 // var shortid = require("short-mongo-id");
@@ -819,6 +817,35 @@ function addScoresheetAsGame(tournamentid, scoresheet, callback) {
     });
 }
 
+function cloneTournament(tournamentid, phaseName, callback) {
+    Tournament.findOne({_id : tournamentid}, function(err, tournament) {
+        if (err) {
+            callback(err, null);
+        } else if (!tournament) {
+            callback(null, null);
+        } else {
+            var newTournament = new Tournament();
+            newTournament.tournament_name = phaseName;
+            newTournament.shortID = shortid.generate();
+            newTournament.teams = tournament.teams;
+            newTournament.players = tournament.players;
+            newTournament.directorid = tournament.directorid;
+            newTournament.collaborators = tournament.collaborators;
+            newTournament.location = tournament.location;
+            newTournament.date = tournament.date;
+            newTournament.openRegistration = tournament.openRegistration;
+            newTournament.questionSet = tournament.questionSet;
+            newTournament.description = tournament.description;
+            newTournament.pointScheme = tournament.pointScheme;
+            newTournament.pointsTypes = tournament.pointsTypes;
+
+            newTournament.save(function(err) {
+                callback(err, newTournament.shortID);
+            });
+        }
+    });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
@@ -840,3 +867,4 @@ exports.addCollaborator = addCollaborator;
 exports.findCollaborators = findCollaborators;
 exports.removeCollaborator = removeCollaborator;
 exports.addScoresheetAsGame = addScoresheetAsGame;
+exports.cloneTournament = cloneTournament;

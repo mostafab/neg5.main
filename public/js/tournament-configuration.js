@@ -1,5 +1,3 @@
-'use strict';
-
 var nextPlayerNum = 5;
 var gameOptions;
 var teamOptions;
@@ -163,6 +161,16 @@ $(document).ready(function() {
         deleteRegistrationAJAX($(this));
     });
 
+    $("#new-phase").click(function() {
+        $("#new-phase-name").css("border-color", "white");
+        console.log($("#new-phase-name").val());
+        if ($("#new-phase-name").val().length !== 0) {
+            makePhaseAJAX($(this).attr("data-tournament"), $("#new-phase-name").val());
+        } else {
+            $("#new-phase-name").css("border-color", "red");
+        }
+    });
+
 });
 
 function uncheckBoxes(checkbox) {
@@ -193,6 +201,26 @@ function removeTeamSender(button) {
 function removeGameSender(button) {
     console.log($(button).parent().serialize());
     removeGame($(button).parent().serialize(), button);
+}
+
+function makePhaseAJAX(tournamentid, phaseName) {
+    $("#new-phase").prop("disabled", true);
+    $.ajax({
+        url : "/tournaments/newphase",
+        type : "POST",
+        data : {tournamentid : tournamentid, phaseName : phaseName},
+        success : function(databack, status, xhr) {
+            console.log(databack);
+            // $("#new-phase").prop("disabled", false);
+            $("#new-phase").text("New phase created!");
+            var html = "<a class='btn btn-lg btn-warning' href='/t/" + databack.newID + "'>Go to Next Phase</a>";
+            $(html).hide().appendTo("#success-phase-div").fadeIn(300);
+            // $("#success-phase-div").empty().append(html);
+        },
+        error : function(xhr, status, err) {
+            $("#new-phase").text("Could not make new phase.");
+        }
+    });
 }
 
 function deleteRegistrationAJAX(button) {

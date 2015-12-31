@@ -51,6 +51,8 @@ block content
                                     a(href="#teams" data-toggle="tab") Teams
                                 li
                                     a(href="#stats" data-toggle="tab") Statistics
+                                li
+                                    a(href="#merge" data-toggle="tab") New Phase/Merge Phases
                     br
                     br
 
@@ -511,11 +513,24 @@ block content
                                                         li
                                                             button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/players") Player Stats
 
-                            // div(class="panel panel-default")
-                            //     div(class="panel-heading collapsable") Custom Stats Will Display Here
-                            //
-                            //     div(class="panel-body")
-                            //         div(class="col-md-12" id="customstatsdiv" style="margin-top:20px")
+                        div(class="tab-pane fade" id="merge")
+
+                            div(class="panel panel-default")
+                                div(class="panel-heading collapsable") New Tournament Phase
+                                div(class="panel-body")
+                                    div(class="row")
+                                        div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
+                                            div(class="alert alert-success")
+                                                | Create a new phase for your tournament if you need new divisions for playoffs.
+                                                | This action will create a new tournament with the same teams and players. You'll be
+                                                | able to merge tournaments together if you need compiled stats.
+                                        div(class="col-md-6 col-sm-6 col=lg-6")
+                                            div(class="form-group")
+                                                input(type='text' value="#{tournament.tournament_name} Playoffs" class="form-control" id="new-phase-name")
+
+                                        div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="success-phase-div")
+                                            button(class="btn btn-lg btn-success" data-tournament='#{tournament._id}' id="new-phase") New Phase
+
 
 block scripts
     script(src="/js/tournament-configuration.js")
