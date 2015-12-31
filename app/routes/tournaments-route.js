@@ -45,6 +45,17 @@ module.exports = function(app) {
             }
         });
 
+    app.post("/tournaments/newphase", function(req, res) {
+        console.log(req.body);
+        tournamentController.cloneTournament(req.body.tournamentid, req.body.phaseName, function(err, newTournamentID) {
+            if (err) {
+                res.status(500).end();
+            } else {
+                res.status(200).send({newID : newTournamentID});
+            }
+        });
+    });
+
     app.get("/tournaments/findDirectors", function(req, res, next) {
         tournamentController.findDirectors(req.query.collab, function(err, directors) {
             if (err) {
