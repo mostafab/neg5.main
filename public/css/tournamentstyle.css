@@ -2,8 +2,8 @@
     font-weight: bold;
     color: white;
     font-size: 18px;
-    /*background: #2C3136;*/
-    background-image: url("/img/backgrounds/tweed.png");
+    background-color:#363B40;
+    /*background-image: url("/img/backgrounds/tweed.png");*/
     /*background-color: black;*/
     border-width: 10px;
     padding: 15px;
@@ -26,6 +26,12 @@
     background: rgba(0, 140, 130, .7);
     padding: 40px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.user-screen {
+    padding: 40px;
+    background: rgb(0, 113, 113);
+    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
 }
 
 .jumbotron {
@@ -102,7 +108,7 @@ td {
     border-color: transparent;
     /*border-style: solid;*/
     /*background-color: #E6E6E6;*/
-    background-image: url("/img/backgrounds/tweed.png");
+    /*background-image: url("/img/backgrounds/tweed.png");*/
     /*border-width: 0px;*/
     color: white;
 }
@@ -116,7 +122,8 @@ td {
 
 .btn {
     margin: 10px;
-    border-radius: 0px;
+    border-radius: 2px;
+    /*box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);*/
 }
 
 .tournament-info-field::-webkit-input-placeholder

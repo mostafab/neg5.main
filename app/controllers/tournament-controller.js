@@ -817,6 +817,12 @@ function addScoresheetAsGame(tournamentid, scoresheet, callback) {
     });
 }
 
+/**
+* Clones a tournament as a new phase. Has same teams and players as given tournamentid
+* @param tournamentid id of the tournament to clone
+* @param phaseName name of the new tournament
+* @param callback callback function with new tournament id and an error (or null)
+*/
 function cloneTournament(tournamentid, phaseName, callback) {
     Tournament.findOne({_id : tournamentid}, function(err, tournament) {
         if (err) {
@@ -846,6 +852,99 @@ function cloneTournament(tournamentid, phaseName, callback) {
     });
 }
 
+/**
+* Merges two tournaments together given their ids and a name for the resultant
+* tournament.
+* @param firstTournamentID id of first tournament
+* @param secondTournamentID id of the second tournament
+* @param name name of the new tournament
+* @param callback callback with the new tournament (or null if error) and an error (or null)
+*/
+function mergeTournaments(firstTournamentID, secondTournamentID, name, callback) {
+    var mergedTourney = new Tournament();
+    mergedTourney.tournament_name = name;
+    mergedTourney.shortID = shortid.generate();
+    mergedTourney.teams = [];
+    mergedTourney.players = [];
+    mergedTourney.games = [];
+    Tournament.findOne({_id : firstTournamentID}, function(err, first) {
+        if (err) {
+            callback(err, null);
+        } else if (!first) {
+            callback(null, null);
+        } else {
+            mergedTourney.teams = first.teams;
+            mergedTourney.players = first.players;
+            mergedTourney.divisions = first.divisions;
+            mergedTourney.games = mergedTourney.games.concat(first.games);
+            mergedTourney.collaborators = first.collaborators;
+            var date = new Date(first.date);
+            mergedTourney.date = date;
+            mergedTourney.location = first.location;
+            mergedTourney.directorid = first.directorid;
+            mergedTourney.questionSet = first.questionSet;
+            mergedTourney.description = first.description;
+            mergedTourney.pointsTypes = first.pointsTypes;
+            mergedTourney.pointScheme = first.pointScheme;
+
+            Tournament.findOne({_id : secondTournamentID}, function(err, second) {
+                if (err) {
+                    callback(err, null);
+                } else if (!second) {
+                    callback(null, null);
+                } else {
+                    mergedTourney.games = mergedTourney.games.concat(second.games);
+                    var existingTeams = {};
+                    var existingPlayers = {};
+                    for (var i = 0; i < mergedTourney.teams.length; i++) {
+                        existingTeams[mergedTourney.teams[i]._id] = true;
+                    }
+                    for (var i = 0; i < mergedTourney.players.length; i++) {
+                        existingPlayers[mergedTourney.players[i]._id] = true;
+                    }
+                    for (var i = 0; i < second.teams.length; i++) {
+                        if (!existingTeams[second.teams[i]._id]) {
+                            mergedTourney.teams.push(second.teams[i]);
+                        }
+                    }
+                    for (var i = 0; i < second.players.length; i++) {
+                        if (!existingPlayers[second.players[i]._id]) {
+                            mergedTourney.players.push(second.players[i]);
+                        }
+                    }
+                    mergedTourney.save(function(err) {
+                        callback(err, mergedTourney);
+                    });
+                }
+            });
+        }
+    });
+}
+
+/**
+* Deletes a tournament from the database
+* @param directorid id of the logged in director
+* @param tournamentid id of the tournament to delete
+* @param callback callback with an error (or null) and indication of success
+*/
+function deleteTournament(directorid, tournamentid, callback) {
+    Tournament.findOne({_id : tournamentid}, function(err, tournament) {
+        if (err) {
+            callback(err, null);
+        } else if (tournament.directorid == directorid) {
+            Tournament.remove({_id : tournamentid}, function(err) {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, null);
+                }
+            });
+        } else {
+            callback(null, "Unauthorized");
+        }
+    });
+}
+
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
@@ -868,3 +967,5 @@ exports.findCollaborators = findCollaborators;
 exports.removeCollaborator = removeCollaborator;
 exports.addScoresheetAsGame = addScoresheetAsGame;
 exports.cloneTournament = cloneTournament;
+exports.mergeTournaments = mergeTournaments;
+exports.deleteTournament = deleteTournament;
