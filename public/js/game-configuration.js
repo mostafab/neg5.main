@@ -51,14 +51,14 @@ $(document).ready(function() {
 
 function savePlayerSender(button) {
     var form = $(button).parent().prev().children("form");
-    console.log($(form).serialize());
+    // console.log($(form).serialize());
     $(button).prop("disabled", true);
     editPlayerAJAX($(form).serialize());
 }
 
 function deletePlayerSender(button) {
     var form = $(button).parent().prev().children("form");
-    console.log($(form).serialize());
+    // console.log($(form).serialize());
     $(button).prop("disabled", true);
     removePlayerAJAX($(form).serialize(), button);
 }
@@ -82,8 +82,8 @@ function editGameAJAX() {
         type : "POST",
         data : $("#changegameform").serialize(),
         success : function(databack, status, xhr) {
-            console.log(databack);
-            console.log("Edited game successfully");
+            // console.log(databack);
+            // console.log("Edited game successfully");
             showMessageInDiv("#updategamediv", "Game updated successfully", null);
         },
         error : function(xhr, status, err) {
@@ -129,7 +129,7 @@ function editPlayerAJAX(playerForm, button) {
         type : "POST",
         data : playerForm,
         success : function(databack, status, xhr) {
-            console.log(databack.msg);
+            // console.log(databack.msg);
             showAfterSentMessage(databack.msg, databack.err);
         },
         error : function(xhr, status, err) {
@@ -151,7 +151,7 @@ function addPlayerAJAX(playerForm) {
         type : "POST",
         data : playerForm,
         success : function(databack, status, xhr) {
-            console.log(databack);
+            // console.log(databack);
             showAddPlayerMsg(databack);
             if (!databack.err) {
                 addNewPlayerRow(databack.player, databack.tid);
@@ -198,7 +198,7 @@ function getTeamPlayersAJAX(side) {
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#leftchoice").val()},
             success : function(databack, status, xhr) {
-                console.log(databack);
+                // console.log(databack);
                 replacePlayerRows(databack.players, databack.pointScheme, "LEFT");
             }
         });

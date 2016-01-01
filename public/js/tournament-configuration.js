@@ -81,7 +81,7 @@ $(document).ready(function() {
     });
 
     $(".deletebutton").click(function(e) {
-        console.log($(this).parent().serialize());
+        // console.log($(this).parent().serialize());
         removeGame($(this).parent().serialize(), $(this));
     });
 
@@ -108,7 +108,7 @@ $(document).ready(function() {
     $(".custombutton").click(function(e) {
         // generateCustomStatsAJAX($(this));
         var postURL = $(this).attr("data-post-url");
-        console.log(postURL);
+        // console.log(postURL);
         $("#filterstatsform").attr("action", postURL);
         $("#filterstatsform").submit();
     });
@@ -168,7 +168,7 @@ $(document).ready(function() {
 
     $("#new-phase").click(function() {
         $("#new-phase-name").css("border-color", "white");
-        console.log($("#new-phase-name").val());
+        // console.log($("#new-phase-name").val());
         if ($("#new-phase-name").val().length !== 0) {
             makePhaseAJAX($(this).attr("data-tournament"), $("#new-phase-name").val());
         } else {
@@ -177,7 +177,7 @@ $(document).ready(function() {
     });
 
     $("#delete-tournament-button").click(function() {
-        console.log("Deleting...");
+        // console.log("Deleting...");
         $("#confirm-delete-div").slideDown(300);
     })
 
@@ -194,7 +194,7 @@ $(document).ready(function() {
 function uncheckBoxes(checkbox) {
     var parentDiv = $(checkbox).parent().parent();
     parentDiv.find(".pointgroup").each(function(index, radio) {
-        console.log($(radio)[0] === $(checkbox)[0]);
+        // console.log($(radio)[0] === $(checkbox)[0]);
         if ($(radio)[0] !== $(checkbox)[0]) {
             $(radio).prop("checked", false);
         }
@@ -208,7 +208,7 @@ function checkTournamentRegistration() {
             empty = true;
         }
     });
-    console.log(empty);
+    // console.log(empty);
     return empty;
 }
 
@@ -217,7 +217,7 @@ function removeTeamSender(button) {
 }
 
 function removeGameSender(button) {
-    console.log($(button).parent().serialize());
+    // console.log($(button).parent().serialize());
     removeGame($(button).parent().serialize(), button);
 }
 
@@ -228,7 +228,7 @@ function makePhaseAJAX(tournamentid, phaseName) {
         type : "POST",
         data : {tournamentid : tournamentid, phaseName : phaseName},
         success : function(databack, status, xhr) {
-            console.log(databack);
+            // console.log(databack);
             // $("#new-phase").prop("disabled", false);
             $("#new-phase").text("New phase created!");
             var html = "<a class='btn btn-lg btn-warning' href='/t/" + databack.newID + "'>Go to Next Phase</a>";
@@ -320,7 +320,7 @@ function sendGameToServer() {
         type : "POST",
         data : $("#gamedataform").serialize(),
         success : function(databack, status, xhr) {
-            console.log(databack);
+            // console.log(databack);
             $("#add-game-message").empty();
             if (databack.game) {
                 updateGameList(databack);
@@ -356,7 +356,7 @@ function findPlayersByTeamnameAndTournament(side) {
             data : {tournamentid : $("#tournament_id_change").val(),
                     teamname : $("#leftchoice").val()},
             success : function(databack, status, xhr) {
-                console.log(databack);
+                // console.log(databack);
                 generatePlayerRows(databack.players, databack.pointScheme, "LEFT");
             }
         });
@@ -379,7 +379,7 @@ function removeGame(forminfo, button) {
         type : "POST",
         data : forminfo,
         success : function(databack, status, xhr) {
-            console.log("Success : " + databack);
+            // console.log("Success : " + databack);
             $(button).parent().parent().parent().remove();
         }
     });
@@ -391,10 +391,10 @@ function removeTeam(forminfo, button) {
         type : "POST",
         data : forminfo,
         success : function(databack, status, xhr) {
-            console.log(databack);
+            // console.log(databack);
             $(button).parent().parent().parent().remove();
             var teamid = databack.teamid;
-            console.log(teamid);
+            // console.log(teamid);
             if (teamid) {
                 $("#leftchoice option[value='" + teamid + "']").remove();
                 $("#rightchoice option[value='" + teamid + "']").remove();
@@ -464,7 +464,7 @@ function generateCustomStatsAJAX(button) {
             if (databack.type == "team") {
                 displayTeamCustomStats(databack);
             } else if (databack.type == "player") {
-                console.log(databack);
+                // console.log(databack);
             }
         }
     });
@@ -654,7 +654,7 @@ function updateGameList(gameinfo) {
 }
 
 function updateTeamList(team) {
-    console.log(team);
+    // console.log(team);
     var html = "<tr>";
     html += "<td>" + team.team_name + "</td>";
     html += "<td>" + team.division + "</td>";
@@ -695,7 +695,7 @@ function formatPointSchemaForm(pointTypes) {
     $("#point-schema-form .pointval").each(function() {
         if ($(this).attr("name") !== "tournamentid") {
             $(this).attr("name", "pointval" + currentPointNum);
-            console.log($(this).val() + ", " + $(this).attr("name"));
+            // console.log($(this).val() + ", " + $(this).attr("name"));
             currentPointNum++;
         }
     });
@@ -707,7 +707,7 @@ function formatPointTypes() {
     $("#point-schema-form .pointval").each(function(index) {
         if ($(this).val() != "") {
             var pointValue = $(this).val();
-            console.log($(this).val());
+            // console.log($(this).val());
             $(this).parent().next().find(".pointgroup").each(function(index, radio) {
                 if ($(radio).is(":checked")) {
                     pointTypes[pointValue] = $(radio).val();
@@ -723,7 +723,7 @@ function formatDivisionsForm() {
     $("#divisions-form :input").each(function() {
         if ($(this).attr("name") !== "tournamentid") {
             $(this).attr("name", "division" + currentDivisonNum);
-            console.log($(this).val() + ", " + $(this).attr("name"));
+            // console.log($(this).val() + ", " + $(this).attr("name"));
             currentDivisonNum++;
         }
     });

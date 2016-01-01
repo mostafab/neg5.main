@@ -500,7 +500,7 @@ $(document).ready(function() {
 
     $("body").on("click", "#submit-game", function() {
         var scoresheet = parseScoresheet(game);
-        console.log(scoresheet);
+        // console.log(scoresheet);
         $(this).prop("disabled", true);
         submitScoresheet(scoresheet);
     });
@@ -525,7 +525,7 @@ $(document).ready(function() {
     });
 
     $("body").on("click", "#scoresheet-body td", function() {
-        console.log($(this).attr("data-player"));
+        // console.log($(this).attr("data-player"));
     });
 
     $('body').ajaxStart(function() {
@@ -668,7 +668,7 @@ function undoGameSubmission(tournament, game) {
             tournament_idgame : tournament
         },
         success : function(databack, status, xhr) {
-            console.log(databack);
+            // console.log(databack);
             $("#dead-tossup-div").slideDown(400);
             $("#submit-game-div").slideDown(400);
             $("#goto-game-div").slideUp(400);
