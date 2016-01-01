@@ -2,10 +2,6 @@
 
 $(document).ready(function() {
 
-    $(".tournament-select").change(function() {
-        console.log($(this).val());
-    });
-
     $("#merge-button").click(function() {
         $(this).text("Merge Tournaments");
         $("#name-merge").css("border-color", "white");

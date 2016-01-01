@@ -1,3 +1,5 @@
+var ONE_WEEK = 86400000 * 7;
+
 var config = require('./config');
 var express = require('express');
 var bodyParser = require("body-parser");
@@ -27,7 +29,7 @@ module.exports = function() {
     app.set("views", "./app/views");
     app.set("view engine", "jade");
 
-    app.use(express.static("./public"));
+    app.use(express.static("./public", {maxAge : ONE_WEEK}));
 
 
     require('../app/routes/index.js')(app, passport);

@@ -24,8 +24,13 @@ $(document).ready(function() {
     });
 
     $("#add-team-button").click(function(e) {
-        $(this).prop("disabled", true);
-        sendTeamToServer();
+        $("#team_name_input").css("border-color", "white");
+        if ($("#team_name_input").val().length !== 0) {
+            $(this).prop("disabled", true);
+            sendTeamToServer();
+        } else {
+            $("#team_name_input").css("border-color", "red");
+        }
     });
 
     $("#team_name_input").keyup(function(e) {
