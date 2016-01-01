@@ -4,7 +4,7 @@ html
     meta(name="description" content="Neg5 is a quiz bowl tournament management system. It is meant to help tournament directors automate their registrations, game inputs, and statistis generation so that they can focus on running their tournament.")
     block titleContent
         title Neg 5
-
+    link(rel="shortcut icon" href="/img/neg5logo.ico")
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css")
     link(rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css")
     link(href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css')
@@ -45,9 +45,9 @@ html
             div(class="container navmiddle")
                 if !tournamentd
                     div(class="navbar-header")
-                        div(class="navbar-brand navbar-brand-centered" style="color:black") Neg 5 : Quizbowl for the Cloud
-                            // img(src="http://dev.girliestgeek.com/img/girliest-geek-logo.png")
-                            div(style="clear:both")
+                        div(class="navbar-brand navbar-brand-centered" style="color:black")
+                            div(class="container" style="height:90%")
+                                img(src="/img/logo.png")
 
                 if tournamentd
                     div(class="collapse navbar-collapse")
@@ -80,9 +80,10 @@ html
                             li(class="list-element")
                                 a(href="/about" style="color:black") About Neg 5
                             li(class="list-element")
-                                a(href="https://github.com/mostafab/neg5" style="color:black") Want to Contribute?
+                                a(href="https://github.com/mostafab/neg5" style="color:black")
                                      i(class="fa fa-github" style="margin-left:10px")
     //- Use
+
 
   body(class="body")
     block content
