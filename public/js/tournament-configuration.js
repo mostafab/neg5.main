@@ -171,6 +171,19 @@ $(document).ready(function() {
         }
     });
 
+    $("#delete-tournament-button").click(function() {
+        console.log("Deleting...");
+        $("#confirm-delete-div").slideDown(300);
+    })
+
+    $("#no-delete").click(function() {
+        $("#confirm-delete-div").slideUp(300);
+    })
+
+    $("#yes-delete").click(function() {
+        document.deleteTournament.submit();
+    });
+
 });
 
 function uncheckBoxes(checkbox) {

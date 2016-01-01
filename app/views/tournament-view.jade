@@ -28,9 +28,9 @@ block content
     -    return formattedDate;
     - }
 
-    // main(class="cd-main-content")
     div(class="content-wrapper box" style='padding-left:100px;padding-right:100px;padding-top:25px')
         input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
+
         div(class="row")
                 div(class="col-md-12")
                     div(style="margin:20px; margin-bottom:50px")
@@ -52,7 +52,10 @@ block content
                                 li
                                     a(href="#stats" data-toggle="tab") Statistics
                                 li
-                                    a(href="#merge" data-toggle="tab") New Phase/Merge Phases
+                                    a(href="#phase" data-toggle="tab") New Phase
+                                if tournamentd._id == tournament.directorid
+                                    li
+                                        a(href="#delete" class="btn-danger" data-toggle="tab") Delete
                     br
                     br
 
@@ -513,7 +516,7 @@ block content
                                                         li
                                                             button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/players") Player Stats
 
-                        div(class="tab-pane fade" id="merge")
+                        div(class="tab-pane fade" id="phase")
 
                             div(class="panel panel-default")
                                 div(class="panel-heading collapsable") New Tournament Phase
@@ -523,15 +526,35 @@ block content
                                             div(class="alert alert-success")
                                                 | Create a new phase for your tournament if you need new divisions for playoffs.
                                                 | This action will create a new tournament with the same teams and players. You'll be
-                                                | able to merge tournaments together if you need compiled stats.
+                                                | able to merge tournaments together if you need compiled stats by going to the "All Tournaments" page.
                                         div(class="col-md-6 col-sm-6 col=lg-6")
                                             div(class="form-group")
-                                                input(type='text' value="#{tournament.tournament_name} Playoffs" class="form-control" id="new-phase-name")
+                                                input(type='text' placeholder='Enter New Phase Name Here' class="form-control" id="new-phase-name")
 
                                         div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="success-phase-div")
                                             button(class="btn btn-lg btn-success" data-tournament='#{tournament._id}' id="new-phase") New Phase
 
+                        if (tournament.directorid == tournamentd._id)
+                            div(class="tab-pane fade" id="delete")
 
+                                div(class="panel panel-default")
+                                    div(class="panel-heading collapsable") Delete #{tournament.tournament_name}
+                                    div(class="panel-body")
+                                        div(class="row")
+                                            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
+                                                div(class="alert alert-danger")
+                                                    | If you no longer need this tournament, you can delete it here. Please make sure this is what you want
+                                                    | to do. This action is final.
+                                                    strong There is no way to undo a tournament deletion.
+
+                                                form(method="post" action="/t/#{tournament._id}/delete" name="deleteTournament")
+                                                    button(type="button" class="btn btn-md btn-danger" id="delete-tournament-button") Delete This Tournament
+
+                                        div(class="col-md-6" id="confirm-delete-div" style='display:none')
+                                            div(class="col-md-6")
+                                                button(type="button" class="btn btn-md btn-danger btn-block" id="yes-delete") Yes
+                                            div(class="col-md-6")
+                                                button(type="button" class="btn btn-md btn-success btn-block" id="no-delete") Never Mind
 block scripts
     script(src="/js/tournament-configuration.js")
     script(src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js")

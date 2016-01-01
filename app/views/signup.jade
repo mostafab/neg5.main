@@ -115,7 +115,8 @@ block content
                                                     type="text",
                                                     name="team_name",
                                                     placeholder="Team Name",
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field"
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40"
                                                 )
                                             div(class="form-group")
                                                 input(
@@ -158,7 +159,8 @@ block content
                                                     name="team_name",
                                                     placeholder="Team Name",
                                                     value="#{prevReg.teamName}",
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field"
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40"
                                                 )
                                             div(class="form-group")
                                                 input(
@@ -166,27 +168,30 @@ block content
                                                     name="teamnumber",
                                                     placeholder="Number of Teams",
                                                     value="#{prevReg.numTeams}",
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field"
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40"
                                                 )
                                             div(class="form-group")
                                                 input(
                                                     class="form-control input-lg center-text no-border-radius tournament-info-field",
                                                     placeholder="Email",
                                                     value="#{prevReg.email}",
-                                                    name="email"
+                                                    name="email",
+                                                    style="background-color:#363B40"
                                                 )
                                             div(class="form-group")
                                                 textarea(
                                                     class="form-control input-lg center-text no-border-radius tournament-info-field",
                                                     placeholder="Other Information",
                                                     name="otherinfo",
-                                                    rows="10"
+                                                    rows="10",
+                                                    style="background-color:#363B40"
                                                 ) #{prevReg.message}
                                             button(type="button" class="btn btn-lg btn-stats no-border-radius" id="submitregistration") Confirm Registration
                                             div(class="form-group" style="text-align:center")
                                                 br
                                                 br
-                                                div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="tregmessage")
+                                                div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="tregmessage" style="background-color:#363B40")
 
                                 else
                                     div(class="form-group")

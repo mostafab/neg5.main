@@ -25,12 +25,12 @@ p {
 a {
         margin: 10px;
 }
-
+/*
 .list-element {
     border-color:grey;
     border-style:solid;
     border-width:0px 1px 0 1px;
-}
+}*/
 
 .list-element:hover {
     background: rgba(100, 100, 100, .1);

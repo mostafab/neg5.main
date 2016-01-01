@@ -33,12 +33,11 @@ block content
                                 th(class="table-head" style='text-align:center') Open Registration
                                 th(class="table-head" style='text-align:center') Question set
                                 th(class="table-head" style='text-align:center') Number of Teams Added
-                        tbody
+                        tbody(id="tournaments-body")
                             each val, i in tournaments
                                 tr()
                                     td
                                         a(href="/t/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
-                                            i(class="fa fa-pencil" style="margin:5px")
                                     td #{tournaments[i].location}
                                     if tournaments[i].date
                                         td #{tournaments[i].date.getMonth() + "/" + tournaments[i].date.getDate() + "/" + tournaments[i].date.getFullYear()}
@@ -50,3 +49,43 @@ block content
                                         td No
                                     td #{tournaments[i].questionSet}
                                     td #{tournaments[i].teams.length}
+            div(class="row col-md-12")
+                div(class="col-md-6 statbox" style='padding:20px')
+                    // div(style="margin:20px; margin-bottom:50px")
+                    h2(class="title" style='width:50%') Merge Tournaments
+                    div(class='' style='padding:10px')
+                        h3
+                            | Merging two tournaments creates a brand new tournament with compiled informaton. It will not replace the two tournaments you merge.
+                            | Divisions from the tournament on the left will be used when merging.
+                    br
+                    div(class="col-md-6")
+                        select(name="tournamentOne" class="form-control tournament-select" id="left-select")
+                            option(disabled selected) Select First Tournament
+                            each tournament, i in tournaments
+                                option(value="#{tournament._id}") #{tournament.tournament_name}
+
+                    div(class="col-md-6 col-lg-6 col-sm-6")
+                        select(name="tournamentTwo" class="form-control tournament-select" id='right-select')
+                            option(disabled selected) Select Second Tournament
+                            each tournament, i in tournaments
+                                option(value="#{tournament._id}") #{tournament.tournament_name}
+
+                    br
+                    div(class="col-md-6" style="margin-top:10px")
+                        input(type="text" class="form-control" id="name-merge" placeholder='Enter Name of Merged Tournament')
+
+            div(class="col-md-6")
+        br
+
+        div(class="row" id='merge-div')
+            div(class="col-md-1")
+            div(class="col-md-4")
+                button(class="btn btn-lg btn-block btn-warning" style='border-radius:3px;box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);' id='merge-button') Merge Tournaments
+
+        div(class="row" id='success-merge-div' style='display:none')
+            div(class="col-md-1")
+            div(class="col-md-4")
+                a(class="btn btn-lg btn-block btn-success" style='border-radius:3px;box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);' id='success-merge') Go To Merged Tournament
+
+block scripts
+    script(src="/js/all-tournaments.js")

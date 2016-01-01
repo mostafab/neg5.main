@@ -45,14 +45,44 @@ module.exports = function(app) {
             }
         });
 
+    app.post("/t/:tid/delete", function(req, res) {
+        // console.log(req.params);
+        if (!req.session.director) {
+            return res.status(401).redirect("/");
+        }
+        tournamentController.deleteTournament(req.session.director._id, req.params.tid, function(err, status) {
+            if (err) {
+                console.log(err);
+                res.status(500).redirect("/");
+            } else if (status == "Unauthorized") {
+                res.status(401).redirect("/tournaments");
+            } else {
+                res.status(200).redirect("/tournaments");
+            }
+        });
+    });
+
     app.post("/tournaments/newphase", function(req, res) {
-        console.log(req.body);
+        // console.log(req.body);
+        if (!req.session.director) {
+            return res.status(401).end();
+        }
         tournamentController.cloneTournament(req.body.tournamentid, req.body.phaseName, function(err, newTournamentID) {
             if (err) {
                 res.status(500).end();
             } else {
                 res.status(200).send({newID : newTournamentID});
             }
+        });
+    });
+
+    app.post("/tournaments/merge", function(req, res) {
+        if (!req.session.director) {
+            return res.status(401).end();
+        }
+        // console.log(req.body);
+        tournamentController.mergeTournaments(req.body.first, req.body.second, req.body.name, function(err, merged) {
+            res.send(merged);
         });
     });
 
@@ -94,7 +124,7 @@ module.exports = function(app) {
             if (err) {
                 return res.status(500).send({collabs : []});
             } else {
-                console.log(collaborators);
+                // console.log(collaborators);
                 return res.status(200).send({collabs : collaborators});
             }
         });
@@ -102,7 +132,7 @@ module.exports = function(app) {
 
     app.post("/tournaments/editPointSchema", function(req, res, next) {
         // console.log(req.body);
-        console.log(JSON.parse(req.body.pointtypes));
+        // console.log(JSON.parse(req.body.pointtypes));
         var newPointValues = {};
         var newPointTypes = JSON.parse(req.body.pointtypes);
         var playerNum = 1;
@@ -181,7 +211,7 @@ module.exports = function(app) {
         });
 
     app.post("/tournaments/scoresheet/submit", function(req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         if (!req.session.director) {
             res.status(401).end();
         } else {
