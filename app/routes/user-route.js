@@ -88,7 +88,7 @@ module.exports = function(app, passport) {
         if (!req.session.director) {
             res.status(401).end();
         } else {
-            console.log(req.body);
+            // console.log(req.body);
             userController.updateUserPassword(req.session.director, req.body.oldpass, req.body.newpass, function(err, wrong) {
                 if (err) {
                     res.status(500).end();

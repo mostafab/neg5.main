@@ -340,7 +340,7 @@ function getGameFromTournament(tournamentid, gameid, callback) {
     // if get game, then remove game from teams and players, then remove the actual game
     var tournamentQuery = {_id : tournamentid, "games.shortID" : gameid};
     Tournament.findOne(tournamentQuery, function(err, result) {
-        console.log("Result: " + result);
+        // console.log("Result: " + result);
         if (err || result == null) {
             // DO STUFF
             callback(err);
@@ -368,7 +368,7 @@ function getGameFromTournament(tournamentid, gameid, callback) {
 function removeGameFromTournament(tournamentid, gameShortID, callback) {
     var tournamentQuery = {_id : tournamentid, "games.shortID" : gameShortID};
     var pullQuery = {$pull : {games : {shortID : gameShortID}}};
-    console.log(pullQuery);
+    // console.log(pullQuery);
     Tournament.update(tournamentQuery, pullQuery, function(err) {
         callback(err);
     });
@@ -648,7 +648,7 @@ function addPlayer(tournamentID, teamName, teamID, playerName, callback) {
             callback(err, null);
         } else {
             newPlayer.pointValues = result.pointScheme;
-            console.log(newPlayer);
+            // console.log(newPlayer);
             var pushQuery = {$push : {players : newPlayer}};
             Tournament.update(tournamentQuery, pushQuery, function(err) {
                 if (err) {

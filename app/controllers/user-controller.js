@@ -88,7 +88,7 @@ function makeUser(req, callback) {
                     user.local.name = name;
                     user.local.email = email;
                     user.local.password = hash;
-                    console.log(user);
+                    // console.log(user);
                     user.save(function(err) {
                         if (err) {
                             console.log(err);
@@ -106,7 +106,7 @@ function makeUser(req, callback) {
                                         email : email,
                                         usertoken : user._id
                                     });
-                                    console.log(td);
+                                    // console.log(td);
                                     td.save(function(err) {
                                         if (err) {
                                             console.log(err);
@@ -171,7 +171,7 @@ function updateEmailAndName(director, newName, newEmail, callback) {
 * success or failure
 */
 function updateUserPassword(director, oldPassword, newPassword, callback) {
-    console.log(oldPassword);
+    // console.log(oldPassword);
     User.findOne({_id : director.usertoken}, function(err, result) {
         // console.log(result);
         if (err) {
@@ -191,7 +191,7 @@ function updateUserPassword(director, oldPassword, newPassword, callback) {
                                 if (err) {
                                     callback(err, false);
                                 } else {
-                                    console.log(hash);
+                                    // console.log(hash);
                                     User.update({_id : director.usertoken}, {"local.password" : hash}, function(err) {
                                         if (err) {
                                             callback(err, false);
