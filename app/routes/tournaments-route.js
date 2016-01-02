@@ -510,7 +510,8 @@ module.exports = function(app) {
                             if (err) {
                                 res.status(500).send(err);
                             } else {
-                                res.render("tournament-view", {tournament : result, tournamentd : req.session.director, registrations : regs});
+                                var linkName = result.tournament_name.replace(" ", "_").toLowerCase();
+                                res.render("tournament-view", {tournament : result, tournamentd : req.session.director, registrations : regs, linkName : linkName});
                             }
                         });
                     } else {

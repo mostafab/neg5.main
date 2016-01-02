@@ -1,0 +1,42 @@
+doctype html
+html
+  head
+    meta(name="description" content="Neg5 is a quiz bowl tournament management system. It is meant to help tournament directors automate their registrations, game inputs, and statistis generation so that they can focus on running their tournament.")
+    block titleContent
+        title Neg 5
+
+    //- Declaration
+    mixin statlinks
+        table(border='0' width="100%")
+            tbody
+                tr
+                    td
+                        a(href="./" + "#{linkName}" + "_standings.html") Team Standings
+                    td
+                        a(href="./" + "#{linkName}" + "_individuals.html") Player Standings
+                    td
+                        a(href="./" + "#{linkName}" + "_teamdetail.html") Teams Full
+                    td
+                        a(href="./" + "#{linkName}" + "_playerdetail.html") Players Full
+    //- Use
+
+    style.
+        * {
+            font-family: "Verdana", sans-serif;
+        }
+        body {
+            padding:15px;
+        }
+        td {
+            padding:2px;
+        }
+        .header {
+            font-weight:bold;
+        }
+        table {
+            font-size: 14px;
+        }
+
+  body()
+
+    block content

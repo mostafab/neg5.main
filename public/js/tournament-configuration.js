@@ -166,6 +166,11 @@ $(document).ready(function() {
         deleteRegistrationAJAX($(this));
     });
 
+    $(".download").click(function(e) {
+        e.preventDefault();
+        downloadStats($(this));
+    });
+
     $("#new-phase").click(function() {
         $("#new-phase-name").css("border-color", "white");
         // console.log($("#new-phase-name").val());
@@ -219,6 +224,28 @@ function removeTeamSender(button) {
 function removeGameSender(button) {
     // console.log($(button).parent().serialize());
     removeGame($(button).parent().serialize(), button);
+}
+
+function downloadStats(anchor) {
+    $.ajax({
+        url : $(anchor).attr("href"),
+        type : "GET",
+        success : function(databack, status, xhr) {
+            var type = xhr.getResponseHeader('Content-Type');
+            var blob = new Blob([databack], { type: type });
+            var URL = window.URL || window.webkitURL;
+            var downloadUrl = URL.createObjectURL(blob);
+            var tempAnchor = document.createElement("a");
+               // safari doesn't support this yet
+               if (typeof tempAnchor.download === 'undefined') {
+                   window.location = downloadUrl;
+               } else {
+                   tempAnchor.href = downloadUrl;
+                   tempAnchor.download = $(anchor).attr("data-link");
+                   tempAnchor.click();
+               }
+        }
+    });
 }
 
 function makePhaseAJAX(tournamentid, phaseName) {
