@@ -123,7 +123,8 @@ block content
                                                     type="number",
                                                     name="teamnumber",
                                                     placeholder="Number of Teams",
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field"
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40"
                                                 )
                                             div(class="form-group")
                                                 if director != null
@@ -131,26 +132,29 @@ block content
                                                         class="form-control input-lg center-text no-border-radius tournament-info-field",
                                                         placeholder="Email",
                                                         value="#{director.email}",
-                                                        name="email"
+                                                        name="email",
+                                                        style="background-color:#363B40"
                                                     )
                                                 else
                                                     input(
                                                         class="form-control input-lg center-text no-border-radius tournament-info-field",
                                                         placeholder="Email",
-                                                        name="email"
+                                                        name="email",
+                                                        style="background-color:#363B40"
                                                     )
                                             div(class="form-group")
                                                 textarea(
                                                     class="form-control input-lg center-text no-border-radius tournament-info-field",
                                                     placeholder="Other Information",
                                                     name="otherinfo",
-                                                    rows="10"
+                                                    rows="10",
+                                                    style="background-color:#363B40"
                                                 )
                                             button(type="button" class="btn btn-lg btn-stats no-border-radius" id="submitregistration") Confirm Registration
                                             div(class="form-group" style="text-align:center")
                                                 br
                                                 br
-                                                div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="tregmessage")
+                                                div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="tregmessage" style="background-color:#363B40")
                                     else
                                         form(id="submitsignup" method="post" action="/t/" + tournament.shortID + "/signup/submit")
                                             div(class="form-group")
@@ -191,7 +195,11 @@ block content
                                             div(class="form-group" style="text-align:center")
                                                 br
                                                 br
-                                                div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="tregmessage" style="background-color:#363B40")
+                                                div(
+                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    style="background-color:#363B40",
+                                                    id="tregmessage"
+                                                    )
 
                                 else
                                     div(class="form-group")
