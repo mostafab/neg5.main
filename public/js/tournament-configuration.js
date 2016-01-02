@@ -166,6 +166,9 @@ $(document).ready(function() {
         deleteRegistrationAJAX($(this));
     });
 
+    /*
+    * Download stats
+    */
     $(".download").click(function(e) {
         e.preventDefault();
         downloadStats($(this));
