@@ -71,6 +71,6 @@ block content
                                             td #{player.stats["pointTotals"][val]}
                                     else if stat == "Player"
                                         td
-                                            a(href="/t/" + tournament.shortID + "/stats/playerfull#" + player.id) #{player.stats[stat]}
+                                            a(href="./" + "#{linkName}" + "_playerdetail.html#" + player.id) #{player.stats[stat]}
                                     else
                                         td #{player.stats[stat]}
