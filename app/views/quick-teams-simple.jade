@@ -1,0 +1,103 @@
+extends simple-layout
+
+block titleContent
+    title Team Standings | #{tournament.tournament_name} | Neg 5
+
+block content
+
+    main
+        +statlinks
+
+        h2 #{tournament.tournament_name} - Team Standings
+        - var points = Object.keys(tournament.pointScheme);
+        if tournament.divisions.length === 0
+            if teamInfo.length != 0
+                - var statHeaders = Object.keys(teamInfo[0].stats)
+
+                table(border='1' width='100%')
+                    thead
+                        tr
+                            td(class="header") Rank
+                            each name, i in statHeaders
+                                if statHeaders[i] == "pointTotals"
+                                    each val, j in points
+                                        td(class='header') #{val}
+                                else if name != "Rank"
+                                    td(class='header') #{statHeaders[i]}
+                    tbody
+                        each team, i in teamInfo
+                            tr
+                                td() #{teamInfo[i].stats["Rank"]}
+                                each name, j in statHeaders
+                                    if statHeaders[j] == "pointTotals"
+                                        each val, k in points
+                                            td #{teamInfo[i].stats.pointTotals[val]}
+                                    else if statHeaders[j] == "Team"
+                                        td
+                                            a(href="./" + "#{linkName}" + "_teamdetail.html#" + teamInfo[i].id) #{teamInfo[i].stats["Team"]}
+                                    else if name != "Rank"
+                                        td #{teamInfo[i].stats[name]}
+
+        else
+            - var noDivisionTeams = []
+            - var addedTeams = {}
+            each division, index in tournament.divisions
+                h3 #{tournament.divisions[index]}
+                if teamInfo.length != 0
+                    - var statHeaders = Object.keys(teamInfo[0].stats)
+
+                    table(border="1" width="100%")
+                        tr
+                            td(class='header') Rank
+                            each name, i in statHeaders
+                                if statHeaders[i] == "pointTotals"
+                                    each val, j in points
+                                        td(class="header") #{val}
+                                else if name != "Rank"
+                                    td(class="header") #{statHeaders[i]}
+                        tbody
+                            each team, i in teamInfo
+                                if team.stats["Division"] == tournament.divisions[index]
+                                    tr
+                                        td() #{teamInfo[i].stats["Rank"]}
+                                        each name, j in statHeaders
+                                            if statHeaders[j] == "pointTotals"
+                                                each val, k in points
+                                                    td #{teamInfo[i].stats.pointTotals[val]}
+                                            else if statHeaders[j] == "Team"
+                                                td
+                                                    a(href="./" + "#{linkName}" + "_teamdetail.html#" + teamInfo[i].id) #{teamInfo[i].stats["Team"]}
+                                            else if name != "Rank"
+                                                td #{teamInfo[i].stats[name]}
+
+                                else if team.stats["Division"].length == 0
+                                    if !addedTeams[team.id]
+                                        - noDivisionTeams.push(team)
+                                        - addedTeams[team.id] = true
+
+            if noDivisionTeams.length !== 0
+                h3 No Division Assigned
+                - var statHeaders = Object.keys(noDivisionTeams[0].stats)
+                table(border='1')
+                    thead
+                        tr
+                            td(class='header') Rank
+                            each name, i in statHeaders
+                                if statHeaders[i] == "pointTotals"
+                                    each val, j in points
+                                        td(class="header") #{val}
+                                else if name != "Rank"
+                                    td(class="header") #{statHeaders[i]}
+                    tbody
+                        each team, i in noDivisionTeams
+                            tr
+                                td #{noDivisionTeams[i].stats["Rank"]}
+                                each name, j in statHeaders
+                                    if statHeaders[j] == "pointTotals"
+                                        each val, k in points
+                                            td #{noDivisionTeams[i].stats.pointTotals[val]}
+                                    else if statHeaders[j] == "Team"
+                                        td
+                                            a(href="./" + "#{linkName}" + "_teamdetail.html#" + noDivisionTeams[i].id) #{noDivisionTeams[i].stats["Team"]}
+                                    else if statHeaders[j] != "Rank"
+                                        td #{noDivisionTeams[i].stats[name]}

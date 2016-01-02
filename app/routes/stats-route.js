@@ -17,6 +17,21 @@ module.exports = function(app) {
         });
     });
 
+    app.get("/t/:tid/stats/team/dl", function(req, res, next) {
+        // res.send("OK");
+        statsController.getTeamsInfo(req.params.tid, function(err, tournament, teamInfo) {
+            if (err) {
+                res.send(err);
+            } else if (tournament == null) {
+                res.send("Couldn't find that tournament");
+            } else {
+                var linkTournamentName = tournament.tournament_name.replace(" ", "_").toLowerCase();
+                // console.log(linkTeamName);
+                res.render("quick-teams-simple", {tournament : tournament, teamInfo : teamInfo, linkName : linkTournamentName});
+            }
+        });
+    });
+
     app.get("/t/:tid/stats/player", function(req, res, next) {
         statsController.getPlayersInfo(req.params.tid, function(err, tournament, playersInfo) {
             if (err) {
@@ -26,6 +41,19 @@ module.exports = function(app) {
             } else {
                 // console.log(playersInfo);
                 res.render("quick-players", {tournament : tournament, playersInfo : playersInfo, custom : false});
+            }
+        });
+    });
+
+    app.get("/t/:tid/stats/player/dl", function(req, res, next) {
+        statsController.getPlayersInfo(req.params.tid, function(err, tournament, playersInfo) {
+            if (err) {
+                res.send(err);
+            } else if (tournament == null) {
+                res.send("Couldn't find that tournament");
+            } else {
+                var linkTournamentName = tournament.tournament_name.replace(" ", "_").toLowerCase();
+                res.render("quick-players-simple", {tournament : tournament, playersInfo : playersInfo, linkName : linkTournamentName});
             }
         });
     });
@@ -43,6 +71,21 @@ module.exports = function(app) {
         });
     });
 
+    app.get("/t/:tid/stats/teamfull/dl", function(req, res, next) {
+        statsController.getFullTeamsGameInformation(req.params.tid, function(err, tournament, teamsGames, playersInfo, teamTotals) {
+            if (err) {
+                res.send(err);
+            } else if (tournament == null) {
+                res.send("Couldn't find that tournament");
+            } else {
+                // console.log(teamTotals);
+                var linkTournamentName = tournament.tournament_name.replace(" ", "_").toLowerCase();
+                res.render("full-team-simple", {tournament : tournament, teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals,
+                    linkName : linkTournamentName});
+            }
+        });
+    });
+
     app.get("/t/:tid/stats/playerfull", function(req, res, next) {
         statsController.getFullPlayersGameInformation(req.params.tid, function(err, tournament, playersInfo, playerTotals) {
             if (err) {
@@ -55,6 +98,23 @@ module.exports = function(app) {
             }
         });
     });
+
+    app.get("/t/:tid/stats/playerfull/dl", function(req, res, next) {
+        statsController.getFullPlayersGameInformation(req.params.tid, function(err, tournament, playersInfo, playerTotals) {
+            if (err) {
+                res.send(err);
+            } else if (tournament == null) {
+                res.send("Couldn't find that tournament");
+            } else {
+                // console.log(playerTotals);
+                var linkTournamentName = tournament.tournament_name.replace(" ", "_").toLowerCase();
+                res.render("full-players-simple", {playersInfo : playersInfo, tournament : tournament, playerTotals : playerTotals,
+                    linkName : linkTournamentName});
+            }
+        });
+    });
+
+
 
     app.post('/t/:tid/stats/filter/teams', function(req, res) {
         var constraints = {};

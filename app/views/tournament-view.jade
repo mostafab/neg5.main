@@ -483,7 +483,7 @@ block content
                                     div(class="panel-heading collapsable") Generate Complete Statistics
                                     div(class="panel-body")
 
-                                        div()
+                                        div(class="col-md-6")
                                             ul(class="nav nav-pills no-border-radius")
                                                 li
                                                     a(target="_blank" href="/t/" + tournament.shortID + "/stats/team" class="btn btn-lg btn-stats") Team Stats
@@ -491,6 +491,18 @@ block content
                                                     a(target="_blank" href="/t/" + tournament.shortID + "/stats/player" class="btn btn-lg btn-stats") Player Stats
                                                 li
                                                     a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull" class="btn btn-lg btn-stats") Full Report
+
+                                        div(class="col-md-6")
+                                            ul(class="nav nav-pills no-border-radius")
+                                                li
+                                                    a(href="/t/" + tournament.shortID + "/stats/team/dl" class="btn btn-md btn-stats download" data-link="#{linkName}_standings.html") Download Team Stats
+                                                li
+                                                    a(href="/t/" + tournament.shortID + "/stats/player/dl" class="btn btn-md btn-stats download" data-link="#{linkName}_individuals.html") Download Player Stats
+                                                li
+                                                    a(href="/t/" + tournament.shortID + "/stats/teamfull/dl" class="btn btn-md btn-stats download" data-link="#{linkName}_teamdetail.html") Download Team Full Report
+                                                li
+                                                    a(href="/t/" + tournament.shortID + "/stats/playerfull/dl" class="btn btn-md btn-stats download" data-link="#{linkName}_playerdetail.html") Download Players Full Report
+
 
                             div(class="panel panel-default")
                                 div(class="panel-heading collapsable") Custom Team Statistics

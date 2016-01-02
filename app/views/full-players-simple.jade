@@ -1,0 +1,51 @@
+extends simple-layout
+
+block titleContent
+    title Players Full | #{tournament.tournament_name} | Neg 5
+
+block content
+
+    main()
+        +statlinks
+
+        h2 #{tournament.tournament_name} - Full Player Details
+
+        each playerid in Object.keys(playersInfo)
+            h3(id="#{playerid}") #{playersInfo[playerid].name}   (#{playersInfo[playerid].team})
+            - var points = Object.keys(tournament.pointScheme);
+            if playersInfo[playerid].games.length != 0
+                - var gameHeaders = Object.keys(playersInfo[playerid].games[0])
+                table(border='1' style='width:100%')
+                    tr
+                        each stat, i in gameHeaders
+                            if stat == "pointValues"
+                                each val in points
+                                    td(class="header") #{val}
+                            else
+                                td(class="header") #{gameHeaders[i]}
+
+                    tbody
+                        each game in playersInfo[playerid].games
+                            tr
+                                each stat, i in gameHeaders
+                                    if stat == "pointValues"
+                                        each val in points
+                                            td #{game["pointValues"][val]}
+                                    else
+                                        td #{game[stat]}
+
+                    tfoot
+
+                        tr
+                            each stat, i in gameHeaders
+                                if i == 0
+                                    td(class="header") Totals
+                                else
+                                    if stat == "pointValues"
+                                        each val in points
+                                            td(class="header") #{playerTotals[playerid].pointTotals[val]}
+                                    else
+                                        if playerTotals[playerid][stat]
+                                            td(class="header") #{playerTotals[playerid][stat]}
+                                        else
+                                            td
