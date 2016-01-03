@@ -1,5 +1,3 @@
-'use strict';
-
 var signupController = require('../../app/controllers/registration-controller');
 var tournamentController = require("../../app/controllers/tournament-controller");
 
@@ -26,13 +24,18 @@ module.exports = function(app) {
             } else if (!result) {
                 res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
             } else {
-                signupController.findOneRegistration(result.shortID, req.session.director._id, function(err, registration) {
-                    if (err) {
-                        res.status(500).send(err);
-                    } else {
-                        res.render("signup", {tournament : result, tournamentd : req.session.director, prevReg : registration});
-                    }
-                });
+                if (!req.session.director) {
+                    res.render("signup", {tournament : result, tournamentd : null});
+                } else {
+                    signupController.findOneRegistration(result.shortID, req.session.director._id, function(err, registration) {
+                        if (err) {
+                            res.status(500).send(err);
+                        } else {
+                            // console.log(registration);
+                            res.render("signup", {tournament : result, tournamentd : req.session.director, prevReg : registration});
+                        }
+                    });
+                }
             }
         });
     });
