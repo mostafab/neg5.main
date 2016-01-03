@@ -102,7 +102,7 @@ module.exports = function(app) {
     app.get("/t/:tid/stats/playerfull/dl", function(req, res, next) {
         statsController.getFullPlayersGameInformation(req.params.tid, function(err, tournament, playersInfo, playerTotals) {
             if (err) {
-                res.send(err);
+                res.status(500).send(err);
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
@@ -114,7 +114,45 @@ module.exports = function(app) {
         });
     });
 
+    app.get("/t/:tid/stats/roundreport", function(req, res, next) {
+        statsController.getRoundReport(req.params.tid, function(err, tournament, roundsInfo) {
+            if (err) {
+                res.status(500).send(err);
+            } else if (tournament == null) {
+                res.status(404).end();
+            } else {
+                // var linkTournamentName = tournamentName.replace(" ", "_").toLowerCase();
+                // res.send({tournamentName : tournamentName, roundsInfo : roundsInfo, roundsInfo});
+                res.render("round-report", {tournament : tournament, roundsInfo : roundsInfo});
+            }
+        });
+    });
 
+    app.get("/t/:tid/stats/roundreport/dl", function(req, res, next) {
+        statsController.getRoundReport(req.params.tid, function(err, tournament, roundsInfo) {
+            if (err) {
+                res.status(500).send(err);
+            } else if (tournament == null) {
+                res.status(404).end();
+            } else {
+                var linkTournamentName = tournament.tournament_name.replace(" ", "_").toLowerCase();
+                res.render("round-report-simple", {tournament : tournament, roundsInfo : roundsInfo, linkName : linkTournamentName});
+            }
+        });
+    });
+
+    app.get("/t/:tid/stats/roundreport/dl", function(req, res, next) {
+        statsController.getRoundReport(req.params.tid, function(err, tournamentName, roundsInfo) {
+            if (err) {
+                res.status(500).send(err);
+            } else if (tournamentName == null) {
+                res.status(404).end();
+            } else {
+                var linkTournamentName = tournamentName.replace(" ", "_").toLowerCase();
+                res.send({tournamentName : tournamentName, roundsInfo : roundsInfo, roundsInfo, linkName : linkTournamentName});
+            }
+        });
+    });
 
     app.post('/t/:tid/stats/filter/teams', function(req, res) {
         var constraints = {};
