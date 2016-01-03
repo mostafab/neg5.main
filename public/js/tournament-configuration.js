@@ -147,7 +147,7 @@ $(document).ready(function() {
         var empty = checkTournamentRegistration();
         if (!empty) {
             var numTeams = parseFloat($("#team-number-s").val());
-            if (numTeams > 0 && numTeams - Math.floor(numTeams) == 0) {
+            if (numTeams >= 1 && numTeams - Math.floor(numTeams) == 0) {
                 $(this).prop("disabled", true);
                 submitTournamentRegistration();
             } else {
