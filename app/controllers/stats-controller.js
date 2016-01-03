@@ -203,9 +203,172 @@ function getFullPlayersGameInformation(tournamentid, callback) {
     });
 }
 
+/**
+* Gets round report information
+* @param tournamentid id of the tournament to get round averages from
+* @param callback callback function with an error (or null), tournament name, and the rounds information
+*/
+function getRoundReport(tournamentid, callback) {
+    Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
+        if (err) {
+            callback(err, null, null);
+        } else if (!tournament) {
+            callback(null, null, null);
+        } else {
+            var gameRounds = {};
+            for (var i = 0; i < tournament.games.length; i++) {
+                var round = tournament.games[i].round;
+                if (!gameRounds[round]) {
+                    gameRounds[round] = [];
+                }
+                gameRounds[round].push(tournament.games[i]);
+            }
+            var roundAverages = {};
+            var rounds = Object.keys(gameRounds);
+            for (var i = 0; i < rounds.length; i++) {
+                roundAverages[rounds[i]] = {};
+                roundAverages[rounds[i]]["PPG/Team"] = getRoundPPG(gameRounds[rounds[i]]);
+                roundAverages[rounds[i]]["TUPts/TUH"] = getRoundTUPts(gameRounds[rounds[i]], tournament.pointScheme);
+                roundAverages[rounds[i]]["PPB"] = getPPBForRounds(gameRounds[rounds[i]], tournament.pointScheme, tournament.pointsTypes);
+            }
+            callback(null, tournament, roundAverages);
+        }
+    });
+}
+
+/**
+* Returns the PPG for a round
+* @param games array of games to parse
+* @return round ppg
+*/
+function getRoundPPG(games) {
+    var totalPoints = 0;
+    var totalTeams = 0;
+    for (var i = 0; i < games.length; i++) {
+        var currentGame = games[i];
+        if (currentGame.team1) {
+            totalPoints += currentGame.team1.score;
+            totalTeams++;
+        }
+        if (currentGame.team2) {
+            totalPoints += currentGame.team2.score;
+            totalTeams++;
+        }
+    }
+    return +(totalPoints / totalTeams).toFixed(2);
+}
+
+/**
+* Gets average TUPts/TUH
+* @param games array of games to parse
+* @param pointScheme point values used in tournament
+* @return average TUPts/TUH
+*/
+function getRoundTUPts(games, pointScheme) {
+    var pointTypes = Object.keys(pointScheme);
+    // console.log(pointTypes);
+    var totalTossupsHeard = 0;
+    var tossupPoints = 0;
+    for (var i = 0; i < games.length; i++) {
+        totalTossupsHeard +=  games[i].tossupsheard;
+        if (games[i].team1 && games[i].team1.playerStats) {
+            for (var player in games[i].team1.playerStats) {
+                if (games[i].team1.playerStats.hasOwnProperty(player)) {
+                    var stats = games[i].team1.playerStats[player];
+                    // console.log(player);
+                    for (var j = 0; j < pointTypes.length; j++) {
+                        if (stats[pointTypes[j]]) {
+                            // console.log(parseFloat(pointTypes[j]));
+                            // console.log(parseFloat(stats[pointTypes[j]]));
+                            // console.log(stats[pointTypes[j]]);
+                            var total = parseFloat(pointTypes[j]) * parseFloat(stats[pointTypes[j]]);
+                            // console.log(total);
+                            tossupPoints += total;
+                        }
+                    }
+                }
+            }
+        }
+        if (games[i].team2 && games[i].team2.playerStats) {
+            for (var player in games[i].team2.playerStats) {
+                if (games[i].team2.playerStats.hasOwnProperty(player)) {
+                    var stats = games[i].team2.playerStats[player];
+                    // console.log(player);
+                    for (var j = 0; j < pointTypes.length; j++) {
+                        if (stats[pointTypes[j]]) {
+                            var total = parseFloat(pointTypes[j]) * parseFloat(stats[pointTypes[j]]);
+                            tossupPoints += total;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // console.log(tossupPoints);
+    return +(tossupPoints / totalTossupsHeard).toFixed(2);
+}
+
+/**
+* Returns average bonus points for a round's games
+* @param games games for one round
+* @param pointScheme point value used in tournament
+* @param pointTypes type of each point value
+* @return average ppb for a round's games
+*/
+function getPPBForRounds(games, pointScheme, pointTypes) {
+    var totalBonusPoints = 0;
+    var totalTossupsGotten = 0;
+    var pointKeys = Object.keys(pointScheme);
+
+    for (var i = 0; i < games.length; i++) {
+        if (games[i].team1 && games[i].team1.playerStats) {
+            var bonusPoints = games[i].team1.score - games[i].team1.bouncebacks;
+            for (var player in games[i].team1.playerStats) {
+                if (games[i].team1.playerStats.hasOwnProperty(player)) {
+                    var stats = games[i].team1.playerStats[player];
+                    // console.log(player);
+                    for (var j = 0; j < pointKeys.length; j++) {
+                        // console.log(stats[pointKeys[j]]);
+                        if (pointTypes[pointKeys[j]] != "N" && stats[pointKeys[j]]) {
+                            totalTossupsGotten += parseFloat(stats[pointKeys[j]]);
+                        }
+                        if (stats[pointKeys[j]]) {
+                            bonusPoints -= parseFloat(stats[pointKeys[j]]) * parseFloat(pointKeys[j]);
+                        }
+                    }
+                }
+            }
+            totalBonusPoints += bonusPoints;
+        }
+        if (games[i].team2 && games[i].team2.playerStats) {
+            var bonusPoints = games[i].team2.score - games[i].team2.bouncebacks;
+            for (var player in games[i].team2.playerStats) {
+                if (games[i].team2.playerStats.hasOwnProperty(player)) {
+                    var stats = games[i].team2.playerStats[player];
+                    // console.log(player);
+                    for (var j = 0; j < pointKeys.length; j++) {
+                        // console.log(stats[pointKeys[j]]);
+                        if (pointTypes[pointKeys[j]] != "N" && stats[pointKeys[j]]) {
+                            totalTossupsGotten += parseFloat(stats[pointKeys[j]]);
+                        }
+                        if (stats[pointKeys[j]]) {
+                            bonusPoints -= parseFloat(stats[pointKeys[j]]) * parseFloat(pointKeys[j]);
+                        }
+                    }
+                }
+            }
+            totalBonusPoints += bonusPoints;
+        }
+    }
+    // console.log(totalTossupsGotten);
+    return totalTossupsGotten == 0 ? 0 : +(totalBonusPoints / totalTossupsGotten).toFixed(2);
+}
+
 exports.getTeamsInfo = getTeamsInfo;
 exports.getPlayersInfo = getPlayersInfo;
 exports.getFullTeamsGameInformation = getFullTeamsGameInformation;
 exports.getFullPlayersGameInformation = getFullPlayersGameInformation;
 exports.getFilteredTeamsInformation = getFilteredTeamsInformation;
 exports.getFilteredPlayersInformation = getFilteredPlayersInformation;
+exports.getRoundReport = getRoundReport;
+exports.getPPBForRounds = getPPBForRounds;

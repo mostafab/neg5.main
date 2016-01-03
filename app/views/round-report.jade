@@ -1,0 +1,54 @@
+extends layout
+
+block titleContent
+    title Round Report | #{tournament.tournament_name} | Neg 5
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/home.css")
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+
+block content
+
+    main(class="cd-main-content")
+        div(class="box" style="padding:50px;padding-top:20px")
+
+            div(class="row")
+                    div(class="col-md-12")
+                        div(class="panel-body")
+                            div(class="row" style="")
+                                ul(class="nav nav-pills no-border-radius")
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/team") Team Standings
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/player") Player Standings
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/teamfull") Teams Full
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/playerfull") Players Full
+                                    li(class="active")
+                                        a(href="/t/" + tournament.shortID + "/stats/roundreport") Round Report
+
+                        h2(class="title" style="width:50%") #{tournament.tournament_name} - Round Report
+
+                        br
+                        br
+
+                        - var rounds = Object.keys(roundsInfo).sort(function(first, second) {
+                            - return (parseFloat(first) - parseFloat(second));
+                        - });
+
+                        div(class="panel panel-default")
+                            table(class="table table-hover table-condensed")
+                                thead
+                                    tr
+                                        th(class="table-head") Round
+                                        th(class="table-head") PPG/Team
+                                        th(class="table-head") TUPts / TUH
+                                        th(class="table-head") PPB
+                                tbody
+                                    each round, i in rounds
+                                        tr
+                                            td #{round}
+                                            td #{roundsInfo[round]["PPG/Team"]}
+                                            td #{roundsInfo[round]["TUPts/TUH"]}
+                                            td #{roundsInfo[round]["PPB"]}

@@ -483,25 +483,29 @@ block content
                                     div(class="panel-heading collapsable") Generate Complete Statistics
                                     div(class="panel-body")
 
-                                        div(class="col-md-6")
+                                        div(class="col-md-5")
                                             ul(class="nav nav-pills no-border-radius")
                                                 li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/team" class="btn btn-lg btn-stats") Team Stats
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/team" class="btn btn-md btn-stats") Team Stats
                                                 li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/player" class="btn btn-lg btn-stats") Player Stats
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/player" class="btn btn-md btn-stats") Player Stats
                                                 li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull" class="btn btn-lg btn-stats") Full Report
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull" class="btn btn-md btn-stats") Full Report
+                                                li
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/roundreport" class="btn btn-md btn-stats") Round Report
 
-                                        div(class="col-md-6")
+                                        div(class="col-md-7")
                                             ul(class="nav nav-pills no-border-radius")
                                                 li
-                                                    a(href="/t/" + tournament.shortID + "/stats/team/dl" class="btn btn-md btn-stats download" data-link="#{linkName}_standings.html") Download Team Stats
+                                                    a(href="/t/" + tournament.shortID + "/stats/team/dl" class="btn btn-sm btn-stats download" data-link="#{linkName}_standings.html") Download Team Stats
                                                 li
-                                                    a(href="/t/" + tournament.shortID + "/stats/player/dl" class="btn btn-md btn-stats download" data-link="#{linkName}_individuals.html") Download Player Stats
+                                                    a(href="/t/" + tournament.shortID + "/stats/player/dl" class="btn btn-sm btn-stats download" data-link="#{linkName}_individuals.html") Download Player Stats
                                                 li
-                                                    a(href="/t/" + tournament.shortID + "/stats/teamfull/dl" class="btn btn-md btn-stats download" data-link="#{linkName}_teamdetail.html") Download Team Full Report
+                                                    a(href="/t/" + tournament.shortID + "/stats/teamfull/dl" class="btn btn-sm btn-stats download" data-link="#{linkName}_teamdetail.html") Download Team Full Report
                                                 li
-                                                    a(href="/t/" + tournament.shortID + "/stats/playerfull/dl" class="btn btn-md btn-stats download" data-link="#{linkName}_playerdetail.html") Download Players Full Report
+                                                    a(href="/t/" + tournament.shortID + "/stats/playerfull/dl" class="btn btn-sm btn-stats download" data-link="#{linkName}_playerdetail.html") Download Players Full Report
+                                                li
+                                                    a(href="/t/" + tournament.shortID + "/stats/roundreport/dl" class="btn btn-sm btn-stats download" data-link="#{linkName}_rounds.html") Download Round Report
 
 
                             div(class="panel panel-default")
