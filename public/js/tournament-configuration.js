@@ -114,13 +114,17 @@ $(document).ready(function() {
     });
 
     $("#searchcollabbutton").click(function() {
-        findDirectorsAJAX()
+        if ($("#searchcollabinput").val().length > 0) {
+            findDirectorsAJAX();
+        }
     });
 
     $("#searchcollabinput").keypress(function(e) {
         if (e.which == 13) {
             e.preventDefault();
-            findDirectorsAJAX();
+            if ($(this).val().length > 0) {
+                findDirectorsAJAX();
+            }
         }
     });
 
@@ -142,8 +146,14 @@ $(document).ready(function() {
     $("#submitregistration").click(function() {
         var empty = checkTournamentRegistration();
         if (!empty) {
-            $(this).prop("disabled", true);
-            submitTournamentRegistration();
+            var numTeams = parseFloat($("#team-number-s").val());
+            if (numTeams > 0 && numTeams - Math.floor(numTeams) == 0) {
+                $(this).prop("disabled", true);
+                submitTournamentRegistration();
+            } else {
+                $("#tregmessage").empty().
+                    append("<p style='margin-left:10px; font-size:18px;'>Enter a valid number of teams.</p>");
+            }
         } else {
             $("#tregmessage").empty().
                 append("<p style='margin-left:10px; font-size:18px;'>Fill in all forms, please.</p>");
