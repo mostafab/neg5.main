@@ -14,7 +14,7 @@ block content
             h3(id=teamid) #{teamsGames[teamid].team}
             - var points = Object.keys(tournament.pointScheme);
             if teamsGames[teamid].games.length != 0
-                table(border='1' width='100%')
+                table
                     - var gameHeaders = Object.keys(teamsGames[teamid].games[0])
                     tr
                         each stat,i in gameHeaders
@@ -52,7 +52,7 @@ block content
                                         td
             br
 
-            table(border='1' style='width:100%')
+            table
                 if playersInfo[teamid].stats.length != 0
                     - var playerHeaders = Object.keys(playersInfo[teamid].stats[0].stats)
                     tr

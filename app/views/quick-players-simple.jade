@@ -14,9 +14,9 @@ block content
             - var statHeaders = Object.keys(playersInfo[0].stats)
             - var points = Object.keys(tournament.pointScheme);
 
-            table(border='1' width='100%')
+            table
                 tr
-                    td(class="header" width='75') Rank
+                    td(class="header") Rank
                     each name, i in statHeaders
                         if statHeaders[i] == "pointTotals"
                             each val, j in points

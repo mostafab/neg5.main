@@ -7,16 +7,16 @@ html
 
     //- Declaration
     mixin statlinks
-        table(border='0' width="100%")
+        table(style="border-width:0px;width:100%")
             tbody
                 tr
-                    td
+                    td(style="border-width:0px")
                         a(href="./" + "#{linkName}" + "_standings.html") Team Standings
-                    td
+                    td(style="border-width:0px")
                         a(href="./" + "#{linkName}" + "_individuals.html") Player Standings
-                    td
+                    td(style="border-width:0px")
                         a(href="./" + "#{linkName}" + "_teamdetail.html") Teams Full
-                    td
+                    td(style="border-width:0px")
                         a(href="./" + "#{linkName}" + "_playerdetail.html") Players Full
     //- Use
 
@@ -35,6 +35,10 @@ html
         }
         table {
             font-size: 14px;
+            width: 100%;
+        }
+        table, th, td {
+           border: 1px solid black;
         }
 
   body()
