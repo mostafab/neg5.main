@@ -15,7 +15,7 @@ block content
             - var points = Object.keys(tournament.pointScheme);
             if playersInfo[playerid].games.length != 0
                 - var gameHeaders = Object.keys(playersInfo[playerid].games[0])
-                table(border='1' style='width:100%')
+                table
                     tr
                         each stat, i in gameHeaders
                             if stat == "pointValues"

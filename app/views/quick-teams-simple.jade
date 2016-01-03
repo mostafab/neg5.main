@@ -14,7 +14,7 @@ block content
             if teamInfo.length != 0
                 - var statHeaders = Object.keys(teamInfo[0].stats)
 
-                table(border='1' width='100%')
+                table
                     thead
                         tr
                             td(class="header") Rank
@@ -46,7 +46,7 @@ block content
                 if teamInfo.length != 0
                     - var statHeaders = Object.keys(teamInfo[0].stats)
 
-                    table(border="1" width="100%")
+                    table
                         tr
                             td(class='header') Rank
                             each name, i in statHeaders
@@ -78,7 +78,7 @@ block content
             if noDivisionTeams.length !== 0
                 h3 No Division Assigned
                 - var statHeaders = Object.keys(noDivisionTeams[0].stats)
-                table(border='1')
+                table
                     thead
                         tr
                             td(class='header') Rank
