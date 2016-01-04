@@ -204,6 +204,18 @@ module.exports = function(app) {
         });
     });
 
+    app.get("/t/:tid/jsonexport", function(req, res) {
+        statsController.convertToQuizbowlSchema(req.params.tid, function(err, json) {
+            if (err) {
+                res.status(500).end();
+            } else if (!json) {
+                res.status(401).end();
+            } else {
+                res.status(200).set("Content-Type", "application/vnd.quizbowl.qbj+json").send(json);
+            }
+        });
+    });
+
     app.get("*", function(req, res, next) {
         res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That page doesn't exist."});
     });

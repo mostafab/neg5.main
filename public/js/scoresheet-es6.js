@@ -3,6 +3,15 @@
 var MAX_TOSSUPS = 20;
 var BONUS_POINT_VALUE = 10;
 
+var entityMap = {
+   "&": "&amp;",
+   "<": "&lt;",
+   ">": "&gt;",
+   '"': '&quot;',
+   "'": '&#39;',
+   "/": '&#x2F;'
+ };
+
 class Player {
     constructor(name, id, teamid) {
         this.name = name;
@@ -509,7 +518,7 @@ $(document).ready(function() {
         $(this).prev(".player-name-input").css("border-color", "transparent");
         if ($(this).prev(".player-name-input").val().length !== 0) {
             $(this).prop("disabled", true);
-            addPlayer($(this).prev(".player-name-input").val(), $(this).attr("data-team"), $(this).attr("data-team-name"), $(this).attr("side"));
+            addPlayer(escapeHtml($(this).prev(".player-name-input").val()), $(this).attr("data-team"), $(this).attr("data-team-name"), $(this).attr("side"));
         } else {
             $(this).prev(".player-name-input").css("border-color", "red");
         }
@@ -1037,4 +1046,10 @@ function addPlayerColumn(side, player) {
 
 function changeFooterColSpan(colspan) {
     $("#tfoot-msg").attr("colspan", colspan);
+}
+
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+         return entityMap[s];
+    });
 }

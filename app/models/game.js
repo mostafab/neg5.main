@@ -1,5 +1,3 @@
-'use strict';
-
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
@@ -10,6 +8,7 @@ var Schema = mongoose.Schema;
 */
 var gameSchema = new Schema({
     shortID : String,
+    forfeit : {type : Boolean, default : false},
     round : {type : Number, default : 0, set : function(num) {
         if (num == null) {
             return 0;

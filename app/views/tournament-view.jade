@@ -486,13 +486,13 @@ block content
                                         div(class="col-md-5")
                                             ul(class="nav nav-pills no-border-radius")
                                                 li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/team" class="btn btn-md btn-stats") Team Stats
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/team" class="btn btn-sm btn-stats") Team Stats
                                                 li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/player" class="btn btn-md btn-stats") Player Stats
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/player" class="btn btn-sm btn-stats") Player Stats
                                                 li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull" class="btn btn-md btn-stats") Full Report
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull" class="btn btn-sm btn-stats") Full Report
                                                 li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/roundreport" class="btn btn-md btn-stats") Round Report
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/roundreport" class="btn btn-sm btn-stats") Round Report
 
                                         div(class="col-md-7")
                                             ul(class="nav nav-pills no-border-radius")
@@ -507,6 +507,9 @@ block content
                                                 li
                                                     a(href="/t/" + tournament.shortID + "/stats/roundreport/dl" class="btn btn-sm btn-stats download" data-link="#{linkName}_rounds.html") Download Round Report
 
+                                        div(class="col-md-6")
+
+                                            a(href="/t/" + tournament.shortID + "/jsonexport" class="btn btn-md btn-warning" data-link="#{linkName}_json.qbj" id="download-json") Export to JSON
 
                             div(class="panel panel-default")
                                 div(class="panel-heading collapsable") Custom Team Statistics
