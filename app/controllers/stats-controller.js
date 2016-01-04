@@ -465,7 +465,7 @@ function makeGameObject(game, teamMap, playerMap, pointScheme) {
                 // }
                 var playerObject = makePlayerObject(playerMap, player, game.team1.playerStats, game, pointScheme);
                 bonusPoints -= playerObject.tossupTotal;
-                firstTeamObj.match_players.push(playerObject);
+                firstTeamObj.match_players.push(playerObject.playerObject);
             }
         }
         firstTeamObj.bonus_points = bonusPoints;
@@ -500,6 +500,7 @@ function makeGameObject(game, teamMap, playerMap, pointScheme) {
                 //     playerObject.answer_counts.push(answerObject);
                 // }
                 var playerObject = makePlayerObject(playerMap, player, game.team2.playerStats, game, pointScheme);
+                // console.log(playerObject.playerObject);
                 bonusPoints -= playerObject.tossupTotal;
                 secondTeamObj.match_players.push(playerObject.playerObject);
             }
