@@ -61,7 +61,7 @@ block content
 
                                 div(class="form-group")
                                     if tournament.date != null
-                                        - var date = tournament.date.getMonth() + "/" + tournament.date.getDate() + "/" + tournament.date.getFullYear()
+                                        - var date = (tournament.date.getMonth() + 1) + "/" + tournament.date.getDate() + "/" + tournament.date.getFullYear()
                                         input(readonly,
                                             type="text",
                                             value="Date: #{date}",

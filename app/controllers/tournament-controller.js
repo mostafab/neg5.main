@@ -39,15 +39,27 @@ function addTournament(director, name, date, location, description, questionset,
 * returns an empty list if result is empty
 */
 function findTournamentsByDirector(directorKey, callback) {
-    var query = Tournament.find({$or : [{directorid : directorKey.toString()}, {"collaborators.id" : directorKey}]}, function(err, result) {
-            if (err || result == null) {
-                callback(err, null);
-            } else {
-                result.sort(function(first, second) {
-                    return second.date - first.date;
-                });
-                callback(null, result);
+    Tournament.find({$or : [{directorid : directorKey.toString()}, {"collaborators.id" : directorKey}]}, function(err, result) {
+        if (err || result == null) {
+            callback(err, null);
+        } else {
+            var tournamentInfo = [];
+            for (var i = 0; i < result.length; i++) {
+                var tournament = {};
+                tournament.tournament_name = result[i].tournament_name;
+                tournament.shortID = result[i].shortID;
+                tournament.location = result[i].location;
+                tournament.date = result[i].date;
+                tournament.openRegistration = result[i].openRegistration;
+                tournament.questionSet = result[i].questionSet;
+                tournament.teamsAdded = result[i].teams.length;
+                tournamentInfo.push(tournament);
             }
+            tournamentInfo.sort(function(first, second) {
+                return second.date - first.date;
+            });
+            callback(null, tournamentInfo);
+        }
     });
 }
 

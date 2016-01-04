@@ -40,7 +40,11 @@ block content
                                         a(href="/t/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
                                     td #{tournaments[i].location}
                                     if tournaments[i].date
-                                        td #{tournaments[i].date.getMonth() + "/" + tournaments[i].date.getDate() + "/" + tournaments[i].date.getFullYear()}
+                                        - var month = tournaments[i].date.getMonth() + 1;
+                                        - var day = tournaments[i].date.getDate();
+                                        - var year = tournaments[i].date.getFullYear();
+                                        - var date = month + "/" + day + "/" + year;
+                                        td #{date}
                                     else
                                         td #{tournaments[i].date}
                                     if tournaments[i].openRegistration
@@ -48,7 +52,8 @@ block content
                                     else
                                         td No
                                     td #{tournaments[i].questionSet}
-                                    td #{tournaments[i].teams.length}
+                                    td #{tournaments[i].teamsAdded}
+
             div(class="row col-md-12")
                 div(class="col-md-6 statbox" style='padding:20px')
                     // div(style="margin:20px; margin-bottom:50px")
