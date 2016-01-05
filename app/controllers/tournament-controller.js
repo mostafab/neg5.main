@@ -739,20 +739,24 @@ function updateTournamentInformation(tournamentid, information, callback) {
 */
 function findDirectors(query, callback) {
     query = query.trim();
-    var rex = new RegExp(".*" + query + ".*", "i");
+    try {
+        var rex = new RegExp(".*" + query + ".*", "i");
 
-    // var query = {$regex : rex};
-    TournamentDirector.find({$or : [{email : rex}, {name : rex}]}, function(err, directors) {
-        if (err) {
-            console.log(err);
-            callback(err, []);
-        } else {
-            directors.sort(function(first, second) {
-                return first.name.localeCompare(second.name);
-            });
-            callback(null, directors);
-        }
-    });
+        // var query = {$regex : rex};
+        TournamentDirector.find({$or : [{email : rex}, {name : rex}]}, function(err, directors) {
+            if (err) {
+                console.log(err);
+                callback(err, []);
+            } else {
+                directors.sort(function(first, second) {
+                    return first.name.localeCompare(second.name);
+                });
+                callback(null, directors);
+            }
+        });
+    } catch (err) {
+        callback(err, []);
+    }
 }
 
 /**

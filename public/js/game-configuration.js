@@ -1,3 +1,20 @@
+'use strict';
+
+var entityMap = {
+   "&": "&amp;",
+   "<": "&lt;",
+   ">": "&gt;",
+   '"': '&quot;',
+   "'": '&#39;',
+   "/": '&#x2F;'
+ };
+
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+         return entityMap[s];
+    });
+}
+
 $(document).ready(function() {
 
     $("#entergamebutton").click(function(e) {
@@ -71,10 +88,11 @@ function showMessageInDiv(div, message, err) {
     } else {
         html = "<p style='margin-left:10px;font-size:18px;color:#009933'>" + message + "<i class='fa fa-check-circle' style='margin-left:5px'></i></p>";
     }
-    $(html).hide().appendTo(div).fadeIn(300);
+    $(html).hide().appendTo(div).fadeIn(200);
 }
 
 function editGameAJAX() {
+    console.log("Ok, editing game");
     $("#updategamediv").empty().
         append("<p style='margin-left:10px; font-size:16px;'>Updating Game <i class='fa fa-spinner fa-spin'></i></p>");
     $.ajax({
@@ -97,6 +115,9 @@ function editGameAJAX() {
 }
 
 function editTeamAJAX() {
+    $("#teamdetailsform :input").each(function() {
+        $(this).val(escapeHtml($(this).val()));
+    });
     $.ajax({
         url : "/tournaments/teams/edit",
         type : "POST",

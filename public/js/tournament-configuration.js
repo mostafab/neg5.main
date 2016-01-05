@@ -6,6 +6,15 @@ var gameList;
 var teamList;
 var playerList;
 
+var entityMap = {
+   "&": "&amp;",
+   "<": "&lt;",
+   ">": "&gt;",
+   '"': '&quot;',
+   "'": '&#39;',
+   "/": '&#x2F;'
+ };
+
 $(document).ready(function() {
     gameOptions = { valueNames : ["round", "team1name", "team2name"]};
     gameList = new List("gamediv", gameOptions);
@@ -74,9 +83,9 @@ $(document).ready(function() {
         // document.getElementById("gamedataform").reset();
         $(this).prop("disabled", true);
         $("#add-game-message").empty().
-            append("<p style='margin-left:10px; font-size:16px;'>Adding Game <i class='fa fa-spinner fa-spin'></i></p>");
+            append("<p style='margin-left:10px; font-size:16px;color:black;'>Adding Game <i class='fa fa-spinner fa-spin'></i></p>");
         $("#updategamediv").empty().
-            append("<p style='margin-left:10px; font-size:16px;'>Adding Game <i class='fa fa-spinner fa-spin'></i></p>");
+            append("<p style='margin-left:10px; font-size:16px;color:black;'>Adding Game <i class='fa fa-spinner fa-spin'></i></p>");
         sendGameToServer();
     });
 
@@ -129,8 +138,9 @@ $(document).ready(function() {
     });
 
     $("#addcollabbutton").click(function() {
-        // console.log($("#addcollabform").serializeArray());
-        addCollaboratorsAJAX();
+        if ($("#directorsoptions").val()) {
+            addCollaboratorsAJAX();
+        }
     });
 
     $(".removcollab").click(function() {
@@ -333,7 +343,10 @@ function deleteRegistrationAJAX(button) {
 
 function submitTournamentRegistration() {
     $("#tregmessage").empty().
-        append("<p style='margin-left:10px; font-size:18px;'>Submitting Information <i class='fa fa-spinner fa-spin' style='margin-left:5px'></i></p>");
+        append("<p style='margin-left:10px; font-size:18px;color:black;'>Submitting Information <i class='fa fa-spinner fa-spin' style='margin-left:5px'></i></p>");
+    $("#submitsignup :input").each(function() {
+        $(this).val(escapeHtml($(this).val()));
+    });
     $.ajax({
         url : $("#submitsignup").attr("action"),
         type : "POST",
@@ -357,7 +370,10 @@ function submitTournamentRegistration() {
 
 function sendTeamToServer() {
     $("#addteammsg").empty().
-        append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Editing<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
+        append("<p style='margin-left:10px; margin-right:10px; font-size:16px;color:black'>Editing<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
+    $("#teamform :input").each(function() {
+        $(this).val(escapeHtml($(this).val()));
+    });
     $.ajax({
         url : "/tournaments/createteam",
         type : "POST",
@@ -384,6 +400,7 @@ function sendTeamToServer() {
 }
 
 function sendGameToServer() {
+    console.log("OK, sending game.");
     $.ajax({
         url : "/tournaments/creategame",
         type : "POST",
@@ -407,6 +424,9 @@ function sendGameToServer() {
 }
 
 function sendPlayersToServer() {
+    $("#playersform :input").each(function() {
+        $(this).val(escapeHtml($(this).val()));
+    });
     $.ajax({
         url : "/tournaments/createplayers",
         type : "POST",
@@ -474,7 +494,7 @@ function removeTeam(forminfo, button) {
 
 function changePointSchemeAJAX(pointTypes) {
     $("#pointdivmsg").empty().
-        append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Working...<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
+        append("<p style='margin-left:10px; margin-right:10px;color:black;font-size:16px;'>Working...<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
         url : "/tournaments/editPointSchema",
         type : "POST",
@@ -489,8 +509,11 @@ function changePointSchemeAJAX(pointTypes) {
 }
 
 function changeDivisionsAJAX() {
+    $("#divisions-form :input").each(function() {
+        $(this).val(escapeHtml($(this).val()));
+    });
     $("#pointdivmsg").empty().
-        append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Working...<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
+        append("<p style='margin-left:10px; margin-right:10px; color:black;font-size:16px;'>Working...<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
         url : "/tournaments/editDivisions",
         type : "POST",
@@ -505,8 +528,11 @@ function changeDivisionsAJAX() {
 }
 
 function editTournamentAJAX() {
+    $("#tournament-overview-form :input").each(function() {
+        $(this).val(escapeHtml($(this).val()));
+    });
     $("#tournament-update-msgdiv").empty().
-        append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Editing<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
+        append("<p style='margin-left:10px; margin-right:10px; color:black;font-size:16px;'>Editing<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
         url : "/tournaments/edit",
         type : "POST",
@@ -524,7 +550,9 @@ function generateCustomStatsAJAX(button) {
     var postURL = $(button).attr("data-post-url");
     $("#customstatsdiv").empty().
         append("<p style='margin-left:10px; margin-right:10px; font-size:16px;'>Generating Stats <i class='fa fa-spinner fa-spin'></i></p>");
-
+    $("#filterstatsform :input").each(function() {
+        $(this).val(escapeHtml($(this).val()));
+    });
     $.ajax({
         url : postURL,
         type : "POST",
@@ -540,6 +568,9 @@ function generateCustomStatsAJAX(button) {
 }
 
 function findDirectorsAJAX() {
+    $("#searchcollabform :input").each(function() {
+        $(this).val(escapeHtml($(this).val()));
+    });
     $.ajax({
         url : "/tournaments/findDirectors",
         type : "GET",
@@ -584,14 +615,13 @@ function removeCollabAJAX(button) {
         success : function(databack, status, xhr) {
             if (databack.err == null) {
                 removeCollabBox(button);
-            } else {
-
             }
         }
     });
 }
 
 function showMessageInDiv(div, message, err) {
+    message = escapeHtml(message);
     var html = "";
     $(div).empty();
     if (err) {
@@ -603,7 +633,7 @@ function showMessageInDiv(div, message, err) {
 }
 
 function removeCollabBox(button) {
-    $(button).parent().fadeOut(300, function() {
+    $(button).parent().fadeOut(200, function() {
         $(this).remove();
     });
 }
@@ -872,4 +902,10 @@ function displayTeamCustomStats(teamData) {
         }
     }
     $(html).hide().appendTo("#customstatsdiv").fadeIn(300);
+}
+
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+         return entityMap[s];
+    });
 }
