@@ -6,6 +6,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var MAX_TOSSUPS = 20;
 var BONUS_POINT_VALUE = 10;
+var CURRENT_BONUS = 1;
+
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+};
 
 var Player = function Player(name, id, teamid) {
     _classCallCheck(this, Player);
@@ -62,6 +72,14 @@ var Tossup = (function () {
     return Tossup;
 })();
 
+var BonusPart = function BonusPart(number, gettingTeam) {
+    _classCallCheck(this, BonusPart);
+
+    this.number = number;
+    this.gettingTeam = gettingTeam;
+    this.value = 10;
+};
+
 var Bonus = (function () {
     function Bonus() {
         _classCallCheck(this, Bonus);
@@ -69,6 +87,7 @@ var Bonus = (function () {
         this.forTeam = null;
         this.forTeamPoints = 0;
         this.againstTeamPoints = 0;
+        // this.bonusParts = [];
     }
 
     _createClass(Bonus, [{
@@ -95,12 +114,30 @@ var Bonus = (function () {
         key: "getForTeamPoints",
         value: function getForTeamPoints() {
             return this.forTeamPoints;
+            // var points = 0;
+            // for (var i = 0; i < this.bonusParts.length; i++) {
+            //     if (this.bonusParts[i].gettingTeam == this.forTeam) {
+            //         points += this.bonusParts[i].value;
+            //     }
+            // }
+            // return points;
         }
     }, {
         key: "getAgainstTeamPoints",
         value: function getAgainstTeamPoints() {
+            // var points = 0;
+            // for (var i = 0; i < this.bonusParts.length; i++) {
+            //     if (this.bonusParts[i].gettingTeam && this.bonusParts[i].gettingTeam != this.forTeam) {
+            //         points += this.bonusParts[i].value;
+            //     }
+            // }
+            // return points;
             return this.againstTeamPoints;
         }
+
+        // addBonusPart(number, gettingTeam) {
+        //     this.bonusParts.push(new BonusPart(number, gettingTeam));
+        // }
     }]);
 
     return Bonus;
@@ -556,17 +593,17 @@ $(document).ready(function () {
     });
 
     $("body").on("click", "#submit-game", function () {
-        var scoresheet = parseScoresheet(game);
+        var parsedGame = parseScoresheet(game);
         // console.log(scoresheet);
         $(this).prop("disabled", true);
-        submitScoresheet(scoresheet);
+        submitScoresheet(game, parsedGame);
     });
 
     $("body").on("click", ".add-player-button", function () {
         $(this).prev(".player-name-input").css("border-color", "transparent");
         if ($(this).prev(".player-name-input").val().length !== 0) {
             $(this).prop("disabled", true);
-            addPlayer($(this).prev(".player-name-input").val(), $(this).attr("data-team"), $(this).attr("data-team-name"), $(this).attr("side"));
+            addPlayer(escapeHtml($(this).prev(".player-name-input").val()), $(this).attr("data-team"), $(this).attr("data-team-name"), $(this).attr("side"));
         } else {
             $(this).prev(".player-name-input").css("border-color", "red");
         }
@@ -695,10 +732,11 @@ function addPlayer(playerName, teamid, teamName, side) {
     });
 }
 
-function submitScoresheet(scoresheet) {
+function submitScoresheet(game, parsedScoresheet) {
     var data = {
-        tournamentid: $("#tournamentid").val(),
-        scoresheet: scoresheet
+        "tournamentid": $("#tournamentid").val(),
+        "scoresheet": game,
+        "game": parsedScoresheet
     };
     $.ajax({
         url: "/tournaments/scoresheet/submit",
@@ -1084,4 +1122,10 @@ function addPlayerColumn(side, player) {
 
 function changeFooterColSpan(colspan) {
     $("#tfoot-msg").attr("colspan", colspan);
+}
+
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+        return entityMap[s];
+    });
 }
