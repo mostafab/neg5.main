@@ -46,7 +46,8 @@ var gameSchema = new Schema({
     room : String,
     moderator : String,
     packet : String,
-    notes : String
+    notes : String,
+    phases : []
 });
 
 /**

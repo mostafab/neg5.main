@@ -2,6 +2,7 @@
 
 var MAX_TOSSUPS = 20;
 var BONUS_POINT_VALUE = 10;
+var CURRENT_BONUS = 1;
 
 var entityMap = {
    "&": "&amp;",
@@ -58,11 +59,20 @@ class Tossup {
     }
 }
 
+class BonusPart {
+    constructor(number, gettingTeam) {
+        this.number = number;
+        this.gettingTeam = gettingTeam;
+        this.value = 10;
+    }
+}
+
 class Bonus {
     constructor() {
         this.forTeam = null;
         this.forTeamPoints = 0;
         this.againstTeamPoints = 0;
+        // this.bonusParts = [];
     }
 
     setForTeam(teamid) {
@@ -83,13 +93,29 @@ class Bonus {
 
     getForTeamPoints() {
         return this.forTeamPoints;
+        // var points = 0;
+        // for (var i = 0; i < this.bonusParts.length; i++) {
+        //     if (this.bonusParts[i].gettingTeam == this.forTeam) {
+        //         points += this.bonusParts[i].value;
+        //     }
+        // }
+        // return points;
     }
 
     getAgainstTeamPoints() {
+        // var points = 0;
+        // for (var i = 0; i < this.bonusParts.length; i++) {
+        //     if (this.bonusParts[i].gettingTeam && this.bonusParts[i].gettingTeam != this.forTeam) {
+        //         points += this.bonusParts[i].value;
+        //     }
+        // }
+        // return points;
         return this.againstTeamPoints;
     }
 
-
+    // addBonusPart(number, gettingTeam) {
+    //     this.bonusParts.push(new BonusPart(number, gettingTeam));
+    // }
 }
 
 class Phase {
@@ -508,10 +534,10 @@ $(document).ready(function() {
     });
 
     $("body").on("click", "#submit-game", function() {
-        var scoresheet = parseScoresheet(game);
+        var parsedGame = parseScoresheet(game);
         // console.log(scoresheet);
         $(this).prop("disabled", true);
-        submitScoresheet(scoresheet);
+        submitScoresheet(game, parsedGame);
     });
 
     $("body").on("click", ".add-player-button", function() {
@@ -648,10 +674,11 @@ function addPlayer(playerName, teamid, teamName, side) {
     });
 }
 
-function submitScoresheet(scoresheet) {
+function submitScoresheet(game, parsedScoresheet) {
     var data = {
-                tournamentid : $("#tournamentid").val(),
-                scoresheet : scoresheet
+                "tournamentid" : $("#tournamentid").val(),
+                "scoresheet" : game,
+                "game" : parsedScoresheet
     };
     $.ajax({
         url : "/tournaments/scoresheet/submit",

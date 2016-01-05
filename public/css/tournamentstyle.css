@@ -224,7 +224,6 @@ td {
     color : white;
 }
 
-
 @media print {
   a[href]:after {
     content: none !important;

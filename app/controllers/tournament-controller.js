@@ -184,6 +184,7 @@ function addGameToTournament(tournamentid, gameinfo, callback) {
         packet : !gameinfo["packet"] ? "-" : gameinfo["packet"],
         notes : !gameinfo["notes"] ? "-" : gameinfo["notes"]
     });
+    newGame.phases = [];
     newGame.shortID = shortid.generate();
     newGame.team1.team_id = gameinfo["leftteamselect"];
     newGame.team1.score = !gameinfo["leftteamscore"] ? "0" : gameinfo["leftteamscore"];
@@ -816,10 +817,11 @@ function findCollaborators(tournamentid, callback) {
 * @param scoresheet scoresheet to add
 * @param callback callback with the new game's shortID
 */
-function addScoresheetAsGame(tournamentid, scoresheet, callback) {
+function addScoresheetAsGame(tournamentid, game, scoresheet, callback) {
     var newGame = new Game();
-    newGame = scoresheet;
+    newGame = game;
     newGame.shortID = shortid.generate();
+    newGame.phases = !scoresheet.phases ? [] : scoresheet.phases;
     Tournament.update({_id : tournamentid}, {$push : {games : newGame}}, function(err) {
         if (err) {
             callback(err, "");
@@ -932,6 +934,8 @@ function mergeTournaments(firstTournamentID, secondTournamentID, name, callback)
         }
     });
 }
+
+
 
 /**
 * Deletes a tournament from the database
