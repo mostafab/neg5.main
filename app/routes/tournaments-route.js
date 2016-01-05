@@ -215,7 +215,10 @@ module.exports = function(app) {
         if (!req.session.director) {
             res.status(401).end();
         } else {
-            tournamentController.addScoresheetAsGame(req.body.tournamentid, req.body.scoresheet, function(err, gameid) {
+            // console.log(req.body.scoresheet.currentPhase.tossup);
+            // console.log(req.body.game);
+            // console.log(JSON.stringify(req.body.scoresheet, null, 4));
+            tournamentController.addScoresheetAsGame(req.body.tournamentid, req.body.game, req.body.scoresheet, function(err, gameid) {
                 if (err) {
                     res.status(500).end();
                 } else {

@@ -15,7 +15,7 @@ block content
     div(class="content-wrapper box" style='padding-left:50px;padding-right:50px;padding-top:10px')
         input(type="hidden" value="#{tournament._id}" id="tournamentid")
         div(class="row")
-            div(class="col-md-6 col-lg-6 col-sm-6")
+            div(class="col-md-5 col-lg-5 col-sm-5")
                 div(style="margin:10px; margin-bottom:50px")
                 div(style="text-align:center")
                     h2(class="title" style="width:100%") Teams Select
@@ -99,14 +99,17 @@ block content
                                         button(class="btn btn-md btn-info btn-block add-bonus" style='margin:0px' data-list="#right-gotten-bonus" id='right-bonus-info')
 
                                 br
-
+                                // div(class="row")
+                                //     div(class="col-md-12")
+                                //         button(class="btn btn-md btn-warning btn-block" style='margin:0px' id='dead-bonus') Dead Bonus Part
+                                // br
                                 div(class="row")
                                     div(class="col-md-6")
                                         button(class="btn btn-lg btn-danger btn-block" style='margin:0px' id="undo-tossup") Undo this Tossup
                                     div(class="col-md-6")
                                         button(class="btn btn-lg btn-success btn-block" style='margin:0px' id="next-tossup") Next Tossup
 
-            div(class="col-md-6 col-lg-6 col-sm-6")
+            div(class="col-md-7 col-lg-7 col-sm-7")
                 div(style="margin:20px; margin-bottom:50px")
                 div(class="row")
                     div(class="col-md-12 col-sm-12 col-lg-12")

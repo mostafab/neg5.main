@@ -401,14 +401,6 @@ function convertToQuizbowlSchema(tournamentid, callback) {
             for (var i = 0; i < tournament.games.length; i++) {
                 tournamentObject.matches.push({$ref : "game_" + tournament.games[i].shortID});
                 qbjObj.objects.push(makeGameObject(tournament.games[i], teamMap, playerMap, Object.keys(tournament.pointScheme)));
-                // var game = tournament.games[i];
-                // var gameObject = {id : "game_" + game.shortID, location : game.room,
-                //     match_teams : [], round : game.round, tossups : game.tossupsheard, type : "Match"};
-                // var firstTeamObj = {points : game.team1.score, match_players : [], team : {$ref : "team_" + teamMap[game.team1.team_id].shortID}};
-                // var secondTeamObj = {points : game.team2.score, match_players : [], team : {$ref : "team_" + teamMap[game.team2.team_id].shortID}};
-                // gameObject.match_teams.push(firstTeamObj);
-                // gameObject.match_teams.push(secondTeamObj);
-                // qbjObj.objects.push(gameObject);
             }
             // console.log(teamMap);
             qbjObj.objects.push(tournamentObject);
@@ -442,27 +434,6 @@ function makeGameObject(game, teamMap, playerMap, pointScheme) {
         var bonusPoints = game.team1.score;
         for (var player in game.team1.playerStats) {
             if (game.team1.playerStats.hasOwnProperty(player)) {
-                // var playerObject = {
-                //     player : {name : playerMap[player].name},
-                //     tossups_heard : Math.floor(parseFloat(game.team1.playerStats[player].gp) * game.tossupsheard),
-                //     answer_counts : []
-                // };
-                // for (var j = 0; j < pointScheme.length; j++) {
-                //     var answerObject = {};
-                //     answerObject.value = parseFloat(pointScheme[j]);
-                //     if (game.team1.playerStats[player][pointScheme[j]]) {
-                //         var number = parseFloat(game.team1.playerStats[player][pointScheme[j]]);
-                //         if (number == null) {
-                //             answerObject.number = 0;
-                //         } else {
-                //             answerObject.number = number;
-                //         }
-                //     } else {
-                //         answerObject.number = 0;
-                //     }
-                //     bonusPoints -= (answerObject.value * answerObject.number);
-                //     playerObject.answer_counts.push(answerObject);
-                // }
                 var playerObject = makePlayerObject(playerMap, player, game.team1.playerStats, game, pointScheme);
                 bonusPoints -= playerObject.tossupTotal;
                 firstTeamObj.match_players.push(playerObject.playerObject);
@@ -478,27 +449,6 @@ function makeGameObject(game, teamMap, playerMap, pointScheme) {
         var bonusPoints = game.team2.score;
         for (var player in game.team2.playerStats) {
             if (game.team2.playerStats.hasOwnProperty(player)) {
-                // var playerObject = {
-                //     player : {name : playerMap[player].name},
-                //     tossups_heard : Math.floor(parseFloat(game.team2.playerStats[player].gp) * game.tossupsheard),
-                //     answer_counts : []
-                // };
-                // for (var j = 0; j < pointScheme.length; j++) {
-                //     var answerObject = {};
-                //     answerObject.value = parseFloat(pointScheme[j]);
-                //     if (game.team2.playerStats[player][pointScheme[j]]) {
-                //         var number = parseFloat(game.team2.playerStats[player][pointScheme[j]]);
-                //         if (number == null) {
-                //             answerObject.number = 0;
-                //         } else {
-                //             answerObject.number = number;
-                //         }
-                //     } else {
-                //         answerObject.number = 0;
-                //     }
-                //     bonusPoints -= (answerObject.value * answerObject.number);
-                //     playerObject.answer_counts.push(answerObject);
-                // }
                 var playerObject = makePlayerObject(playerMap, player, game.team2.playerStats, game, pointScheme);
                 // console.log(playerObject.playerObject);
                 bonusPoints -= playerObject.tossupTotal;
