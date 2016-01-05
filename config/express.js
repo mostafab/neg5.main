@@ -23,13 +23,13 @@ module.exports = function() {
         httpOnly : true,
         secure : true
     }));
-    app.use(passport.initialize());
-    app.use(passport.session());
+    // app.use(passport.initialize());
+    // app.use(passport.session());
 
     app.set("views", "./app/views");
     app.set("view engine", "jade");
 
-    app.use(express.static("./public", {maxAge : ONE_WEEK}));
+    app.use(express.static("./public"));
 
 
     require('../app/routes/index.js')(app, passport);
