@@ -489,6 +489,13 @@ function makeGameObject(game, teamMap, playerMap, pointScheme) {
     return gameObject;
 }
 
+/**
+* Creates a matchQuestion object adhering to QBJ format
+* @param phase current match question with a tossup and bonus
+* @param teamMap map of teams where key is teamid and value is shortID and teamname
+* @param playerMap map of players where key is playerid and value is shortID and player_name
+* @return a match question object with a number, bonus_points, bounceback_bonus_points, and an array of buzzes
+*/
 function makeMatchQuestionObject(phase, teamMap, playerMap) {
     var matchQuestion = {
                     number : parseFloat(phase.number),
@@ -508,6 +515,14 @@ function makeMatchQuestionObject(phase, teamMap, playerMap) {
     return matchQuestion;
 }
 
+/**
+* Creates a player object adhering to QBJ format
+* @param playerMap map of players where key is playerid and value is shortID and player_name
+* @param player id of the player for this object
+* @param playerStats object where key is a playerid and value is the point values for a game by this player
+* @param pointScheme tournament's point scheme so only correct answers in point values are accounted for
+* @return a player object and the total sum of points this player scored in a game
+*/
 function makePlayerObject(playerMap, player, playerStats, game, pointScheme) {
     var playerObject = {
         player : {name : playerMap[player].name},
