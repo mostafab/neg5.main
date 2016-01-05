@@ -1,6 +1,8 @@
 var mongoose = require("mongoose");
 var Tournament = mongoose.model("Tournament");
 
+var SCHEMA_VERSION = "1.1";
+
 /**
 * Responsible for gathering basic statistics information about a tournament's teams
 * and calling the given callback with an err if needed, the tournament found, and
@@ -364,6 +366,12 @@ function getPPBForRounds(games, pointScheme, pointTypes) {
     return totalTossupsGotten == 0 ? 0 : +(totalBonusPoints / totalTossupsGotten).toFixed(2);
 }
 
+/**
+* Converts a tournament from the way it's saved in the Mongo database to the
+* QBJ format
+* @param tournamentid id of the tournament to convert
+* @param callback callback function with an error (Or null) and the quizbowlSchema object
+*/
 function convertToQuizbowlSchema(tournamentid, callback) {
     Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
         if (err) {
@@ -371,7 +379,7 @@ function convertToQuizbowlSchema(tournamentid, callback) {
         } else if (!tournament) {
             callback(null, null);
         } else {
-            var qbjObj = {version : "1.0", objects : []};
+            var qbjObj = {version : SCHEMA_VERSION, objects : []};
             var tournamentObject = {matches : [], registrations : [], type : "Tournament", name : tournament.tournament_name};
             var teamMap = {};
             for (var i = 0; i < tournament.teams.length; i++) {
@@ -409,6 +417,12 @@ function convertToQuizbowlSchema(tournamentid, callback) {
     });
 }
 
+/**
+* Creates a map of all players in a given tournament where the key is the player's id
+* and the value is the player's shortID and name
+* @param players array of players
+* @return map of all players
+*/
 function makePlayerMap(players) {
     var playerMap = {};
     for (var i = 0; i < players.length; i++) {
@@ -417,15 +431,22 @@ function makePlayerMap(players) {
     return playerMap;
 }
 
+/**
+* Creates a game object adhering to the .qbj format
+* @param game game to convert
+* @param teamMap a map of teams where key is the teamid and the values are the team's name
+* and shortID
+* @param playerMap map of players where key is playerid and values are player's name and shortID
+* @param pointScheme tournament's point scheme so that only relevant point values are factored in
+* @return a game object adhering to .qbj format
+*/
 function makeGameObject(game, teamMap, playerMap, pointScheme) {
     var gameObject = {id : "game_" + game.shortID, location : game.room,
-        match_teams : [], round : game.round, tossups : game.tossupsheard, type : "Match",
+        match_teams : [], match_questions : [], round : game.round, tossups : game.tossupsheard, type : "Match",
         moderator : game.moderator, notes : game.notes};
 
     var numPlayersTeam1 = Object.keys(game.team1.playerStats).length;
     var numPlayersTeam2 = Object.keys(game.team2.playerStats).length;
-    // console.log(numPlayersTeam1);
-    // console.log(numPlayersTeam2);
 
     var firstTeamObj = {match_players : [], team : {$ref : "team_" + teamMap[game.team1.team_id].shortID}};
     if (numPlayersTeam1 === 0) {
@@ -460,9 +481,31 @@ function makeGameObject(game, teamMap, playerMap, pointScheme) {
     }
     gameObject.match_teams.push(firstTeamObj);
     gameObject.match_teams.push(secondTeamObj);
-
+    if (game.phases) {
+        for (var i = 0; i < game.phases.length; i++) {
+            gameObject.match_questions.push(makeMatchQuestionObject(game.phases[i], teamMap, playerMap));
+        }
+    }
     return gameObject;
+}
 
+function makeMatchQuestionObject(phase, teamMap, playerMap) {
+    var matchQuestion = {
+                    number : parseFloat(phase.number),
+                    bonus_points : parseFloat(phase.bonus.forTeamPoints) + parseFloat(phase.bonus.againstTeamPoints),
+                    bounceback_bonus_points : parseFloat(phase.bonus.againstTeamPoints),
+                    buzzes : []
+                };
+    // console.log(phase.tossup.answers.length);
+    for (var i = 0; i < phase.tossup.answers.length; i++) {
+        var answer = phase.tossup.answers[i];
+        var buzzObject = {};
+        buzzObject.team = {$ref : "team_" + teamMap[answer.team].shortID};
+        buzzObject.player = {$ref : "player_" + playerMap[answer.player].shortID};
+        buzzObject.result = {value : parseFloat(answer.value)};
+        matchQuestion.buzzes.push(buzzObject);
+    }
+    return matchQuestion;
 }
 
 function makePlayerObject(playerMap, player, playerStats, game, pointScheme) {

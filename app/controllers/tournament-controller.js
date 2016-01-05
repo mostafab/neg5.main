@@ -822,6 +822,11 @@ function addScoresheetAsGame(tournamentid, game, scoresheet, callback) {
     newGame = game;
     newGame.shortID = shortid.generate();
     newGame.phases = !scoresheet.phases ? [] : scoresheet.phases;
+    for (var i = 0; i < newGame.phases.length; i++) {
+        if (!newGame.phases[i].tossup) {
+            newGame.phases[i].tossup = {answers : []};
+        }
+    }
     Tournament.update({_id : tournamentid}, {$push : {games : newGame}}, function(err) {
         if (err) {
             callback(err, "");
