@@ -264,19 +264,32 @@ function downloadStats(anchor) {
         url : $(anchor).attr("href"),
         type : "GET",
         success : function(databack, status, xhr) {
-            var type = xhr.getResponseHeader('Content-Type');
-            var blob = new Blob([databack], { type: type });
-            var URL = window.URL || window.webkitURL;
-            var downloadUrl = URL.createObjectURL(blob);
-            var tempAnchor = document.createElement("a");
-               // safari doesn't support this yet
-               if (typeof tempAnchor.download === 'undefined') {
-                   window.location = downloadUrl;
-               } else {
-                   tempAnchor.href = downloadUrl;
-                   tempAnchor.download = $(anchor).attr("data-link");
-                   tempAnchor.click();
-               }
+            if (window.navigator.msSaveOrOpenBlob) {
+                var fileData = [databack];
+                var blobObject = new Blob(fileData);
+                $(anchor).click(function() {
+                    window.navigator.msSaveOrOpenBlob(blobObject, $(anchor).attr("data-link"));
+                });
+            } else {
+                var type = xhr.getResponseHeader('Content-Type');
+                var blob = new Blob([databack], { type: type });
+                var URL = window.URL || window.webkitURL;
+                var downloadUrl = URL.createObjectURL(blob);
+                var tempAnchor = document.createElement("a");
+                   // safari doesn't support this yet
+                   if (typeof tempAnchor.download === 'undefined') {
+                       window.location = downloadUrl;
+                   } else {
+                       tempAnchor.href = downloadUrl;
+                       tempAnchor.download = $(anchor).attr("data-link");
+                       document.body.appendChild(tempAnchor);
+                       tempAnchor.click();
+                       setTimeout(function() {
+                           document.body.removeChild(tempAnchor);
+                           window.URL.revokeObjectURL(downloadUrl);
+                       }, 100);
+                   }
+            }
         }
     });
 }
@@ -287,20 +300,32 @@ function downloadJSON(anchor) {
         type : "GET",
         success : function(databack, status, xhr) {
             // console.log(xhr.getResponseHeader("Content-Type"));
-            console.log(databack);
-            var type = xhr.getResponseHeader('Content-Type');
-            var blob = new Blob([JSON.stringify(databack, null, 4)], { type: type });
-            var URL = window.URL || window.webkitURL;
-            var downloadUrl = URL.createObjectURL(blob);
-            var tempAnchor = document.createElement("a");
-               // safari doesn't support this yet
-               if (typeof tempAnchor.download === 'undefined') {
-                   window.location = downloadUrl;
-               } else {
-                   tempAnchor.href = downloadUrl;
-                   tempAnchor.download = $(anchor).attr("data-link");
-                   tempAnchor.click();
-               }
+            if (window.navigator.msSaveOrOpenBlob) {
+                var fileData = [JSON.stringify(databack, null, 4)];
+                var blobObject = new Blob(fileData);
+                $(anchor).click(function() {
+                    window.navigator.msSaveOrOpenBlob(blobObject, $(anchor).attr("data-link"));
+                });
+            } else {
+                var type = xhr.getResponseHeader('Content-Type');
+                var blob = new Blob([JSON.stringify(databack, null, 4)], { type: type });
+                var URL = window.URL || window.webkitURL;
+                var downloadUrl = URL.createObjectURL(blob);
+                var tempAnchor = document.createElement("a");
+                   // safari doesn't support this yet
+                   if (typeof tempAnchor.download === 'undefined') {
+                       window.location = downloadUrl;
+                   } else {
+                       tempAnchor.href = downloadUrl;
+                       tempAnchor.download = $(anchor).attr("data-link");
+                       document.body.appendChild(tempAnchor);
+                       tempAnchor.click();
+                       setTimeout(function() {
+                           document.body.removeChild(tempAnchor);
+                           window.URL.revokeObjectURL(downloadUrl);
+                       }, 100);
+                   }
+            }
         }
     });
 }
@@ -310,21 +335,32 @@ function downloadSQBS(anchor) {
         url : $(anchor).attr("href"),
         type : "GET",
         success : function(databack, status, xhr) {
-            // console.log(xhr.getResponseHeader("Content-Type"));
-            console.log(databack);
-            var type = xhr.getResponseHeader('Content-Type');
-            var blob = new Blob([databack], { type: type });
-            var URL = window.URL || window.webkitURL;
-            var downloadUrl = URL.createObjectURL(blob);
-            var tempAnchor = document.createElement("a");
-               // safari doesn't support this yet
-               if (typeof tempAnchor.download === 'undefined') {
-                   window.location = downloadUrl;
-               } else {
-                   tempAnchor.href = downloadUrl;
-                   tempAnchor.download = $(anchor).attr("data-link");
-                   tempAnchor.click();
-               }
+            if (window.navigator.msSaveOrOpenBlob) {
+                var fileData = [databack];
+                var blobObject = new Blob(fileData);
+                $(anchor).click(function() {
+                    window.navigator.msSaveOrOpenBlob(blobObject, $(anchor).attr("data-link"));
+                });
+            } else {
+                var type = xhr.getResponseHeader('Content-Type');
+                var blob = new Blob([databack], { type: type });
+                var URL = window.URL || window.webkitURL;
+                var downloadUrl = URL.createObjectURL(blob);
+                var tempAnchor = document.createElement("a");
+                   // safari doesn't support this yet
+                   if (typeof tempAnchor.download === 'undefined') {
+                       window.location = downloadUrl;
+                   } else {
+                       tempAnchor.href = downloadUrl;
+                       tempAnchor.download = $(anchor).attr("data-link");
+                       document.body.appendChild(tempAnchor);
+                       tempAnchor.click();
+                       setTimeout(function() {
+                           document.body.removeChild(tempAnchor);
+                           window.URL.revokeObjectURL(downloadUrl);
+                       }, 100);
+                   }
+            }
         }
     });
 }
