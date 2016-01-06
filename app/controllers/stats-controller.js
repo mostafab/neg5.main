@@ -367,6 +367,127 @@ function getPPBForRounds(games, pointScheme, pointTypes) {
 }
 
 /**
+* Converts a tournament from the Mongo database to an SQBS readable format
+* For more information on the SQBS format, visit : https://code.google.com/p/qbsql/source/browse/trunk/functions.php#504
+* @param tournamentid id of the tournament to convert
+* @param callback callback function with an error (or null) and the sqbs string
+*/
+function convertToSQBS(tournamentid, callback) {
+    Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
+        if (err) {
+            callback(err, null);
+        } else if (!tournament) {
+            callback(null, null);
+        } else {
+            var sqbsString = "";
+            sqbsString += tournament.teams.length + "\n";
+            // Build the team map
+            var teamMap = {};
+            var teamIndex = 0;
+            for (var i = 0; i < tournament.teams.length; i++) {
+                teamMap[tournament.teams[i]._id] = {team_name : tournament.teams[i].team_name, players : [], team_index : teamIndex};
+                teamIndex++;
+            }
+            for (var i = 0; i < tournament.players.length; i++) {
+                var numPlayers = teamMap[tournament.players[i].teamID].players.length;
+                teamMap[tournament.players[i].teamID].players.push({name : tournament.players[i].player_name, id : tournament.players[i]._id, player_index : numPlayers});
+                // console.log(teamMap[tournament.players[i].teamID].players);
+            }
+            for (var team in teamMap) {
+                if (teamMap.hasOwnProperty(team)) {
+                    sqbsString += (teamMap[team].players.length + 1) + "\n";
+                    sqbsString += teamMap[team].team_name + "\n";
+                    for (var i = 0; i < teamMap[team].players.length; i++) {
+                        sqbsString += teamMap[team].players[i].name + "\n";
+                    }
+                }
+            }
+            sqbsString += tournament.games.length + "\n";
+            for (var i = 0; i < tournament.games.length; i++) {
+                sqbsString += i + "\n";
+                var currentGame = tournament.games[i];
+                // console.log(teamMap[currentGame.team1.team_id].team_index);
+                // console.log(teamMap[currentGame.team2.team_id].team_index);
+                sqbsString += teamMap[currentGame.team1.team_id].team_index + "\n";
+                sqbsString += teamMap[currentGame.team2.team_id].team_index + "\n";
+                sqbsString += currentGame.team1.score + "\n";
+                sqbsString += currentGame.team2.score + "\n";
+                sqbsString += currentGame.tossupsheard + "\n";
+                sqbsString += currentGame.round + "\n";
+                sqbsString += "3\n";
+                sqbsString += "200\n";
+                sqbsString += "5\n";
+                sqbsString += "110\n";
+                sqbsString += "0\n";
+                sqbsString += "0\n";
+                sqbsString += "0\n";
+                sqbsString += "0\n";
+                sqbsString += "0\n";
+                sqbsString += "0\n";
+                sqbsString += "----------Start Player Stats ----------------\n";
+                var current = 0;
+                for (var player in currentGame.team1.playerStats) {
+                    if (currentGame.team1.playerStats.hasOwnProperty(player)) {
+                        // console.log(player);
+                        // console.log(player);
+                        var index = -1;
+                        // console.log(teamMap[currentGame.team1.team_id].players);
+                        // console.log("num players: " + teamMap[currentGame.team1.team_id].players.length);
+                        for (var j = 0; j < teamMap[currentGame.team1.team_id].players.length; j++) {
+                            if (player == teamMap[currentGame.team1.team_id].players[j].id) {
+                                // console.log("match");
+                                index = teamMap[currentGame.team1.team_id].players[j].player_index;
+                                break;
+                            }
+                        }
+                        // console.log(index);
+                        sqbsString += index + "\n0\n0\n0\n0\n0\n0\n";
+                        sqbsString += "----------Next Player---------\n";
+                        current++;
+                    }
+                }
+                while (current < 7) {
+                    sqbsString += "-1\n0\n0\n0\n0\n0\n0\n";
+                    current++;
+                    sqbsString += "------------Next Player----------\n";
+                }
+                sqbsString += "--------Next Team ---------\n";
+                // console.log(current);
+                current = 0;
+                for (var player in currentGame.team2.playerStats) {
+                    if (currentGame.team2.playerStats.hasOwnProperty(player)) {
+                        // console.log(player);
+                        // console.log(player);
+                        var index = -1;
+                        // console.log(teamMap[currentGame.team1.team_id].players);
+                        // console.log("num players: " + teamMap[currentGame.team2.team_id].players.length);
+                        for (var j = 0; j < teamMap[currentGame.team2.team_id].players.length; j++) {
+                            if (player == teamMap[currentGame.team2.team_id].players[j].id) {
+                                // console.log("match");
+                                index = teamMap[currentGame.team2.team_id].players[j].player_index;
+                                break;
+                            }
+                        }
+                        // console.log(index);
+                        sqbsString += index + "\n0\n0\n0\n0\n0\n0\n";
+                        sqbsString += "----------Next Player---------\n";
+                        current++;
+                    }
+                }
+                while (current < 7) {
+                    sqbsString += "-1\n0\n0\n0\n0\n0\n0\n";
+                    current++;
+                    sqbsString += "------------Next Player----------\n";
+                }
+                // console.log(current);
+            }
+            sqbsString = sqbsString.replace(/\n$/, "")
+            callback(null, sqbsString);
+        }
+    });
+}
+
+/**
 * Converts a tournament from the way it's saved in the Mongo database to the
 * QBJ format
 * @param tournamentid id of the tournament to convert
@@ -558,3 +679,4 @@ exports.getFilteredPlayersInformation = getFilteredPlayersInformation;
 exports.getRoundReport = getRoundReport;
 exports.getPPBForRounds = getPPBForRounds;
 exports.convertToQuizbowlSchema = convertToQuizbowlSchema;
+exports.convertToSQBS = convertToSQBS;

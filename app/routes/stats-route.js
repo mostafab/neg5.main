@@ -204,14 +204,26 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/jsonexport", function(req, res) {
+    app.get("/t/:tid/export/qbj", function(req, res) {
         statsController.convertToQuizbowlSchema(req.params.tid, function(err, json) {
             if (err) {
                 res.status(500).end();
             } else if (!json) {
-                res.status(401).end();
+                res.status(404).end();
             } else {
                 res.status(200).set("Content-Type", "application/vnd.quizbowl.qbj+json").send(json);
+            }
+        });
+    });
+
+    app.get("/t/:tid/export/sqbs", function(req, res) {
+        statsController.convertToSQBS(req.params.tid, function(err, sqbs) {
+            if (err) {
+                res.status(500).end();
+            } else if (!sqbs) {
+                res.status(404).end();
+            } else {
+                res.status(200).send(sqbs);
             }
         });
     });
