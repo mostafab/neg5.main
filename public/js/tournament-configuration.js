@@ -199,11 +199,16 @@ $(document).ready(function() {
         downloadJSON($(this));
     });
 
+    // $("#download-sqbs").click(function(e) {
+    //     e.preventDefault();
+    //     downloadSQBS($(this));
+    // });
+
     $("#new-phase").click(function() {
         $("#new-phase-name").css("border-color", "white");
         // console.log($("#new-phase-name").val());
         if ($("#new-phase-name").val().length !== 0) {
-            makePhaseAJAX($(this).attr("data-tournament"), $("#new-phase-name").val());
+            makePhaseAJAX($(this).attr("data-tournament"), escapeHtml($("#new-phase-name").val()));
         } else {
             $("#new-phase-name").css("border-color", "red");
         }
@@ -285,6 +290,30 @@ function downloadJSON(anchor) {
             console.log(databack);
             var type = xhr.getResponseHeader('Content-Type');
             var blob = new Blob([JSON.stringify(databack, null, 4)], { type: type });
+            var URL = window.URL || window.webkitURL;
+            var downloadUrl = URL.createObjectURL(blob);
+            var tempAnchor = document.createElement("a");
+               // safari doesn't support this yet
+               if (typeof tempAnchor.download === 'undefined') {
+                   window.location = downloadUrl;
+               } else {
+                   tempAnchor.href = downloadUrl;
+                   tempAnchor.download = $(anchor).attr("data-link");
+                   tempAnchor.click();
+               }
+        }
+    });
+}
+
+function downloadSQBS(anchor) {
+    $.ajax({
+        url : $(anchor).attr("href"),
+        type : "GET",
+        success : function(databack, status, xhr) {
+            // console.log(xhr.getResponseHeader("Content-Type"));
+            console.log(databack);
+            var type = xhr.getResponseHeader('Content-Type');
+            var blob = new Blob([databack], { type: type });
             var URL = window.URL || window.webkitURL;
             var downloadUrl = URL.createObjectURL(blob);
             var tempAnchor = document.createElement("a");
