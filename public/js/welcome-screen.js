@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var constants = {
     MIN_USER_LENGTH : 5,
@@ -70,7 +70,7 @@ function submitRegistration() {
 
 function showMessageInDiv(div, message, err) {
     var html = "";
-    $(div).empty();
+    $(div).show().empty();
     if (err) {
         html = "<p style='margin-left:10px;font-size:18px;color:#ff3300'>" + message + "<i class='fa fa-times-circle' style='margin-left:5px'></i></p>";
     } else {
