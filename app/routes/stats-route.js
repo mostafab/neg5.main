@@ -149,7 +149,7 @@ module.exports = function(app) {
                 res.status(404).end();
             } else {
                 var linkTournamentName = tournamentName.replace(" ", "_").toLowerCase();
-                res.send({tournamentName : tournamentName, roundsInfo : roundsInfo, roundsInfo, linkName : linkTournamentName});
+                res.send({tournamentName : tournamentName, roundsInfo : roundsInfo, linkName : linkTournamentName});
             }
         });
     });

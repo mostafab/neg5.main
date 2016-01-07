@@ -199,10 +199,10 @@ $(document).ready(function() {
         downloadJSON($(this));
     });
 
-    // $("#download-sqbs").click(function(e) {
-    //     e.preventDefault();
-    //     downloadSQBS($(this));
-    // });
+    $("#download-sqbs").click(function(e) {
+        e.preventDefault();
+        downloadSQBS($(this));
+    });
 
     $("#new-phase").click(function() {
         $("#new-phase-name").css("border-color", "white");
