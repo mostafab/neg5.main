@@ -388,11 +388,13 @@ function convertToSQBS(tournamentid, callback) {
                 teamMap[tournament.teams[i]._id] = {team_name : tournament.teams[i].team_name, players : [], team_index : teamIndex};
                 teamIndex++;
             }
+            // console.log(teamMap);
             for (var i = 0; i < tournament.players.length; i++) {
                 var numPlayers = teamMap[tournament.players[i].teamID].players.length;
                 teamMap[tournament.players[i].teamID].players.push({name : tournament.players[i].player_name, id : tournament.players[i]._id, player_index : numPlayers});
                 // console.log(teamMap[tournament.players[i].teamID].players);
             }
+            console.log(JSON.stringify(teamMap, null, 4));
             for (var team in teamMap) {
                 if (teamMap.hasOwnProperty(team)) {
                     sqbsString += (teamMap[team].players.length + 1) + "\n";
@@ -424,7 +426,7 @@ function convertToSQBS(tournamentid, callback) {
                 sqbsString += "0\n";
                 sqbsString += "0\n";
                 sqbsString += "0\n";
-                sqbsString += "----------Start Player Stats ----------------\n";
+                // sqbsString += "----------Start Player Stats ----------------\n";
                 var current = 0;
                 for (var player in currentGame.team1.playerStats) {
                     if (currentGame.team1.playerStats.hasOwnProperty(player)) {
@@ -442,16 +444,16 @@ function convertToSQBS(tournamentid, callback) {
                         }
                         // console.log(index);
                         sqbsString += index + "\n0\n0\n0\n0\n0\n0\n";
-                        sqbsString += "----------Next Player---------\n";
+                        // sqbsString += "----------Next Player---------\n";
                         current++;
                     }
                 }
                 while (current < 7) {
                     sqbsString += "-1\n0\n0\n0\n0\n0\n0\n";
                     current++;
-                    sqbsString += "------------Next Player----------\n";
+                    // sqbsString += "------------Next Player----------\n";
                 }
-                sqbsString += "--------Next Team ---------\n";
+                // sqbsString += "--------Next Team ---------\n";
                 // console.log(current);
                 current = 0;
                 for (var player in currentGame.team2.playerStats) {
@@ -470,14 +472,14 @@ function convertToSQBS(tournamentid, callback) {
                         }
                         // console.log(index);
                         sqbsString += index + "\n0\n0\n0\n0\n0\n0\n";
-                        sqbsString += "----------Next Player---------\n";
+                        // sqbsString += "----------Next Player---------\n";
                         current++;
                     }
                 }
                 while (current < 7) {
                     sqbsString += "-1\n0\n0\n0\n0\n0\n0\n";
                     current++;
-                    sqbsString += "------------Next Player----------\n";
+                    // sqbsString += "------------Next Player----------\n";
                 }
                 // console.log(current);
             }
