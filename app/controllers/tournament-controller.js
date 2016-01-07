@@ -46,6 +46,7 @@ function findTournamentsByDirector(directorKey, callback) {
             var tournamentInfo = [];
             for (var i = 0; i < result.length; i++) {
                 var tournament = {};
+                tournament._id = result[i]._id;
                 tournament.tournament_name = result[i].tournament_name;
                 tournament.shortID = result[i].shortID;
                 tournament.location = result[i].location;
