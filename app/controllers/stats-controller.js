@@ -394,7 +394,7 @@ function convertToSQBS(tournamentid, callback) {
                 teamMap[tournament.players[i].teamID].players.push({name : tournament.players[i].player_name, id : tournament.players[i]._id, player_index : numPlayers});
                 // console.log(teamMap[tournament.players[i].teamID].players);
             }
-            console.log(JSON.stringify(teamMap, null, 4));
+            // console.log(JSON.stringify(teamMap, null, 4));
             for (var team in teamMap) {
                 if (teamMap.hasOwnProperty(team)) {
                     sqbsString += (teamMap[team].players.length + 1) + "\n";
