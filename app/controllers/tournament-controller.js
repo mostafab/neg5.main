@@ -173,9 +173,10 @@ function findTeamMembers(tournamentid, teamid, callback) {
 * a tournamentid, information about the game, and a callback.
 * @param tournamentid id of the tournament to add a game to
 * @param gameinfo information about the game to add
+* @param phases phases of the game to add
 * @param callback function called back with an error (or null) and the new game
 */
-function addGameToTournament(tournamentid, gameinfo, callback) {
+function addGameToTournament(tournamentid, gameinfo, phases, callback) {
     pointsJSONKeys = Object.keys(JSON.parse(gameinfo["pointValueForm"]));
     var newGame = new Game({
         round : !gameinfo["round"] ? 0 : gameinfo["round"],
@@ -185,7 +186,7 @@ function addGameToTournament(tournamentid, gameinfo, callback) {
         packet : !gameinfo["packet"] ? "-" : gameinfo["packet"],
         notes : !gameinfo["notes"] ? "-" : gameinfo["notes"]
     });
-    newGame.phases = [];
+    newGame.phases = phases;
     newGame.shortID = shortid.generate();
     newGame.team1.team_id = gameinfo["leftteamselect"];
     newGame.team1.score = !gameinfo["leftteamscore"] ? "0" : gameinfo["leftteamscore"];
@@ -383,8 +384,21 @@ function removeGameFromTournament(tournamentid, gameShortID, callback) {
     var tournamentQuery = {_id : tournamentid, "games.shortID" : gameShortID};
     var pullQuery = {$pull : {games : {shortID : gameShortID}}};
     // console.log(pullQuery);
-    Tournament.update(tournamentQuery, pullQuery, function(err) {
-        callback(err);
+    Tournament.findOne({_id : tournamentid}, function(err, tournament) {
+        if (err) {
+            callback(err, null);
+        } else {
+            for (var i = 0; i < tournament.games.length; i++) {
+                var phases = [];
+                if (tournament.games[i].shortID === gameShortID) {
+                    phases = tournament.games[i].phases ? tournament.games[i].phases : [];
+                    break;
+                }
+            }
+            Tournament.update(tournamentQuery, pullQuery, function(err) {
+                callback(err, phases);
+            });
+        }
     });
 }
 
