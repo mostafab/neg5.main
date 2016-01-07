@@ -199,7 +199,7 @@ module.exports = function(app) {
                 res.status(401).send({game : null, tid : id});
             } else {
                 var id = req.body["tournament_id_form"];
-                tournamentController.addGameToTournament(id, req.body, function(err, games) {
+                tournamentController.addGameToTournament(id, req.body, [], function(err, games) {
                     if (err) {
                         // DO STUFF
                         res.status(500).send({game : null, tid : id});
@@ -246,10 +246,8 @@ module.exports = function(app) {
                 res.redirect("/");
             } else {
                 var gameid = req.body["gameid_form"];
-                // console.log(gameid);
                 var tournamentid = req.body["tournament_idgame"];
-                // console.log(tournamentid);
-                tournamentController.removeGameFromTournament(tournamentid, gameid, function(err) {
+                tournamentController.removeGameFromTournament(tournamentid, gameid, function(err, phases) {
                     if (err) {
                         console.log(err);
                         res.status(500).end();
@@ -284,11 +282,11 @@ module.exports = function(app) {
                 // console.log(req.body);
                 var tournamentid = req.body["tournament_id_form"];
                 var gameid = req.body["oldgameid"];
-                tournamentController.removeGameFromTournament(tournamentid, gameid, function(err) {
+                tournamentController.removeGameFromTournament(tournamentid, gameid, function(err, phases) {
                     if (err) {
                         res.status(500).send({err : err});
                     } else {
-                        tournamentController.addGameToTournament(tournamentid, req.body, function(err, game) {
+                        tournamentController.addGameToTournament(tournamentid, req.body, phases, function(err, game) {
                             if (err) {
                                 res.status(500).send({err : err});
                             } else {
