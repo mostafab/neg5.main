@@ -215,9 +215,6 @@ module.exports = function(app) {
         if (!req.session.director) {
             res.status(401).end();
         } else {
-            // console.log(req.body.scoresheet.currentPhase.tossup);
-            // console.log(req.body.game);
-            // console.log(JSON.stringify(req.body.scoresheet, null, 4));
             tournamentController.addScoresheetAsGame(req.body.tournamentid, req.body.game, req.body.scoresheet, function(err, gameid) {
                 if (err) {
                     res.status(500).end();
@@ -315,7 +312,9 @@ module.exports = function(app) {
                     res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
                 } else {
                     if (hasPermission(tournament, req.session.director)) {
-                        res.render("scoresheet", {tournamentd : req.session.director, tournament : tournament});
+                        // res.render("scoresheet", {tournamentd : req.session.director, tournament : tournament});
+                        res.render("scoresheet", {tournamentd : req.session.director, tournamentName : tournament.tournament_name, tid : tournament._id,
+                            shortID : tournament.shortID, teams : tournament.teams});
                     } else {
                         res.status(401).send("You don't have permission to view this tournament");
                     }

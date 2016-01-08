@@ -620,13 +620,22 @@ function makeGameObject(game, teamMap, playerMap, pointScheme) {
 * @return a match question object with a number, bonus_points, bounceback_bonus_points, and an array of buzzes
 */
 function makeMatchQuestionObject(phase, teamMap, playerMap) {
+    var bonusPoints = 0;
+    var bouncebackPoints = 0;
+    for (var i = 0; i < phase.bonus.bonusParts.length; i++) {
+        if (phase.bonus.bonusParts[i].gettingTeam) {
+            bonusPoints += parseFloat(phase.bonus.bonusParts[i].value);
+            if (phase.bonus.bonusParts[i].gettingTeam !== phase.bonus.forTeam) {
+                bouncebackPoints += parseFloat(phase.bonus.bonusParts[i].value);
+            }
+        }
+    }
     var matchQuestion = {
                     number : parseFloat(phase.number),
-                    bonus_points : parseFloat(phase.bonus.forTeamPoints) + parseFloat(phase.bonus.againstTeamPoints),
-                    bounceback_bonus_points : parseFloat(phase.bonus.againstTeamPoints),
+                    bonus_points : bonusPoints,
+                    bounceback_bonus_points : bouncebackPoints,
                     buzzes : []
                 };
-    // console.log(phase.tossup.answers.length);
     for (var i = 0; i < phase.tossup.answers.length; i++) {
         var answer = phase.tossup.answers[i];
         var buzzObject = {};

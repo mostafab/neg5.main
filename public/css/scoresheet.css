@@ -13,6 +13,24 @@
     box-shadow: 0 .05px .05px rgba(0, 0, 0, 0.5);
 }
 
+.gotten-bonus {
+    background-color: #5CB85C;
+    color: white;
+}
+
+.gotten-bonus:focus {
+    color: white;
+}
+
+.not-gotten-bonus {
+    background-color: #E6E6E6;
+    color: black;
+}
+
+.not-gotten-bonus:focus {
+    color: black;
+}
+
 .neg-box {
     position:absolute;
     top: 5px;
