@@ -72,12 +72,12 @@ var Tossup = (function () {
     return Tossup;
 })();
 
-var BonusPart = function BonusPart(number, gettingTeam) {
+var BonusPart = function BonusPart(number, value, gettingTeam) {
     _classCallCheck(this, BonusPart);
 
     this.number = number;
     this.gettingTeam = gettingTeam;
-    this.value = 10;
+    this.value = value;
 };
 
 var Bonus = (function () {
@@ -85,9 +85,9 @@ var Bonus = (function () {
         _classCallCheck(this, Bonus);
 
         this.forTeam = null;
-        this.forTeamPoints = 0;
-        this.againstTeamPoints = 0;
-        // this.bonusParts = [];
+        // this.forTeamPoints = 0;
+        // this.againstTeamPoints = 0;
+        this.bonusParts = [];
     }
 
     _createClass(Bonus, [{
@@ -95,16 +95,15 @@ var Bonus = (function () {
         value: function setForTeam(teamid) {
             this.forTeam = teamid;
         }
-    }, {
-        key: "setForTeamPoints",
-        value: function setForTeamPoints(points) {
-            this.forTeamPoints = points;
-        }
-    }, {
-        key: "setAgainstTeamPoints",
-        value: function setAgainstTeamPoints(points) {
-            this.againstTeamPoints = points;
-        }
+
+        // setForTeamPoints(points) {
+        //     this.forTeamPoints = points;
+        // }
+
+        // setAgainstTeamPoints(points) {
+        //     this.againstTeamPoints = points;
+        // }
+
     }, {
         key: "getForTeam",
         value: function getForTeam() {
@@ -113,31 +112,32 @@ var Bonus = (function () {
     }, {
         key: "getForTeamPoints",
         value: function getForTeamPoints() {
-            return this.forTeamPoints;
-            // var points = 0;
-            // for (var i = 0; i < this.bonusParts.length; i++) {
-            //     if (this.bonusParts[i].gettingTeam == this.forTeam) {
-            //         points += this.bonusParts[i].value;
-            //     }
-            // }
-            // return points;
+            // return this.forTeamPoints;
+            var points = 0;
+            for (var i = 0; i < this.bonusParts.length; i++) {
+                if (this.bonusParts[i].gettingTeam == this.forTeam) {
+                    points += this.bonusParts[i].value;
+                }
+            }
+            return points;
         }
     }, {
         key: "getAgainstTeamPoints",
         value: function getAgainstTeamPoints() {
-            // var points = 0;
-            // for (var i = 0; i < this.bonusParts.length; i++) {
-            //     if (this.bonusParts[i].gettingTeam && this.bonusParts[i].gettingTeam != this.forTeam) {
-            //         points += this.bonusParts[i].value;
-            //     }
-            // }
-            // return points;
-            return this.againstTeamPoints;
+            var points = 0;
+            for (var i = 0; i < this.bonusParts.length; i++) {
+                if (this.bonusParts[i].gettingTeam && this.bonusParts[i].gettingTeam != this.forTeam) {
+                    points += this.bonusParts[i].value;
+                }
+            }
+            return points;
+            // return this.againstTeamPoints;
         }
-
-        // addBonusPart(number, gettingTeam) {
-        //     this.bonusParts.push(new BonusPart(number, gettingTeam));
-        // }
+    }, {
+        key: "addBonusPart",
+        value: function addBonusPart(partNumber, value, gettingTeam) {
+            this.bonusParts.push(new BonusPart(partNumber, value, gettingTeam));
+        }
     }]);
 
     return Bonus;
@@ -203,12 +203,21 @@ var Phase = (function () {
                 return this.bonus.getAgainstTeamPoints();
             }
         }
+
+        // addBonusPoints(forTeamID, forTeamPoints, otherTeamPoints) {
+        //     this.bonus.setForTeam(forTeamID);
+        //     this.bonus.setForTeamPoints(forTeamPoints);
+        //     this.bonus.setAgainstTeamPoints(otherTeamPoints);
+        // }
     }, {
-        key: "addBonusPoints",
-        value: function addBonusPoints(forTeamID, forTeamPoints, otherTeamPoints) {
+        key: "setBonusTeam",
+        value: function setBonusTeam(forTeamID) {
             this.bonus.setForTeam(forTeamID);
-            this.bonus.setForTeamPoints(forTeamPoints);
-            this.bonus.setAgainstTeamPoints(otherTeamPoints);
+        }
+    }, {
+        key: "addBonusPart",
+        value: function addBonusPart(partNumber, value, gettingTeam) {
+            this.bonus.addBonusPart(partNumber, value, gettingTeam);
         }
     }, {
         key: "removeLastTossup",
@@ -512,7 +521,6 @@ $(document).ready(function () {
         if (game.team1 != null && game.team2 != null) {
             game.getCurrentPhase().addAnswerToTossup($(this).attr("data-team"), $(this).attr("data-player"), parseFloat($(this).attr("data-point-value")));
             showAnswersOnScoresheet(game.currentPhase);
-            // console.log(game.getTeamScore(game.team1.id) + ", " + game.getTeamScore(game.team2.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), $(this).attr("data-team"), game.getTeamScore($(this).attr("data-team")));
             // console.log(game.getCurrentPhase());
             // var i = 1;
@@ -538,40 +546,28 @@ $(document).ready(function () {
     });
 
     $("body").on("click", "#next-tossup", function () {
-        if (game.team1 !== null && game.team2 !== null)
-            // console.log("Going to next tossup");
-            var bonusLeft = $("#left-gotten-bonus li").size() * BONUS_POINT_VALUE;
-        var bonusRight = $("#right-gotten-bonus li").size() * BONUS_POINT_VALUE;
-        var forTeamPoints;
-        var againstPoints;
-        if ($("#left-gotten-bonus").attr("data-team") == $(this).attr('data-team')) {
-            forTeamPoints = bonusLeft;
-            againstPoints = bonusRight;
-        } else {
-            forTeamPoints = bonusRight;
-            againstPoints = bonusLeft;
-        }
-        game.getCurrentPhase().addBonusPoints($(this).attr("data-team"), forTeamPoints, againstPoints);
-        showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team1.id, game.getCurrentPhase().getBonusPointsForTeam(game.team1.id));
-        showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
-        // console.log(game.getCurrentPhase());
-        game.stashPhase();
-        showTossupDiv();
-        if (game.getCurrentPhase().getNumber() > MAX_TOSSUPS) {
-            createScoresheetRow(game.team1, game.team2, MAX_TOSSUPS + 1);
-            MAX_TOSSUPS++;
-        }
-        setActiveRow(game.getCurrentPhase());
-        showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
-        showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
-        destroyBonusLabels();
-        unlockBothTeams();
-        incrementTossupsHeardForPlayers();
-    });
+        if (game.team1 !== null && game.team2 !== null) {
+            $(".bonus-phase").each(function (index) {
+                var bonusButton = $(this).find(".gotten-bonus").first();
+                game.getCurrentPhase().addBonusPart(index + 1, BONUS_POINT_VALUE, $(bonusButton).attr("data-team"));
+            });
+            game.getCurrentPhase().setBonusTeam($(this).attr("data-team"));
 
-    $("body").on("click", ".remove-bonus", function () {
-        console.log("Removing bonus");
-        $(this).parent().remove();
+            showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team1.id, game.getCurrentPhase().getBonusPointsForTeam(game.team1.id));
+            showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
+            game.stashPhase();
+            showTossupDiv();
+            if (game.getCurrentPhase().getNumber() > MAX_TOSSUPS) {
+                createScoresheetRow(game.team1, game.team2, MAX_TOSSUPS + 1);
+                MAX_TOSSUPS++;
+            }
+            setActiveRow(game.getCurrentPhase());
+            showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
+            showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
+            destroyBonusLabels();
+            unlockBothTeams();
+            incrementTossupsHeardForPlayers();
+        }
     });
 
     $("body").on("click", "#dead-tossup", function () {
@@ -594,7 +590,6 @@ $(document).ready(function () {
 
     $("body").on("click", "#submit-game", function () {
         var parsedGame = parseScoresheet(game);
-        // console.log(scoresheet);
         $(this).prop("disabled", true);
         submitScoresheet(game, parsedGame);
     });
@@ -618,10 +613,6 @@ $(document).ready(function () {
         showPlayerPointTotals(game);
     });
 
-    $("body").on("click", "#scoresheet-body td", function () {
-        // console.log($(this).attr("data-player"));
-    });
-
     $('body').ajaxStart(function () {
         $(this).css({ 'cursor': 'wait' });
     }).ajaxStop(function () {
@@ -631,11 +622,6 @@ $(document).ready(function () {
     $("#lock-teams").click(function () {
         $("#team-select-div").slideUp("fast");
         $("#lock-teams-div").slideUp("fast");
-    });
-
-    $(".add-bonus").click(function () {
-        var list = $(this).attr("data-list");
-        addBonusRow(list);
     });
 
     $(".undo-neg").click(function () {
@@ -660,6 +646,17 @@ $(document).ready(function () {
     $("#undo-game").click(function () {
         $(this).prop("disabled", true);
         undoGameSubmission($(this).attr("data-tournament"), $(this).attr("data-game"));
+    });
+
+    $(".bonus-part").click(function () {
+        $(this).toggleClass("gotten-bonus").toggleClass("not-gotten-bonus");
+        if ($(this).hasClass("gotten-bonus")) {
+            var row = $(this).attr("data-toggle-row");
+            var cousin = $(".bonus-part[data-toggle-row=" + row + "]").not(this);
+            if ($(cousin).hasClass("gotten-bonus")) {
+                $(cousin).removeClass("gotten-bonus").addClass("not-gotten-bonus");
+            }
+        }
     });
 });
 
@@ -743,12 +740,14 @@ function submitScoresheet(game, parsedScoresheet) {
         type: "POST",
         data: data,
         success: function success(databack, status, xhr) {
-            // console.log(xhr);
             $("#dead-tossup-div").slideUp(400);
             $("#submit-game-div").slideUp(400);
             setGameAnchorTag(databack.gameid);
             $("#goto-game-div").slideDown(400);
             $("#submit-game").prop("disabled", false);
+        },
+        error: function error(xhr, status, err) {
+            console.log(err);
         }
     });
 }
@@ -915,8 +914,14 @@ function createScoresheetRow(team1, team2, number) {
 }
 
 function destroyBonusLabels() {
-    $("#left-gotten-bonus").empty();
-    $("#right-gotten-bonus").empty();
+    // $("#left-gotten-bonus").empty();
+    // $("#right-gotten-bonus").empty();
+    // $(".bonus-part").each(function() {
+    //     if ($(this).hasClass("gotten-bonus")) {
+    //         $(this).removeClass("gotten-bonus");
+    //     }
+    // });
+    $(".bonus-part").removeClass("gotten-bonus").addClass("not-gotten-bonus");
 }
 
 function changeTeamLabels(side) {
@@ -1100,6 +1105,9 @@ function editAddBonusAttributes(team1, team2) {
     $("#right-bonus-info").text("+10 for " + team2.name);
     $("#left-gotten-bonus").attr("data-team", team1.id);
     $("#right-gotten-bonus").attr("data-team", team2.id);
+
+    $(".left-team-bonus").text("+10 for " + team1.name).attr("data-team", team1.id);
+    $(".right-team-bonus").text("+10 for " + team2.name).attr("data-team", team2.id);
 }
 
 function addPlayerColumn(side, player) {

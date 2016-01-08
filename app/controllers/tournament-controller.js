@@ -845,6 +845,9 @@ function addScoresheetAsGame(tournamentid, game, scoresheet, callback) {
         if (!newGame.phases[i].tossup) {
             newGame.phases[i].tossup = {answers : []};
         }
+        if (!newGame.phases[i].bonus.bonusParts) {
+            newGame.phases[i].bonus.bonusParts = [];
+        }
     }
     Tournament.update({_id : tournamentid}, {$push : {games : newGame}}, function(err) {
         if (err) {

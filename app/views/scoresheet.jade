@@ -1,7 +1,7 @@
 extends layout
 
 block titleContent
-    title Scoresheet | #{tournament.tournament_name} | Neg 5
+    title Scoresheet | #{tournamentName} | Neg 5
 
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
@@ -13,7 +13,7 @@ block content
     +navbar
 
     div(class="content-wrapper box" style='padding-left:50px;padding-right:50px;padding-top:10px')
-        input(type="hidden" value="#{tournament._id}" id="tournamentid")
+        input(type="hidden" value="#{tid}" id="tournamentid")
         div(class="row")
             div(class="col-md-5 col-lg-5 col-sm-5")
                 div(style="margin:10px; margin-bottom:50px")
@@ -25,12 +25,11 @@ block content
                         div(class="col-md-12 col-lg-12 col-sm-12")
                             div(class="col-md-6 col-lg-6 col-sm-6")
                                 div(style="text-align:left")
-                                    // h2(class="title" style="width:100%")
                                     br
                                     br
                                     select(class="form-control input-lg center-text teamselect" id='leftselect')
                                         option(disabled selected value="") Select Team 1
-                                        each team in tournament.teams
+                                        each team in teams
                                             option(value="#{team._id}") #{team.team_name}
 
                             div(class="col-md-6 col-lg-6 col-sm-6")
@@ -40,7 +39,7 @@ block content
                                     br
                                     select(class="form-control input-lg center-text teamselect" id='rightselect')
                                         option(disabled selected value="") Select Team 2
-                                        each team in tournament.teams
+                                        each team in teams
                                             option(value="#{team._id}") #{team.team_name}
 
                 div(class="row col-md-12" id='lock-teams-div')
@@ -73,10 +72,10 @@ block content
 
                 div(class="row col-md-12 col-lg-12 col-sm-12" id="goto-game-div" style='display:none')
                     div(class="col-md-6 col-sm-6 col-lg-6")
-                        button(class="btn btn-xl btn-warning btn-block" data-tournament='#{tournament._id}' id='undo-game') Undo Submission
+                        button(class="btn btn-xl btn-warning btn-block" data-tournament='#{tid}' id='undo-game') Undo Submission
                             i(class="fa fa-arrow-left" style='margin-left:20px')
                     div(class="col-md-6 col-sm-6 col-lg-6")
-                        a(target="_blank" class="btn btn-xl btn-stats btn-block" data-tournament='#{tournament.shortID}' id='goto-game') View/Edit game
+                        a(target="_blank" class="btn btn-xl btn-stats btn-block" data-tournament='#{shortID}' id='goto-game') View/Edit game
                             i(class="fa fa-arrow-right" style='margin-left:20px')
 
                 div(class="row" id="bonus-div" style='display:none')
@@ -86,28 +85,20 @@ block content
                             div(class="panel-heading" style="font-size:20px" id="team-bonus-name") Team 1
                             div(class="panel-body")
                                 div(class="row")
-                                    div(class="col-md-6")
-                                        ul(class="list-group" id='left-gotten-bonus')
-
-                                    div(class="col-md-6")
-                                        ul(class="list-group" id='right-gotten-bonus')
-
-                                div(class="row")
-                                    div(class="col-md-6")
-                                        button(class="btn btn-md btn-info btn-block add-bonus" style='margin:0px' data-list="#left-gotten-bonus" id='left-bonus-info')
-                                    div(class="col-md-6")
-                                        button(class="btn btn-md btn-info btn-block add-bonus" style='margin:0px' data-list="#right-gotten-bonus" id='right-bonus-info')
-
+                                    each val, i in [1, 2, 3]
+                                        div(class="col-md-12 panel-body bonus-phase" style='padding:0px')
+                                            div(class="col-md-5 bonus-box")
+                                                button(type='button' class='btn btn-sm not-gotten-bonus btn-block left-team-bonus bonus-part' data-toggle-row='#{val}')
+                                            div(class="col-md-2")
+                                                label(class='alert alert-info btn-sm btn-block' style='font-size:16px;padding:5px') Part #{val}
+                                            div(class="col-md-5 bonus-box")
+                                                button(type='button' class='btn btn-sm not-gotten-bonus btn-block right-team-bonus bonus-part' data-toggle-row='#{val}')
                                 br
-                                // div(class="row")
-                                //     div(class="col-md-12")
-                                //         button(class="btn btn-md btn-warning btn-block" style='margin:0px' id='dead-bonus') Dead Bonus Part
-                                // br
                                 div(class="row")
                                     div(class="col-md-6")
                                         button(class="btn btn-lg btn-danger btn-block" style='margin:0px' id="undo-tossup") Undo this Tossup
                                     div(class="col-md-6")
-                                        button(class="btn btn-lg btn-success btn-block" style='margin:0px' id="next-tossup") Next Tossup
+                                        button(class="btn btn-lg btn-warning btn-block" style='margin:0px' id="next-tossup") Next Tossup
 
             div(class="col-md-7 col-lg-7 col-sm-7")
                 div(style="margin:20px; margin-bottom:50px")
@@ -156,4 +147,4 @@ block content
                                 table(class="table table-striped table-hover table-condensed player-table" id="rightplayertable")
 
 block scripts
-    script(src="/js/scoresheet-es5.js")
+    script(src="/js/scoresheet-es6.js")
