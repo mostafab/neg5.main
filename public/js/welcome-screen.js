@@ -23,14 +23,14 @@ $(document).ready(function() {
 
 
     $("#gotoregister").click(function() {
-        $("#loginpanel").fadeOut(300, function() {
-            $("#registerpanel").fadeIn(300);
+        $("#loginpanel").fadeOut(200, function() {
+            $("#registerpanel").fadeIn(200);
         });
     });
 
     $("#closereg").click(function() {
-        $("#registerpanel").fadeOut(300, function() {
-            $("#loginpanel").fadeIn(300);
+        $("#registerpanel").fadeOut(200, function() {
+            $("#loginpanel").fadeIn(200);
         });
     });
 
