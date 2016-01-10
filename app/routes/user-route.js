@@ -1,8 +1,8 @@
 var userController = require('../../app/controllers/user-controller');
-var passportP = require("passport");
-var passport = require("../../config/passport")(passportP);
+// var passportP = require("passport");
+// var passport = require("../../config/passport")(passportP);
 
-module.exports = function(app, passport) {
+module.exports = function(app) {
 
     app.get("/account", function(req, res, next) {
         if (!req.session.director) {
@@ -12,20 +12,20 @@ module.exports = function(app, passport) {
         }
     });
 
-    app.get("/auth/google", passport.authenticate("google", {scope : ["profile", "email"]}));
+    // app.get("/auth/google", passport.authenticate("google", {scope : ["profile", "email"]}));
 
-    app.get("/auth/google/callback", function(req, res, next) {
-        passport.authenticate("google", function(err, director) {
-            if (err) {
-                res.redirect("/");
-            } else if (!director) {
-                res.redirect("/");
-            } else {
-                req.session.director = director;
-                res.redirect("/home");
-            }
-        })(req, res, next);
-    });
+    // app.get("/auth/google/callback", function(req, res, next) {
+    //     passport.authenticate("google", function(err, director) {
+    //         if (err) {
+    //             res.redirect("/");
+    //         } else if (!director) {
+    //             res.redirect("/");
+    //         } else {
+    //             req.session.director = director;
+    //             res.redirect("/home");
+    //         }
+    //     })(req, res, next);
+    // });
 
     app.post("/register/local", function(req, res, next) {
         userController.register(req.body, function(err, message) {

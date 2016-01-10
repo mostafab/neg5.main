@@ -32,11 +32,10 @@ module.exports = function() {
     app.use(express.static("./public"));
 
 
-    require('../app/routes/index.js')(app, passport);
-    require("../app/routes/user-route.js")(app, passport);
-    require("../app/routes/tournaments-route.js")(app, passport);
-    require("../app/routes/signup-route.js")(app, passport);
-    require("../app/routes/stats-route.js")(app,passport);
+    require('../app/routes/index.js')(app);
+    require("../app/routes/user-route.js")(app);
+    require("../app/routes/tournaments-route.js")(app);
+    require("../app/routes/stats-route.js")(app);
 
     return app;
 };

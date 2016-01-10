@@ -42,8 +42,6 @@ block content
                                 li(class="active")
                                     a(href="#overview" data-toggle="tab") Overview
                                 li
-                                    a(href="#registrations" data-toggle="tab") Registrations
-                                li
                                     a(href="#divisions" data-toggle="tab") Divisions/Point Scheme
                                 li
                                     a(href="#games" data-toggle="tab") Games/Scoresheet
@@ -100,28 +98,6 @@ block content
                                                                 name="tournament_date",
                                                                 class="form-control input-medium center-text no-border-radius"
                                                             )
-                                                    label(class="label label-primary col-xs-4") Registration
-                                                    div(class="form-group col-xs-8")
-                                                        if tournament.openRegistration
-                                                            input(
-                                                                checked,
-                                                                type="checkbox",
-                                                                name="register",
-                                                                data-toggle="toggle",
-                                                                data-on="Open",
-                                                                data-onstyle="success",
-                                                                data-off="Closed"
-                                                            )
-                                                        else
-                                                            input(
-                                                                type="checkbox",
-                                                                name="register",
-                                                                data-toggle="toggle",
-                                                                data-on="Open",
-                                                                data-onstyle="success",
-                                                                data-off="Closed"
-                                                            )
-
 
                                         div(class="row")
                                             div(class="col-md-12")
@@ -163,42 +139,6 @@ block content
                                                     p Email : #{person.email}
 
                                                     button(class="btn btn-md btn-danger removcollab" style='margin-top:20px' data-collabid="#{person.id}") Remove
-
-                        div(class="tab-pane fade" id="registrations")
-                            div(class="row")
-                                div(class="col-md-12")
-                                    div(class="panel panel-default")
-                                        div(class="panel-heading collapsable") Registration Form
-                                        div(class="panel-body")
-                                                a(target="_blank" href="/t/" + tournament.shortID + "/signup" class="btn btn-lg btn-stats") View Registration Form
-                                                br
-                                                br
-                                                div(class="row")
-                                                    div(class="col-xs-12")
-                                                        div(class="alert alert-success")
-                                                            h5 Share the above form to let teams sign up for #{tournament.tournament_name}. Go to the overview tab to either open or close registration.
-
-                            div(class="row")
-                                div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") Registrations for #{tournament.tournament_name}
-                                    div(class="panel-body")
-                                        div(class="panel panel-default")
-                                            table(class="table table-hover table-condensed")
-                                                thead
-                                                    tr
-                                                        th(class="table-head" style='text-align:center') Team
-                                                        th(class="table-head" style='text-align:center') Number of Teams
-                                                        th(class="table-head" style='text-align:center') Email
-                                                        th(class="table-head" style='text-align:center') Time of Registration
-                                                        th(class="table-head" style='text-align:center') Other Information
-                                                tbody
-                                                    each reg, i in registrations
-                                                        tr
-                                                            td #{reg.teamName}
-                                                            td #{reg.numTeams}
-                                                            td #{reg.email}
-                                                            td #{reg.signupTime}
-                                                            td #{reg.message}
 
                         div(class="tab-pane fade" id="divisions")
                             div(class="panel panel-default")
@@ -344,7 +284,7 @@ block content
                                             div(class="row" style="width:95%")
                                                 div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
 
-                                                    input(type="text" class="form-control search" placeholder="Filter List")
+                                                    input(type="text" class="form-control search" placeholder="Filter By Round or Team")
                                                     span(class="input-group-addon")
                                                         i(class="glyphicon glyphicon-search")
                                             div(class="panel panel-default")
@@ -511,6 +451,8 @@ block content
 
                                             a(href="/t/" + tournament.shortID + "/export/qbj" class="btn btn-md btn-warning" data-link="#{linkName}_qbj.qbj" id="download-json") Export to QBJ Format
                                             // a(href="/t/" + tournament.shortID + "/export/sqbs" class="btn btn-md btn-warning" data-link="#{linkName}_sqbs.sqbs" id="download-sqbs") Export to SQBS Format
+                                            a(href="/t/" + tournament.shortID + "/export/scoresheets" class="btn btn-md btn-warning" data-link="#{linkName}_scoresheets.zip" id='download-scoresheets') Export Scoresheets
+                                            // a(href="/t/" + tournament.shortID + "/export/sqbs" class="btn btn-md btn-warning" data-link="#{linkName}_sqbs.sqbs" id="download-sqbs") Export to SQBS Format
 
                             div(class="panel panel-default")
                                 div(class="panel-heading collapsable") Custom Team Statistics
@@ -577,4 +519,6 @@ block content
                                                 button(type="button" class="btn btn-md btn-success btn-block" id="no-delete") Never Mind
 block scripts
     script(src="/js/tournament-configuration.js")
+    script(src="/js/jszip/dist/jszip.min.js")
+    script(src='/js/jszip/dist/FileSaver.min.js')
     script(src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js")

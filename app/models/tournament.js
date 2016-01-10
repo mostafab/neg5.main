@@ -21,7 +21,6 @@ var TournamentSchema = new Schema({
     collaborators : [{}], // List of emails of collaborators
     location : String,
     date : {type : Date, set : setDate},
-    openRegistration : {type : Boolean, default : false},
     questionSet : String,
     description : String,
     teams : [teamSchema],

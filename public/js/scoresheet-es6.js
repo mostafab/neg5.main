@@ -120,13 +120,13 @@ class Bonus {
 
 class Phase {
     constructor(number) {
-        this.number = number;
+        this.question_number = number;
         this.tossup = new Tossup();
         this.bonus = new Bonus();
     }
 
     getNumber() {
-        return this.number;
+        return this.question_number;
     }
 
     getTossupPointsEarned(teamid) {
@@ -673,7 +673,7 @@ function submitScoresheet(game, parsedScoresheet) {
     var data = {
                 "tournamentid" : $("#tournamentid").val(),
                 "scoresheet" : game,
-                "game" : parsedScoresheet
+                "game" : parsedScoresheet,
     };
     $.ajax({
         url : "/tournaments/scoresheet/submit",

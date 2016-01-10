@@ -147,7 +147,7 @@ var Phase = (function () {
     function Phase(number) {
         _classCallCheck(this, Phase);
 
-        this.number = number;
+        this.question_number = number;
         this.tossup = new Tossup();
         this.bonus = new Bonus();
     }
@@ -155,7 +155,7 @@ var Phase = (function () {
     _createClass(Phase, [{
         key: "getNumber",
         value: function getNumber() {
-            return this.number;
+            return this.question_number;
         }
     }, {
         key: "getTossupPointsEarned",

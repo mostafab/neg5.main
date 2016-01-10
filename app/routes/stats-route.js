@@ -216,14 +216,26 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/export/sqbs", function(req, res) {
-        statsController.convertToSQBS(req.params.tid, function(err, sqbs) {
+    // app.get("/t/:tid/export/sqbs", function(req, res) {
+    //     statsController.convertToSQBS(req.params.tid, function(err, sqbs) {
+    //         if (err) {
+    //             res.status(500).end();
+    //         } else if (!sqbs) {
+    //             res.status(404).end();
+    //         } else {
+    //             res.status(200).send(sqbs);
+    //         }
+    //     });
+    // });
+
+    app.get("/t/:tid/export/scoresheets", function(req, res) {
+        statsController.exportScoresheets(req.params.tid, function(err, scoresheets) {
             if (err) {
                 res.status(500).end();
-            } else if (!sqbs) {
+            } else if (!scoresheets) {
                 res.status(404).end();
             } else {
-                res.status(200).send(sqbs);
+                res.status(200).send({scoresheets : scoresheets.rounds, pointScheme : scoresheets.pointScheme});
             }
         });
     });

@@ -46,7 +46,6 @@ function mergeTournamentsAJAX(firstTournamentID, secondTournamentID, mergeName) 
                 name : mergeName
             },
         success : function(databack, status, xhr) {
-            console.log(databack);
             $("#merge-div").slideUp(300);
             $("#success-merge").attr("href",  "/t/" + databack.shortID);
             $("#success-merge-div").slideDown(300);
@@ -69,19 +68,10 @@ function addTournamentRow(tournament) {
     var html = "<tr>";
     html += "<td><a href='/t/" + tournament.shortID + "'>" + tournament.tournament_name + "</a></td>";
     html += "<td>" + tournament.location + "</td>";
-    console.log(typeof tournament.date);
     var date = new Date(tournament.date);
-    console.log(date);
     html += ("<td>" + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear() + "</td>");
-    if (tournament.openRegistration) {
-        html += "<td>Yes</td>";
-    } else {
-        html += "<td>No</td>";
-    }
     html += "<td>" + tournament.questionSet + "</td>";
     html += "<td>" + tournament.teams.length + "</td>";
     html += "</tr>";
-
     $(html).hide().appendTo("#tournaments-body").fadeIn(300);
-    // $("#tournaments-body").append(html);
 }
