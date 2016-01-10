@@ -199,6 +199,11 @@ $(document).ready(function() {
         downloadJSON($(this));
     });
 
+    $("#download-scoresheets").click(function(e) {
+        e.preventDefault();
+        downloadScoresheets($(this));
+    });
+
     // $("#download-sqbs").click(function(e) {
     //     e.preventDefault();
     //     downloadSQBS($(this));
@@ -257,6 +262,130 @@ function removeTeamSender(button) {
 function removeGameSender(button) {
     // console.log($(button).parent().serialize());
     removeGame($(button).parent().serialize(), button);
+}
+
+function rebuildScoresheet(round, scoresheetInfo, pointScheme) {
+    var styles = "* { font-family: 'Verdana', sans-serif;} body { padding:50px;" +
+        "} td { padding:2px;} .header { font-weight:bold; } table { font-size: 14px;" +
+        "width: 100%;} table, th, td { border: 1px solid black;} .outer-list .inner-list{display:inline;}";
+
+    var title = scoresheetInfo.team1.name + " vs " + scoresheetInfo.team2.name + " | Round " + round;
+    var html = "<!DOCTYPE html><html><head><title>" + title + "</title>"
+    html += "<style>" + styles + "</style></head>";
+    html += "<body>";
+    html += "<h3>" + title + "</h3>";
+    // Metadata table
+    html += "<table><tbody><tr><td class='header'>Team 1</td><td class='header'>Score</td><td class='header'>" +
+        "Team 2</td><td class='header'>Score</td><td class='header'>Round</td><td class='header'>Moderator</td><td class='header'>Packet</td></tr>";
+    html += "<tr><td>" + scoresheetInfo.team1.name + "</td><td>" + scoresheetInfo.team1.score + "</td><td>"
+        + scoresheetInfo.team2.name + "</td><td>" + scoresheetInfo.team2.score + "</td><td>" + round + "</td>";
+    html += "<td>" + scoresheetInfo.moderator + "</td><td>" + scoresheetInfo.packet + "</td></tr>";
+    html += "</tbody></table>";
+    // End metadata table
+    // Start player tables
+    html += "<table style='width:40%;display:inline-table;margin:50px'><tbody>";
+    html += "<tr><td class='header'>" + scoresheetInfo.team1.name + "</td>";
+    for (var i = 0; i < pointScheme.length; i++) {
+        html += "<td class='header'>" + pointScheme[i] + "</td>";
+    }
+    html += "<td class='header'>TUH</td></tr>";
+    for (var i = 0; i < scoresheetInfo.team1.players.length; i++) {
+        var player = scoresheetInfo.team1.players[i];
+        html += "<tr><td>" + player.name + "</td>";
+        for (var j = 0; j < pointScheme.length; j++) {
+            html += "<td>" + player.pointTotals[pointScheme[j]] + "</td>";
+        }
+        html += "<td>" + player.tuh + "</td>";
+        html += "</tr>";
+    }
+    html += "</tbody></table>";
+    html += "<table style='width:40%;display:inline-table;margin:50px'><tbody>";
+    html += "<tr><td class='header'>" + scoresheetInfo.team2.name + "</td>";
+    for (var i = 0; i < pointScheme.length; i++) {
+        html += "<td class='header'>" + pointScheme[i] + "</td>";
+    }
+    html += "<td class='header'>TUH</td></tr>";
+    for (var i = 0; i < scoresheetInfo.team2.players.length; i++) {
+        var player = scoresheetInfo.team2.players[i];
+        html += "<tr><td>" + player.name + "</td>";
+        for (var j = 0; j < pointScheme.length; j++) {
+            html += "<td>" + player.pointTotals[pointScheme[j]] + "</td>";
+        }
+        html += "<td>" + player.tuh + "</td>";
+        html += "</tr>";
+    }
+    html += "</tbody></table>";
+    // End player tables
+    // Start Questions Table
+    html += "<table style='margin-top:50px'><tbody><tr><td class='header' style='text-align:center'>#</td>" +
+        "<td class='header'>Tossup Answers</td><td class='header'>Bonus</td></tr>";
+    for (var i = 0; i < scoresheetInfo.questions.length; i++) {
+        var question = scoresheetInfo.questions[i];
+        html += "<tr>";
+        html += "<td style='text-align:center'>" + question.question_number + "</td>";
+        html += "<td><ul>";
+        for (var j = 0; j < question.tossup.answers.length; j++) {
+            var answer = question.tossup.answers[j];
+            var listHTML = "<li style='display:inline;list-style-type:none;float:left;padding:15px;'><strong>Answer " + (j + 1) + "</strong>";
+            listHTML += "<ul>";
+            listHTML += "<li>Player: " + answer.player + "</li>";
+            listHTML += "<li>Team: " + answer.team + "</li>";
+            listHTML += "<li>Value: " + answer.value + "</li>";
+            listHTML += "</ul></li>";
+            html += listHTML;
+        }
+        html += "</ul></td>";
+        html += "<td><ul>";
+        for (var j = 0; j < question.bonus.bonusParts.length; j++) {
+            var bonusPart = question.bonus.bonusParts[j];
+            var listHTML = "<li style='display:inline;list-style-type:none;float:left;padding:15px;'><strong>Part " + (j + 1) + "</strong>";
+            listHTML += "<ul>";
+            listHTML += "<li>Getting Team: " + bonusPart.gettingTeam + "</li>";
+            listHTML += "<li>Value: " + bonusPart.value + "</li>";
+            listHTML += "</ul></li>";
+            html += listHTML;
+        }
+        html += "</ul></td>";
+        html += "</tr>";
+    }
+    html += "</tbody></table>";
+    html += "</body></html>";
+    return html;
+}
+
+function downloadScoresheets(anchor) {
+    $.ajax({
+        url : $(anchor).attr("href"),
+        type : "GET",
+        success : function(rounds, status, xhr) {
+            var zip = new JSZip();
+            var pointScheme = Object.keys(rounds.pointScheme);
+            for (var roundNumber in rounds.scoresheets) {
+                if (rounds.scoresheets.hasOwnProperty(roundNumber)) {
+                    var folder = zip.folder("round_" + roundNumber);
+                    var scoresheets = rounds.scoresheets[roundNumber];
+
+                    for (var i = 0; i < scoresheets.length; i++) {
+                        var filename = "round_" + roundNumber + "_sc_" + (i + 1) + "_" + scoresheets[i].gameTitle + ".html";
+                        var json = {
+                            team1 : scoresheets[i].team1,
+                            team2 : scoresheets[i].team2,
+                            round : scoresheets[i].round,
+                            moderator : scoresheets[i].moderator ? scoresheets[i].moderator : "-",
+                            packet : scoresheets[i].packet ? scoresheets[i].packet : "-",
+                            notes : scoresheets[i].notes ? scoresheets[i].notes : "-",
+                            questions : scoresheets[i].questions
+                        };
+                        // console.log(json);
+                        // folder.file(filename, JSON.stringify(json, null, 4));
+                        folder.file(filename, rebuildScoresheet(roundNumber, json, pointScheme));
+                    }
+                }
+            }
+            var content = zip.generate({type : "blob"});
+            saveAs(content, $(anchor).attr("data-link"));
+        }
+    });
 }
 
 function downloadStats(anchor) {
@@ -385,52 +514,52 @@ function makePhaseAJAX(tournamentid, phaseName) {
     });
 }
 
-function deleteRegistrationAJAX(button) {
-    $(button).prop("disabled", true);
-    $.ajax({
-        url : "/signup/delete",
-        type : "POST",
-        data : {regid : $(button).attr("data-reg")},
-        success : function(databack, status, xhr) {
-            var tdParent = $(button).parents("tr");
-            var tdPrev = $(button).parents("tr").prev("tr");
-            $(tdParent).remove();
-            $(tdPrev).remove();
-        },
-        error : function(xhr, status, err) {
-            console.log(err);
-        },
-        complete : function(xhr, status) {
-            $(button).prop("disabled", false);
-        }
-    });
-}
+// function deleteRegistrationAJAX(button) {
+//     $(button).prop("disabled", true);
+//     $.ajax({
+//         url : "/signup/delete",
+//         type : "POST",
+//         data : {regid : $(button).attr("data-reg")},
+//         success : function(databack, status, xhr) {
+//             var tdParent = $(button).parents("tr");
+//             var tdPrev = $(button).parents("tr").prev("tr");
+//             $(tdParent).remove();
+//             $(tdPrev).remove();
+//         },
+//         error : function(xhr, status, err) {
+//             console.log(err);
+//         },
+//         complete : function(xhr, status) {
+//             $(button).prop("disabled", false);
+//         }
+//     });
+// }
 
-function submitTournamentRegistration() {
-    $("#tregmessage").empty().
-        append("<p style='margin-left:10px; font-size:18px;color:black;'>Submitting Information <i class='fa fa-spinner fa-spin' style='margin-left:5px'></i></p>");
-    $("#submitsignup :input").each(function() {
-        $(this).val(escapeHtml($(this).val()));
-    });
-    $.ajax({
-        url : $("#submitsignup").attr("action"),
-        type : "POST",
-        data : $("#submitsignup").serialize(),
-        success : function(databack, status, xhr) {
-            if (databack.closed) {
-                showMessageInDiv("#tregmessage", "Registration for this tournament is closed!", "CLOSED");
-            } else {
-                showMessageInDiv("#tregmessage", "All good to go!", null);
-            }
-        },
-        error : function(xhr, status, err) {
-            showMessageInDiv("#tregmessage", "Couldn't connect to the server!", err);
-        },
-        complete : function(xhr, status) {
-            $("#submitregistration").prop("disabled", false);
-        }
-    });
-}
+// function submitTournamentRegistration() {
+//     $("#tregmessage").empty().
+//         append("<p style='margin-left:10px; font-size:18px;color:black;'>Submitting Information <i class='fa fa-spinner fa-spin' style='margin-left:5px'></i></p>");
+//     $("#submitsignup :input").each(function() {
+//         $(this).val(escapeHtml($(this).val()));
+//     });
+//     $.ajax({
+//         url : $("#submitsignup").attr("action"),
+//         type : "POST",
+//         data : $("#submitsignup").serialize(),
+//         success : function(databack, status, xhr) {
+//             if (databack.closed) {
+//                 showMessageInDiv("#tregmessage", "Registration for this tournament is closed!", "CLOSED");
+//             } else {
+//                 showMessageInDiv("#tregmessage", "All good to go!", null);
+//             }
+//         },
+//         error : function(xhr, status, err) {
+//             showMessageInDiv("#tregmessage", "Couldn't connect to the server!", err);
+//         },
+//         complete : function(xhr, status) {
+//             $("#submitregistration").prop("disabled", false);
+//         }
+//     });
+// }
 
 
 function sendTeamToServer() {

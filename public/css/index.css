@@ -25,23 +25,29 @@ p {
 a {
         margin: 10px;
 }
-/*
+
 .list-element {
-    border-color:grey;
-    border-style:solid;
-    border-width:0px 1px 0 1px;
-}*/
+    -webkit-transition: background-color .5s;
+    -moz-transition: background-color .5s;
+    -o-transition: background-color .5s;
+    -ms-transition: background-color .5s;
+    transition: background-color .5s;
+}
 
 .list-element:hover {
     background: rgba(100, 100, 100, .1);
+    border-bottom-width: thick;
+    border-bottom-color: black;
+    border-bottom-style: solid;
 }
-
 
 .body {
     background-image: url("../img/backgrounds/gplaypattern.png");
+    /*background-image: url("../img/backgrounds/brushed.png");*/
     /*background-image: url("../img/background.jpg");*/
     /*background-size: cover;*/
     /*background-color: #EEEEEE;*/
+    /*background-color: white;*/
 }
 
 .header {
@@ -113,12 +119,21 @@ a {
 }
 
 .btn {
-    /*background-color: transparent;*/
+    background-color: transparent;
+    border-width: 3px;
+    border-right-width:0px;
+    border-left-width: 0px;
     border-radius: 5px;
     padding: 15px 22px;
     line-height: 1.33;
     margin: 10px;
     font-size: 20px;
+    color:black;
+    -webkit-transition: background-color .5s;
+    -moz-transition: background-color .5s;
+    -o-transition: background-color .5s;
+    -ms-transition: background-color .5s;
+    transition: background-color .5s;
 }
 
 .list-group-item {

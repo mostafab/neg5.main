@@ -8,6 +8,7 @@ var constants = {
 }
 
 $(document).ready(function() {
+
     $("#login").click(function() {
         checkLoginForms();
     });
@@ -22,13 +23,15 @@ $(document).ready(function() {
 
 
     $("#gotoregister").click(function() {
-        $("#registerpanel").slideDown(300);
-        $("#loginpanel").slideUp(300);
+        $("#loginpanel").fadeOut(300, function() {
+            $("#registerpanel").fadeIn(300);
+        });
     });
 
     $("#closereg").click(function() {
-        $("#registerpanel").slideUp(300);
-        $("#loginpanel").slideDown(300);
+        $("#registerpanel").fadeOut(300, function() {
+            $("#loginpanel").fadeIn(300);
+        });
     });
 
 });
@@ -109,8 +112,6 @@ function checkLoginForms() {
     }
     if (message.length != 0) {
         $("#errorlabel").text(message);
-    } else {
-        $("#errorlabel").text("Welcome to Neg 5, a Quizbowl tournament management system. Login to continue.")
     }
 }
 

@@ -367,6 +367,114 @@ function getPPBForRounds(games, pointScheme, pointTypes) {
 }
 
 /**
+* Creates a team map where key is team id and values are team name and short id
+* @param teams array of teams
+* @return key value pairing of teams
+*/
+function makeTeamMap(teams) {
+    var map = {};
+    for (var i = 0; i < teams.length; i++) {
+        map[teams[i]._id] = {name : teams[i].team_name, shortID : teams[i].shortID};
+    }
+    return map;
+}
+
+function exportScoresheets(tournamentid, callback) {
+    Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
+        if (err) {
+            callback(err, null);
+        } else if (!tournament) {
+            callback(null, null);
+        } else {
+            var rounds = {};
+            var teamMap = makeTeamMap(tournament.teams);
+            var playerMap = makePlayerMap(tournament.players);
+            for (var i = 0; i < tournament.games.length; i++) {
+                if (tournament.games[i].phases) {
+                    var currentGame = tournament.games[i];
+                    if (!rounds[currentGame.round]) {
+                        rounds[currentGame.round] = [];
+                    }
+                    for (var j = 0; j < currentGame.phases.length; j++) {
+                        var phase = currentGame.phases[j];
+                        phase.question_number = parseFloat(phase.question_number);
+                        for (var k = 0; k < phase.tossup.answers.length; k++) {
+                            phase.tossup.answers[k].player = playerMap[phase.tossup.answers[k].player].name;
+                            phase.tossup.answers[k].team = teamMap[phase.tossup.answers[k].team].name;
+                            phase.tossup.answers[k].value = parseFloat(phase.tossup.answers[k].value);
+                        }
+                        if (phase.bonus.forTeam) {
+                            phase.bonus.forTeam = teamMap[phase.bonus.forTeam].name;
+                        }
+                        for (var k = 0; k < phase.bonus.bonusParts.length; k++) {
+                            if (phase.bonus.bonusParts[k].gettingTeam) {
+                                phase.bonus.bonusParts[k].gettingTeam = teamMap[phase.bonus.bonusParts[k].gettingTeam].name;
+                            }
+                            phase.bonus.bonusParts[k].number = parseFloat(phase.bonus.bonusParts[k].number);
+                            phase.bonus.bonusParts[k].value = parseFloat(phase.bonus.bonusParts[k].value);
+                        }
+                    }
+                    var team1Players = [];
+                    for (var playerid in currentGame.team1.playerStats) {
+                        if (currentGame.team1.playerStats.hasOwnProperty(playerid)) {
+                            var player = {name : playerMap[playerid].name};
+                            var pointTotals = {};
+                            for (var pv in tournament.pointScheme) {
+                                if (tournament.pointScheme.hasOwnProperty(pv)) {
+                                    if (currentGame.team1.playerStats[playerid][pv]) {
+                                        pointTotals[pv] = parseFloat(currentGame.team1.playerStats[playerid][pv]);
+                                    } else {
+                                        pointTotals[pv] = 0;
+                                    }
+                                }
+                            }
+                            player.pointTotals = pointTotals;
+                            player.tuh = Math.floor(parseFloat(currentGame.team1.playerStats[playerid].gp) * currentGame.tossupsheard);
+                            team1Players.push(player);
+                        }
+                    }
+                    var team2Players = [];
+                    for (var playerid in currentGame.team2.playerStats) {
+                        if (currentGame.team2.playerStats.hasOwnProperty(playerid)) {
+                            var player = {name : playerMap[playerid].name};
+                            var pointTotals = {};
+                            for (var pv in tournament.pointScheme) {
+                                if (tournament.pointScheme.hasOwnProperty(pv)) {
+                                    if (currentGame.team2.playerStats[playerid][pv]) {
+                                        pointTotals[pv] = parseFloat(currentGame.team2.playerStats[playerid][pv]);
+                                    } else {
+                                        pointTotals[pv] = 0;
+                                    }
+                                }
+                            }
+                            player.pointTotals = pointTotals;
+                            player.tuh = Math.floor(parseFloat(currentGame.team2.playerStats[playerid].gp) * currentGame.tossupsheard);
+                            team2Players.push(player);
+                        }
+                    }
+                    var team1 = {name : teamMap[currentGame.team1.team_id].name, score : currentGame.team1.score, players : team1Players};
+                    var team2 = {name : teamMap[currentGame.team2.team_id].name, score : currentGame.team2.score, players : team2Players};
+                    var round = currentGame.round;
+                    var room = currentGame.room;
+                    var moderator = currentGame.moderator;
+                    var packet = currentGame.packet;
+                    var notes = currentGame.notes;
+                    var gameTitle = team1.name.replace(" ", "_").toLowerCase() + "_" +
+                        team2.name.replace(" ", "_").toLowerCase();
+                    rounds[currentGame.round].push({round : round, team1 : team1, team2 : team2, room : room, moderator : moderator,
+                        packet : packet, notes : notes, gameTitle : gameTitle, questions : tournament.games[i].phases});
+                }
+            }
+            callback(null, {rounds : rounds, pointScheme : tournament.pointScheme});
+        }
+    });
+}
+
+function exportScoresheetsSummaries(tournamentid, callback) {
+
+}
+
+/**
 * Converts a tournament from the Mongo database to an SQBS readable format
 * For more information on the SQBS format, visit : https://code.google.com/p/qbsql/source/browse/trunk/functions.php#504
 * @param tournamentid id of the tournament to convert
@@ -379,111 +487,113 @@ function convertToSQBS(tournamentid, callback) {
         } else if (!tournament) {
             callback(null, null);
         } else {
-            var sqbsString = "";
-            sqbsString += tournament.teams.length + "\n";
-            // Build the team map
+            sqbsString += tournament.teams.length + "\n"; // Number of teams
+            tournament.teams.sort(function(first, second) {
+                return first.team_name.localeCompare(second.team_name);
+            });
+            // Build the team map where key is team's _id and value contains the team's name, its players, and the team index
             var teamMap = {};
             var teamIndex = 0;
             for (var i = 0; i < tournament.teams.length; i++) {
                 teamMap[tournament.teams[i]._id] = {team_name : tournament.teams[i].team_name, players : [], team_index : teamIndex};
                 teamIndex++;
             }
-            // console.log(teamMap);
+            tournament.players.sort(function(first, second) {
+                return first.player_name.localeCompare(second.player_name);
+            });
             for (var i = 0; i < tournament.players.length; i++) {
-                var numPlayers = teamMap[tournament.players[i].teamID].players.length;
+                var numPlayers = teamMap[tournament.players[i].teamID].players.length; // The number of players already in a team's players array. This represents the a player's index
                 teamMap[tournament.players[i].teamID].players.push({name : tournament.players[i].player_name, id : tournament.players[i]._id, player_index : numPlayers});
-                // console.log(teamMap[tournament.players[i].teamID].players);
             }
-            // console.log(JSON.stringify(teamMap, null, 4));
-            for (var team in teamMap) {
-                if (teamMap.hasOwnProperty(team)) {
-                    sqbsString += (teamMap[team].players.length + 1) + "\n";
-                    sqbsString += teamMap[team].team_name + "\n";
-                    for (var i = 0; i < teamMap[team].players.length; i++) {
-                        sqbsString += teamMap[team].players[i].name + "\n";
+            for (var teamid in teamMap) {
+                if (teamMap.hasOwnProperty(teamid)) {
+                    sqbsString += (teamMap[teamid].players.length + 1) + "\n"; // Number of players on each team plus the team itself
+                    sqbsString += teamMap[teamid].team_name + "\n"; // Team name
+                    for (var i = 0; i < teamMap[teamid].players.length; i++) {
+                        sqbsString += teamMap[teamid].players[i].name + "\n"; // Player name
                     }
                 }
             }
-            sqbsString += tournament.games.length + "\n";
+            // console.log(JSON.stringify(teamMap, null, 2));
+            sqbsString += tournament.games.length + "\n"; // Number of games
             for (var i = 0; i < tournament.games.length; i++) {
-                sqbsString += i + "\n";
+                // console.log(i);
                 var currentGame = tournament.games[i];
+                sqbsString += i + "\n"; // Identifier for current game
+                sqbsString += teamMap[currentGame.team1.team_id].team_index + "\n"; // Index of team 1
                 // console.log(teamMap[currentGame.team1.team_id].team_index);
                 // console.log(teamMap[currentGame.team2.team_id].team_index);
-                sqbsString += teamMap[currentGame.team1.team_id].team_index + "\n";
-                sqbsString += teamMap[currentGame.team2.team_id].team_index + "\n";
-                sqbsString += currentGame.team1.score + "\n";
-                sqbsString += currentGame.team2.score + "\n";
-                sqbsString += currentGame.tossupsheard + "\n";
-                sqbsString += currentGame.round + "\n";
-                sqbsString += "3\n";
-                sqbsString += "200\n";
-                sqbsString += "5\n";
-                sqbsString += "110\n";
-                sqbsString += "0\n";
-                sqbsString += "0\n";
-                sqbsString += "0\n";
-                sqbsString += "0\n";
-                sqbsString += "0\n";
-                sqbsString += "0\n";
-                // sqbsString += "----------Start Player Stats ----------------\n";
+                // console.log("------");
+                sqbsString += teamMap[currentGame.team2.team_id].team_index + "\n"; // Index of team 2
+                sqbsString += currentGame.team1.score + "\n"; // Team 1 Score
+                sqbsString += currentGame.team2.score + "\n"; // Team 2 Score
+                sqbsString += currentGame.tossupsheard + "\n"; // Game tossups heard
+                sqbsString += currentGame.round + "\n"; // Game round
+                sqbsString += "3\n"; // Team 1 bonus count
+                sqbsString += "200\n"; // Team 1 bonus points
+                sqbsString += "5\n"; // Team 2 bonus count
+                sqbsString += "110\n"; // Team 2 bonus points
+                sqbsString += "0\n"; // Overtime
+                sqbsString += "0\n"; // Team 1 correct overtime tossups
+                sqbsString += "0\n"; // Team 2 correct overtime tossups
+                sqbsString += "0\n"; // Forfeit == team1?
+                sqbsString += "0\n"; // Lightning round, not supported
+                sqbsString += "0\n"; // Lightning round, not supported
                 var current = 0;
                 for (var player in currentGame.team1.playerStats) {
                     if (currentGame.team1.playerStats.hasOwnProperty(player)) {
-                        // console.log(player);
-                        // console.log(player);
                         var index = -1;
-                        // console.log(teamMap[currentGame.team1.team_id].players);
-                        // console.log("num players: " + teamMap[currentGame.team1.team_id].players.length);
                         for (var j = 0; j < teamMap[currentGame.team1.team_id].players.length; j++) {
                             if (player == teamMap[currentGame.team1.team_id].players[j].id) {
                                 // console.log("match");
                                 index = teamMap[currentGame.team1.team_id].players[j].player_index;
+                                // console.log(index);
+                                // console.log(teamMap[currentGame.team1.team_id].team_index + ", " + index);
                                 break;
                             }
                         }
                         // console.log(index);
-                        sqbsString += index + "\n0\n0\n0\n0\n0\n0\n";
-                        // sqbsString += "----------Next Player---------\n";
+                        sqbsString += index + "\n"; // Player index
+                        sqbsString += "1\n"; // Fraction of game played
+                        sqbsString += "2\n"; // Powers
+                        sqbsString += "2\n"; // Tossups
+                        sqbsString += "1\n"; // Negs
+                        sqbsString += "0\n"; // Always 0
+                        sqbsString += "30\n"; // Tossup points
                         current++;
                     }
                 }
                 while (current < 7) {
                     sqbsString += "-1\n0\n0\n0\n0\n0\n0\n";
                     current++;
-                    // sqbsString += "------------Next Player----------\n";
                 }
-                // sqbsString += "--------Next Team ---------\n";
-                // console.log(current);
                 current = 0;
                 for (var player in currentGame.team2.playerStats) {
                     if (currentGame.team2.playerStats.hasOwnProperty(player)) {
-                        // console.log(player);
-                        // console.log(player);
                         var index = -1;
-                        // console.log(teamMap[currentGame.team1.team_id].players);
-                        // console.log("num players: " + teamMap[currentGame.team2.team_id].players.length);
                         for (var j = 0; j < teamMap[currentGame.team2.team_id].players.length; j++) {
                             if (player == teamMap[currentGame.team2.team_id].players[j].id) {
-                                // console.log("match");
                                 index = teamMap[currentGame.team2.team_id].players[j].player_index;
+                                // console.log(index);
                                 break;
                             }
                         }
-                        // console.log(index);
-                        sqbsString += index + "\n0\n0\n0\n0\n0\n0\n";
-                        // sqbsString += "----------Next Player---------\n";
+                        sqbsString += index + "\n"; // Player index
+                        sqbsString += "1\n"; // Fraction of game played
+                        sqbsString += "2\n"; // Powers
+                        sqbsString += "2\n"; // Tossups
+                        sqbsString += "1\n"; // Negs
+                        sqbsString += "0\n"; // Always 0
+                        sqbsString += "30\n"; // Tossup points
                         current++;
                     }
                 }
                 while (current < 7) {
                     sqbsString += "-1\n0\n0\n0\n0\n0\n0\n";
                     current++;
-                    // sqbsString += "------------Next Player----------\n";
                 }
-                // console.log(current);
             }
-            sqbsString = sqbsString.replace(/\n$/, "")
+            sqbsString = sqbsString.replace(/\n$/, "");
             callback(null, sqbsString);
         }
     });
@@ -691,3 +801,4 @@ exports.getRoundReport = getRoundReport;
 exports.getPPBForRounds = getPPBForRounds;
 exports.convertToQuizbowlSchema = convertToQuizbowlSchema;
 exports.convertToSQBS = convertToSQBS;
+exports.exportScoresheets = exportScoresheets;

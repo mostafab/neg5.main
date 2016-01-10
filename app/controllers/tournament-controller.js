@@ -51,7 +51,6 @@ function findTournamentsByDirector(directorKey, callback) {
                 tournament.shortID = result[i].shortID;
                 tournament.location = result[i].location;
                 tournament.date = result[i].date;
-                tournament.openRegistration = result[i].openRegistration;
                 tournament.questionSet = result[i].questionSet;
                 tournament.teamsAdded = result[i].teams.length;
                 tournamentInfo.push(tournament);
@@ -739,10 +738,9 @@ function updateDivisions(tournamentid, divisions, callback) {
 * @param callback callback with an error (or null)
 */
 function updateTournamentInformation(tournamentid, information, callback) {
-    var registration = information.register == undefined ? false : true;
     Tournament.update({_id : tournamentid},
             {"$set" : {tournament_name : information.tournament_name, location : information.tournament_location,
-                    date : information.tournament_date, description : information.tournament_description, openRegistration : registration}}, function(err) {
+                    date : information.tournament_date, description : information.tournament_description}}, function(err) {
                         callback(err);
                     });
 }
@@ -880,7 +878,6 @@ function cloneTournament(tournamentid, phaseName, callback) {
             newTournament.collaborators = tournament.collaborators;
             newTournament.location = tournament.location;
             newTournament.date = tournament.date;
-            newTournament.openRegistration = tournament.openRegistration;
             newTournament.questionSet = tournament.questionSet;
             newTournament.description = tournament.description;
             newTournament.pointScheme = tournament.pointScheme;

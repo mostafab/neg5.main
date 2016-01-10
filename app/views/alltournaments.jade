@@ -30,7 +30,6 @@ block content
                                 th(class="table-head" style='text-align:center') Name
                                 th(class="table-head" style='text-align:center') Location
                                 th(class="table-head" style='text-align:center') Date
-                                th(class="table-head" style='text-align:center') Open Registration
                                 th(class="table-head" style='text-align:center') Question set
                                 th(class="table-head" style='text-align:center') Number of Teams Added
                         tbody(id="tournaments-body")
@@ -47,10 +46,6 @@ block content
                                         td #{date}
                                     else
                                         td #{tournaments[i].date}
-                                    if tournaments[i].openRegistration
-                                        td Yes
-                                    else
-                                        td No
                                     td #{tournaments[i].questionSet}
                                     td #{tournaments[i].teamsAdded}
 

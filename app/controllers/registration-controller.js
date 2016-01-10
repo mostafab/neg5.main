@@ -1,5 +1,3 @@
-'use strict';
-
 var mongoose = require("mongoose");
 var Tournament = mongoose.model("Tournament");
 var TournamentDirector = mongoose.model("TournamentDirector");
@@ -13,9 +11,7 @@ var Registration = mongoose.model("Registration");
 * and a message if the tournament is closed for regisration.
 * This function works by first creating a registration model and finding the
 * tournament to register for. If the registree has already registered under the directorid,
-* that old registration is updated. If not, a new one is created.
-* If director id is null, function looks for a director from the given email and sets the registration's
-* directorid to the matched director with the email (if found)
+* that old registration is updated. Otherise, a new one is created
 * @param tournamentid shortID of the tournament to register for
 * @param directorid id of director who is signing up
 * @param information business information about the registration like teamName and email
@@ -35,43 +31,14 @@ function createRegistration(tournamentid, directorid, information, callback) {
         if (err || tournament == null) {
             callback(err, null);
         } else if (!tournament.openRegistration) {
-            // console.log()
             callback(null, "CLOSED");
         } else {
+                // console.log(reg);
             if (reg.directorid == null) {
-                TournamentDirector.findOne({email : information.email.toLowerCase()}, function(err, result) {
-                    if (err) {
-                        callback(err, null);
-                    } else {
-                        // console.log(result);
-                        if (result) {
-                            reg.directorid = result._id;
-                        }
-                        // console.log(reg);
-                        if (reg.directorid == null) {
-                            var query = {tournamentid : reg.tournamentid, email : reg.email};
-                            var update = {teamName : reg.teamName, numTeams : reg.numTeams, email : reg.email,
-                                message : reg.message, tournamentid : reg.tournamentid, directorid : reg.directorid, signupTime : Date.now(), tournamentName : tournament.tournament_name};
-                            var options = {upsert : true};
-                            Registration.update(query, update, options, function(err) {
-                                callback(err, null);
-                            });
-                            // reg.save(function(err) {
-                            //     callback(err);
-                            // });
-                        } else {
-                            var query = {tournamentid : reg.tournamentid, directorid : reg.directorid};
-                            var update = {teamName : reg.teamName, numTeams : reg.numTeams, email : reg.email,
-                                message : reg.message, tournamentid : reg.tournamentid, directorid : reg.directorid, signupTime : Date.now(), tournamentName : tournament.tournament_name};
-                            var options = {upsert : true};
-                            Registration.update(query, update, options, function(err) {
-                                callback(err, null);
-                            });
-                        }
-                    }
+                reg.save(function(err) {
+                    callback(err, null);
                 });
             } else {
-                // console.log(reg);
                 var query = {tournamentid : reg.tournamentid, directorid : reg.directorid};
                 var update = {teamName : reg.teamName, numTeams : reg.numTeams, email : reg.email,
                     message : reg.message, tournamentid : reg.tournamentid, directorid : reg.directorid, signupTime : Date.now(), tournamentName : tournament.tournament_name};
