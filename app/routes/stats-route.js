@@ -12,7 +12,9 @@ module.exports = function(app) {
                 // console.log(teamInfo);
                 res.send("Couldn't find that tournament");
             } else {
-                res.render("quick-teams", {tournament : tournament, teamInfo : teamInfo, custom : false});
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                    pointScheme : tournament.pointScheme, divisions : tournament.divisions};
+                res.render("quick-teams", {tournament : tournamentData, teamInfo : teamInfo, custom : false});
             }
         });
     });
@@ -27,7 +29,9 @@ module.exports = function(app) {
             } else {
                 var linkTournamentName = tournament.tournament_name.replace(" ", "_").toLowerCase();
                 // console.log(linkTeamName);
-                res.render("quick-teams-simple", {tournament : tournament, teamInfo : teamInfo, linkName : linkTournamentName});
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                    pointScheme : tournament.pointScheme, divisions : tournament.divisions};
+                res.render("quick-teams-simple", {tournament : tournamentData, teamInfo : teamInfo, linkName : linkTournamentName});
             }
         });
     });
@@ -40,7 +44,9 @@ module.exports = function(app) {
                 res.send("Couldn't find that tournament");
             } else {
                 // console.log(playersInfo);
-                res.render("quick-players", {tournament : tournament, playersInfo : playersInfo, custom : false});
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                    pointScheme : tournament.pointScheme};
+                res.render("quick-players", {tournament : tournamentData, playersInfo : playersInfo, custom : false});
             }
         });
     });
@@ -53,7 +59,9 @@ module.exports = function(app) {
                 res.send("Couldn't find that tournament");
             } else {
                 var linkTournamentName = tournament.tournament_name.replace(" ", "_").toLowerCase();
-                res.render("quick-players-simple", {tournament : tournament, playersInfo : playersInfo, linkName : linkTournamentName});
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                    pointScheme : tournament.pointScheme};
+                res.render("quick-players-simple", {tournament : tournamentData, playersInfo : playersInfo, linkName : linkTournamentName});
             }
         });
     });
@@ -66,7 +74,9 @@ module.exports = function(app) {
                 res.send("Couldn't find that tournament");
             } else {
                 // console.log(teamTotals);
-                res.render("full-teams", {tournament : tournament, teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals});
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                    pointScheme : tournament.pointScheme};
+                res.render("full-teams", {tournament : tournamentData, teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals});
             }
         });
     });
@@ -80,7 +90,9 @@ module.exports = function(app) {
             } else {
                 // console.log(teamTotals);
                 var linkTournamentName = tournament.tournament_name.replace(" ", "_").toLowerCase();
-                res.render("full-team-simple", {tournament : tournament, teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals,
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                    pointScheme : tournament.pointScheme};
+                res.render("full-team-simple", {tournament : tournamentData, teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals,
                     linkName : linkTournamentName});
             }
         });
@@ -94,7 +106,9 @@ module.exports = function(app) {
                 res.send("Couldn't find that tournament");
             } else {
                 // console.log(playerTotals);
-                res.render("full-player", {playersInfo : playersInfo, tournament : tournament, playerTotals : playerTotals});
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                    pointScheme : tournament.pointScheme};
+                res.render("full-player", {playersInfo : playersInfo, tournament : tournamentData, playerTotals : playerTotals});
             }
         });
     });
@@ -108,7 +122,9 @@ module.exports = function(app) {
             } else {
                 // console.log(playerTotals);
                 var linkTournamentName = tournament.tournament_name.replace(" ", "_").toLowerCase();
-                res.render("full-players-simple", {playersInfo : playersInfo, tournament : tournament, playerTotals : playerTotals,
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                    pointScheme : tournament.pointScheme};
+                res.render("full-players-simple", {playersInfo : playersInfo, tournament : tournamentData, playerTotals : playerTotals,
                     linkName : linkTournamentName});
             }
         });
@@ -121,9 +137,8 @@ module.exports = function(app) {
             } else if (tournament == null) {
                 res.status(404).end();
             } else {
-                // var linkTournamentName = tournamentName.replace(" ", "_").toLowerCase();
-                // res.send({tournamentName : tournamentName, roundsInfo : roundsInfo, roundsInfo});
-                res.render("round-report", {tournament : tournament, roundsInfo : roundsInfo});
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID};
+                res.render("round-report", {tournament : tournamentData, roundsInfo : roundsInfo});
             }
         });
     });
@@ -136,20 +151,8 @@ module.exports = function(app) {
                 res.status(404).end();
             } else {
                 var linkTournamentName = tournament.tournament_name.replace(" ", "_").toLowerCase();
-                res.render("round-report-simple", {tournament : tournament, roundsInfo : roundsInfo, linkName : linkTournamentName});
-            }
-        });
-    });
-
-    app.get("/t/:tid/stats/roundreport/dl", function(req, res, next) {
-        statsController.getRoundReport(req.params.tid, function(err, tournamentName, roundsInfo) {
-            if (err) {
-                res.status(500).send(err);
-            } else if (tournamentName == null) {
-                res.status(404).end();
-            } else {
-                var linkTournamentName = tournamentName.replace(" ", "_").toLowerCase();
-                res.send({tournamentName : tournamentName, roundsInfo : roundsInfo, linkName : linkTournamentName});
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID};
+                res.render("round-report-simple", {tournament : tournamentData, roundsInfo : roundsInfo, linkName : linkTournamentName});
             }
         });
     });
@@ -174,7 +177,9 @@ module.exports = function(app) {
                 res.send("Couldn't find that tournament");
             } else {
                 // res.send({type : "team", teamInfo: teamInfo, tournament : tournament});
-                res.render("quick-teams", {tournament : tournament, teamInfo : teamInfo, custom : true});
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                    pointScheme : tournament.pointScheme, divisions : tournament.divisions};
+                res.render("quick-teams", {tournament : tournamentData, teamInfo : teamInfo, custom : true});
             }
         });
     });
@@ -198,8 +203,9 @@ module.exports = function(app) {
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                res.render("quick-players", {tournament : tournament, playersInfo : playersInfo, custom : true});
-                // res.send({type : "player", playerInfo : playerInfo, tournament : tournament});
+                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                    pointScheme : tournament.pointScheme};
+                res.render("quick-players", {tournament : tournamentData, playersInfo : playersInfo, custom : true});
             }
         });
     });
