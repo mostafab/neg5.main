@@ -12,7 +12,7 @@ block content
 
     +navbar
 
-    div(class="content-wrapper box"  style='padding:300px;padding-top:20px')
+    div(class="content-wrapper box"  style='padding:150px;padding-top:20px')
         input(type="hidden" value="#{tid}" id="tournamentid")
         div(class="row")
             div(class="col-md-5 col-lg-5 col-sm-5")
@@ -136,6 +136,11 @@ block content
                             table(class="table table-hover table-condensed"  id="scoresheet")
 
                 div(class="row" style="margin-bottom:5px")
+                    div(class='col-md-12' id='toggle-message-div' style='display:none')
+                        div(class='alert alert-info btn-lg' style='text-align:center')
+                            strong
+                                | Click player names on the table below to toggle them as active or unactive. Only active players have their TUH incremented after each tossup.
+
                     div(class="col-md-12")
                         br
                         div(class="col-md-6")
@@ -146,5 +151,7 @@ block content
                             div(class="panel panel-default")
                                 table(class="table table-striped table-hover table-condensed player-table" id="rightplayertable")
 
+
+
 block scripts
-    script(src="/js/scoresheet-es5.js")
+    script(src="/js/scoresheet-es6.js")

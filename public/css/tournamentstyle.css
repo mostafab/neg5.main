@@ -71,16 +71,21 @@ td {
 }
 
 .statbox {
-    margin:20px;
-    padding:20px;
+    margin:10px;
+    padding:10px;
     padding-bottom: 0px;
     background-color:rgb(212, 212, 212);
     border-radius: 3px;
     /*box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2);*/
+    -webkit-transition: background-color .5s;
+    -moz-transition: background-color .5s;
+    -o-transition: background-color .5s;
+    -ms-transition: background-color .5s;
+    transition: background-color .5s;
 }
 
 .statbox:hover {
-    background-color:rgb(217, 217, 217);
+    background-color:rgb(200, 210, 210);
 }
 
 ::-webkit-input-placeholder {
@@ -124,6 +129,11 @@ td {
     margin: 10px;
     border-radius: 2px;
     /*box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);*/
+    -webkit-transition: background-color .5s;
+    -moz-transition: background-color .5s;
+    -o-transition: background-color .5s;
+    -ms-transition: background-color .5s;
+    transition: background-color .5s;
 }
 
 .tournament-info-field::-webkit-input-placeholder
@@ -201,6 +211,11 @@ td {
 
 .table-head {
     background: rgb(0, 136, 136);
+    -webkit-transition: background-color .5s;
+    -moz-transition: background-color .5s;
+    -o-transition: background-color .5s;
+    -ms-transition: background-color .5s;
+    transition: background-color .5s;
     color : white;
 }
 
@@ -221,6 +236,11 @@ td {
 
 .btn-stats {
     background: rgb(0, 136, 136);
+    -webkit-transition: background-color .5s;
+    -moz-transition: background-color .5s;
+    -o-transition: background-color .5s;
+    -ms-transition: background-color .5s;
+    transition: background-color .5s;
     color : white;
 }
 
