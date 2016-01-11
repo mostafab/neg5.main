@@ -26,7 +26,7 @@
 
 .list-element:hover {
     background: rgba(100, 100, 100, .1);
-    border-top-width: thick;
-    border-top-color: black;
-    border-top-style: solid;
+    border-left-width: thick;
+    border-left-color: black;
+    border-left-style: solid;
 }
