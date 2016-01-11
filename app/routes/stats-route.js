@@ -4,6 +4,11 @@ var statsController = require("../../app/controllers/stats-controller");
 
 module.exports = function(app) {
 
+    app.get("/t/:tid/stats", function(req, res, next) {
+        var tournament = req.params.tid;
+        res.redirect("/t/" + tournament + "/stats/team");
+    });
+
     app.get("/t/:tid/stats/team", function(req, res, next) {
         statsController.getTeamsInfo(req.params.tid, function(err, tournament, teamInfo) {
             if (err) {
