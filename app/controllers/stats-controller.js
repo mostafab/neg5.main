@@ -741,7 +741,7 @@ function makeMatchQuestionObject(phase, teamMap, playerMap) {
         }
     }
     var matchQuestion = {
-                    number : parseFloat(phase.number),
+                    number : parseFloat(phase.question_number),
                     bonus_points : bonusPoints,
                     bounceback_bonus_points : bouncebackPoints,
                     buzzes : []
