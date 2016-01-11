@@ -79,14 +79,6 @@ class Bonus {
         this.forTeam = teamid;
     }
 
-    // setForTeamPoints(points) {
-    //     this.forTeamPoints = points;
-    // }
-
-    // setAgainstTeamPoints(points) {
-    //     this.againstTeamPoints = points;
-    // }
-
     getForTeam() {
         return this.forTeam;
     }
@@ -110,7 +102,6 @@ class Bonus {
             }
         }
         return points;
-        // return this.againstTeamPoints;
     }
 
     addBonusPart(partNumber, value, gettingTeam) {
@@ -168,11 +159,6 @@ class Phase {
         }
     }
 
-    // addBonusPoints(forTeamID, forTeamPoints, otherTeamPoints) {
-    //     this.bonus.setForTeam(forTeamID);
-    //     this.bonus.setForTeamPoints(forTeamPoints);
-    //     this.bonus.setAgainstTeamPoints(otherTeamPoints);
-    // }
     setBonusTeam(forTeamID) {
         this.bonus.setForTeam(forTeamID);
     }
@@ -217,14 +203,11 @@ class Game {
     }
 
     stashPhase() {
-        // console.log("Stashing phase");
-        // console.log(this.currentPhase);
         if (this.phases.length < this.currentPhase.getNumber()) {
             this.phases.push(this.currentPhase);
         } else {
             this.phases[this.currentPhase.getNumber() - 1] = this.currentPhase;
         }
-        // console.log(this.phases);
         this.nextPhase();
     }
 
@@ -234,7 +217,6 @@ class Game {
             for (var i = 0; i < players.length; i++) {
                 this.team1.players.push(new Player(players[i].player_name, players[i]._id, players[i].teamID));
             }
-            // console.log("sorting");
             this.team1.players.sort(function(player1, player2) {
                 return player1.name.localeCompare(player2.name);
             });
@@ -253,7 +235,6 @@ class Game {
         var player = new Player(name, id, teamid);
         if (teamid == this.team1.id) {
             this.team1.players.push(player);
-            // console.log("Adding player");
         } else {
             this.team2.players.push(player);
         }
@@ -461,14 +442,6 @@ $(document).ready(function() {
             game.getCurrentPhase().addAnswerToTossup($(this).attr("data-team"), $(this).attr("data-player"), parseFloat($(this).attr("data-point-value")));
             showAnswersOnScoresheet(game.currentPhase);
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), $(this).attr("data-team"), game.getTeamScore($(this).attr("data-team")));
-            // console.log(game.getCurrentPhase());
-            // var i = 1;
-            // while (i <= game.getCurrentPhase().getNumber()) {
-            //     showTotalOnScoresheetOneRow(i, $(this).attr("data-team"), game.getTeamScoreUpToPhase($(this).attr("data-team"), i));
-            //     // console.log(game.getTeamScoreUpToPhase($(this).attr("data-team"), i));
-            //     i++;
-            // }
-            // showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getTeamScore(game.team2.id));
             if (!$(this).data("neg")) {
                 if ($(this).attr("data-team") == game.team1.id) {
                     showBonusScreen(game.team1);
@@ -627,6 +600,7 @@ function findPlayers(side) {
                 editAddBonusAttributes(game.team1, game.team2);
                 createDeadTossupButton();
                 createSubmitGameButton();
+                $("#toggle-message-div").fadeIn(200);
             }
         }
     });

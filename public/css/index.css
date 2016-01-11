@@ -36,9 +36,9 @@ a {
 
 .list-element:hover {
     background: rgba(100, 100, 100, .1);
-    border-bottom-width: thick;
-    border-bottom-color: black;
-    border-bottom-style: solid;
+    border-left-width: thick;
+    border-left-color: black;
+    border-left-style: solid;
 }
 
 .body {
