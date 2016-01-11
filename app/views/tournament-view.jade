@@ -6,12 +6,10 @@ block titleContent
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
     link(rel="stylesheet" href="/css/tournamentstyle.css")
-    link(href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet")
 
 block content
 
     +navbar
-    // +sidebar
 
     - var dateConverter = function(date) {
     -    var day = date.getDate();
@@ -517,8 +515,8 @@ block content
                                                 button(type="button" class="btn btn-md btn-danger btn-block" id="yes-delete") Yes
                                             div(class="col-md-6")
                                                 button(type="button" class="btn btn-md btn-success btn-block" id="no-delete") Never Mind
+
 block scripts
     script(src="/js/tournament-configuration.js")
     script(src="/js/jszip/dist/jszip.min.js")
     script(src='/js/jszip/dist/FileSaver.min.js')
-    script(src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js")
