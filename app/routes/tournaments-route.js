@@ -133,8 +133,10 @@ module.exports = function(app) {
     app.post("/tournaments/editPointSchema", function(req, res, next) {
         // console.log(req.body);
         // console.log(JSON.parse(req.body.pointtypes));
+        console.log(req.body);
         var newPointValues = {};
         var newPointTypes = JSON.parse(req.body.pointtypes);
+        console.log(newPointTypes);
         var playerNum = 1;
         currentVal = "pointval" + playerNum
         while (req.body[currentVal] != undefined) {

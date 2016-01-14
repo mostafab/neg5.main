@@ -70,18 +70,22 @@ block content
                     div(class="col-md-6" style="margin-top:10px")
                         input(type="text" class="form-control" id="name-merge" placeholder='Enter Name of Merged Tournament')
 
+                    div(class="col-md-12")
+                        div(class="row" id='merge-div')
+                            div(class="col-md-1")
+                            div(class="col-md-4")
+                                button(class="btn btn-lg btn-block btn-warning" style='border-radius:3px;box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);' id='merge-button') Merge Tournaments
+
+                        div(class="row" id='success-merge-div' style='display:none')
+                            div(class="col-md-1")
+                            div(class="col-md-4")
+                                a(class="btn btn-lg btn-block btn-success" style='border-radius:3px;box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);' id='success-merge') Go To Merged Tournament
             div(class="col-md-6")
+
+
         br
 
-        div(class="row" id='merge-div')
-            div(class="col-md-1")
-            div(class="col-md-4")
-                button(class="btn btn-lg btn-block btn-warning" style='border-radius:3px;box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);' id='merge-button') Merge Tournaments
 
-        div(class="row" id='success-merge-div' style='display:none')
-            div(class="col-md-1")
-            div(class="col-md-4")
-                a(class="btn btn-lg btn-block btn-success" style='border-radius:3px;box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);' id='success-merge') Go To Merged Tournament
 
 block scripts
     script(src="/js/all-tournaments.js")

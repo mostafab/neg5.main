@@ -1,6 +1,5 @@
 var mongoose = require("mongoose");
 var shortid = require("shortid");
-// var shortid = require("short-mongo-id");
 
 var Tournament = mongoose.model("Tournament");
 var TournamentDirector = mongoose.model("TournamentDirector");
@@ -714,6 +713,7 @@ function changePointScheme(tournamentid, newPointScheme, newPointTypes, callback
     // console.log(newPointScheme);
     Tournament.update({_id : tournamentid},
             {"$set" : {pointScheme : newPointScheme, pointsTypes : newPointTypes}}, function(err) {
+                console.log(err);
                 callback(err);
             });
 }
@@ -754,8 +754,6 @@ function findDirectors(query, callback) {
     query = query.trim();
     try {
         var rex = new RegExp(".*" + query + ".*", "i");
-
-        // var query = {$regex : rex};
         TournamentDirector.find({$or : [{email : rex}, {name : rex}]}, function(err, directors) {
             if (err) {
                 console.log(err);

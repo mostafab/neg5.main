@@ -1,0 +1,44 @@
+.chat
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chat li
+{
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #B3A9A9;
+}
+
+.chat li.left .chat-body
+{
+    margin-left: 60px;
+}
+
+.chat li.right .chat-body
+{
+    margin-right: 60px;
+}
+
+.chat li .chat-body p
+{
+    margin: 0;
+    color: #777777;
+}
+
+.chatdiv .panel .slidedown .fa, .chat .fa
+{
+    margin-right: 5px;
+}
+
+.chat-panel
+{
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.chat-img:hover {
+    cursor: pointer;
+}

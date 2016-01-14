@@ -1,5 +1,3 @@
-var ONE_WEEK = 86400000 * 7;
-
 var config = require('./config');
 var express = require('express');
 var bodyParser = require("body-parser");
@@ -23,14 +21,11 @@ module.exports = function() {
         httpOnly : true,
         secure : true
     }));
-    // app.use(passport.initialize());
-    // app.use(passport.session());
 
     app.set("views", "./app/views");
     app.set("view engine", "jade");
 
     app.use(express.static("./public"));
-
 
     require('../app/routes/index.js')(app);
     require("../app/routes/user-route.js")(app);

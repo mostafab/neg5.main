@@ -112,11 +112,6 @@ thead th {
     color : #3C763D;
 }
 
-/*.unactive-player {
-    background-color: #F2DEDE;
-    color : #A94442;
-}*/
-
 .btn-xl {
     padding: 18px 28px;
     font-size: 22px;
@@ -127,7 +122,6 @@ thead th {
 }
 
 .input-xs {
-      /*height: 22px;*/
       padding: 2px 2px;
       font-size: 12px;
       line-height: 1.5;
@@ -149,4 +143,9 @@ thead th {
 
 #dead-tossup:hover {
     background-color: rgba(20, 20, 20, .8);
+}
+
+#scoresheet tbody td:not(.tossup-number):hover {
+    cursor: pointer;
+    background-color: #FCF8E3;
 }

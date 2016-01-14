@@ -14,22 +14,17 @@ block extrastylesheets
 block content
 
     +navbar
-    // +sidebar
 
-    // main(class="cd-main-content")
-    // div(class="content-wrapper box" style='padding-left:50px;padding-right:50px;padding-top:25px')
-
-    div(class="jumbotron vertical-center")
+    div(class="vertical-center")
         div(class="container")
             div(style="margin:20px; margin-bottom:50px")
 
             div(class="row")
                 div(class="col-md-12")
-                    // div(style="margin:20px; margin-bottom:50px")
                     h2(class="title" style="width:50%") Create a Tournament. You only need to provide a name.
                     div(class="panel-body")
                         div(class="row")
-                            div(class="col-md-12 smallbox")
+                            div(class="col-md-12 smallbox" style='padding:20px')
                                 form(name="createTournament" method="post" action="/create/submit")
                                     div(class="form-group")
                                         label(class="info-label") Name*
