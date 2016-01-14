@@ -5,6 +5,7 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var MAX_TOSSUPS = 20;
+var MAX_ACTIVE_PLAYERS = 4;
 var BONUS_POINT_VALUE = 10;
 var CURRENT_BONUS = 1;
 
@@ -493,6 +494,9 @@ $(document).ready(function () {
     $("#game-metadata").hide(0);
 
     $(".teamselect").change(function () {
+        $(this).each(function () {
+            $(this).css("color", "white");
+        });
         findPlayers($(this));
     });
 
@@ -542,7 +546,7 @@ $(document).ready(function () {
     });
 
     $("body").on("click", "#dead-tossup", function () {
-        console.log("dead tossup");
+        // console.log("dead tossup");
         if (game.team1 !== null && game.team2 !== null) {
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team1.id, game.getCurrentPhase().getBonusPointsForTeam(game.team1.id));
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
@@ -591,8 +595,20 @@ $(document).ready(function () {
     });
 
     $("#lock-teams").click(function () {
-        $("#team-select-div").slideUp("fast");
-        $("#lock-teams-div").slideUp("fast");
+        $(".teamselect").each(function () {
+            $(this).css("color", "white");
+        });
+        if (game.team1 && game.team2) {
+            $("#team-select-div").slideUp("fast");
+            $("#lock-teams-div").slideUp("fast");
+        } else {
+            if (!game.team1) {
+                $("#leftselect").css("color", "#D9534F");
+            }
+            if (!game.team2) {
+                $("#rightselect").css("color", "#D9534F");
+            }
+        }
     });
 
     $(".undo-neg").click(function () {
@@ -604,13 +620,18 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".player-table .player-body", function (e) {
-        // console.log("toggling class...");
         if (!$(e.target).is("input")) {
-            // console.log($(this).attr("data-player"));
             $(this).find("th").toggleClass("active-player");
             $(this).find("td").toggleClass("active-player");
             var playerid = $(this).attr("data-player");
             $(".player-list > .cell[data-player='" + playerid + "']").toggleClass("active-player");
+        }
+    });
+
+    $("body").on("click", "#scoresheet tbody td:not(.tossup-number)", function () {
+        var row = $(this).attr("data-row");
+        if (game.getPhases()[row - 1]) {
+            console.log(game.getPhases()[row - 1]);
         }
     });
 
@@ -644,7 +665,7 @@ function findPlayers(side) {
             // createPlayerLabels(side, databack.players, pointValues, databack.pointTypes);
             if ($(side).attr("id") == "leftselect") {
                 game.setTeam(1, $("#leftselect").find(":selected").text(), $("#leftselect").val(), databack.players);
-                console.log(game.team1.players);
+                // console.log(game.team1.players);
                 createPlayerTable(side, game.team1.players, pointValues);
                 createPlayerLabels(side, game.team1.players, pointValues, databack.pointTypes);
             } else {
@@ -793,7 +814,7 @@ function parseScoresheet(submittedGame) {
 }
 
 function incrementTossupsHeardForPlayers() {
-    console.log("Incrementing tossups heard...");
+    // console.log("Incrementing tossups heard...");
     $(".player-table .active-player input").each(function (index, input) {
         var currentTUH = parseFloat($(input).val());
         $(input).val(currentTUH + 1 + "");
@@ -801,7 +822,7 @@ function incrementTossupsHeardForPlayers() {
 }
 
 function createDeadTossupButton() {
-    var html = "<button type='button' class='btn btn-md btn-block' id='dead-tossup'> Dead Tossup </button>";
+    var html = "<button type='button' class='btn btn-md btn-block' id='dead-tossup'>Dead Tossup</button>";
     $("#dead-tossup-div").empty().append(html);
 }
 
@@ -853,7 +874,7 @@ function createScoresheet(team1, team2) {
         }
         html += "<td class='bonus-td' data-team='" + team1.id + "' data-row='" + (i + 1) + "'>-</td>";
         html += "<td class='total-td' data-team='" + team1.id + "' data-row='" + (i + 1) + "'>-</td>";
-        html += "<td class='alert alert-info'><strong>" + (i + 1) + "</strong></td>";
+        html += "<td class='alert alert-info tossup-number'><strong>" + (i + 1) + "</strong></td>";
         html += "<td class='total-td' data-team='" + team2.id + "' data-row='" + (i + 1) + "'>-</td>";
         html += "<td class='bonus-td' data-team='" + team2.id + "' data-row='" + (i + 1) + "'>-</td>";
         for (var j = 0; j < team2.players.length; j++) {
@@ -875,7 +896,7 @@ function createScoresheetRow(team1, team2, number) {
     }
     html += "<td class='bonus-td' data-team='" + team1.id + "' data-row='" + number + "'>-</td>";
     html += "<td class='total-td' data-team='" + team1.id + "' data-row='" + number + "'>-</td>";
-    html += "<td class='alert alert-info'><strong>" + number + "</strong></td>";
+    html += "<td class='alert alert-info tossup-number'><strong>" + number + "</strong></td>";
     html += "<td class='total-td' data-team='" + team2.id + "' data-row='" + number + "'>-</td>";
     html += "<td class='bonus-td' data-team='" + team2.id + "' data-row='" + number + "'>-</td>";
     for (var j = 0; j < team2.players.length; j++) {
@@ -905,7 +926,6 @@ function changeTeamLabels(side) {
 }
 
 function appendPlayerLabel(side, player, pointValues, pointTypes) {
-    // console.log(pointValues);
     var html = "<div class='row cell' data-player='" + player._id + "'>";
     html += "<div class='col-md-5'>";
     html += "<div class='playerbox'><strong style='color:white'>" + player.player_name + "</strong></div></div>";
@@ -936,7 +956,11 @@ function createPlayerLabels(side, players, pointValues, pointTypes) {
     var list = $(side).attr("id") === "leftselect" ? "#leftplayerlist" : "#rightplayerlist";
     var html = "";
     for (var i = 0; i < players.length; i++) {
-        html += "<div class='row cell' data-player='" + players[i].id + "'>";
+        if (i < MAX_ACTIVE_PLAYERS) {
+            html += "<div class='row cell active-player' data-player='" + players[i].id + "'>";
+        } else {
+            html += "<div class='row cell' data-player='" + players[i].id + "'>";
+        }
         html += "<div class='col-md-5'>";
         html += "<div class='playerbox'><strong style='color:white'>" + players[i].name + "</strong></div></div>";
         html += "<div class='col-md-7'>";
@@ -971,13 +995,23 @@ function createPlayerTable(side, players, pointScheme) {
     html += "</tr>";
     for (var i = 0; i < players.length; i++) {
         html += "<tr class='player-body' data-player='" + players[i].id + "'>";
-        html += "<th>" + players[i].name;+"</th>";
-        for (var j = 0; j < pointScheme.length; j++) {
-            html += "<td class='player-point' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
+        if (i < MAX_ACTIVE_PLAYERS) {
+            html += "<th class='active-player'>" + players[i].name;+"</th>";
+            for (var j = 0; j < pointScheme.length; j++) {
+                html += "<td class='player-point active-player' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
+            }
+            html += "<td class='player-total active-player' data-player='" + players[i].id + "'>0</td>";
+            html += "<td class='player-tossups td-scoresheet active-player' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet' value='0' style='font-size:14px'/></td>";
+            html += "</tr>";
+        } else {
+            html += "<th>" + players[i].name;+"</th>";
+            for (var j = 0; j < pointScheme.length; j++) {
+                html += "<td class='player-point' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
+            }
+            html += "<td class='player-total' data-player='" + players[i].id + "'>0</td>";
+            html += "<td class='player-tossups td-scoresheet' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet' value='0' style='font-size:14px'/></td>";
+            html += "</tr>";
         }
-        html += "<td class='player-total' data-player='" + players[i].id + "'>0</td>";
-        html += "<td class='player-tossups td-scoresheet' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet' value='0' style='font-size:14px'/></td>";
-        html += "</tr>";
     }
     $(table).empty().append(html);
 }

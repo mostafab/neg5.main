@@ -1,6 +1,6 @@
 {
   "name": "neg_five",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Quiz Bowl for the Cloud!",
   "main": "server.js",
   "scripts": {
@@ -14,16 +14,11 @@
     "client-sessions": "^0.7.0",
     "cookie-parser": "^1.4.0",
     "express": "^4.13.3",
+    "express-partial": "^0.1.0",
     "express-session": "^1.12.1",
     "favicon": "0.0.2",
     "jade": "^1.11.0",
     "mongoose": "^4.2.5",
-    "passport": "^0.3.2",
-    "passport-facebook": "^2.0.0",
-    "passport-google": "^0.3.0",
-    "passport-google-oauth": "^0.2.0",
-    "passport-local": "^1.0.0",
-    "passport-twitter": "^1.0.3",
     "short-mongo-id": "^0.1.1",
     "shortid": "^2.2.4"
   }

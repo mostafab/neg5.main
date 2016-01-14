@@ -12,7 +12,7 @@ module.exports = function(app) {
     app.get("/t/:tid/stats/team", function(req, res, next) {
         statsController.getTeamsInfo(req.params.tid, function(err, tournament, teamInfo) {
             if (err) {
-                res.send(err);
+                res.status(500).send(err);
             } else if (tournament == null) {
                 // console.log(teamInfo);
                 res.send("Couldn't find that tournament");
@@ -28,7 +28,7 @@ module.exports = function(app) {
         // res.send("OK");
         statsController.getTeamsInfo(req.params.tid, function(err, tournament, teamInfo) {
             if (err) {
-                res.send(err);
+                res.status(500).end();
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
@@ -44,7 +44,7 @@ module.exports = function(app) {
     app.get("/t/:tid/stats/player", function(req, res, next) {
         statsController.getPlayersInfo(req.params.tid, function(err, tournament, playersInfo) {
             if (err) {
-                res.send(err);
+                res.status(500).end();
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
@@ -59,7 +59,7 @@ module.exports = function(app) {
     app.get("/t/:tid/stats/player/dl", function(req, res, next) {
         statsController.getPlayersInfo(req.params.tid, function(err, tournament, playersInfo) {
             if (err) {
-                res.send(err);
+                res.status(500).end();
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
@@ -74,7 +74,7 @@ module.exports = function(app) {
     app.get("/t/:tid/stats/teamfull", function(req, res, next) {
         statsController.getFullTeamsGameInformation(req.params.tid, function(err, tournament, teamsGames, playersInfo, teamTotals) {
             if (err) {
-                res.send(err);
+                res.status(500).end();
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
@@ -89,7 +89,7 @@ module.exports = function(app) {
     app.get("/t/:tid/stats/teamfull/dl", function(req, res, next) {
         statsController.getFullTeamsGameInformation(req.params.tid, function(err, tournament, teamsGames, playersInfo, teamTotals) {
             if (err) {
-                res.send(err);
+                res.status(500).end();
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
@@ -106,7 +106,7 @@ module.exports = function(app) {
     app.get("/t/:tid/stats/playerfull", function(req, res, next) {
         statsController.getFullPlayersGameInformation(req.params.tid, function(err, tournament, playersInfo, playerTotals) {
             if (err) {
-                res.send(err);
+                res.status(500).end();
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
@@ -121,7 +121,7 @@ module.exports = function(app) {
     app.get("/t/:tid/stats/playerfull/dl", function(req, res, next) {
         statsController.getFullPlayersGameInformation(req.params.tid, function(err, tournament, playersInfo, playerTotals) {
             if (err) {
-                res.status(500).send(err);
+                res.status(500).end();
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
@@ -138,7 +138,7 @@ module.exports = function(app) {
     app.get("/t/:tid/stats/roundreport", function(req, res, next) {
         statsController.getRoundReport(req.params.tid, function(err, tournament, roundsInfo) {
             if (err) {
-                res.status(500).send(err);
+                res.status(500).end();
             } else if (tournament == null) {
                 res.status(404).end();
             } else {
@@ -151,7 +151,7 @@ module.exports = function(app) {
     app.get("/t/:tid/stats/roundreport/dl", function(req, res, next) {
         statsController.getRoundReport(req.params.tid, function(err, tournament, roundsInfo) {
             if (err) {
-                res.status(500).send(err);
+                res.status(500).end();
             } else if (tournament == null) {
                 res.status(404).end();
             } else {
@@ -177,7 +177,7 @@ module.exports = function(app) {
         }
         statsController.getFilteredTeamsInformation(req.params.tid, constraints, function(err, tournament, teamInfo) {
             if (err) {
-                res.send(err);
+                res.status(500).end();
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {

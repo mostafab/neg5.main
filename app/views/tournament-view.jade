@@ -6,6 +6,7 @@ block titleContent
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
     link(rel="stylesheet" href="/css/tournamentstyle.css")
+    link(rel="stylesheet" href="/css/chat.css")
 
 block content
 
@@ -26,10 +27,10 @@ block content
     -    return formattedDate;
     - }
 
-    div(class="content-wrapper box" style='padding:150px;padding-top:20px')
+    div(class="content-wrapper box" style='padding:150px;padding-top:20px;')
         input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
-
         div(class="row")
+            div(class="col-md-12")
                 div(class="col-md-12")
                     div(style="margin:20px; margin-bottom:50px")
                     h2(class="title" style="width:50%") #{tournament.tournament_name}
@@ -393,7 +394,7 @@ block content
                                             div(class="row" style="width:95%")
                                                 div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
 
-                                                    input(type="text" class="form-control search" placeholder="Filter List")
+                                                    input(type="text" class="form-control search" placeholder="Filter by Name or Division")
                                                     span(class="input-group-addon btn-stats")
                                                         i(class="glyphicon glyphicon-search")
 
@@ -450,7 +451,6 @@ block content
                                             a(href="/t/" + tournament.shortID + "/export/qbj" class="btn btn-md btn-warning" data-link="#{linkName}_qbj.qbj" id="download-json") Export to QBJ Format
                                             // a(href="/t/" + tournament.shortID + "/export/sqbs" class="btn btn-md btn-warning" data-link="#{linkName}_sqbs.sqbs" id="download-sqbs") Export to SQBS Format
                                             a(href="/t/" + tournament.shortID + "/export/scoresheets" class="btn btn-md btn-warning" data-link="#{linkName}_scoresheets.zip" id='download-scoresheets') Export Scoresheets
-                                            // a(href="/t/" + tournament.shortID + "/export/sqbs" class="btn btn-md btn-warning" data-link="#{linkName}_sqbs.sqbs" id="download-sqbs") Export to SQBS Format
 
                             div(class="panel panel-default")
                                 div(class="panel-heading collapsable") Custom Team Statistics
@@ -487,10 +487,9 @@ block content
                                                 | Create a new phase for your tournament if you need new divisions for playoffs.
                                                 | This action will create a new tournament with the same teams and players. You'll be
                                                 | able to merge tournaments together if you need compiled stats by going to the "My Tournaments" page.
-                                        div(class="col-md-6 col-sm-6 col=lg-6")
+                                        div(class="col-md-3 col-sm-3 col=lg-3")
                                             div(class="form-group")
                                                 input(type='text' placeholder='Enter New Phase Name Here' class="form-control" id="new-phase-name")
-
                                         div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="success-phase-div")
                                             button(class="btn btn-lg btn-success" data-tournament='#{tournament._id}' id="new-phase") New Phase
 
@@ -515,6 +514,40 @@ block content
                                                 button(type="button" class="btn btn-md btn-danger btn-block" id="yes-delete") Yes
                                             div(class="col-md-6")
                                                 button(type="button" class="btn btn-md btn-success btn-block" id="no-delete") Never Mind
+
+            // div(class="col-md-3 chat-div")
+            //     div(class+"col-md-12" style='margin-top:70%;')
+            //         div(class="panel panel-primary")
+            //             div(class="panel-heading" style='background-color:#008888')
+            //                 span(class="fa fa-comment")
+            //                 span(style='margin-left:10px')
+            //                     | Hello
+            //                 div(class="btn-group pull-right")
+            //             div(class="panel-body chat-panel")
+            //                 ul(class="chat")
+            //                     li(class="left clearfix")
+            //                         span(class="chat-img pull-left")
+            //                             img(src="http://placehold.it/50/55C1E7/fff&text=M" alt='User Avatar' class='img-circle')
+            //                         div(class="chat-body clearfix")
+            //                             div(class="header")
+            //                                 strong(class='primary-font') Mostafa Bhuiyan
+            //                             p
+            //                              | Yo, wassup
+            //                     li(class="right clearfix")
+            //                         span(class="chat-img pull-right")
+            //                             img(src="http://placehold.it/50/55C1E7/fff&text=U" alt='User Avatar' class='img-circle')
+            //                         div(class="chat-body clearfix")
+            //                             div(class="header")
+            //                                 strong(class='primary-font') Mostafa Bhuiyan
+            //                             p
+            //                               | Yo, wassup
+            //
+            //             div(class="panel-footer")
+            //                 div(class="col-md-10")
+            //                     input(id="btn-input" type='text' class='form-control input-sm' placeholder='Enter your message here.')
+            //                     span(class="input-group-btn")
+            //
+            //                 button(class="btn btn-warning btn-sm" id="btn-chat") Send
 block scripts
     script(src="/js/tournament-configuration.js")
     script(src="/js/jszip/dist/jszip.min.js")
