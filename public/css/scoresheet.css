@@ -13,6 +13,10 @@
     box-shadow: 0 .05px .05px rgba(0, 0, 0, 0.5);
 }
 
+.cell:hover {
+    cursor: pointer;
+}
+
 .gotten-bonus {
     background-color: #5CB85C;
     color: white;

@@ -90,14 +90,24 @@ $(document).ready(function() {
     });
 
     $(".deletebutton").click(function(e) {
-        // console.log($(this).parent().serialize());
         removeGame($(this).parent().serialize(), $(this));
     });
 
-    $(".deleteteambutton").click(function(e) {
-        // console.log($(this).parent().serialize());
+    $("body").on("click", ".start-delete-team", function() {
+        $(this).parents("tr").next().slideDown(0);
+    });
+
+    $("body").on("click", ".cancel-delete-team", function() {
+        $(this).parents("tr").slideUp(0);
+    });
+
+    $("body").on("click", ".deleteteambutton", function() {
         removeTeam($(this).parent().serialize(), $(this));
     });
+
+    // $(".deleteteambutton").click(function(e) {
+    //
+    // });
 
     $("#save-point-schema-button").click(function(e) {
         var pointTypes = formatPointTypes();
@@ -908,17 +918,41 @@ function updateGameList(gameinfo) {
 }
 
 function updateTeamList(team) {
+    // tr()
+    //     td(class="teamname") #{tournament.teams[i].team_name}
+    //     td(class="division") #{tournament.teams[i].division}
+    //     td
+    //         a(class="btn btn-sm btn-info" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
+    //         button(type="button" class="btn btn-sm btn-warning start-delete-team") Remove Team
+    // tr(style='display:none')
+    //     td
+    //     td
+    //     td
+    //         div(class="col-md-3 col-lg-3 col-sm-3")
+    //             button(class="btn btn-stats btn-sm btn-block cancel-delete-team") Never Mind
+    //         div(class="col-md-3 col-lg-3 col-sm-3")
+    //             form()
+    //                 input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
+    //                 input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
+    //                 button(type="button" class="btn btn-sm btn-danger btn-block deleteteambutton") Confirm
     // console.log(team);
     var html = "<tr>";
-    html += "<td>" + team.team_name + "</td>";
-    html += "<td>" + team.division + "</td>";
-    html += "<td> <form><input type='hidden' name='teamid_form' value='" + team.shortID + "'/>";
-    html += "<input type='hidden' name='tournament_idteam' value='" + $("#tournament_id_change").val() + "'/>";
-    html += "<a class='btn btn-sm btn-info' href='/t/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'> Details </a>";
-    html += "<button type='button' class='btn btn-sm btn-warning deleteteambutton' onclick='removeTeamSender(this)'> Remove Team </button>";
-    html += "</form></td></tr>";
+    html += "<td class='teamname'>" + team.team_name + "</td>";
+    html += "<td class='division'>" + team.division + "</td>";
+    html += "<td><a class='btn btn-sm btn-info' href='/t/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'>Details</a>";
+    html += "<button type='button' class='btn btn-sm btn-warning start-delete-team'>Remove Team</button></td></tr>";
+    html += "<tr style='display:none'><td></td><td></td><td>";
+    html += "<div class='col-md-3 col-lg-3 col-sm-3'><button class='btn btn-stats btn-sm btn-block cancel-delete-team'>Never Mind</button></div>";
+    html += "<div class='col-md-3 col-lg-3 col-sm-3>'";
+    html += "<form><input type='hidden' name='teamid_form' value='" + team.shortID + "'/>";
+    html += "<input type='hidden' name='tournament_idteam' value='" + $("#tournamentshortid").val() + "'/>";
+    html += "<button type='button' class='btn btn-sm btn-danger btn-block deleteteambutton'>Confirm</button></form></div></td></tr>";
+    // html += "<td> <form><input type='hidden' name='teamid_form' value='" + team.shortID + "'/>";
+    // html += "<input type='hidden' name='tournament_idteam' value='" + $("#tournament_id_change").val() + "'/>";
+    // html += "<a class='btn btn-sm btn-info' href='/t/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'> Details </a>";
+    // html += "<button type='button' class='btn btn-sm btn-warning deleteteambutton'> Remove Team </button>";
+    // html += "</form></td></tr>";
     $(html).hide().appendTo("#teamtablebody").fadeIn(300);
-    // $("#teamtablebody").append(html);
 }
 
 function addPointSchemaRow() {
