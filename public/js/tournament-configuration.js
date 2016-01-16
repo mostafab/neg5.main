@@ -501,66 +501,15 @@ function makePhaseAJAX(tournamentid, phaseName) {
         type : "POST",
         data : {tournamentid : tournamentid, phaseName : phaseName},
         success : function(databack, status, xhr) {
-            // console.log(databack);
-            // $("#new-phase").prop("disabled", false);
             $("#new-phase").text("New phase created!");
             var html = "<a class='btn btn-lg btn-warning' href='/t/" + databack.newID + "'>Go to Next Phase</a>";
             $(html).hide().appendTo("#success-phase-div").fadeIn(300);
-            // $("#success-phase-div").empty().append(html);
         },
         error : function(xhr, status, err) {
             $("#new-phase").text("Could not make new phase.");
         }
     });
 }
-
-// function deleteRegistrationAJAX(button) {
-//     $(button).prop("disabled", true);
-//     $.ajax({
-//         url : "/signup/delete",
-//         type : "POST",
-//         data : {regid : $(button).attr("data-reg")},
-//         success : function(databack, status, xhr) {
-//             var tdParent = $(button).parents("tr");
-//             var tdPrev = $(button).parents("tr").prev("tr");
-//             $(tdParent).remove();
-//             $(tdPrev).remove();
-//         },
-//         error : function(xhr, status, err) {
-//             console.log(err);
-//         },
-//         complete : function(xhr, status) {
-//             $(button).prop("disabled", false);
-//         }
-//     });
-// }
-
-// function submitTournamentRegistration() {
-//     $("#tregmessage").empty().
-//         append("<p style='margin-left:10px; font-size:18px;color:black;'>Submitting Information <i class='fa fa-spinner fa-spin' style='margin-left:5px'></i></p>");
-//     $("#submitsignup :input").each(function() {
-//         $(this).val(escapeHtml($(this).val()));
-//     });
-//     $.ajax({
-//         url : $("#submitsignup").attr("action"),
-//         type : "POST",
-//         data : $("#submitsignup").serialize(),
-//         success : function(databack, status, xhr) {
-//             if (databack.closed) {
-//                 showMessageInDiv("#tregmessage", "Registration for this tournament is closed!", "CLOSED");
-//             } else {
-//                 showMessageInDiv("#tregmessage", "All good to go!", null);
-//             }
-//         },
-//         error : function(xhr, status, err) {
-//             showMessageInDiv("#tregmessage", "Couldn't connect to the server!", err);
-//         },
-//         complete : function(xhr, status) {
-//             $("#submitregistration").prop("disabled", false);
-//         }
-//     });
-// }
-
 
 function sendTeamToServer() {
     $("#addteammsg").empty().
@@ -713,6 +662,7 @@ function changeDivisionsAJAX() {
         type : "POST",
         data : $("#divisions-form").serialize(),
         success : function(databack, status, xhr) {
+            setSelectOptions("#divisions-list", databack.divisions, "No Divisions");
             showMessageInDiv("#pointdivmsg", "Updated divisions successfully", null);
         },
         error : function(xhr, status, err) {
@@ -811,6 +761,17 @@ function removeCollabAJAX(button) {
                 removeCollabBox(button);
             }
         }
+    });
+}
+
+function setSelectOptions(select, options, zeroMessage) {
+    var select = $(select);
+    select.empty();
+    $.each(options, function(index, value) {
+        select.append($("<option/>", {
+            value: value,
+            text: value
+        }));
     });
 }
 
