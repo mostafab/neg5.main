@@ -441,6 +441,10 @@ $(document).ready(function() {
         findPlayers($(this));
     });
 
+    $(window).bind("beforeunload", function() {
+        return "You will lose this scoresheet info if you leave/reload.";
+    });
+
     $("body").on("click", ".btn-point", function() {
         if (game.team1 != null && game.team2 != null) {
             game.getCurrentPhase().addAnswerToTossup($(this).attr("data-team"), $(this).attr("data-player"), parseFloat($(this).attr("data-point-value")));
@@ -487,7 +491,6 @@ $(document).ready(function() {
     });
 
     $("body").on("click", "#dead-tossup", function() {
-        // console.log("dead tossup");
         if (game.team1 !== null && game.team2 !== null) {
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team1.id, game.getCurrentPhase().getBonusPointsForTeam(game.team1.id));
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
@@ -566,7 +569,7 @@ $(document).ready(function() {
             $(this).find("th").toggleClass("active-player");
             $(this).find("td").toggleClass("active-player");
             var playerid = $(this).attr("data-player");
-            $(".player-list > .cell[data-player='" + playerid + "']").toggleClass("active-player");
+            $(".player-list > .cell[data-player='" + playerid + "']").toggleClass("active-player").toggle();
         }
     });
 
@@ -596,7 +599,6 @@ $(document).ready(function() {
 });
 
 function findPlayers(side) {
-    // console.log(game);
     $.ajax({
         url : "/tournaments/getplayers",
         type : "GET",
@@ -604,11 +606,11 @@ function findPlayers(side) {
                 teamname : $(side).val()},
         success : function(databack, status, xhr) {
             changeTeamLabels(side);
-            var pointValues = Object.keys(databack.pointScheme);
-            // createPlayerLabels(side, databack.players, pointValues, databack.pointTypes);
+            var pointValues = Object.keys(databack.pointScheme).sort(function(first, second) {
+                return parseFloat(second) - parseFloat(first);
+            });
             if ($(side).attr("id") == "leftselect") {
                 game.setTeam(1, $("#leftselect").find(":selected").text(), $("#leftselect").val(), databack.players);
-                // console.log(game.team1.players);
                 createPlayerTable(side, game.team1.players, pointValues);
                 createPlayerLabels(side, game.team1.players, pointValues, databack.pointTypes);
             } else {
@@ -640,8 +642,9 @@ function addPlayer(playerName, teamid, teamName, side) {
         type : "POST",
         data : data,
         success : function(databack, status, xhr) {
-            // console.log(databack);
-            var pointScheme = Object.keys(databack.pointScheme);
+            var pointScheme = Object.keys(databack.pointScheme).sort(function(first, second) {
+                return parseFloat(second) - parseFloat(first);
+            });
             if (game.team1.id == teamid) {
                 appendPlayerLabel("#leftplayerlist", databack.player, pointScheme, databack.pointTypes);
                 game.addPlayer(databack.player.player_name, databack.player._id, game.team1.id);
@@ -697,7 +700,6 @@ function undoGameSubmission(tournament, game) {
             tournament_idgame : tournament
         },
         success : function(databack, status, xhr) {
-            // console.log(databack);
             $("#dead-tossup-div").slideDown(400);
             $("#submit-game-div").slideDown(400);
             $("#goto-game-div").slideUp(400);
@@ -737,7 +739,6 @@ function parseScoresheet(submittedGame) {
     for (var playerid in gameToAdd.team1.playerStats) {
         if (gameToAdd.team1.playerStats.hasOwnProperty(playerid)) {
             if (gameToAdd.tossupsheard !== 0) {
-                // console.log(findTossupsHeardForPlayer(playerid));
                 gameToAdd.team1.playerStats[playerid].gp = (findTossupsHeardForPlayer(playerid) / gameToAdd.tossupsheard).toFixed(2);
             } else {
                 gameToAdd.team1.playerStats[playerid].gp = 0;
@@ -757,7 +758,6 @@ function parseScoresheet(submittedGame) {
 }
 
 function incrementTossupsHeardForPlayers() {
-    // console.log("Incrementing tossups heard...");
     $(".player-table .active-player input").each(function(index, input) {
         var currentTUH = parseFloat($(input).val());
         $(input).val((currentTUH + 1) + "");
@@ -850,13 +850,6 @@ function createScoresheetRow(team1, team2, number) {
 }
 
 function destroyBonusLabels() {
-    // $("#left-gotten-bonus").empty();
-    // $("#right-gotten-bonus").empty();
-    // $(".bonus-part").each(function() {
-    //     if ($(this).hasClass("gotten-bonus")) {
-    //         $(this).removeClass("gotten-bonus");
-    //     }
-    // });
     $(".bonus-part").removeClass("gotten-bonus").addClass("not-gotten-bonus");
 }
 
@@ -891,9 +884,7 @@ function appendPlayerLabel(side, player, pointValues, pointTypes) {
     html += "</div>";
     if ($(side + " .cell").size() === 0) {
         $(side).prepend(html);
-        // console.log("No players before");
     } else {
-        // console.log("Players before");
         $(html).insertAfter($(side + " .cell").last());
     }
 }
@@ -906,7 +897,7 @@ function createPlayerLabels(side, players, pointValues, pointTypes) {
         if (i < MAX_ACTIVE_PLAYERS) {
             html += "<div class='row cell active-player' data-player='" + players[i].id + "'>";
         } else {
-            html += "<div class='row cell' data-player='" + players[i].id + "'>";
+            html += "<div class='row cell' data-player='" + players[i].id + "' style='display:none'>";
         }
         html += "<div class='col-md-5'>";
         html += "<div class='playerbox'><strong style='color:white'>" + players[i].name + "</strong></div></div>";
@@ -969,7 +960,6 @@ function createPlayerTable(side, players, pointScheme) {
 }
 
 function addPlayerTableRow(side, player, pointScheme) {
-    // console.log(player);
     var table = side == "left" ? "#leftplayertable" : "#rightplayertable";
     var html = "<tr class='player-body' data-player='" + player.id + "'>";
     html += "<th class='unactive-player'>" + player.name; + "</th>";
@@ -983,7 +973,6 @@ function addPlayerTableRow(side, player, pointScheme) {
 }
 
 function setNegButtonPlayer(button, player) {
-    // console.log(button);
     $(button).attr("data-player", player);
 }
 
@@ -1003,7 +992,6 @@ function unlockBothTeams() {
 }
 
 function showAnswersOnScoresheet(phase) {
-    // console.log(phase.getNumber());
     var row = phase.getNumber();
     var answers = phase.getTossup().getAnswers();
     for (var i = 0; i < answers.length; i++) {
@@ -1028,8 +1016,6 @@ function showPlayerPointTotals(gameObj) {
             $(tdTotal).text(pointTotal);
         }
     }
-    // console.log(playerTotals);
-
 }
 
 function revertPlayerAnswerOnScoresheet(answer, row) {
@@ -1056,7 +1042,6 @@ function setActiveRow(phase) {
 function addBonusRow(list) {
     var html = "<li class='list-group-item'>10<button class='btn btn-sm btn-danger fa fa-times remove-bonus'></button></li>";
     $(html).hide().appendTo(list).fadeIn(200);
-    // console.log($(list + " .list-group-item").size());
 }
 
 function editAddBonusAttributes(team1, team2) {

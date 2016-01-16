@@ -169,12 +169,11 @@ module.exports = function(app) {
             divNum++;
             currentDivision = "division" + divNum;
         }
-        // console.log(divisions);
-        tournamentController.updateDivisions(req.body["tournamentid"], divisions, function(err) {
+        tournamentController.updateDivisions(req.body["tournamentid"], divisions, function(err, newDivisions) {
             if (err) {
-                res.status(500).send({err : err, divisions : []});
+                res.status(500).end();
             } else {
-                res.status(200).send({err : null, divisions : divisions});
+                res.status(200).send({divisions : newDivisions});
             }
         });
     });

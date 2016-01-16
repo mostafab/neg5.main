@@ -46,16 +46,12 @@ block content
                                             )
                                         label(class="label label-primary col-xs-4") Division
                                         div(class="form-group col-xs-8")
-                                            if tournament.divisions.length === 0
-                                                select(class="form-control" name="divisionform")
-                                                    option(selected value="") No Divisions
-                                            else
-                                                select(class="form-control" name="divisionform")
-                                                    each division, i in tournament.divisions
-                                                        if team.division === tournament.divisions[i]
-                                                            option(selected value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
-                                                        else
-                                                            option(value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
+                                            select(class="form-control" name="divisionform")
+                                                each division, i in tournament.divisions
+                                                    if team.division === tournament.divisions[i]
+                                                        option(selected value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
+                                                    else
+                                                        option(value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
                                         div(class="col-md-6")
                                             button(type="button" class="btn btn-lg btn-success" id="editteambutton") Save Changes
                                             div(id="team-update-msgdiv")
