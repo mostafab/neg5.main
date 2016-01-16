@@ -231,7 +231,8 @@ module.exports = function(app) {
             // console.log(req.body);
             tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, function(err, teamid) {
                 if (err) {
-                    res.status(500).send({"err" : err, "teamid" : teamid});
+                    console.log(err);
+                    res.status(500).end();
                 } else {
                     res.status(200).send({"err" : null, "teamid" : teamid});
                 }
