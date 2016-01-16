@@ -390,8 +390,8 @@ function exportScoresheets(tournamentid, callback) {
             var teamMap = makeTeamMap(tournament.teams);
             var playerMap = makePlayerMap(tournament.players);
             for (var i = 0; i < tournament.games.length; i++) {
-                if (tournament.games[i].phases) {
-                    var currentGame = tournament.games[i];
+                var currentGame = tournament.games[i];
+                if (currentGame.phases && teamMap[currentGame.team1.team_id] && teamMap[currentGame.team2.team_id]) {
                     if (!rounds[currentGame.round]) {
                         rounds[currentGame.round] = [];
                     }
@@ -399,8 +399,10 @@ function exportScoresheets(tournamentid, callback) {
                         var phase = currentGame.phases[j];
                         phase.question_number = parseFloat(phase.question_number);
                         for (var k = 0; k < phase.tossup.answers.length; k++) {
-                            phase.tossup.answers[k].player = playerMap[phase.tossup.answers[k].player].name;
-                            phase.tossup.answers[k].team = teamMap[phase.tossup.answers[k].team].name;
+                            phase.tossup.answers[k].player =
+                                playerMap[phase.tossup.answers[k].player] ? playerMap[phase.tossup.answers[k].player].name : "";
+                            phase.tossup.answers[k].team =
+                                teamMap[phase.tossup.answers[k].team] ? teamMap[phase.tossup.answers[k].team].name : "";
                             phase.tossup.answers[k].value = parseFloat(phase.tossup.answers[k].value);
                         }
                         if (phase.bonus.forTeam) {
@@ -417,7 +419,7 @@ function exportScoresheets(tournamentid, callback) {
                     var team1Players = [];
                     for (var playerid in currentGame.team1.playerStats) {
                         if (currentGame.team1.playerStats.hasOwnProperty(playerid)) {
-                            var player = {name : playerMap[playerid].name};
+                            var player = {name : playerMap[playerid] ? playerMap[playerid].name : ""};
                             var pointTotals = {};
                             for (var pv in tournament.pointScheme) {
                                 if (tournament.pointScheme.hasOwnProperty(pv)) {
@@ -436,7 +438,7 @@ function exportScoresheets(tournamentid, callback) {
                     var team2Players = [];
                     for (var playerid in currentGame.team2.playerStats) {
                         if (currentGame.team2.playerStats.hasOwnProperty(playerid)) {
-                            var player = {name : playerMap[playerid].name};
+                            var player = {name : playerMap[playerid] ? playerMap[playerid].name : ""};
                             var pointTotals = {};
                             for (var pv in tournament.pointScheme) {
                                 if (tournament.pointScheme.hasOwnProperty(pv)) {
@@ -517,80 +519,81 @@ function convertToSQBS(tournamentid, callback) {
             // console.log(JSON.stringify(teamMap, null, 2));
             sqbsString += tournament.games.length + "\n"; // Number of games
             for (var i = 0; i < tournament.games.length; i++) {
-                // console.log(i);
                 var currentGame = tournament.games[i];
-                sqbsString += i + "\n"; // Identifier for current game
-                sqbsString += teamMap[currentGame.team1.team_id].team_index + "\n"; // Index of team 1
-                // console.log(teamMap[currentGame.team1.team_id].team_index);
-                // console.log(teamMap[currentGame.team2.team_id].team_index);
-                // console.log("------");
-                sqbsString += teamMap[currentGame.team2.team_id].team_index + "\n"; // Index of team 2
-                sqbsString += currentGame.team1.score + "\n"; // Team 1 Score
-                sqbsString += currentGame.team2.score + "\n"; // Team 2 Score
-                sqbsString += currentGame.tossupsheard + "\n"; // Game tossups heard
-                sqbsString += currentGame.round + "\n"; // Game round
-                sqbsString += "3\n"; // Team 1 bonus count
-                sqbsString += "200\n"; // Team 1 bonus points
-                sqbsString += "5\n"; // Team 2 bonus count
-                sqbsString += "110\n"; // Team 2 bonus points
-                sqbsString += "0\n"; // Overtime
-                sqbsString += "0\n"; // Team 1 correct overtime tossups
-                sqbsString += "0\n"; // Team 2 correct overtime tossups
-                sqbsString += "0\n"; // Forfeit == team1?
-                sqbsString += "0\n"; // Lightning round, not supported
-                sqbsString += "0\n"; // Lightning round, not supported
-                var current = 0;
-                for (var player in currentGame.team1.playerStats) {
-                    if (currentGame.team1.playerStats.hasOwnProperty(player)) {
-                        var index = -1;
-                        for (var j = 0; j < teamMap[currentGame.team1.team_id].players.length; j++) {
-                            if (player == teamMap[currentGame.team1.team_id].players[j].id) {
-                                // console.log("match");
-                                index = teamMap[currentGame.team1.team_id].players[j].player_index;
-                                // console.log(index);
-                                // console.log(teamMap[currentGame.team1.team_id].team_index + ", " + index);
-                                break;
+                if (teamMap[currentGame.team1.team_id] && teamMap[currentGame.team2.team_id]) {
+                    sqbsString += i + "\n"; // Identifier for current game
+                    sqbsString += teamMap[currentGame.team1.team_id].team_index + "\n"; // Index of team 1
+                    // console.log(teamMap[currentGame.team1.team_id].team_index);
+                    // console.log(teamMap[currentGame.team2.team_id].team_index);
+                    // console.log("------");
+                    sqbsString += teamMap[currentGame.team2.team_id].team_index + "\n"; // Index of team 2
+                    sqbsString += currentGame.team1.score + "\n"; // Team 1 Score
+                    sqbsString += currentGame.team2.score + "\n"; // Team 2 Score
+                    sqbsString += currentGame.tossupsheard + "\n"; // Game tossups heard
+                    sqbsString += currentGame.round + "\n"; // Game round
+                    sqbsString += "3\n"; // Team 1 bonus count
+                    sqbsString += "200\n"; // Team 1 bonus points
+                    sqbsString += "5\n"; // Team 2 bonus count
+                    sqbsString += "110\n"; // Team 2 bonus points
+                    sqbsString += "0\n"; // Overtime
+                    sqbsString += "0\n"; // Team 1 correct overtime tossups
+                    sqbsString += "0\n"; // Team 2 correct overtime tossups
+                    sqbsString += "0\n"; // Forfeit == team1?
+                    sqbsString += "0\n"; // Lightning round, not supported
+                    sqbsString += "0\n"; // Lightning round, not supported
+                    var current = 0;
+                    for (var player in currentGame.team1.playerStats) {
+                        if (currentGame.team1.playerStats.hasOwnProperty(player)) {
+                            var index = -1;
+                            for (var j = 0; j < teamMap[currentGame.team1.team_id].players.length; j++) {
+                                if (player == teamMap[currentGame.team1.team_id].players[j].id) {
+                                    // console.log("match");
+                                    index = teamMap[currentGame.team1.team_id].players[j].player_index;
+                                    // console.log(index);
+                                    // console.log(teamMap[currentGame.team1.team_id].team_index + ", " + index);
+                                    break;
+                                }
                             }
+                            // console.log(index);
+                            sqbsString += index + "\n"; // Player index
+                            sqbsString += "1\n"; // Fraction of game played
+                            sqbsString += "2\n"; // Powers
+                            sqbsString += "2\n"; // Tossups
+                            sqbsString += "1\n"; // Negs
+                            sqbsString += "0\n"; // Always 0
+                            sqbsString += "30\n"; // Tossup points
+                            current++;
                         }
-                        // console.log(index);
-                        sqbsString += index + "\n"; // Player index
-                        sqbsString += "1\n"; // Fraction of game played
-                        sqbsString += "2\n"; // Powers
-                        sqbsString += "2\n"; // Tossups
-                        sqbsString += "1\n"; // Negs
-                        sqbsString += "0\n"; // Always 0
-                        sqbsString += "30\n"; // Tossup points
+                    }
+                    while (current < 7) {
+                        sqbsString += "-1\n0\n0\n0\n0\n0\n0\n";
                         current++;
                     }
-                }
-                while (current < 7) {
-                    sqbsString += "-1\n0\n0\n0\n0\n0\n0\n";
-                    current++;
-                }
-                current = 0;
-                for (var player in currentGame.team2.playerStats) {
-                    if (currentGame.team2.playerStats.hasOwnProperty(player)) {
-                        var index = -1;
-                        for (var j = 0; j < teamMap[currentGame.team2.team_id].players.length; j++) {
-                            if (player == teamMap[currentGame.team2.team_id].players[j].id) {
-                                index = teamMap[currentGame.team2.team_id].players[j].player_index;
-                                // console.log(index);
-                                break;
+                    current = 0;
+                    for (var player in currentGame.team2.playerStats) {
+                        if (currentGame.team2.playerStats.hasOwnProperty(player)) {
+                            var index = -1;
+                            for (var j = 0; j < teamMap[currentGame.team2.team_id].players.length; j++) {
+                                if (player == teamMap[currentGame.team2.team_id].players[j].id) {
+                                    index = teamMap[currentGame.team2.team_id].players[j].player_index;
+                                    // console.log(index);
+                                    break;
+                                }
                             }
+                            sqbsString += index + "\n"; // Player index
+                            sqbsString += "1\n"; // Fraction of game played
+                            sqbsString += "2\n"; // Powers
+                            sqbsString += "2\n"; // Tossups
+                            sqbsString += "1\n"; // Negs
+                            sqbsString += "0\n"; // Always 0
+                            sqbsString += "30\n"; // Tossup points
+                            current++;
                         }
-                        sqbsString += index + "\n"; // Player index
-                        sqbsString += "1\n"; // Fraction of game played
-                        sqbsString += "2\n"; // Powers
-                        sqbsString += "2\n"; // Tossups
-                        sqbsString += "1\n"; // Negs
-                        sqbsString += "0\n"; // Always 0
-                        sqbsString += "30\n"; // Tossup points
+                    }
+                    while (current < 7) {
+                        sqbsString += "-1\n0\n0\n0\n0\n0\n0\n";
                         current++;
                     }
-                }
-                while (current < 7) {
-                    sqbsString += "-1\n0\n0\n0\n0\n0\n0\n";
-                    current++;
                 }
             }
             sqbsString = sqbsString.replace(/\n$/, "");
@@ -641,7 +644,10 @@ function convertToQuizbowlSchema(tournamentid, callback) {
             var playerMap = makePlayerMap(tournament.players);
             for (var i = 0; i < tournament.games.length; i++) {
                 tournamentObject.matches.push({$ref : "game_" + tournament.games[i].shortID});
-                qbjObj.objects.push(makeGameObject(tournament.games[i], teamMap, playerMap, Object.keys(tournament.pointScheme)));
+                var game = makeGameObject(tournament.games[i], teamMap, playerMap, Object.keys(tournament.pointScheme));
+                if (game) {
+                    qbjObj.objects.push(makeGameObject(tournament.games[i], teamMap, playerMap, Object.keys(tournament.pointScheme)));
+                }
             }
             // console.log(teamMap);
             qbjObj.objects.push(tournamentObject);
@@ -680,46 +686,52 @@ function makeGameObject(game, teamMap, playerMap, pointScheme) {
 
     var numPlayersTeam1 = Object.keys(game.team1.playerStats).length;
     var numPlayersTeam2 = Object.keys(game.team2.playerStats).length;
-
-    var firstTeamObj = {match_players : [], team : {$ref : "team_" + teamMap[game.team1.team_id].shortID}};
-    if (numPlayersTeam1 === 0) {
-        firstTeamObj.points = game.team1.score;
-    } else {
-        var bonusPoints = game.team1.score;
-        for (var player in game.team1.playerStats) {
-            if (game.team1.playerStats.hasOwnProperty(player)) {
-                var playerObject = makePlayerObject(playerMap, player, game.team1.playerStats, game, pointScheme);
-                bonusPoints -= playerObject.tossupTotal;
-                firstTeamObj.match_players.push(playerObject.playerObject);
+    if (teamMap[game.team1.team_id] && teamMap[game.team2.team_id]) {
+        var firstTeamObj = {match_players : [], team : {$ref : "team_" + teamMap[game.team1.team_id].shortID}};
+        if (numPlayersTeam1 === 0) {
+            firstTeamObj.points = game.team1.score;
+        } else {
+            var bonusPoints = game.team1.score;
+            for (var player in game.team1.playerStats) {
+                if (game.team1.playerStats.hasOwnProperty(player)) {
+                    var playerObject = makePlayerObject(playerMap, player, game.team1.playerStats, game, pointScheme);
+                    bonusPoints -= playerObject.tossupTotal;
+                    if (playerObject.playerObject) {
+                        firstTeamObj.match_players.push(playerObject.playerObject);
+                    }
+                }
+            }
+            firstTeamObj.bonus_points = bonusPoints;
+            firstTeamObj.bonus_bounceback_points = !game.team1.bouncebacks ? 0 : parseFloat(game.team1.bouncebacks);
+        }
+        var secondTeamObj = {match_players : [], team : {$ref : "team_" + teamMap[game.team2.team_id].shortID}};
+        if (numPlayersTeam2 === 0) {
+            secondTeamObj.points = game.team2.score;
+        } else {
+            var bonusPoints = game.team2.score;
+            for (var player in game.team2.playerStats) {
+                if (game.team2.playerStats.hasOwnProperty(player)) {
+                    var playerObject = makePlayerObject(playerMap, player, game.team2.playerStats, game, pointScheme);
+                    // console.log(playerObject.playerObject);
+                    bonusPoints -= playerObject.tossupTotal;
+                    if (playerObject.playerObject) {
+                        secondTeamObj.match_players.push(playerObject.playerObject);
+                    }
+                }
+            }
+            secondTeamObj.bonus_points = bonusPoints;
+            secondTeamObj.bonus_bounceback_points = !game.team2.bouncebacks ? 0 : parseFloat(game.team2.bouncebacks);
+        }
+        gameObject.match_teams.push(firstTeamObj);
+        gameObject.match_teams.push(secondTeamObj);
+        if (game.phases) {
+            for (var i = 0; i < game.phases.length; i++) {
+                gameObject.match_questions.push(makeMatchQuestionObject(game.phases[i], teamMap, playerMap));
             }
         }
-        firstTeamObj.bonus_points = bonusPoints;
-        firstTeamObj.bonus_bounceback_points = !game.team1.bouncebacks ? 0 : parseFloat(game.team1.bouncebacks);
+        return gameObject;
     }
-    var secondTeamObj = {match_players : [], team : {$ref : "team_" + teamMap[game.team2.team_id].shortID}};
-    if (numPlayersTeam2 === 0) {
-        secondTeamObj.points = game.team2.score;
-    } else {
-        var bonusPoints = game.team2.score;
-        for (var player in game.team2.playerStats) {
-            if (game.team2.playerStats.hasOwnProperty(player)) {
-                var playerObject = makePlayerObject(playerMap, player, game.team2.playerStats, game, pointScheme);
-                // console.log(playerObject.playerObject);
-                bonusPoints -= playerObject.tossupTotal;
-                secondTeamObj.match_players.push(playerObject.playerObject);
-            }
-        }
-        secondTeamObj.bonus_points = bonusPoints;
-        secondTeamObj.bonus_bounceback_points = !game.team2.bouncebacks ? 0 : parseFloat(game.team2.bouncebacks);
-    }
-    gameObject.match_teams.push(firstTeamObj);
-    gameObject.match_teams.push(secondTeamObj);
-    if (game.phases) {
-        for (var i = 0; i < game.phases.length; i++) {
-            gameObject.match_questions.push(makeMatchQuestionObject(game.phases[i], teamMap, playerMap));
-        }
-    }
-    return gameObject;
+    return null;
 }
 
 /**
@@ -741,18 +753,20 @@ function makeMatchQuestionObject(phase, teamMap, playerMap) {
         }
     }
     var matchQuestion = {
-                    number : parseFloat(phase.number),
+                    number : parseFloat(phase.question_number),
                     bonus_points : bonusPoints,
                     bounceback_bonus_points : bouncebackPoints,
                     buzzes : []
                 };
     for (var i = 0; i < phase.tossup.answers.length; i++) {
         var answer = phase.tossup.answers[i];
-        var buzzObject = {};
-        buzzObject.team = {$ref : "team_" + teamMap[answer.team].shortID};
-        buzzObject.player = {$ref : "player_" + playerMap[answer.player].shortID};
-        buzzObject.result = {value : parseFloat(answer.value)};
-        matchQuestion.buzzes.push(buzzObject);
+        if (teamMap[answer.team] && playerMap[answer.player]) {
+            var buzzObject = {};
+            buzzObject.team = {$ref : "team_" + teamMap[answer.team].shortID};
+            buzzObject.player = {$ref : "player_" + playerMap[answer.player].shortID};
+            buzzObject.result = {value : parseFloat(answer.value)};
+            matchQuestion.buzzes.push(buzzObject);
+        }
     }
     return matchQuestion;
 }
@@ -766,11 +780,14 @@ function makeMatchQuestionObject(phase, teamMap, playerMap) {
 * @return a player object and the total sum of points this player scored in a game
 */
 function makePlayerObject(playerMap, player, playerStats, game, pointScheme) {
-    var playerObject = {
-        player : {name : playerMap[player].name},
-        tossups_heard : Math.floor(parseFloat(playerStats[player].gp) * game.tossupsheard),
-        answer_counts : []
-    };
+    var playerObject = null;
+    if (playerMap[player]) {
+        playerObject = {
+            player : {name : playerMap[player].name},
+            tossups_heard : Math.floor(parseFloat(playerStats[player].gp) * game.tossupsheard),
+            answer_counts : []
+        };
+    }
     var tossupTotal = 0;
     for (var j = 0; j < pointScheme.length; j++) {
         var answerObject = {};
@@ -786,7 +803,9 @@ function makePlayerObject(playerMap, player, playerStats, game, pointScheme) {
             answerObject.number = 0;
         }
         tossupTotal += (answerObject.value * answerObject.number);
-        playerObject.answer_counts.push(answerObject);
+        if (playerObject) {
+            playerObject.answer_counts.push(answerObject);
+        }
     }
     return {playerObject : playerObject, tossupTotal : tossupTotal};
 }
