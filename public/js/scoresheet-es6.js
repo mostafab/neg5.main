@@ -873,7 +873,7 @@ function changeTeamLabels(side) {
 }
 
 function appendPlayerLabel(side, player, pointValues, pointTypes) {
-    var html = "<div class='row cell' data-player='" + player._id + "'>";
+    var html = "<div class='row cell' data-player='" + player._id + "' style='display:none'>";
     html += "<div class='col-md-5'>";
     html += "<div class='playerbox'><strong style='color:white'>" + player.player_name + "</strong></div></div>";
     html += "<div class='col-md-7'>";

@@ -653,6 +653,17 @@ $(document).ready(function () {
             }
         }
     });
+
+    jQuery.fn.swap = function (b) {
+        // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
+        b = jQuery(b)[0];
+        var a = this[0];
+        var t = a.parentNode.insertBefore(document.createTextNode(''), a);
+        b.parentNode.insertBefore(a, b);
+        t.parentNode.insertBefore(b, t);
+        t.parentNode.removeChild(t);
+        return this;
+    };
 });
 
 function findPlayers(side) {
@@ -919,7 +930,7 @@ function changeTeamLabels(side) {
 }
 
 function appendPlayerLabel(side, player, pointValues, pointTypes) {
-    var html = "<div class='row cell' data-player='" + player._id + "'>";
+    var html = "<div class='row cell' data-player='" + player._id + "' style='display:none'>";
     html += "<div class='col-md-5'>";
     html += "<div class='playerbox'><strong style='color:white'>" + player.player_name + "</strong></div></div>";
     html += "<div class='col-md-7'>";
