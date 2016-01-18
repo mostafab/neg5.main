@@ -24,6 +24,7 @@ module.exports = function() {
 
     app.set("views", "./app/views");
     app.set("view engine", "jade");
+    app.locals.pretty = true;
 
     app.use(express.static("./public"));
 

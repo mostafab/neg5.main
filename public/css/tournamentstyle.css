@@ -18,6 +18,10 @@
     background-color:rgb(0, 136, 136);
 }
 
+.no-border-radius {
+    border-radius: 2px;
+}
+
 .smallbox {
     background: rgba(0, 140, 130, .7);
     padding: 40px;

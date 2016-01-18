@@ -4,6 +4,21 @@ var statsController = require("../../app/controllers/stats-controller");
 
 module.exports = function(app) {
 
+    // app.get("/search", function(req, res) {
+    //     res.render("search", {tournamentd : req.session.director});
+    // });
+    //
+    // app.get("/search/submit", function(req, res) {
+    //     statsController.findTournamentsByNameAndSet(req.query.t_name, req.query.t_qset, function(err, tournaments) {
+    //         if (err) {
+    //             res.status(500).end();
+    //         } else {
+    //             // res.send(tournaments);
+    //             res.render("tournament-search-result", {tournaments : tournaments});
+    //         }
+    //     });
+    // });
+
     app.get("/t/:tid/stats", function(req, res, next) {
         var tournament = req.params.tid;
         res.redirect("/t/" + tournament + "/stats/team");
