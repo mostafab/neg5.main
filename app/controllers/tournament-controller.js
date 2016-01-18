@@ -25,9 +25,9 @@ function addTournament(director, name, date, location, description, questionset,
     tourney.save(function(err) {
         if (err) {
             // console.log("Unable to save tournament");
-            callback(err);
+            callback(err, null);
         } else {
-            callback(null);
+            callback(null, tourney.shortID);
         }
     });
 }
@@ -822,7 +822,8 @@ function removeCollaborator(tournamentid, collaboratorid, callback) {
 */
 function findCollaborators(tournamentid, callback) {
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
-        if (err || result == null) {
+        if (err) {
+            console.log(err);
             callback(err, []);
         } else {
             callback(null, result.collaborators);
@@ -838,9 +839,16 @@ function findCollaborators(tournamentid, callback) {
 */
 function addScoresheetAsGame(tournamentid, game, scoresheet, callback) {
     var newGame = new Game();
-    newGame = game;
-    newGame.shortID = shortid.generate();
+    newGame.team1 = game.team1;
+    newGame.team2 = game.team2;
+    newGame.round = game.round;
+    newGame.tossupsheard = game.tossupsheard;
+    newGame.room = game.room;
+    newGame.moderator = game.moderator;
+    newGame.packet = game.packet;
+    newGame.notes = game.notes;
     newGame.phases = !scoresheet.phases ? [] : scoresheet.phases;
+    newGame.shortID = shortid.generate();
     for (var i = 0; i < newGame.phases.length; i++) {
         if (!newGame.phases[i].tossup) {
             newGame.phases[i].tossup = {answers : []};
@@ -851,6 +859,7 @@ function addScoresheetAsGame(tournamentid, game, scoresheet, callback) {
     }
     Tournament.update({_id : tournamentid}, {$push : {games : newGame}}, function(err) {
         if (err) {
+            console.log(err);
             callback(err, "");
         } else {
             callback(null, newGame.shortID);
@@ -886,6 +895,9 @@ function cloneTournament(tournamentid, phaseName, callback) {
             newTournament.pointsTypes = tournament.pointsTypes;
 
             newTournament.save(function(err) {
+                if (err) {
+                    console.log(err);
+                }
                 callback(err, newTournament.shortID);
             });
         }
@@ -909,6 +921,7 @@ function mergeTournaments(firstTournamentID, secondTournamentID, name, callback)
     mergedTourney.games = [];
     Tournament.findOne({_id : firstTournamentID}, function(err, first) {
         if (err) {
+            console.log(err);
             callback(err, null);
         } else if (!first) {
             callback(null, null);
@@ -929,6 +942,7 @@ function mergeTournaments(firstTournamentID, secondTournamentID, name, callback)
 
             Tournament.findOne({_id : secondTournamentID}, function(err, second) {
                 if (err) {
+                    console.log(err);
                     callback(err, null);
                 } else if (!second) {
                     callback(null, null);
@@ -953,6 +967,9 @@ function mergeTournaments(firstTournamentID, secondTournamentID, name, callback)
                         }
                     }
                     mergedTourney.save(function(err) {
+                        if (err) {
+                            console.log(err);
+                        }
                         callback(err, mergedTourney);
                     });
                 }

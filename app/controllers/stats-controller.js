@@ -810,6 +810,35 @@ function makePlayerObject(playerMap, player, playerStats, game, pointScheme) {
     return {playerObject : playerObject, tossupTotal : tossupTotal};
 }
 
+function findTournamentsByNameAndSet(name, set, callback) {
+    try {
+        var query;
+        var trex = new RegExp(".*" + name.trim() + ".*", "i");
+        var qrex = new RegExp(".*" + set.trim() + ".*", "i");
+        if (name.trim().length === 0) {
+            query = {questionSet : qrex};
+        } else if (set.trim().length === 0) {
+            query = {tournament_name : trex};
+        } else {
+            query = {$and : [{tournament_name : trex}, {questionSet : qrex}]};
+        }
+        var fields = {tournament_name : 1, questionSet : 1, shortID : 1};
+        Tournament.find(query, fields, function(err, tournaments) {
+            if (err) {
+                console.log(err);
+                callback(err, []);
+            } else {
+                tournaments.sort(function(first, second) {
+                    return first.tournament_name.localeCompare(second.tournament_name);
+                });
+                callback(null, tournaments);
+            }
+        });
+    } catch (err) {
+        callback(err, []);
+    }
+}
+
 exports.getTeamsInfo = getTeamsInfo;
 exports.getPlayersInfo = getPlayersInfo;
 exports.getFullTeamsGameInformation = getFullTeamsGameInformation;
@@ -821,3 +850,4 @@ exports.getPPBForRounds = getPPBForRounds;
 exports.convertToQuizbowlSchema = convertToQuizbowlSchema;
 exports.convertToSQBS = convertToSQBS;
 exports.exportScoresheets = exportScoresheets;
+exports.findTournamentsByNameAndSet = findTournamentsByNameAndSet;

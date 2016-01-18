@@ -29,7 +29,7 @@ var TournamentSchema = new Schema({
     games : [gameSchema],
     pointScheme : {type : {}, default : {"15" : 0, "10" : 0, "-5" : 0}},
     pointsTypes : {type : {}, default : {"15" : "P", "10" : "B", "-5" : "N"}},
-    shortID : {type : String, index : true, unique : true}
+    shortID : {type : String, index : true, unique : true},
 });
 
 function setDate(date) {

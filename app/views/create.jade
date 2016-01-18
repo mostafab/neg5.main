@@ -14,64 +14,62 @@ block extrastylesheets
 block content
 
     +navbar
-
-    div(class="vertical-center")
-        div(class="container")
-            div(style="margin:20px; margin-bottom:50px")
-
-            div(class="row")
+    div(class="content-wrapper box" style='padding:150px;padding-top:20px;')
+        div(class="row")
+            div(class="col-md-12")
                 div(class="col-md-12")
+                    div(style="margin:20px; margin-bottom:50px")
                     h2(class="title" style="width:50%") Create a Tournament. You only need to provide a name.
-                    div(class="panel-body")
-                        div(class="row")
-                            div(class="col-md-12 smallbox" style='padding:20px')
-                                form(name="createTournament" method="post" action="/create/submit")
-                                    div(class="form-group")
-                                        label(class="info-label") Name*
-                                        input(
-                                            type="text",
-                                            name="t_name",
-                                            placeholder="Tournament Name",
-                                            class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                            style="background-color:#363B40",
-                                            required
-                                        )
-                                    div(class="form-group")
-                                        label(class="info-label") Question Set
-                                        input(
-                                            type="text",
-                                            name="t_qset",
-                                            placeholder="Question Set",
-                                            class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                            style="background-color:#363B40"
-                                        )
-                                    div(class="form-group")
-                                        label(class="info-label") Location
-                                        input(
-                                            type="text",
-                                            name="t_location",
-                                            placeholder="Institution",
-                                            class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                            style="background-color:#363B40"
-                                        )
-                                    div(class="form-group")
-                                        label(class="info-label") Host Date
-                                        input(
-                                            type="date",
-                                            name="t_date",
-                                            placeholder="Tournament Date",
-                                            id="date-box",
-                                            class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                            style="background-color:#363B40"
-                                        )
-                                    div(class="form-group")
-                                        label(class="info-label") Additional Information
-                                        textarea(
-                                            name="t_description",
-                                            placeholder="Enter any other important information about the tournament here.",
-                                            class="form-control input-lg no-border-radius tournament-info-field",
-                                            style="min-height:300px;background-color:#363B40"
-                                        )
+                    br
+                    br
+                    div(class="panel panel-default")
+                        div(class="panel-heading collapsable" style='font-size:20px') Information
+                        div(class="panel-body")
+                            div(class="row")
+                                div(class='col-md-8')
+                                   form(name="createTournament" method="post" action="/create/submit")
+                                        label(class="label label-info col-xs-4") Name
+                                        div(class="form-group col-xs-8")
+                                           input(
+                                               type="text",
+                                               name="t_name",
+                                               placeholder="Tournament Name",
+                                               class="form-control input-lg center-text no-border-radius",
+                                               required
+                                           )
+                                        label(class="label label-primary col-xs-4") Question Set
+                                        div(class="form-group col-xs-8")
+                                           input(
+                                               type="text",
+                                               name="t_qset",
+                                               placeholder="Question Set",
+                                               class="form-control input-lg center-text no-border-radius"
+                                           )
+                                        label(class="label label-primary col-xs-4") Location
+                                        div(class="form-group col-xs-8")
+                                           input(
+                                               type="text",
+                                               name="t_location",
+                                               placeholder="Location",
+                                               class="form-control input-lg center-text no-border-radius"
+                                           )
+                                        label(class="label label-primary col-xs-4") Date
+                                        div(class="form-group col-xs-8")
+                                           input(
+                                               type="date",
+                                               name="t_date",
+                                               placeholder="Tournament Date",
+                                               id="date-box",
+                                               class="form-control input-lg center-text no-border-radius"
+                                           )
+                                        label(class='label label-primary col-xs-4') Description
+                                        div(class="form-group col-xs-8")
+                                           textarea(
+                                               name="t_description",
+                                               placeholder="Enter any other important information about the tournament here.",
+                                               class="form-control input-lg no-border-radius",
+                                               style="min-height:300px;"
+                                           )
 
-                                    button(type="submit" class="btn btn-lg btn-success no-border-radius") Confirm
-                                    button(type="button" class="btn btn-lg btn-info no-border-radius") Clear Fields
+                                         button(type="submit" class="btn btn-lg btn-success no-border-radius") Confirm
+                                         button(type="reset" class="btn btn-lg btn-info no-border-radius") Clear Fields
