@@ -13,6 +13,10 @@
     box-shadow: 0 .05px .05px rgba(0, 0, 0, 0.5);
 }
 
+.cell:hover {
+    cursor: pointer;
+}
+
 .gotten-bonus {
     background-color: #5CB85C;
     color: white;
@@ -122,10 +126,12 @@ thead th {
 }
 
 .input-xs {
-      padding: 2px 2px;
-      font-size: 12px;
-      line-height: 1.5;
-      border-radius: 2px;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  .center-text {
+      text-align: center;
   }
 
 .player-table tr:hover {

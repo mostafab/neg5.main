@@ -33,8 +33,8 @@ block content
             div(class="col-md-12")
                 div(class="col-md-12")
                     div(style="margin:20px; margin-bottom:50px")
-                    h2(class="title" style="width:50%") #{tournament.tournament_name}
-
+                    h2(class="title" style='text-align:center;font-size:1.6em') #{tournament.tournament_name}
+                    div(style="margin:20px; margin-bottom:10px")
                     div(class="panel-body")
                         div(class="row" style="")
                             ul(class="nav nav-pills no-border-radius")
@@ -48,14 +48,14 @@ block content
                                     a(href="#teams" data-toggle="tab") Teams
                                 li
                                     a(href="#stats" data-toggle="tab") Statistics
-                                li
-                                    a(href="#phase" data-toggle="tab") New Phase
                                 if tournamentd._id == tournament.directorid
+                                    li
+                                        a(href="#phase" data-toggle="tab") New Phase
                                     li
                                         a(href="#delete" class="btn-danger" data-toggle="tab") Delete
                     br
-                    br
-
+        div(class="row")
+                div(class='col-sm-12 col-md-12')
                     div(class="tab-content")
 
                         div(class="tab-pane fade active in" id="overview")
@@ -207,11 +207,9 @@ block content
                                             div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="pointdivmsg")
 
                         div(class="tab-pane fade" id="games")
-                            div(class="panel panel-default")
-                                div(class="panel-heading collapsable") Scoresheet
-                                div(class="panel-body")
-                                    a(class="btn btn-lg btn-stats" target="_blank" href="/t/" + tournament.shortID + "/scoresheet") Go to Scoresheet
-
+                            div(class="row")
+                                div(class="col-md-3 col-sm-3")
+                                    a(class="btn btn-lg btn-info btn-block" target="_blank" href="/t/" + tournament.shortID + "/scoresheet") Scoresheet
                             div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Add a Game
                                     div(class="panel-body" id="addgamepanel")
@@ -269,15 +267,13 @@ block content
                                                         textarea(class="form-control leftscorebox" name="notes" placeholder="Notes")
 
                                                 button(type="button" class="btn btn-lg btn-success" id="entergamebutton") Add Game Information
-                                                    span(style="padding-left:10px")
-                                                        i(class="glyphicon glyphicon-plus")
 
                                                 div(id="add-game-message")
                                                     //p(style='margin:10px; font-size:16px; color:#009933') Hello
 
                             div(class="panel panel-default")
                                     div(class="panel-heading collapsable") List of Games
-                                    div(class="panel-body")
+                                    div(class="panel-body" style='display:none')
 
                                         div(class="table-responsive" id="gamediv")
                                             div(class="row" style="width:95%")
@@ -396,7 +392,7 @@ block content
                                                         i(class="glyphicon glyphicon-search")
 
                                             div(class="panel panel-default")
-                                                table(class="table table-striped table-bordered table-hover table-condensed")
+                                                table(class="table table-striped table-hover table-condensed")
                                                     thead
                                                         tr
                                                             th(class="table-head") Team
@@ -408,11 +404,22 @@ block content
                                                                 td(class="teamname") #{tournament.teams[i].team_name}
                                                                 td(class="division") #{tournament.teams[i].division}
                                                                 td
-                                                                    form()
-                                                                        input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
-                                                                        input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
-                                                                        a(class="btn btn-sm btn-info" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
-                                                                        button(type="button" class="btn btn-sm btn-warning deleteteambutton") Remove Team
+                                                                    a(class="btn btn-sm btn-info" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
+                                                                    button(type="button" class="btn btn-sm btn-warning start-delete-team")
+                                                                        i(class="glyphicon glyphicon-remove")
+                                                            tr(style='display:none')
+                                                                td
+                                                                td
+                                                                td
+                                                                    div(class="col-md-3 col-lg-3 col-sm-3")
+                                                                        button(class="btn btn-stats btn-sm btn-block cancel-delete-team") Never Mind
+                                                                    div(class="col-md-3 col-lg-3 col-sm-3")
+                                                                        form()
+                                                                            input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
+                                                                            input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
+                                                                            button(type="button" class="btn btn-sm btn-danger btn-block deleteteambutton") Confirm
+
+
 
                         div(class="tab-pane fade" id="stats")
                             div(class="panel panel-default")
@@ -473,24 +480,23 @@ block content
                                                         li
                                                             button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/players") Player Stats
 
-                        div(class="tab-pane fade" id="phase")
-
-                            div(class="panel panel-default")
-                                div(class="panel-heading collapsable") New Tournament Phase
-                                div(class="panel-body")
-                                    div(class="row")
-                                        div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
-                                            div(class="alert alert-success")
-                                                | Create a new phase for your tournament if you need new divisions for playoffs.
-                                                | This action will create a new tournament with the same teams and players. You'll be
-                                                | able to merge tournaments together if you need compiled stats by going to the "My Tournaments" page.
-                                        div(class="col-md-3 col-sm-3 col=lg-3")
-                                            div(class="form-group")
-                                                input(type='text' placeholder='Enter New Phase Name Here' class="form-control" id="new-phase-name")
-                                        div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="success-phase-div")
-                                            button(class="btn btn-lg btn-success" data-tournament='#{tournament._id}' id="new-phase") New Phase
-
                         if (tournament.directorid == tournamentd._id)
+                            div(class="tab-pane fade" id="phase")
+
+                                div(class="panel panel-default")
+                                    div(class="panel-heading collapsable") New Tournament Phase
+                                    div(class="panel-body")
+                                        div(class="row")
+                                            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
+                                                div(class="alert alert-success")
+                                                    | Create a new phase for your tournament if you need new divisions for playoffs.
+                                                    | This action will create a new tournament with the same teams and players. You'll be
+                                                    | able to merge tournaments together if you need compiled stats by going to the "My Tournaments" page.
+                                            div(class="col-md-3 col-sm-3 col=lg-3")
+                                                div(class="form-group")
+                                                    input(type='text' placeholder='Enter New Phase Name Here' class="form-control" id="new-phase-name")
+                                            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="success-phase-div")
+                                                button(class="btn btn-lg btn-success" data-tournament='#{tournament._id}' id="new-phase") New Phase
                             div(class="tab-pane fade" id="delete")
 
                                 div(class="panel panel-default")

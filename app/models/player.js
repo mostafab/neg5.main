@@ -1,5 +1,3 @@
-'use strict';
-
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var TeamSchema = require("./team").schema;
@@ -9,12 +7,10 @@ var TeamSchema = require("./team").schema;
 * Each player has a name, a teamID to link to the team and the team's name
 */
 var playerSchema = new Schema({
-    player_name : String,
-    teamID : String,
+    player_name : {type : String, required : true},
+    teamID : {type : String, required : true},
     team_name : String,
-    // gamesPlayed : {type : Number, default : 0},
-    // pointValues : {type : {}},
-    shortID : String
+    shortID : {type : String, required : true}
 });
 
 /**

@@ -7,12 +7,13 @@ block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
     link(rel="stylesheet" href="/css/tournamentstyle.css")
     link(rel="stylesheet" href="/css/scoresheet.css")
+    link(rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css")
 
 block content
 
     +navbar
 
-    div(class="content-wrapper box"  style='padding:150px;padding-top:20px')
+    div(class="content-wrapper box"  style='padding:75px;padding-top:20px')
         input(type="hidden" value="#{tid}" id="tournamentid")
         div(class="row")
             div(class="col-md-6 col-lg-6 col-sm-6")
@@ -115,7 +116,7 @@ block content
                 div(class="row")
                     div(class="col-md-12 col-sm-12 col-lg-12")
                         div(class="panel panel-default")
-                            table(class="table table-hover table-bordered table-condensed" id="game-metadata")
+                            table(class="table table-bordered table-condensed" id="game-metadata")
                                 thead
                                     th(class="table-head" style='text-align:center') Round
                                     th(class="table-head" style='text-align:center') Room
@@ -138,7 +139,7 @@ block content
                 div(class="row")
                     div(class="col-md-12")
                         div(class="panel panel-default")
-                            table(class="table table-hover table-condensed"  id="scoresheet")
+                            table(class="table table-condensed"  id="scoresheet")
 
                 div(class="row col-md-12" id="dead-tossup-div")
 

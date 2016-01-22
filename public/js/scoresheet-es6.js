@@ -3,7 +3,7 @@
 var MAX_TOSSUPS = 20;
 var MAX_ACTIVE_PLAYERS = 4;
 var BONUS_POINT_VALUE = 10;
-var CURRENT_BONUS = 1;
+var POINT_SCHEME = [];
 
 var entityMap = {
    "&": "&amp;",
@@ -441,9 +441,9 @@ $(document).ready(function() {
         findPlayers($(this));
     });
 
-    $(window).bind("beforeunload", function() {
-        return "You will lose this scoresheet info if you leave/reload.";
-    });
+    // $(window).bind("beforeunload", function() {
+    //     return "You will lose this scoresheet info if you leave/reload.";
+    // });
 
     $("body").on("click", ".btn-point", function() {
         if (game.team1 != null && game.team2 != null) {
@@ -573,11 +573,28 @@ $(document).ready(function() {
         }
     });
 
-    $("body").on("click", "#scoresheet tbody td:not(.tossup-number)", function() {
-        var row = $(this).attr("data-row");
-        if (game.getPhases()[row - 1]) {
-            console.log(game.getPhases()[row - 1]);
-        }
+    $("body").on("click", "#scoresheet tbody td:not(.tossup-number, .total-td, .bonus-td, .editing)", function(e) {
+        e.stopPropagation();
+        replaceTossupTD($(this), game);
+    });
+
+    $("body").on("click", "#scoresheet tbody .bonus-td:not(.editing)", function(e) {
+        e.stopPropagation();
+        replaceBonusTD($(this), game);
+    });
+
+    $("body").on("click", ".confirm-change", function() {
+        console.log($(this).prev().prev().val());
+        var td = $(this).parents("td");
+        console.log(td.attr("data-player"));
+        console.log(td.attr("data-row"));
+    });
+
+    $("body").on("click", ".cancel-change", function() {
+        console.log("canceling...");
+        var oldValue = $(this).attr("data-point");
+        var parentTD = $(this).parents("td");
+        parentTD.html(oldValue).removeClass("editing");
     });
 
     $("#undo-game").click(function() {
@@ -609,6 +626,8 @@ function findPlayers(side) {
             var pointValues = Object.keys(databack.pointScheme).sort(function(first, second) {
                 return parseFloat(second) - parseFloat(first);
             });
+            POINT_SCHEME = pointValues;
+            console.log(POINT_SCHEME);
             if ($(side).attr("id") == "leftselect") {
                 game.setTeam(1, $("#leftselect").find(":selected").text(), $("#leftselect").val(), databack.players);
                 createPlayerTable(side, game.team1.players, pointValues);
@@ -706,6 +725,46 @@ function undoGameSubmission(tournament, game) {
             $("#undo-game").prop("disabled", false);
         }
     });
+}
+
+function replaceTossupTD(td, game) {
+    var row = td.attr("data-row");
+    var player = td.attr("data-player");
+    if (game.getPhases()[row - 1]) {
+        console.log(game.getPhases()[row - 1]);
+        var currentVal = td.text();
+        var html = "<select class='input-xs center-text'><option value='-'>-</option>";
+        for (var i = 0; i < POINT_SCHEME.length; i++) {
+            var option = "";
+            if (currentVal == POINT_SCHEME[i]) {
+                option = "<option selected value='" + POINT_SCHEME[i] + "'>" + POINT_SCHEME[i] + "</option>";
+            } else {
+                option = "<option value='" + POINT_SCHEME[i] + "'>" + POINT_SCHEME[i] + "</option>";
+            }
+            html += option;
+        }
+        html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change'></button>";
+        td.addClass("editing").html(html);
+    }
+}
+
+function replaceBonusTD(td, game) {
+    var row = td.attr("data-row");
+    var team = td.attr("data-team");
+    if (game.getPhases()[row - 1] && game.getPhases()[row - 1].bonus.bonusParts.length !== 0) {
+        var currentVal = td.text();
+        var html = "<select multiple size='3' class='input-xs center-text form-control'>";
+        var bonusParts = game.getPhases()[row - 1].bonus.bonusParts;
+        for (var i = 0; i < bonusParts.length; i++) {
+            if (bonusParts[i].gettingTeam === team) {
+                html += "<option selected value='" +  bonusParts[i].value + "'>" + bonusParts[i].value + "</option>";
+            } else {
+                html += "<option value='" +  bonusParts[i].value + "'>" + bonusParts[i].value + "</option>";
+            }
+        }
+        html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change'></button>";
+        td.addClass("editing").html(html);
+    }
 }
 
 function setGameAnchorTag(gameid) {
@@ -862,7 +921,7 @@ function changeTeamLabels(side) {
 }
 
 function appendPlayerLabel(side, player, pointValues, pointTypes) {
-    var html = "<div class='row cell' data-player='" + player._id + "'>";
+    var html = "<div class='row cell' data-player='" + player._id + "' style='display:none'>";
     html += "<div class='col-md-5'>";
     html += "<div class='playerbox'><strong style='color:white'>" + player.player_name + "</strong></div></div>";
     html += "<div class='col-md-7'>";
