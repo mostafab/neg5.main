@@ -6,6 +6,7 @@
     border-width: 10px;
     padding: 15px;
     width: 100%;
+<<<<<<< HEAD
     border-radius: 3px;
 }
 
@@ -17,6 +18,8 @@
     border-width: 10px;
     padding: 15px;
     width: 100%;
+=======
+>>>>>>> 9e4ec779782811a6231247d9edcc6edbc217ddeb
     border-radius: 3px;
 }
 
@@ -187,9 +190,14 @@ td {
 }
 
 .panel-default:hover > .panel-heading {
+<<<<<<< HEAD
   /*font-weight: bold;*/
   background-color: rgb(0, 134, 134);
   /*font-size: 24px;*/
+=======
+  font-weight: bold;
+  font-size: 24px;
+>>>>>>> 9e4ec779782811a6231247d9edcc6edbc217ddeb
 }
 
 .panel-default > .panel-body {

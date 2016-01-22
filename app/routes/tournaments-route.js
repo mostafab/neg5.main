@@ -15,9 +15,7 @@ module.exports = function(app) {
         } else {
             tournamentController.findTournamentsByDirector(req.session.director._id, function(err, result) {
                 if (err || result == null) {
-                    // DO STUFF
-                    // console.log("Result is null");
-                    res.render("alltournaments", {tournaments : [], tournamentd : req.session.director});
+                    res.status(500).render("alltournaments", {tournaments : [], tournamentd : req.session.director});
                 } else {
                     res.render("alltournaments", {tournaments : result, tournamentd : req.session.director});
                 }
@@ -26,7 +24,6 @@ module.exports = function(app) {
     });
 
     app.post("/tournaments/edit", function(req, res, next) {
-        // console.log(req.body);
         tournamentController.updateTournamentInformation(req.body.tournamentid, req.body, function(err) {
             if (err) {
                 res.status(500).send({err : err});
@@ -231,7 +228,8 @@ module.exports = function(app) {
             // console.log(req.body);
             tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, function(err, teamid) {
                 if (err) {
-                    res.status(500).send({"err" : err, "teamid" : teamid});
+                    console.log(err);
+                    res.status(500).end();
                 } else {
                     res.status(200).send({"err" : null, "teamid" : teamid});
                 }
@@ -389,12 +387,11 @@ module.exports = function(app) {
                 var description = req.body.t_description;
                 var date = req.body.t_date;
                 var questionset = req.body.t_qset;
-                // console.log("Session email: " + req.session.director.email);
-                tournamentController.addTournament(req.session.director, name, date, location, description, questionset, function(err) {
+                tournamentController.addTournament(req.session.director, name, date, location, description, questionset, function(err, ref) {
                     if (err) {
                         res.redirect("/create");
                     } else {
-                        res.redirect("/tournaments");
+                        res.redirect("/t/" + ref);
                     }
                 });
             }
