@@ -17,7 +17,7 @@ var playerSchema = require("./player").schema;
 var TournamentSchema = new Schema({
     createdAt : {type : Date, default : Date.now()},
     directorid : String, // Foreign key,
-    tournament_name : String,
+    tournament_name : {type : String, required : true},
     collaborators : [{}], // List of emails of collaborators
     location : String,
     date : {type : Date, set : setDate},
@@ -29,7 +29,7 @@ var TournamentSchema = new Schema({
     games : [gameSchema],
     pointScheme : {type : {}, default : {"15" : 0, "10" : 0, "-5" : 0}},
     pointsTypes : {type : {}, default : {"15" : "P", "10" : "B", "-5" : "N"}},
-    shortID : {type : String, index : true, unique : true},
+    shortID : {type : String, index : true, unique : true, required : true},
 });
 
 function setDate(date) {

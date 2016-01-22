@@ -126,10 +126,12 @@ thead th {
 }
 
 .input-xs {
-      padding: 2px 2px;
-      font-size: 12px;
-      line-height: 1.5;
-      border-radius: 2px;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  .center-text {
+      text-align: center;
   }
 
 .player-table tr:hover {
@@ -149,7 +151,7 @@ thead th {
     background-color: rgba(20, 20, 20, .8);
 }
 
-/*#scoresheet tbody td:not(.tossup-number):hover {
+#scoresheet tbody td:not(.tossup-number):hover {
     cursor: pointer;
     background-color: #FCF8E3;
-}*/
+}

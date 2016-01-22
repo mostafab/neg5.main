@@ -943,7 +943,7 @@ function updateTeamList(team) {
     html += "<td class='teamname'>" + team.team_name + "</td>";
     html += "<td class='division'>" + team.division + "</td>";
     html += "<td><a class='btn btn-sm btn-info' href='/t/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'>Details</a>";
-    html += "<button type='button' class='btn btn-sm btn-warning start-delete-team'>Remove Team</button></td></tr>";
+    html += "<button type='button' class='btn btn-warning start-delete-team'><i class='glyphicon glyphicon-remove'></i></button></td></tr>";
     html += "<tr style='display:none'><td></td><td></td><td>";
     html += "<div class='col-md-3 col-lg-3 col-sm-3'><button class='btn btn-stats btn-sm btn-block cancel-delete-team'>Never Mind</button></div>";
     html += "<div class='col-md-3 col-lg-3 col-sm-3'>";

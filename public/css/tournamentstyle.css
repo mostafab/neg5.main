@@ -9,6 +9,17 @@
     border-radius: 3px;
 }
 
+.subtitle {
+    font-weight: bold;
+    color: white;
+    font-size: 14px;
+    background-color:rgb(83, 90, 98);
+    border-width: 10px;
+    padding: 15px;
+    width: 100%;
+    border-radius: 3px;
+}
+
 
 .box {
     /*background-color : rgba(190, 190, 190, .7);*/
@@ -120,8 +131,8 @@ td {
 .collab-box {
     border-radius: 5px;
     border-style: solid;
-    background-color: #E6E6E6;
-    color: black;
+    background-color: #008888;
+    color: white;
 }
 
 .btn {
@@ -172,12 +183,13 @@ td {
   background-image: url("/img/backgrounds/brushed_alu_dark.png");
   color : white;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 1.2em;
 }
 
 .panel-default:hover > .panel-heading {
-  font-weight: bold;
-  font-size: 24px;
+  /*font-weight: bold;*/
+  background-color: rgb(0, 134, 134);
+  /*font-size: 24px;*/
 }
 
 .panel-default > .panel-body {
