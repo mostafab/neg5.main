@@ -151,7 +151,7 @@ thead th {
     background-color: rgba(20, 20, 20, .8);
 }
 
-#scoresheet tbody td:not(.tossup-number):hover {
+#scoresheet tbody td:not(.tossup-number):not(.total-td):hover {
     cursor: pointer;
     background-color: #FCF8E3;
 }
