@@ -172,6 +172,27 @@ class Phase {
         return this.tossup.removeLastAnswer();
     }
 
+    removeAnswer(player) {
+        this.tossup.answers = this.tossup.answers.filter(function(answer) {
+            return answer.player !== player;
+        });
+    }
+
+    replaceAnswer(player, team, value) {
+        var replaced = false;
+        for (var i = 0; i < this.tossup.answers.length; i++) {
+            var answer = this.tossup.answers[i];
+            if (answer.player === player) {
+                answer.value = value;
+                replaced = true;
+                break;
+            }
+        }
+        if (!replaced) {
+            this.tossup.answers.push(new Answer(team, player, value));
+        }
+    }
+
 }
 
 class Game {
@@ -210,6 +231,17 @@ class Game {
             this.phases[this.currentPhase.getNumber() - 1] = this.currentPhase;
         }
         this.nextPhase();
+    }
+
+    getPlayerTeam(playerid) {
+        var team1 = this.team1.players.filter(function(player) {
+            return player.id === playerid;
+        });
+        if (team1.length === 0) {
+            return this.team2.id;
+        } else {
+            return this.team1.id;
+        }
     }
 
     setTeam(number, name, id, players) {
@@ -411,15 +443,10 @@ class Game {
                         score += currentAnswer.value;
                     }
                 }
-            }
-        }
-        if (this.currentPhase.getNumber() <= maxPhase) {
-            var tossup = this.currentPhase.getTossup();
-            var bonus = this.currentPhase.getBonus();
-            for (var j = 0; j < tossup.getAnswers().length; j++) {
-                var currentAnswer = tossup.getAnswers()[j];
-                if (currentAnswer.team == teamid) {
-                    score += currentAnswer.value;
+                for (var j = 0; j < currentBonus.bonusParts.length; j++) {
+                    if (currentBonus.bonusParts[j].gettingTeam === teamid) {
+                        score += currentBonus.bonusParts[j].value;
+                    }
                 }
             }
         }
@@ -545,6 +572,7 @@ $(document).ready(function() {
         if (game.team1 && game.team2) {
             $("#team-select-div").slideUp("fast");
             $("#lock-teams-div").slideUp("fast");
+            $(".title").slideUp("fast");
         } else {
             if (!game.team1) {
                 $("#leftselect").css("color", "#D9534F");
@@ -583,18 +611,30 @@ $(document).ready(function() {
         replaceBonusTD($(this), game);
     });
 
-    $("body").on("click", ".confirm-change", function() {
-        console.log($(this).prev().prev().val());
-        var td = $(this).parents("td");
-        console.log(td.attr("data-player"));
-        console.log(td.attr("data-row"));
+    $("body").on("click", ".confirm-change-tossup", function() {
+        var parent = $(this).parent();
+        var index = parseInt(parent.attr("data-row")) - 1;
+        var player = parent.attr("data-player");
+        var value = $(this).siblings("select").val();
+        var team = game.getPlayerTeam(player);
+        if (value === "-") {
+            game.getPhases()[index].removeAnswer(player);
+        } else {
+            game.getPhases()[index].replaceAnswer(player, team, parseFloat(value));
+        }
+        parent.empty().text(value).removeClass("editing");
+        for (var i = index; i < game.getPhases().length + 1; i++) {
+            var total = game.getTeamScoreUpToPhase(team, i + 1);
+            console.log(total);
+            showTotalOnScoresheetOneRow(i + 1, team, total);
+        }
     });
 
     $("body").on("click", ".cancel-change", function() {
         console.log("canceling...");
         var oldValue = $(this).attr("data-point");
         var parentTD = $(this).parents("td");
-        parentTD.html(oldValue).removeClass("editing");
+        parentTD.empty().text(oldValue).removeClass("editing");
     });
 
     $("#undo-game").click(function() {
@@ -613,17 +653,6 @@ $(document).ready(function() {
         }
     });
 
-    jQuery.fn.swap = function(b){
-    // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
-    b = jQuery(b)[0];
-    var a = this[0];
-    var t = a.parentNode.insertBefore(document.createTextNode(''), a);
-    b.parentNode.insertBefore(a, b);
-    t.parentNode.insertBefore(b, t);
-    t.parentNode.removeChild(t);
-    return this;
-    };
-
 });
 
 function findPlayers(side) {
@@ -638,7 +667,6 @@ function findPlayers(side) {
                 return parseFloat(second) - parseFloat(first);
             });
             POINT_SCHEME = pointValues;
-            console.log(POINT_SCHEME);
             if ($(side).attr("id") == "leftselect") {
                 game.setTeam(1, $("#leftselect").find(":selected").text(), $("#leftselect").val(), databack.players);
                 createPlayerTable(side, game.team1.players, pointValues);
@@ -742,7 +770,6 @@ function replaceTossupTD(td, game) {
     var row = td.attr("data-row");
     var player = td.attr("data-player");
     if (game.getPhases()[row - 1]) {
-        console.log(game.getPhases()[row - 1]);
         var currentVal = td.text();
         var html = "<select class='input-xs center-text'><option value='-'>-</option>";
         for (var i = 0; i < POINT_SCHEME.length; i++) {
@@ -754,7 +781,7 @@ function replaceTossupTD(td, game) {
             }
             html += option;
         }
-        html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change'></button>";
+        html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-tossup'></button>";
         td.addClass("editing").html(html);
     }
 }
@@ -768,12 +795,12 @@ function replaceBonusTD(td, game) {
         var bonusParts = game.getPhases()[row - 1].bonus.bonusParts;
         for (var i = 0; i < bonusParts.length; i++) {
             if (bonusParts[i].gettingTeam === team) {
-                html += "<option selected value='" +  bonusParts[i].value + "'>" + bonusParts[i].value + "</option>";
+                html += "<option selected value='" +  bonusParts[i].value + "' data-part=" + bonusParts[i].number + ">" + bonusParts[i].value + "</option>";
             } else {
-                html += "<option value='" +  bonusParts[i].value + "'>" + bonusParts[i].value + "</option>";
+                html += "<option value='" +  bonusParts[i].value + "' data-part=" + bonusParts[i].number + ">" + bonusParts[i].value + "</option>";
             }
         }
-        html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change'></button>";
+        html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-bonus'></button>";
         td.addClass("editing").html(html);
     }
 }
