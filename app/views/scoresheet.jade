@@ -7,19 +7,18 @@ block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
     link(rel="stylesheet" href="/css/tournamentstyle.css")
     link(rel="stylesheet" href="/css/scoresheet.css")
-    link(rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css")
 
 block content
 
     +navbar
 
-    div(class="content-wrapper box"  style='padding:75px;padding-top:20px')
+    div(class="content-wrapper box"  style='padding:75px;padding-top:0px')
         input(type="hidden" value="#{tid}" id="tournamentid")
         div(class="row")
             div(class="col-md-6 col-lg-6 col-sm-6")
                 div(style="margin:10px; margin-bottom:50px")
                 div(style="text-align:center")
-                    h2(class="title" style="width:100%") Teams Select
+                    h2(class="title" style="width:100%;font-size:14px") #{tournamentName} Teams Select
 
                 div(class="row" id="team-select-div")
                     div(class="row")
@@ -51,7 +50,7 @@ block content
 
                     div(class="col-md-6 col-lg-6 col-sm-6" id="left-team-players")
                         div(class="panel panel-default" style="text-align:center")
-                            div(class="panel-heading" style="font-size:20px" id="team-1-name") Team 1
+                            div(class="panel-heading" id="team-1-name") Team 1
                             div(class="panel-body" style='position:relative')
                                 div(id="leftplayerlist" class='player-list')
                                 div(class="neg-box")
@@ -59,11 +58,17 @@ block content
 
                     div(class="col-md-6 col-lg-6 col-sm-6" id="right-team-players")
                         div(class="panel panel-default" style="text-align:center")
-                            div(class="panel-heading" style="font-size:20px" id="team-2-name") Team 2
+                            div(class="panel-heading" id="team-2-name") Team 2
                             div(class="panel-body" style='position:relative')
                                 div(id="rightplayerlist" class='player-list')
                                 div(class="neg-box")
                                     button(class='btn btn-lg btn-danger btn-block undo-neg') Undo Neg
+
+                    div(class="row col-md-12 col-sm-12 col-lg-12" id="dead-tossup-div" style='display:none;')
+                        div(class="col-md-6 col-lg-6 col-sm-6")
+                            btn(class="btn btn-block btn-danger" id='last-tossup') Back to Last Tossup
+                        div(class='col-md-6 col-lg-6 col-sm-6')
+                            btn(class="btn btn-block" id='dead-tossup') Dead Tossup
 
                 div(class="row" id="bonus-div" style='display:none')
 
@@ -109,7 +114,7 @@ block content
                 div(class="row")
                     div(class="col-md-12 col-sm-12 col-lg-12")
                         div(style="text-align:center")
-                            h2(class="title" style="width:100%") Scoresheet
+                            h2(class="title" style="width:100%;font-size:14px") #{tournamentName} Scoresheet
 
                 br
 
@@ -126,7 +131,7 @@ block content
                                 tbody
                                     tr(id="tr-metadata")
                                         td(class='td-scoresheet')
-                                            input(type='number' class='input-scoresheet' id="round-number" value="0")
+                                            input(type='number' class='input-scoresheet' id="round-number" value="#{maxRound}")
                                         td(class="td-scoresheet")
                                             input(type='text' class='input-scoresheet' value="-" id="room-number")
                                         td(class="td-scoresheet")
@@ -140,8 +145,6 @@ block content
                     div(class="col-md-12")
                         div(class="panel panel-default")
                             table(class="table table-condensed"  id="scoresheet")
-
-                div(class="row col-md-12" id="dead-tossup-div")
 
                 div(class="row col-md-12" id='submit-game-div')
 

@@ -71,7 +71,9 @@ function findTournamentsByDirector(directorKey, callback) {
 function findTournamentById(id, callback) {
     var query = Tournament.findOne({shortID : id}, {"games.phases" : 0}).exec(function(err, result) {
         if (err || result == null) {
-            callback(err, null);
+            return callback(err, null);
+        } else if (!result) {
+            return callback(null, null);
         } else {
             result.games.sort(function(game1, game2) {
                 return game1.round - game2.round;
@@ -79,7 +81,27 @@ function findTournamentById(id, callback) {
             result.teams.sort(function(team1, team2) {
                 return team1.team_name.localeCompare(team2.team_name);
             });
-            callback(null, result);
+            return callback(null, result);
+        }
+    });
+}
+
+function loadTournamentScoresheet(id, callback) {
+    Tournament.findOne({shortID : id},
+            {tournament_name : 1, shortID : 1, teams : 1, collaborators : 1,
+                    directorid : 1, "games.round" : 1}, function(err, tournament) {
+        if (err) {
+            return callback(err, null);
+        } else {
+            if (tournament.games.length === 0) {
+                tournament.maxRound = 1;
+            } else {
+                tournament.games.sort(function(first, second) {
+                    return second.round - first.round;
+                });
+                tournament.maxRound = tournament.games[0].round + 1;
+            }
+            return callback(err, tournament);
         }
     });
 }
@@ -1028,3 +1050,4 @@ exports.addScoresheetAsGame = addScoresheetAsGame;
 exports.cloneTournament = cloneTournament;
 exports.mergeTournaments = mergeTournaments;
 exports.deleteTournament = deleteTournament;
+exports.loadTournamentScoresheet = loadTournamentScoresheet;

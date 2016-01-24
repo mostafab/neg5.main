@@ -1,10 +1,5 @@
 'use strict';
 
-var MAX_TOSSUPS = 20;
-var MAX_ACTIVE_PLAYERS = 4;
-var BONUS_POINT_VALUE = 10;
-var POINT_SCHEME = [];
-
 var entityMap = {
    "&": "&amp;",
    "<": "&lt;",
@@ -49,7 +44,6 @@ class Tossup {
 
     addAnswer(teamid, playerid, value) {
         this.answers.push(new Answer(teamid, playerid, value));
-        // console.log(this.answers);
     }
 
     removeLastAnswer() {
@@ -71,8 +65,6 @@ class BonusPart {
 class Bonus {
     constructor() {
         this.forTeam = null;
-        // this.forTeamPoints = 0;
-        // this.againstTeamPoints = 0;
         this.bonusParts = [];
     }
 
@@ -85,11 +77,12 @@ class Bonus {
     }
 
     getForTeamPoints() {
-        // return this.forTeamPoints;
         var points = 0;
-        for (var i = 0; i < this.bonusParts.length; i++) {
-            if (this.bonusParts[i].gettingTeam == this.forTeam) {
-                points += this.bonusParts[i].value;
+        if (this.forTeam) {
+            for (var i = 0; i < this.bonusParts.length; i++) {
+                if (this.bonusParts[i].gettingTeam == this.forTeam) {
+                    points += this.bonusParts[i].value;
+                }
             }
         }
         return points;
@@ -97,9 +90,11 @@ class Bonus {
 
     getAgainstTeamPoints() {
         var points = 0;
-        for (var i = 0; i < this.bonusParts.length; i++) {
-            if (this.bonusParts[i].gettingTeam && this.bonusParts[i].gettingTeam != this.forTeam) {
-                points += this.bonusParts[i].value;
+        if (this.forTeam) {
+            for (var i = 0; i < this.bonusParts.length; i++) {
+                if (this.bonusParts[i].gettingTeam && this.bonusParts[i].gettingTeam != this.forTeam) {
+                    points += this.bonusParts[i].value;
+                }
             }
         }
         return points;
@@ -153,7 +148,7 @@ class Phase {
     }
 
     getBonusPointsForTeam(teamid) {
-        if (this.bonus.getForTeam() == teamid) {
+        if (this.bonus.getForTeam() === teamid) {
             return this.bonus.getForTeamPoints();
         } else {
             return this.bonus.getAgainstTeamPoints();
@@ -172,13 +167,22 @@ class Phase {
         return this.tossup.removeLastAnswer();
     }
 
-    removeAnswer(player) {
+    removeAnswer(player, pointMap) {
         this.tossup.answers = this.tossup.answers.filter(function(answer) {
             return answer.player !== player;
         });
+        var allNegs = true;
+        for (var i = 0; i < this.tossup.answers.length; i++) {
+            if (pointMap[this.tossup.answers[i].value] !== "N") {
+                allNegs = false;
+            }
+        }
+        if (this.tossup.answers.length === 0 || allNegs) {
+            this.bonus.forTeam = null;
+        }
     }
 
-    replaceAnswer(player, team, value) {
+    replaceAnswer(player, team, value, pointMap) {
         var replaced = false;
         for (var i = 0; i < this.tossup.answers.length; i++) {
             var answer = this.tossup.answers[i];
@@ -188,11 +192,48 @@ class Phase {
                 break;
             }
         }
+        console.log("team: " + team);
+        console.log("replaced: " + replaced);
         if (!replaced) {
             this.tossup.answers.push(new Answer(team, player, value));
+            if (pointMap[value] !== "N") {
+                this.bonus.forTeam = team;
+                console.log("switching bonus forTeam");
+            }
+        }
+        var allNegs = true;
+        for (var i = 0; i < this.tossup.answers.length; i++) {
+            if (pointMap[this.tossup.answers[i].value] !== "N") {
+                allNegs = false;
+            }
+        }
+        console.log("all incorrect:" + allNegs);
+        if (allNegs) {
+            console.log("no correct answer, setting forTeam to null");
+            this.bonus.forTeam = null;
+        } else {
+            this.bonus.forTeam = team;
         }
     }
 
+    changeBonusPart(part, value, team) {
+        for (var i = 0; i < this.bonus.bonusParts.length; i++) {
+            if (this.bonus.bonusParts[i].number === part) {
+                this.bonus.bonusParts[i].value = value;
+                this.bonus.bonusParts[i].gettingTeam = team;
+            }
+        }
+    }
+
+    removeBonusFromTeam(part, team) {
+        for (var i = 0; i < this.bonus.bonusParts.length; i++) {
+            if (this.bonus.bonusParts[i].number === part
+                && this.bonus.bonusParts[i].gettingTeam === team) {
+                    console.log(i + 1);
+                    this.bonus.bonusParts[i].gettingTeam = null;
+            }
+        }
+    }
 }
 
 class Game {
@@ -201,6 +242,11 @@ class Game {
         this.team2 = null;
         this.phases = [];
         this.currentPhase = new Phase(1);
+        this.pointScheme = [];
+        this.pointMap = {};
+        this.maxTossups = 20;
+        this.maxActivePlayers = 4;
+        this.bonusPointValue = 10;
     }
 
     getPhases() {
@@ -211,8 +257,18 @@ class Game {
         return this.currentPhase;
     }
 
-    deadTossup() {
+    deadTossup(bonusParts, bonusValue) {
+        for (var i = 0; i < bonusParts; i++) {
+            this.currentPhase.bonus.bonusParts.push(new BonusPart(i + 1, bonusValue, null));
+        }
         this.stashPhase();
+    }
+
+    lastQuestion() {
+        this.currentPhase = this.phases.pop();
+        this.currentPhase.tossup.answers = [];
+        this.currentPhase.bonus.bonusParts = [];
+        this.currentPhase.bonus.forTeam = null;
     }
 
     nextPhase() {
@@ -443,9 +499,11 @@ class Game {
                         score += currentAnswer.value;
                     }
                 }
-                for (var j = 0; j < currentBonus.bonusParts.length; j++) {
-                    if (currentBonus.bonusParts[j].gettingTeam === teamid) {
-                        score += currentBonus.bonusParts[j].value;
+                if (currentBonus.forTeam) {
+                    for (var j = 0; j < currentBonus.bonusParts.length; j++) {
+                        if (currentBonus.bonusParts[j].gettingTeam === teamid) {
+                            score += currentBonus.bonusParts[j].value;
+                        }
                     }
                 }
             }
@@ -459,11 +517,9 @@ var game = new Game();
 
 $(document).ready(function() {
 
-    $("#game-metadata").hide(0);
-
     $(".teamselect").change(function() {
         $(this).each(function() {
-            $(this).css("color", "white");
+            $(this).css("color", "black");
         });
         findPlayers($(this));
     });
@@ -496,7 +552,7 @@ $(document).ready(function() {
         if (game.team1 !== null && game.team2 !== null) {
             $(".bonus-phase").each(function(index) {
                 var bonusButton = $(this).find(".gotten-bonus").first();
-                game.getCurrentPhase().addBonusPart(index + 1, BONUS_POINT_VALUE, $(bonusButton).attr("data-team"));
+                game.getCurrentPhase().addBonusPart(index + 1, game.bonusPointValue, $(bonusButton).attr("data-team"));
             });
             game.getCurrentPhase().setBonusTeam($(this).attr("data-team"));
 
@@ -504,16 +560,16 @@ $(document).ready(function() {
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
             game.stashPhase();
             showTossupDiv();
-            if (game.getCurrentPhase().getNumber() > MAX_TOSSUPS) {
-                createScoresheetRow(game.team1, game.team2, MAX_TOSSUPS + 1);
-                MAX_TOSSUPS++;
+            if (game.getCurrentPhase().getNumber() > game.maxTossups) {
+                createScoresheetRow(game.team1, game.team2, game.maxTossups + 1);
+                game.maxTossups++;
             }
             setActiveRow(game.getCurrentPhase());
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
             destroyBonusLabels();
             unlockBothTeams();
-            incrementTossupsHeardForPlayers();
+            incrementTossupsHeardForPlayers(1);
         }
     });
 
@@ -521,16 +577,16 @@ $(document).ready(function() {
         if (game.team1 !== null && game.team2 !== null) {
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team1.id, game.getCurrentPhase().getBonusPointsForTeam(game.team1.id));
             showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
-            game.deadTossup();
-            if (game.getCurrentPhase().getNumber() > MAX_TOSSUPS) {
-                createScoresheetRow(game.team1, game.team2, MAX_TOSSUPS + 1);
-                MAX_TOSSUPS++;
+            game.deadTossup(3, game.bonusPointValue);
+            if (game.getCurrentPhase().getNumber() > game.maxTossups) {
+                createScoresheetRow(game.team1, game.team2, game.maxTossups + 1);
+                game.maxTossups++;
             }
             setActiveRow(game.getCurrentPhase());
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
             unlockBothTeams();
-            incrementTossupsHeardForPlayers();
+            incrementTossupsHeardForPlayers(1);
         }
     });
 
@@ -553,7 +609,6 @@ $(document).ready(function() {
     $("body").on("click", "#undo-tossup", function() {
         var lastAnswer = game.getCurrentPhase().removeLastTossup();
         revertPlayerAnswerOnScoresheet(lastAnswer, game.getCurrentPhase().getNumber());
-        showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), lastAnswer.team, game.getTeamScore(lastAnswer.team));
         destroyBonusLabels();
         showTossupDiv();
         showPlayerPointTotals(game);
@@ -572,7 +627,6 @@ $(document).ready(function() {
         if (game.team1 && game.team2) {
             $("#team-select-div").slideUp("fast");
             $("#lock-teams-div").slideUp("fast");
-            $(".title").slideUp("fast");
         } else {
             if (!game.team1) {
                 $("#leftselect").css("color", "#D9534F");
@@ -587,7 +641,6 @@ $(document).ready(function() {
     $(".undo-neg").click(function() {
         var lastAnswer = game.getCurrentPhase().removeLastTossup();
         revertPlayerAnswerOnScoresheet(lastAnswer, game.getCurrentPhase().getNumber());
-        showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber(), lastAnswer.team, game.getTeamScore(lastAnswer.team));
         unlockTeam($(this));
         showPlayerPointTotals(game);
     });
@@ -606,9 +659,41 @@ $(document).ready(function() {
         replaceTossupTD($(this), game);
     });
 
+    $("body").on("mousedown", ".bonus-select option", function(e) {
+        this.selected = !this.selected;
+        e.preventDefault();
+    });
+
     $("body").on("click", "#scoresheet tbody .bonus-td:not(.editing)", function(e) {
         e.stopPropagation();
         replaceBonusTD($(this), game);
+    });
+
+    $("body").on("click", ".confirm-change-bonus", function() {
+        var parent = $(this).parent();
+        var index = parseInt(parent.attr('data-row')) - 1;
+        var team = parent.attr("data-team");
+        var select = $(this).siblings(".bonus-select");
+        select.children("option:selected").each(function() {
+            var part = parseInt($(this).attr('data-part'));
+            var value = parseInt($(this).val());
+            game.getPhases()[index].changeBonusPart(part, value, team);
+        });
+        select.children("option:not(:selected)").each(function() {
+            var part = parseInt($(this).attr('data-part'));
+            game.getPhases()[index].removeBonusFromTeam(part, team);
+        });
+        parent.empty().removeClass("editing");
+        for (var i = index; i < game.getPhases().length; i++) {
+            var total = game.getTeamScoreUpToPhase(game.team1.id, i + 1);
+            var total2 = game.getTeamScoreUpToPhase(game.team2.id, i + 1);
+            showTotalOnScoresheetOneRow(i + 1, game.team1.id, total);
+            showTotalOnScoresheetOneRow(i + 1, game.team2.id, total2);
+        }
+        var bonus = game.getPhases()[index].getBonusPointsForTeam(game.team1.id);
+        var bonus2 = game.getPhases()[index].getBonusPointsForTeam(game.team2.id);
+        showBonusOnScoresheetOneRow(index + 1, game.team1.id, bonus);
+        showBonusOnScoresheetOneRow(index + 1, game.team2.id, bonus2);
     });
 
     $("body").on("click", ".confirm-change-tossup", function() {
@@ -618,16 +703,22 @@ $(document).ready(function() {
         var value = $(this).siblings("select").val();
         var team = game.getPlayerTeam(player);
         if (value === "-") {
-            game.getPhases()[index].removeAnswer(player);
+            game.getPhases()[index].removeAnswer(player, game.pointMap);
         } else {
-            game.getPhases()[index].replaceAnswer(player, team, parseFloat(value));
+            game.getPhases()[index].replaceAnswer(player, team, parseFloat(value), game.pointMap);
         }
         parent.empty().text(value).removeClass("editing");
-        for (var i = index; i < game.getPhases().length + 1; i++) {
-            var total = game.getTeamScoreUpToPhase(team, i + 1);
-            console.log(total);
-            showTotalOnScoresheetOneRow(i + 1, team, total);
+        for (var i = index; i < game.getPhases().length; i++) {
+            var total = game.getTeamScoreUpToPhase(game.team1.id, i + 1);
+            var total2 = game.getTeamScoreUpToPhase(game.team2.id, i + 1);
+            showTotalOnScoresheetOneRow(i + 1, game.team1.id, total);
+            showTotalOnScoresheetOneRow(i + 1, game.team2.id, total2);
         }
+        var bonus = game.getPhases()[index].getBonusPointsForTeam(game.team1.id);
+        var bonus2 = game.getPhases()[index].getBonusPointsForTeam(game.team2.id);
+        showBonusOnScoresheetOneRow(index + 1, game.team1.id, bonus);
+        showBonusOnScoresheetOneRow(index + 1, game.team2.id, bonus2);
+        showPlayerPointTotals(game);
     });
 
     $("body").on("click", ".cancel-change", function() {
@@ -635,6 +726,20 @@ $(document).ready(function() {
         var oldValue = $(this).attr("data-point");
         var parentTD = $(this).parents("td");
         parentTD.empty().text(oldValue).removeClass("editing");
+    });
+
+    $("body").on("click", "#last-tossup", function() {
+        var phaseNum = game.getCurrentPhase().getNumber();
+        console.log(phaseNum);
+        if (game.phases[phaseNum - 2]) {
+            console.log(game.phases[phaseNum - 2]);
+            game.lastQuestion();
+            $("td[data-row='" + game.getCurrentPhase().getNumber() + "']:not(.tossup-number)").text("-");
+            $("td[data-row='" + (game.getCurrentPhase().getNumber() + 1) + "']:not(.tossup-number)").text("-");
+            setActiveRow(game.getCurrentPhase());
+            incrementTossupsHeardForPlayers(-1);
+            showPlayerPointTotals(game);
+        }
     });
 
     $("#undo-game").click(function() {
@@ -666,7 +771,8 @@ function findPlayers(side) {
             var pointValues = Object.keys(databack.pointScheme).sort(function(first, second) {
                 return parseFloat(second) - parseFloat(first);
             });
-            POINT_SCHEME = pointValues;
+            game.pointScheme = pointValues;
+            game.pointMap = databack.pointTypes;
             if ($(side).attr("id") == "leftselect") {
                 game.setTeam(1, $("#leftselect").find(":selected").text(), $("#leftselect").val(), databack.players);
                 createPlayerTable(side, game.team1.players, pointValues);
@@ -677,11 +783,10 @@ function findPlayers(side) {
                 createPlayerLabels(side, game.team2.players, pointValues, databack.pointTypes);
             }
             if (game.team1 !== null && game.team2 !== null) {
-                $("#game-metadata").slideDown(0);
                 createScoresheet(game.team1, game.team2);
                 editAddBonusAttributes(game.team1, game.team2);
-                createDeadTossupButton();
                 createSubmitGameButton();
+                $("#dead-tossup-div").fadeIn(0);
                 $("#toggle-message-div").fadeIn(200);
             }
         }
@@ -772,12 +877,12 @@ function replaceTossupTD(td, game) {
     if (game.getPhases()[row - 1]) {
         var currentVal = td.text();
         var html = "<select class='input-xs center-text'><option value='-'>-</option>";
-        for (var i = 0; i < POINT_SCHEME.length; i++) {
+        for (var i = 0; i < game.pointScheme.length; i++) {
             var option = "";
-            if (currentVal == POINT_SCHEME[i]) {
-                option = "<option selected value='" + POINT_SCHEME[i] + "'>" + POINT_SCHEME[i] + "</option>";
+            if (currentVal == game.pointScheme[i]) {
+                option = "<option selected value='" + game.pointScheme[i] + "'>" + game.pointScheme[i] + "</option>";
             } else {
-                option = "<option value='" + POINT_SCHEME[i] + "'>" + POINT_SCHEME[i] + "</option>";
+                option = "<option value='" + game.pointScheme[i] + "'>" + game.pointScheme[i] + "</option>";
             }
             html += option;
         }
@@ -789,9 +894,10 @@ function replaceTossupTD(td, game) {
 function replaceBonusTD(td, game) {
     var row = td.attr("data-row");
     var team = td.attr("data-team");
-    if (game.getPhases()[row - 1] && game.getPhases()[row - 1].bonus.bonusParts.length !== 0) {
+    console.log(game.getPhases()[row - 1]);
+    if (game.getPhases()[row - 1] && game.getPhases()[row - 1].bonus.forTeam) {
         var currentVal = td.text();
-        var html = "<select multiple size='3' class='input-xs center-text form-control'>";
+        var html = "<select multiple size='3' class='input-xs center-text form-control bonus-select'>";
         var bonusParts = game.getPhases()[row - 1].bonus.bonusParts;
         for (var i = 0; i < bonusParts.length; i++) {
             if (bonusParts[i].gettingTeam === team) {
@@ -854,16 +960,11 @@ function parseScoresheet(submittedGame) {
     return gameToAdd;
 }
 
-function incrementTossupsHeardForPlayers() {
+function incrementTossupsHeardForPlayers(number) {
     $(".player-table .active-player input").each(function(index, input) {
         var currentTUH = parseFloat($(input).val());
-        $(input).val((currentTUH + 1) + "");
+        $(input).val((currentTUH + number) + "");
     });
-}
-
-function createDeadTossupButton() {
-    var html = "<button type='button' class='btn btn-md btn-block' id='dead-tossup'>Dead Tossup</button>";
-    $("#dead-tossup-div").empty().append(html);
 }
 
 function createSubmitGameButton() {
@@ -903,7 +1004,7 @@ function createScoresheet(team1, team2) {
     }
     html += "</tr></thead>";
     html += "<tbody id='scoresheet-body'>";
-    for (var i = 0; i < MAX_TOSSUPS; i++) {
+    for (var i = 0; i < game.maxTossups; i++) {
         if (i + 1 === game.getCurrentPhase().getNumber()) {
             html += "<tr class='active-row' data-row='" + (i + 1) + "'>";
         } else {
@@ -991,7 +1092,7 @@ function createPlayerLabels(side, players, pointValues, pointTypes) {
     var list = $(side).attr("id") === "leftselect" ? "#leftplayerlist" : "#rightplayerlist";
     var html = "";
     for (var i = 0; i < players.length; i++) {
-        if (i < MAX_ACTIVE_PLAYERS) {
+        if (i < game.maxActivePlayers) {
             html += "<div class='row cell active-player' data-player='" + players[i].id + "'>";
         } else {
             html += "<div class='row cell' data-player='" + players[i].id + "' style='display:none'>";
@@ -1034,7 +1135,7 @@ function createPlayerTable(side, players, pointScheme) {
     html += "</tr>";
     for (var i = 0; i < players.length; i++) {
         html += "<tr class='player-body' data-player='" + players[i].id + "'>";
-        if (i < MAX_ACTIVE_PLAYERS) {
+        if (i < game.maxActivePlayers) {
             html += "<th class='active-player'>" + players[i].name; + "</th>";
             for (var j = 0; j < pointScheme.length; j++) {
                 html += "<td class='player-point active-player' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
@@ -1117,6 +1218,7 @@ function showPlayerPointTotals(gameObj) {
 
 function revertPlayerAnswerOnScoresheet(answer, row) {
     $("#scoresheet-body tr td[data-row='" + row + "'][data-player='" + answer.player + "']").text("-");
+    $(".total-td[data-row='" + row + "']").text("-");
 }
 
 function showTotalOnScoresheetOneRow(row, teamid, total) {
