@@ -148,6 +148,13 @@ block content
 
                 div(class="row col-md-12" id='submit-game-div')
 
+                div(class='row' id='error-div' style='display:none')
+                    div(class="col-md-12")
+                        div(class="panel panel-danger" style='text-align:center')
+                            div(class="panel-heading" style='font-size:16px') Error
+                                i(class="fa fa-times-circle" style='float:left' id='dismiss-error')
+                            div(class="panel-body" id='error-msg')
+
                 div(class="row col-md-12 col-lg-12 col-sm-12" id="goto-game-div" style='display:none')
                     div(class="col-md-6 col-sm-6 col-lg-6")
                         button(class="btn btn-xl btn-warning btn-block" data-tournament='#{tid}' id='undo-game') Undo Submission
@@ -157,4 +164,4 @@ block content
                             i(class="fa fa-arrow-right" style='margin-left:20px')
 
 block scripts
-    script(src="/js/scoresheet-es6.js")
+    script(src="/js/scoresheet-es5.js")

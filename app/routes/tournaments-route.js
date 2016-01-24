@@ -209,7 +209,6 @@ module.exports = function(app) {
         });
 
     app.post("/tournaments/scoresheet/submit", function(req, res) {
-        // console.log(req.body);
         if (!req.session.director) {
             res.status(401).end();
         } else {
@@ -225,7 +224,6 @@ module.exports = function(app) {
 
     app.route("/tournaments/teams/remove")
         .post(function(req, res, next) {
-            // console.log(req.body);
             tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, function(err, teamid) {
                 if (err) {
                     console.log(err);

@@ -167,6 +167,36 @@ class Phase {
         return this.tossup.removeLastAnswer();
     }
 
+    teamAlreadyAnswered(player, team) {
+        for (var i = 0; i < this.tossup.answers.length; i++) {
+            var ans = this.tossup.answers[i];
+            if (ans.player !== player && ans.team === team) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    hasCorrectAnswer(pointMap, player) {
+        for (var i = 0; i < this.tossup.answers.length; i++) {
+            if (pointMap[this.tossup.answers[i].value] !== "N"
+                    && this.tossup.answers[i].player !== player) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    hasNeg(pointMap, player) {
+        for (var i = 0; i < this.tossup.answers.length; i++) {
+            if (pointMap[this.tossup.answers[i].value] === "N"
+                    && this.tossup.answers[i].player !== player) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     removeAnswer(player, pointMap) {
         this.tossup.answers = this.tossup.answers.filter(function(answer) {
             return answer.player !== player;
@@ -192,13 +222,10 @@ class Phase {
                 break;
             }
         }
-        console.log("team: " + team);
-        console.log("replaced: " + replaced);
         if (!replaced) {
             this.tossup.answers.push(new Answer(team, player, value));
             if (pointMap[value] !== "N") {
                 this.bonus.forTeam = team;
-                console.log("switching bonus forTeam");
             }
         }
         var allNegs = true;
@@ -207,9 +234,7 @@ class Phase {
                 allNegs = false;
             }
         }
-        console.log("all incorrect:" + allNegs);
         if (allNegs) {
-            console.log("no correct answer, setting forTeam to null");
             this.bonus.forTeam = null;
         } else {
             this.bonus.forTeam = team;
@@ -229,7 +254,6 @@ class Phase {
         for (var i = 0; i < this.bonus.bonusParts.length; i++) {
             if (this.bonus.bonusParts[i].number === part
                 && this.bonus.bonusParts[i].gettingTeam === team) {
-                    console.log(i + 1);
                     this.bonus.bonusParts[i].gettingTeam = null;
             }
         }
@@ -524,6 +548,10 @@ $(document).ready(function() {
         findPlayers($(this));
     });
 
+    $("#dismiss-error").click(function() {
+        $("#error-div").fadeOut(0);
+    });
+
     // $(window).bind("beforeunload", function() {
     //     return "You will lose this scoresheet info if you leave/reload.";
     // });
@@ -542,6 +570,7 @@ $(document).ready(function() {
                 $("#next-tossup").attr("data-team", $(this).attr('data-team'));
             } else {
                 setNegButtonPlayer($(this).parent(".player-list").next(".neg-box").find(".undo-neg"), $(this).attr("data-player"));
+                $(".btn-point[data-neg='" + "true" + "']").fadeOut(0);
                 lockOutTeam($(this));
             }
             showPlayerPointTotals(game);
@@ -569,6 +598,7 @@ $(document).ready(function() {
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
             destroyBonusLabels();
             unlockBothTeams();
+            $(".btn-point[data-neg='" + "true" + "']").fadeIn(0);
             incrementTossupsHeardForPlayers(1);
         }
     });
@@ -586,6 +616,7 @@ $(document).ready(function() {
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team1.id, game.getTeamScore(game.team1.id));
             showTotalOnScoresheetOneRow(game.getCurrentPhase().getNumber() - 1, game.team2.id, game.getTeamScore(game.team2.id));
             unlockBothTeams();
+            $(".btn-point[data-neg='" + "true" + "']").fadeIn(0);
             incrementTossupsHeardForPlayers(1);
         }
     });
@@ -596,11 +627,25 @@ $(document).ready(function() {
         submitScoresheet(game, parsedGame);
     });
 
+    $("body").on("keydown", ".player-name-input", function(e) {
+        $(this).css("border-color", "white");
+        if (e.which === 13 && $(this).val().length !== 0) {
+            var button = $(this).next(".add-player-button");
+            var player = $(this).val();
+            var teamid = button.attr("data-team");
+            var team = button.attr("data-team-name");
+            addPlayer(escapeHtml(player), teamid, team);
+        } else if (e.which === 13 && $(this).val().length === 0) {
+            $(this).css("border-color", "red");
+        }
+    });
+
     $("body").on("click", ".add-player-button", function() {
         $(this).prev(".player-name-input").css("border-color", "transparent");
         if ($(this).prev(".player-name-input").val().length !== 0) {
             $(this).prop("disabled", true);
-            addPlayer(escapeHtml($(this).prev(".player-name-input").val()), $(this).attr("data-team"), $(this).attr("data-team-name"), $(this).attr("side"));
+            console.log($(this).attr("side"));
+            addPlayer(escapeHtml($(this).prev(".player-name-input").val()), $(this).attr("data-team"), $(this).attr("data-team-name"));
         } else {
             $(this).prev(".player-name-input").css("border-color", "red");
         }
@@ -642,6 +687,7 @@ $(document).ready(function() {
         var lastAnswer = game.getCurrentPhase().removeLastTossup();
         revertPlayerAnswerOnScoresheet(lastAnswer, game.getCurrentPhase().getNumber());
         unlockTeam($(this));
+        $(".btn-point[data-neg='" + "true" + "']").fadeIn(0);
         showPlayerPointTotals(game);
     });
 
@@ -722,7 +768,6 @@ $(document).ready(function() {
     });
 
     $("body").on("click", ".cancel-change", function() {
-        console.log("canceling...");
         var oldValue = $(this).attr("data-point");
         var parentTD = $(this).parents("td");
         parentTD.empty().text(oldValue).removeClass("editing");
@@ -730,15 +775,15 @@ $(document).ready(function() {
 
     $("body").on("click", "#last-tossup", function() {
         var phaseNum = game.getCurrentPhase().getNumber();
-        console.log(phaseNum);
         if (game.phases[phaseNum - 2]) {
-            console.log(game.phases[phaseNum - 2]);
             game.lastQuestion();
             $("td[data-row='" + game.getCurrentPhase().getNumber() + "']:not(.tossup-number)").text("-");
             $("td[data-row='" + (game.getCurrentPhase().getNumber() + 1) + "']:not(.tossup-number)").text("-");
             setActiveRow(game.getCurrentPhase());
             incrementTossupsHeardForPlayers(-1);
             showPlayerPointTotals(game);
+            unlockBothTeams();
+            $(".btn-point[data-neg='" + "true" + "']").fadeIn(0);
         }
     });
 
@@ -793,7 +838,7 @@ function findPlayers(side) {
     });
 }
 
-function addPlayer(playerName, teamid, teamName, side) {
+function addPlayer(playerName, teamid, teamName) {
     var data = {
             tournamentidform : $("#tournamentid").val(),
             teamnameform : teamName,
@@ -846,10 +891,18 @@ function submitScoresheet(game, parsedScoresheet) {
             $("#submit-game-div").slideUp(400);
             setGameAnchorTag(databack.gameid);
             $("#goto-game-div").slideDown(400);
-            $("#submit-game").prop("disabled", false);
         },
         error : function(xhr, status, err) {
-            console.log(err);
+            if (xhr.status === 401) {
+                $("#error-div").fadeIn(0);
+                $("#error-msg").text(xhr.status + ": " + "You're not logged in!");
+            } else if (xhr.status === 500) {
+                $("#error-div").fadeIn(0);
+                $("#error-msg").text(xhr.status + ": Couldn't submit scoresheet!");
+            }
+        },
+        complete : function() {
+            $("#submit-game").prop("disabled", false);
         }
     });
 }
@@ -874,15 +927,29 @@ function undoGameSubmission(tournament, game) {
 function replaceTossupTD(td, game) {
     var row = td.attr("data-row");
     var player = td.attr("data-player");
-    if (game.getPhases()[row - 1]) {
+    var team = game.getPlayerTeam(player);
+    var validAnswerTypes = [];
+    if (game.getPhases()[row - 1].hasNeg(game.pointMap, player)) {
+        validAnswerTypes = game.pointScheme.filter(function(value) {
+            return game.pointMap[value] !== "N";
+        });
+    } else if (game.getPhases()[row - 1].hasCorrectAnswer(game.pointMap, player)) {
+        validAnswerTypes = game.pointScheme.filter(function(value) {
+            return game.pointMap[value] === "N";
+        });
+    } else {
+        validAnswerTypes = game.pointScheme;
+    }
+    if (game.getPhases()[row - 1] && !game.getPhases()[row - 1].teamAlreadyAnswered(player, team)
+            && validAnswerTypes.length !== 0) {
         var currentVal = td.text();
         var html = "<select class='input-xs center-text'><option value='-'>-</option>";
-        for (var i = 0; i < game.pointScheme.length; i++) {
+        for (var i = 0; i < validAnswerTypes.length; i++) {
             var option = "";
-            if (currentVal == game.pointScheme[i]) {
-                option = "<option selected value='" + game.pointScheme[i] + "'>" + game.pointScheme[i] + "</option>";
+            if (currentVal == validAnswerTypes[i]) {
+                option = "<option selected value='" + validAnswerTypes[i] + "'>" + validAnswerTypes[i] + "</option>";
             } else {
-                option = "<option value='" + game.pointScheme[i] + "'>" + game.pointScheme[i] + "</option>";
+                option = "<option value='" + validAnswerTypes[i] + "'>" + validAnswerTypes[i] + "</option>";
             }
             html += option;
         }
@@ -894,7 +961,6 @@ function replaceTossupTD(td, game) {
 function replaceBonusTD(td, game) {
     var row = td.attr("data-row");
     var team = td.attr("data-team");
-    console.log(game.getPhases()[row - 1]);
     if (game.getPhases()[row - 1] && game.getPhases()[row - 1].bonus.forTeam) {
         var currentVal = td.text();
         var html = "<select multiple size='3' class='input-xs center-text form-control bonus-select'>";

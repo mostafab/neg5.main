@@ -43,7 +43,8 @@ a {
 
 .body {
     background-image: url("../img/backgrounds/gplaypattern.png");
-    background-image: url("../img/backgrounds/geometry2.png");
+    /*background-color: black;*/
+    /*background-image: url("../img/backgrounds/brushed.png");*/
 }
 
 .header {
