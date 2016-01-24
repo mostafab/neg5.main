@@ -304,16 +304,15 @@ module.exports = function(app) {
         if (!req.session.director) {
             res.redirect("/");
         } else {
-            tournamentController.findTournamentById(req.params.tid, function(err, tournament) {
+            tournamentController.loadTournamentScoresheet(req.params.tid, function(err, tournament) {
                 if (err) {
                     res.status(500).send({err : err});
                 } else if (!tournament) {
                     res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
                 } else {
                     if (hasPermission(tournament, req.session.director)) {
-                        // res.render("scoresheet", {tournamentd : req.session.director, tournament : tournament});
                         res.render("scoresheet", {tournamentd : req.session.director, tournamentName : tournament.tournament_name, tid : tournament._id,
-                            shortID : tournament.shortID, teams : tournament.teams});
+                            shortID : tournament.shortID, teams : tournament.teams, maxRound : tournament.maxRound});
                     } else {
                         res.status(401).send("You don't have permission to view this tournament");
                     }

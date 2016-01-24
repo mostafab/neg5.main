@@ -1,8 +1,7 @@
 .playerbox {
     background: rgba(0, 140, 130, .7);
-    padding: 15px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    /*margin-bottom: 10px;*/
+    padding: 10px;
+    /*box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);*/
     font-size: 14px;
     border-radius: 2px;
 }
@@ -54,18 +53,18 @@
 }
 
 .btn {
-    border-radius: 2px;
-    box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 1px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .btn:active {
-    transform: translateY(2px);
+    transform: translateY(1px);
 }
 
 .btn-point {
     margin:2px;
-    border-radius: 2px;
-    box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 1px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     /*transform: translateY(-15px);*/
 }
 
@@ -74,8 +73,9 @@
 }
 
 .teamselect {
-    background-color:#363B40;
-    color:white;
+    color:black;
+    /*border-width: 0px;*/
+    border-radius: 3px;
 }
 
 .player-header {
@@ -143,12 +143,12 @@ thead th {
 .td-scoresheet {margin: 0; padding: 0;}
 
 #dead-tossup {
-    background-color: rgba(20, 20, 20, 1);
+    background-color: rgba(15, 15, 15, .8);
     color: white;
 }
 
 #dead-tossup:hover {
-    background-color: rgba(20, 20, 20, .8);
+    background-color: rgba(20, 20, 20, 1);
 }
 
 #scoresheet tbody td:not(.tossup-number):not(.total-td):hover {
