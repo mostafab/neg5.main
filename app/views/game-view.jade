@@ -51,7 +51,7 @@ block content
                                     br
                                     div(class="row")
                                         div(id="left-text" class="col-lg-6 col-md-6 col-sm-6")
-                                            table(class='table table-striped table-bordered table-hover table-condensed')
+                                            table(class='table table-condensed')
                                                 - var points = Object.keys(tournament.pointScheme)
                                                 thead
                                                     tr
@@ -70,15 +70,14 @@ block content
                                                                 td #{current.player_name}
                                                                 td
                                                                     - var inputGP = "player" + playerNum + "_leftgp"
-                                                                    input(type="number" name="#{inputGP}" class="form-control" value="#{game.team1.playerStats[current._id]['gp']}")
+                                                                    input(type="number" name="#{inputGP}" class="form-control gp-box" value="#{game.team1.playerStats[current._id]['gp']}")
                                                                 each score, j in points
                                                                     td
                                                                         - var inputPoints = "player" + playerNum + "_left_" + points[j] + "val"
-                                                                        input(type="number" name="#{inputPoints}" class="form-control" value="#{game.team1.playerStats[current._id]['' + points[j]]}")
-
+                                                                        input(type="number" name="#{inputPoints}" class="form-control point-box" value="#{game.team1.playerStats[current._id]['' + points[j]]}")
                                                         - playerNum++
                                         div(id="right-text" class="col-lg-6 col-md-6 col-sm-6")
-                                            table(class='table table-striped table-bordered table-hover table-condensed')
+                                            table(class='table table-condensed')
                                                 - var points = Object.keys(tournament.pointScheme)
                                                 thead
                                                     tr
@@ -97,51 +96,102 @@ block content
                                                                 td #{current.player_name}
                                                                 td
                                                                     - var inputGP = "player" + playerNum + "_rightgp"
-                                                                    input(type="number" name="#{inputGP}" class="form-control" value="#{game.team2.playerStats[current._id]['gp']}")
+                                                                    input(type="number" name="#{inputGP}" class="form-control gp-box" value="#{game.team2.playerStats[current._id]['gp']}")
                                                                 each score, j in points
                                                                     td
                                                                         - var inputPoints = "player" + playerNum + "_right_" + points[j] + "val"
-                                                                        input(type="number" name="#{inputPoints}" class="form-control" value="#{game.team2.playerStats[current._id]['' + points[j]]}")
+                                                                        input(type="number" name="#{inputPoints}" class="form-control point-box" value="#{game.team2.playerStats[current._id]['' + points[j]]}")
 
                                                         - playerNum++
                                     div(class="row")
                                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                            input(type="number" class="form-control leftscorebox" name="leftteamscore" placeholder="Team 1 Score" pattern="[0-9]" value="#{game.team1.score}")
-                                            input(type="number" class="form-control leftscorebox" name="leftbounceback" placeholder="Bounceback Points" value="#{game.team1.bouncebacks}")
+                                            div(class="row")
+                                                div(class='col-md-3')
+                                                div(class='col-md-3')
+                                                div(class='col-md-3')
+                                                    label(class="label label-warning btn-block" style='float:right') Team 1 Score *
+                                                div(class='col-md-3')
+                                                    input(type="number" class="form-control scorebox" name="leftteamscore" placeholder="Team 1 Score" pattern="[0-9]" value="#{game.team1.score}")
+                                            div(class="row")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                    label(class="label label-primary btn-block" style='float:right') Bouncebacks
+                                                div(class="col-md-3")
+                                                    input(type="number" class="form-control" name="leftbounceback" placeholder="Bounceback Points" value="#{game.team1.bouncebacks}")
                                             br
                                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                            input(type="number" class="form-control rightscorebox" name="rightteamscore" placeholder="Team 2 Score" pattern="[0-9]" value="#{game.team2.score}")
-                                            input(type="number" class="form-control rightscorebox" name="rightbounceback" placeholder="Bounceback Points" value="#{game.team2.bouncebacks}")
+                                            div(class="row")
+                                                div(class="col-md-3")
+                                                    input(type="number" class="form-control" name="rightteamscore scorebox" placeholder="Team 2 Score" pattern="[0-9]" value="#{game.team2.score}")
+                                                div(class="col-md-3")
+                                                    label(class="label label-warning btn-block" style='float:right') Team 2 Score *
+                                            div(class="row")
+                                                div(class="col-md-3")
+                                                    input(type="number" class="form-control" name="rightbounceback" placeholder="Bounceback Points" value="#{game.team2.bouncebacks}")
+                                                div(class="col-md-3")
+                                                    label(class="label label-primary btn-block" style='float:right') Bouncebacks
                                             br
                                     div(class="row")
                                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                            input(type="number" class="form-control leftscorebox" name="round" placeholder="Round" value="#{game.round}")
+                                            div(class="row")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                    label(class="label label-primary btn-block" style='float:right') Round
+                                                div(class="col-md-3")
+                                                    input(type="number" class="form-control" name="round" placeholder="Round" value="#{game.round}")
                                     div(class="row")
                                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                            input(type="number" class="form-control leftscorebox" name="tossupsheard" placeholder="Tossups Heard" value="#{game.tossupsheard}")
+                                            div(class="row")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                    label(class="label label-primary btn-block" style='float:right') TUH
+                                                div(class="col-md-3")
+                                                    input(type="number" class="form-control" name="tossupsheard" placeholder="Tossups Heard" value="#{game.tossupsheard}")
                                             br
 
                                     div(class="row")
                                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                            input(type="text" class="form-control leftscorebox" name="room" placeholder="Room Number" value="#{game.room}")
-                                            input(type="text" class="form-control leftscorebox" name="moderator" placeholder="Moderator" value="#{game.moderator}")
-                                            input(type="text" class="form-control leftscorebox" name="packet" placeholder="Packet" value="#{game.packet}")
+                                            div(class="row")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                    label(class="label label-primary btn-block" style='float:right') Room
+                                                div(class="col-md-3")
+                                                    input(type="text" class="form-control" name="room" placeholder="Room Number" value="#{!game.room ? '' : game.room}")
+                                            div(class="row")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                    label(class="label label-primary btn-block" style='float:right') Moderator
+                                                div(class="col-md-3")
+                                                    input(type="text" class="form-control" name="moderator" placeholder="Moderator" value="#{!game.moderator ? '' : game.moderator}")
+                                            div(class="row")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                    label(class="label label-primary btn-block" style='float:right') Packet
+                                                div(class="col-md-3")
+                                                    input(type="text" class="form-control" name="packet" placeholder="Packet" value="#{!game.packet ? '' : game.packet}")
                                             br
 
                                     div(class='row')
                                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                            textarea(class="form-control leftscorebox" name="notes" placeholder="Notes") #{game.notes}
+                                            div(class="row")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                div(class="col-md-3")
+                                                    label(class="label label-primary btn-block" style='float:right') Notes
+                                                div(class="col-md-3")
+                                                    textarea(class="form-control" name="notes" placeholder="Notes") #{game.notes}
 
-                                    button(type="button" class="btn btn-lg btn-info" id="entergamebutton") Save Changes
-                                        span(style="padding-left:10px")
-                                            i(class="glyphicon glyphicon-check")
-                                    a(class="btn btn-lg btn-danger" href="/t/" + tournament.shortID) Cancel
-                                        span(style="padding-left:10px")
-                                            i(class="glyphicons glyphicons-remove-2")
+                                    button(type="button" class="btn btn-md btn-info" id="entergamebutton") Save Changes
+                                    a(class="btn btn-md btn-danger" href="/t/" + tournament.shortID) Cancel
 
                                     br
                                     br
-
                                     div(class="col-md-6 input-lg center-text no-border-radius tournament-info-field" id="updategamediv" style="text-align:center")
 
 block scripts

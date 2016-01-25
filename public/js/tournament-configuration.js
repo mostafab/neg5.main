@@ -79,14 +79,51 @@ $(document).ready(function() {
     });
 
     $("#entergamebutton").click(function(e) {
-        // console.log($("#gamedataform").serialize());
         // document.getElementById("gamedataform").reset();
-        $(this).prop("disabled", true);
-        $("#add-game-message").empty().
-            append("<p style='margin-left:10px; font-size:16px;color:black;'>Adding Game <i class='fa fa-spinner fa-spin'></i></p>");
-        $("#updategamediv").empty().
-            append("<p style='margin-left:10px; font-size:16px;color:black;'>Adding Game <i class='fa fa-spinner fa-spin'></i></p>");
-        sendGameToServer();
+        var wrong = false;
+        $(".point-box").each(function() {
+            $(this).removeClass("alert-danger");
+            if ($(this).val()) {
+                var val = parseFloat($(this).val());
+                if (val < 0 || Math.floor(val) - val !== 0) {
+                    wrong = true;
+                    $(this).addClass("alert-danger");
+                }
+            }
+        });
+        $(".gp-box").each(function() {
+            $(this).removeClass("alert-danger");
+            if ($(this).val()) {
+                var val = parseFloat($(this).val());
+                if (val < 0 || val > 1) {
+                    wrong = true;
+                    $(this).addClass("alert-danger");
+                }
+            } else {
+                wrong = true;
+                $(this).addClass("alert-danger");
+            }
+        });
+        $(".scorebox").each(function() {
+            $(this).removeClass("alert-danger");
+            if (!$(this).val()) {
+                wrong = true;
+                $(this).addClass("alert-danger");
+            }
+        });
+        $(".teamselect").removeClass("alert-danger");
+        if ($("#leftchoice").val() === $("#rightchoice").val()) {
+            wrong = true;
+            $(".teamselect").addClass("alert-danger");
+        }
+        if (!wrong) {
+            $(this).prop("disabled", true);
+            $("#add-game-message").empty().
+                append("<p style='margin-left:10px; font-size:16px;color:black;'>Adding Game <i class='fa fa-spinner fa-spin'></i></p>");
+            $("#updategamediv").empty().
+                append("<p style='margin-left:10px; font-size:16px;color:black;'>Adding Game <i class='fa fa-spinner fa-spin'></i></p>");
+            sendGameToServer();
+        }
     });
 
     $(".deletebutton").click(function(e) {
@@ -552,7 +589,6 @@ function sendTeamToServer() {
 }
 
 function sendGameToServer() {
-    console.log("OK, sending game.");
     $.ajax({
         url : "/tournaments/creategame",
         type : "POST",
@@ -830,7 +866,7 @@ function generatePlayerRows(players, pointScheme, side) {
     var choice = side == "LEFT" ? "#left-text" : "#right-text";
     var points = Object.keys(pointScheme);
     $(choice).empty();
-    var html = "<table class='table table-striped table-bordered table-hover table-condensed'><thead><tr>";
+    var html = "<table class='table table-condensed'><thead><tr>";
     html += "<th class='table-head'>Name</th>";
     html += "<th class='table-head'>GP</th>";
     for (var i = 0; i < points.length; i++) {
@@ -844,7 +880,7 @@ function generatePlayerRows(players, pointScheme, side) {
         html += "<tr>";
         html += "<input type='hidden' value='" + players[i]._id +  "' " + "name='" + "player" + playerNum + sideText + "id'" + "/>";
         html += "<td>" + players[i].player_name + "</td>";
-        html += "<td> <input class='form-control' type='number' placeholder='GP'" + "value='1' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
+        html += "<td> <input class='form-control gp-box' type='number' value='1' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
         for (var j = 0; j < points.length; j++) {
             var keyNameStr = "name='player" + playerNum + sideText + "_" + points[j] + "val' ";
             var keyId = "id='player" + playerNum + "_" + points[j] + sideText + "id' ";
@@ -854,10 +890,10 @@ function generatePlayerRows(players, pointScheme, side) {
             onkeyupString += playerNum + ',' + json + ', "' + sideText + '"' + ")' ";
             var onchangeString = "onchange=";
             onchangeString += "'updatePoints(" + playerNum + ',' + json + ', "' + sideText + '"' + ")'";
-            html += "<td><input class='form-control' type='number' placeholder='" + points[j] + "'" + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
+            html += "<td><input class='form-control point-box' type='number' " + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
         }
         var idTag = "id='" + playerNum + sideText + "pts'";
-        html += "<td> <input " + idTag + "class='form-control disabledview' type='input' placeholder='0' disabled /> </td>";
+        html += "<td> <input " + idTag + "class='form-control point-box-disabled disabledview' type='input' placeholder='0' disabled /> </td>";
         html += "</tr>";
         playerNum++;
     }
@@ -920,24 +956,6 @@ function updateGameList(gameinfo) {
 }
 
 function updateTeamList(team) {
-    // tr()
-    //     td(class="teamname") #{tournament.teams[i].team_name}
-    //     td(class="division") #{tournament.teams[i].division}
-    //     td
-    //         a(class="btn btn-sm btn-info" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
-    //         button(type="button" class="btn btn-sm btn-warning start-delete-team") Remove Team
-    // tr(style='display:none')
-    //     td
-    //     td
-    //     td
-    //         div(class="col-md-3 col-lg-3 col-sm-3")
-    //             button(class="btn btn-stats btn-sm btn-block cancel-delete-team") Never Mind
-    //         div(class="col-md-3 col-lg-3 col-sm-3")
-    //             form()
-    //                 input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
-    //                 input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
-    //                 button(type="button" class="btn btn-sm btn-danger btn-block deleteteambutton") Confirm
-    // console.log(team);
     console.log(team);
     var html = "<tr>";
     html += "<td class='teamname'>" + team.team_name + "</td>";
@@ -950,11 +968,6 @@ function updateTeamList(team) {
     html += "<form><input type='hidden' name='teamid_form' value='" + team.shortID + "'/>";
     html += "<input type='hidden' name='tournament_idteam' value='" + $("#tournament_id_change").val() + "'/>";
     html += "<button type='button' class='btn btn-sm btn-danger btn-block deleteteambutton'>Confirm</button></form></div></td></tr>";
-    // html += "<td> <form><input type='hidden' name='teamid_form' value='" + team.shortID + "'/>";
-    // html += "<input type='hidden' name='tournament_idteam' value='" + $("#tournament_id_change").val() + "'/>";
-    // html += "<a class='btn btn-sm btn-info' href='/t/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'> Details </a>";
-    // html += "<button type='button' class='btn btn-sm btn-warning deleteteambutton'> Remove Team </button>";
-    // html += "</form></td></tr>";
     $(html).hide().appendTo("#teamtablebody").fadeIn(0);
     $("#teamtablebody tr").last().fadeOut(0);
 }
@@ -987,7 +1000,6 @@ function formatPointSchemaForm(pointTypes) {
     $("#point-schema-form .pointval").each(function() {
         if ($(this).attr("name") !== "tournamentid") {
             $(this).attr("name", "pointval" + currentPointNum);
-            // console.log($(this).val() + ", " + $(this).attr("name"));
             currentPointNum++;
         }
     });
