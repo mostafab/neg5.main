@@ -790,10 +790,6 @@ function addCollaboratorsAJAX() {
         success : function(databack, status, xhr) {
             if (!databack.err && !databack.duplicate) {
                 addCollaboratorBox(databack.collab)
-            } else if (databack.err) {
-
-            } else {
-
             }
         }
     });
@@ -836,15 +832,18 @@ function showMessageInDiv(div, message, err) {
 }
 
 function removeCollabBox(button) {
-    $(button).parent().fadeOut(200, function() {
-        $(this).remove();
-    });
+    $(button).parent().remove();
 }
 
 function addCollaboratorBox(collaborator) {
-    var html = "<div class='col-md-3 statbox' style='border-radius:0;padding-bottom:20px'>";
-    html += "<p>Name : " + collaborator.name + "</p>";
-    html += "<p>Email : " + collaborator.email + "</p>";
+    var html = "";
+    if (collaborator.admin) {
+        html += "<div class='col-md-3 collab-box admin' style='padding:20px;font-size:18px;border-radius:2px'>";
+    } else {
+        html += "<div class='col-md-3 collab-box not-admin' style='padding:20px;font-size:18px;border-radius:2px'>";
+    }
+    html += "<h3>Name : " + collaborator.name + "</h3>";
+    html += "<h3>Email : " + collaborator.email + "</h3>";
     html += "<button class='btn btn-md btn-danger' style='margin-top:20px' onclick='removeCollabAJAX(this)' data-collabid='"
         + collaborator.id + "'>Remove</button>";
     html += "</div>";

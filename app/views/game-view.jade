@@ -106,15 +106,13 @@ block content
                                     div(class="row")
                                         div(class="col-lg-6 col-md-6 col-sm-6")
                                             div(class="row")
-                                                div(class='col-md-3')
-                                                div(class='col-md-3')
+                                                div(class='col-md-6')
                                                 div(class='col-md-3')
                                                     label(class="label label-warning btn-block" style='float:right') Team 1 Score *
                                                 div(class='col-md-3')
                                                     input(type="number" class="form-control scorebox" name="leftteamscore" placeholder="Team 1 Score" pattern="[0-9]" value="#{game.team1.score}")
                                             div(class="row")
-                                                div(class="col-md-3")
-                                                div(class="col-md-3")
+                                                div(class="col-md-6")
                                                 div(class="col-md-3")
                                                     label(class="label label-primary btn-block" style='float:right') Bouncebacks
                                                 div(class="col-md-3")
@@ -135,8 +133,7 @@ block content
                                     div(class="row")
                                         div(class="col-lg-6 col-md-6 col-sm-6")
                                             div(class="row")
-                                                div(class="col-md-3")
-                                                div(class="col-md-3")
+                                                div(class="col-md-6")
                                                 div(class="col-md-3")
                                                     label(class="label label-primary btn-block" style='float:right') Round
                                                 div(class="col-md-3")
@@ -144,8 +141,7 @@ block content
                                     div(class="row")
                                         div(class="col-lg-6 col-md-6 col-sm-6")
                                             div(class="row")
-                                                div(class="col-md-3")
-                                                div(class="col-md-3")
+                                                div(class="col-md-6")
                                                 div(class="col-md-3")
                                                     label(class="label label-primary btn-block" style='float:right') TUH
                                                 div(class="col-md-3")
@@ -155,22 +151,19 @@ block content
                                     div(class="row")
                                         div(class="col-lg-6 col-md-6 col-sm-6")
                                             div(class="row")
-                                                div(class="col-md-3")
-                                                div(class="col-md-3")
+                                                div(class="col-md-6")
                                                 div(class="col-md-3")
                                                     label(class="label label-primary btn-block" style='float:right') Room
                                                 div(class="col-md-3")
                                                     input(type="text" class="form-control" name="room" placeholder="Room Number" value="#{!game.room ? '' : game.room}")
                                             div(class="row")
-                                                div(class="col-md-3")
-                                                div(class="col-md-3")
+                                                div(class="col-md-6")
                                                 div(class="col-md-3")
                                                     label(class="label label-primary btn-block" style='float:right') Moderator
                                                 div(class="col-md-3")
                                                     input(type="text" class="form-control" name="moderator" placeholder="Moderator" value="#{!game.moderator ? '' : game.moderator}")
                                             div(class="row")
-                                                div(class="col-md-3")
-                                                div(class="col-md-3")
+                                                div(class="col-md-6")
                                                 div(class="col-md-3")
                                                     label(class="label label-primary btn-block" style='float:right') Packet
                                                 div(class="col-md-3")
@@ -180,12 +173,11 @@ block content
                                     div(class='row')
                                         div(class="col-lg-6 col-md-6 col-sm-6")
                                             div(class="row")
-                                                div(class="col-md-3")
-                                                div(class="col-md-3")
-                                                div(class="col-md-3")
+                                                div(class="col-md-6")
+                                                div(class="col-md-2")
                                                     label(class="label label-primary btn-block" style='float:right') Notes
-                                                div(class="col-md-3")
-                                                    textarea(class="form-control" name="notes" placeholder="Notes") #{game.notes}
+                                                div(class="col-md-4")
+                                                    textarea(class="form-control" name="notes" placeholder="Notes" style='min-height:200px') #{game.notes}
 
                                     button(type="button" class="btn btn-md btn-info" id="entergamebutton") Save Changes
                                     a(class="btn btn-md btn-danger" href="/t/" + tournament.shortID) Cancel

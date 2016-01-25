@@ -40,8 +40,9 @@ block content
                             ul(class="nav nav-pills no-border-radius")
                                 li(class="active")
                                     a(href="#overview" data-toggle="tab") Overview
-                                li
-                                    a(href="#divisions" data-toggle="tab") Divisions/Point Scheme
+                                if tournamentd._id == tournament.directorid
+                                    li
+                                        a(href="#divisions" data-toggle="tab") Divisions/Point Scheme
                                 li
                                     a(href="#games" data-toggle="tab") Games/Scoresheet
                                 li
@@ -57,57 +58,65 @@ block content
         div(class="row")
                 div(class='col-sm-12 col-md-12')
                     div(class="tab-content")
-
                         div(class="tab-pane fade active in" id="overview")
-                            div(class="panel panel-default")
-                                div(class="panel-heading collapsable") Tournament Overview
-                                div(class="panel-body")
-                                    form(id="tournament-overview-form")
-                                        input(type="hidden" value="#{tournament._id}" name="tournamentid")
-                                        div(class="row")
-                                            div(class="col-md-6")
-                                                    label(class="label label-primary col-xs-4") Name
-                                                    div(class="form-group col-xs-8")
-                                                        input(
-                                                            type="text",
-                                                            name="tournament_name",
-                                                            value="#{tournament.tournament_name}",
-                                                            class="form-control input-medium center-text no-border-radius"
-                                                        )
-                                                    label(class="label label-primary col-xs-4") Location
-                                                    div(class="form-group col-xs-8")
-                                                        input(
-                                                            type="text",
-                                                            name="tournament_location",
-                                                            value="#{tournament.location}",
-                                                            class="form-control input-medium center-text no-border-radius"
-                                                        )
-                                                    label(class="label label-primary col-xs-4") Date
-                                                    div(class="form-group col-xs-8")
-                                                        if tournament.date
-                                                            input(
-                                                                type="date",
-                                                                name="tournament_date",
-                                                                value="#{dateConverter(tournament.date)}",
-                                                                class="form-control input-medium center-text no-border-radius"
-                                                            )
-                                                        else
-                                                            input(
-                                                                type="date",
-                                                                name="tournament_date",
-                                                                class="form-control input-medium center-text no-border-radius"
-                                                            )
-
-                                        div(class="row")
-                                            div(class="col-md-12")
-                                                label(class="label label-primary col-xs-2") Description
-                                                div(class="form-group col-xs-8")
-                                                    textarea(name="tournament_description" class="form-control" rows="10") #{tournament.description}
-
+                            if tournamentd._id == tournament.directorid
+                                div(class="panel panel-default")
+                                    div(class="panel-heading collapsable") Tournament Overview
+                                    div(class="panel-body")
+                                        form(id="tournament-overview-form")
+                                            input(type="hidden" value="#{tournament._id}" name="tournamentid")
+                                            div(class="row")
                                                 div(class="col-md-6")
-                                                    button(type="button" class="btn btn-lg btn-success" id="edittournamentbutton") Save Changes
-                                                    div(id="tournament-update-msgdiv")
-                                                        p(style="margin:10px; font-size:18px")
+                                                        label(class="label label-primary col-xs-4") Name
+                                                        div(class="form-group col-xs-8")
+                                                            input(
+                                                                type="text",
+                                                                name="tournament_name",
+                                                                value="#{tournament.tournament_name}",
+                                                                class="form-control input-medium center-text no-border-radius"
+                                                            )
+                                                        label(class="label label-primary col-xs-4") Location
+                                                        div(class="form-group col-xs-8")
+                                                            input(
+                                                                type="text",
+                                                                name="tournament_location",
+                                                                value="#{tournament.location}",
+                                                                class="form-control input-medium center-text no-border-radius"
+                                                            )
+                                                        label(class="label label-primary col-xs-4") Question Set
+                                                        div(class="form-group col-xs-8")
+                                                            input(
+                                                                type="text",
+                                                                name="tournament_qset",
+                                                                value="#{tournament.questionSet}",
+                                                                class="form-control input-medium center-text no-border-radius"
+                                                            )
+                                                        label(class="label label-primary col-xs-4") Date
+                                                        div(class="form-group col-xs-8")
+                                                            if tournament.date
+                                                                input(
+                                                                    type="date",
+                                                                    name="tournament_date",
+                                                                    value="#{dateConverter(tournament.date)}",
+                                                                    class="form-control input-medium center-text no-border-radius"
+                                                                )
+                                                            else
+                                                                input(
+                                                                    type="date",
+                                                                    name="tournament_date",
+                                                                    class="form-control input-medium center-text no-border-radius"
+                                                                )
+
+                                            div(class="row")
+                                                div(class="col-md-12")
+                                                    label(class="label label-primary col-xs-2") Description
+                                                    div(class="form-group col-xs-8")
+                                                        textarea(name="tournament_description" class="form-control" rows="10") #{tournament.description}
+
+                                                    div(class="col-md-6")
+                                                        button(type="button" class="btn btn-lg btn-success" id="edittournamentbutton") Save Changes
+                                                        div(id="tournament-update-msgdiv")
+                                                            p(style="margin:10px; font-size:18px")
 
 
 
@@ -115,29 +124,39 @@ block content
                                 div(class="panel-heading collapsable") Collaborators
 
                                 div(class="panel-body")
-                                    div(class="row")
-                                        div(class="col-md-4" style='background-color:transparent')
-                                            form(id="searchcollabform")
-                                                input(id="searchcollabinput" type="text" class="form-control" placeholder="Add Collaborator" name="collab")
-                                                button(type="button" class="btn btn-sm btn-info" id="searchcollabbutton") Search
+                                    if (tournamentd._id == tournament.directorid)
+                                        div(class="row")
+                                            div(class="col-md-3" style='background-color:transparent')
+                                                form(id="searchcollabform")
+                                                    input(id="searchcollabinput" type="text" class="form-control" placeholder="Add Collaborator" name="collab")
+                                                    button(type="button" class="btn btn-sm btn-info" id="searchcollabbutton") Search
 
-                                        div(class="col-md-6" style="background-color:transparent;margin-top:0")
-                                            form(name="collabs" id="addcollabform")
-                                                input(type='hidden' name="tournamentid" value="#{tournament.shortID}")
-                                                select(name="collaborators" class="form-control" size="15" id="directorsoptions")
-                                                    option(value="" disabled) Directors will show here.
-                                            button(type="button" class="btn btn-sm btn-success" id="addcollabbutton") Add Selected
-                                    br
-                                    br
+                                            div(class="col-md-3" style="background-color:transparent;margin-top:0")
+                                                form(name="collabs" id="addcollabform")
+                                                    input(type='hidden' name="tournamentid" value="#{tournament.shortID}")
+                                                    select(name="collaborators" class="form-control" size="15" id="directorsoptions")
+                                                        option(value="" disabled) Directors will show here.
+                                                    label(class="btn btn-sm btn-info") Add as Admin
+                                                        input(type="checkbox" name='admin' style='margin-left:10px')
+                                                button(type="button" class="btn btn-sm btn-success" id="addcollabbutton") Add Selected
+                                        br
+                                        br
 
                                     div(class="row")
                                         div(id="collaboratorsdiv" style="margin-left:25px")
                                             each person, i in tournament.collaborators
-                                                div(class="col-md-3 center-text no-border-radius statbox" style='border-radius:0;padding:20px;')
-                                                    p Name : #{person.name}
-                                                    p Email : #{person.email}
-
-                                                    button(class="btn btn-md btn-danger removcollab" style='margin-top:20px' data-collabid="#{person.id}") Remove
+                                                if person.admin || person._id == tournament.directorid
+                                                    div(class="col-md-3 center-text collab-box admin" style='padding:20px;font-size:18px;border-radius:2px')
+                                                        h3 Name : #{person.name}
+                                                        h3 Email : #{person.email}
+                                                        if (tournament.directorid == tournamentd._id)
+                                                            button(class="btn btn-md btn-danger removcollab" style='margin-top:20px;' data-collabid="#{person.id}") Remove
+                                                else
+                                                    div(class="col-md-3 center-text collab-box not-admin" style='padding:20px;font-size:18px;border-radius:2px')
+                                                        h3 Name : #{person.name}
+                                                        h3 Email : #{person.email}
+                                                        if (tournament.directorid == tournamentd._id)
+                                                            button(class="btn btn-md btn-danger removcollab" style='margin-top:20px;' data-collabid="#{person.id}") Remove
 
                         div(class="tab-pane fade" id="divisions")
                             div(class="panel panel-default")
@@ -238,8 +257,7 @@ block content
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
                                                         div(class="row")
-                                                            div(class="col-md-3")
-                                                            div(class="col-md-3")
+                                                            div(class="col-md-6")
                                                             div(class="col-md-3")
                                                                 label(class="label label-warning btn-block" style='float:right') Team 1 Score *
                                                             div(class="col-md-3")
@@ -267,8 +285,7 @@ block content
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
                                                         div(class="row")
-                                                            div(class="col-md-3")
-                                                            div(class="col-md-3")
+                                                            div(class="col-md-6")
                                                             div(class="col-md-3")
                                                                 label(class="label label-primary btn-block" style='float:right') Round
                                                             div(class="col-md-3")
@@ -276,8 +293,7 @@ block content
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
                                                         div(class="row")
-                                                            div(class="col-md-3")
-                                                            div(class="col-md-3")
+                                                            div(class="col-md-6")
                                                             div(class="col-md-3")
                                                                 label(class="label label-primary btn-block" style='float:right') TUH
                                                             div(class="col-md-3")
@@ -286,8 +302,7 @@ block content
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
                                                         div(class="row")
-                                                            div(class="col-md-3")
-                                                            div(class="col-md-3")
+                                                            div(class="col-md-6")
                                                             div(class="col-md-3")
                                                                 label(class="label label-primary btn-block" style='float:right') Room
                                                             div(class="col-md-3")
@@ -295,8 +310,7 @@ block content
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
                                                         div(class="row")
-                                                            div(class="col-md-3")
-                                                            div(class="col-md-3")
+                                                            div(class="col-md-6")
                                                             div(class="col-md-3")
                                                                 label(class="label label-primary btn-block" style='float:right') Moderator
                                                             div(class="col-md-3")
@@ -304,8 +318,7 @@ block content
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
                                                         div(class="row")
-                                                            div(class="col-md-3")
-                                                            div(class="col-md-3")
+                                                            div(class="col-md-6")
                                                             div(class="col-md-3")
                                                                 label(class="label label-primary btn-block" style='float:right') Packet
                                                             div(class="col-md-3")
@@ -315,12 +328,11 @@ block content
                                                 div(class='row')
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
                                                         div(class="row")
+                                                            div(class="col-md-6")
                                                             div(class="col-md-3")
+                                                                label(class="label label-primary btn-block" style='float:right;') Notes
                                                             div(class="col-md-3")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-primary btn-block" style='float:right') Notes
-                                                            div(class="col-md-3")
-                                                                textarea(class="form-control" name="notes" placeholder="Notes")
+                                                                textarea(class="form-control" name="notes" placeholder="Notes" style='min-height:200px')
 
                                                 button(type="button" class="btn btn-md btn-success" id="entergamebutton") Add Game Information
 
@@ -348,7 +360,7 @@ block content
                                                             th(class="table-head") Team 2
                                                             th(class="table-head") Team 2 Score
                                                             th(class="table-head") Tossups Heard
-                                                            th(class="table-head") Edit
+                                                            th(class="table-head") Details
                                                     tbody(id="gametablebody" class="list")
                                                         each val, i in tournament.games
                                                             tr()
@@ -359,12 +371,14 @@ block content
                                                                 td(class="team2score") #{tournament.games[i].team2.score}
                                                                 td(class="tuheard") #{tournament.games[i].tossupsheard}
                                                                 td
-                                                                    form()
-                                                                        input(type="hidden" name="gameid_form" value='#{tournament.games[i].shortID}')
-                                                                        input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
+                                                                    if tournamentd._id == tournament.directorid
+                                                                        form()
+                                                                            input(type="hidden" name="gameid_form" value='#{tournament.games[i].shortID}')
+                                                                            input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
+                                                                            a(class="btn btn-sm btn-info editbutton" href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
+                                                                            button(type="button" class="btn btn-sm btn-warning deletebutton") Remove Game
+                                                                    else
                                                                         a(class="btn btn-sm btn-info editbutton" href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
-                                                                        button(type="button" class="btn btn-sm btn-warning deletebutton") Remove Game
-
 
                         div(class="tab-pane fade" id="teams")
                             div(class="panel panel-default")
@@ -453,27 +467,30 @@ block content
                                                         tr
                                                             th(class="table-head") Team
                                                             th(class="table-head") Division
-                                                            th(class="table-head") Edit
+                                                            th(class="table-head") Details
                                                     tbody(id="teamtablebody" class="list")
                                                         each val, i in tournament.teams
                                                             tr()
                                                                 td(class="teamname") #{tournament.teams[i].team_name}
                                                                 td(class="division") #{tournament.teams[i].division}
+
                                                                 td
                                                                     a(class="btn btn-sm btn-info" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
-                                                                    button(type="button" class="btn btn-sm btn-warning start-delete-team")
-                                                                        i(class="glyphicon glyphicon-remove")
-                                                            tr(style='display:none')
-                                                                td
-                                                                td
-                                                                td
-                                                                    div(class="col-md-3 col-lg-3 col-sm-3")
-                                                                        button(class="btn btn-stats btn-sm btn-block cancel-delete-team") Never Mind
-                                                                    div(class="col-md-3 col-lg-3 col-sm-3")
-                                                                        form()
-                                                                            input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
-                                                                            input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
-                                                                            button(type="button" class="btn btn-sm btn-danger btn-block deleteteambutton") Confirm
+                                                                    if tournamentd._id == tournament.directorid
+                                                                        button(type="button" class="btn btn-sm btn-warning start-delete-team")
+                                                                            i(class="glyphicon glyphicon-remove")
+                                                            if tournamentd._id == tournament.directorid
+                                                                tr(style='display:none')
+                                                                    td
+                                                                    td
+                                                                    td
+                                                                        div(class="col-md-3 col-lg-3 col-sm-3")
+                                                                            button(class="btn btn-stats btn-sm btn-block cancel-delete-team") Never Mind
+                                                                        div(class="col-md-3 col-lg-3 col-sm-3")
+                                                                            form()
+                                                                                input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
+                                                                                input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
+                                                                                button(type="button" class="btn btn-sm btn-danger btn-block deleteteambutton") Confirm
 
 
 

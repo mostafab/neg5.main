@@ -24,13 +24,20 @@ module.exports = function(app) {
     });
 
     app.post("/tournaments/edit", function(req, res, next) {
-        tournamentController.updateTournamentInformation(req.body.tournamentid, req.body, function(err) {
-            if (err) {
-                res.status(500).send({err : err});
-            } else {
-                res.status(200).send({err : null});
-            }
-        });
+        if (!req.session.director) {
+            res.status(401).end();
+        } else {
+            tournamentController.updateTournamentInformation(req.body.tournamentid, req.body, req.session.director._id, function(err, unauthorized) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).end();
+                } else if (unauthorized) {
+                    res.status(401).end();
+                } else {
+                    res.status(200).send({err : null});
+                }
+            });
+        }
     });
 
     app.route('/create')
@@ -43,7 +50,6 @@ module.exports = function(app) {
         });
 
     app.post("/t/:tid/delete", function(req, res) {
-        // console.log(req.params);
         if (!req.session.director) {
             return res.status(401).redirect("/");
         }
@@ -94,8 +100,8 @@ module.exports = function(app) {
     });
 
     app.post("/tournaments/addCollaborator", function(req, res, next) {
-        // console.log(req.body);
         var collaborator = JSON.parse(req.body.collaborators);
+        collaborator.admin = !req.body.admin ? false : true;
         tournamentController.addCollaborator(req.body.tournamentid, collaborator, function(err, duplicate) {
             if (err) {
                 res.status(500).send({err : err});
@@ -415,7 +421,6 @@ module.exports = function(app) {
         });
 
     app.get("/t/:tid/teams/:teamid", function(req, res) {
-        // Add check for session here
         if (!req.session.director) {
             return res.redirect("/");
         }
@@ -436,7 +441,13 @@ module.exports = function(app) {
                                 teamPlayers.push(result.players[i]);
                             }
                         }
-                        res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : result, tournamentd : req.session.director});
+                        var tourney = {};
+                        tourney.tournament_name = result.tournament_name;
+                        tourney._id = result._id;
+                        tourney.directorid = result.directorid;
+                        tourney.shortID = result.shortID;
+                        tourney.divisions = result.divisions;
+                        res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, tournamentd : req.session.director});
                     } else {
                         res.status(404).render("not-found", {tournamentd: req.session.director, msg : "Could not find that team."})
                     }

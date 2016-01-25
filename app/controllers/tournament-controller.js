@@ -46,6 +46,7 @@ function findTournamentsByDirector(directorKey, callback) {
             for (var i = 0; i < result.length; i++) {
                 var tournament = {};
                 tournament._id = result[i]._id;
+                tournament.directorid = result[i].directorid;
                 tournament.tournament_name = result[i].tournament_name;
                 tournament.shortID = result[i].shortID;
                 tournament.location = result[i].location;
@@ -75,6 +76,15 @@ function findTournamentById(id, callback) {
         } else if (!result) {
             return callback(null, null);
         } else {
+            result.collaborators.sort(function(first, second) {
+                if (first.admin && !second.admin) {
+                    return -1;
+                } else if (second.admin && !first.admin) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
             result.games.sort(function(game1, game2) {
                 return game1.round - game2.round;
             });
@@ -763,12 +773,28 @@ function updateDivisions(tournamentid, divisions, callback) {
 * @param information new information about the tournament
 * @param callback callback with an error (or null)
 */
-function updateTournamentInformation(tournamentid, information, callback) {
-    Tournament.update({_id : tournamentid},
-            {"$set" : {tournament_name : information.tournament_name, location : information.tournament_location,
-                    date : information.tournament_date, description : information.tournament_description}}, function(err) {
-                        callback(err);
-                    });
+function updateTournamentInformation(tournamentid, information, directorid, callback) {
+    Tournament.findOne({_id : tournamentid}, {directorid : 1, collaborators : 1}, function(err, result) {
+        if (err) {
+            callback(err, null);
+        } else if (!result) {
+            callback(null, null);
+        } else {
+            var filtered = result.collaborators.filter(function(collab) {
+                return collab._id == directorid;
+            });
+            if (result.directorid == directorid || filtered.length > 0) {
+                Tournament.update({_id : tournamentid},
+                        {"$set" : {tournament_name : information.tournament_name, location : information.tournament_location,
+                                date : information.tournament_date, description : information.tournament_description,
+                                    questionSet : information.tournament_qset}}, function(err) {
+                                    callback(err, null);
+                                });
+            } else {
+                callback(null, "Unauthorized");
+            }
+        }
+    });
 }
 
 /**
