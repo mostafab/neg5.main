@@ -58,13 +58,15 @@ block content
                         select(name="tournamentOne" class="form-control tournament-select" id="left-select")
                             option(disabled selected) Select First Tournament
                             each tournament, i in tournaments
-                                option(value="#{tournament._id}") #{tournament.tournament_name}
+                                if tournament.directorid == tournamentd._id
+                                    option(value="#{tournament._id}") #{tournament.tournament_name}
 
                     div(class="col-sm-6")
                         select(name="tournamentTwo" class="form-control tournament-select" id='right-select')
                             option(disabled selected) Select Second Tournament
                             each tournament, i in tournaments
-                                option(value="#{tournament._id}") #{tournament.tournament_name}
+                                if tournament.directorid == tournamentd._id
+                                    option(value="#{tournament._id}") #{tournament.tournament_name}
 
                     div(class="col-md-12" style="height:10px")
                     div(class="col-md-12")

@@ -141,10 +141,28 @@ td {
 }
 
 .collab-box {
+    -webkit-transition: background-color .5s;
+    -moz-transition: background-color .5s;
+    -o-transition: background-color .5s;
+    -ms-transition: background-color .5s;
+    transition: background-color .5s;
+    background: rgba(100, 100, 100, .2);
+    border-left-width: 10px;
+    border-left-style: solid;
     border-radius: 5px;
-    border-style: solid;
-    background-color: #008888;
-    color: white;
+    margin: 10px;
+}
+
+.collab-box:hover {
+    background: rgba(100, 100, 100, .3);
+}
+
+.admin {
+    border-left-color: #008888;
+}
+
+.not-admin {
+    border-left-color: #EC971F;
 }
 
 .btn {
