@@ -314,7 +314,8 @@ module.exports = function(app) {
                 } else if (!tournament) {
                     res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
                 } else {
-                    if (hasPermission(tournament, req.session.director)) {
+                    var hasPermission = getPermission(tournament, req.session.director);
+                    if (hasPermission.permission) {
                         res.render("scoresheet", {tournamentd : req.session.director, tournamentName : tournament.tournament_name, tid : tournament._id,
                             shortID : tournament.shortID, teams : tournament.teams, maxRound : tournament.maxRound});
                     } else {
@@ -427,7 +428,8 @@ module.exports = function(app) {
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var team = null;
             if (result) {
-                if (hasPermission(result, req.session.director)) {
+                var hasPermission = getPermission(result, req.session.director);
+                if (hasPermission.permission) {
                     for (var i = 0; i < result.teams.length; i++) {
                         if (result.teams[i].shortID == req.params.teamid) {
                             team = result.teams[i];
@@ -447,7 +449,7 @@ module.exports = function(app) {
                         tourney.directorid = result.directorid;
                         tourney.shortID = result.shortID;
                         tourney.divisions = result.divisions;
-                        res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, tournamentd : req.session.director});
+                        res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, tournamentd : req.session.director, admin : hasPermission.admin});
                     } else {
                         res.status(404).render("not-found", {tournamentd: req.session.director, msg : "Could not find that team."})
                     }
@@ -468,7 +470,8 @@ module.exports = function(app) {
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var game = null;
             if (result) {
-                if (hasPermission(result, req.session.director)) {
+                var hasPermission = getPermission(result, req.session.director)
+                if (hasPermission.permission) {
                     for (var i = 0; i < result.games.length; i++) {
                         if (result.games[i].shortID == req.params.gid) {
                             game = result.games[i];
@@ -476,7 +479,6 @@ module.exports = function(app) {
                         }
                     }
                     if (game !== null) {
-                        // console.log(result.players);
                         var team1Players = [];
                         var team2Players = [];
                         for (var i = 0; i < result.players.length; i++) {
@@ -511,13 +513,15 @@ module.exports = function(app) {
                 } else if (result == null) {
                     res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
                 } else {
-                    if (hasPermission(result, req.session.director)) {
+                    var hasPermission = getPermission(result, req.session.director);
+                    if (hasPermission.permission) {
                         registrationController.findRegistrationsByTournament(req.params.tid, function(err, regs) {
                             if (err) {
                                 res.status(500).send(err);
                             } else {
                                 var linkName = result.tournament_name.replace(" ", "_").toLowerCase();
-                                res.render("tournament-view", {tournament : result, tournamentd : req.session.director, registrations : regs, linkName : linkName});
+                                res.render("tournament-view", {tournament : result, tournamentd : req.session.director, registrations : regs, linkName : linkName,
+                                    admin : hasPermission.admin});
                             }
                         });
                     } else {
@@ -545,17 +549,19 @@ function checkEmptyQuery(query) {
     return true;
 }
 
-function hasPermission(tournament, director) {
+function getPermission(tournament, director) {
     if (!director) {
-        return false;
+        return {permission : false, admin : false};
     }
     if (tournament.directorid == director._id) {
-        return true;
+        return {permission : true, admin : true};
     }
     for (var i = 0; i < tournament.collaborators.length; i++) {
-        if (director._id == tournament.collaborators[i].id) {
-            return true;
+        if (director._id == tournament.collaborators[i].id && tournament.collaborators[i].admin) {
+            return {permission : true, admin : true};
+        } else if (director._id == tournament.collaborators[i].id) {
+            return {permission : true, admin : false};
         }
     }
-    return false;
+    return {permission : false, admin : false};
 }
