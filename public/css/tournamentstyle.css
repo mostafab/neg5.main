@@ -118,6 +118,18 @@ td {
    font-weight: bold;
 }
 
+.point-box {
+    border-radius: 2px;
+}
+
+.point-box-disabled {
+    border-radius: 2px;
+}
+
+.gp-box {
+    border-radius: 2px;
+}
+
 .tournament-info-field {
     border-radius: 3px;
     border-color: transparent;
@@ -205,13 +217,29 @@ td {
 
 .leftscorebox {
     width: 25%;
-    transform: translateX(300%);
+    /*transform: translateX(300%);*/
     border-radius: 0px;
+    float: right;
 }
 
 .rightscorebox {
     width: 25%;
     border-radius: 0px;
+}
+
+#gamedataform input {
+    border-radius: 1px;
+}
+
+#changegameform input {
+    border-radius: 2px;
+    /*padding: 1px;*/
+}
+
+.label {
+    border-radius: 1px;
+    font-size: 14px;
+    padding: 5px;
 }
 
 .table-head {

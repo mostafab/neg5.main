@@ -237,39 +237,95 @@ block content
                                                     div(id="right-text" class="col-lg-6 col-md-6 col-sm-6")
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        input(type="number" class="form-control leftscorebox" name="leftteamscore" placeholder="Team 1 Score")
-                                                        input(type="number" class="form-control leftscorebox" name="leftbounceback" placeholder="Bounceback Points")
+                                                        div(class="row")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                                label(class="label label-warning btn-block" style='float:right') Team 1 Score *
+                                                            div(class="col-md-3")
+                                                                input(type="number" class="form-control scorebox" name="leftteamscore" placeholder="Team 1 Score")
+                                                        div(class='row')
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                                label(class="label label-primary btn-block" style='float:right') Bouncebacks
+                                                            div(class="col-md-3")
+                                                                input(type="number" class="form-control" name="leftbounceback" placeholder="Bounceback Points")
                                                         br
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        input(type="number" class="form-control rightscorebox" name="rightteamscore" placeholder="Team 2 Score")
-                                                        input(type="number" class="form-control rightscorebox" name="rightbounceback" placeholder="Bounceback Points")
+                                                        div(class="row")
+                                                            div(class="col-md-3")
+                                                                input(type="number" class="form-control scorebox" name="rightteamscore" placeholder="Team 2 Score")
+                                                            div(class="col-md-3")
+                                                                label(class="label label-warning btn-block" style='float:right') Team 2 Score *
+                                                        div(class="row")
+                                                            div(class="col-md-3")
+                                                                input(type="number" class="form-control" name="rightbounceback" placeholder="Bounceback Points")
+                                                            div(class="col-md-3")
+                                                                label(class="label label-primary btn-block" style='float:right') Bouncebacks
                                                         br
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        input(type="number" class="form-control leftscorebox" name="round" placeholder="Round")
+                                                        div(class="row")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                                label(class="label label-primary btn-block" style='float:right') Round
+                                                            div(class="col-md-3")
+                                                                input(type="number" class="form-control" name="round" placeholder="Round")
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        input(type="number" class="form-control leftscorebox" name="tossupsheard" placeholder="Tossups Heard")
+                                                        div(class="row")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                                label(class="label label-primary btn-block" style='float:right') TUH
+                                                            div(class="col-md-3")
+                                                                input(type="number" class="form-control" name="tossupsheard" placeholder="Tossups Heard")
                                                         br
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        input(type="text" class="form-control leftscorebox" name="room" placeholder="Room")
+                                                        div(class="row")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                                label(class="label label-primary btn-block" style='float:right') Room
+                                                            div(class="col-md-3")
+                                                                input(type="text" class="form-control" name="room" placeholder="Room")
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        input(type="text" class="form-control leftscorebox" name="moderator" placeholder="Moderator")
+                                                        div(class="row")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                                label(class="label label-primary btn-block" style='float:right') Moderator
+                                                            div(class="col-md-3")
+                                                                input(type="text" class="form-control" name="moderator" placeholder="Moderator")
                                                 div(class="row")
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        input(type="text" class="form-control leftscorebox" name="packet" placeholder="Packet")
+                                                        div(class="row")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                                label(class="label label-primary btn-block" style='float:right') Packet
+                                                            div(class="col-md-3")
+                                                                input(type="text" class="form-control" name="packet" placeholder="Packet")
                                                         br
 
                                                 div(class='row')
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        textarea(class="form-control leftscorebox" name="notes" placeholder="Notes")
+                                                        div(class="row")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                            div(class="col-md-3")
+                                                                label(class="label label-primary btn-block" style='float:right') Notes
+                                                            div(class="col-md-3")
+                                                                textarea(class="form-control" name="notes" placeholder="Notes")
 
-                                                button(type="button" class="btn btn-lg btn-success" id="entergamebutton") Add Game Information
+                                                button(type="button" class="btn btn-md btn-success" id="entergamebutton") Add Game Information
 
                                                 div(id="add-game-message")
-                                                    //p(style='margin:10px; font-size:16px; color:#009933') Hello
+
 
                             div(class="panel panel-default")
                                     div(class="panel-heading collapsable") List of Games
@@ -405,12 +461,8 @@ block content
                                                                 td(class="division") #{tournament.teams[i].division}
                                                                 td
                                                                     a(class="btn btn-sm btn-info" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
-<<<<<<< HEAD
                                                                     button(type="button" class="btn btn-sm btn-warning start-delete-team")
                                                                         i(class="glyphicon glyphicon-remove")
-=======
-                                                                    button(type="button" class="btn btn-sm btn-warning start-delete-team") Remove Team
->>>>>>> 9e4ec779782811a6231247d9edcc6edbc217ddeb
                                                             tr(style='display:none')
                                                                 td
                                                                 td

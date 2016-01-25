@@ -18,8 +18,45 @@ function escapeHtml(string) {
 $(document).ready(function() {
 
     $("#entergamebutton").click(function(e) {
-        // console.log($("#changegameform").serialize());
-        editGameAJAX();
+        var wrong = false;
+        $(".point-box").each(function() {
+            $(this).removeClass("alert-danger");
+            if ($(this).val()) {
+                var val = parseFloat($(this).val());
+                if (val < 0 || Math.floor(val) - val !== 0) {
+                    wrong = true;
+                    $(this).addClass("alert-danger");
+                }
+            }
+        });
+        $(".gp-box").each(function() {
+            $(this).removeClass("alert-danger");
+            if ($(this).val()) {
+                var val = parseFloat($(this).val());
+                if (val < 0 || val > 1) {
+                    wrong = true;
+                    $(this).addClass("alert-danger");
+                }
+            } else {
+                wrong = true;
+                $(this).addClass("alert-danger");
+            }
+        });
+        $(".scorebox").each(function() {
+            $(this).removeClass("alert-danger");
+            if (!$(this).val()) {
+                wrong = true;
+                $(this).addClass("alert-danger");
+            }
+        });
+        $(".teamselect").removeClass("alert-danger");
+        if ($("#leftchoice").val() === $("#rightchoice").val()) {
+            wrong = true;
+            $(".teamselect").addClass("alert-danger");
+        }
+        if (!wrong) {
+            editGameAJAX();
+        }
     });
 
     $("#editteambutton").click(function(e) {
