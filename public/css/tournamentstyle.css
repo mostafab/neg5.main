@@ -20,7 +20,6 @@
     border-radius: 3px;
 }
 
-
 .box {
     /*background-color : rgba(190, 190, 190, .7);*/
     background-color: transparent;
@@ -147,7 +146,7 @@ td {
     -ms-transition: background-color .5s;
     transition: background-color .5s;
     background: rgba(100, 100, 100, .2);
-    border-left-width: 10px;
+    border-left-width: 20px;
     border-left-style: solid;
     border-radius: 5px;
     margin: 10px;
@@ -163,6 +162,10 @@ td {
 
 .not-admin {
     border-left-color: #EC971F;
+}
+
+.master-admin {
+    border-left-color: #31B0D5;
 }
 
 .btn {

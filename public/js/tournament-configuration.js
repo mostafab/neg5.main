@@ -842,12 +842,13 @@ function addCollaboratorBox(collaborator) {
     } else {
         html += "<div class='col-md-3 collab-box not-admin' style='padding:20px;font-size:18px;border-radius:2px'>";
     }
-    html += "<h3>Name : " + collaborator.name + "</h3>";
-    html += "<h3>Email : " + collaborator.email + "</h3>";
+    html += "<p>Name : " + collaborator.name + "</p>";
+    html += "<p>Email : " + collaborator.email + "</p>";
     html += "<button class='btn btn-md btn-danger' style='margin-top:20px' onclick='removeCollabAJAX(this)' data-collabid='"
         + collaborator.id + "'>Remove</button>";
     html += "</div>";
-    $(html).hide().appendTo("#collaboratorsdiv").fadeIn(300);
+    var div = collaborator.admin ? "#admin-div" : "#non-admin-div";
+    $(html).hide().appendTo(div).fadeIn(300);
 }
 
 function createPlayerInputField() {

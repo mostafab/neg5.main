@@ -78,7 +78,7 @@ block content
                                                             input(type="text" class="form-control" name="playername" value="#{teamPlayers[i].player_name}")
                                                     td
                                                         button(type="button" class="btn btn-sm btn-success saveplayerbutton") Save Name
-                                                        if (tournamentd._id == tournament.directorid)
+                                                        if admin
                                                             button(type="button" class="btn btn-sm btn-danger deleteplayerbutton") Remove
 
                             div(class="row col-md-3 col-lg-3 col-sm-3")
