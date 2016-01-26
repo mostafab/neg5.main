@@ -386,18 +386,18 @@ var Game = (function () {
                 for (var i = 0; i < players.length; i++) {
                     this.team1.players.push(new Player(players[i].player_name, players[i]._id, players[i].teamID));
                 }
-                this.team1.players.sort(function (player1, player2) {
-                    return player1.name.localeCompare(player2.name);
-                });
+                // this.team1.players.sort(function(player1, player2) {
+                //     return player1.name.localeCompare(player2.name);
+                // });
             } else {
-                this.team2 = new Team(name, id);
-                for (var i = 0; i < players.length; i++) {
-                    this.team2.players.push(new Player(players[i].player_name, players[i]._id, players[i].teamID));
+                    this.team2 = new Team(name, id);
+                    for (var i = 0; i < players.length; i++) {
+                        this.team2.players.push(new Player(players[i].player_name, players[i]._id, players[i].teamID));
+                    }
+                    // this.team2.players.sort(function(player1, player2) {
+                    //     return player1.name.localeCompare(player2.name);
+                    // });
                 }
-                this.team2.players.sort(function (player1, player2) {
-                    return player1.name.localeCompare(player2.name);
-                });
-            }
         }
     }, {
         key: "addPlayer",
