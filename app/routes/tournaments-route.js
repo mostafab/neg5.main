@@ -507,7 +507,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             res.redirect("/");
         } else {
-            tournamentController.findTournamentById(req.params.tid, function(err, result) {
+            tournamentController.findTournamentById(req.params.tid, function(err, result, director) {
                 if (err) {
                     res.status(500).send(err);
                 } else if (result == null) {
@@ -515,15 +515,9 @@ module.exports = function(app) {
                 } else {
                     var hasPermission = getPermission(result, req.session.director);
                     if (hasPermission.permission) {
-                        registrationController.findRegistrationsByTournament(req.params.tid, function(err, regs) {
-                            if (err) {
-                                res.status(500).send(err);
-                            } else {
-                                var linkName = result.tournament_name.replace(" ", "_").toLowerCase();
-                                res.render("tournament-view", {tournament : result, tournamentd : req.session.director, registrations : regs, linkName : linkName,
-                                    admin : hasPermission.admin});
-                            }
-                        });
+                        var linkName = result.tournament_name.replace(" ", "_").toLowerCase();
+                        res.render("tournament-view", {tournament : result, tournamentd : req.session.director, linkName : linkName,
+                            admin : hasPermission.admin, tournamentDirector : director});
                     } else {
                         res.status(401).send("You don't have permission to view this tournament");
                     }

@@ -171,7 +171,7 @@ $(document).ready(function() {
     });
 
     $("#searchcollabbutton").click(function() {
-        if ($("#searchcollabinput").val().length > 0) {
+        if ($("#searchcollabinput").val().trim().length >= 5) {
             findDirectorsAJAX();
         }
     });
@@ -233,6 +233,9 @@ $(document).ready(function() {
     $(".confirm-delete-reg").click(function() {
         deleteRegistrationAJAX($(this));
     });
+
+     $('[data-toggle="tooltip"]').tooltip();
+
 
     /*
     * Download stats
@@ -844,7 +847,7 @@ function addCollaboratorBox(collaborator) {
     }
     html += "<p>Name : " + collaborator.name + "</p>";
     html += "<p>Email : " + collaborator.email + "</p>";
-    html += "<button class='btn btn-md btn-danger' style='margin-top:20px' onclick='removeCollabAJAX(this)' data-collabid='"
+    html += "<button class='btn btn-sm btn-danger' style='margin-top:20px' onclick='removeCollabAJAX(this)' data-collabid='"
         + collaborator.id + "'>Remove</button>";
     html += "</div>";
     var div = collaborator.admin ? "#admin-div" : "#non-admin-div";
