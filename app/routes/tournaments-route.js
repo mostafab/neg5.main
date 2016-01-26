@@ -187,11 +187,22 @@ module.exports = function(app) {
                 res.status(401).end();
             } else {
                 var id = req.body["tournament_id"];
-                tournamentController.addTeamToTournament(id, req.body, function(err, teams, newTeam) {
+                tournamentController.addTeamToTournament(id, req.body, function(err, teams, newTeam, collaborators, directorid) {
                     if (err) {
                         res.status(500).end();
                     } else {
-                        res.status(200).send({"teams" : teams, "newTeam" : newTeam});
+                        admin = false;
+                        if (req.session.director._id == directorid) {
+                            admin = true;
+                        }
+                        if (!admin) {
+                            for (var i = 0; i < collaborators.length; i++) {
+                                if (collaborators[i].id == req.session.director._id && collaborators[i].admin) {
+                                    admin = true;
+                                }
+                            }
+                        }
+                        res.status(200).send({teams : teams, newTeam : newTeam, admin : admin});
                     }
                 });
             }
@@ -203,12 +214,22 @@ module.exports = function(app) {
                 res.status(401).send({game : null, tid : id});
             } else {
                 var id = req.body["tournament_id_form"];
-                tournamentController.addGameToTournament(id, req.body, [], function(err, games) {
+                tournamentController.addGameToTournament(id, req.body, [], function(err, game, collaborators, directorid) {
                     if (err) {
-                        // DO STUFF
-                        res.status(500).send({game : null, tid : id});
+                        res.status(500).end();
                     } else {
-                        res.status(200).send({game : games, tid : id});
+                        admin = false;
+                        if (req.session.director._id == directorid) {
+                            admin = true;
+                        }
+                        if (!admin) {
+                            for (var i = 0; i < collaborators.length; i++) {
+                                if (collaborators[i].id == req.session.director._id && collaborators[i].admin) {
+                                    admin = true;
+                                }
+                            }
+                        }
+                        res.status(200).send({game : game, tid : id, admin : admin});
                     }
                 });
             }
