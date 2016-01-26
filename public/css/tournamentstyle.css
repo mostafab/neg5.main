@@ -132,10 +132,6 @@ td {
 .tournament-info-field {
     border-radius: 3px;
     border-color: transparent;
-    /*border-style: solid;*/
-    /*background-color: #E6E6E6;*/
-    /*background-image: url("/img/backgrounds/tweed.png");*/
-    /*border-width: 0px;*/
     color: white;
 }
 
@@ -145,7 +141,7 @@ td {
     -o-transition: background-color .5s;
     -ms-transition: background-color .5s;
     transition: background-color .5s;
-    background: rgba(100, 100, 100, .2);
+    background: rgba(100, 100, 100, .1);
     border-left-width: 20px;
     border-left-style: solid;
     border-radius: 5px;
@@ -153,7 +149,7 @@ td {
 }
 
 .collab-box:hover {
-    background: rgba(100, 100, 100, .3);
+    background: rgba(100, 100, 100, .15);
 }
 
 .admin {
