@@ -176,12 +176,20 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
 * @param callback function called after players are found.
 */
 function findTeamMembers(tournamentid, teamid, callback) {
-    var query = Tournament.findOne({_id : tournamentid}, {players : 1, pointScheme : 1, pointsTypes : 1}, function(err, result) {
+    var query = Tournament.findOne({_id : tournamentid}, function(err, result) {
         if (err || !result) {
             callback(err, [], null, null);
         } else {
             var playersArr = result.players.filter(function(player) {
                 return player.teamID == teamid;
+            });
+            playersArr.sort(function(first, second) {
+                var secondGP = second.getTotalGamesPlayed(result);
+                var firstGP = first.getTotalGamesPlayed(result);
+                if (secondGP === firstGP) {
+                    return first.player_name.localeCompare(second.player_name);
+                }
+                return secondGP - firstGP;
             });
             callback(null, playersArr, result.pointScheme, result.pointsTypes);
         }
