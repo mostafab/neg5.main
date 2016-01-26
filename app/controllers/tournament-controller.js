@@ -154,11 +154,11 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
                 if (err) {
                     callback(err, null, null);
                 } else {
-                    Tournament.findOne({_id : tournamentid}, {teams : 1}).exec(function(err, result) {
+                    Tournament.findOne({_id : tournamentid}, {teams : 1, collaborators : 1, directorid : 1}).exec(function(err, result) {
                         if (err) {
-                            callback(err, null, null);
+                            callback(err);
                         } else {
-                            callback(null, result.teams, newteam);
+                            callback(null, result.teams, newteam, result.collaborators, result.directorid);
                         }
                     })
                 }
@@ -247,12 +247,17 @@ function addGameToTournament(tournamentid, gameinfo, phases, callback) {
     }
     var tournament = {_id : tournamentid};
     var updateQuery = {$push: {games : newGame}};
-    var options = {safe : true, upsert : true};
-    Tournament.update(tournament, updateQuery, options, function(err) {
+    Tournament.update(tournament, updateQuery, function(err) {
         if (err) {
-            callback(err, []);
+            callback(err);
         } else {
-            callback(null, newGame);
+            Tournament.findOne(tournament, {directorid : 1, collaborators : 1}, function(err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                     callback(null, newGame, result.collaborators, result.directorid);
+                }
+            });
         }
     });
 }
