@@ -49,10 +49,9 @@ block content
                                     a(href="#teams" data-toggle="tab") Teams
                                 li
                                     a(href="#stats" data-toggle="tab") Statistics
-                                if admin
+                                if tournamentd._id == tournament.directorid
                                     li
                                         a(href="#phase" data-toggle="tab") New Phase
-                                if tournamentd._id == tournament.directorid
                                     li
                                         a(href="#delete" class="btn-danger" data-toggle="tab") Delete
                     br
@@ -129,23 +128,32 @@ block content
                                         div(class="row")
                                             div(class="col-md-3" style='background-color:transparent')
                                                 form(id="searchcollabform")
-                                                    input(id="searchcollabinput" type="text" class="form-control" placeholder="Add Collaborator" name="collab")
+                                                    input(id="searchcollabinput" type="text" class="form-control" placeholder="Add Collaborator. Enter at least 5 characters" name="collab")
                                                     button(type="button" class="btn btn-sm btn-info" id="searchcollabbutton") Search
 
                                             div(class="col-md-5" style="background-color:transparent;margin-top:0")
                                                 form(name="collabs" id="addcollabform")
                                                     input(type='hidden' name="tournamentid" value="#{tournament.shortID}")
-                                                    select(name="collaborators" class="form-control" size="15" id="directorsoptions")
+                                                    select(name="collaborators" class="form-control" size="5" id="directorsoptions")
                                                         option(value="" disabled) Directors will show here.
-                                                    label(class="btn btn-sm btn-info") Add as Admin
-                                                        input(type="checkbox" name='admin' style='margin-left:10px')
+                                                    label(class="btn btn-sm btn-info"
+                                                            data-toggle='tooltip' title='Admins have access to remove games and teams, as well as add new collaborators and remove non-admin collaborators. They can also change divisions, point scheme, and tournament overview info. They cannot delete the tournament or make a new phase.') Admin Privileges
+                                                        input(type="checkbox" name='admin' style='margin-left:10px;border-width:0px;')
                                                 button(type="button" class="btn btn-sm btn-success" id="addcollabbutton") Add Selected
-                                        br
-                                        br
+                                        hr
 
                                     div(class="row")
                                         div(class="row")
-                                            span(class="label label-primary" style='margin-left:50px;font-size:18px') Admins
+                                            span(class="label label-info" style='margin-left:50px;font-size:16px;') Director
+                                        hr
+                                        div(style='margin-left:25px')
+                                            div(class="col-md-3 center-text collab-box master-admin" style='padding:20px;font-size:18px;border-radius:2px')
+                                                p Name: #{tournamentDirector.name}
+                                                p Email : #{tournamentDirector.email}
+                                    hr
+                                    div(class="row")
+                                        div(class="row")
+                                            span(class="label label-primary" style='margin-left:50px;font-size:16px') Admins
                                         hr
                                         div(style='margin-left:25px' id='admin-div')
                                             each person, i in tournament.collaborators
@@ -153,12 +161,12 @@ block content
                                                     div(class="col-md-3 center-text collab-box admin" style='padding:20px;font-size:18px;border-radius:2px')
                                                         p Name : #{person.name}
                                                         p Email : #{person.email}
-                                                        if (admin && person.id != tournamentd._id)
+                                                        if (admin && person.id != tournamentd._id && tournamentd._id == tournament.directorid)
                                                             button(class="btn btn-sm btn-danger removcollab" style='margin-top:20px;' data-collabid="#{person.id}") Remove
                                     hr
                                     div(class="row")
                                         div(class="row")
-                                            span(class="label label-warning" style='margin-left:50px;font-size:18px') Non-Admins
+                                            span(class="label label-warning" style='margin-left:50px;font-size:16px') Non-Admins
                                         hr
                                         div(style='margin-left:25px' id='non-admin-div')
                                             each person, i in tournament.collaborators
@@ -168,23 +176,6 @@ block content
                                                         p Email : #{person.email}
                                                         if (admin && person.id != tournamentd._id)
                                                             button(class="btn btn-sm btn-danger removcollab" style='margin-top:20px;' data-collabid="#{person.id}") Remove
-                                        // div(id="collaboratorsdiv" style="margin-left:25px")
-                                        //
-                                        //     each person, i in tournament.collaborators
-                                        //         if person.admin || person.id == tournament.directorid
-                                        //             div(class="col-md-3 center-text collab-box admin" style='padding:20px;font-size:18px;border-radius:2px')
-                                        //                 p Name : #{person.name}
-                                        //                 p Email : #{person.email}
-                                        //                 if (admin && person.id != tournamentd._id)
-                                        //                     button(class="btn btn-sm btn-danger removcollab" style='margin-top:20px;' data-collabid="#{person.id}") Remove
-                                        //         else
-                                        //             div(class="col-md-3 center-text collab-box not-admin" style='padding:20px;font-size:18px;border-radius:2px')
-                                        //                 p Name : #{person.name}
-                                        //                 p Email : #{person.email}
-                                        //                 if (admin && person.id != tournamentd._id)
-                                        //                     button(class="btn btn-sm btn-danger removcollab" style='margin-top:20px;' data-collabid="#{person.id}") Remove
-
-
 
                         if admin
                             div(class="tab-pane fade" id="divisions")
@@ -582,7 +573,7 @@ block content
                                                         li
                                                             button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/players") Player Stats
 
-                        if (admin)
+                        if (tournamentd._id == tournament.directorid)
                             div(class="tab-pane fade" id="phase")
 
                                 div(class="panel panel-default")

@@ -76,22 +76,19 @@ function findTournamentById(id, callback) {
         } else if (!result) {
             return callback(null, null);
         } else {
-            result.collaborators.sort(function(first, second) {
-                if (first.admin && !second.admin) {
-                    return -1;
-                } else if (second.admin && !first.admin) {
-                    return 1;
+            TournamentDirector.findOne({_id : result.directorid}, {name : 1, email : 1, _id : 0}, function(err, director) {
+                if (err) {
+                    return callback(err, null);
                 } else {
-                    return 0;
+                    result.games.sort(function(game1, game2) {
+                        return game1.round - game2.round;
+                    });
+                    result.teams.sort(function(team1, team2) {
+                        return team1.team_name.localeCompare(team2.team_name);
+                    });
+                    return callback(null, result, director);
                 }
             });
-            result.games.sort(function(game1, game2) {
-                return game1.round - game2.round;
-            });
-            result.teams.sort(function(team1, team2) {
-                return team1.team_name.localeCompare(team2.team_name);
-            });
-            return callback(null, result);
         }
     });
 }
