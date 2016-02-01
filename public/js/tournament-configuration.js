@@ -35,8 +35,10 @@ $(document).ready(function() {
     $("#add-team-button").click(function(e) {
         $("#team_name_input").css("border-color", "white");
         if ($("#team_name_input").val().length !== 0) {
-            $(this).prop("disabled", true);
-            sendTeamToServer();
+            // $(this).prop("disabled", true);
+            var teamInfo = getNewTeamInfo();
+            console.log(teamInfo);
+            sendTeamToServer(teamInfo);
         } else {
             $("#team_name_input").css("border-color", "red");
         }
@@ -72,10 +74,6 @@ $(document).ready(function() {
             $("#entergamebutton").prop("disabled", false);
             $("#entergamebutton").removeClass("btn-danger").addClass("btn-success");
         }
-    });
-
-    $("#add-point-value-button").click(function(e) {
-
     });
 
     $("#entergamebutton").click(function(e) {
@@ -142,9 +140,10 @@ $(document).ready(function() {
         removeTeam($(this).parent().serialize(), $(this));
     });
 
-    // $(".deleteteambutton").click(function(e) {
-    //
-    // });
+    $(".add-division").click(function() {
+        console.log($(this).attr('data-phase-id'));
+        addDivisionRow($(this).attr("data-phase-id"));
+    });
 
     $("#save-point-schema-button").click(function(e) {
         var pointTypes = formatPointTypes();
@@ -153,8 +152,18 @@ $(document).ready(function() {
     });
 
     $("#save-divisions-button").click(function(e) {
-        formatDivisionsForm();
-        changeDivisionsAJAX();
+        // formatDivisionsForm();
+        // changeDivisionsAJAX();
+        var divisions = [];
+        $(".division-name").each(function() {
+            var name = $(this).val();
+            var phaseID = $(this).attr('data-phase-id');
+            if (name.trim().length !== 0) {
+                var division = {phase_id : phaseID, name : name};
+                divisions.push(division);
+            }
+        });
+        changeDivisionsAJAX(divisions);
     });
 
     $("#edittournamentbutton").click(function(e) {
@@ -195,7 +204,6 @@ $(document).ready(function() {
     });
 
     $("#playerstatstable th").each(function(index, head) {
-        // console.log($(head).text());
         playerOptions.valueNames.push($(head).text());
     });
     playerList = new List("players", playerOptions);
@@ -283,6 +291,24 @@ $(document).ready(function() {
     });
 
 });
+
+function getNewTeamInfo() {
+    var teamInfo = {};
+    teamInfo.divisions = {};
+    teamInfo.teamName = $("#team_name_input").val();
+    teamInfo.players = [];
+    $(".new-team-division").each(function() {
+        var phase = $(this).attr("data-phase-id");
+        teamInfo.divisions[phase] = $(this).val();
+    });
+    $(".player-name").each(function() {
+        var name = $(this).val().trim();
+        if (name.length !== 0) {
+            teamInfo.players.push(name);
+        }
+    });
+    return teamInfo;
+}
 
 function uncheckBoxes(checkbox) {
     var parentDiv = $(checkbox).parent().parent();
@@ -549,17 +575,26 @@ function makePhaseAJAX(tournamentid, phaseName) {
         type : "POST",
         data : {tournamentid : tournamentid, phaseName : phaseName},
         success : function(databack, status, xhr) {
-            $("#new-phase").text("New phase created!");
-            var html = "<a class='btn btn-lg btn-warning' href='/t/" + databack.newID + "'>Go to Next Phase</a>";
-            $(html).hide().appendTo("#success-phase-div").fadeIn(300);
+            var selectHTML = "<option value='" + databack.newPhase.phase_id + "'>" + databack.newPhase.name + "</option>";
+            $("#phase-select").append(selectHTML);
+            $("#game-phases").append(selectHTML);
+            var tableHTML = "<tr><td><input type='text' data-phase-id='" + databack.newPhase.phase_id + "'"
+                + "value='" + databack.newPhase.name + "' class='form-control phase-box'/></td>";
+            tableHTML += "<td><button data-phase-id='" + databack.newPhase.phase_id + "' class='btn btn-danger btn-sm remove-phase'>Remove</button></td></tr>";
+            $("#phases-body").append(tableHTML);
+            $("#new-phase-name").val("");
+            console.log(databack);
         },
         error : function(xhr, status, err) {
             $("#new-phase").text("Could not make new phase.");
+        },
+        complete : function() {
+            $("#new-phase").prop("disabled", false);
         }
     });
 }
 
-function sendTeamToServer() {
+function sendTeamToServer(teamInfo) {
     $("#addteammsg").empty().
         append("<p style='margin-left:10px; margin-right:10px; font-size:16px;color:black'>Editing<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $("#teamform :input").each(function() {
@@ -568,11 +603,11 @@ function sendTeamToServer() {
     $.ajax({
         url : "/tournaments/createteam",
         type : "POST",
-        data : $("#teamform").serialize(),
+        data : {teamInfo : teamInfo, tid : $("#tournamentidajax").val()},
         success : function(databack, status, xhr) {
-            if (databack["teams"] && databack["newTeam"]) {
+            if (databack.teams && databack.newTeam) {
                 updateTeamSelectionList(databack.teams);
-                updateTeamList(databack.newTeam, databack.admin);
+                updateTeamList(databack.newTeam, databack.admin, databack.phases);
                 document.getElementById("teamform").reset();
                 showMessageInDiv("#addteammsg", "Successfully added team", null);
             }
@@ -703,18 +738,15 @@ function changePointSchemeAJAX(pointTypes) {
     });
 }
 
-function changeDivisionsAJAX() {
-    $("#divisions-form :input").each(function() {
-        $(this).val(escapeHtml($(this).val()));
-    });
+function changeDivisionsAJAX(divisions) {
     $("#pointdivmsg").empty().
         append("<p style='margin-left:10px; margin-right:10px; color:black;font-size:16px;'>Working...<i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>");
     $.ajax({
         url : "/tournaments/editDivisions",
         type : "POST",
-        data : $("#divisions-form").serialize(),
+        data : {divisions : divisions, tid : $("#tid-divisions").val()},
         success : function(databack, status, xhr) {
-            setSelectOptions("#divisions-list", databack.divisions, "No Divisions");
+            setSelectOptions(databack.divisions);
             showMessageInDiv("#pointdivmsg", "Updated divisions successfully", null);
         },
         error : function(xhr, status, err) {
@@ -812,14 +844,21 @@ function removeCollabAJAX(button) {
     });
 }
 
-function setSelectOptions(select, options, zeroMessage) {
-    var select = $(select);
-    select.empty();
-    $.each(options, function(index, value) {
-        select.append($("<option/>", {
-            value: value,
-            text: value
-        }));
+function setSelectOptions(divisions) {
+    // var select = $(select);
+    // select.empty();
+    // $.each(options, function(index, value) {
+    //     select.append($("<option/>", {
+    //         value: value,
+    //         text: value
+    //     }));
+    // });
+    $(".new-team-division").empty();
+    divisions.forEach(function(division) {
+        var id = division.phase_id;
+        var html = "<option value='" + division.phase_id + "'>" + division.name + "</option>";
+        $(".new-team-division[data-phase-id='" + id + "']").append(html);
+        console.log(division);
     });
 }
 
@@ -857,7 +896,7 @@ function addCollaboratorBox(collaborator) {
 
 function createPlayerInputField() {
     var newInput = "<input type='text'/>";
-    var classes = "form-control input-medium center-text no-border-radius";
+    var classes = "form-control input-medium center-text no-border-radius player-name";
     var name = "player" + nextPlayerNum + "_name";
     var placeholder = "Player " + nextPlayerNum;
     var autocomplete = "off";
@@ -961,11 +1000,19 @@ function updateGameList(gameinfo) {
     gameList = new List("gamediv", gameOptions);
 }
 
-function updateTeamList(team, admin) {
-    console.log(team + ", " + admin);
+function updateTeamList(team, admin, phases) {
+    console.log(team);
     var html = "<tr>";
     html += "<td class='teamname'>" + team.team_name + "</td>";
-    html += "<td class='division'>" + team.division + "</td>";
+    // for phase, j in tournament.phases
+    //     - var phaseID = tournament.phases[j].phase_id
+    //     li #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
+    html += "<td class='division'>";
+    for (var i = 0; i < phases.length; i++) {
+        var phaseID = phases[i].phase_id;
+        html += "<li>" + phases[i].name + " : " + team.divisions[phaseID] + "</li>";
+    }
+    html += "</td>";
     html += "<td><a class='btn btn-xs btn-info' href='/t/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'>Details</a>";
     if (admin) {
         html += "<button type='button' class='btn btn-warning btn-xs start-delete-team'><i class='glyphicon glyphicon-remove'></i></button>";
@@ -1000,12 +1047,14 @@ function addPointSchemaRow() {
     }
     html += "<br><br>";
     html += "</div>";
-    $("#point-schema-form").append(html);
+    $(html).hide().appendTo("#point-schema-form").fadeIn(200);
+    // $("#point-schema-form").append(html);
 }
 
-function addDivisionRow() {
-    var html = "<div class='form-group'><input type='text' style='width:50%' class='form-control input-medium no-border-radius'/></div>";
-    $("#divisions-form").append(html);
+function addDivisionRow(phase) {
+    var html = "<input type='text' data-phase-id='" + phase + "' style='width:100%' class='form-control input-medium no-border-radius division-name'/>";
+    $(html).hide().appendTo(".division-box[data-phase-id='" + phase + "']").fadeIn(200);
+    // $(".division-box[data-phase-id='" + phase + "']").append(html);
 }
 
 function formatPointSchemaForm(pointTypes) {

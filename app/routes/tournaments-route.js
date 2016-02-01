@@ -70,11 +70,18 @@ module.exports = function(app) {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        tournamentController.cloneTournament(req.body.tournamentid, req.body.phaseName, function(err, newTournamentID) {
+        // tournamentController.cloneTournament(req.body.tournamentid, req.body.phaseName, function(err, newTournamentID) {
+        //     if (err) {
+        //         res.status(500).end();
+        //     } else {
+        //         res.status(200).send({newID : newTournamentID});
+        //     }
+        // });
+        tournamentController.newPhase(req.body.tournamentid, req.body.phaseName, function(err, newPhase) {
             if (err) {
-                res.status(500).end();
+                return res.status(401).end();
             } else {
-                res.status(200).send({newID : newTournamentID});
+                res.send({newPhase : newPhase});
             }
         });
     });
@@ -162,17 +169,17 @@ module.exports = function(app) {
 
     app.post("/tournaments/editDivisions", function(req, res, next) {
         // console.log(req.body);
-        var divisions = [];
-        var divNum = 1;
-        currentDivision = "division" + divNum;
-        while (req.body[currentDivision] != undefined) {
-            if (req.body[currentDivision].length != 0) {
-                divisions.push(req.body[currentDivision]);
-            }
-            divNum++;
-            currentDivision = "division" + divNum;
-        }
-        tournamentController.updateDivisions(req.body["tournamentid"], divisions, function(err, newDivisions) {
+        // var divisions = [];
+        // var divNum = 1;
+        // currentDivision = "division" + divNum;
+        // while (req.body[currentDivision] != undefined) {
+        //     if (req.body[currentDivision].length != 0) {
+        //         divisions.push(req.body[currentDivision]);
+        //     }
+        //     divNum++;
+        //     currentDivision = "division" + divNum;
+        // }
+        tournamentController.updateDivisions(req.body.tid, req.body.divisions, function(err, newDivisions) {
             if (err) {
                 res.status(500).end();
             } else {
@@ -186,8 +193,8 @@ module.exports = function(app) {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
-                var id = req.body["tournament_id"];
-                tournamentController.addTeamToTournament(id, req.body, function(err, teams, newTeam, collaborators, directorid) {
+                var id = req.body.tid;
+                tournamentController.addTeamToTournament(id, req.body.teamInfo, function(err, teams, newTeam, collaborators, directorid, phases) {
                     if (err) {
                         res.status(500).end();
                     } else {
@@ -202,10 +209,11 @@ module.exports = function(app) {
                                 }
                             }
                         }
-                        res.status(200).send({teams : teams, newTeam : newTeam, admin : admin});
+                        res.status(200).send({teams : teams, newTeam : newTeam, admin : admin, phases : phases});
                     }
                 });
             }
+            // res.end();
         });
 
     app.route("/tournaments/creategame")
@@ -338,7 +346,7 @@ module.exports = function(app) {
                     var hasPermission = getPermission(tournament, req.session.director);
                     if (hasPermission.permission) {
                         res.render("scoresheet", {tournamentd : req.session.director, tournamentName : tournament.tournament_name, tid : tournament._id,
-                            shortID : tournament.shortID, teams : tournament.teams, maxRound : tournament.maxRound});
+                            shortID : tournament.shortID, teams : tournament.teams, maxRound : tournament.maxRound, phases : tournament.phases});
                     } else {
                         res.status(401).send("You don't have permission to view this tournament");
                     }
@@ -353,9 +361,9 @@ module.exports = function(app) {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
-                var tournamentid = req.body["tournamentid"];
-                var teamid = req.body["teamid"];
-                tournamentController.updateTeam(tournamentid, teamid, req.body, function(err, team) {
+                var tournamentid = req.body.tid;
+                var teamid = req.body.teamInfo.teamID;
+                tournamentController.updateTeam(tournamentid, teamid, req.body.teamInfo, function(err, team) {
                     if (err) {
                         res.status(500).end();
                         console.log(err);
@@ -470,6 +478,7 @@ module.exports = function(app) {
                         tourney.directorid = result.directorid;
                         tourney.shortID = result.shortID;
                         tourney.divisions = result.divisions;
+                        tourney.phases = result.phases;
                         res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, tournamentd : req.session.director, admin : hasPermission.admin});
                     } else {
                         res.status(404).render("not-found", {tournamentd: req.session.director, msg : "Could not find that team."})
@@ -484,7 +493,6 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/games/:gid", function(req, res) {
-        // console.log(req.params);
         if (!req.session.director) {
             return res.redirect("/");
         }
@@ -503,7 +511,6 @@ module.exports = function(app) {
                         var team1Players = [];
                         var team2Players = [];
                         for (var i = 0; i < result.players.length; i++) {
-                            // console.log(game.team1.team_id + " | " + result.players[i].teamID);
                             if (result.players[i].teamID == game.team1.team_id) {
                                 team1Players.push(result.players[i]);
                             } else if (result.players[i].teamID == game.team2.team_id) {

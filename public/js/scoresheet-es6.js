@@ -644,7 +644,6 @@ $(document).ready(function() {
         $(this).prev(".player-name-input").css("border-color", "transparent");
         if ($(this).prev(".player-name-input").val().length !== 0) {
             $(this).prop("disabled", true);
-            console.log($(this).attr("side"));
             addPlayer(escapeHtml($(this).prev(".player-name-input").val()), $(this).attr("data-team"), $(this).attr("data-team-name"));
         } else {
             $(this).prev(".player-name-input").css("border-color", "red");
@@ -929,32 +928,35 @@ function replaceTossupTD(td, game) {
     var player = td.attr("data-player");
     var team = game.getPlayerTeam(player);
     var validAnswerTypes = [];
-    if (game.getPhases()[row - 1].hasNeg(game.pointMap, player)) {
-        validAnswerTypes = game.pointScheme.filter(function(value) {
-            return game.pointMap[value] !== "N";
-        });
-    } else if (game.getPhases()[row - 1].hasCorrectAnswer(game.pointMap, player)) {
-        validAnswerTypes = game.pointScheme.filter(function(value) {
-            return game.pointMap[value] === "N";
-        });
-    } else {
-        validAnswerTypes = game.pointScheme;
-    }
-    if (game.getPhases()[row - 1] && !game.getPhases()[row - 1].teamAlreadyAnswered(player, team)
-            && validAnswerTypes.length !== 0) {
-        var currentVal = td.text();
-        var html = "<select class='input-xs center-text'><option value='-'>-</option>";
-        for (var i = 0; i < validAnswerTypes.length; i++) {
-            var option = "";
-            if (currentVal == validAnswerTypes[i]) {
-                option = "<option selected value='" + validAnswerTypes[i] + "'>" + validAnswerTypes[i] + "</option>";
-            } else {
-                option = "<option value='" + validAnswerTypes[i] + "'>" + validAnswerTypes[i] + "</option>";
-            }
-            html += option;
+    var phase = game.getPhases()[row - 1];
+    if (phase) {
+        if (phase.hasNeg(game.pointMap, player)) {
+            validAnswerTypes = game.pointScheme.filter(function(value) {
+                return game.pointMap[value] !== "N";
+            });
+        } else if (phase.hasCorrectAnswer(game.pointMap, player)) {
+            validAnswerTypes = game.pointScheme.filter(function(value) {
+                return game.pointMap[value] === "N";
+            });
+        } else {
+            validAnswerTypes = game.pointScheme;
         }
-        html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-tossup'></button>";
-        td.addClass("editing").html(html);
+        if (!phase.teamAlreadyAnswered(player, team)
+                && validAnswerTypes.length !== 0) {
+            var currentVal = td.text();
+            var html = "<select class='input-xs center-text'><option value='-'>-</option>";
+            for (var i = 0; i < validAnswerTypes.length; i++) {
+                var option = "";
+                if (currentVal == validAnswerTypes[i]) {
+                    option = "<option selected value='" + validAnswerTypes[i] + "'>" + validAnswerTypes[i] + "</option>";
+                } else {
+                    option = "<option value='" + validAnswerTypes[i] + "'>" + validAnswerTypes[i] + "</option>";
+                }
+                html += option;
+            }
+            html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-tossup'></button>";
+            td.addClass("editing").html(html);
+        }
     }
 }
 
@@ -989,12 +991,12 @@ function parseScoresheet(submittedGame) {
     gameToAdd.team1 = {};
     gameToAdd.team2 = {};
     gameToAdd.team1.team_id = submittedGame.team1.id;
-    gameToAdd.team1.team_name = submittedGame.team1.name;
+    // gameToAdd.team1.team_name = submittedGame.team1.name;
     gameToAdd.team1.score = submittedGame.getTeamScore(submittedGame.team1.id);
     gameToAdd.team1.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team1.id);
     gameToAdd.team1.playerStats = submittedGame.getPlayersPointValues(submittedGame.team1);
     gameToAdd.team2.team_id = submittedGame.team2.id;
-    gameToAdd.team2.team_name = submittedGame.team2.name;
+    // gameToAdd.team2.team_name = submittedGame.team2.name;
     gameToAdd.team2.score = submittedGame.getTeamScore(submittedGame.team2.id);
     gameToAdd.team2.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team2.id);
     gameToAdd.team2.playerStats = submittedGame.getPlayersPointValues(submittedGame.team2);
@@ -1003,6 +1005,7 @@ function parseScoresheet(submittedGame) {
     gameToAdd.room = $("#room-number").val();
     gameToAdd.moderator = $("#moderator").val();
     gameToAdd.packet = $("#packet").val();
+    gameToAdd.phase_id = $("#phase").val();
     gameToAdd.notes = $("#notes").val();
 
     for (var playerid in gameToAdd.team1.playerStats) {
@@ -1060,13 +1063,13 @@ function findTossupsHeardForPlayer(playerid) {
 function createScoresheet(team1, team2) {
     var html = "<thead><tr>";
     for (var i = 0; i < team1.players.length; i++) {
-        html += "<th class='player-header' title='" + team1.players[i].name + "'>" + team1.players[i].name.slice(0,2).toUpperCase() + "</th>";
+        html += "<th class='player-header' data-toggle='tooltip' data-container='body' title='" + team1.players[i].name + "'>" + team1.players[i].name.slice(0,2).toUpperCase() + "</th>";
     }
     html += "<th>Bonus</th><th>Total</th>";
     html += "<th class='alert alert-info'> TU # </th>";
     html += "<th>Total</th><th>Bonus</th>";
     for (var i = 0; i < team2.players.length; i++) {
-        html += "<th class='player-header' title='" + team2.players[i].name + "'>" + team2.players[i].name.slice(0,2).toUpperCase() + "</th>";
+        html += "<th class='player-header' data-toggle='tooltip' data-container='body' title='" + team2.players[i].name + "'>" + team2.players[i].name.slice(0,2).toUpperCase() + "</th>";
     }
     html += "</tr></thead>";
     html += "<tbody id='scoresheet-body'>";
@@ -1094,6 +1097,8 @@ function createScoresheet(team1, team2) {
     html += "<tfoot><tr class='alert alert-warning'><td id='tfoot-msg' colspan='" + colspan + "'>More rows will appear as needed.</td></tr></tfoot>";
     $("#scoresheet").empty();
     $(html).hide().appendTo("#scoresheet").fadeIn(500);
+    $('[data-toggle="tooltip"]').tooltip();
+
 }
 
 function createScoresheetRow(team1, team2, number) {

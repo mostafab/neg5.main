@@ -34,6 +34,8 @@ block content
                 div(class="col-md-12")
                     div(style="margin:20px; margin-bottom:50px")
                     h2(class="title" style='text-align:center;font-size:1.6em') #{tournament.tournament_name}
+                    hr
+                    h2(class="title" style='text-align:center;font-size:.9em;width:25%') Current Phase: #{tournament.phaseName}
                     div(style="margin:20px; margin-bottom:10px")
                     div(class="panel-body")
                         div(class="row" style="")
@@ -51,7 +53,7 @@ block content
                                     a(href="#stats" data-toggle="tab") Statistics
                                 if tournamentd._id == tournament.directorid
                                     li
-                                        a(href="#phase" data-toggle="tab") New Phase
+                                        a(href="#phase" data-toggle="tab") Phases
                                     li
                                         a(href="#delete" class="btn-danger" data-toggle="tab") Delete
                     br
@@ -270,14 +272,24 @@ block content
 
                                         div(class="col-md-6")
                                             label(class="label label-primary col-xs-4") Divisions
-                                            div(class="form-group col-xs-8")
+                                            div(class="col-md-1")
+                                            div(class="form-group col-xs-7")
                                                 form(id="divisions-form")
-                                                    input(type="hidden" name="tournamentid" value="#{tournament._id}")
-                                                    each divison, i in tournament.divisions
-                                                        div(class="form-group")
-                                                            input(type='text' style="width:50%" value="#{tournament.divisions[i]}" class='form-control input-medium no-border-radius')
+                                                    input(type="hidden" name="tournamentid" value="#{tournament._id}" id="tid-divisions")
+                                                    each phase in tournament.phases
+                                                        div(class="row")
+                                                            label(class="label label-info col-xs-3 col-md-3 col-sm-3") #{phase.name}
+                                                            button(type='button' class="btn btn-sm btn-info add-division" data-phase-id="#{phase.phase_id}")
+                                                                i(class="fa fa-plus")
+                                                            div(class="col-md-7 division-box" data-phase-id='#{phase.phase_id}')
+                                                                each division, i in tournament.divisions
+                                                                    if (division.phase_id == phase.phase_id)
+                                                                        input(type='text' style="width:100%" value="#{tournament.divisions[i].name}" class='form-control input-medium no-border-radius division-name' data-phase-id='#{phase.phase_id}')
+
+                                                        br
+                                                        br
+
                                             div(class="btn-group" style="margin-top:15px")
-                                                button(type="button" class="btn btn-md btn-info" style="margin:0" onclick='addDivisionRow()') Add Division
                                                 button(type="button" class="btn btn-md btn-success" style="margin:0" id="save-divisions-button") Save Divisions
 
                                         div(class="col-md-12")
@@ -388,7 +400,20 @@ block content
                                                             div(class="col-md-3")
                                                                 input(type="text" class="form-control" name="packet" placeholder="Packet")
                                                         br
-
+                                                div(class="row")
+                                                    div(class="col-lg-6 col-md-6 col-sm-6")
+                                                        div(class="row")
+                                                            div(class="col-md-6")
+                                                            div(class="col-md-3")
+                                                                label(class="label label-primary btn-block" style='float:right') Phase
+                                                            div(class="col-md-3")
+                                                                select(class="form-control" name='phase_id' id='game-phases')
+                                                                    each phase in tournament.phases
+                                                                        if phase.active
+                                                                            option(selected value='#{phase.phase_id}') #{phase.name}
+                                                                        else
+                                                                            option(value='#{phase.phase_id}') #{phase.name}
+                                                        br
                                                 div(class='row')
                                                     div(class="col-lg-6 col-md-6 col-sm-6")
                                                         div(class="row")
@@ -419,6 +444,7 @@ block content
                                                     thead
                                                         tr
                                                             th(class="table-head") Round
+                                                            th(class="table-head") Phase
                                                             th(class="table-head") Team 1
                                                             th(class="table-head") Team 1 Score
                                                             th(class="table-head") Team 2
@@ -429,9 +455,14 @@ block content
                                                         each val, i in tournament.games
                                                             tr()
                                                                 td(class="round") #{tournament.games[i].round}
-                                                                td(class="team1name") #{tournament.games[i].team1.team_name}
+                                                                each phase in tournament.phases
+                                                                    if phase.phase_id == tournament.games[i].phase_id
+                                                                        - console.log(phase)
+                                                                        - console.log(tournament.games[i].phase_id)
+                                                                        td(class="phase") #{phase.name}
+                                                                td(class="team1name") #{tournament.teamMap[tournament.games[i].team1.team_id].name}
                                                                 td(class="team1score") #{tournament.games[i].team1.score}
-                                                                td(class="team2name") #{tournament.games[i].team2.team_name}
+                                                                td(class="team2name") #{tournament.teamMap[tournament.games[i].team2.team_id].name}
                                                                 td(class="team2score") #{tournament.games[i].team2.score}
                                                                 td(class="tuheard") #{tournament.games[i].tossupsheard}
                                                                 td
@@ -457,7 +488,7 @@ block content
                                                     value="#{tournament._id}"
                                                 )
                                                 div(class="form-group")
-                                                    label Name*
+                                                    label Name *
                                                     input(
                                                         type="text",
                                                         name="team_name",
@@ -465,11 +496,27 @@ block content
                                                         placeholder="Team Name",
                                                         class="form-control input-medium center-text no-border-radius"
                                                     )
+                                                hr
                                                 div(class="form-group")
-                                                    label Division
-                                                    select(name="team_division" class="form-control input-medium center-text no-border-radius" id="divisions-list")
-                                                        each division, i in tournament.divisions
-                                                            option(value="#{tournament.divisions[i]}") #{division}
+                                                    div(class="row")
+                                                        div(class="col-md-6")
+                                                            label Divisions
+                                                    br
+                                                    each phase, i in tournament.phases
+                                                        div(class="row")
+                                                            div(class="col-md-1")
+                                                                label(class="label label-info btn-block") #{phase.name}
+                                                            div(class="col-md-5")
+                                                                select(class="form-control new-team-division" data-phase-id='#{phase.phase_id}')
+                                                                    each division in tournament.divisions
+                                                                        if division.phase_id == phase.phase_id
+                                                                            option(value='#{division.name}') #{division.name}
+                                                        br
+                                                        // option(value="#{tournament.divisions[i]}") #{division}
+                                                    // select(name="team_division" class="form-control input-medium center-text no-border-radius" id="divisions-list")
+                                                    //     each division, i in tournament.divisions
+                                                    //         option(value="#{tournament.divisions[i]}") #{division}
+                                                hr
                                                 div(id="player-dynamic" class="form-group")
                                                     label Players
                                                     button(type="button" class="btn btn-sm btn-success no-border-radius" id="newlineplayer" style="margin: 5px") Add Player
@@ -483,13 +530,13 @@ block content
                                                         name="player1_name",
                                                         placeholder="Player 1",
                                                         autocomplete="off",
-                                                        class="form-control input-medium center-text no-border-radius"
+                                                        class="form-control input-medium center-text no-border-radius player-name"
                                                     )
                                                     input(
                                                         type="text",
                                                         name="player2_name",
                                                         autocomplete="off",
-                                                        class="form-control input-medium center-text no-border-radius"
+                                                        class="form-control input-medium center-text no-border-radius player-name"
                                                         placeholder="Player 2",
                                                     )
                                                     input(
@@ -497,14 +544,14 @@ block content
                                                         name="player3_name",
                                                         placeholder="Player 3",
                                                         autocomplete="off"
-                                                        class="form-control input-medium center-text no-border-radius"
+                                                        class="form-control input-medium center-text no-border-radius player-name"
                                                     )
                                                     input(
                                                         type="text",
                                                         name="player4_name",
                                                         placeholder="Player 4",
                                                         autocomplete="off",
-                                                        class="form-control input-medium center-text no-border-radius"
+                                                        class="form-control input-medium center-text no-border-radius player-name"
                                                     )
                                                 br
                                                 button(type="button" class="btn btn-lg btn-info no-border-radius" id="add-team-button") Add Team To Tournament
@@ -526,18 +573,20 @@ block content
                                                         i(class="glyphicon glyphicon-search")
 
                                             div(class="panel panel-default")
-                                                table(class="table table-striped table-hover table-condensed")
+                                                table(class="table table-condensed")
                                                     thead
                                                         tr
                                                             th(class="table-head") Team
-                                                            th(class="table-head") Division
+                                                            th(class="table-head") Divisions
                                                             th(class="table-head") Details
                                                     tbody(id="teamtablebody" class="list")
                                                         each val, i in tournament.teams
                                                             tr()
                                                                 td(class="teamname") #{tournament.teams[i].team_name}
-                                                                td(class="division") #{tournament.teams[i].division}
-
+                                                                td(class="division")
+                                                                    for phase, j in tournament.phases
+                                                                        - var phaseID = tournament.phases[j].phase_id
+                                                                        li #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
                                                                 td
                                                                     a(class="btn btn-xs btn-info" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
                                                                     if tournamentd._id == tournament.directorid || admin
@@ -625,15 +674,52 @@ block content
                                     div(class="panel-body")
                                         div(class="row")
                                             div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
-                                                div(class="alert alert-success")
-                                                    | Create a new phase for your tournament if you need new divisions for playoffs.
-                                                    | This action will create a new tournament with the same teams and players. You'll be
-                                                    | able to merge tournaments together if you need compiled stats by going to the "My Tournaments" page.
+                                                p(class="alert alert-success")
+                                                    | Create a new phase for your tournament. You'll be able to switch between different phases using the drop-down below.
+
                                             div(class="col-md-3 col-sm-3 col=lg-3")
                                                 div(class="form-group")
                                                     input(type='text' placeholder='Enter New Phase Name Here' class="form-control" id="new-phase-name")
                                             div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="success-phase-div")
-                                                button(class="btn btn-lg btn-success" data-tournament='#{tournament._id}' id="new-phase") New Phase
+                                                button(class="btn btn-md btn-success" data-tournament='#{tournament._id}' id="new-phase") New Phase
+
+                                            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
+                                                p(class="alert alert-success")
+                                                    | Set the Active Phase Here. New games added will be added as part of this phase by default.
+
+                                            div(class='col-md-3 col-sm-3 col-lg-3')
+                                                select(class='form-control' name='phase' id='phase-select')
+                                                    each phase in tournament.phases
+                                                        if phase.active
+                                                            option(selected value='#{phase.phase_id}') #{phase.name}
+                                                        else
+                                                            option(value='#{phase.phase_id}') #{phase.name}
+
+                                                button(class='btn btn-info btn-md') Switch Phases
+
+                                div(class="panel panel-default")
+                                    div(class="panel-heading collapsable") Current Phases
+                                    div(class="panel-body")
+                                        div(class="row")
+                                            div(class="col-md-3 col-sm-3 col-lg-3")
+                                                div(class="table-responsive")
+                                                    div(class="panel panel-default")
+                                                        table(class="table table-striped table-bordered table-hover table-condensed")
+                                                            thead
+                                                                tr
+                                                                    th(class="table-head") Phase
+                                                                    th(class="table-head") Edit
+                                                            tbody(id='phases-body')
+                                                                each phase in tournament.phases
+                                                                    tr
+                                                                        td
+                                                                            input(class='form-control phase-box' type='text' data-phase-id='#{phase.phase_id}' value='#{phase.name}')
+                                                                        td
+                                                                            button(class="btn btn-danger btn-sm remove-phase" data-phase-id='#{phase.phase_id}') Remove
+                                                div(class="row")
+                                                    div(class="col-md-3 col-sm-3 col-lg-3")
+                                                        button(class="btn btn-success btn-md") Save Phases
+
 
                         if (tournamentd._id == tournament.directorid)
                             div(class="tab-pane fade" id="delete")

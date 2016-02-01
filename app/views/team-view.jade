@@ -19,7 +19,7 @@ block content
         div(class="row")
             div(class="col-md-12")
                 div(style="margin:20px; margin-bottom:50px")
-                h2(class="title" style="width:50%" id="team-name-header") #{team.team_name} | #{tournament.tournament_name}
+                h2(class="title" style="width:50%" id="team-name-header") #{team.team_name}
                 h3(style="width:50%;border-radius:0")
                     a(class="btn btn-sm btn-info" href="/t/" + tournament.shortID) Back to #{tournament.tournament_name}
 
@@ -30,8 +30,8 @@ block content
                         div(class="panel-heading collapsable") Team Details
                         div(class="panel-body")
                             form(id="teamdetailsform")
-                                input(type="hidden" value="#{tournament._id}" name="tournamentid")
-                                input(type="hidden" value="#{team._id}" name="teamid")
+                                input(type="hidden" value="#{tournament._id}" name="tournamentid" id='tournament-id-team')
+                                input(type="hidden" value="#{team._id}" name="teamid" id='team-id')
                                 div(class="col-md-6")
                                         label(class="label label-primary col-xs-4") Name
                                         div(class="form-group col-xs-8")
@@ -42,14 +42,28 @@ block content
                                                 id = "team-name-input",
                                                 class="form-control input-medium center-text no-border-radius"
                                             )
-                                        label(class="label label-primary col-xs-4") Division
-                                        div(class="form-group col-xs-8")
-                                            select(class="form-control" name="divisionform")
-                                                each division, i in tournament.divisions
-                                                    if team.division === tournament.divisions[i]
-                                                        option(selected value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
-                                                    else
-                                                        option(value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
+                                        hr
+                                        label(class="label label-primary col-xs-4") Divisions
+                                        div(class="form-group col-md-8")
+                                            each phase, i in tournament.phases
+                                                div(class="row")
+                                                    div(class="col-md-2")
+                                                        label(class="label label-info") #{phase.name}
+                                                    div(class="col-md-10")
+                                                        select(class="form-control edit-team-division" data-phase-id='#{phase.phase_id}')
+                                                            each division in tournament.divisions
+                                                                if division.phase_id == phase.phase_id && team.divisions[phase.phase_id] == division.name
+                                                                    option(selected value='#{division.name}') #{division.name}
+                                                                else if division.phase_id == phase.phase_id
+                                                                    option(value='#{division.name}') #{division.name}
+                                                hr
+
+                                            // select(class="form-control" name="divisionform")
+                                            //     each division, i in tournament.divisions
+                                            //         if team.division === tournament.divisions[i]
+                                            //             option(selected value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
+                                            //         else
+                                            //             option(value="#{tournament.divisions[i]}") #{tournament.divisions[i]}
                                         div(class="col-md-6")
                                             button(type="button" class="btn btn-lg btn-success" id="editteambutton") Save Changes
                                             div(id="team-update-msgdiv")

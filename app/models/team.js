@@ -7,7 +7,7 @@ var playerSchema = require("./player").schema;
 */
 var teamSchema = new Schema({
     team_name : {type : String, required : true},
-    division : String,
+    divisions : {},
     shortID : {type : String, required : true},
     registration_number : String
 });

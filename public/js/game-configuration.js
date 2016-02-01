@@ -60,10 +60,16 @@ $(document).ready(function() {
     });
 
     $("#editteambutton").click(function(e) {
-        $(this).prop("disabled", true);
-        $("#team-update-msgdiv").empty().
-            append("<p style='margin:10px; font-size:16px;'>Saving Team <i class='fa fa-spinner fa-spin'></i></p>");
-        editTeamAJAX();
+        var nameInput = $("#team-name-input");
+        nameInput.removeClass("alert-danger");
+        if (nameInput.val().trim().length !== 0) {
+            $(this).prop("disabled", true);
+            $("#team-update-msgdiv").empty().
+                append("<p style='margin:10px; font-size:16px;'>Saving Team <i class='fa fa-spinner fa-spin'></i></p>");
+            editTeamAJAX();
+        } else {
+            nameInput.addClass("alert-danger");
+        }
     });
 
     $(".saveplayerbutton").click(function(e) {
@@ -155,13 +161,23 @@ function editTeamAJAX() {
     $("#teamdetailsform :input").each(function() {
         $(this).val(escapeHtml($(this).val()));
     });
+    var tid = $("#tournament-id-team").val();
+    var teamInfo = {
+        teamName : $("#team-name-input").val(),
+        teamID : $("#team-id").val(),
+        divisions : {}
+    };
+    $(".edit-team-division").each(function() {
+        var phaseID = $(this).attr('data-phase-id');
+        teamInfo.divisions[phaseID] = $(this).val();
+    });
     $.ajax({
         url : "/tournaments/teams/edit",
         type : "POST",
-        data : $("#teamdetailsform").serialize(),
+        data : {teamInfo : teamInfo, tid : tid},
         success : function(databack, status, xhr) {
-            // showTeamUpdateMsg(databack);
             if (databack.team) {
+                $("#team-name-header").text(databack.team);
                 showMessageInDiv("#team-update-msgdiv", "Success!", null);
             } else {
                 showMessageInDiv("#team-update-msgdiv", "A team with that name already exists!", "exists");

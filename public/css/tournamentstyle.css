@@ -135,6 +135,11 @@ td {
     color: white;
 }
 
+.division-name {
+    border-width: 1px;
+    border-radius: 1px;
+}
+
 .collab-box {
     -webkit-transition: background-color .5s;
     -moz-transition: background-color .5s;
