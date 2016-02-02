@@ -1,5 +1,6 @@
 var tournamentController = require('../../app/controllers/tournament-controller');
 var registrationController = require("../../app/controllers/registration-controller");
+var statsController = require("../../app/controllers/stats-controller");
 var mongoose = require("mongoose");
 var Tournament = mongoose.model("Tournament");
 
@@ -219,13 +220,14 @@ module.exports = function(app) {
     app.route("/tournaments/creategame")
         .post(function(req, res, next) {
             if (!req.session.director) {
-                res.status(401).send({game : null, tid : id});
+                res.status(401).end();
             } else {
                 var id = req.body["tournament_id_form"];
-                tournamentController.addGameToTournament(id, req.body, [], function(err, game, collaborators, directorid) {
+                tournamentController.addGameToTournament(id, req.body, [], function(err, game, collaborators, directorid, phaseName) {
                     if (err) {
                         res.status(500).end();
                     } else {
+                        console.log(game);
                         admin = false;
                         if (req.session.director._id == directorid) {
                             admin = true;
@@ -237,7 +239,7 @@ module.exports = function(app) {
                                 }
                             }
                         }
-                        res.status(200).send({game : game, tid : id, admin : admin});
+                        res.status(200).send({game : game, tid : id, admin : admin, phaseName : phaseName});
                     }
                 });
             }
@@ -498,6 +500,7 @@ module.exports = function(app) {
         }
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var game = null;
+            var teamMap = statsController.makeTeamMap(result.teams);
             if (result) {
                 var hasPermission = getPermission(result, req.session.director)
                 if (hasPermission.permission) {
@@ -508,6 +511,8 @@ module.exports = function(app) {
                         }
                     }
                     if (game !== null) {
+                        game.team1.team_name = teamMap[game.team1.team_id].name;
+                        game.team2.team_name = teamMap[game.team2.team_id].name;
                         var team1Players = [];
                         var team2Players = [];
                         for (var i = 0; i < result.players.length; i++) {

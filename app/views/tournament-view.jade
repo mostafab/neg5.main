@@ -440,7 +440,7 @@ block content
                                                     span(class="input-group-addon btn-stats")
                                                         i(class="glyphicon glyphicon-search")
                                             div(class="panel panel-default")
-                                                table(class="table table-striped table-bordered table-hover table-condensed" id='test-table')
+                                                table(class="table table-bordered table-condensed" id='test-table')
                                                     thead
                                                         tr
                                                             th(class="table-head") Round
@@ -457,8 +457,6 @@ block content
                                                                 td(class="round") #{tournament.games[i].round}
                                                                 each phase in tournament.phases
                                                                     if phase.phase_id == tournament.games[i].phase_id
-                                                                        - console.log(phase)
-                                                                        - console.log(tournament.games[i].phase_id)
                                                                         td(class="phase") #{phase.name}
                                                                 td(class="team1name") #{tournament.teamMap[tournament.games[i].team1.team_id].name}
                                                                 td(class="team1score") #{tournament.games[i].team1.score}
@@ -512,10 +510,6 @@ block content
                                                                         if division.phase_id == phase.phase_id
                                                                             option(value='#{division.name}') #{division.name}
                                                         br
-                                                        // option(value="#{tournament.divisions[i]}") #{division}
-                                                    // select(name="team_division" class="form-control input-medium center-text no-border-radius" id="divisions-list")
-                                                    //     each division, i in tournament.divisions
-                                                    //         option(value="#{tournament.divisions[i]}") #{division}
                                                 hr
                                                 div(id="player-dynamic" class="form-group")
                                                     label Players

@@ -80,7 +80,6 @@ function findTournamentById(id, callback) {
         } else if (!result) {
             return callback(null, null);
         } else {
-            console.log(result.phases);
             TournamentDirector.findOne({_id : result.directorid}, {name : 1, email : 1, _id : 0}, function(err, director) {
                 if (err) {
                     return callback(err, null);
@@ -251,11 +250,11 @@ function addGameToTournament(tournamentid, gameinfo, phases, callback) {
     newGame.phase_id = gameinfo["phase_id"];
     newGame.shortID = shortid.generate();
     newGame.team1.team_id = gameinfo["leftteamselect"];
-    newGame.team1.score = !gameinfo["leftteamscore"] ? "0" : gameinfo["leftteamscore"];
+    newGame.team1.score = !gameinfo["leftteamscore"] ? 0 : gameinfo["leftteamscore"];
     newGame.team1.bouncebacks = !gameinfo["leftbounceback"] ? 0 : gameinfo["leftbounceback"];
     // newGame.team1.team_name = gameinfo["leftteamname"];
     newGame.team2.team_id = gameinfo["rightteamselect"];
-    newGame.team2.score = !gameinfo["rightteamscore"] ? "0" : gameinfo["rightteamscore"];
+    newGame.team2.score = !gameinfo["rightteamscore"] ? 0 : gameinfo["rightteamscore"];
     newGame.team2.bouncebacks = !gameinfo["rightbounceback"] ? 0 : gameinfo["rightbounceback"];
     // newGame.team2.team_name = gameinfo["rightteamname"];
     var playerNum = 1;
@@ -293,11 +292,22 @@ function addGameToTournament(tournamentid, gameinfo, phases, callback) {
         if (err) {
             callback(err);
         } else {
-            Tournament.findOne(tournament, {directorid : 1, collaborators : 1}, function(err, result) {
+            Tournament.findOne(tournament, {directorid : 1, collaborators : 1, teams : 1, phases : 1}, function(err, result) {
                 if (err) {
                     callback(err);
                 } else {
-                     callback(null, newGame, result.collaborators, result.directorid);
+                    var teamMap = statsController.makeTeamMap(result.teams);
+                    newGame.team1.team_name = teamMap[newGame.team1.team_id].name;
+                    newGame.team2.team_name = teamMap[newGame.team2.team_id].name;
+                    // console.log(newGame.phase_id);
+                    var phaseName = "";
+                    for (var j = 0; j < result.phases.length; j++) {
+                        if (newGame.phase_id == result.phases[j].phase_id) {
+                            phaseName = result.phases[j].name;
+                            break;
+                        }
+                    }
+                    callback(null, newGame, result.collaborators, result.directorid, phaseName);
                 }
             });
         }

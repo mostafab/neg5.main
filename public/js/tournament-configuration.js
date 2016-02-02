@@ -983,6 +983,7 @@ function updateGameList(gameinfo) {
     var id = gameinfo.tid;
     var html = "<tr>";
     html += "<td>" + game.round + "</td>";
+    html += "<td>" + gameinfo.phaseName + "</td>";
     html += "<td>" + game.team1.team_name + "</td>";
     html += "<td>" + game.team1.score + "</td>";
     html += "<td>" + game.team2.team_name + "</td>";
