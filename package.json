@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.3.0",
+    "bktree": "^0.1.4",
     "body-parser": "^1.14.1",
     "client-sessions": "^0.7.0",
     "cookie-parser": "^1.4.0",
@@ -18,6 +19,7 @@
     "express-session": "^1.12.1",
     "favicon": "0.0.2",
     "jade": "^1.11.0",
+    "mdiff": "^0.4.0",
     "mongoose": "^4.2.5",
     "short-mongo-id": "^0.1.1",
     "shortid": "^2.2.4"

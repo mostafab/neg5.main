@@ -7,7 +7,8 @@ var Schema = mongoose.Schema;
 * other miscellaneous information
 */
 var gameSchema = new Schema({
-    shortID : String,
+    shortID : {type : String, required : true},
+    phase_id : String,
     forfeit : {type : Boolean, default : false},
     round : {type : Number, default : 0, set : function(num) {
         if (num == null) {

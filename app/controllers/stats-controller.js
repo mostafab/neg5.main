@@ -1,3 +1,4 @@
+var bktree = require("bktree");
 var mongoose = require("mongoose");
 var Tournament = mongoose.model("Tournament");
 
@@ -618,22 +619,25 @@ function convertToQuizbowlSchema(tournamentid, callback) {
             var qbjObj = {version : SCHEMA_VERSION, objects : []};
             var tournamentObject = {matches : [], registrations : [], type : "Tournament", name : tournament.tournament_name};
             var teamMap = {};
+            // var registrationObjects = makeRegistrationObjects(tournament.teams);
             for (var i = 0; i < tournament.teams.length; i++) {
+                var teamObj = {id : "team_" + tournament.teams[i].shortID,
+                    name : tournament.teams[i].team_name, players : [], shortID : tournament.teams[i].shortID}
                 teamMap[tournament.teams[i]._id] = {id : "team_" + tournament.teams[i].shortID,
                     name : tournament.teams[i].team_name, players : [], shortID : tournament.teams[i].shortID};
-                tournamentObject.registrations.push({$ref : "school_" + tournament.teams[i].shortID});
+                // tournamentObject.registrations.push({$ref : "school_" + tournament.teams[i].shortID});
             }
             for (var i = 0; i < tournament.players.length; i++) {
                 var teamid = tournament.players[i].teamID;
                 var playerObj = {id : "player_" + tournament.players[i].shortID, name : tournament.players[i].player_name};
                 teamMap[teamid].players.push(playerObj);
-                // console.log(playerObj);
             }
+            // var teams =
             for (var teamid in teamMap) {
                 if (teamMap.hasOwnProperty(teamid)) {
+
                     var teamObj = {type : "Registration"};
                     teamObj.id = "school_" + teamMap[teamid].shortID;
-                    // teamObj.id = "school_" + teamMap[teamid].id;
                     teamObj.name = teamMap[teamid].name;
                     teamObj.teams = [];
                     var newTeam = {id : teamMap[teamid].id, name : teamMap[teamid].name, players : teamMap[teamid].players};
@@ -649,11 +653,20 @@ function convertToQuizbowlSchema(tournamentid, callback) {
                     qbjObj.objects.push(makeGameObject(tournament.games[i], teamMap, playerMap, Object.keys(tournament.pointScheme)));
                 }
             }
-            // console.log(teamMap);
             qbjObj.objects.push(tournamentObject);
             callback(null, qbjObj);
         }
     });
+}
+
+/**
+* Couples teams together based on bktree and longest-common-subsequence
+*/
+function makeRegistrationObjects(teams) {
+    var teamNames = teams.map(function(team) {
+        return team.team_name;
+    });
+    console.log(teamNames);
 }
 
 /**
@@ -851,3 +864,4 @@ exports.convertToQuizbowlSchema = convertToQuizbowlSchema;
 exports.convertToSQBS = convertToSQBS;
 exports.exportScoresheets = exportScoresheets;
 exports.findTournamentsByNameAndSet = findTournamentsByNameAndSet;
+exports.makeTeamMap = makeTeamMap;

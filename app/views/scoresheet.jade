@@ -70,6 +70,7 @@ block content
                         div(class='col-md-6 col-lg-6 col-sm-6')
                             btn(class="btn btn-block" id='dead-tossup') Dead Tossup
 
+
                 div(class="row" id="bonus-div" style='display:none')
 
                     div(class="col-md-12 col-lg-12 col-sm-12")
@@ -127,7 +128,8 @@ block content
                                     th(class="table-head" style='text-align:center') Room
                                     th(class="table-head" style='text-align:center') Moderator
                                     th(class='table-head' style='text-align:center') Packet
-                                    th(class="table-head" style="text-align:center") Notes
+                                    th(class="table-head" style="text-align:center") Phase
+                                    th(class="table-head" style='text-align:center') Notes
                                 tbody
                                     tr(id="tr-metadata")
                                         td(class='td-scoresheet')
@@ -138,6 +140,13 @@ block content
                                             input(type='text' class='input-scoresheet' value="-" id='moderator')
                                         td(class="td-scoresheet")
                                             input(type='text' class='input-scoresheet' value='-' id='packet')
+                                        td(class='td-scoresheet')
+                                            select(class="form-control" id='phase' style='border-radius:1px')
+                                                each phase in phases
+                                                    if phase.active
+                                                        option(selected value='#{phase.phase_id}') #{phase.name}
+                                                    else
+                                                        option(value='#{phase.phase_id}') #{phase.name}
                                         td(class='td-scoresheet' width='300')
                                             textarea(class='input-scoresheet' id='notes' style='text-align:left') -
 
@@ -164,4 +173,4 @@ block content
                             i(class="fa fa-arrow-right" style='margin-left:20px')
 
 block scripts
-    script(src="/js/scoresheet-es5.js")
+    script(src="/js/scoresheet-es6.js")

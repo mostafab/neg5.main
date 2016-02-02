@@ -9,7 +9,6 @@ var TeamSchema = require("./team").schema;
 var playerSchema = new Schema({
     player_name : {type : String, required : true},
     teamID : {type : String, required : true},
-    team_name : String,
     shortID : {type : String, required : true}
 });
 
@@ -382,7 +381,7 @@ playerSchema.methods.getPointsPerTossup = function(tournament) {
 playerSchema.methods.getAllInformation = function(tournament) {
     var playerInfo = {};
     playerInfo["Player"] = this.player_name;
-    playerInfo["Team"] = this.team_name;
+    // playerInfo["Team"] = this.team_name;
     playerInfo["GP"] = this.getTotalGamesPlayed(tournament);
     playerInfo.pointTotals = this.getTotalPointValues(tournament);
     playerInfo["TUH"] = this.getTossupsHeard(tournament);
@@ -401,7 +400,7 @@ playerSchema.methods.getAllInformation = function(tournament) {
 playerSchema.methods.getAllInformationFiltered = function(tournament, constraints) {
     var playerInfo = {};
     playerInfo["Player"] = this.player_name;
-    playerInfo["Team"] = this.team_name;
+    // playerInfo["Team"] = this.team_name;
     playerInfo["GP"] = this.getTotalGamesPlayedFiltered(tournament, constraints);
     playerInfo.pointTotals = this.getTotalPointValuesFiltered(tournament, constraints);
     playerInfo["TUH"] = this.getTossupsHeardFiltered(tournament, constraints);
@@ -440,7 +439,7 @@ playerSchema.methods.formatGameInformation = function(game, tournament) {
     var gameinfo = {};
     gameinfo["Round"] = game.round;
     if (game.team1.team_id == this.teamID) {
-        gameinfo["Opponent"] = game.team2.team_name;
+        // gameinfo["Opponent"] = game.team2.team_name;
         if (game.team1.score > game.team2.score) {
             gameinfo["Result"] = "W";
         } else if (game.team2.score > game.team1.score) {
@@ -449,7 +448,7 @@ playerSchema.methods.formatGameInformation = function(game, tournament) {
             gameinfo["Result"] = "T";
         }
     } else {
-        gameinfo["Opponent"] = game.team1.team_name;
+        // gameinfo["Opponent"] = game.team1.team_name;
         if (game.team1.score > game.team2.score) {
             gameinfo["Result"] = "L";
         } else if (game.team2.score > game.team1.score) {
