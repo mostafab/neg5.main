@@ -2,7 +2,6 @@ var config = require('./config');
 var express = require('express');
 var bodyParser = require("body-parser");
 var clientsession = require("client-sessions");
-var passport = require("passport");
 var cookieParser = require("cookie-parser");
 
 module.exports = function() {
