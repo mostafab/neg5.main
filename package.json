@@ -22,6 +22,7 @@
     "mdiff": "^0.4.0",
     "mongoose": "^4.2.5",
     "short-mongo-id": "^0.1.1",
-    "shortid": "^2.2.4"
+    "shortid": "^2.2.4",
+    "passport": "^0.3.2"
   }
 }
