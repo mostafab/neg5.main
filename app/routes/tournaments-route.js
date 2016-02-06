@@ -81,6 +81,11 @@ module.exports = function(app) {
         });
     });
 
+    app.post("/tournaments/switchphases", function(req, res) {
+        console.log(req.body);
+        res.status(200).send({err : null});
+    });
+
     app.post("/tournaments/newphase", function(req, res) {
         if (!req.session.director) {
             return res.status(401).end();

@@ -267,6 +267,12 @@ $(document).ready(function() {
     //     downloadSQBS($(this));
     // });
 
+    $("#switch-phases").click(function() {
+        var newPhase = $("#phase-select").val();
+        var tid = $("#tournamentshortid").val();
+        switchPhasesAJAX(newPhase, tid);
+    });
+
     $("#new-phase").click(function() {
         $("#new-phase-name").css("border-color", "white");
         // console.log($("#new-phase-name").val());
@@ -327,7 +333,6 @@ function checkTournamentRegistration() {
             empty = true;
         }
     });
-    // console.log(empty);
     return empty;
 }
 
@@ -336,7 +341,6 @@ function removeTeamSender(button) {
 }
 
 function removeGameSender(button) {
-    // console.log($(button).parent().serialize());
     removeGame($(button).parent().serialize(), button);
 }
 
@@ -427,6 +431,19 @@ function rebuildScoresheet(round, scoresheetInfo, pointScheme) {
     html += "</tbody></table>";
     html += "</body></html>";
     return html;
+}
+
+function switchPhasesAJAX(newPhase, tid) {
+    var button = $("#switch-phases");
+    button.prop("disabled", true);
+    $.ajax({
+        url : "/tournaments/switchphases",
+        type : "POST",
+        data : {newPhaseID : newPhase, tid : tid},
+        success : function(databack, status, xhr) {
+            console.log(databack);
+        }
+    });
 }
 
 function removePhase(phaseID, button) {
