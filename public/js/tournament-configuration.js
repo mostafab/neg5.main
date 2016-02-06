@@ -32,6 +32,11 @@ $(document).ready(function() {
         $(this).next().toggle(300);
     });
 
+    $("body").on("click", ".remove-phase", function() {
+        var pid = $(this).attr("data-phase-id");
+        removePhase(pid, $(this));
+    });
+
     $("#add-team-button").click(function(e) {
         $("#team_name_input").css("border-color", "white");
         if ($("#team_name_input").val().length !== 0) {
@@ -136,7 +141,6 @@ $(document).ready(function() {
     });
 
     $("body").on("click", ".deleteteambutton", function() {
-        // console.log($(this).parent());
         removeTeam($(this).parent().serialize(), $(this));
     });
 
@@ -152,8 +156,6 @@ $(document).ready(function() {
     });
 
     $("#save-divisions-button").click(function(e) {
-        // formatDivisionsForm();
-        // changeDivisionsAJAX();
         var divisions = [];
         $(".division-name").each(function() {
             var name = $(this).val();
@@ -168,6 +170,16 @@ $(document).ready(function() {
 
     $("#edittournamentbutton").click(function(e) {
         editTournamentAJAX();
+    });
+
+    $("#phase-select-stats").change(function() {
+        var phaseID = $(this).val();
+        $(".stat-link").each(function() {
+            var tid = $(this).attr("data-tid");
+            var statsType = $(this).attr('data-stats-type');
+            var url = "/t/" + tid + "/stats/" + statsType + "?phase=" + phaseID;
+            $(this).attr("href", url);
+        });
     });
 
     $(".custombutton").click(function(e) {
@@ -227,18 +239,6 @@ $(document).ready(function() {
 
     $(".pointgroup").click(function() {
         uncheckBoxes($(this));
-    });
-
-    $(".cancel-reg").click(function() {
-        $(this).parents("tr").next("tr").slideDown(0);
-    });
-
-    $(".cancel-delete-reg").click(function() {
-        $(this).parents("tr").slideUp(0);
-    });
-
-    $(".confirm-delete-reg").click(function() {
-        deleteRegistrationAJAX($(this));
     });
 
      $('[data-toggle="tooltip"]').tooltip();
@@ -429,6 +429,26 @@ function rebuildScoresheet(round, scoresheetInfo, pointScheme) {
     return html;
 }
 
+function removePhase(phaseID, button) {
+    button.text("Remove");
+    $.ajax({
+        url : "/tournaments/removephase",
+        type : "POST",
+        data : {phaseID : phaseID, tid : $("#tournamentshortid").val()},
+        success : function(databack, status, xhr) {
+            if (databack.removed) {
+                button.parents("tr").remove();
+            } else {
+                button.text("You must have at least one phase. You cannot remove a phase that has games in it.");
+                console.log("Cannot remove phase");
+            }
+        },
+        error : function() {
+            button.text("Could not remove phase!");
+        }
+    });
+}
+
 function downloadScoresheets(anchor) {
     $.ajax({
         url : $(anchor).attr("href"),
@@ -570,20 +590,24 @@ function downloadSQBS(anchor) {
 
 function makePhaseAJAX(tournamentid, phaseName) {
     $("#new-phase").prop("disabled", true);
+    $("#new-phase").text("New Phase");
     $.ajax({
         url : "/tournaments/newphase",
         type : "POST",
         data : {tournamentid : tournamentid, phaseName : phaseName},
         success : function(databack, status, xhr) {
-            var selectHTML = "<option value='" + databack.newPhase.phase_id + "'>" + databack.newPhase.name + "</option>";
-            $("#phase-select").append(selectHTML);
-            $("#game-phases").append(selectHTML);
-            var tableHTML = "<tr><td><input type='text' data-phase-id='" + databack.newPhase.phase_id + "'"
-                + "value='" + databack.newPhase.name + "' class='form-control phase-box'/></td>";
-            tableHTML += "<td><button data-phase-id='" + databack.newPhase.phase_id + "' class='btn btn-danger btn-sm remove-phase'>Remove</button></td></tr>";
-            $("#phases-body").append(tableHTML);
-            $("#new-phase-name").val("");
-            console.log(databack);
+            if (databack.newPhase) {
+                var selectHTML = "<option value='" + databack.newPhase.phase_id + "'>" + databack.newPhase.name + "</option>";
+                $("#phase-select").append(selectHTML);
+                $("#game-phases").append(selectHTML);
+                var tableHTML = "<tr><td><input type='text' data-phase-id='" + databack.newPhase.phase_id + "'"
+                    + "value='" + databack.newPhase.name + "' class='form-control phase-box'/></td>";
+                tableHTML += "<td><button data-phase-id='" + databack.newPhase.phase_id + "' class='btn btn-danger btn-sm remove-phase'>Remove</button></td></tr>";
+                $("#phases-body").append(tableHTML);
+                $("#new-phase-name").val("");
+            } else {
+                $("#new-phase").text("There's already a phase with that name.");
+            }
         },
         error : function(xhr, status, err) {
             $("#new-phase").text("Could not make new phase.");

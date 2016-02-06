@@ -22,14 +22,14 @@ function addTournament(director, name, date, location, description, questionset,
         date : date,
         description : description,
         questionSet : questionset,
-        phases : [{phase_id : shortID.generate(), name : "Default", active : true}]
+        phases : [{phase_id : shortid.generate(), name : "Default", active : true}]
     });
     tourney.shortID = shortid.generate();
     tourney.save(function(err) {
         if (err) {
             // console.log("Unable to save tournament");
             console.log(err);
-            callback(err, null);
+            callback(err);
         } else {
             callback(null, tourney.shortID);
         }
@@ -983,6 +983,30 @@ function newPhase(tournamentid, phaseName, callback) {
     });
 }
 
+function removePhase(tournamentid, phaseID, directorid, callback) {
+    Tournament.findOne({shortID : tournamentid}, {directorid : 1, phases : 1, games : 1}, function(err, tournament) {
+        if (err) {
+            return callback(err);
+        } else if (!tournament) {
+            return callback(null, null, null);
+        } else if (tournament.directorid !== directorid) {
+            return callback(null, 'unauthorized', null);
+        } else {
+            if (tournament.phases.length === 1) {
+                return callback(null, null, false);
+            }
+            for (var i = 0; i < tournament.games.length; i++) {
+                if (tournament.games[i].phase_id == phaseID) {
+                    return callback(null, null, false);
+                }
+            }
+            Tournament.update({_id : tournament._id}, {$pull : {phases : {phase_id : phaseID}}}, function(err) {
+                return callback(err, null, true);
+            });
+        }
+    });
+}
+
 /**
 * Merges two tournaments together given their ids and a name for the resultant
 * tournament.
@@ -1109,3 +1133,4 @@ exports.mergeTournaments = mergeTournaments;
 exports.deleteTournament = deleteTournament;
 exports.loadTournamentScoresheet = loadTournamentScoresheet;
 exports.newPhase = newPhase;
+exports.removePhase = removePhase;

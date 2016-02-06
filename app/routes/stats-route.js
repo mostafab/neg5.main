@@ -21,10 +21,11 @@ module.exports = function(app) {
 
     app.get("/t/:tid/stats", function(req, res, next) {
         var tournament = req.params.tid;
-        res.redirect("/t/" + tournament + "/stats/team");
+        res.redirect("/t/" + tournament + "/stats/team?phase=-1");
     });
 
     app.get("/t/:tid/stats/team", function(req, res, next) {
+        console.log(req.query);
         statsController.getTeamsInfo(req.params.tid, function(err, tournament, teamInfo) {
             if (err) {
                 res.status(500).send(err);
@@ -40,7 +41,6 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/team/dl", function(req, res, next) {
-        // res.send("OK");
         statsController.getTeamsInfo(req.params.tid, function(err, tournament, teamInfo) {
             if (err) {
                 res.status(500).end();
@@ -57,13 +57,13 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/player", function(req, res, next) {
+        console.log(req.query);
         statsController.getPlayersInfo(req.params.tid, function(err, tournament, playersInfo) {
             if (err) {
                 res.status(500).end();
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                // console.log(playersInfo);
                 var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme};
                 res.render("quick-players", {tournament : tournamentData, playersInfo : playersInfo, custom : false});

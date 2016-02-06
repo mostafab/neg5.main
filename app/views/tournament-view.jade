@@ -605,17 +605,29 @@ block content
                             div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Generate Complete Statistics
                                     div(class="panel-body")
-
+                                        - var phaseID = -1
                                         div(class="col-md-5")
-                                            ul(class="nav nav-pills no-border-radius")
-                                                li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/team" class="btn btn-sm btn-stats") Team Stats
-                                                li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/player" class="btn btn-sm btn-stats") Player Stats
-                                                li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull" class="btn btn-sm btn-stats") Full Report
-                                                li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/roundreport" class="btn btn-sm btn-stats") Round Report
+                                            div(class="row")
+                                                div(class='col-md-6')
+                                                    select(class="form-control no-border-radius" id='phase-select-stats')
+                                                        option(value='1') All Phases
+                                                        each phase in tournament.phases
+                                                            if phase.active
+                                                                - phaseID = phase.phase_id
+                                                                option(selected value='#{phase.phase_id}') #{phase.name}
+                                                            else
+                                                                option(value='#{phase.phase_id}') #{phase.name}
+                                            div(class="row")
+                                                div(class='col-md-12')
+                                                    ul(class="nav nav-pills no-border-radius")
+                                                        li
+                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/team?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='team') Team Stats
+                                                        li
+                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/player?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='player') Player Stats
+                                                        li
+                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='teamfull') Full Report
+                                                        li
+                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='roundreport') Round Report
 
                                         div(class="col-md-7")
                                             ul(class="nav nav-pills no-border-radius")
@@ -695,7 +707,7 @@ block content
                                     div(class="panel-heading collapsable") Current Phases
                                     div(class="panel-body")
                                         div(class="row")
-                                            div(class="col-md-3 col-sm-3 col-lg-3")
+                                            div(class="col-md-5 col-sm-5 col-lg-5")
                                                 div(class="table-responsive")
                                                     div(class="panel panel-default")
                                                         table(class="table table-striped table-bordered table-hover table-condensed")

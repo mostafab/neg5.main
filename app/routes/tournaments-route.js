@@ -66,18 +66,25 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/newphase", function(req, res) {
-        // console.log(req.body);
+    app.post("/tournaments/removephase", function(req, res) {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        // tournamentController.cloneTournament(req.body.tournamentid, req.body.phaseName, function(err, newTournamentID) {
-        //     if (err) {
-        //         res.status(500).end();
-        //     } else {
-        //         res.status(200).send({newID : newTournamentID});
-        //     }
-        // });
+        tournamentController.removePhase(req.body.tid, req.body.phaseID, req.session.director._id, function(err, unauthorized, removed) {
+            if (err) {
+                res.status(500).end();
+            } else if (unauthorized) {
+                res.status(401).end();
+            } else {
+                res.send({removed : removed});
+            }
+        });
+    });
+
+    app.post("/tournaments/newphase", function(req, res) {
+        if (!req.session.director) {
+            return res.status(401).end();
+        }
         tournamentController.newPhase(req.body.tournamentid, req.body.phaseName, function(err, newPhase) {
             if (err) {
                 return res.status(401).end();
