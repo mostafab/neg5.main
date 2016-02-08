@@ -82,8 +82,19 @@ module.exports = function(app) {
     });
 
     app.post("/tournaments/switchphases", function(req, res) {
-        console.log(req.body);
-        res.status(200).send({err : null});
+        if (!req.session.director) {
+            return res.status(401).end();
+        }
+        tournamentController.switchPhases(req.body.tid, req.body.newPhaseID, req.session.director._id, function(err, unauthorized, switched) {
+            if (err) {
+                res.status(500).end();
+            } else if (unauthorized) {
+                res.status(401).end();
+            } else {
+                console.log(unauthorized);
+                res.send({switched : switched});
+            }
+        });
     });
 
     app.post("/tournaments/newphase", function(req, res) {
@@ -560,7 +571,7 @@ module.exports = function(app) {
                 } else {
                     var hasPermission = getPermission(result, req.session.director);
                     if (hasPermission.permission) {
-                        var linkName = result.tournament_name.replace(" ", "_").toLowerCase();
+                        var linkName = result.tournament_name.replace(/\s/g, "_").toLowerCase();
                         res.render("tournament-view", {tournament : result, tournamentd : req.session.director, linkName : linkName,
                             admin : hasPermission.admin, tournamentDirector : director});
                     } else {

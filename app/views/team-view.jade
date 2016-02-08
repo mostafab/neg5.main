@@ -52,7 +52,7 @@ block content
                                                     div(class="col-md-10")
                                                         select(class="form-control edit-team-division" data-phase-id='#{phase.phase_id}')
                                                             each division in tournament.divisions
-                                                                if division.phase_id == phase.phase_id && team.divisions[phase.phase_id] == division.name
+                                                                if division.phase_id == phase.phase_id && team.divisons && team.divisions[phase.phase_id] == division.name
                                                                     option(selected value='#{division.name}') #{division.name}
                                                                 else if division.phase_id == phase.phase_id
                                                                     option(value='#{division.name}') #{division.name}

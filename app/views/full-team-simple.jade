@@ -8,7 +8,7 @@ block content
     main()
         +statlinks
 
-        h2 #{tournament.tournament_name} - Full Team Details
+        h2 #{tournament.tournament_name} #{tournament.phaseInfo.name} - Full Team Details
 
         each teamid in Object.keys(teamsGames)
             h3(id=teamid) #{teamsGames[teamid].team}

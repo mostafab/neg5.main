@@ -614,8 +614,11 @@ teamSchema.methods.getAverageInformation = function(tournament) {
     var record = this.getRecord(tournament);
     var teamInfo = {};
     teamInfo["Team"] = this.team_name;
-    if (tournament.divisions.length !== 0) {
-        teamInfo["Division"] = this.division;
+    if (tournament.divisions.length !== 0 && tournament.currentPhaseID != 1
+        && this.divisions && this.divisions[tournament.currentPhaseID]) {
+        teamInfo["Division"] = !this.divisions ? "" : this.divisions[tournament.currentPhaseID];
+    } else if (tournament.divisions.length !== 0) {
+        teamInfo["Division"] = "";
     }
     teamInfo["W"] = record.wins;
     teamInfo["L"] = record.losses;

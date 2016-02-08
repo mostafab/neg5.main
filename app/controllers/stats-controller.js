@@ -12,7 +12,7 @@ var SCHEMA_VERSION = "1.1";
 * @param callback asynchronous callback function called after this function is done with the
 * list of team statistics
 */
-function getTeamsInfo(tournamentid, callback) {
+function getTeamsInfo(tournamentid, phaseID, callback) {
     var teamInfo = [];
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
         if (err) {
@@ -20,6 +20,38 @@ function getTeamsInfo(tournamentid, callback) {
         } else if (result == null) {
             callback(null, null, []);
         } else {
+            var phaseInfo = {phase_id : "1", name : "All"};
+            var teamMap = makeTeamMap(result.teams);
+            result.currentPhaseID = 1;
+            if (phaseID && phaseID != 1) {
+                result.currentPhaseID = phaseID;
+                for (var i = 0; i < result.phases.length; i++) {
+                    if (result.phases[i].phase_id == phaseID) {
+                        phaseInfo.phase_id = result.phases[i].phase_id;
+                        phaseInfo.name = result.phases[i].name;
+                    }
+                }
+                result.divisions = result.divisions.filter(function(division) {
+                    return division.phase_id == phaseID;
+                });
+                result.games = result.games.filter(function(game) {
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id == phaseID;
+                });
+            } else {
+                result.games = result.games.filter(function(game) {
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id];
+                });
+                for (var i = 0; i < result.phases.length; i++) {
+                    if (result.phases[i].active) {
+                        result.divisions = result.divisions.filter(function(division) {
+                            return division.phase_id == result.phases[i].phase_id;
+                        });
+                        result.currentPhaseID = result.phases[i].phase_id;
+                        break;
+                    }
+                }
+            }
+            result.phaseInfo = phaseInfo;
             for (var i = 0; i < result.teams.length; i++) {
                 teamInfo.push(result.teams[i].getAverageInformation(result));
             }
@@ -36,6 +68,13 @@ function getTeamsInfo(tournamentid, callback) {
             for (var i = 0; i < teamInfo.length; i++) {
                 teamInfo[i].stats["Rank"] = i + 1;
             }
+            result.divisions = result.divisions.map(function(division) {
+                if (!division.name) {
+                    return division;
+                } else {
+                    return division.name;
+                }
+            });
             callback(null, result, teamInfo);
         }
     });
@@ -93,7 +132,7 @@ function getFilteredTeamsInformation(tournamentid, constraints, callback) {
 * @param callback asynchronous callback function called after this function is done with the
 * list of player statistics
 */
-function getPlayersInfo(tournamentid, callback) {
+function getPlayersInfo(tournamentid, phaseID, callback) {
     var playersInfo = [];
     Tournament.findOne({shortID : tournamentid}, function(err, result) {
         if (err) {
@@ -102,12 +141,29 @@ function getPlayersInfo(tournamentid, callback) {
             callback(null, null, []);
         } else {
             var teamMap = makeTeamMap(result.teams);
+            var phaseInfo = {phase_id : "1", name : "All"};
+            if (phaseID && phaseID != 1) {
+                for (var i = 0; i < result.phases.length; i++) {
+                    if (result.phases[i].phase_id == phaseID) {
+                        phaseInfo.phase_id = result.phases[i].phase_id;
+                        phaseInfo.name = result.phases[i].name;
+                    }
+                }
+                result.games = result.games.filter(function(game) {
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id == phaseID;
+                });
+            } else {
+                result.games = result.games.filter(function(game) {
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id];
+                });
+            }
             for (var i = 0; i < result.players.length; i++) {
                 playersInfo.push(result.players[i].getAllInformation(result, teamMap));
             }
             playersInfo.sort(function(first, second) {
                 return second.stats["PPG"] - first.stats["PPG"];
             });
+            result.phaseInfo = phaseInfo;
             callback(null, result, playersInfo);
         }
     });
@@ -131,6 +187,9 @@ function getFilteredPlayersInformation(tournamentid, constraints, callback) {
             callback(null, null, []);
         } else {
             var teamMap = makeTeamMap(result.teams);
+            result.games = result.games.filter(function(game) {
+                return teamMap[game.team1.team_id] && teamMap[game.team2.team_id];
+            });
             if (constraints.teams) {
                 for (var i = 0; i < result.players.length; i++) {
                     if (constraints.teams.indexOf(result.players[i].teamID) != -1) {
@@ -158,7 +217,7 @@ function getFilteredPlayersInformation(tournamentid, constraints, callback) {
 * @param callback asynchronous callback function called after this function is done with the
 * list of team statistics
 */
-function getFullTeamsGameInformation(tournamentid, callback) {
+function getFullTeamsGameInformation(tournamentid, phaseID, callback) {
     var teamsInfo = {};
     var playersInfo = {};
     var teamTotals = {};
@@ -169,6 +228,23 @@ function getFullTeamsGameInformation(tournamentid, callback) {
             callback(null, null, {}, {});
         } else {
             var teamMap = makeTeamMap(result.teams);
+            var phaseInfo = {phase_id : "1", name : "All"};
+            if (phaseID && phaseID != 1) {
+                for (var i = 0; i < result.phases.length; i++) {
+                    if (result.phases[i].phase_id == phaseID) {
+                        phaseInfo.phase_id = result.phases[i].phase_id;
+                        phaseInfo.name = result.phases[i].name;
+                    }
+                }
+                result.games = result.games.filter(function(game) {
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id == phaseID;
+                });
+            } else {
+                result.games = result.games.filter(function(game) {
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id];
+                });
+            }
+            result.phaseInfo = phaseInfo;
             for (var i = 0; i < result.teams.length; i++) {
                 teamsInfo[result.teams[i].shortID] = {team : result.teams[i].team_name, games : result.teams[i].getAllGamesInformation(result, teamMap)};
                 playersInfo[result.teams[i].shortID] = {team : result.teams[i].team_name, stats : result.teams[i].getPlayerStats(result, teamMap)};
@@ -187,7 +263,7 @@ function getFullTeamsGameInformation(tournamentid, callback) {
 * @param callback asynchronous callback function called after this function is done with the
 * list of player statistics
 */
-function getFullPlayersGameInformation(tournamentid, callback) {
+function getFullPlayersGameInformation(tournamentid, phaseID, callback) {
     var playersInfo = {};
     var playerTotals = {};
     Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
@@ -197,11 +273,28 @@ function getFullPlayersGameInformation(tournamentid, callback) {
             callback(null, null, {}, {});
         } else {
             var teamMap = makeTeamMap(tournament.teams);
+            var phaseInfo = {phase_id : "1", name : "All"};
+            if (phaseID && phaseID != 1) {
+                for (var i = 0; i < tournament.phases.length; i++) {
+                    if (tournament.phases[i].phase_id == phaseID) {
+                        phaseInfo.phase_id = tournament.phases[i].phase_id;
+                        phaseInfo.name = tournament.phases[i].name;
+                    }
+                }
+                tournament.games = tournament.games.filter(function(game) {
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id == phaseID;
+                });
+            } else {
+                tournament.games = tournament.games.filter(function(game) {
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id];
+                });
+            }
             for (var i = 0; i < tournament.players.length; i++) {
                 var teamName = teamMap[tournament.players[i].teamID].name;
                 playersInfo[tournament.players[i].shortID] = {name : tournament.players[i].player_name, team : teamName, games : tournament.players[i].getAllGamesInformation(tournament, teamMap)};
                 playerTotals[tournament.players[i].shortID] = tournament.players[i].getTotalGameStats(tournament, teamMap);
             }
+            tournament.phaseInfo = phaseInfo
             callback(null, tournament, playersInfo, playerTotals);
         }
     });
@@ -212,13 +305,25 @@ function getFullPlayersGameInformation(tournamentid, callback) {
 * @param tournamentid id of the tournament to get round averages from
 * @param callback callback function with an error (or null), tournament name, and the rounds information
 */
-function getRoundReport(tournamentid, callback) {
+function getRoundReport(tournamentid, phaseID, callback) {
     Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
         if (err) {
             callback(err);
         } else if (!tournament) {
             callback(null, null, null);
         } else {
+            var phaseInfo = {phase_id : "1", name : "All"};
+            if (phaseID && phaseID != 1) {
+                for (var i = 0; i < tournament.phases.length; i++) {
+                    if (tournament.phases[i].phase_id == phaseID) {
+                        phaseInfo.phase_id = tournament.phases[i].phase_id;
+                        phaseInfo.name = tournament.phases[i].name;
+                    }
+                }
+                tournament.games = tournament.games.filter(function(game) {
+                    return game.phase_id == phaseID;
+                });
+            }
             var gameRounds = {};
             for (var i = 0; i < tournament.games.length; i++) {
                 var round = tournament.games[i].round;
@@ -235,6 +340,7 @@ function getRoundReport(tournamentid, callback) {
                 roundAverages[rounds[i]]["TUPts/TUH"] = getRoundTUPts(gameRounds[rounds[i]], tournament.pointScheme);
                 roundAverages[rounds[i]]["PPB"] = getPPBForRounds(gameRounds[rounds[i]], tournament.pointScheme, tournament.pointsTypes);
             }
+            tournament.phaseInfo = phaseInfo;
             callback(null, tournament, roundAverages);
         }
     });
@@ -512,9 +618,6 @@ function convertToSQBS(tournamentid, callback) {
                 if (teamMap[currentGame.team1.team_id] && teamMap[currentGame.team2.team_id]) {
                     sqbsString += i + "\n"; // Identifier for current game
                     sqbsString += teamMap[currentGame.team1.team_id].team_index + "\n"; // Index of team 1
-                    // console.log(teamMap[currentGame.team1.team_id].team_index);
-                    // console.log(teamMap[currentGame.team2.team_id].team_index);
-                    // console.log("------");
                     sqbsString += teamMap[currentGame.team2.team_id].team_index + "\n"; // Index of team 2
                     sqbsString += currentGame.team1.score + "\n"; // Team 1 Score
                     sqbsString += currentGame.team2.score + "\n"; // Team 2 Score
@@ -536,14 +639,10 @@ function convertToSQBS(tournamentid, callback) {
                             var index = -1;
                             for (var j = 0; j < teamMap[currentGame.team1.team_id].players.length; j++) {
                                 if (player == teamMap[currentGame.team1.team_id].players[j].id) {
-                                    // console.log("match");
                                     index = teamMap[currentGame.team1.team_id].players[j].player_index;
-                                    // console.log(index);
-                                    // console.log(teamMap[currentGame.team1.team_id].team_index + ", " + index);
                                     break;
                                 }
                             }
-                            // console.log(index);
                             sqbsString += index + "\n"; // Player index
                             sqbsString += "1\n"; // Fraction of game played
                             sqbsString += "2\n"; // Powers

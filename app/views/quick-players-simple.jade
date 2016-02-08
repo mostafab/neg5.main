@@ -8,7 +8,7 @@ block content
     main()
         +statlinks
 
-        h2 #{tournament.tournament_name} - Player Standings
+        h2 #{tournament.tournament_name} #{tournament.phaseInfo.name} - Player Standings
 
         if playersInfo.length != 0
             - var statHeaders = Object.keys(playersInfo[0].stats)

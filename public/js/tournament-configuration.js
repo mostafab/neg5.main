@@ -174,11 +174,19 @@ $(document).ready(function() {
 
     $("#phase-select-stats").change(function() {
         var phaseID = $(this).val();
+        var phaseName = $(this).find(":selected").text().replace(/\s/g, "_").toLowerCase();
         $(".stat-link").each(function() {
             var tid = $(this).attr("data-tid");
             var statsType = $(this).attr('data-stats-type');
             var url = "/t/" + tid + "/stats/" + statsType + "?phase=" + phaseID;
             $(this).attr("href", url);
+        });
+        $(".download").each(function() {
+            var tid = $(this).attr("data-tid");
+            var statsType = $(this).attr('data-stats-type');
+            var url = "/t/" + tid + "/stats/" + statsType + "/dl?phase=" + phaseID;
+            $(this).attr("href", url);
+            $(this).attr("data-phase", phaseName);
         });
     });
 
@@ -435,6 +443,7 @@ function rebuildScoresheet(round, scoresheetInfo, pointScheme) {
 
 function switchPhasesAJAX(newPhase, tid) {
     var button = $("#switch-phases");
+    var header = $("#current-phase-header");
     button.prop("disabled", true);
     $.ajax({
         url : "/tournaments/switchphases",
@@ -442,6 +451,21 @@ function switchPhasesAJAX(newPhase, tid) {
         data : {newPhaseID : newPhase, tid : tid},
         success : function(databack, status, xhr) {
             console.log(databack);
+            if (databack.switched) {
+                $(".phase-selection").each(function() {
+                    $(this).children("option").each(function() {
+                        $(this).prop("selected", false);
+                        if ($(this).val() == newPhase) {
+                            header.text("Current Phase: " + $(this).text());
+                            $(this).prop("selected", true);
+                        }
+                    });
+                });
+                $("#phase-select-stats").change();
+            }
+        },
+        complete : function() {
+            button.prop("disabled", false);
         }
     });
 }
@@ -500,6 +524,8 @@ function downloadScoresheets(anchor) {
 }
 
 function downloadStats(anchor) {
+    var downloadFileName = $(anchor).attr("data-link") + "_" +
+        $(anchor).attr("data-phase") + $(anchor).attr("data-file");
     $.ajax({
         url : $(anchor).attr("href"),
         type : "GET",
@@ -508,7 +534,7 @@ function downloadStats(anchor) {
                 var fileData = [databack];
                 var blobObject = new Blob(fileData);
                 $(anchor).click(function() {
-                    window.navigator.msSaveOrOpenBlob(blobObject, $(anchor).attr("data-link"));
+                    window.navigator.msSaveOrOpenBlob(blobObject, downloadFileName);
                 });
             } else {
                 var type = xhr.getResponseHeader('Content-Type');
@@ -521,7 +547,7 @@ function downloadStats(anchor) {
                        window.location = downloadUrl;
                    } else {
                        tempAnchor.href = downloadUrl;
-                       tempAnchor.download = $(anchor).attr("data-link");
+                       tempAnchor.download = downloadFileName;
                        document.body.appendChild(tempAnchor);
                        tempAnchor.click();
                        setTimeout(function() {
@@ -615,8 +641,11 @@ function makePhaseAJAX(tournamentid, phaseName) {
         success : function(databack, status, xhr) {
             if (databack.newPhase) {
                 var selectHTML = "<option value='" + databack.newPhase.phase_id + "'>" + databack.newPhase.name + "</option>";
-                $("#phase-select").append(selectHTML);
-                $("#game-phases").append(selectHTML);
+                // $("#phase-select").append(selectHTML);
+                // $("#game-phases").append(selectHTML);
+                $(".phase-selection").each(function() {
+                    $(this).append(selectHTML);
+                });
                 var tableHTML = "<tr><td><input type='text' data-phase-id='" + databack.newPhase.phase_id + "'"
                     + "value='" + databack.newPhase.name + "' class='form-control phase-box'/></td>";
                 tableHTML += "<td><button data-phase-id='" + databack.newPhase.phase_id + "' class='btn btn-danger btn-sm remove-phase'>Remove</button></td></tr>";
@@ -886,14 +915,6 @@ function removeCollabAJAX(button) {
 }
 
 function setSelectOptions(divisions) {
-    // var select = $(select);
-    // select.empty();
-    // $.each(options, function(index, value) {
-    //     select.append($("<option/>", {
-    //         value: value,
-    //         text: value
-    //     }));
-    // });
     $(".new-team-division").empty();
     divisions.forEach(function(division) {
         var id = division.phase_id;

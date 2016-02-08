@@ -17,17 +17,17 @@ block content
                             div(class="row" style="")
                                 ul(class="nav nav-pills no-border-radius")
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/team") Team Standings
+                                        a(href="/t/" + tournament.shortID + "/stats/team?phase=#{tournament.phaseInfo.phase_id}") Team Standings
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/player") Player Standings
+                                        a(href="/t/" + tournament.shortID + "/stats/player?phase=#{tournament.phaseInfo.phase_id}") Player Standings
                                     li(class="active")
-                                        a(href="/t/" + tournament.shortID + "/stats/teamfull") Teams Full
+                                        a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}") Teams Full
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/playerfull") Players Full
+                                        a(href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}") Players Full
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/roundreport") Round Report
+                                        a(href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{tournament.phaseInfo.phase_id}") Round Report
 
-                        h2(class="title" style="width:50%") #{tournament.tournament_name} - Full Team Details
+                        h2(class="title" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Full Team Details
 
                         br
                         br
@@ -86,7 +86,6 @@ block content
                             div(class="panel panel-default")
                                 table(class="table table-condensed")
                                     if playersInfo[teamid].stats.length != 0
-                                        // - console.log(playersInfo[teamid].stats)
                                         - var playerHeaders = Object.keys(playersInfo[teamid].stats[0].stats)
                                         thead
                                             tr
@@ -105,6 +104,6 @@ block content
                                                                 td #{player.stats["pointTotals"][val]}
                                                         else if stat == "Player"
                                                             td
-                                                                a(href="/t/" + tournament.shortID + "/stats/playerfull#" + player.id) #{player.stats[stat]}
+                                                                a(href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}#" + player.id) #{player.stats[stat]}
                                                         else
                                                             td #{player.stats[stat]}
