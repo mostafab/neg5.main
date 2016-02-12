@@ -16,6 +16,7 @@ var entityMap = {
  };
 
 $(document).ready(function() {
+
     gameOptions = { valueNames : ["round", "team1name", "team2name"]};
     gameList = new List("gamediv", gameOptions);
 
@@ -211,6 +212,9 @@ $(document).ready(function() {
                 findDirectorsAJAX();
             }
         }
+        if ($(this).val().trim().length >= 5) {
+            $("#searchcollabbutton").click();
+        }
     });
 
     $("#addcollabbutton").click(function() {
@@ -221,6 +225,16 @@ $(document).ready(function() {
 
     $(".removcollab").click(function() {
         removeCollabAJAX(this);
+    });
+
+    $("body").on("click", ".division-name", function() {
+        $(this).prop("readonly", false).addClass("not-saved").removeClass("saved");
+    });
+
+    $("body").on("blur", ".division-name", function() {
+        if ($(this).val().trim().length > 0) {
+            $(this).prop("readonly", true).removeClass("not-saved").addClass("saved");
+        }
     });
 
     $("#playerstatstable th").each(function(index, head) {
@@ -270,11 +284,6 @@ $(document).ready(function() {
         downloadScoresheets($(this));
     });
 
-    // $("#download-sqbs").click(function(e) {
-    //     e.preventDefault();
-    //     downloadSQBS($(this));
-    // });
-
     $("#switch-phases").click(function() {
         var newPhase = $("#phase-select").val();
         var tid = $("#tournamentshortid").val();
@@ -283,7 +292,6 @@ $(document).ready(function() {
 
     $("#new-phase").click(function() {
         $("#new-phase-name").css("border-color", "white");
-        // console.log($("#new-phase-name").val());
         if ($("#new-phase-name").val().length !== 0) {
             makePhaseAJAX($(this).attr("data-tournament"), escapeHtml($("#new-phase-name").val()));
         } else {
@@ -292,7 +300,6 @@ $(document).ready(function() {
     });
 
     $("#delete-tournament-button").click(function() {
-        // console.log("Deleting...");
         $("#confirm-delete-div").slideDown(300);
     })
 
@@ -818,6 +825,16 @@ function changeDivisionsAJAX(divisions) {
         success : function(databack, status, xhr) {
             setSelectOptions(databack.divisions);
             showMessageInDiv("#pointdivmsg", "Updated divisions successfully", null);
+            $(".division-name").each(function() {
+                if ($(this).val().trim().length === 0) {
+                    $(this).addClass("empty");
+                } else {
+                    $(this).prop("readonly", true);
+                }
+            });
+            $(".empty").fadeOut(200, function() {
+                $(this).remove();
+            });
         },
         error : function(xhr, status, err) {
             showMessageInDiv("#pointdivmsg", "Could not update divisions", err);
@@ -1115,9 +1132,9 @@ function addPointSchemaRow() {
 }
 
 function addDivisionRow(phase) {
-    var html = "<input type='text' data-phase-id='" + phase + "' style='width:100%' class='form-control input-medium no-border-radius division-name'/>";
+    var html = "<input type='text' data-phase-id='" + phase + "' style='width:100%' class='form-control input-medium no-border-radius division-name not-saved'/>";
     $(html).hide().appendTo(".division-box[data-phase-id='" + phase + "']").fadeIn(200);
-    // $(".division-box[data-phase-id='" + phase + "']").append(html);
+    $(".division-box[data-phase-id='" + phase + "']").children(".division-name").last().focus();
 }
 
 function formatPointSchemaForm(pointTypes) {

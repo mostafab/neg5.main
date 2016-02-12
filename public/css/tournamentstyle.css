@@ -24,8 +24,10 @@
     /*background-color : rgba(190, 190, 190, .7);*/
     background-color: transparent;
 }
+
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
     background-color:rgb(0, 136, 136);
+    border-radius: 5px;
 }
 
 .no-border-radius {
@@ -61,8 +63,6 @@ div p {
 
 
 tr {
-    font-size: 16px;
-    /*font-weight: bold;*/
     background-color: white;
     white-space: nowrap;
 }
@@ -138,6 +138,19 @@ td {
 .division-name {
     border-width: 1px;
     border-radius: 1px;
+    border-right-width: 5px;
+}
+
+.saved {
+    border-right-color: #008888;
+}
+
+.not-saved {
+    border-right-color: red;
+}
+
+.division-name:hover {
+    cursor: pointer;
 }
 
 .collab-box {
@@ -147,9 +160,9 @@ td {
     -ms-transition: background-color .5s;
     transition: background-color .5s;
     background: rgba(100, 100, 100, .1);
-    border-left-width: 20px;
+    border-left-width: 10px;
     border-left-style: solid;
-    border-radius: 5px;
+    border-radius: 2px;
     margin: 10px;
 }
 
@@ -214,21 +227,13 @@ td {
 }
 
 .panel-default > .panel-heading {
-  background-image: url("/img/backgrounds/brushed_alu_dark.png");
-  color : white;
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-.panel-default:hover > .panel-heading {
+  /*background-image: url("/img/backgrounds/brushed_alu_dark.png");*/
+  /*color : white;*/
   /*font-weight: bold;*/
-  background-color: rgb(0, 134, 134);
-  /*font-size: 24px;*/
+  /*font-size: 1.2em;*/
 }
 
 .panel-default > .panel-body {
-    font-size: 24px;
-    background-color: rgb(249, 249, 249);
     /*box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);*/
 }
 
@@ -264,6 +269,11 @@ td {
     padding: 5px;
 }
 
+.game-help {
+    border-bottom: 1px solid black;
+    color: black;
+}
+
 .table-head {
     background: rgb(0, 136, 136);
     -webkit-transition: background-color .5s;
@@ -272,6 +282,7 @@ td {
     -ms-transition: background-color .5s;
     transition: background-color .5s;
     color : white;
+    text-align: center;
 }
 
 .table-head:hover {

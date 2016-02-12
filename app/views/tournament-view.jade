@@ -27,7 +27,7 @@ block content
     -    return formattedDate;
     - }
 
-    div(class="content-wrapper box" style='padding:50px;padding-top:20px;')
+    div(class="content-wrapper box" style='padding-left:100px;padding-right:100px;padding-top:20px;')
         input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
         div(class="row")
             div(class="col-md-12")
@@ -38,24 +38,24 @@ block content
                     h2(class="title" style='text-align:center;font-size:.9em;width:25%' id='current-phase-header') Current Phase: #{tournament.phaseName}
                     div(style="margin:20px; margin-bottom:10px")
                     div(class="panel-body")
-                        div(class="row" style="")
+                        div(class="row")
                             ul(class="nav nav-pills no-border-radius")
                                 li(class="active")
-                                    a(href="#overview" data-toggle="tab") Overview
+                                    a(href="#overview" data-toggle="tab" class='tournament-tab') Overview
                                 if admin
                                     li
-                                        a(href="#divisions" data-toggle="tab") Divisions/Point Scheme
+                                        a(href="#divisions" data-toggle="tab" class='tournament-tab') Divisions/Point Scheme
                                 li
-                                    a(href="#games" data-toggle="tab") Games/Scoresheet
+                                    a(href="#games" data-toggle="tab" class='tournament-tab') Games/Scoresheet
                                 li
-                                    a(href="#teams" data-toggle="tab") Teams
+                                    a(href="#teams" data-toggle="tab" class='tournament-tab') Teams
                                 li
-                                    a(href="#stats" data-toggle="tab") Statistics
+                                    a(href="#stats" data-toggle="tab" class='tournament-tab') Statistics
                                 if tournamentd._id == tournament.directorid
                                     li
-                                        a(href="#phase" data-toggle="tab") Phases
+                                        a(href="#phase" data-toggle="tab" class='tournament-tab') Phases
                                     li
-                                        a(href="#delete" class="btn-danger" data-toggle="tab") Delete
+                                        a(href="#delete" class="btn-danger" data-toggle="tab" class='tournament-tab') Delete
                     br
         div(class="row")
                 div(class='col-sm-12 col-md-12')
@@ -268,7 +268,7 @@ block content
 
                                             div(class="btn-group" style="margin-top:15px")
                                                 button(type="button" class="btn btn-md btn-info" style="margin:0;margin-bottom:15px" id="add-point-value-button" onclick='addPointSchemaRow()') Add A Point Value
-                                                button(type="button" class="btn btn-md btn-success" style="margin:0;margin-bottom:15px" id="save-point-schema-button") Save Point Scheme
+                                                button(type="button" class="btn btn-md btn-success" style="margin:0;margin-bottom:15px" id="save-point-schema-button" data-toggle='tooltip' title='Empty boxes are ignored.') Save Point Scheme
 
                                         div(class="col-md-6")
                                             label(class="label label-primary col-xs-4") Divisions
@@ -279,18 +279,18 @@ block content
                                                     each phase in tournament.phases
                                                         div(class="row")
                                                             label(class="label label-info col-xs-3 col-md-3 col-sm-3") #{phase.name}
-                                                            button(type='button' class="btn btn-sm btn-info add-division" data-phase-id="#{phase.phase_id}")
+                                                            button(type='button' data-toggle='tooltip' class="btn btn-sm btn-info add-division" data-phase-id="#{phase.phase_id}" title='Add Division to #{phase.name}.')
                                                                 i(class="fa fa-plus")
                                                             div(class="col-md-7 division-box" data-phase-id='#{phase.phase_id}')
                                                                 each division, i in tournament.divisions
                                                                     if (division.phase_id == phase.phase_id)
-                                                                        input(type='text' style="width:100%" value="#{tournament.divisions[i].name}" class='form-control input-medium no-border-radius division-name' data-phase-id='#{phase.phase_id}')
+                                                                        input(readonly type='text' style="width:100%" value="#{tournament.divisions[i].name}" class='form-control input-medium no-border-radius division-name saved' data-phase-id='#{phase.phase_id}')
 
                                                         br
                                                         br
 
                                             div(class="btn-group" style="margin-top:15px")
-                                                button(type="button" class="btn btn-md btn-success" style="margin:0" id="save-divisions-button") Save Divisions
+                                                button(type="button" class="btn btn-md btn-success" style="margin:0" id="save-divisions-button" data-toggle="tooltip" title='Empty boxes are ignored.') Save All Divisions
 
                                         div(class="col-md-12")
                                         br
@@ -335,7 +335,7 @@ block content
                                                         div(class="row")
                                                             div(class="col-md-6")
                                                             div(class="col-md-3")
-                                                                label(class="label label-warning btn-block" style='float:right') Team 1 Score *
+                                                                label(class="label label-primary btn-block" style='float:right') Team 1 Score *
                                                             div(class="col-md-3")
                                                                 input(type="number" class="form-control scorebox" name="leftteamscore" placeholder="Team 1 Score")
                                                         div(class='row')
@@ -351,7 +351,7 @@ block content
                                                             div(class="col-md-3")
                                                                 input(type="number" class="form-control scorebox" name="rightteamscore" placeholder="Team 2 Score")
                                                             div(class="col-md-3")
-                                                                label(class="label label-warning btn-block" style='float:right') Team 2 Score *
+                                                                label(class="label label-primary btn-block" style='float:right') Team 2 Score *
                                                         div(class="row")
                                                             div(class="col-md-3")
                                                                 input(type="number" class="form-control" name="rightbounceback" placeholder="Bounceback Points")
@@ -699,7 +699,7 @@ block content
 
                                             div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
                                                 p(class="alert alert-success")
-                                                    | Set the Active Phase Here. New games added will be added as part of this phase by default.
+                                                    | Set the Active Phase Here. New games will be added as part of this phase by default.
 
                                             div(class='col-md-3 col-sm-3 col-lg-3')
                                                 select(class='form-control phase-selection' name='phase' id='phase-select')

@@ -192,18 +192,8 @@ module.exports = function(app) {
     });
 
     app.post("/tournaments/editDivisions", function(req, res, next) {
-        // console.log(req.body);
-        // var divisions = [];
-        // var divNum = 1;
-        // currentDivision = "division" + divNum;
-        // while (req.body[currentDivision] != undefined) {
-        //     if (req.body[currentDivision].length != 0) {
-        //         divisions.push(req.body[currentDivision]);
-        //     }
-        //     divNum++;
-        //     currentDivision = "division" + divNum;
-        // }
-        tournamentController.updateDivisions(req.body.tid, req.body.divisions, function(err, newDivisions) {
+        var divisions = !req.body.divisions ? [] : req.body.divisions;
+        tournamentController.updateDivisions(req.body.tid, divisions, function(err, newDivisions) {
             if (err) {
                 res.status(500).end();
             } else {
