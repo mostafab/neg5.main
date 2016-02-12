@@ -363,7 +363,6 @@ function rebuildScoresheet(round, scoresheetInfo, pointScheme) {
     var styles = "* { font-family: 'Verdana', sans-serif;} body { padding:50px;" +
         "} td { padding:2px;} .header { font-weight:bold; } table { font-size: 14px;" +
         "width: 100%;} table, th, td { border: 1px solid black;} .outer-list .inner-list{display:inline;}";
-
     var title = scoresheetInfo.team1.name + " vs " + scoresheetInfo.team2.name + " | Round " + round;
     var html = "<!DOCTYPE html><html><head><title>" + title + "</title>"
     html += "<style>" + styles + "</style></head>";
@@ -488,7 +487,6 @@ function removePhase(phaseID, button) {
                 button.parents("tr").remove();
             } else {
                 button.text("You must have at least one phase. You cannot remove a phase that has games in it.");
-                console.log("Cannot remove phase");
             }
         },
         error : function() {
@@ -549,7 +547,6 @@ function downloadStats(anchor) {
                 var URL = window.URL || window.webkitURL;
                 var downloadUrl = URL.createObjectURL(blob);
                 var tempAnchor = document.createElement("a");
-                   // safari doesn't support this yet
                    if (typeof tempAnchor.download === 'undefined') {
                        window.location = downloadUrl;
                    } else {
@@ -572,7 +569,6 @@ function downloadJSON(anchor) {
         url : $(anchor).attr("href"),
         type : "GET",
         success : function(databack, status, xhr) {
-            // console.log(xhr.getResponseHeader("Content-Type"));
             if (window.navigator.msSaveOrOpenBlob) {
                 var fileData = [JSON.stringify(databack, null, 4)];
                 var blobObject = new Blob(fileData);
@@ -620,7 +616,6 @@ function downloadSQBS(anchor) {
                 var URL = window.URL || window.webkitURL;
                 var downloadUrl = URL.createObjectURL(blob);
                 var tempAnchor = document.createElement("a");
-                   // safari doesn't support this yet
                    if (typeof tempAnchor.download === 'undefined') {
                        window.location = downloadUrl;
                    } else {
@@ -648,8 +643,6 @@ function makePhaseAJAX(tournamentid, phaseName) {
         success : function(databack, status, xhr) {
             if (databack.newPhase) {
                 var selectHTML = "<option value='" + databack.newPhase.phase_id + "'>" + databack.newPhase.name + "</option>";
-                // $("#phase-select").append(selectHTML);
-                // $("#game-phases").append(selectHTML);
                 $(".phase-selection").each(function() {
                     $(this).append(selectHTML);
                 });
