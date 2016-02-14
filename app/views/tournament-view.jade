@@ -37,7 +37,7 @@ block content
                     hr
                     h2(class="title" style='text-align:center;font-size:.9em;width:25%' id='current-phase-header') Current Phase: #{tournament.phaseName}
                     div(style="margin:20px; margin-bottom:10px")
-                    div(class="panel-body")
+                    div(class="panel-body" id='anchor-links')
                         div(class="row")
                             ul(class="nav nav-pills no-border-radius")
                                 li(class="active")
@@ -434,7 +434,7 @@ block content
                                         include ./game-list.jade
 
                         div(class="tab-pane fade" id="teams")
-                            div(class="panel panel-default")
+                            div(class="panel panel-default" id='add-team-div')
                                     div(class="panel-heading collapsable" id="add-team-panel") Add a Team
                                     div(class="panel-body" id="add-team-body")
 
@@ -515,12 +515,13 @@ block content
                                                 div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="addteammsg")
 
 
-                            div(class="panel panel-default")
+                            div(class="panel panel-default" id='team-list-div')
                                     div(class="panel-heading collapsable") List of Teams
                                     div(class="panel-body" id='team-list-template')
                                         include ./team-list.jade
 
-                            div(class='')
+                            div(class='row')
+                                div(class='col-md-12' id='team-view-div')
 
                         div(class="tab-pane fade" id="stats")
                             div(class="panel panel-default")
@@ -678,40 +679,8 @@ block content
                                             div(class="col-md-6")
                                                 button(type="button" class="btn btn-md btn-success btn-block" id="no-delete") Never Mind
 
-            // div(class="col-md-3 chat-div")
-            //     div(class+"col-md-12" style='margin-top:70%;')
-            //         div(class="panel panel-primary")
-            //             div(class="panel-heading" style='background-color:#008888')
-            //                 span(class="fa fa-comment")
-            //                 span(style='margin-left:10px')
-            //                     | Hello
-            //                 div(class="btn-group pull-right")
-            //             div(class="panel-body chat-panel")
-            //                 ul(class="chat")
-            //                     li(class="left clearfix")
-            //                         span(class="chat-img pull-left")
-            //                             img(src="http://placehold.it/50/55C1E7/fff&text=M" alt='User Avatar' class='img-circle')
-            //                         div(class="chat-body clearfix")
-            //                             div(class="header")
-            //                                 strong(class='primary-font') Mostafa Bhuiyan
-            //                             p
-            //                              | Yo, wassup
-            //                     li(class="right clearfix")
-            //                         span(class="chat-img pull-right")
-            //                             img(src="http://placehold.it/50/55C1E7/fff&text=U" alt='User Avatar' class='img-circle')
-            //                         div(class="chat-body clearfix")
-            //                             div(class="header")
-            //                                 strong(class='primary-font') Mostafa Bhuiyan
-            //                             p
-            //                               | Yo, wassup
-            //
-            //             div(class="panel-footer")
-            //                 div(class="col-md-10")
-            //                     input(id="btn-input" type='text' class='form-control input-sm' placeholder='Enter your message here.')
-            //                     span(class="input-group-btn")
-            //
-            //                 button(class="btn btn-warning btn-sm" id="btn-chat") Send
 block scripts
     script(src="/js/tournament-configuration.js")
+    script(src='/js/game-configuration.js')
     script(src="/js/jszip/dist/jszip.min.js")
     script(src='/js/jszip/dist/FileSaver.min.js')

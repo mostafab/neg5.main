@@ -17,7 +17,7 @@ function escapeHtml(string) {
 
 $(document).ready(function() {
 
-    $("#entergamebutton").click(function(e) {
+    $("body").on("click", "#entergamebutton", function() {
         var wrong = false;
         $(".point-box").each(function() {
             $(this).removeClass("alert-danger");
@@ -59,7 +59,7 @@ $(document).ready(function() {
         }
     });
 
-    $("#editteambutton").click(function(e) {
+    $("body").on("click", "#editteambutton", function() {
         var nameInput = $("#team-name-input");
         nameInput.removeClass("alert-danger");
         if (nameInput.val().trim().length !== 0) {
@@ -72,21 +72,20 @@ $(document).ready(function() {
         }
     });
 
-    $(".saveplayerbutton").click(function(e) {
+    $("body").on("click", ".saveplayerbutton", function() {
         var form = $(this).parent().prev().children("form");
         $(this).prop("disabled", true);
         editPlayerAJAX($(form).serialize(), $(this));
     });
 
-    $(".deleteplayerbutton").click(function(e) {
+    $("body").on("click", ".deleteplayerbutton", function() {
         var form = $(this).parent().prev().children("form");
         $(this).prop("disabled", true);
-        // console.log(form);
         showBeforeSentMessage("Removing Player");
         removePlayerAJAX($(form).serialize(), $(this));
     });
 
-    $(".teamselect").change(function() {
+    $("body").on("click", ".teamselect", function() {
         if ($(this).attr("id") == "leftchoice") {
             getTeamPlayersAJAX("LEFT");
             $("#leftteamnameID").val($(this).find(":selected").text());
@@ -96,7 +95,7 @@ $(document).ready(function() {
         }
     });
 
-    $("#add-player-button").click(function(e) {
+    $("body").on("click", "#add-player-button", function() {
         if ($("#newplayerinput").val().length == 0) {
             showMessageInDiv("#player-add-msg", "Enter a name, please", "zero");
         } else {
@@ -107,18 +106,17 @@ $(document).ready(function() {
             addPlayerAJAX(form, $(this));
         }
     });
+
 });
 
 function savePlayerSender(button) {
     var form = $(button).parent().prev().children("form");
-    // console.log($(form).serialize());
     $(button).prop("disabled", true);
     editPlayerAJAX($(form).serialize());
 }
 
 function deletePlayerSender(button) {
     var form = $(button).parent().prev().children("form");
-    // console.log($(form).serialize());
     $(button).prop("disabled", true);
     removePlayerAJAX($(form).serialize(), button);
 }
@@ -143,8 +141,6 @@ function editGameAJAX() {
         type : "POST",
         data : $("#changegameform").serialize(),
         success : function(databack, status, xhr) {
-            // console.log(databack);
-            // console.log("Edited game successfully");
             showMessageInDiv("#updategamediv", "Game updated successfully", null);
         },
         error : function(xhr, status, err) {

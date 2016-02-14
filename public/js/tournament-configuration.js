@@ -148,6 +148,11 @@ $(document).ready(function() {
         addDivisionRow($(this).attr("data-phase-id"));
     });
 
+    $("body").on("click", ".team-anchor", function(e) {
+        e.preventDefault();
+        loadTeamAJAX($(this).attr("href"));
+    });
+
     $("#save-point-schema-button").click(function(e) {
         var pointTypes = formatPointTypes();
         formatPointSchemaForm(pointTypes);
@@ -331,10 +336,25 @@ $(document).ready(function() {
                 $(this).addClass("alert-danger");
             }
         });
-        console.log(phases);
         if (!empty) {
             editPhasesAJAX(phases, $(this).attr('data-tid'));
         }
+    });
+
+    $("body").on("click", "#back-to-teams", function(e) {
+        e.preventDefault();
+        var href = $(this).attr("href");
+        $.ajax({
+            url : href,
+            type : "GET",
+            success : function(databack, status, xhr) {
+                // console.log(databack);
+                $("#team-view-div").empty();
+                $("#team-list-template").html(databack);
+                $("#add-team-div").show();
+                $("#team-list-div").show();
+            }
+        });
     });
 
 });
@@ -471,6 +491,18 @@ function rebuildScoresheet(round, scoresheetInfo, pointScheme) {
     html += "</tbody></table>";
     html += "</body></html>";
     return html;
+}
+
+function loadTeamAJAX(href) {
+    $.ajax({
+        url : href,
+        type : 'GET',
+        success : function(databack, status, xhr) {
+            $("#add-team-div").hide();
+            $("#team-list-div").hide();
+            $("#team-view-div").html(databack);
+        }
+    });
 }
 
 function editPhasesAJAX(phases, tid) {

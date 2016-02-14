@@ -115,6 +115,18 @@ function findTournamentById(id, callback) {
     });
 }
 
+function getTeams(tid, callback) {
+    Tournament.findOne({shortID : tid}, {teams : 1, phases : 1, shortID : 1, directorid : 1, collaborators : 1}, function(err, result) {
+        if (err) {
+            callback(err);
+        } else if (!result) {
+            callback(null, null);
+        } else {
+            callback(null, result);
+        }
+    });
+}
+
 function loadTournamentScoresheet(id, callback) {
     Tournament.findOne({shortID : id},
             {tournament_name : 1, shortID : 1, teams : 1, collaborators : 1,
@@ -973,6 +985,7 @@ function deleteTournament(directorid, tournamentid, callback) {
 exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
+exports.getTeams = getTeams;
 exports.addTeamToTournament = addTeamToTournament;
 exports.findTeamMembers = findTeamMembers;
 exports.addGameToTournament = addGameToTournament;

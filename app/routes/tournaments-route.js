@@ -249,7 +249,7 @@ module.exports = function(app) {
                     if (err) {
                         res.status(500).end();
                     } else {
-                        admin = false;
+                        var admin = false;
                         if (req.session.director._id == tournament.directorid) {
                             admin = true;
                         }
@@ -283,7 +283,7 @@ module.exports = function(app) {
                     if (err) {
                         res.status(500).end();
                     } else {
-                        admin = false;
+                        var admin = false;
                         if (req.session.director._id == tournament.directorid) {
                             admin = true;
                         }
@@ -510,7 +510,7 @@ module.exports = function(app) {
 
     app.get("/t/:tid/teams/:teamid", function(req, res) {
         if (!req.session.director) {
-            return res.redirect("/");
+            return res.status(401).end();
         }
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var team = null;
@@ -537,15 +537,42 @@ module.exports = function(app) {
                         tourney.shortID = result.shortID;
                         tourney.divisions = result.divisions;
                         tourney.phases = result.phases;
-                        res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, tournamentd : req.session.director, admin : hasPermission.admin});
+                        res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, admin : hasPermission.admin});
                     } else {
-                        res.status(404).render("not-found", {tournamentd: req.session.director, msg : "Could not find that team."})
+                        res.status(404).end();
                     }
                 } else {
-                    res.status(401).send("You don't have permission to view this tournament");
+                    res.status(401).end();
                 }
             } else {
-                res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
+                res.status(404).end();
+            }
+        });
+    });
+
+    app.get("/t/:tid/teams", function(req, res) {
+        if (!req.session.director) {
+            return res.status(401).end();
+        }
+        tournamentController.getTeams(req.params.tid, function(err, tournament) {
+            if (err) {
+                return res.status(500).end();
+            } else if (!tournament) {
+                return res.status(404).end();
+            } else {
+                tournament.teamMap = statsController.makeTeamMap(tournament.teams);
+                var admin = false;
+                if (req.session.director._id == tournament.directorid) {
+                    admin = true;
+                }
+                if (!admin) {
+                    for (var i = 0; i < tournament.collaborators.length; i++) {
+                        if (tournament.collaborators[i].id == req.session.director._id && tournament.collaborators[i].admin) {
+                            admin = true;
+                        }
+                    }
+                }
+                res.render("team-list", {tournament : tournament, admin : admin});
             }
         });
     });

@@ -23,7 +23,7 @@ div(class="table-responsive" id="teamdiv")
                                 if tournament.teams[i].divisions
                                     li #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
                         td
-                            a(class="btn btn-xs btn-info" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
+                            a(class="btn btn-xs btn-info team-anchor" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
                             if admin
                                 button(type="button" class="btn btn-xs btn-warning start-delete-team")
                                     i(class="glyphicon glyphicon-remove")
