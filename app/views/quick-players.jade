@@ -59,15 +59,15 @@ block content
                                     tbody(class="list")
                                         each player, i in playersInfo
                                             tr
-                                                td(class="Rank") #{i + 1}
+                                                td(class="Rank stat-td") #{i + 1}
                                                 each name, j in statHeaders
                                                     if statHeaders[j] == "pointTotals"
                                                         each val, k in points
-                                                            td(class=val) #{playersInfo[i].stats.pointTotals[val]}
+                                                            td(class='#{val} stat-td') #{playersInfo[i].stats.pointTotals[val]}
                                                     else if statHeaders[j] == "Player"
-                                                        td()
+                                                        td(class='stat-td')
                                                             a(class="Player" href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}#" + playersInfo[i].id) #{playersInfo[i].stats[name]}
                                                     else
-                                                        td(class=statHeaders[j]) #{playersInfo[i].stats[name]}
+                                                        td(class="#{statHeaders[j]} stat-td") #{playersInfo[i].stats[name]}
 block scripts
     script(src="/js/tournament-configuration.js")

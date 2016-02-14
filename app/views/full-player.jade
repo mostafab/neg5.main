@@ -54,9 +54,9 @@ block content
                                                     each stat, i in gameHeaders
                                                         if stat == "pointValues"
                                                             each val in points
-                                                                td #{game["pointValues"][val]}
+                                                                td(class='stat-td') #{game["pointValues"][val]}
                                                         else
-                                                            td #{game[stat]}
+                                                            td(class='stat-td') #{game[stat]}
 
                                         tfoot
 
@@ -69,12 +69,12 @@ block content
                                                     else
                                                         if stat == "pointValues"
                                                             each val in points
-                                                                td
+                                                                td(class='stat-td')
                                                                     strong
                                                                         | #{playerTotals[playerid].pointTotals[val]}
                                                         else
                                                             if playerTotals[playerid][stat]
-                                                                td
+                                                                td(class='stat-td')
                                                                     strong
                                                                         | #{playerTotals[playerid][stat]}
                                                             else

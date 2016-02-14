@@ -102,15 +102,7 @@ function findTournamentById(id, callback) {
                         }
                     });
                     result.games.sort(function(game1, game2) {
-                        if (game1.phase_id === game2.phase_id) {
-                            return game1.round - game2.round;
-                        } else {
-                            if (!game1.phase_id || !game2.phase_id) {
-                                return game1.round - game2.round;
-                            } else {
-                                return game1.phase_id.localeCompare(game2.phase_id);
-                            }
-                        }
+                        return game1.round - game2.round;
                     });
                     result.teams.sort(function(team1, team2) {
                         return team1.team_name.localeCompare(team2.team_name);
@@ -151,10 +143,8 @@ function loadTournamentScoresheet(id, callback) {
 * @param callback callback with an error (or null), the tournament's teams, and the new team
 */
 function addTeamToTournament(tournamentid, teaminfo, callback) {
-    // var currentPlayer = 1;
-    // var key = "player" + currentPlayer + "_name";
     var newPlayers = [];
-    var newteam = new Team({
+    var newTeam = new Team({
         team_name : teaminfo.teamName,
         divisions : teaminfo.divisions,
         shortID : shortid.generate()
@@ -169,38 +159,27 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
             newPlayers.push(newPlayer);
         }
     }
-    // while (teaminfo[key] !== undefined) {
-    //     if (teaminfo[key].length !== 0) {
-    //         var newplayer = new Player({
-    //             teamID : newteam._id.toString(),
-    //             player_name : teaminfo[key],
-    //             team_name : teaminfo["players_team"],
-    //         });
-    //         newplayer.shortID = shortid.generate();
-    //         newPlayers.push(newplayer);
-    //     }
-    //     currentPlayer++;
-    //     key = "player" + currentPlayer + "_name";
-    // }
     var tournament = {_id : tournamentid};
-    var updateQuery = {$push: {teams : newteam}};
+    var updateQuery = {$push: {teams : newTeam}};
     var updateQueryPlayers = {$push : {players : {$each : newPlayers}}};
-    var options = {safe : true, upsert : true};
-    Tournament.update(tournament, updateQuery, options, function(err) { // Add the team
+    Tournament.update(tournament, updateQuery, function(err) {
         if (err) {
             callback(err);
         } else {
-            Tournament.update(tournament, updateQueryPlayers, options, function(err) { // Add all players
+            Tournament.update(tournament, updateQueryPlayers, function(err) {
                 if (err) {
                     callback(err);
                 } else {
-                    Tournament.findOne({_id : tournamentid}, {teams : 1, collaborators : 1, directorid : 1, phases : 1}).exec(function(err, result) {
+                    Tournament.findOne({_id : tournamentid}, {teams : 1, collaborators : 1, directorid : 1, phases : 1, shortID : 1}, function(err, result) {
                         if (err) {
                             callback(err);
                         } else {
-                            callback(null, result.teams, newteam, result.collaborators, result.directorid, result.phases);
+                            result.teams.sort((first, second) => {
+                                return first.team_name.localeCompare(second.team_name);
+                            });
+                            callback(null, result);
                         }
-                    })
+                    });
                 }
             });
         }
@@ -247,24 +226,22 @@ function findTeamMembers(tournamentid, teamid, callback) {
 function addGameToTournament(tournamentid, gameinfo, phases, callback) {
     pointsJSONKeys = Object.keys(JSON.parse(gameinfo["pointValueForm"]));
     var newGame = new Game({
-        round : !gameinfo["round"] ? 0 : gameinfo["round"],
-        tossupsheard : !gameinfo["tossupsheard"] ? 0 : gameinfo["tossupsheard"],
-        room : !gameinfo["room"] ? "-" : gameinfo["room"],
-        moderator : !gameinfo["moderator"] ? "-" : gameinfo["moderator"],
-        packet : !gameinfo["packet"] ? "-" : gameinfo["packet"],
-        notes : !gameinfo["notes"] ? "-" : gameinfo["notes"]
+        round : !gameinfo.round ? 0 : gameinfo.round,
+        tossupsheard : !gameinfo.tossupsheard ? 0 : gameinfo.tossupsheard,
+        room : !gameinfo.room ? "-" : gameinfo.room,
+        moderator : !gameinfo.moderator ? "-" : gameinfo.moderator,
+        packet : !gameinfo.packet ? "-" : gameinfo.packet,
+        notes : !gameinfo.notes ? "-" : gameinfo.notes
     });
     newGame.phases = phases;
-    newGame.phase_id = gameinfo["phase_id"];
+    newGame.phase_id = gameinfo.phase_id;
     newGame.shortID = shortid.generate();
-    newGame.team1.team_id = gameinfo["leftteamselect"];
-    newGame.team1.score = !gameinfo["leftteamscore"] ? 0 : gameinfo["leftteamscore"];
-    newGame.team1.bouncebacks = !gameinfo["leftbounceback"] ? 0 : gameinfo["leftbounceback"];
-    // newGame.team1.team_name = gameinfo["leftteamname"];
-    newGame.team2.team_id = gameinfo["rightteamselect"];
-    newGame.team2.score = !gameinfo["rightteamscore"] ? 0 : gameinfo["rightteamscore"];
-    newGame.team2.bouncebacks = !gameinfo["rightbounceback"] ? 0 : gameinfo["rightbounceback"];
-    // newGame.team2.team_name = gameinfo["rightteamname"];
+    newGame.team1.team_id = gameinfo.leftteamselect;
+    newGame.team1.score = !gameinfo.leftteamscore ? 0 : gameinfo.leftteamscore;
+    newGame.team1.bouncebacks = !gameinfo.leftbounceback ? 0 : gameinfo.leftbounceback;
+    newGame.team2.team_id = gameinfo.rightteamselect;
+    newGame.team2.score = !gameinfo.rightteamscore ? 0 : gameinfo.rightteamscore;
+    newGame.team2.bouncebacks = !gameinfo.rightbounceback ? 0 : gameinfo.rightbounceback;
     var playerNum = 1;
     var playerleft = "player" + playerNum + "_leftid";
     newGame.team1.playerStats = {};
@@ -300,22 +277,15 @@ function addGameToTournament(tournamentid, gameinfo, phases, callback) {
         if (err) {
             callback(err);
         } else {
-            Tournament.findOne(tournament, {directorid : 1, collaborators : 1, teams : 1, phases : 1}, function(err, result) {
+            Tournament.findOne(tournament, {games : 1, phases : 1, shortID : 1, teams : 1, directorid : 1, collaborators : 1}, function(err, result) {
                 if (err) {
                     callback(err);
                 } else {
-                    var teamMap = statsController.makeTeamMap(result.teams);
-                    newGame.team1.team_name = teamMap[newGame.team1.team_id].name;
-                    newGame.team2.team_name = teamMap[newGame.team2.team_id].name;
-                    // console.log(newGame.phase_id);
-                    var phaseName = "";
-                    for (var j = 0; j < result.phases.length; j++) {
-                        if (newGame.phase_id == result.phases[j].phase_id) {
-                            phaseName = result.phases[j].name;
-                            break;
-                        }
-                    }
-                    callback(null, newGame, result.collaborators, result.directorid, phaseName);
+                    result.games.sort(function(first, second) {
+                        return first.round - second.round;
+                    });
+                    result.teamMap = statsController.makeTeamMap(result.teams);
+                    callback(null, result, newGame);
                 }
             });
         }
@@ -839,7 +809,7 @@ function removePhase(tournamentid, phaseID, directorid, callback) {
                 return callback(null, null, false);
             }
             for (var i = 0; i < tournament.games.length; i++) {
-                if (tournament.games[i].phase_id == phaseID) {
+                if (tournament.games[i].phase_id.indexOf(phaseID) != -1) {
                     return callback(null, null, false);
                 }
             }
@@ -869,6 +839,32 @@ function switchPhases(tournamentid, phaseID, directorid, callback) {
             }
             Tournament.update({_id : tournament._id}, {$set : {phases : newPhases}}, function(err) {
                 callback(err, null, true);
+            });
+        }
+    });
+}
+
+function editPhases(tournamentid, directorid, newPhases, callback) {
+    Tournament.findOne({shortID : tournamentid}, {directorid : 1}, function(err, tournament) {
+        if (err) {
+            return callback(err);
+        } else if (!tournament) {
+            return callback(null, null, null);
+        } else if (tournament.directorid != directorid) {
+            return callback(null, "unauthorized", null);
+        } else {
+            Tournament.update({shortID : tournamentid}, {$set : {phases : newPhases}}, function(err) {
+                if (err) {
+                    return callback(err);
+                } else {
+                    Tournament.findOne({shortID : tournamentid}, {games : 1, teams : 1, shortID : 1, directorid : 1, phases : 1}, function(err, result) {
+                        if (err) {
+                            return callback(err);
+                        } else {
+                            return callback(err, null, result);
+                        }
+                    });
+                }
             });
         }
     });
@@ -1002,3 +998,4 @@ exports.loadTournamentScoresheet = loadTournamentScoresheet;
 exports.newPhase = newPhase;
 exports.removePhase = removePhase;
 exports.switchPhases = switchPhases;
+exports.editPhases = editPhases;

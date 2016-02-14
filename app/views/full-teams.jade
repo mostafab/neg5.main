@@ -54,28 +54,28 @@ block content
                                                     each stat, i in gameHeaders
                                                         if stat == "pointValues"
                                                             each val in points
-                                                                td #{game["pointValues"][val]}
+                                                                td(class='stat-td') #{game["pointValues"][val]}
                                                         else
-                                                            td #{game[stat]}
+                                                            td(class='stat-td') #{game[stat]}
 
                                         tfoot
 
                                             tr(class="success" style="font-size:16px")
                                                 each stat, i in gameHeaders
                                                     if i == 0
-                                                        td
+                                                        td(class='stat-td')
                                                             strong
                                                                 | Totals
                                                     else
                                                         if teamTotals[teamid].stats
                                                             if stat == "pointValues"
                                                                 each val in points
-                                                                    td
+                                                                    td(class='stat-td')
                                                                         strong
                                                                             | #{teamTotals[teamid].stats.pointValues[val]}
                                                             else
                                                                 if teamTotals[teamid].stats[stat]
-                                                                    td
+                                                                    td(class='stat-td')
                                                                         strong
                                                                             | #{teamTotals[teamid].stats[stat]}
                                                                 else
@@ -101,9 +101,9 @@ block content
                                                     each stat, i in playerHeaders
                                                         if stat == "pointTotals"
                                                             each val in points
-                                                                td #{player.stats["pointTotals"][val]}
+                                                                td(class='stat-td') #{player.stats["pointTotals"][val]}
                                                         else if stat == "Player"
-                                                            td
+                                                            td(class='stat-td')
                                                                 a(href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}#" + player.id) #{player.stats[stat]}
                                                         else
-                                                            td #{player.stats[stat]}
+                                                            td(class='stat-td') #{player.stats[stat]}

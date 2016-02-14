@@ -71,9 +71,17 @@ td {
     white-space: nowrap;
 }
 
+.stat-td {
+    text-align: center;
+}
+
 .info-label {
     padding: 10px;
     font-size: 24px;
+}
+
+.phase-box {
+    border-radius: 1px;
 }
 
 .label-primary {
@@ -142,12 +150,22 @@ td {
     margin-bottom: 5px;
 }
 
+.active-phase {
+    background-color: #DFF0D8;
+}
+
 .saved {
     border-right-color: #008888;
+    border-width: 1px;
+    border-radius: 1px;
+    border-right-width: 20px;
 }
 
 .not-saved {
     border-right-color: red;
+    border-width: 1px;
+    border-radius: 1px;
+    border-right-width: 20px;
 }
 
 .division-name:hover {

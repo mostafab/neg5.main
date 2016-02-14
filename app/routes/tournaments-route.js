@@ -2,6 +2,7 @@ var tournamentController = require('../../app/controllers/tournament-controller'
 var registrationController = require("../../app/controllers/registration-controller");
 var statsController = require("../../app/controllers/stats-controller");
 var mongoose = require("mongoose");
+var shortid = require("shortid");
 var Tournament = mongoose.model("Tournament");
 
 module.exports = function(app) {
@@ -97,6 +98,43 @@ module.exports = function(app) {
         });
     });
 
+    app.post("/tournaments/editphases", function(req, res) {
+        if (!req.session.director) {
+            return res.status(401).end();
+        }
+        var phases = !req.body.phases ? [] : req.body.phases.map(phase => {
+            var editedPhase = phase;
+            editedPhase.active = phase.active == 'true' ? true : false;
+            return editedPhase;
+        });
+        tournamentController.editPhases(req.body.tid, req.session.director._id, phases, (err, unauthorized, tournament) => {
+            if (err) {
+                res.status(500).end();
+            } else if (unauthorized) {
+                res.status(401).end();
+            } else if (!tournament) {
+                res.status(404).end();
+            } else {
+                tournament.teamMap = statsController.makeTeamMap(tournament.teams);
+                res.render("game-list", {tournament : tournament, admin : true}, (err, gameHTML) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).end();
+                    } else {
+                        res.render("team-list", {tournament : tournament, admin : true}, (err, teamHTML) => {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).end();
+                            } else {
+                                res.send({gameHTML : gameHTML, teamHTML : teamHTML, phases : tournament.phases});
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
     app.post("/tournaments/newphase", function(req, res) {
         if (!req.session.director) {
             return res.status(401).end();
@@ -114,7 +152,6 @@ module.exports = function(app) {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        // console.log(req.body);
         tournamentController.mergeTournaments(req.body.first, req.body.second, req.body.name, function(err, merged) {
             res.send(merged);
         });
@@ -208,26 +245,32 @@ module.exports = function(app) {
                 res.status(401).end();
             } else {
                 var id = req.body.tid;
-                tournamentController.addTeamToTournament(id, req.body.teamInfo, function(err, teams, newTeam, collaborators, directorid, phases) {
+                tournamentController.addTeamToTournament(id, req.body.teamInfo, function(err, tournament) {
                     if (err) {
                         res.status(500).end();
                     } else {
                         admin = false;
-                        if (req.session.director._id == directorid) {
+                        if (req.session.director._id == tournament.directorid) {
                             admin = true;
                         }
                         if (!admin) {
-                            for (var i = 0; i < collaborators.length; i++) {
-                                if (collaborators[i].id == req.session.director._id && collaborators[i].admin) {
+                            for (var i = 0; i < tournament.collaborators.length; i++) {
+                                if (tournament.collaborators[i].id == req.session.director._id && tournament.collaborators[i].admin) {
                                     admin = true;
                                 }
                             }
                         }
-                        res.status(200).send({teams : teams, newTeam : newTeam, admin : admin, phases : phases});
+                        res.render("team-list", {tournament : tournament, admin : admin}, function(err, html) {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).end();
+                            } else {
+                                res.send({html : html, teams : tournament.teams});
+                            }
+                        });
                     }
                 });
             }
-            // res.end();
         });
 
     app.route("/tournaments/creategame")
@@ -236,23 +279,22 @@ module.exports = function(app) {
                 res.status(401).end();
             } else {
                 var id = req.body["tournament_id_form"];
-                tournamentController.addGameToTournament(id, req.body, [], function(err, game, collaborators, directorid, phaseName) {
+                tournamentController.addGameToTournament(id, req.body, [], function(err, tournament, newGame) {
                     if (err) {
                         res.status(500).end();
                     } else {
-                        console.log(game);
                         admin = false;
-                        if (req.session.director._id == directorid) {
+                        if (req.session.director._id == tournament.directorid) {
                             admin = true;
                         }
                         if (!admin) {
-                            for (var i = 0; i < collaborators.length; i++) {
-                                if (collaborators[i].id == req.session.director._id && collaborators[i].admin) {
+                            for (var i = 0; i < tournament.collaborators.length; i++) {
+                                if (tournament.collaborators[i].id == req.session.director._id && tournament.collaborators[i].admin) {
                                     admin = true;
                                 }
                             }
                         }
-                        res.status(200).send({game : game, tid : id, admin : admin, phaseName : phaseName});
+                        res.render("game-list", {tournament : tournament, admin : admin});
                     }
                 });
             }
@@ -321,22 +363,23 @@ module.exports = function(app) {
     app.route("/tournaments/games/edit")
         .post(function(req, res, next) {
             if (!req.session.director) {
-                res.status(401).send({msg : "Unauthorized"});
+                res.status(401).end();
             } else {
-                // console.log(req.body);
                 var tournamentid = req.body["tournament_id_form"];
                 var gameid = req.body["oldgameid"];
                 tournamentController.removeGameFromTournament(tournamentid, gameid, function(err, phases) {
                     if (err) {
-                        res.status(500).send({err : err});
+                        console.log(err);
+                        res.status(500).end();
                     } else {
-                        tournamentController.addGameToTournament(tournamentid, req.body, phases, function(err, game) {
+                        tournamentController.addGameToTournament(tournamentid, req.body, phases, function(err, tournament, game) {
                             if (err) {
-                                res.status(500).send({err : err});
+                                console.log(err);
+                                res.status(500).end();
                             } else {
                                 tournamentController.changeGameShortID(tournamentid, game.shortID, gameid, function(err) {
                                     if (err) {
-                                        res.status(500).send({err : err});
+                                        res.status(500).end();
                                     } else {
                                         res.status(200).send({err : null});
                                     }
@@ -570,6 +613,10 @@ module.exports = function(app) {
                 }
             });
         }
+    });
+
+    app.get('/shortid', function(req, res) {
+        res.send(shortid.generate());
     });
 
 

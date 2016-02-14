@@ -1,0 +1,43 @@
+div(class="table-responsive" id="gamediv")
+    div(class="row" style="width:95%")
+        div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
+
+            input(type="text" class="form-control search" placeholder="Filter By Round or Team")
+            span(class="input-group-addon btn-stats")
+                i(class="glyphicon glyphicon-search")
+    div(class="panel panel-default")
+        table(class="table table-bordered table-condensed")
+            thead
+                tr
+                    th(class="table-head") Round
+                    th(class="table-head") Phase(s)
+                    th(class="table-head") Team 1
+                    th(class="table-head") Team 1 Score
+                    th(class="table-head") Team 2
+                    th(class="table-head") Team 2 Score
+                    th(class="table-head") Tossups Heard
+                    th(class="table-head") Details
+            tbody(id="gametablebody" class="list")
+                each val, i in tournament.games
+                    if tournament.teamMap[tournament.games[i].team1.team_id] && tournament.teamMap[tournament.games[i].team2.team_id]
+                        tr()
+                            td(class="round") #{tournament.games[i].round}
+                            td(class="phase")
+                                each phase in tournament.phases
+                                    each includedPhase in tournament.games[i].phase_id
+                                        if phase.phase_id == includedPhase
+                                            li #{phase.name}
+                            td(class="team1name") #{tournament.teamMap[tournament.games[i].team1.team_id].name}
+                            td(class="team1score") #{tournament.games[i].team1.score}
+                            td(class="team2name") #{tournament.teamMap[tournament.games[i].team2.team_id].name}
+                            td(class="team2score") #{tournament.games[i].team2.score}
+                            td(class="tuheard") #{tournament.games[i].tossupsheard}
+                            td
+                                if admin
+                                    form()
+                                        input(type="hidden" name="gameid_form" value='#{tournament.games[i].shortID}')
+                                        input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
+                                        a(class="btn btn-xs btn-info editbutton" href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
+                                        button(type="button" class="btn btn-xs btn-warning deletebutton") Remove Game
+                                else
+                                    a(class="btn btn-xs btn-info editbutton" href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details

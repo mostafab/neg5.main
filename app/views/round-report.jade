@@ -47,7 +47,7 @@ block content
                                 tbody
                                     each round, i in rounds
                                         tr
-                                            td #{round}
-                                            td #{roundsInfo[round]["PPG/Team"]}
-                                            td #{roundsInfo[round]["TUPts/TUH"]}
-                                            td #{roundsInfo[round]["PPB"]}
+                                            td(class='stat-td') #{round}
+                                            td(class='stat-td') #{roundsInfo[round]["PPG/Team"]}
+                                            td(class='stat-td') #{roundsInfo[round]["TUPts/TUH"]}
+                                            td(class='stat-td') #{roundsInfo[round]["PPB"]}

@@ -35,7 +35,7 @@ function getTeamsInfo(tournamentid, phaseID, callback) {
                     return division.phase_id == phaseID;
                 });
                 result.games = result.games.filter(function(game) {
-                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id == phaseID;
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id.indexOf(phaseID) != -1;
                 });
             } else {
                 result.games = result.games.filter(function(game) {
@@ -150,7 +150,7 @@ function getPlayersInfo(tournamentid, phaseID, callback) {
                     }
                 }
                 result.games = result.games.filter(function(game) {
-                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id == phaseID;
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id.indexOf(phaseID) != -1;
                 });
             } else {
                 result.games = result.games.filter(function(game) {
@@ -237,7 +237,7 @@ function getFullTeamsGameInformation(tournamentid, phaseID, callback) {
                     }
                 }
                 result.games = result.games.filter(function(game) {
-                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id == phaseID;
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id.indexOf(phaseID) != -1;
                 });
             } else {
                 result.games = result.games.filter(function(game) {
@@ -282,7 +282,7 @@ function getFullPlayersGameInformation(tournamentid, phaseID, callback) {
                     }
                 }
                 tournament.games = tournament.games.filter(function(game) {
-                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id == phaseID;
+                    return teamMap[game.team1.team_id] && teamMap[game.team2.team_id] && game.phase_id.indexOf(phaseID) != -1;
                 });
             } else {
                 tournament.games = tournament.games.filter(function(game) {
@@ -321,7 +321,7 @@ function getRoundReport(tournamentid, phaseID, callback) {
                     }
                 }
                 tournament.games = tournament.games.filter(function(game) {
-                    return game.phase_id == phaseID;
+                    return game.phase_id.indexOf(phaseID) != -1;
                 });
             }
             var gameRounds = {};

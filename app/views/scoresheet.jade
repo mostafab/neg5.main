@@ -132,22 +132,22 @@ block content
                                     th(class="table-head" style='text-align:center') Notes
                                 tbody
                                     tr(id="tr-metadata")
-                                        td(class='td-scoresheet')
+                                        td(class='td-scoresheet' width='100')
                                             input(type='number' class='input-scoresheet' id="round-number" value="#{maxRound}")
-                                        td(class="td-scoresheet")
+                                        td(class="td-scoresheet" width='100')
                                             input(type='text' class='input-scoresheet' value="-" id="room-number")
-                                        td(class="td-scoresheet")
+                                        td(class="td-scoresheet" width='100')
                                             input(type='text' class='input-scoresheet' value="-" id='moderator')
                                         td(class="td-scoresheet")
                                             input(type='text' class='input-scoresheet' value='-' id='packet')
                                         td(class='td-scoresheet')
-                                            select(class="form-control" id='phase' style='border-radius:1px')
+                                            select(multiple class="form-control" id='phase' style='border-radius:1px;border-width:0px;' size='#{phases.length}')
                                                 each phase in phases
                                                     if phase.active
                                                         option(selected value='#{phase.phase_id}') #{phase.name}
                                                     else
                                                         option(value='#{phase.phase_id}') #{phase.name}
-                                        td(class='td-scoresheet' width='250')
+                                        td(class='td-scoresheet' width='200')
                                             textarea(class='input-scoresheet' id='notes' style='text-align:left') -
 
                 div(class="row")

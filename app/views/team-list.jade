@@ -1,0 +1,41 @@
+div(class="table-responsive" id="teamdiv")
+    div(class="row" style="width:95%")
+        div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
+
+            input(type="text" class="form-control search" placeholder="Filter by Name or Division")
+            span(class="input-group-addon btn-stats")
+                i(class="glyphicon glyphicon-search")
+
+    div(class="panel panel-default")
+        table(class="table table-condensed")
+            thead
+                tr
+                    th(class="table-head") Team
+                    th(class="table-head") Divisions
+                    th(class="table-head") Details
+            tbody(id="teamtablebody" class="list")
+                each val, i in tournament.teams
+                    tr()
+                        td(class="teamname") #{tournament.teams[i].team_name}
+                        td(class="division")
+                            for phase, j in tournament.phases
+                                - var phaseID = tournament.phases[j].phase_id
+                                if tournament.teams[i].divisions
+                                    li #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
+                        td
+                            a(class="btn btn-xs btn-info" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
+                            if admin
+                                button(type="button" class="btn btn-xs btn-warning start-delete-team")
+                                    i(class="glyphicon glyphicon-remove")
+                    if admin
+                        tr(style='display:none')
+                            td
+                            td
+                            td
+                                div(class="col-md-3 col-lg-3 col-sm-3")
+                                    button(class="btn btn-stats btn-sm btn-block cancel-delete-team") Never Mind
+                                div(class="col-md-3 col-lg-3 col-sm-3")
+                                    form()
+                                        input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
+                                        input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
+                                        button(type="button" class="btn btn-sm btn-danger btn-block deleteteambutton") Confirm
