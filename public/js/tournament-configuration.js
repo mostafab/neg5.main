@@ -348,13 +348,37 @@ $(document).ready(function() {
             url : href,
             type : "GET",
             success : function(databack, status, xhr) {
-                // console.log(databack);
                 $("#team-view-div").empty();
                 $("#team-list-template").html(databack);
                 $("#add-team-div").show();
                 $("#team-list-div").show();
+                teamOptions = { valueNames : ["teamname", "division"]};
+                teamList = new List("teamdiv", teamOptions);
             }
         });
+    });
+
+    $("body").on("click", "#back-to-games", function(e) {
+        e.preventDefault();
+        var href = $(this).attr("href");
+        $.ajax({
+            url : href,
+            type : "GET",
+            success : function(databack, status, xhr) {
+                $("#game-view-div").empty();
+                $("#game-list-template").html(databack);
+                $("#add-game-div").show();
+                $("#game-list-div").show();
+                gameOptions = { valueNames : ["round", "team1name", "team2name"]};
+                gameList = new List("gamediv", gameOptions);
+            }
+        });
+    });
+
+    $("body").on("click", ".game-anchor", function(e) {
+        e.preventDefault();
+        var href = $(this).attr("href");
+        loadGameAJAX(href);
     });
 
 });
@@ -380,7 +404,6 @@ function getNewTeamInfo() {
 function uncheckBoxes(checkbox) {
     var parentDiv = $(checkbox).parent().parent();
     parentDiv.find(".pointgroup").each(function(index, radio) {
-        // console.log($(radio)[0] === $(checkbox)[0]);
         if ($(radio)[0] !== $(checkbox)[0]) {
             $(radio).prop("checked", false);
         }
@@ -498,9 +521,21 @@ function loadTeamAJAX(href) {
         url : href,
         type : 'GET',
         success : function(databack, status, xhr) {
-            $("#add-team-div").hide();
-            $("#team-list-div").hide();
-            $("#team-view-div").html(databack);
+            $("#add-team-div").slideUp(300);
+            $("#team-list-div").slideUp(300);
+            $("#team-view-div").slideUp(0).html(databack).slideDown(300);
+        }
+    });
+}
+
+function loadGameAJAX(href) {
+    $.ajax({
+        url : href,
+        type : 'GET',
+        success : function(databack, status, xhr) {
+            $("#add-game-div").slideUp(300);
+            $("#game-list-div").slideUp(300);
+            $("#game-view-div").slideUp(0).html(databack).slideDown(300);
         }
     });
 }

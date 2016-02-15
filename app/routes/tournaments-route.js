@@ -190,35 +190,27 @@ module.exports = function(app) {
     });
 
     app.get("/tournaments/findCollaborators", function(req, res, next) {
-        // console.log(req.query);
         tournamentController.findCollaborators(req.query.tournamentid, function(err, collaborators) {
             if (err) {
                 return res.status(500).send({collabs : []});
             } else {
-                // console.log(collaborators);
                 return res.status(200).send({collabs : collaborators});
             }
         });
     });
 
     app.post("/tournaments/editPointSchema", function(req, res, next) {
-        // console.log(req.body);
-        // console.log(JSON.parse(req.body.pointtypes));
-        console.log(req.body);
         var newPointValues = {};
         var newPointTypes = JSON.parse(req.body.pointtypes);
-        console.log(newPointTypes);
         var playerNum = 1;
         currentVal = "pointval" + playerNum
         while (req.body[currentVal] != undefined) {
-            // console.log(req.body[currentVal]);
             if (req.body[currentVal].length !== 0) {
                 newPointValues[req.body[currentVal]] = 0;
             }
             playerNum++;
             currentVal = "pointval" + playerNum;
         }
-        // console.log(newPointValues);
         tournamentController.changePointScheme(req.body["tournamentid"], newPointValues, newPointTypes, function(err) {
             if (err) {
                 res.status(500).send({err : err});
@@ -579,7 +571,7 @@ module.exports = function(app) {
 
     app.get("/t/:tid/games/:gid", function(req, res) {
         if (!req.session.director) {
-            return res.redirect("/");
+            return res.status(401).end();
         }
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var game = null;
@@ -605,16 +597,37 @@ module.exports = function(app) {
                                 team2Players.push(result.players[i]);
                             }
                         }
-                        res.render("game-view", {tournamentd : req.session.director, game : game, tournamentName : result.tournament_name,
+                        res.render("game-view", {game : game, tournamentName : result.tournament_name,
                             team1Players : team1Players, team2Players : team2Players, tournament : result});
                     } else {
-                        res.status(404).render("not-found", {tournamentd: req.session.director, msg : "That game doesn't exist."})
+                        res.status(404).end();
                     }
                 } else {
-                    res.status(401).send("You don't have permission to view this tournament");
+                    res.status(401).end();
                 }
             } else {
-                res.status(404).render("not-found", {tournamentd: req.session.director, msg : "That tournament doesn't exist."})
+                res.status(404).end();
+            }
+        });
+    });
+
+    app.get("/t/:tid/games", function(req, res) {
+        if (!req.session.director) {
+            return res.status(401).end();
+        }
+        tournamentController.getGames(req.params.tid, function(err, tournament) {
+            if (err) {
+                return res.status(500).end();
+            } else if (!tournament) {
+                return res.status(404).end();
+            } else {
+                var hasPermission = getPermission(tournament, req.session.director);
+                if (hasPermission.permission) {
+                    tournament.teamMap = statsController.makeTeamMap(tournament.teams);
+                    return res.render('game-list', {tournament : tournament, admin : hasPermission.admin});
+                } else {
+                    return res.status(401).end();
+                }
             }
         });
     });

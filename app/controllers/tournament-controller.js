@@ -122,6 +122,25 @@ function getTeams(tid, callback) {
         } else if (!result) {
             callback(null, null);
         } else {
+            result.teams.sort((first, second) => {
+                return first.team_name.localeCompare(second.team_name);
+            });
+            callback(null, result);
+        }
+    });
+}
+
+function getGames(tid, callback) {
+    Tournament.findOne({shortID : tid}, {teams : 1, games : 1, phases : 1, shortID : 1, directorid : 1, collaborators : 1}, function(err, result) {
+        if (err) {
+            console.log(err);
+            callback(err);
+        } else if (!result) {
+            callback(null, null);
+        } else {
+            result.games.sort((first, second) => {
+                return first.round - second.round;
+            });
             callback(null, result);
         }
     });
@@ -986,6 +1005,7 @@ exports.addTournament = addTournament;
 exports.findTournamentsByDirector = findTournamentsByDirector;
 exports.findTournamentById = findTournamentById;
 exports.getTeams = getTeams;
+exports.getGames = getGames;
 exports.addTeamToTournament = addTeamToTournament;
 exports.findTeamMembers = findTeamMembers;
 exports.addGameToTournament = addGameToTournament;

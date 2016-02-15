@@ -37,7 +37,7 @@ div(class="table-responsive" id="gamediv")
                                     form()
                                         input(type="hidden" name="gameid_form" value='#{tournament.games[i].shortID}')
                                         input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
-                                        a(class="btn btn-xs btn-info editbutton" href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
+                                        a(class="btn btn-xs btn-info editbutton game-anchor" href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
                                         button(type="button" class="btn btn-xs btn-warning deletebutton") Remove Game
                                 else
                                     a(class="btn btn-xs btn-info editbutton" href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
