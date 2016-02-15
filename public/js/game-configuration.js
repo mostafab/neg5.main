@@ -17,9 +17,9 @@ function escapeHtml(string) {
 
 $(document).ready(function() {
 
-    $("body").on("click", "#entergamebutton", function() {
+    $("body").on("click", "#entergamebutton-edit", function() {
         var wrong = false;
-        $(".point-box").each(function() {
+        $(".point-box-edit").each(function() {
             $(this).removeClass("alert-danger");
             if ($(this).val()) {
                 var val = parseFloat($(this).val());
@@ -29,7 +29,7 @@ $(document).ready(function() {
                 }
             }
         });
-        $(".gp-box").each(function() {
+        $(".gp-box-edit").each(function() {
             $(this).removeClass("alert-danger");
             if ($(this).val()) {
                 var val = parseFloat($(this).val());
@@ -42,17 +42,17 @@ $(document).ready(function() {
                 $(this).addClass("alert-danger");
             }
         });
-        $(".scorebox").each(function() {
+        $(".scorebox-edit").each(function() {
             $(this).removeClass("alert-danger");
             if (!$(this).val()) {
                 wrong = true;
                 $(this).addClass("alert-danger");
             }
         });
-        $(".teamselect").removeClass("alert-danger");
-        if ($("#leftchoice").val() === $("#rightchoice").val()) {
+        $(".teamselect-edit").removeClass("alert-danger");
+        if ($("#leftchoice-edit").val() === $("#rightchoice-edit").val()) {
             wrong = true;
-            $(".teamselect").addClass("alert-danger");
+            $(".teamselect-edit").addClass("alert-danger");
         }
         if (!wrong) {
             editGameAJAX();
@@ -85,13 +85,11 @@ $(document).ready(function() {
         removePlayerAJAX($(form).serialize(), $(this));
     });
 
-    $("body").on("click", ".teamselect", function() {
-        if ($(this).attr("id") == "leftchoice") {
+    $("body").on("change", ".teamselect-edit", function() {
+        if ($(this).attr("id") == "leftchoice-edit") {
             getTeamPlayersAJAX("LEFT");
-            $("#leftteamnameID").val($(this).find(":selected").text());
         } else {
             getTeamPlayersAJAX("RIGHT");
-            $("#rightteamnameID").val($(this).find(":selected").text());
         }
     });
 
@@ -139,7 +137,7 @@ function editGameAJAX() {
     $.ajax({
         url : "/tournaments/games/edit",
         type : "POST",
-        data : $("#changegameform").serialize(),
+        data : $("#changegameform-edit").serialize(),
         success : function(databack, status, xhr) {
             showMessageInDiv("#updategamediv", "Game updated successfully", null);
         },
@@ -266,9 +264,8 @@ function getTeamPlayersAJAX(side) {
             url : "/tournaments/getplayers",
             type : "GET",
             data : {tournamentid : $("#tournament_id_change").val(),
-                    teamname : $("#leftchoice").val()},
+                    teamname : $("#leftchoice-edit").val()},
             success : function(databack, status, xhr) {
-                // console.log(databack);
                 replacePlayerRows(databack.players, databack.pointScheme, "LEFT");
             }
         });
@@ -324,10 +321,10 @@ function addNewPlayerRow(player, tid) {
 }
 
 function replacePlayerRows(players, pointScheme, side) {
-    var choice = side == "LEFT" ? "#left-text" : "#right-text";
+    var choice = side == "LEFT" ? "#left-text-edit" : "#right-text-edit";
     var points = Object.keys(pointScheme);
     $(choice).empty();
-    var html = "<table class='table table-striped table-bordered table-hover table-condensed'><thead><tr>";
+    var html = "<table class='table table-condensed'><thead><tr>";
     html += "<th class='table-head'>Name</th>";
     html += "<th class='table-head'>GP</th>";
     for (var i = 0; i < points.length; i++) {
@@ -341,7 +338,7 @@ function replacePlayerRows(players, pointScheme, side) {
         html += "<tr>";
         html += "<input type='hidden' value='" + players[i]._id +  "' " + "name='" + "player" + playerNum + sideText + "id'" + "/>";
         html += "<td>" + players[i].player_name + "</td>";
-        html += "<td> <input class='form-control' type='number' placeholder='GP'" + "value='0' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
+        html += "<td> <input class='form-control' type='number'" + "value='0' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
         for (var j = 0; j < points.length; j++) {
             var keyNameStr = "name='player" + playerNum + sideText + "_" + points[j] + "val' ";
             var keyId = "id='player" + playerNum + "_" + points[j] + sideText + "id' ";
@@ -351,7 +348,7 @@ function replacePlayerRows(players, pointScheme, side) {
             onkeyupString += playerNum + ',' + json + ', "' + sideText + '"' + ")' ";
             var onchangeString = "onchange=";
             onchangeString += "'updatePoints(" + playerNum + ',' + json + ', "' + sideText + '"' + ")'";
-            html += "<td><input class='form-control' type='number' placeholder='" + points[j] + "'" + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
+            html += "<td><input class='form-control' type='number' " + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
         }
         var idTag = "id='" + playerNum + sideText + "pts'";
         html += "<td> <input " + idTag + "class='form-control disabledview' type='input' placeholder='0' disabled /> </td>";

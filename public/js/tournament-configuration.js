@@ -348,12 +348,14 @@ $(document).ready(function() {
             url : href,
             type : "GET",
             success : function(databack, status, xhr) {
-                $("#team-view-div").empty();
-                $("#team-list-template").html(databack);
-                $("#add-team-div").show();
-                $("#team-list-div").show();
-                teamOptions = { valueNames : ["teamname", "division"]};
-                teamList = new List("teamdiv", teamOptions);
+                $("#team-view-div").fadeOut(200, function() {
+                    $(this).empty();
+                    $("#team-list-template").html(databack);
+                    $("#add-team-div").fadeIn(200);
+                    $("#team-list-div").fadeIn(200);
+                    teamOptions = { valueNames : ["teamname", "division"]};
+                    teamList = new List("teamdiv", teamOptions);
+                });
             }
         });
     });
@@ -365,12 +367,15 @@ $(document).ready(function() {
             url : href,
             type : "GET",
             success : function(databack, status, xhr) {
-                $("#game-view-div").empty();
-                $("#game-list-template").html(databack);
-                $("#add-game-div").show();
-                $("#game-list-div").show();
-                gameOptions = { valueNames : ["round", "team1name", "team2name"]};
-                gameList = new List("gamediv", gameOptions);
+                $("#game-list-template").fadeOut(0);
+                $("#game-view-div").fadeOut(200, function() {
+                    $("#game-list-template").html(databack);
+                    $("#add-game-div").fadeIn(200);
+                    $("#game-list-div").fadeIn(200);
+                    $("#game-list-template").fadeIn(200);
+                    gameOptions = { valueNames : ["round", "team1name", "team2name"]};
+                    gameList = new List("gamediv", gameOptions);
+                });
             }
         });
     });
@@ -379,6 +384,11 @@ $(document).ready(function() {
         e.preventDefault();
         var href = $(this).attr("href");
         loadGameAJAX(href);
+    });
+
+    $("body").on("mousedown", ".phase-selection option", function(e) {
+        this.selected = !this.selected;
+        e.preventDefault();
     });
 
 });
@@ -521,9 +531,9 @@ function loadTeamAJAX(href) {
         url : href,
         type : 'GET',
         success : function(databack, status, xhr) {
-            $("#add-team-div").slideUp(300);
-            $("#team-list-div").slideUp(300);
-            $("#team-view-div").slideUp(0).html(databack).slideDown(300);
+            $("#add-team-div").fadeOut(300);
+            $("#team-list-div").fadeOut(300);
+            $("#team-view-div").fadeOut(0).html(databack).fadeIn(300);
         }
     });
 }
@@ -533,9 +543,9 @@ function loadGameAJAX(href) {
         url : href,
         type : 'GET',
         success : function(databack, status, xhr) {
-            $("#add-game-div").slideUp(300);
-            $("#game-list-div").slideUp(300);
-            $("#game-view-div").slideUp(0).html(databack).slideDown(300);
+            $("#add-game-div").fadeOut(300);
+            $("#game-list-div").fadeOut(300);
+            $("#game-view-div").fadeOut(0).html(databack).fadeIn(300);
         }
     });
 }
