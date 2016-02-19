@@ -1,13 +1,13 @@
 h2(class="title" style="width:25%" id="team-name-header") #{team.team_name}
 h3(style="width:50%;border-radius:0")
-    a(class="btn btn-sm btn-info" id='back-to-teams' href="/t/" + tournament.shortID + "/teams") Teams
+    a(class="btn btn-md btn-info" id='back-to-teams' href="/t/" + tournament.shortID + "/teams") Teams
 
 br
 br
 
-div(class="panel panel-default ")
+div(class="panel panel-default")
         div(class="panel-heading collapsable") Team Details
-        div(class="panel-body")
+        div(class="panel-body tournament-panel")
             form(id="teamdetailsform")
                 input(type="hidden" value="#{tournament._id}" name="tournamentid" id='tournament-id-team')
                 input(type="hidden" value="#{team._id}" name="teamid" id='team-id')
@@ -47,7 +47,7 @@ div(class="panel panel-default ")
 
 div(class="panel panel-default")
         div(class="panel-heading collapsable") Player Information
-        div(class="panel-body")
+        div(class="panel-body tournament-panel")
 
             div(class="table-responsive")
                 table(class="table table-condensed" style="width:auto")
@@ -75,7 +75,7 @@ div(class="panel panel-default")
                     input(type="hidden" name="teamnameform" value="#{team.team_name}")
                     input(type="text" class="form-control" name="newplayername" placeholder="Add a Player" id="newplayerinput")
 
-                    button(type="button" class="btn btn-sm btn-info" id="add-player-button") Add Player
+                    button(type="button" class="btn btn-md btn-info" id="add-player-button") Add Player
                 br
                 br
                 div(class="col-md-12 input-lg center-text no-border-radius tournament-info-field" id="player-add-msg" style="text-align:center")

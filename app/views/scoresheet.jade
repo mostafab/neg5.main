@@ -165,12 +165,12 @@ block content
                             div(class="panel-body" id='error-msg')
 
                 div(class="row col-md-12 col-lg-12 col-sm-12" id="goto-game-div" style='display:none')
-                    div(class="col-md-6 col-sm-6 col-lg-6")
+                    div(class="col-md-12 col-sm-12 col-lg-12")
                         button(class="btn btn-xl btn-warning btn-block" data-tournament='#{tid}' id='undo-game') Undo Submission
                             i(class="fa fa-arrow-left" style='margin-left:20px')
-                    div(class="col-md-6 col-sm-6 col-lg-6")
-                        a(target="_blank" class="btn btn-xl btn-stats btn-block" data-tournament='#{shortID}' id='goto-game') View/Edit game
-                            i(class="fa fa-arrow-right" style='margin-left:20px')
+                    // div(class="col-md-6 col-sm-6 col-lg-6")
+                    //     a(target="_blank" class="btn btn-xl btn-stats btn-block" data-tournament='#{shortID}' id='goto-game') View/Edit game
+                    //         i(class="fa fa-arrow-right" style='margin-left:20px')
 
 block scripts
     script(src="/js/scoresheet-es6.js")

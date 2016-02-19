@@ -27,13 +27,11 @@ function createRegistration(tournamentid, directorid, information, callback) {
         directorid : directorid
     });
     Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
-        // console.log(result.tournament_name);
         if (err || tournament == null) {
             callback(err, null);
         } else if (!tournament.openRegistration) {
             callback(null, "CLOSED");
         } else {
-                // console.log(reg);
             if (reg.directorid == null) {
                 reg.save(function(err) {
                     callback(err, null);

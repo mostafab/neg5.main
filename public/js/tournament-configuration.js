@@ -17,7 +17,7 @@ var entityMap = {
 
 $(document).ready(function() {
 
-    gameOptions = { valueNames : ["round", "team1name", "team2name"]};
+    gameOptions = { valueNames : ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"]};
     gameList = new List("gamediv", gameOptions);
 
     teamOptions = { valueNames : ["teamname", "division"]};
@@ -128,11 +128,13 @@ $(document).ready(function() {
         }
     });
 
-    $("body").on("click", ".deletebutton", function() {
+    $("body").on("click", ".deletebutton", function(e) {
+        e.stopPropagation();
         removeGame($(this).parent().serialize(), $(this));
     });
 
-    $("body").on("click", ".start-delete-team", function() {
+    $("body").on("click", ".start-delete-team", function(e) {
+        e.stopPropagation();
         $(this).parents("tr").next().slideDown(0);
     });
 
@@ -150,7 +152,8 @@ $(document).ready(function() {
 
     $("body").on("click", ".team-anchor", function(e) {
         e.preventDefault();
-        loadTeamAJAX($(this).attr("href"));
+        var td = $(this).children("td").first();
+        loadTeamAJAX($(this).attr("data-href"), td);
     });
 
     $("#save-point-schema-button").click(function(e) {
@@ -203,18 +206,6 @@ $(document).ready(function() {
     $("#searchcollabbutton").click(function() {
         if ($("#searchcollabinput").val().trim().length >= 5) {
             findDirectorsAJAX();
-        }
-    });
-
-    $("#searchcollabinput").keypress(function(e) {
-        if (e.which == 13) {
-            e.preventDefault();
-            if ($(this).val().length > 0) {
-                findDirectorsAJAX();
-            }
-        }
-        if ($(this).val().trim().length >= 5) {
-            $("#searchcollabbutton").click();
         }
     });
 
@@ -348,14 +339,12 @@ $(document).ready(function() {
             url : href,
             type : "GET",
             success : function(databack, status, xhr) {
-                $("#team-view-div").fadeOut(200, function() {
-                    $(this).empty();
-                    $("#team-list-template").html(databack);
-                    $("#add-team-div").fadeIn(200);
-                    $("#team-list-div").fadeIn(200);
-                    teamOptions = { valueNames : ["teamname", "division"]};
-                    teamList = new List("teamdiv", teamOptions);
-                });
+                $("#team-view-div").empty();
+                $("#team-list-template").html(databack);
+                $("#add-team-div").show();
+                $("#team-list-div").show();
+                teamOptions = { valueNames : ["teamname", "division"]};
+                teamList = new List("teamdiv", teamOptions);
             }
         });
     });
@@ -367,28 +356,21 @@ $(document).ready(function() {
             url : href,
             type : "GET",
             success : function(databack, status, xhr) {
-                $("#game-list-template").fadeOut(0);
-                $("#game-view-div").fadeOut(200, function() {
-                    $("#game-list-template").html(databack);
-                    $("#add-game-div").fadeIn(200);
-                    $("#game-list-div").fadeIn(200);
-                    $("#game-list-template").fadeIn(200);
-                    gameOptions = { valueNames : ["round", "team1name", "team2name"]};
-                    gameList = new List("gamediv", gameOptions);
-                });
+                $("#game-view-div").empty();
+                $("#game-list-template").html(databack);
+                $("#add-game-div").show();
+                $("#game-list-div").show();
+                gameOptions = { valueNames : ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"]};
+                gameList = new List("gamediv", gameOptions);
             }
         });
     });
 
     $("body").on("click", ".game-anchor", function(e) {
         e.preventDefault();
-        var href = $(this).attr("href");
-        loadGameAJAX(href);
-    });
-
-    $("body").on("mousedown", ".phase-selection option", function(e) {
-        this.selected = !this.selected;
-        e.preventDefault();
+        var href = $(this).attr("data-href");
+        var td = $(this).children("td").first();
+        loadGameAJAX(href, td);
     });
 
 });
@@ -526,26 +508,42 @@ function rebuildScoresheet(round, scoresheetInfo, pointScheme) {
     return html;
 }
 
-function loadTeamAJAX(href) {
+function loadTeamAJAX(href, td) {
+    var html = "<p class='loading'><i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>";
+    var lastText = td.text();
+    td.html(html);
     $.ajax({
         url : href,
         type : 'GET',
         success : function(databack, status, xhr) {
-            $("#add-team-div").fadeOut(300);
-            $("#team-list-div").fadeOut(300);
-            $("#team-view-div").fadeOut(0).html(databack).fadeIn(300);
+            html = "<p class='loading-complete'><i class='fa fa-check-circle'></i></p>";
+            td.html(html);
+            $("#add-team-div").slideUp(300);
+            $("#team-list-div").slideUp(300);
+            $("#team-view-div").slideUp(0).html(databack).slideDown(300);
+        },
+        error : function(xhr, status, err) {
+            td.html(lastText);
         }
     });
 }
 
-function loadGameAJAX(href) {
+function loadGameAJAX(href, td) {
+    var html = "<p class='loading'><i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>";
+    var lastText = td.text();
+    td.html(html);
     $.ajax({
         url : href,
         type : 'GET',
         success : function(databack, status, xhr) {
-            $("#add-game-div").fadeOut(300);
-            $("#game-list-div").fadeOut(300);
-            $("#game-view-div").fadeOut(0).html(databack).fadeIn(300);
+            html = "<p class='loading-complete'><i class='fa fa-check-circle'></i></p>";
+            td.html(html);
+            $("#add-game-div").slideUp(300);
+            $("#game-list-div").slideUp(300);
+            $("#game-view-div").slideUp(0).html(databack).slideDown(300);
+        },
+        error : function(xhr, status, err) {
+            td.html(lastText);
         }
     });
 }
@@ -833,7 +831,7 @@ function sendGameToServer() {
                 hide().appendTo("#add-game-message").fadeIn(300);
             $("#game-list-template").html(databack);
             document.getElementById("gamedataform").reset();
-            gameOptions = { valueNames : ["round", "team1name", "team2name"]};
+            gameOptions = { valueNames : ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"]};
             gameList = new List("gamediv", gameOptions);
         },
         error : function() {
@@ -904,12 +902,15 @@ function removeTeam(forminfo, button) {
         type : "POST",
         data : forminfo,
         success : function(databack, status, xhr) {
-            $(button).parents("tr").prev().remove();
-            $(button).parents("tr").remove();
             var teamid = databack.teamid;
             if (teamid) {
+                $(".team-tr[data-team-id='" + teamid + "']").fadeOut(200, function() {
+                    $(this).remove();
+                });
                 $("#leftchoice option[value='" + teamid + "']").remove();
                 $("#rightchoice option[value='" + teamid + "']").remove();
+                teamOptions = { valueNames : ["teamname", "division"]};
+                teamList = new List("teamdiv", teamOptions);
             }
         },
         error : function(xhr, status, err) {
@@ -1058,7 +1059,6 @@ function setSelectOptions(divisions) {
         var id = division.phase_id;
         var html = "<option value='" + division.phase_id + "'>" + division.name + "</option>";
         $(".new-team-division[data-phase-id='" + id + "']").append(html);
-        console.log(division);
     });
 }
 
@@ -1243,7 +1243,7 @@ function addPointSchemaRow() {
         }
     }
     html += "<br><br>";
-    html += "</div>";
+    html += "</div></div>";
     $(html).hide().appendTo("#point-schema-form").fadeIn(200);
 }
 

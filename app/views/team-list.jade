@@ -10,25 +10,26 @@ div(class="table-responsive" id="teamdiv")
         table(class="table table-condensed")
             thead
                 tr
-                    th(class="table-head") Team
-                    th(class="table-head") Divisions
-                    th(class="table-head") Details
+                    th(class="table-head sort sortable" data-sort='teamname') Team
+                    th(class="table-head sort sortable" data-sort='division' style='text-align:left') Divisions
+                    if admin
+                        th(class="table-head")
             tbody(id="teamtablebody" class="list")
                 each val, i in tournament.teams
-                    tr()
-                        td(class="teamname") #{tournament.teams[i].team_name}
-                        td(class="division")
+                    tr(class='team-tr clickable-link team-anchor tournament-panel' data-href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID data-team-id='#{tournament.teams[i]._id}')
+                        td(class="teamname team-name-list teamname") #{tournament.teams[i].team_name}
+                        td(class="division division-list division")
                             for phase, j in tournament.phases
                                 - var phaseID = tournament.phases[j].phase_id
                                 if tournament.teams[i].divisions
-                                    li #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
-                        td
-                            a(class="btn btn-xs btn-info team-anchor" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
-                            if admin
-                                button(type="button" class="btn btn-xs btn-warning start-delete-team")
-                                    i(class="glyphicon glyphicon-remove")
+                                    li(style='list-style-type:none') #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
+                        if admin
+                            td
+                                button(type="button" class="btn btn-xs btn-danger start-delete-team")
+                                    i(class="fa fa-trash")
+
                     if admin
-                        tr(style='display:none')
+                        tr(class='team-tr' style='display:none' data-team-id='#{tournament.teams[i]._id}')
                             td
                             td
                             td

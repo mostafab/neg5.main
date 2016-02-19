@@ -93,8 +93,15 @@ $(document).ready(function() {
         }
     });
 
+    $("body").on("keyup", "#newplayerinput", function(e) {
+        if (e.which === 13 && $(this).val().trim().length !== 0) {
+            e.preventDefault();
+            $("#add-player-button").click();
+        }
+    });
+
     $("body").on("click", "#add-player-button", function() {
-        if ($("#newplayerinput").val().length == 0) {
+        if ($("#newplayerinput").val().trim().length == 0) {
             showMessageInDiv("#player-add-msg", "Enter a name, please", "zero");
         } else {
             var form = $(this).parent().serialize();
@@ -133,7 +140,7 @@ function showMessageInDiv(div, message, err) {
 function editGameAJAX() {
     console.log("Ok, editing game");
     $("#updategamediv").empty().
-        append("<p style='margin-left:10px; font-size:16px;'>Updating Game <i class='fa fa-spinner fa-spin'></i></p>");
+        append("<p style='margin-left:10px; font-size:16px;color:black;'>Updating Game <i class='fa fa-spinner fa-spin'></i></p>");
     $.ajax({
         url : "/tournaments/games/edit",
         type : "POST",
@@ -219,7 +226,6 @@ function addPlayerAJAX(playerForm) {
         type : "POST",
         data : playerForm,
         success : function(databack, status, xhr) {
-            // console.log(databack);
             showAddPlayerMsg(databack);
             if (!databack.err) {
                 addNewPlayerRow(databack.player, databack.tid);

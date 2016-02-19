@@ -27,7 +27,6 @@ function addTournament(director, name, date, location, description, questionset,
     tourney.shortID = shortid.generate();
     tourney.save(function(err) {
         if (err) {
-            // console.log("Unable to save tournament");
             console.log(err);
             callback(err);
         } else {
@@ -183,7 +182,7 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
     if (teaminfo.players) {
         for (var i = 0; i < teaminfo.players.length; i++) {
             var newPlayer = new Player({
-                teamID : newteam._id.toString(),
+                teamID : newTeam._id.toString(),
                 player_name : teaminfo.players[i],
                 shortID : shortid.generate()
             });
@@ -324,47 +323,6 @@ function addGameToTournament(tournamentid, gameinfo, phases, callback) {
 }
 
 /**
-* Function that takes the newly added-game to the tournament
-* and projects the results to the teams involved
-* @param tournamentid the unique id of the tournament the game took place at
-* @param game the game to project onto involved teams
-*/
-function projectGameToTeams(tournamentid, game) {
-    var winnerOrder = game.getWinner();
-    // First, add information about teams themselves
-    if (winnerOrder.length !== 3) {
-        Tournament.update({_id : tournamentid ,"teams._id" : winnerOrder[0]},
-                            {"$inc" : {"teams.$.wins" : 1}}, function(err) {
-                                if (err) {
-                                    console.log("Something bad happenned");
-                                } else {
-                                    Tournament.update({_id : tournamentid, "teams._id" : winnerOrder[1]},
-                                    {"$inc" : {"teams.$.losses" : 1}}, function(err) {
-                                        if (err) {
-                                            console.log("Something bad happened down here");
-                                        }
-                                    });
-                                }
-        });
-    } else {
-        // Handles situation with ties
-        Tournament.update({_id : tournamentid ,"teams._id" : winnerOrder[0]},
-                            {"$inc" : {"teams.$.ties" : 1}}, function(err) {
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                    Tournament.update({_id : tournamentid, "teams._id" : winnerOrder[1]},
-                                    {"$inc" : {"teams.$.ties" : 1}}, function(err) {
-                                        if (err) {
-                                            console.log(err);
-                                        }
-                                    });
-                                }
-        });
-    }
-}
-
-/**
 * Function to get a specific game from the tournamentid. The resultant game
 * returned from the query is used to remove the game
 * @param tournamentid id of the tournament the game is associated with
@@ -374,15 +332,11 @@ function getGameFromTournament(tournamentid, gameid, callback) {
     // if get game, then remove game from teams and players, then remove the actual game
     var tournamentQuery = {_id : tournamentid, "games.shortID" : gameid};
     Tournament.findOne(tournamentQuery, function(err, result) {
-        // console.log("Result: " + result);
         if (err || result == null) {
-            // DO STUFF
             callback(err);
         } else {
             for (var i = 0; i < result.games.length; i++) {
                 if (result.games[i].shortID == gameid) {
-                    // removeGameFromTeam(tournamentid, result.games[i]);
-                    // removeGameFromPlayers(tournamentid, result.games[i]);
                     removeGameFromTournament(tournamentid, result.games[i]);
                     i = result.games.length + 1;
                     callback(null);
@@ -402,7 +356,6 @@ function getGameFromTournament(tournamentid, gameid, callback) {
 function removeGameFromTournament(tournamentid, gameShortID, callback) {
     var tournamentQuery = {_id : tournamentid, "games.shortID" : gameShortID};
     var pullQuery = {$pull : {games : {shortID : gameShortID}}};
-    // console.log(pullQuery);
     Tournament.findOne({_id : tournamentid}, function(err, tournament) {
         if (err) {
             callback(err, null);
@@ -432,9 +385,7 @@ function removeGameFromTournament(tournamentid, gameShortID, callback) {
 * @param callback callback function called back after function is done
 */
 function removeTeamFromTournament(tournamentid, teaminfo, callback) {
-    // console.log(teaminfo);
     var tournamentQuery = {_id : tournamentid, "teams.shortID" : teaminfo.teamid_form};
-    // console.log(tournamentQuery);
     Tournament.findOne(tournamentQuery, function(err, result) {
         if (err || result == null) {
             callback(err, null);
@@ -442,9 +393,7 @@ function removeTeamFromTournament(tournamentid, teaminfo, callback) {
             var teamid = -1;
             for (var i = 0; i < result.teams.length; i++) {
                 if (result.teams[i].shortID === teaminfo.teamid_form) {
-                    // console.log("Short ids match");
                     teamid = result.teams[i]._id.toString();
-                    // console.log(teamid);
                     i = result.teams.length + 1;
                 }
             }
@@ -453,12 +402,10 @@ function removeTeamFromTournament(tournamentid, teaminfo, callback) {
             } else {
                 Tournament.update({_id : tournamentid}, {$pull : {players : {teamID : teamid}}}, function(err) {
                     if (err) {
-                        // console.log(err);
                         callback(err, null);
                     } else {
                         Tournament.update({_id : tournamentid}, {$pull : {teams : {_id : teamid}}}, function(err) {
                             if (err) {
-                                // console.log(err);
                                 callback(err, null);
                             } else {
                                 callback(null, teamid);

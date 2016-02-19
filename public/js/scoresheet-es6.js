@@ -552,9 +552,9 @@ $(document).ready(function() {
         $("#error-div").fadeOut(0);
     });
 
-    // $(window).bind("beforeunload", function() {
-    //     return "You will lose this scoresheet info if you leave/reload.";
-    // });
+    $(window).bind("beforeunload", function() {
+        return "You will lose this scoresheet info if you leave/reload.";
+    });
 
     $("body").on("click", ".btn-point", function() {
         if (game.team1 != null && game.team2 != null) {
@@ -622,26 +622,20 @@ $(document).ready(function() {
     });
 
     $("body").on("click", "#submit-game", function() {
-        var phaseVal = $("#phase");
-        phaseVal.removeClass("alert-danger");
-        if (phaseVal.val()) {
-            var parsedGame = parseScoresheet(game);
-            $(this).prop("disabled", true);
-            submitScoresheet(game, parsedGame);
-        } else {
-            phaseVal.addClass("alert-danger");
-        }
+        var parsedGame = parseScoresheet(game);
+        $(this).prop("disabled", true);
+        submitScoresheet(game, parsedGame);
     });
 
     $("body").on("keydown", ".player-name-input", function(e) {
         $(this).css("border-color", "white");
-        if (e.which === 13 && $(this).val().length !== 0) {
+        if (e.which === 13 && $(this).val().trim().length !== 0) {
             var button = $(this).next(".add-player-button");
             var player = $(this).val();
             var teamid = button.attr("data-team");
             var team = button.attr("data-team-name");
             addPlayer(escapeHtml(player), teamid, team);
-        } else if (e.which === 13 && $(this).val().length === 0) {
+        } else if (e.which === 13 && $(this).val().trim().length === 0) {
             $(this).css("border-color", "red");
         }
     });
@@ -997,10 +991,12 @@ function parseScoresheet(submittedGame) {
     gameToAdd.team1 = {};
     gameToAdd.team2 = {};
     gameToAdd.team1.team_id = submittedGame.team1.id;
+    // gameToAdd.team1.team_name = submittedGame.team1.name;
     gameToAdd.team1.score = submittedGame.getTeamScore(submittedGame.team1.id);
     gameToAdd.team1.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team1.id);
     gameToAdd.team1.playerStats = submittedGame.getPlayersPointValues(submittedGame.team1);
     gameToAdd.team2.team_id = submittedGame.team2.id;
+    // gameToAdd.team2.team_name = submittedGame.team2.name;
     gameToAdd.team2.score = submittedGame.getTeamScore(submittedGame.team2.id);
     gameToAdd.team2.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team2.id);
     gameToAdd.team2.playerStats = submittedGame.getPlayersPointValues(submittedGame.team2);
@@ -1330,18 +1326,19 @@ function editAddBonusAttributes(team1, team2) {
 
 function addPlayerColumn(side, player) {
     if (side == "right") {
-        $("#scoresheet thead tr").append("<th class='player-header' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
+        $("#scoresheet thead tr").append("<th class='player-header' data-toggle='tooltip' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
         $("#scoresheet tbody tr").each(function(index, tableRow) {
             var row = index + 1;
             $(this).append("<td data-player='" + player._id + "' data-row='" + row + "'>-</td>");
         });
     } else {
-        $("#scoresheet thead tr").prepend("<th class='player-header' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
+        $("#scoresheet thead tr").prepend("<th class='player-header' data-toggle='tooltip' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
         $("#scoresheet tbody tr").each(function(index, tableRow) {
             var row = index + 1;
             $(this).prepend("<td data-player='" + player._id + "' data-row='" + row + "'>-</td>");
         });
     }
+    $('[data-toggle="tooltip"]').tooltip();
     var colspan = game.team1.players.length + game.team2.players.length + 5;
     changeFooterColSpan(colspan);
 }

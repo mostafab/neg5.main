@@ -21,8 +21,8 @@
 }
 
 .box {
-    /*background-color : rgba(190, 190, 190, .7);*/
-    background-color: transparent;
+    /*background-color : #e9f5e4;*/
+    /*background-color: transparent;*/
 }
 
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
@@ -43,7 +43,6 @@
 .user-screen {
     padding: 40px;
     background: rgb(0, 113, 113);
-    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
 }
 
 .jumbotron {
@@ -234,6 +233,63 @@ td {
 .panel {
     margin-top: : 50px;
     margin-bottom: 50px;
+}
+
+.clickable-link {
+    -webkit-transition: background-color .1s;
+    -moz-transition: background-color .1s;
+    -o-transition: background-color .1s;
+    -ms-transition: background-color .1s;
+    transition: background-color .1s;
+}
+
+.clickable-link:hover {
+    background-color: #DFF0D8;
+    border-left: 21px solid #008888;
+    cursor: pointer;
+}
+
+.loading {
+    margin-left:10px;
+    margin-right:10px;
+    color: #EC971F;
+}
+
+.loading-complete {
+    margin-left:10px;
+    margin-right:10px;
+    color: green;
+}
+
+th.sortable:hover {
+    cursor: pointer;
+}
+
+.team-name-list {
+    font-size: 1.1em;
+    text-align: center;
+    border-left-width: 20px;
+    border-left-style: solid;
+    border-left-color: #EC971F;
+}
+
+.game-list-element {
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.bordered-game-list-element {
+    border-left-width: 20px;
+    border-left-style: solid;
+    border-left-color: #EC971F;
+}
+
+.division-list {
+    font-size: 1.2em;
+}
+
+.tournament-panel {
+    background-color: #F7F7F7;
 }
 
 .tab-pane {

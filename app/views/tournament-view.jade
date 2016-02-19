@@ -6,7 +6,7 @@ block titleContent
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
     link(rel="stylesheet" href="/css/tournamentstyle.css")
-    link(rel="stylesheet" href="/css/chat.css")
+    // link(rel="stylesheet" href="/css/chat.css")
 
 block content
 
@@ -64,7 +64,7 @@ block content
                             if admin
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Tournament Overview
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         form(id="tournament-overview-form")
                                             input(type="hidden" value="#{tournament._id}" name="tournamentid")
                                             div(class="row")
@@ -122,7 +122,7 @@ block content
                             else
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Tournament Overview
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         div(class="row")
                                             div(class="col-md-6")
                                                 label(class="label label-primary col-xs-4") Name
@@ -169,7 +169,7 @@ block content
                             div(class="panel panel-default")
                                 div(class="panel-heading collapsable") Collaborators
 
-                                div(class="panel-body")
+                                div(class="panel-body tournament-panel")
                                     if admin
                                         div(class="row")
                                             div(class="col-md-3" style='background-color:transparent')
@@ -227,7 +227,7 @@ block content
                             div(class="tab-pane fade" id="divisions")
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Divisions and Point Scheme
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         div(class="col-md-6")
                                             label(class="label label-primary col-xs-4") Point Scheme
                                             br
@@ -308,7 +308,7 @@ block content
                                         a(class="btn btn-lg btn-info btn-block" target="_blank" href="/t/" + tournament.shortID + "/scoresheet") Scoresheet
                                 div(class="panel panel-default")
                                         div(class="panel-heading collapsable") Add a Game
-                                        div(class="panel-body" id="addgamepanel")
+                                        div(class="panel-body tournament-panel" id="addgamepanel")
 
                                                 form(name="gameinfoform" id="gamedataform")
                                                     input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
@@ -427,12 +427,9 @@ block content
                                                     button(type="button" class="btn btn-md btn-success" id="entergamebutton") Add Game Information
 
                                                     div(id="add-game-message")
-
-
-                            div(class="panel panel-default" id='game-list-div')
-                                    div(class="panel-heading collapsable") List of Games
-                                    div(class="panel-body" id='game-list-template')
-                                        include ./game-list.jade
+                            div(id='game-list-div')
+                                div(id='game-list-template')
+                                    include ./game-list.jade
 
                             div(class='row')
                                 div(class='col-md-12' id='game-view-div')
@@ -440,7 +437,7 @@ block content
                         div(class="tab-pane fade" id="teams")
                             div(class="panel panel-default" id='add-team-div')
                                     div(class="panel-heading collapsable" id="add-team-panel") Add a Team
-                                    div(class="panel-body" id="add-team-body")
+                                    div(class="panel-body tournament-panel" id="add-team-body")
 
                                         div(class="col-md-6")
                                             form(id="teamform" name="createTeam")
@@ -456,7 +453,7 @@ block content
                                                         name="team_name",
                                                         id="team_name_input",
                                                         placeholder="Team Name",
-                                                        class="form-control input-medium center-text no-border-radius"
+                                                        class="form-control input-md center-text no-border-radius"
                                                     )
                                                 hr
                                                 div(class="form-group")
@@ -518,11 +515,9 @@ block content
                                                 br
                                                 div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="addteammsg")
 
-
-                            div(class="panel panel-default" id='team-list-div')
-                                    div(class="panel-heading collapsable") List of Teams
-                                    div(class="panel-body" id='team-list-template')
-                                        include ./team-list.jade
+                            div(id='team-list-div')
+                                div(id='team-list-template')
+                                    include ./team-list.jade
 
                             div(class='row')
                                 div(class='col-md-12' id='team-view-div')
@@ -530,7 +525,7 @@ block content
                         div(class="tab-pane fade" id="stats")
                             div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Generate Complete Statistics
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         - var phaseID = 1
                                         div(class="col-md-5")
                                             div(class="row")
@@ -581,7 +576,7 @@ block content
                             div(class="panel panel-default")
                                 div(class="panel-heading collapsable") Custom Team Statistics
 
-                                div(class="panel-body")
+                                div(class="panel-body tournament-panel")
                                         div(class="col-md-12")
                                             form(target="_blank" method="post" action="/t/" + tournament.shortID + "/stats/filter/teams" id="filterstatsform")
                                                 div(class="form-group")
@@ -607,7 +602,7 @@ block content
 
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") New Tournament Phase
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         div(class="row")
                                             div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
                                                 p(class="alert alert-success")
@@ -635,7 +630,7 @@ block content
 
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Current Phases
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         div(class="row")
                                             div(class="col-md-5 col-sm-5 col-lg-5")
                                                 div(class="table-responsive")
@@ -666,7 +661,7 @@ block content
 
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Delete #{tournament.tournament_name}
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         div(class="row")
                                             div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
                                                 div(class="alert alert-danger")
