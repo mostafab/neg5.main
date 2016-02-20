@@ -29,7 +29,10 @@ block content
                                             a(href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{tournament.phaseInfo.phase_id}") Round Report
 
 
-                        h2(class="title" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Player Standings
+                        if (tournament.phaseInfo)
+                            h2(class="title" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Team Standings
+                        else
+                            h2(class="title" style="width:50%") #{tournament.tournament_name} - Team Standings
 
                         br
                         br

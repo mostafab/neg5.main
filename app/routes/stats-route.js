@@ -190,7 +190,6 @@ module.exports = function(app) {
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                // res.send({type : "team", teamInfo: teamInfo, tournament : tournament});
                 var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, divisions : tournament.divisions};
                 res.render("quick-teams", {tournament : tournamentData, teamInfo : teamInfo, custom : true});

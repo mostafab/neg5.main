@@ -28,8 +28,10 @@ block content
                                         li
                                             a(href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{tournament.phaseInfo.phase_id}") Round Report
 
-                        h2(class="title" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Team Standings
-
+                        if (tournament.phaseInfo)
+                            h2(class="title" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Team Standings
+                        else
+                            h2(class="title" style="width:50%") #{tournament.tournament_name} - Team Standings
                         br
                         br
                         - var points = Object.keys(tournament.pointScheme);
@@ -83,7 +85,7 @@ block content
                                                             th(class="table-head") #{statHeaders[i]}
                                             tbody
                                                 each team, i in teamInfo
-                                                    if team.stats["Division"] == tournament.divisions[index]
+                                                    if team.stats["Division"] == tournament.divisions[index].name
                                                         tr
                                                             td(class='stat-td') #{teamInfo[i].stats["Rank"]}
                                                             each name, j in statHeaders
@@ -96,7 +98,7 @@ block content
                                                                 else if name != "Rank"
                                                                     td(class='stat-td') #{teamInfo[i].stats[name]}
 
-                                                    else if team.stats["Division"].length == 0
+                                                    else if !custom && team.stats["Division"].length == 0
                                                         if !addedTeams[team.id]
                                                             - noDivisionTeams.push(team)
                                                             - addedTeams[team.id] = true

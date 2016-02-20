@@ -587,10 +587,14 @@ teamSchema.methods.getTotalBouncebackPoints = function(tournament) {
 teamSchema.methods.getAverageInformationFiltered = function(tournament, constraints) {
     var record = this.getRecordFiltered(tournament, constraints);
     var teamInfo = {};
-    teamInfo["Team"] = this.team_name;
-    if (tournament.divisions.length !== 0) {
-        teamInfo["Division"] = this.division;
+    var activePhase = "";
+    for (var i = 0; i < tournament.phases.length; i++) {
+        if (tournament.phases[i].active) {
+            activePhase = tournament.phases[i].phase_id;
+        }
     }
+    teamInfo["Division"] = this.divisions[activePhase];
+    teamInfo["Team"] = this.team_name;
     teamInfo["W"] = record.wins;
     teamInfo["L"] = record.losses;
     teamInfo["T"] = record.ties;
