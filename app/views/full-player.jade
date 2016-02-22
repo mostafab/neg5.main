@@ -17,17 +17,17 @@ block content
                             div(class="row" style="")
                                 ul(class="nav nav-pills no-border-radius")
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/team") Team Standings
+                                        a(href="/t/" + tournament.shortID + "/stats/team?phase=#{tournament.phaseInfo.phase_id}") Team Standings
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/player") Player Standings
+                                        a(href="/t/" + tournament.shortID + "/stats/player?phase=#{tournament.phaseInfo.phase_id}") Player Standings
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/teamfull") Teams Full
+                                        a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}") Teams Full
                                     li(class="active")
-                                        a(href="/t/" + tournament.shortID + "/stats/playerfull") Players Full
+                                        a(href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}") Players Full
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/roundreport") Round Report
+                                        a(href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{tournament.phaseInfo.phase_id}") Round Report
 
-                        h2(class="title" style="width:50%") #{tournament.tournament_name} - Full Player Details
+                        h2(class="title" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Full Player Details
 
                         br
                         br
@@ -38,7 +38,7 @@ block content
                             if playersInfo[playerid].games.length != 0
                                 - var gameHeaders = Object.keys(playersInfo[playerid].games[0])
                                 div(class="panel panel-default")
-                                    table(class="table table-striped table-hover table-condensed")
+                                    table(class="table table-condensed")
                                         thead
                                             tr
                                                 each stat, i in gameHeaders
@@ -54,9 +54,9 @@ block content
                                                     each stat, i in gameHeaders
                                                         if stat == "pointValues"
                                                             each val in points
-                                                                td #{game["pointValues"][val]}
+                                                                td(class='stat-td') #{game["pointValues"][val]}
                                                         else
-                                                            td #{game[stat]}
+                                                            td(class='stat-td') #{game[stat]}
 
                                         tfoot
 
@@ -69,12 +69,12 @@ block content
                                                     else
                                                         if stat == "pointValues"
                                                             each val in points
-                                                                td
+                                                                td(class='stat-td')
                                                                     strong
                                                                         | #{playerTotals[playerid].pointTotals[val]}
                                                         else
                                                             if playerTotals[playerid][stat]
-                                                                td
+                                                                td(class='stat-td')
                                                                     strong
                                                                         | #{playerTotals[playerid][stat]}
                                                             else

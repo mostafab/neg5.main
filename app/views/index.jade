@@ -13,6 +13,11 @@ block content
     +navbar
 
     div(class="jumbotron" style='background-color:transparent;overflow:hidden;')
+        div(class='row')
+            div(class="col-md-12")
+                div(class="row" style='text-align:center')
+                    h3 Neg 5 : Quizbowl for the Cloud
+
         div(style="margin:20px;margin-top:12%")
             div(class="row")
                 div(class="col-xs-12")
@@ -74,7 +79,7 @@ block content
                                             if errormsg
                                                 label(id="errorlabel" style='color:black') #{errormsg}
                                             else
-                                                label(id="errorlabel" style='color:black') Neg 5 : Quizbowl for the Cloud
+                                                label(id='errorlabel' style='color:black')
 
                             div(id="registerpanel" style="display:none")
 
@@ -146,7 +151,11 @@ block content
                                                         div(class="col-md-2")
                                                         div(class="form-group col-md-8 input-lg no-border-radius tournament-info-field" style="text-align:center;background-color:#363B40" id="registererror")
 
-
+        div(class='row')
+            div(class="col-md-12")
+                div(class="row" style='text-align:center')
+                    h3 Neg 5 is a collaborative quizbowl tournament management system.
+                    h3 Easily manage all aspects of your event from the cloud on tournament day!
 
 block scripts
     script(src="/js/welcome-screen.js")

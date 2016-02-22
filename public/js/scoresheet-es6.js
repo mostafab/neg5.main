@@ -552,9 +552,9 @@ $(document).ready(function() {
         $("#error-div").fadeOut(0);
     });
 
-    // $(window).bind("beforeunload", function() {
-    //     return "You will lose this scoresheet info if you leave/reload.";
-    // });
+    $(window).bind("beforeunload", function() {
+        return "You will lose this scoresheet info if you leave/reload.";
+    });
 
     $("body").on("click", ".btn-point", function() {
         if (game.team1 != null && game.team2 != null) {
@@ -629,13 +629,13 @@ $(document).ready(function() {
 
     $("body").on("keydown", ".player-name-input", function(e) {
         $(this).css("border-color", "white");
-        if (e.which === 13 && $(this).val().length !== 0) {
+        if (e.which === 13 && $(this).val().trim().length !== 0) {
             var button = $(this).next(".add-player-button");
             var player = $(this).val();
             var teamid = button.attr("data-team");
             var team = button.attr("data-team-name");
             addPlayer(escapeHtml(player), teamid, team);
-        } else if (e.which === 13 && $(this).val().length === 0) {
+        } else if (e.which === 13 && $(this).val().trim().length === 0) {
             $(this).css("border-color", "red");
         }
     });
@@ -1326,18 +1326,19 @@ function editAddBonusAttributes(team1, team2) {
 
 function addPlayerColumn(side, player) {
     if (side == "right") {
-        $("#scoresheet thead tr").append("<th class='player-header' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
+        $("#scoresheet thead tr").append("<th class='player-header' data-toggle='tooltip' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
         $("#scoresheet tbody tr").each(function(index, tableRow) {
             var row = index + 1;
             $(this).append("<td data-player='" + player._id + "' data-row='" + row + "'>-</td>");
         });
     } else {
-        $("#scoresheet thead tr").prepend("<th class='player-header' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
+        $("#scoresheet thead tr").prepend("<th class='player-header' data-toggle='tooltip' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
         $("#scoresheet tbody tr").each(function(index, tableRow) {
             var row = index + 1;
             $(this).prepend("<td data-player='" + player._id + "' data-row='" + row + "'>-</td>");
         });
     }
+    $('[data-toggle="tooltip"]').tooltip();
     var colspan = game.team1.players.length + game.team2.players.length + 5;
     changeFooterColSpan(colspan);
 }

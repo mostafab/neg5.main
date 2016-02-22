@@ -20,7 +20,7 @@ block content
                 br
                 div(class="panel panel-default table-grey")
 
-                    table(class="table table-hover table-condensed")
+                    table(class="table table-condensed")
                         thead
                             tr()
                                 th(class="table-head" style='text-align:center') Name
@@ -30,9 +30,8 @@ block content
                                 th(class="table-head" style='text-align:center') Number of Teams Added
                         tbody(id="tournaments-body")
                             each val, i in tournaments
-                                tr()
-                                    td
-                                        a(href="/t/" + tournaments[i].shortID) #{tournaments[i].tournament_name}
+                                tr(class='tournament-anchor' data-href='/t/' + tournaments[i].shortID)
+                                    td #{tournaments[i].tournament_name}
                                     td #{tournaments[i].location}
                                     if tournaments[i].date
                                         - var month = tournaments[i].date.getMonth() + 1;
@@ -45,44 +44,43 @@ block content
                                     td #{tournaments[i].questionSet}
                                     td #{tournaments[i].teamsAdded}
 
-            div(class="row col-md-12")
-                div(class="col-md-6 statbox" style='padding:20px')
-                    // div(style="margin:20px; margin-bottom:50px")
-                    h2(class="title" style='width:50%') Merge Tournaments
-                    div(class='' style='padding:10px')
-                        h3
-                            | Merging two tournaments creates a brand new tournament with compiled informaton. It will not replace the two tournaments you merge.
-                            | Divisions from the tournament on the left will be used when merging.
-                    br
-                    div(class="col-sm-6")
-                        select(name="tournamentOne" class="form-control tournament-select" id="left-select")
-                            option(disabled selected) Select First Tournament
-                            each tournament, i in tournaments
-                                if tournament.directorid == tournamentd._id
-                                    option(value="#{tournament._id}") #{tournament.tournament_name}
-
-                    div(class="col-sm-6")
-                        select(name="tournamentTwo" class="form-control tournament-select" id='right-select')
-                            option(disabled selected) Select Second Tournament
-                            each tournament, i in tournaments
-                                if tournament.directorid == tournamentd._id
-                                    option(value="#{tournament._id}") #{tournament.tournament_name}
-
-                    div(class="col-md-12" style="height:10px")
-                    div(class="col-md-12")
-                        input(type="text" class="form-control" id="name-merge" placeholder='Enter Name of Merged Tournament')
-
-                    div(class="col-md-12")
-                        div(class="row" id='merge-div')
-                            div(class="col-md-1")
-                            div(class="col-md-10")
-                                button(class="btn btn-lg btn-block btn-warning" style='border-radius:3px;box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);' id='merge-button') Merge Tournaments
-
-                        div(class="row" id='success-merge-div' style='display:none')
-                            div(class="col-md-1")
-                            div(class="col-md-10")
-                                a(class="btn btn-lg btn-block btn-success" style='border-radius:3px;box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);' id='success-merge') Go To Merged Tournament
-            div(class="col-md-6")
+            // div(class="row col-md-12")
+            //     div(class="col-md-6 statbox" style='padding:20px')
+            //         h2(class="title" style='width:50%') Merge Tournaments
+            //         div(class='' style='padding:10px')
+            //             h3
+            //                 | Merging two tournaments creates a brand new tournament with compiled informaton. It will not replace the two tournaments you merge.
+            //                 | Divisions from the tournament on the left will be used when merging.
+            //         br
+            //         div(class="col-sm-6")
+            //             select(name="tournamentOne" class="form-control tournament-select" id="left-select")
+            //                 option(disabled selected) Select First Tournament
+            //                 each tournament, i in tournaments
+            //                     if tournament.directorid == tournamentd._id
+            //                         option(value="#{tournament._id}") #{tournament.tournament_name}
+            //
+            //         div(class="col-sm-6")
+            //             select(name="tournamentTwo" class="form-control tournament-select" id='right-select')
+            //                 option(disabled selected) Select Second Tournament
+            //                 each tournament, i in tournaments
+            //                     if tournament.directorid == tournamentd._id
+            //                         option(value="#{tournament._id}") #{tournament.tournament_name}
+            //
+            //         div(class="col-md-12" style="height:10px")
+            //         div(class="col-md-12")
+            //             input(type="text" class="form-control" id="name-merge" placeholder='Enter Name of Merged Tournament')
+            //
+            //         div(class="col-md-12")
+            //             div(class="row" id='merge-div')
+            //                 div(class="col-md-1")
+            //                 div(class="col-md-10")
+            //                     button(class="btn btn-lg btn-block btn-warning" style='border-radius:3px;box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);' id='merge-button') Merge Tournaments
+            //
+            //             div(class="row" id='success-merge-div' style='display:none')
+            //                 div(class="col-md-1")
+            //                 div(class="col-md-10")
+            //                     a(class="btn btn-lg btn-block btn-success" style='border-radius:3px;box-shadow: 0 2.5px 1px rgba(0, 0, 0, 0.2);' id='success-merge') Go To Merged Tournament
+            // div(class="col-md-6")
 
 
         br

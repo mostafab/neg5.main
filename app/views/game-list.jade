@@ -1,0 +1,42 @@
+div(class="table-responsive" id="gamediv")
+    div(class="row" style="width:95%")
+        div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
+
+            input(type="text" class="form-control search" placeholder="Filter By Round or Team")
+            span(class="input-group-addon btn-stats")
+                i(class="glyphicon glyphicon-search")
+    div(class="panel panel-default")
+        table(class="table table-condensed")
+            thead
+                tr
+                    th(class="table-head sort sortable" data-sort='round') Round
+                    th(class="table-head sort sortable" data-sort='phases-n') Phase(s)
+                    th(class="table-head sort sortable" data-sort='team1name') Team 1
+                    th(class="table-head sort sortable" data-sort='team-1-score') Team 1 Score
+                    th(class="table-head sort sortable" data-sort='team2name') Team 2
+                    th(class="table-head sort sortable" data-sort='team-2-score') Team 2 Score
+                    th(class="table-head sort sortable" data-sort='tuh') Tossups Heard
+                    if admin
+                        th(class="table-head")
+            tbody(id="gametablebody" class="list")
+                each val, i in tournament.games
+                    if tournament.teamMap[tournament.games[i].team1.team_id] && tournament.teamMap[tournament.games[i].team2.team_id]
+                        tr(class='clickable-link game-anchor tournament-panel' data-href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID id='game_#{tournament.games[i].shortID}')
+                            td(class="round game-list-element bordered-game-list-element round") #{tournament.games[i].round}
+                            td(class="phase game-list-element phases-n")
+                                each phase in tournament.phases
+                                    each includedPhase in tournament.games[i].phase_id
+                                        if phase.phase_id == includedPhase
+                                            li(style='list-style-type:none') #{phase.name}
+                            td(class="team1name game-list-element team1name") #{tournament.teamMap[tournament.games[i].team1.team_id].name}
+                            td(class="team1score game-list-element team-1-score") #{tournament.games[i].team1.score}
+                            td(class="team2name game-list-element team2name") #{tournament.teamMap[tournament.games[i].team2.team_id].name}
+                            td(class="team2score game-list-element team-2-score") #{tournament.games[i].team2.score}
+                            td(class="tuheard game-list-element tuh") #{tournament.games[i].tossupsheard}
+                            if admin
+                                td
+                                    form()
+                                        input(type="hidden" name="gameid_form" value='#{tournament.games[i].shortID}')
+                                        input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
+                                        button(type="button" class="btn btn-xs btn-danger deletebutton" data-toggle='tooltip' data-placement='right' title='Delete game.')
+                                            i(class="fa fa-trash")

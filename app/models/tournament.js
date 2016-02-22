@@ -18,7 +18,7 @@ var TournamentSchema = new Schema({
     createdAt : {type : Date, default : Date.now()},
     directorid : String, // Foreign key,
     tournament_name : {type : String, required : true},
-    collaborators : [{}], // List of emails of collaborators
+    collaborators : [{}], // List of ids of collaborators
     location : String,
     date : {type : Date, set : setDate},
     questionSet : String,

@@ -1,0 +1,43 @@
+div(class="table-responsive" id="teamdiv")
+    div(class="row" style="width:95%")
+        div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
+            span(class='input-group-addon btn btn-stats' id='refresh-teams' data-href='/t/' + tournament.shortID + "/teams")
+                i(class='fa fa-refresh')
+            input(type="text" class="form-control search" placeholder="Filter by Name or Division")
+            span(class="input-group-addon btn-stats")
+                i(class="glyphicon glyphicon-search")
+
+    div(class="panel panel-default")
+        table(class="table table-condensed")
+            thead
+                tr
+                    th(class="table-head sort sortable" data-sort='teamname') Team
+                    th(class="table-head sort sortable" data-sort='division' style='text-align:left') Divisions
+                    if admin
+                        th(class="table-head")
+            tbody(id="teamtablebody" class="list")
+                each val, i in tournament.teams
+                    tr(class='team-tr clickable-link team-anchor tournament-panel' data-href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID id='#{tournament.teams[i].shortID}')
+                        td(class="teamname team-name-list teamname") #{tournament.teams[i].team_name}
+                        td(class="division division-list division")
+                            for phase, j in tournament.phases
+                                - var phaseID = tournament.phases[j].phase_id
+                                if tournament.teams[i].divisions
+                                    li(style='list-style-type:none') #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
+                        if admin
+                            td
+                                button(type="button" class="btn btn-xs btn-danger start-delete-team" data-toggle='tooltip' data-placement='right' title='Delete #{tournament.teams[i].team_name}.')
+                                    i(class="fa fa-trash")
+
+                    if admin
+                        tr(class='team-tr' style='display:none' data-team-id='#{tournament.teams[i]._id}')
+                            td
+                            td
+                            td
+                                div(class="col-md-3 col-lg-3 col-sm-3")
+                                    button(class="btn btn-stats btn-sm btn-block cancel-delete-team") Never Mind
+                                div(class="col-md-3 col-lg-3 col-sm-3")
+                                    form()
+                                        input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
+                                        input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
+                                        button(type="button" class="btn btn-sm btn-danger btn-block deleteteambutton") Confirm

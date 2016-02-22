@@ -8,7 +8,7 @@ block content
     main
         +statlinks
 
-        h2 #{tournament.tournament_name} - Round Report
+        h2 #{tournament.tournament_name} #{tournament.phaseInfo.name} - Round Report
 
         - var rounds = Object.keys(roundsInfo).sort(function(first, second) {
             - return (parseFloat(first) - parseFloat(second));

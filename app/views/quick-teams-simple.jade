@@ -8,7 +8,7 @@ block content
     main
         +statlinks
 
-        h2 #{tournament.tournament_name} - Team Standings
+        h2 #{tournament.tournament_name} #{tournament.phaseInfo.name} - Team Standings
         - var points = Object.keys(tournament.pointScheme);
         if tournament.divisions.length === 0
             if teamInfo.length != 0

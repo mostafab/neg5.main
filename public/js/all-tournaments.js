@@ -2,30 +2,38 @@
 
 $(document).ready(function() {
 
-    $("#merge-button").click(function() {
-        $(this).text("Merge Tournaments");
-        $("#name-merge").css("border-color", "white");
-        var selected = true;
-        $(".tournament-select").each(function(index, select) {
-            $(this).css("border-color", "white");
-            if (!$(this).val()) {
-                selected = false;
-                $(this).css("border-color", "red");
-            }
-        });
-        if (selected) {
-            if (!(checkSameValue($("#left-select"), $("#right-select")))) {
-                if ($("#name-merge").val().length == 0) {
-                    $("#name-merge").css("border-color", "red");
-                } else {
-                    mergeTournamentsAJAX($("#left-select").val(), $("#right-select").val(), $("#name-merge").val())
-                }
-            } else {
-                $(this).text("Same Tournaments Chosen");
-            }
-        } else {
-            $(this).text("Select Two Tournaments");
-        }
+    // $("#merge-button").click(function() {
+    //     $(this).text("Merge Tournaments");
+    //     $("#name-merge").css("border-color", "white");
+    //     var selected = true;
+    //     $(".tournament-select").each(function(index, select) {
+    //         $(this).css("border-color", "white");
+    //         if (!$(this).val()) {
+    //             selected = false;
+    //             $(this).css("border-color", "red");
+    //         }
+    //     });
+    //     if (selected) {
+    //         if (!(checkSameValue($("#left-select"), $("#right-select")))) {
+    //             if ($("#name-merge").val().length == 0) {
+    //                 $("#name-merge").css("border-color", "red");
+    //             } else {
+    //                 mergeTournamentsAJAX($("#left-select").val(), $("#right-select").val(), $("#name-merge").val())
+    //             }
+    //         } else {
+    //             $(this).text("Same Tournaments Chosen");
+    //         }
+    //     } else {
+    //         $(this).text("Select Two Tournaments");
+    //     }
+    // });
+
+    $(".tournament-anchor").click(function() {
+        var href = $(this).attr("data-href");
+        var anchor = document.createElement("a");
+        anchor.href= href;
+        anchor.click();
+        anchor.remove();
     });
 
 });

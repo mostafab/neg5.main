@@ -378,10 +378,10 @@ playerSchema.methods.getPointsPerTossup = function(tournament) {
 * @param tournament tournament to check
 * @return all statistics information about a player
 */
-playerSchema.methods.getAllInformation = function(tournament) {
+playerSchema.methods.getAllInformation = function(tournament, teamMap) {
     var playerInfo = {};
     playerInfo["Player"] = this.player_name;
-    // playerInfo["Team"] = this.team_name;
+    playerInfo["Team"] = teamMap[this.teamID].name;
     playerInfo["GP"] = this.getTotalGamesPlayed(tournament);
     playerInfo.pointTotals = this.getTotalPointValues(tournament);
     playerInfo["TUH"] = this.getTossupsHeard(tournament);
@@ -397,10 +397,10 @@ playerSchema.methods.getAllInformation = function(tournament) {
 * @param constraints limits on rounds
 * @return all statistics information about a player
 */
-playerSchema.methods.getAllInformationFiltered = function(tournament, constraints) {
+playerSchema.methods.getAllInformationFiltered = function(tournament, constraints, teamMap) {
     var playerInfo = {};
     playerInfo["Player"] = this.player_name;
-    // playerInfo["Team"] = this.team_name;
+    playerInfo["Team"] = teamMap[this.teamID].name;
     playerInfo["GP"] = this.getTotalGamesPlayedFiltered(tournament, constraints);
     playerInfo.pointTotals = this.getTotalPointValuesFiltered(tournament, constraints);
     playerInfo["TUH"] = this.getTossupsHeardFiltered(tournament, constraints);
@@ -414,12 +414,12 @@ playerSchema.methods.getAllInformationFiltered = function(tournament, constraint
 * @param tournament tournament to check
 * @return array of information about player's games
 */
-playerSchema.methods.getAllGamesInformation = function(tournament) {
+playerSchema.methods.getAllGamesInformation = function(tournament, teamMap) {
     var playedGames = [];
     for (var i = 0; i < tournament.games.length; i++) {
         var currentGame = tournament.games[i];
         if (currentGame.team1.team_id == this.teamID || currentGame.team2.team_id == this.teamID) {
-            var formattedGame = this.formatGameInformation(currentGame, tournament);
+            var formattedGame = this.formatGameInformation(currentGame, tournament, teamMap);
             playedGames.push(formattedGame);
         }
     }
@@ -435,11 +435,11 @@ playerSchema.methods.getAllGamesInformation = function(tournament) {
 * @param tournament tournament to check
 * @return information about a single game
 */
-playerSchema.methods.formatGameInformation = function(game, tournament) {
+playerSchema.methods.formatGameInformation = function(game, tournament, teamMap) {
     var gameinfo = {};
     gameinfo["Round"] = game.round;
     if (game.team1.team_id == this.teamID) {
-        // gameinfo["Opponent"] = game.team2.team_name;
+        gameinfo["Opponent"] = teamMap[game.team2.team_id].name;
         if (game.team1.score > game.team2.score) {
             gameinfo["Result"] = "W";
         } else if (game.team2.score > game.team1.score) {
@@ -448,7 +448,7 @@ playerSchema.methods.formatGameInformation = function(game, tournament) {
             gameinfo["Result"] = "T";
         }
     } else {
-        // gameinfo["Opponent"] = game.team1.team_name;
+        gameinfo["Opponent"] = teamMap[game.team1.team_id].name;
         if (game.team1.score > game.team2.score) {
             gameinfo["Result"] = "L";
         } else if (game.team2.score > game.team1.score) {
@@ -469,8 +469,8 @@ playerSchema.methods.formatGameInformation = function(game, tournament) {
 * @param tournament tournament to check
 * @return statistics information about a player
 */
-playerSchema.methods.getTotalGameStats = function(tournament) {
-    var stats = this.getAllInformation(tournament).stats;
+playerSchema.methods.getTotalGameStats = function(tournament, teamMap) {
+    var stats = this.getAllInformation(tournament, teamMap).stats;
     return stats;
 }
 

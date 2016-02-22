@@ -3,7 +3,7 @@ var tournamentController = require("../../app/controllers/tournament-controller"
 
 module.exports = function(app) {
 
-    app.get("/registrations", function(req, res) {
+    app.get("/registrations", (req, res) => {
         if (!req.session.director) {
             res.redirect("/");
         } else {
@@ -17,7 +17,7 @@ module.exports = function(app) {
         }
     });
 
-    app.get("/t/:tid/signup", function(req, res) {
+    app.get("/t/:tid/signup", (req, res) => {
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             if (err) {
                 res.status(500).send(err);
@@ -40,7 +40,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/t/:tid/signup/submit", function(req, res) {
+    app.post("/t/:tid/signup/submit", (req, res) => {
         var directorid = req.session.director == null ? null : req.session.director._id;
         var tournamentid = req.params.tid;
         signupController.createRegistration(tournamentid, directorid, req.body, function(err, closed) {
@@ -52,8 +52,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/signup/delete", function(req, res) {
-        // console.log(req.body);
+    app.post("/signup/delete", (req, res) => {
         if (!req.session.director) {
             res.status(401).end();
         } else {

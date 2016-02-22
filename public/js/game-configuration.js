@@ -17,9 +17,9 @@ function escapeHtml(string) {
 
 $(document).ready(function() {
 
-    $("#entergamebutton").click(function(e) {
+    $("body").on("click", "#entergamebutton-edit", function() {
         var wrong = false;
-        $(".point-box").each(function() {
+        $(".point-box-edit").each(function() {
             $(this).removeClass("alert-danger");
             if ($(this).val()) {
                 var val = parseFloat($(this).val());
@@ -29,7 +29,7 @@ $(document).ready(function() {
                 }
             }
         });
-        $(".gp-box").each(function() {
+        $(".gp-box-edit").each(function() {
             $(this).removeClass("alert-danger");
             if ($(this).val()) {
                 var val = parseFloat($(this).val());
@@ -42,24 +42,24 @@ $(document).ready(function() {
                 $(this).addClass("alert-danger");
             }
         });
-        $(".scorebox").each(function() {
+        $(".scorebox-edit").each(function() {
             $(this).removeClass("alert-danger");
             if (!$(this).val()) {
                 wrong = true;
                 $(this).addClass("alert-danger");
             }
         });
-        $(".teamselect").removeClass("alert-danger");
-        if ($("#leftchoice").val() === $("#rightchoice").val()) {
+        $(".teamselect-edit").removeClass("alert-danger");
+        if ($("#leftchoice-edit").val() === $("#rightchoice-edit").val()) {
             wrong = true;
-            $(".teamselect").addClass("alert-danger");
+            $(".teamselect-edit").addClass("alert-danger");
         }
         if (!wrong) {
             editGameAJAX();
         }
     });
 
-    $("#editteambutton").click(function(e) {
+    $("body").on("click", "#editteambutton", function() {
         var nameInput = $("#team-name-input");
         nameInput.removeClass("alert-danger");
         if (nameInput.val().trim().length !== 0) {
@@ -72,32 +72,46 @@ $(document).ready(function() {
         }
     });
 
-    $(".saveplayerbutton").click(function(e) {
-        var form = $(this).parent().prev().children("form");
-        $(this).prop("disabled", true);
-        editPlayerAJAX($(form).serialize(), $(this));
+    // $("body").on("click", ".saveplayerbutton", function() {
+    //     var form = $(this).parent().prev().children("form");
+    //     $(this).prop("disabled", true);
+    //     editPlayerAJAX($(form).serialize(), $(this));
+    // });
+
+    $("body").on("click", ".player-name-box", function() {
+        $(this).prop("readonly", false);
     });
 
-    $(".deleteplayerbutton").click(function(e) {
+    $("body").on("blur", ".player-name-box", function() {
+        $(this).prop("readonly", true);
+        var form = $(this).parent().serialize();
+        editPlayerAJAX(form);
+    });
+
+    $("body").on("click", ".deleteplayerbutton", function() {
         var form = $(this).parent().prev().children("form");
         $(this).prop("disabled", true);
-        // console.log(form);
         showBeforeSentMessage("Removing Player");
         removePlayerAJAX($(form).serialize(), $(this));
     });
 
-    $(".teamselect").change(function() {
-        if ($(this).attr("id") == "leftchoice") {
+    $("body").on("change", ".teamselect-edit", function() {
+        if ($(this).attr("id") == "leftchoice-edit") {
             getTeamPlayersAJAX("LEFT");
-            $("#leftteamnameID").val($(this).find(":selected").text());
         } else {
             getTeamPlayersAJAX("RIGHT");
-            $("#rightteamnameID").val($(this).find(":selected").text());
         }
     });
 
-    $("#add-player-button").click(function(e) {
-        if ($("#newplayerinput").val().length == 0) {
+    $("body").on("keyup", "#newplayerinput", function(e) {
+        if (e.which === 13 && $(this).val().trim().length !== 0) {
+            e.preventDefault();
+            $("#add-player-button").click();
+        }
+    });
+
+    $("body").on("click", "#add-player-button", function() {
+        if ($("#newplayerinput").val().trim().length == 0) {
             showMessageInDiv("#player-add-msg", "Enter a name, please", "zero");
         } else {
             var form = $(this).parent().serialize();
@@ -107,18 +121,17 @@ $(document).ready(function() {
             addPlayerAJAX(form, $(this));
         }
     });
+
 });
 
 function savePlayerSender(button) {
     var form = $(button).parent().prev().children("form");
-    // console.log($(form).serialize());
     $(button).prop("disabled", true);
     editPlayerAJAX($(form).serialize());
 }
 
 function deletePlayerSender(button) {
     var form = $(button).parent().prev().children("form");
-    // console.log($(form).serialize());
     $(button).prop("disabled", true);
     removePlayerAJAX($(form).serialize(), button);
 }
@@ -137,14 +150,12 @@ function showMessageInDiv(div, message, err) {
 function editGameAJAX() {
     console.log("Ok, editing game");
     $("#updategamediv").empty().
-        append("<p style='margin-left:10px; font-size:16px;'>Updating Game <i class='fa fa-spinner fa-spin'></i></p>");
+        append("<p style='margin-left:10px; font-size:16px;color:black;'>Updating Game <i class='fa fa-spinner fa-spin'></i></p>");
     $.ajax({
         url : "/tournaments/games/edit",
         type : "POST",
-        data : $("#changegameform").serialize(),
+        data : $("#changegameform-edit").serialize(),
         success : function(databack, status, xhr) {
-            // console.log(databack);
-            // console.log("Edited game successfully");
             showMessageInDiv("#updategamediv", "Game updated successfully", null);
         },
         error : function(xhr, status, err) {
@@ -196,14 +207,13 @@ function editTeamAJAX() {
     });
 }
 
-function editPlayerAJAX(playerForm, button) {
+function editPlayerAJAX(playerForm) {
     showBeforeSentMessage("Saving Player");
     $.ajax({
         url : "/tournaments/players/edit",
         type : "POST",
         data : playerForm,
         success : function(databack, status, xhr) {
-            // console.log(databack.msg);
             showAfterSentMessage(databack.msg, databack.err);
         },
         error : function(xhr, status, err) {
@@ -212,9 +222,6 @@ function editPlayerAJAX(playerForm, button) {
             } else {
                 showMessageInDiv("#player-add-msg", "Could not update player", err);
             }
-        },
-        complete : function(databack) {
-            $(button).prop("disabled", false);
         }
     });
 }
@@ -225,7 +232,6 @@ function addPlayerAJAX(playerForm) {
         type : "POST",
         data : playerForm,
         success : function(databack, status, xhr) {
-            // console.log(databack);
             showAddPlayerMsg(databack);
             if (!databack.err) {
                 addNewPlayerRow(databack.player, databack.tid);
@@ -270,9 +276,8 @@ function getTeamPlayersAJAX(side) {
             url : "/tournaments/getplayers",
             type : "GET",
             data : {tournamentid : $("#tournament_id_change").val(),
-                    teamname : $("#leftchoice").val()},
+                    teamname : $("#leftchoice-edit").val()},
             success : function(databack, status, xhr) {
-                // console.log(databack);
                 replacePlayerRows(databack.players, databack.pointScheme, "LEFT");
             }
         });
@@ -318,20 +323,19 @@ function addNewPlayerRow(player, tid) {
     html += "<td><form name='editplayerform'>";
     html += "<input type='hidden' name='tournamentidform' value='" + tid + "'/>";
     html += "<input type='hidden' name='playerid' value='" + player._id + "'>";
-    html += "<input type='text' class='form-control' name='playername' value='" + player.player_name + "'/>";
+    html += "<input type='text' class='form-control player-name-box saved' name='playername' value='" + player.player_name + "'/>";
     html += "</form></td>";
     html += "<td>";
-    html += "<button type='button' class='btn btn-sm btn-success saveplayerbutton' onclick='savePlayerSender(this)'>Save Name</button>";
-    html += "<button type='button' class='btn btn-sm btn-danger deleteplayerbutton' onclick='deletePlayerSender(this)'>Remove</button>";
+    html += "<button type='button' class='btn btn-sm btn-danger deleteplayerbutton' onclick='deletePlayerSender(this)'><i class='fa fa-trash'></i></button>";
     html += "</td></tr>";
     $(html).hide().appendTo("#playersbody").fadeIn(300);
 }
 
 function replacePlayerRows(players, pointScheme, side) {
-    var choice = side == "LEFT" ? "#left-text" : "#right-text";
+    var choice = side == "LEFT" ? "#left-text-edit" : "#right-text-edit";
     var points = Object.keys(pointScheme);
     $(choice).empty();
-    var html = "<table class='table table-striped table-bordered table-hover table-condensed'><thead><tr>";
+    var html = "<table class='table table-condensed'><thead><tr>";
     html += "<th class='table-head'>Name</th>";
     html += "<th class='table-head'>GP</th>";
     for (var i = 0; i < points.length; i++) {
@@ -345,7 +349,7 @@ function replacePlayerRows(players, pointScheme, side) {
         html += "<tr>";
         html += "<input type='hidden' value='" + players[i]._id +  "' " + "name='" + "player" + playerNum + sideText + "id'" + "/>";
         html += "<td>" + players[i].player_name + "</td>";
-        html += "<td> <input class='form-control' type='number' placeholder='GP'" + "value='0' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
+        html += "<td> <input class='form-control' type='number'" + "value='0' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
         for (var j = 0; j < points.length; j++) {
             var keyNameStr = "name='player" + playerNum + sideText + "_" + points[j] + "val' ";
             var keyId = "id='player" + playerNum + "_" + points[j] + sideText + "id' ";
@@ -355,7 +359,7 @@ function replacePlayerRows(players, pointScheme, side) {
             onkeyupString += playerNum + ',' + json + ', "' + sideText + '"' + ")' ";
             var onchangeString = "onchange=";
             onchangeString += "'updatePoints(" + playerNum + ',' + json + ', "' + sideText + '"' + ")'";
-            html += "<td><input class='form-control' type='number' placeholder='" + points[j] + "'" + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
+            html += "<td><input class='form-control' type='number' " + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
         }
         var idTag = "id='" + playerNum + sideText + "pts'";
         html += "<td> <input " + idTag + "class='form-control disabledview' type='input' placeholder='0' disabled /> </td>";
@@ -379,5 +383,5 @@ function showAfterSentMessage(message, err) {
 
 function showBeforeSentMessage(message) {
     $("#player-add-msg").empty().
-        append("<p style='margin:10px; font-size:16px;'>" + message + "<i class='fa fa-spinner fa-spin'></i></p>");
+        append("<p style='margin:10px; font-size:16px;color:black'>" + message + "<i class='fa fa-spinner fa-spin'></i></p>");
 }

@@ -1,22 +1,25 @@
+var mongoose = require("mongoose");
+var shortid = require("shortid");
+var Tournament = mongoose.model("Tournament");
+
 var tournamentController = require('../../app/controllers/tournament-controller');
 var registrationController = require("../../app/controllers/registration-controller");
 var statsController = require("../../app/controllers/stats-controller");
-var mongoose = require("mongoose");
-var Tournament = mongoose.model("Tournament");
 
 module.exports = function(app) {
 
-    app.get("/t", function(req, res, next) {
+    app.get("/t", (req, res, next) => {
         res.redirect("/tournaments");
     });
 
-    app.get("/tournaments", function(req, res, next) {
+    app.get("/tournaments", (req, res, next) => {
         if (!req.session.director) {
             res.redirect("/");
         } else {
             tournamentController.findTournamentsByDirector(req.session.director._id, function(err, result) {
-                if (err || result == null) {
-                    res.status(500).render("alltournaments", {tournaments : [], tournamentd : req.session.director});
+                if (err) {
+                    console.log(err);
+                    res.status(500).send({err : err});
                 } else {
                     res.render("alltournaments", {tournaments : result, tournamentd : req.session.director});
                 }
@@ -24,7 +27,7 @@ module.exports = function(app) {
         }
     });
 
-    app.post("/tournaments/edit", function(req, res, next) {
+    app.post("/tournaments/edit", (req, res, next) => {
         if (!req.session.director) {
             res.status(401).end();
         } else {
@@ -42,7 +45,7 @@ module.exports = function(app) {
     });
 
     app.route('/create')
-        .get(function(req, res, next) {
+        .get((req, res, next) => {
             if (!req.session.director) {
                 res.redirect("/");
             } else {
@@ -50,7 +53,7 @@ module.exports = function(app) {
             }
         });
 
-    app.post("/t/:tid/delete", function(req, res) {
+    app.post("/t/:tid/delete", (req, res) => {
         if (!req.session.director) {
             return res.status(401).redirect("/");
         }
@@ -66,18 +69,78 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/newphase", function(req, res) {
-        // console.log(req.body);
+    app.post("/tournaments/removephase", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        // tournamentController.cloneTournament(req.body.tournamentid, req.body.phaseName, function(err, newTournamentID) {
-        //     if (err) {
-        //         res.status(500).end();
-        //     } else {
-        //         res.status(200).send({newID : newTournamentID});
-        //     }
-        // });
+        tournamentController.removePhase(req.body.tid, req.body.phaseID, req.session.director._id, function(err, unauthorized, removed) {
+            if (err) {
+                res.status(500).end();
+            } else if (unauthorized) {
+                res.status(401).end();
+            } else {
+                res.send({removed : removed});
+            }
+        });
+    });
+
+    app.post("/tournaments/switchphases", (req, res) => {
+        if (!req.session.director) {
+            return res.status(401).end();
+        }
+        tournamentController.switchPhases(req.body.tid, req.body.newPhaseID, req.session.director._id, function(err, unauthorized, switched) {
+            if (err) {
+                res.status(500).end();
+            } else if (unauthorized) {
+                res.status(401).end();
+            } else {
+                console.log(unauthorized);
+                res.send({switched : switched});
+            }
+        });
+    });
+
+    app.post("/tournaments/editphases", (req, res) => {
+        if (!req.session.director) {
+            return res.status(401).end();
+        }
+        var phases = !req.body.phases ? [] : req.body.phases.map(phase => {
+            var editedPhase = phase;
+            editedPhase.active = phase.active == 'true' ? true : false;
+            return editedPhase;
+        });
+        tournamentController.editPhases(req.body.tid, req.session.director._id, phases, (err, unauthorized, tournament) => {
+            if (err) {
+                res.status(500).end();
+            } else if (unauthorized) {
+                res.status(401).end();
+            } else if (!tournament) {
+                res.status(404).end();
+            } else {
+                tournament.teamMap = statsController.makeTeamMap(tournament.teams);
+                res.render("game-list", {tournament : tournament, admin : true}, (err, gameHTML) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).end();
+                    } else {
+                        res.render("team-list", {tournament : tournament, admin : true}, (err, teamHTML) => {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).end();
+                            } else {
+                                res.send({gameHTML : gameHTML, teamHTML : teamHTML, phases : tournament.phases});
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    app.post("/tournaments/newphase", (req, res) => {
+        if (!req.session.director) {
+            return res.status(401).end();
+        }
         tournamentController.newPhase(req.body.tournamentid, req.body.phaseName, function(err, newPhase) {
             if (err) {
                 return res.status(401).end();
@@ -87,17 +150,16 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/merge", function(req, res) {
+    app.post("/tournaments/merge", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        // console.log(req.body);
         tournamentController.mergeTournaments(req.body.first, req.body.second, req.body.name, function(err, merged) {
             res.send(merged);
         });
     });
 
-    app.get("/tournaments/findDirectors", function(req, res, next) {
+    app.get("/tournaments/findDirectors", (req, res, next) => {
         tournamentController.findDirectors(req.query.collab, function(err, directors) {
             if (err) {
                 res.status(500).send({err : err});
@@ -107,7 +169,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/addCollaborator", function(req, res, next) {
+    app.post("/tournaments/addCollaborator", (req, res, next) => {
         var collaborator = JSON.parse(req.body.collaborators);
         collaborator.admin = !req.body.admin ? false : true;
         tournamentController.addCollaborator(req.body.tournamentid, collaborator, function(err, duplicate) {
@@ -119,7 +181,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/removeCollab", function(req, res, next) {
+    app.post("/tournaments/removeCollab", (req, res, next) => {
         tournamentController.removeCollaborator(req.body.tournamentid, req.body.collab, function(err) {
             if (err) {
                 res.status(500).send({err : err});
@@ -129,36 +191,28 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/tournaments/findCollaborators", function(req, res, next) {
-        // console.log(req.query);
+    app.get("/tournaments/findCollaborators", (req, res, next) => {
         tournamentController.findCollaborators(req.query.tournamentid, function(err, collaborators) {
             if (err) {
                 return res.status(500).send({collabs : []});
             } else {
-                // console.log(collaborators);
                 return res.status(200).send({collabs : collaborators});
             }
         });
     });
 
-    app.post("/tournaments/editPointSchema", function(req, res, next) {
-        // console.log(req.body);
-        // console.log(JSON.parse(req.body.pointtypes));
-        console.log(req.body);
+    app.post("/tournaments/editPointSchema", (req, res, next) => {
         var newPointValues = {};
         var newPointTypes = JSON.parse(req.body.pointtypes);
-        console.log(newPointTypes);
         var playerNum = 1;
         currentVal = "pointval" + playerNum
         while (req.body[currentVal] != undefined) {
-            // console.log(req.body[currentVal]);
             if (req.body[currentVal].length !== 0) {
                 newPointValues[req.body[currentVal]] = 0;
             }
             playerNum++;
             currentVal = "pointval" + playerNum;
         }
-        // console.log(newPointValues);
         tournamentController.changePointScheme(req.body["tournamentid"], newPointValues, newPointTypes, function(err) {
             if (err) {
                 res.status(500).send({err : err});
@@ -168,19 +222,9 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/editDivisions", function(req, res, next) {
-        // console.log(req.body);
-        // var divisions = [];
-        // var divNum = 1;
-        // currentDivision = "division" + divNum;
-        // while (req.body[currentDivision] != undefined) {
-        //     if (req.body[currentDivision].length != 0) {
-        //         divisions.push(req.body[currentDivision]);
-        //     }
-        //     divNum++;
-        //     currentDivision = "division" + divNum;
-        // }
-        tournamentController.updateDivisions(req.body.tid, req.body.divisions, function(err, newDivisions) {
+    app.post("/tournaments/editDivisions", (req, res, next) => {
+        var divisions = !req.body.divisions ? [] : req.body.divisions;
+        tournamentController.updateDivisions(req.body.tid, divisions, function(err, newDivisions) {
             if (err) {
                 res.status(500).end();
             } else {
@@ -190,62 +234,67 @@ module.exports = function(app) {
     });
 
     app.route("/tournaments/createteam")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
                 var id = req.body.tid;
-                tournamentController.addTeamToTournament(id, req.body.teamInfo, function(err, teams, newTeam, collaborators, directorid, phases) {
+                tournamentController.addTeamToTournament(id, req.body.teamInfo, function(err, tournament) {
                     if (err) {
                         res.status(500).end();
                     } else {
-                        admin = false;
-                        if (req.session.director._id == directorid) {
+                        var admin = false;
+                        if (req.session.director._id == tournament.directorid) {
                             admin = true;
                         }
                         if (!admin) {
-                            for (var i = 0; i < collaborators.length; i++) {
-                                if (collaborators[i].id == req.session.director._id && collaborators[i].admin) {
+                            for (var i = 0; i < tournament.collaborators.length; i++) {
+                                if (tournament.collaborators[i].id == req.session.director._id && tournament.collaborators[i].admin) {
                                     admin = true;
                                 }
                             }
                         }
-                        res.status(200).send({teams : teams, newTeam : newTeam, admin : admin, phases : phases});
+                        res.render("team-list", {tournament : tournament, admin : admin}, function(err, html) {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).end();
+                            } else {
+                                res.send({html : html, teams : tournament.teams});
+                            }
+                        });
                     }
                 });
             }
-            // res.end();
         });
 
     app.route("/tournaments/creategame")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
                 var id = req.body["tournament_id_form"];
-                tournamentController.addGameToTournament(id, req.body, [], function(err, game, collaborators, directorid, phaseName) {
+                tournamentController.addGameToTournament(id, req.body, [], function(err, tournament, newGame) {
                     if (err) {
                         res.status(500).end();
                     } else {
-                        console.log(game);
-                        admin = false;
-                        if (req.session.director._id == directorid) {
+                        var admin = false;
+                        if (req.session.director._id == tournament.directorid) {
                             admin = true;
                         }
                         if (!admin) {
-                            for (var i = 0; i < collaborators.length; i++) {
-                                if (collaborators[i].id == req.session.director._id && collaborators[i].admin) {
+                            for (var i = 0; i < tournament.collaborators.length; i++) {
+                                if (tournament.collaborators[i].id == req.session.director._id && tournament.collaborators[i].admin) {
                                     admin = true;
                                 }
                             }
                         }
-                        res.status(200).send({game : game, tid : id, admin : admin, phaseName : phaseName});
+                        res.render("game-list", {tournament : tournament, admin : admin});
                     }
                 });
             }
         });
 
-    app.post("/tournaments/scoresheet/submit", function(req, res) {
+    app.post("/tournaments/scoresheet/submit", (req, res) => {
         if (!req.session.director) {
             res.status(401).end();
         } else {
@@ -260,19 +309,19 @@ module.exports = function(app) {
     });
 
     app.route("/tournaments/teams/remove")
-        .post(function(req, res, next) {
-            tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, function(err, teamid) {
+        .post((req, res, next) => {
+            tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, function(err, removedInfo) {
                 if (err) {
                     console.log(err);
                     res.status(500).end();
                 } else {
-                    res.status(200).send({"err" : null, "teamid" : teamid});
+                    res.status(200).send(removedInfo);
                 }
             });
         });
 
     app.route("/tournaments/games/remove")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.redirect("/");
             } else {
@@ -290,7 +339,7 @@ module.exports = function(app) {
         });
 
     app.route("/tournaments/players/remove")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             // console.log(req.body);
             if (!req.session.director) {
                 res.status(401).send({msg : "Hmm, doesn't seem like you're logged in."});
@@ -306,24 +355,25 @@ module.exports = function(app) {
         });
 
     app.route("/tournaments/games/edit")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
-                res.status(401).send({msg : "Unauthorized"});
+                res.status(401).end();
             } else {
-                // console.log(req.body);
                 var tournamentid = req.body["tournament_id_form"];
                 var gameid = req.body["oldgameid"];
                 tournamentController.removeGameFromTournament(tournamentid, gameid, function(err, phases) {
                     if (err) {
-                        res.status(500).send({err : err});
+                        console.log(err);
+                        res.status(500).end();
                     } else {
-                        tournamentController.addGameToTournament(tournamentid, req.body, phases, function(err, game) {
+                        tournamentController.addGameToTournament(tournamentid, req.body, phases, function(err, tournament, game) {
                             if (err) {
-                                res.status(500).send({err : err});
+                                console.log(err);
+                                res.status(500).end();
                             } else {
                                 tournamentController.changeGameShortID(tournamentid, game.shortID, gameid, function(err) {
                                     if (err) {
-                                        res.status(500).send({err : err});
+                                        res.status(500).end();
                                     } else {
                                         res.status(200).send({err : null});
                                     }
@@ -335,7 +385,7 @@ module.exports = function(app) {
             }
         });
 
-    app.get("/t/:tid/scoresheet", function(req, res, next) {
+    app.get("/t/:tid/scoresheet", (req, res, next) => {
         if (!req.session.director) {
             res.redirect("/");
         } else {
@@ -359,7 +409,7 @@ module.exports = function(app) {
     });
 
     app.route("/tournaments/teams/edit")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
@@ -379,7 +429,7 @@ module.exports = function(app) {
         });
 
     app.route("/tournaments/players/edit")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
@@ -395,7 +445,7 @@ module.exports = function(app) {
         });
 
     app.route("/tournaments/players/create")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             // console.log(req.body);
             if (!req.session.director) {
                 res.status(401).end();
@@ -413,7 +463,7 @@ module.exports = function(app) {
         });
 
     app.route("/create/submit")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.redirect("/");
             } else {
@@ -433,7 +483,7 @@ module.exports = function(app) {
         });
 
     app.route("/tournaments/getplayers")
-        .get(function(req, res, next) {
+        .get((req, res, next) => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
@@ -452,9 +502,9 @@ module.exports = function(app) {
             }
         });
 
-    app.get("/t/:tid/teams/:teamid", function(req, res) {
+    app.get("/t/:tid/teams/:teamid", (req, res) => {
         if (!req.session.director) {
-            return res.redirect("/");
+            return res.status(401).end();
         }
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var team = null;
@@ -481,22 +531,49 @@ module.exports = function(app) {
                         tourney.shortID = result.shortID;
                         tourney.divisions = result.divisions;
                         tourney.phases = result.phases;
-                        res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, tournamentd : req.session.director, admin : hasPermission.admin});
+                        res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, admin : hasPermission.admin});
                     } else {
-                        res.status(404).render("not-found", {tournamentd: req.session.director, msg : "Could not find that team."})
+                        res.status(404).end();
                     }
                 } else {
-                    res.status(401).send("You don't have permission to view this tournament");
+                    res.status(401).end();
                 }
             } else {
-                res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
+                res.status(404).end();
             }
         });
     });
 
-    app.get("/t/:tid/games/:gid", function(req, res) {
+    app.get("/t/:tid/teams", (req, res) => {
         if (!req.session.director) {
-            return res.redirect("/");
+            return res.status(401).end();
+        }
+        tournamentController.getTeams(req.params.tid, function(err, tournament) {
+            if (err) {
+                return res.status(500).end();
+            } else if (!tournament) {
+                return res.status(404).end();
+            } else {
+                tournament.teamMap = statsController.makeTeamMap(tournament.teams);
+                var admin = false;
+                if (req.session.director._id == tournament.directorid) {
+                    admin = true;
+                }
+                if (!admin) {
+                    for (var i = 0; i < tournament.collaborators.length; i++) {
+                        if (tournament.collaborators[i].id == req.session.director._id && tournament.collaborators[i].admin) {
+                            admin = true;
+                        }
+                    }
+                }
+                res.render("team-list", {tournament : tournament, admin : admin});
+            }
+        });
+    });
+
+    app.get("/t/:tid/games/:gid", (req, res) => {
+        if (!req.session.director) {
+            return res.status(401).end();
         }
         tournamentController.findTournamentById(req.params.tid, function(err, result) {
             var game = null;
@@ -522,21 +599,42 @@ module.exports = function(app) {
                                 team2Players.push(result.players[i]);
                             }
                         }
-                        res.render("game-view", {tournamentd : req.session.director, game : game, tournamentName : result.tournament_name,
+                        res.render("game-view", {game : game, tournamentName : result.tournament_name,
                             team1Players : team1Players, team2Players : team2Players, tournament : result});
                     } else {
-                        res.status(404).render("not-found", {tournamentd: req.session.director, msg : "That game doesn't exist."})
+                        res.status(404).end();
                     }
                 } else {
-                    res.status(401).send("You don't have permission to view this tournament");
+                    res.status(401).end();
                 }
             } else {
-                res.status(404).render("not-found", {tournamentd: req.session.director, msg : "That tournament doesn't exist."})
+                res.status(404).end();
             }
         });
     });
 
-    app.get("/t/:tid", function(req, res, next) {
+    app.get("/t/:tid/games", (req, res) => {
+        if (!req.session.director) {
+            return res.status(401).end();
+        }
+        tournamentController.getGames(req.params.tid, function(err, tournament) {
+            if (err) {
+                return res.status(500).end();
+            } else if (!tournament) {
+                return res.status(404).end();
+            } else {
+                var hasPermission = getPermission(tournament, req.session.director);
+                if (hasPermission.permission) {
+                    tournament.teamMap = statsController.makeTeamMap(tournament.teams);
+                    return res.render('game-list', {tournament : tournament, admin : hasPermission.admin});
+                } else {
+                    return res.status(401).end();
+                }
+            }
+        });
+    });
+
+    app.get("/t/:tid", (req, res, next) => {
         if (!req.session.director) {
             res.redirect("/");
         } else {
@@ -548,7 +646,7 @@ module.exports = function(app) {
                 } else {
                     var hasPermission = getPermission(result, req.session.director);
                     if (hasPermission.permission) {
-                        var linkName = result.tournament_name.replace(" ", "_").toLowerCase();
+                        var linkName = result.tournament_name.replace(/\s/g, "_").toLowerCase();
                         res.render("tournament-view", {tournament : result, tournamentd : req.session.director, linkName : linkName,
                             admin : hasPermission.admin, tournamentDirector : director});
                     } else {
@@ -557,6 +655,10 @@ module.exports = function(app) {
                 }
             });
         }
+    });
+
+    app.get('/shortid', (req, res) => {
+        res.send(shortid.generate());
     });
 
 

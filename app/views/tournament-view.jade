@@ -6,7 +6,6 @@ block titleContent
 block extrastylesheets
     link(rel="stylesheet" href="/css/home.css")
     link(rel="stylesheet" href="/css/tournamentstyle.css")
-    link(rel="stylesheet" href="/css/chat.css")
 
 block content
 
@@ -27,7 +26,7 @@ block content
     -    return formattedDate;
     - }
 
-    div(class="content-wrapper box" style='padding:50px;padding-top:20px;')
+    div(class="content-wrapper box" style='padding-left:100px;padding-right:100px;padding-top:20px;')
         input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
         div(class="row")
             div(class="col-md-12")
@@ -35,27 +34,27 @@ block content
                     div(style="margin:20px; margin-bottom:50px")
                     h2(class="title" style='text-align:center;font-size:1.6em') #{tournament.tournament_name}
                     hr
-                    h2(class="title" style='text-align:center;font-size:.9em;width:25%') Current Phase: #{tournament.phaseName}
+                    h2(class="title" style='text-align:center;font-size:.9em;width:25%' id='current-phase-header') Current Phase: #{tournament.phaseName}
                     div(style="margin:20px; margin-bottom:10px")
-                    div(class="panel-body")
-                        div(class="row" style="")
+                    div(class="panel-body" id='anchor-links')
+                        div(class="row")
                             ul(class="nav nav-pills no-border-radius")
                                 li(class="active")
-                                    a(href="#overview" data-toggle="tab") Overview
+                                    a(href="#overview" data-toggle="tab" class='tournament-tab') Overview
                                 if admin
                                     li
-                                        a(href="#divisions" data-toggle="tab") Divisions/Point Scheme
+                                        a(href="#divisions" data-toggle="tab" class='tournament-tab') Divisions/Point Scheme
                                 li
-                                    a(href="#games" data-toggle="tab") Games/Scoresheet
+                                    a(href="#games" data-toggle="tab" class='tournament-tab') Games/Scoresheet
                                 li
-                                    a(href="#teams" data-toggle="tab") Teams
+                                    a(href="#teams" data-toggle="tab" class='tournament-tab') Teams
                                 li
-                                    a(href="#stats" data-toggle="tab") Statistics
+                                    a(href="#stats" data-toggle="tab" class='tournament-tab') Statistics
                                 if tournamentd._id == tournament.directorid
                                     li
-                                        a(href="#phase" data-toggle="tab") Phases
+                                        a(href="#phase" data-toggle="tab" class='tournament-tab') Phases
                                     li
-                                        a(href="#delete" class="btn-danger" data-toggle="tab") Delete
+                                        a(href="#delete" class="btn-danger" data-toggle="tab" class='tournament-tab') Delete
                     br
         div(class="row")
                 div(class='col-sm-12 col-md-12')
@@ -64,7 +63,7 @@ block content
                             if admin
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Tournament Overview
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         form(id="tournament-overview-form")
                                             input(type="hidden" value="#{tournament._id}" name="tournamentid")
                                             div(class="row")
@@ -122,7 +121,7 @@ block content
                             else
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Tournament Overview
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         div(class="row")
                                             div(class="col-md-6")
                                                 label(class="label label-primary col-xs-4") Name
@@ -169,7 +168,7 @@ block content
                             div(class="panel panel-default")
                                 div(class="panel-heading collapsable") Collaborators
 
-                                div(class="panel-body")
+                                div(class="panel-body tournament-panel")
                                     if admin
                                         div(class="row")
                                             div(class="col-md-3" style='background-color:transparent')
@@ -227,7 +226,7 @@ block content
                             div(class="tab-pane fade" id="divisions")
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Divisions and Point Scheme
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         div(class="col-md-6")
                                             label(class="label label-primary col-xs-4") Point Scheme
                                             br
@@ -268,7 +267,7 @@ block content
 
                                             div(class="btn-group" style="margin-top:15px")
                                                 button(type="button" class="btn btn-md btn-info" style="margin:0;margin-bottom:15px" id="add-point-value-button" onclick='addPointSchemaRow()') Add A Point Value
-                                                button(type="button" class="btn btn-md btn-success" style="margin:0;margin-bottom:15px" id="save-point-schema-button") Save Point Scheme
+                                                button(type="button" class="btn btn-md btn-success" style="margin:0;margin-bottom:15px" id="save-point-schema-button" data-toggle='tooltip' title='Empty boxes are ignored.') Save Point Scheme
 
                                         div(class="col-md-6")
                                             label(class="label label-primary col-xs-4") Divisions
@@ -278,19 +277,19 @@ block content
                                                     input(type="hidden" name="tournamentid" value="#{tournament._id}" id="tid-divisions")
                                                     each phase in tournament.phases
                                                         div(class="row")
-                                                            label(class="label label-info col-xs-3 col-md-3 col-sm-3") #{phase.name}
-                                                            button(type='button' class="btn btn-sm btn-info add-division" data-phase-id="#{phase.phase_id}")
+                                                            label(class="label label-info col-xs-3 col-md-3 col-sm-3 phase-name" data-phase-id='#{phase.phase_id}') #{phase.name}
+                                                            button(type='button' data-toggle='tooltip' class="btn btn-sm btn-info add-division" data-phase-id="#{phase.phase_id}" title='Add Division to #{phase.name}.')
                                                                 i(class="fa fa-plus")
                                                             div(class="col-md-7 division-box" data-phase-id='#{phase.phase_id}')
                                                                 each division, i in tournament.divisions
                                                                     if (division.phase_id == phase.phase_id)
-                                                                        input(type='text' style="width:100%" value="#{tournament.divisions[i].name}" class='form-control input-medium no-border-radius division-name' data-phase-id='#{phase.phase_id}')
+                                                                        input(readonly type='text' style="width:100%" value="#{tournament.divisions[i].name}" class='form-control input-medium no-border-radius division-name saved' data-phase-id='#{phase.phase_id}' data-division-id='#{tournament.divisions[i].division_id}')
 
                                                         br
                                                         br
 
                                             div(class="btn-group" style="margin-top:15px")
-                                                button(type="button" class="btn btn-md btn-success" style="margin:0" id="save-divisions-button") Save Divisions
+                                                button(type="button" class="btn btn-md btn-success" style="margin:0" id="save-divisions-button" data-toggle="tooltip" title='Empty boxes are ignored.') Save All Divisions
 
                                         div(class="col-md-12")
                                         br
@@ -302,181 +301,142 @@ block content
                                                 div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="pointdivmsg")
 
                         div(class="tab-pane fade" id="games")
-                            div(class="row")
-                                div(class="col-md-3 col-sm-3")
-                                    a(class="btn btn-lg btn-info btn-block" target="_blank" href="/t/" + tournament.shortID + "/scoresheet") Scoresheet
-                            div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") Add a Game
-                                    div(class="panel-body" id="addgamepanel")
+                            div(id='add-game-div')
+                                div(class="row")
+                                    div(class="col-md-3 col-sm-3")
+                                        a(class="btn btn-lg btn-info btn-block" target="_blank" href="/t/" + tournament.shortID + "/scoresheet") Scoresheet
+                                div(class="panel panel-default")
+                                        div(class="panel-heading collapsable") Add a Game
+                                        div(class="panel-body tournament-panel" id="addgamepanel")
 
-                                            form(name="gameinfoform" id="gamedataform")
-                                                input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
-                                                div(class="row")
-                                                    input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
-                                                    div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            input(type="hidden" name="leftteamname" id="leftteamnameID")
-                                                            select(id="leftchoice" class="form-control teamselect" name="leftteamselect")
-                                                                option(selected value="") Choose a Team
-                                                                each team in tournament.teams
-                                                                    option(value="#{team._id}") #{team.team_name}
+                                                form(name="gameinfoform" id="gamedataform")
+                                                    input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
+                                                    div(class="row")
+                                                        input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                                input(type="hidden" name="leftteamname" id="leftteamnameID")
+                                                                select(id="leftchoice" class="form-control teamselect" name="leftteamselect")
+                                                                    option(selected value="") Choose a Team
+                                                                    each team in tournament.teams
+                                                                        option(value="#{team._id}") #{team.team_name}
 
-                                                    div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            input(type="hidden" name="rightteamname" id="rightteamnameID")
-                                                            select(id="rightchoice" class="form-control teamselect" name="rightteamselect")
-                                                                option(selected value="") Choose a Team
-                                                                each team in tournament.teams
-                                                                    option(value="#{team._id}") #{team.team_name}
-                                                br
-                                                div(class="row")
-                                                    div(id="left-text" class="col-lg-6 col-md-6 col-sm-6")
-                                                    div(id="right-text" class="col-lg-6 col-md-6 col-sm-6")
-                                                div(class="row")
-                                                    div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        div(class="row")
-                                                            div(class="col-md-6")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-warning btn-block" style='float:right') Team 1 Score *
-                                                            div(class="col-md-3")
-                                                                input(type="number" class="form-control scorebox" name="leftteamscore" placeholder="Team 1 Score")
-                                                        div(class='row')
-                                                            div(class="col-md-3")
-                                                            div(class="col-md-3")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-primary btn-block" style='float:right') Bouncebacks
-                                                            div(class="col-md-3")
-                                                                input(type="number" class="form-control" name="leftbounceback" placeholder="Bounceback Points")
-                                                        br
-                                                    div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        div(class="row")
-                                                            div(class="col-md-3")
-                                                                input(type="number" class="form-control scorebox" name="rightteamscore" placeholder="Team 2 Score")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-warning btn-block" style='float:right') Team 2 Score *
-                                                        div(class="row")
-                                                            div(class="col-md-3")
-                                                                input(type="number" class="form-control" name="rightbounceback" placeholder="Bounceback Points")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-primary btn-block" style='float:right') Bouncebacks
-                                                        br
-                                                div(class="row")
-                                                    div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        div(class="row")
-                                                            div(class="col-md-6")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-primary btn-block" style='float:right') Round
-                                                            div(class="col-md-3")
-                                                                input(type="number" class="form-control" name="round" placeholder="Round")
-                                                div(class="row")
-                                                    div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        div(class="row")
-                                                            div(class="col-md-6")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-primary btn-block" style='float:right') TUH
-                                                            div(class="col-md-3")
-                                                                input(type="number" class="form-control" name="tossupsheard" placeholder="Tossups Heard")
-                                                        br
-                                                div(class="row")
-                                                    div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        div(class="row")
-                                                            div(class="col-md-6")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-primary btn-block" style='float:right') Room
-                                                            div(class="col-md-3")
-                                                                input(type="text" class="form-control" name="room" placeholder="Room")
-                                                div(class="row")
-                                                    div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        div(class="row")
-                                                            div(class="col-md-6")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-primary btn-block" style='float:right') Moderator
-                                                            div(class="col-md-3")
-                                                                input(type="text" class="form-control" name="moderator" placeholder="Moderator")
-                                                div(class="row")
-                                                    div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        div(class="row")
-                                                            div(class="col-md-6")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-primary btn-block" style='float:right') Packet
-                                                            div(class="col-md-3")
-                                                                input(type="text" class="form-control" name="packet" placeholder="Packet")
-                                                        br
-                                                div(class="row")
-                                                    div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        div(class="row")
-                                                            div(class="col-md-6")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-primary btn-block" style='float:right') Phase
-                                                            div(class="col-md-3")
-                                                                select(class="form-control" name='phase_id' id='game-phases')
-                                                                    each phase in tournament.phases
-                                                                        if phase.active
-                                                                            option(selected value='#{phase.phase_id}') #{phase.name}
-                                                                        else
-                                                                            option(value='#{phase.phase_id}') #{phase.name}
-                                                        br
-                                                div(class='row')
-                                                    div(class="col-lg-6 col-md-6 col-sm-6")
-                                                        div(class="row")
-                                                            div(class="col-md-6")
-                                                            div(class="col-md-3")
-                                                                label(class="label label-primary btn-block" style='float:right;') Notes
-                                                            div(class="col-md-3")
-                                                                textarea(class="form-control" name="notes" placeholder="Notes" style='min-height:200px')
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                                input(type="hidden" name="rightteamname" id="rightteamnameID")
+                                                                select(id="rightchoice" class="form-control teamselect" name="rightteamselect")
+                                                                    option(selected value="") Choose a Team
+                                                                    each team in tournament.teams
+                                                                        option(value="#{team._id}") #{team.team_name}
+                                                    br
+                                                    div(class="row")
+                                                        div(id="left-text" class="col-lg-6 col-md-6 col-sm-6")
+                                                        div(id="right-text" class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(class="row")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(class="row")
+                                                                div(class="col-md-6")
+                                                                div(class="col-md-3")
+                                                                    label(class="label label-primary btn-block" style='float:right') Team 1 Score *
+                                                                div(class="col-md-3")
+                                                                    input(type="number" class="form-control scorebox" name="leftteamscore" placeholder="Team 1 Score")
+                                                            div(class='row')
+                                                                div(class="col-md-3")
+                                                                div(class="col-md-3")
+                                                                div(class="col-md-3")
+                                                                    label(class="label label-primary btn-block" style='float:right') Bouncebacks
+                                                                div(class="col-md-3")
+                                                                    input(type="number" class="form-control" name="leftbounceback" placeholder="Bounceback Points")
+                                                            br
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(class="row")
+                                                                div(class="col-md-3")
+                                                                    input(type="number" class="form-control scorebox" name="rightteamscore" placeholder="Team 2 Score")
+                                                                div(class="col-md-3")
+                                                                    label(class="label label-primary btn-block" style='float:right') Team 2 Score *
+                                                            div(class="row")
+                                                                div(class="col-md-3")
+                                                                    input(type="number" class="form-control" name="rightbounceback" placeholder="Bounceback Points")
+                                                                div(class="col-md-3")
+                                                                    label(class="label label-primary btn-block" style='float:right') Bouncebacks
+                                                            br
+                                                    div(class="row")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(class="row")
+                                                                div(class="col-md-6")
+                                                                div(class="col-md-3")
+                                                                    label(class="label label-primary btn-block" style='float:right') Round
+                                                                div(class="col-md-3")
+                                                                    input(type="number" class="form-control" name="round" placeholder="Round")
+                                                    div(class="row")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(class="row")
+                                                                div(class="col-md-6")
+                                                                div(class="col-md-3")
+                                                                    label(class="label label-primary btn-block" style='float:right') TUH
+                                                                div(class="col-md-3")
+                                                                    input(type="number" class="form-control" name="tossupsheard" placeholder="Tossups Heard")
+                                                            br
+                                                    div(class="row")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(class="row")
+                                                                div(class="col-md-6")
+                                                                div(class="col-md-3")
+                                                                    label(class="label label-primary btn-block" style='float:right') Room
+                                                                div(class="col-md-3")
+                                                                    input(type="text" class="form-control" name="room" placeholder="Room")
+                                                    div(class="row")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(class="row")
+                                                                div(class="col-md-6")
+                                                                div(class="col-md-3")
+                                                                    label(class="label label-primary btn-block" style='float:right') Moderator
+                                                                div(class="col-md-3")
+                                                                    input(type="text" class="form-control" name="moderator" placeholder="Moderator")
+                                                    div(class="row")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(class="row")
+                                                                div(class="col-md-6")
+                                                                div(class="col-md-3")
+                                                                    label(class="label label-primary btn-block" style='float:right') Packet
+                                                                div(class="col-md-3")
+                                                                    input(type="text" class="form-control" name="packet" placeholder="Packet")
+                                                            br
+                                                    div(class="row")
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(class="row")
+                                                                div(class="col-md-6")
+                                                                div(class="col-md-3")
+                                                                    label(class="label label-primary btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases
+                                                                div(class="col-md-3")
+                                                                    select(multiple class="form-control phase-selection" name='phase_id[]' id='game-phases' size='#{tournament.phases.length}')
+                                                                        each phase in tournament.phases
+                                                                            if phase.active
+                                                                                option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+                                                                            else
+                                                                                option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+                                                            br
+                                                    div(class='row')
+                                                        div(class="col-lg-6 col-md-6 col-sm-6")
+                                                            div(class="row")
+                                                                div(class="col-md-6")
+                                                                div(class="col-md-3")
+                                                                    label(class="label label-primary btn-block" style='float:right;') Notes
+                                                                div(class="col-md-3")
+                                                                    textarea(class="form-control" name="notes" placeholder="Notes" style='min-height:200px')
 
-                                                button(type="button" class="btn btn-md btn-success" id="entergamebutton") Add Game Information
+                                                    button(type="button" class="btn btn-md btn-success" id="entergamebutton") Add Game Information
 
-                                                div(id="add-game-message")
+                                                    div(id="add-game-message")
+                            div(id='game-list-div')
+                                div(id='game-list-template')
+                                    include ./game-list.jade
 
-
-                            div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") List of Games
-                                    div(class="panel-body")
-
-                                        div(class="table-responsive" id="gamediv")
-                                            div(class="row" style="width:95%")
-                                                div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
-
-                                                    input(type="text" class="form-control search" placeholder="Filter By Round or Team")
-                                                    span(class="input-group-addon btn-stats")
-                                                        i(class="glyphicon glyphicon-search")
-                                            div(class="panel panel-default")
-                                                table(class="table table-bordered table-condensed" id='test-table')
-                                                    thead
-                                                        tr
-                                                            th(class="table-head") Round
-                                                            th(class="table-head") Phase
-                                                            th(class="table-head") Team 1
-                                                            th(class="table-head") Team 1 Score
-                                                            th(class="table-head") Team 2
-                                                            th(class="table-head") Team 2 Score
-                                                            th(class="table-head") Tossups Heard
-                                                            th(class="table-head") Details
-                                                    tbody(id="gametablebody" class="list")
-                                                        each val, i in tournament.games
-                                                            tr()
-                                                                td(class="round") #{tournament.games[i].round}
-                                                                each phase in tournament.phases
-                                                                    if phase.phase_id == tournament.games[i].phase_id
-                                                                        td(class="phase") #{phase.name}
-                                                                td(class="team1name") #{tournament.teamMap[tournament.games[i].team1.team_id].name}
-                                                                td(class="team1score") #{tournament.games[i].team1.score}
-                                                                td(class="team2name") #{tournament.teamMap[tournament.games[i].team2.team_id].name}
-                                                                td(class="team2score") #{tournament.games[i].team2.score}
-                                                                td(class="tuheard") #{tournament.games[i].tossupsheard}
-                                                                td
-                                                                    if admin
-                                                                        form()
-                                                                            input(type="hidden" name="gameid_form" value='#{tournament.games[i].shortID}')
-                                                                            input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
-                                                                            a(class="btn btn-xs btn-info editbutton" href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
-                                                                            button(type="button" class="btn btn-xs btn-warning deletebutton") Remove Game
-                                                                    else
-                                                                        a(class="btn btn-xs btn-info editbutton" href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID) Details
+                            div(class='row')
+                                div(class='col-md-12' id='game-view-div')
 
                         div(class="tab-pane fade" id="teams")
-                            div(class="panel panel-default")
+                            div(class="panel panel-default" id='add-team-div')
                                     div(class="panel-heading collapsable" id="add-team-panel") Add a Team
-                                    div(class="panel-body" id="add-team-body")
+                                    div(class="panel-body tournament-panel" id="add-team-body")
 
                                         div(class="col-md-6")
                                             form(id="teamform" name="createTeam")
@@ -492,7 +452,7 @@ block content
                                                         name="team_name",
                                                         id="team_name_input",
                                                         placeholder="Team Name",
-                                                        class="form-control input-medium center-text no-border-radius"
+                                                        class="form-control input-md center-text no-border-radius"
                                                     )
                                                 hr
                                                 div(class="form-group")
@@ -502,8 +462,9 @@ block content
                                                     br
                                                     each phase, i in tournament.phases
                                                         div(class="row")
-                                                            div(class="col-md-1")
-                                                                label(class="label label-info btn-block") #{phase.name}
+                                                            div(class="col-md-4")
+                                                                div(class='alert alert-info phase-name' data-phase-id='#{phase.phase_id}')
+                                                                    p #{phase.name}
                                                             div(class="col-md-5")
                                                                 select(class="form-control new-team-division" data-phase-id='#{phase.phase_id}')
                                                                     each division in tournament.divisions
@@ -553,82 +514,57 @@ block content
                                                 br
                                                 div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="addteammsg")
 
+                            div(id='team-list-div')
+                                div(id='team-list-template')
+                                    include ./team-list.jade
 
-                            div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") List of Teams
-                                    div(class="panel-body")
-
-                                        div(class="table-responsive" id="teamdiv")
-                                            div(class="row" style="width:95%")
-                                                div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
-
-                                                    input(type="text" class="form-control search" placeholder="Filter by Name or Division")
-                                                    span(class="input-group-addon btn-stats")
-                                                        i(class="glyphicon glyphicon-search")
-
-                                            div(class="panel panel-default")
-                                                table(class="table table-condensed")
-                                                    thead
-                                                        tr
-                                                            th(class="table-head") Team
-                                                            th(class="table-head") Divisions
-                                                            th(class="table-head") Details
-                                                    tbody(id="teamtablebody" class="list")
-                                                        each val, i in tournament.teams
-                                                            tr()
-                                                                td(class="teamname") #{tournament.teams[i].team_name}
-                                                                td(class="division")
-                                                                    for phase, j in tournament.phases
-                                                                        - var phaseID = tournament.phases[j].phase_id
-                                                                        li #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
-                                                                td
-                                                                    a(class="btn btn-xs btn-info" href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID) Details
-                                                                    if tournamentd._id == tournament.directorid || admin
-                                                                        button(type="button" class="btn btn-xs btn-warning start-delete-team")
-                                                                            i(class="glyphicon glyphicon-remove")
-                                                            if tournamentd._id == tournament.directorid || admin
-                                                                tr(style='display:none')
-                                                                    td
-                                                                    td
-                                                                    td
-                                                                        div(class="col-md-3 col-lg-3 col-sm-3")
-                                                                            button(class="btn btn-stats btn-sm btn-block cancel-delete-team") Never Mind
-                                                                        div(class="col-md-3 col-lg-3 col-sm-3")
-                                                                            form()
-                                                                                input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
-                                                                                input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
-                                                                                button(type="button" class="btn btn-sm btn-danger btn-block deleteteambutton") Confirm
-
-
+                            div(class='row')
+                                div(class='col-md-12' id='team-view-div')
 
                         div(class="tab-pane fade" id="stats")
                             div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Generate Complete Statistics
-                                    div(class="panel-body")
-
+                                    div(class="panel-body tournament-panel")
+                                        - var phaseID = 1
                                         div(class="col-md-5")
-                                            ul(class="nav nav-pills no-border-radius")
-                                                li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/team" class="btn btn-sm btn-stats") Team Stats
-                                                li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/player" class="btn btn-sm btn-stats") Player Stats
-                                                li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull" class="btn btn-sm btn-stats") Full Report
-                                                li
-                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/roundreport" class="btn btn-sm btn-stats") Round Report
+                                            div(class="row")
+                                                div(class='col-md-6')
+                                                    select(class="form-control no-border-radius phase-selection" id='phase-select-stats')
+                                                        option(value='1') All
+                                                        each phase in tournament.phases
+                                                            if phase.active
+                                                                - phaseID = phase.phase_id
+                                                                option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+                                                            else
+                                                                option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+                                            div(class="row")
+                                                div(class='col-md-12')
+                                                    ul(class="nav nav-pills no-border-radius")
+                                                        li
+                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/team?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='team') Team Stats
+                                                        li
+                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/player?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='player') Player Stats
+                                                        li
+                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='teamfull') Full Report
+                                                        li
+                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='roundreport') Round Report
 
+                                        - var activePhase = 'all'
+                                        each phase in tournament.phases
+                                            if phase.active
+                                                - activePhase = phase.name.replace(/\s/g, "_").toLowerCase()
                                         div(class="col-md-7")
                                             ul(class="nav nav-pills no-border-radius")
                                                 li
-                                                    a(href="/t/" + tournament.shortID + "/stats/team/dl" class="btn btn-sm btn-stats download" data-link="#{linkName}_standings.html") Download Team Stats
+                                                    a(href="/t/" + tournament.shortID + "/stats/team/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download" data-tid='#{tournament.shortID}' data-stats-type='team' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_standings.html') Download Team Stats
                                                 li
-                                                    a(href="/t/" + tournament.shortID + "/stats/player/dl" class="btn btn-sm btn-stats download" data-link="#{linkName}_individuals.html") Download Player Stats
+                                                    a(href="/t/" + tournament.shortID + "/stats/player/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download" data-tid='#{tournament.shortID}' data-stats-type='player' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_individuals.html') Download Player Stats
                                                 li
-                                                    a(href="/t/" + tournament.shortID + "/stats/teamfull/dl" class="btn btn-sm btn-stats download" data-link="#{linkName}_teamdetail.html") Download Team Full Report
+                                                    a(href="/t/" + tournament.shortID + "/stats/teamfull/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download" data-tid='#{tournament.shortID}' data-stats-type='teamfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_teamdetail.html') Download Team Full Report
                                                 li
-                                                    a(href="/t/" + tournament.shortID + "/stats/playerfull/dl" class="btn btn-sm btn-stats download" data-link="#{linkName}_playerdetail.html") Download Players Full Report
+                                                    a(href="/t/" + tournament.shortID + "/stats/playerfull/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download" data-tid='#{tournament.shortID}' data-stats-type='playerfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_playerdetail.html') Download Players Full Report
                                                 li
-                                                    a(href="/t/" + tournament.shortID + "/stats/roundreport/dl" class="btn btn-sm btn-stats download" data-link="#{linkName}_rounds.html") Download Round Report
+                                                    a(href="/t/" + tournament.shortID + "/stats/roundreport/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download" data-tid='#{tournament.shortID}' data-stats-type='roundreport' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_rounds.html') Download Round Report
 
                                         div(class="col-md-6")
 
@@ -639,9 +575,9 @@ block content
                             div(class="panel panel-default")
                                 div(class="panel-heading collapsable") Custom Team Statistics
 
-                                div(class="panel-body")
+                                div(class="panel-body tournament-panel")
                                         div(class="col-md-12")
-                                            form(target="_blank" method="post" action="/t/" + tournament.shortID + "/stats/filter/teams" id="filterstatsform")
+                                            form(target="_blank" method="get" action="/t/" + tournament.shortID + "/stats/filter/teams" id="filterstatsform")
                                                 div(class="form-group")
                                                     label Teams
                                                     br
@@ -665,7 +601,7 @@ block content
 
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") New Tournament Phase
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         div(class="row")
                                             div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
                                                 p(class="alert alert-success")
@@ -679,48 +615,52 @@ block content
 
                                             div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
                                                 p(class="alert alert-success")
-                                                    | Set the Active Phase Here. New games added will be added as part of this phase by default.
+                                                    | Set the Active Phase Here. New games will be added as part of this phase by default.
 
                                             div(class='col-md-3 col-sm-3 col-lg-3')
-                                                select(class='form-control' name='phase' id='phase-select')
+                                                select(class='form-control phase-selection' name='phase' id='phase-select')
                                                     each phase in tournament.phases
                                                         if phase.active
-                                                            option(selected value='#{phase.phase_id}') #{phase.name}
+                                                            option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
                                                         else
-                                                            option(value='#{phase.phase_id}') #{phase.name}
+                                                            option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
 
-                                                button(class='btn btn-info btn-md') Switch Phases
+                                                button(class='btn btn-info btn-md' id='switch-phases') Switch Phases
 
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Current Phases
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         div(class="row")
-                                            div(class="col-md-3 col-sm-3 col-lg-3")
+                                            div(class="col-md-5 col-sm-5 col-lg-5")
                                                 div(class="table-responsive")
                                                     div(class="panel panel-default")
-                                                        table(class="table table-striped table-bordered table-hover table-condensed")
-                                                            thead
-                                                                tr
-                                                                    th(class="table-head") Phase
-                                                                    th(class="table-head") Edit
+                                                        table(class="table table-condensed")
                                                             tbody(id='phases-body')
                                                                 each phase in tournament.phases
-                                                                    tr
-                                                                        td
-                                                                            input(class='form-control phase-box' type='text' data-phase-id='#{phase.phase_id}' value='#{phase.name}')
-                                                                        td
-                                                                            button(class="btn btn-danger btn-sm remove-phase" data-phase-id='#{phase.phase_id}') Remove
+                                                                    if phase.active
+                                                                        tr(class='active-phase')
+                                                                            td
+                                                                                input(class='form-control phase-box input-sm' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
+                                                                            td
+                                                                                button(class="btn btn-danger btn-sm remove-phase" data-phase-id='#{phase.phase_id}') Remove
+                                                                    else
+                                                                        tr
+                                                                            td
+                                                                                input(class='form-control phase-box input-sm' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
+                                                                            td
+                                                                                button(class="btn btn-danger btn-sm remove-phase" data-phase-id='#{phase.phase_id}') Remove
+
+
                                                 div(class="row")
                                                     div(class="col-md-3 col-sm-3 col-lg-3")
-                                                        button(class="btn btn-success btn-md") Save Phases
-
+                                                        button(class="btn btn-success btn-md" id='save-phases' data-tid='#{tournament.shortID}') Save Phases
 
                         if (tournamentd._id == tournament.directorid)
                             div(class="tab-pane fade" id="delete")
 
                                 div(class="panel panel-default")
                                     div(class="panel-heading collapsable") Delete #{tournament.tournament_name}
-                                    div(class="panel-body")
+                                    div(class="panel-body tournament-panel")
                                         div(class="row")
                                             div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
                                                 div(class="alert alert-danger")
@@ -737,40 +677,8 @@ block content
                                             div(class="col-md-6")
                                                 button(type="button" class="btn btn-md btn-success btn-block" id="no-delete") Never Mind
 
-            // div(class="col-md-3 chat-div")
-            //     div(class+"col-md-12" style='margin-top:70%;')
-            //         div(class="panel panel-primary")
-            //             div(class="panel-heading" style='background-color:#008888')
-            //                 span(class="fa fa-comment")
-            //                 span(style='margin-left:10px')
-            //                     | Hello
-            //                 div(class="btn-group pull-right")
-            //             div(class="panel-body chat-panel")
-            //                 ul(class="chat")
-            //                     li(class="left clearfix")
-            //                         span(class="chat-img pull-left")
-            //                             img(src="http://placehold.it/50/55C1E7/fff&text=M" alt='User Avatar' class='img-circle')
-            //                         div(class="chat-body clearfix")
-            //                             div(class="header")
-            //                                 strong(class='primary-font') Mostafa Bhuiyan
-            //                             p
-            //                              | Yo, wassup
-            //                     li(class="right clearfix")
-            //                         span(class="chat-img pull-right")
-            //                             img(src="http://placehold.it/50/55C1E7/fff&text=U" alt='User Avatar' class='img-circle')
-            //                         div(class="chat-body clearfix")
-            //                             div(class="header")
-            //                                 strong(class='primary-font') Mostafa Bhuiyan
-            //                             p
-            //                               | Yo, wassup
-            //
-            //             div(class="panel-footer")
-            //                 div(class="col-md-10")
-            //                     input(id="btn-input" type='text' class='form-control input-sm' placeholder='Enter your message here.')
-            //                     span(class="input-group-btn")
-            //
-            //                 button(class="btn btn-warning btn-sm" id="btn-chat") Send
 block scripts
     script(src="/js/tournament-configuration.js")
+    script(src='/js/game-configuration.js')
     script(src="/js/jszip/dist/jszip.min.js")
     script(src='/js/jszip/dist/FileSaver.min.js')

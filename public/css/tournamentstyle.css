@@ -21,11 +21,13 @@
 }
 
 .box {
-    /*background-color : rgba(190, 190, 190, .7);*/
-    background-color: transparent;
+    /*background-color : #e9f5e4;*/
+    /*background-color: transparent;*/
 }
+
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
     background-color:rgb(0, 136, 136);
+    border-radius: 5px;
 }
 
 .no-border-radius {
@@ -41,7 +43,6 @@
 .user-screen {
     padding: 40px;
     background: rgb(0, 113, 113);
-    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
 }
 
 .jumbotron {
@@ -61,8 +62,6 @@ div p {
 
 
 tr {
-    font-size: 16px;
-    /*font-weight: bold;*/
     background-color: white;
     white-space: nowrap;
 }
@@ -71,9 +70,17 @@ td {
     white-space: nowrap;
 }
 
+.stat-td {
+    text-align: center;
+}
+
 .info-label {
     padding: 10px;
     font-size: 24px;
+}
+
+.phase-box {
+    border-radius: 1px;
 }
 
 .label-primary {
@@ -138,6 +145,30 @@ td {
 .division-name {
     border-width: 1px;
     border-radius: 1px;
+    border-right-width: 20px;
+    margin-bottom: 5px;
+}
+
+.active-phase {
+    background-color: #DFF0D8;
+}
+
+.saved {
+    border-right-color: #008888;
+    border-width: 1px;
+    border-radius: 1px;
+    border-right-width: 20px;
+}
+
+.not-saved {
+    border-right-color: red;
+    border-width: 1px;
+    border-radius: 1px;
+    border-right-width: 20px;
+}
+
+.division-name:hover {
+    cursor: pointer;
 }
 
 .collab-box {
@@ -147,9 +178,9 @@ td {
     -ms-transition: background-color .5s;
     transition: background-color .5s;
     background: rgba(100, 100, 100, .1);
-    border-left-width: 20px;
+    border-left-width: 10px;
     border-left-style: solid;
-    border-radius: 5px;
+    border-radius: 2px;
     margin: 10px;
 }
 
@@ -204,6 +235,72 @@ td {
     margin-bottom: 50px;
 }
 
+.clickable-link {
+    -webkit-transition: background-color .1s;
+    -moz-transition: background-color .1s;
+    -o-transition: background-color .1s;
+    -ms-transition: background-color .1s;
+    transition: background-color .1s;
+}
+
+.clickable-link:hover {
+    background-color: #DFF0D8;
+    border-left: 21px solid #008888;
+    cursor: pointer;
+}
+
+.tournament-anchor {
+    font-size: 1.2em;
+}
+
+.tournament-anchor:hover {
+    background-color: #DFF0D8;
+    cursor: pointer;
+}
+
+.loading {
+    margin-left:10px;
+    margin-right:10px;
+    color: #EC971F;
+}
+
+.loading-complete {
+    margin-left:10px;
+    margin-right:10px;
+    color: green;
+}
+
+th.sortable:hover {
+    cursor: pointer;
+}
+
+.team-name-list {
+    font-size: 1.1em;
+    text-align: center;
+    border-left-width: 20px;
+    border-left-style: solid;
+    border-left-color: #EC971F;
+}
+
+.game-list-element {
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.bordered-game-list-element {
+    border-left-width: 20px;
+    border-left-style: solid;
+    border-left-color: #EC971F;
+}
+
+.division-list {
+    font-size: 1.2em;
+}
+
+.tournament-panel {
+    background-color: #F7F7F7;
+}
+
 .tab-pane {
     margin-top: : 50px;
     margin-bottom: 50px;
@@ -213,40 +310,8 @@ td {
      background-image: url("/img/backgrounds/brushed.png");
 }
 
-.panel-default > .panel-heading {
-  background-image: url("/img/backgrounds/brushed_alu_dark.png");
-  color : white;
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-.panel-default:hover > .panel-heading {
-  /*font-weight: bold;*/
-  background-color: rgb(0, 134, 134);
-  /*font-size: 24px;*/
-}
-
-.panel-default > .panel-body {
-    font-size: 24px;
-    background-color: rgb(249, 249, 249);
-    /*box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);*/
-}
-
-
 .collapsable:hover {
     cursor: pointer;
-}
-
-.leftscorebox {
-    width: 25%;
-    /*transform: translateX(300%);*/
-    border-radius: 0px;
-    float: right;
-}
-
-.rightscorebox {
-    width: 25%;
-    border-radius: 0px;
 }
 
 #gamedataform input {
@@ -264,6 +329,11 @@ td {
     padding: 5px;
 }
 
+.game-help {
+    border-bottom: 1px solid black;
+    color: black;
+}
+
 .table-head {
     background: rgb(0, 136, 136);
     -webkit-transition: background-color .5s;
@@ -272,6 +342,7 @@ td {
     -ms-transition: background-color .5s;
     transition: background-color .5s;
     color : white;
+    text-align: center;
 }
 
 .table-head:hover {

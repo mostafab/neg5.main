@@ -17,17 +17,17 @@ block content
                             div(class="row" style="")
                                 ul(class="nav nav-pills no-border-radius")
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/team") Team Standings
+                                        a(href="/t/" + tournament.shortID + "/stats/team?phase=#{tournament.phaseInfo.phase_id}") Team Standings
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/player") Player Standings
+                                        a(href="/t/" + tournament.shortID + "/stats/player?phase=#{tournament.phaseInfo.phase_id}") Player Standings
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/teamfull") Teams Full
+                                        a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}") Teams Full
                                     li
-                                        a(href="/t/" + tournament.shortID + "/stats/playerfull") Players Full
+                                        a(href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}") Players Full
                                     li(class="active")
-                                        a(href="/t/" + tournament.shortID + "/stats/roundreport") Round Report
+                                        a(href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{tournament.phaseInfo.phase_id}") Round Report
 
-                        h2(class="title" style="width:50%") #{tournament.tournament_name} - Round Report
+                        h2(class="title" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Round Report
 
                         br
                         br
@@ -47,7 +47,7 @@ block content
                                 tbody
                                     each round, i in rounds
                                         tr
-                                            td #{round}
-                                            td #{roundsInfo[round]["PPG/Team"]}
-                                            td #{roundsInfo[round]["TUPts/TUH"]}
-                                            td #{roundsInfo[round]["PPB"]}
+                                            td(class='stat-td') #{round}
+                                            td(class='stat-td') #{roundsInfo[round]["PPG/Team"]}
+                                            td(class='stat-td') #{roundsInfo[round]["TUPts/TUH"]}
+                                            td(class='stat-td') #{roundsInfo[round]["PPB"]}

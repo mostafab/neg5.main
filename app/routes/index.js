@@ -1,10 +1,8 @@
-'use strict';
-
 module.exports = function(app) {
 
     var index = require('../controllers/index-controller');
 
-    app.get('/', function(req, res) {
+    app.get('/', (req, res) => {
         if (req.session.director) {
             res.redirect("/home");
         } else {
@@ -12,7 +10,7 @@ module.exports = function(app) {
         }
     });
 
-    app.get("/about", function(req, res) {
+    app.get("/about", (req, res) => {
         res.render("about", {tournamentd : req.session.director});
     });
 };
