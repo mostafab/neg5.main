@@ -25,7 +25,7 @@ div(class="table-responsive" id="teamdiv")
                                     li(style='list-style-type:none') #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
                         if admin
                             td
-                                button(type="button" class="btn btn-xs btn-danger start-delete-team")
+                                button(type="button" class="btn btn-xs btn-danger start-delete-team" data-toggle='tooltip' data-placement='right' title='Delete #{tournament.teams[i].team_name}.')
                                     i(class="fa fa-trash")
 
                     if admin

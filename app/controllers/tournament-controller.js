@@ -25,7 +25,7 @@ function addTournament(director, name, date, location, description, questionset,
         phases : [{phase_id : shortid.generate(), name : "Default", active : true}]
     });
     tourney.shortID = shortid.generate();
-    tourney.save(function(err) {
+    tourney.save(err => {
         if (err) {
             console.log(err);
             callback(err);
@@ -41,9 +41,9 @@ function addTournament(director, name, date, location, description, questionset,
 * returns an empty list if result is empty
 */
 function findTournamentsByDirector(directorKey, callback) {
-    Tournament.find({$or : [{directorid : directorKey.toString()}, {"collaborators.id" : directorKey}]}, function(err, result) {
-        if (err || result == null) {
-            callback(err, null);
+    Tournament.find({$or : [{directorid : directorKey.toString()}, {"collaborators.id" : directorKey}]}, (err, result) => {
+        if (err) {
+            callback(err);
         } else {
             var tournamentInfo = [];
             for (var i = 0; i < result.length; i++) {
@@ -58,7 +58,7 @@ function findTournamentsByDirector(directorKey, callback) {
                 tournament.teamsAdded = result[i].teams.length;
                 tournamentInfo.push(tournament);
             }
-            tournamentInfo.sort(function(first, second) {
+            tournamentInfo.sort((first, second) => {
                 return second.date - first.date;
             });
             callback(null, tournamentInfo);
@@ -73,15 +73,15 @@ function findTournamentsByDirector(directorKey, callback) {
 * @param callback callback with the tournament found, or null
 */
 function findTournamentById(id, callback) {
-    var query = Tournament.findOne({shortID : id}, {"games.phases" : 0}).exec(function(err, result) {
+    var query = Tournament.findOne({shortID : id}, {"games.phases" : 0}).exec((err, result) => {
         if (err || result == null) {
             return callback(err, null);
         } else if (!result) {
             return callback(null, null);
         } else {
-            TournamentDirector.findOne({_id : result.directorid}, {name : 1, email : 1, _id : 0}, function(err, director) {
+            TournamentDirector.findOne({_id : result.directorid}, {name : 1, email : 1, _id : 0}, (err, director) => {
                 if (err) {
-                    return callback(err, null);
+                    return callback(err);
                 } else {
                     if (!result.phases) {
                         result.phaseName = "Full Tournament";
@@ -93,17 +93,17 @@ function findTournamentById(id, callback) {
                             }
                         }
                     }
-                    result.divisions.sort(function(first, second) {
+                    result.divisions.sort((first, second) => {
                         if (!first.name || !second.name) {
                             return first.localeCompare(second);
                         } else {
                             return first.name.localeCompare(second.name);
                         }
                     });
-                    result.games.sort(function(game1, game2) {
+                    result.games.sort((game1, game2) => {
                         return game1.round - game2.round;
                     });
-                    result.teams.sort(function(team1, team2) {
+                    result.teams.sort((team1, team2) => {
                         return team1.team_name.localeCompare(team2.team_name);
                     });
                     result.teamMap = statsController.makeTeamMap(result.teams);
@@ -115,7 +115,7 @@ function findTournamentById(id, callback) {
 }
 
 function getTeams(tid, callback) {
-    Tournament.findOne({shortID : tid}, {teams : 1, phases : 1, shortID : 1, directorid : 1, collaborators : 1}, function(err, result) {
+    Tournament.findOne({shortID : tid}, {teams : 1, phases : 1, shortID : 1, directorid : 1, collaborators : 1}, (err, result) => {
         if (err) {
             callback(err);
         } else if (!result) {
@@ -130,7 +130,7 @@ function getTeams(tid, callback) {
 }
 
 function getGames(tid, callback) {
-    Tournament.findOne({shortID : tid}, {teams : 1, games : 1, phases : 1, shortID : 1, directorid : 1, collaborators : 1}, function(err, result) {
+    Tournament.findOne({shortID : tid}, {teams : 1, games : 1, phases : 1, shortID : 1, directorid : 1, collaborators : 1}, (err, result) => {
         if (err) {
             console.log(err);
             callback(err);
@@ -148,19 +148,23 @@ function getGames(tid, callback) {
 function loadTournamentScoresheet(id, callback) {
     Tournament.findOne({shortID : id},
             {tournament_name : 1, shortID : 1, teams : 1, collaborators : 1,
-                    directorid : 1, "games.round" : 1, phases : 1}, function(err, tournament) {
+                    directorid : 1, "games.round" : 1, phases : 1}, (err, tournament) => {
         if (err) {
-            return callback(err, null);
+            return callback(err);
         } else {
             if (tournament.games.length === 0) {
                 tournament.maxRound = 1;
             } else {
-                tournament.games.sort(function(first, second) {
+                tournament.games.sort((first, second) => {
                     return second.round - first.round;
                 });
-                tournament.maxRound = tournament.games[0].round + 1;
+                if (tournament.games.length === 0) {
+                    tournmaent.maxRound = 1;
+                } else {
+                    tournament.maxRound = tournament.games[0].round + 1;
+                }
             }
-            return callback(err, tournament);
+            return callback(null, tournament);
         }
     });
 }
@@ -192,15 +196,15 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
     var tournament = {_id : tournamentid};
     var updateQuery = {$push: {teams : newTeam}};
     var updateQueryPlayers = {$push : {players : {$each : newPlayers}}};
-    Tournament.update(tournament, updateQuery, function(err) {
+    Tournament.update(tournament, updateQuery, err => {
         if (err) {
             callback(err);
         } else {
-            Tournament.update(tournament, updateQueryPlayers, function(err) {
+            Tournament.update(tournament, updateQueryPlayers, err => {
                 if (err) {
                     callback(err);
                 } else {
-                    Tournament.findOne({_id : tournamentid}, {teams : 1, collaborators : 1, directorid : 1, phases : 1, shortID : 1}, function(err, result) {
+                    Tournament.findOne({_id : tournamentid}, {teams : 1, collaborators : 1, directorid : 1, phases : 1, shortID : 1}, (err, result) => {
                         if (err) {
                             callback(err);
                         } else {
@@ -225,14 +229,14 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
 * @param callback function called after players are found.
 */
 function findTeamMembers(tournamentid, teamid, callback) {
-    var query = Tournament.findOne({_id : tournamentid}, function(err, result) {
-        if (err || !result) {
-            callback(err, [], null, null);
-        } else {
-            var playersArr = result.players.filter(function(player) {
+    var query = Tournament.findOne({_id : tournamentid}, (err, result) => {
+        if (err) {
+            callback(err);
+        } else if (result) {
+            var playersArr = result.players.filter((player) => {
                 return player.teamID == teamid;
             });
-            playersArr.sort(function(first, second) {
+            playersArr.sort((first, second) => {
                 var secondGP = second.getTotalGamesPlayed(result);
                 var firstGP = first.getTotalGamesPlayed(result);
                 if (secondGP === firstGP) {
@@ -241,6 +245,8 @@ function findTeamMembers(tournamentid, teamid, callback) {
                 return secondGP - firstGP;
             });
             callback(null, playersArr, result.pointScheme, result.pointsTypes);
+        } else {
+            callback(null, [], {}, {});
         }
     });
 }
@@ -303,15 +309,15 @@ function addGameToTournament(tournamentid, gameinfo, phases, callback) {
     }
     var tournament = {_id : tournamentid};
     var updateQuery = {$push: {games : newGame}};
-    Tournament.update(tournament, updateQuery, function(err) {
+    Tournament.update(tournament, updateQuery, err => {
         if (err) {
             callback(err);
         } else {
-            Tournament.findOne(tournament, {games : 1, phases : 1, shortID : 1, teams : 1, directorid : 1, collaborators : 1}, function(err, result) {
+            Tournament.findOne(tournament, {games : 1, phases : 1, shortID : 1, teams : 1, directorid : 1, collaborators : 1}, (err, result) => {
                 if (err) {
                     callback(err);
                 } else {
-                    result.games.sort(function(first, second) {
+                    result.games.sort((first, second) => {
                         return first.round - second.round;
                     });
                     result.teamMap = statsController.makeTeamMap(result.teams);
@@ -329,19 +335,19 @@ function addGameToTournament(tournamentid, gameinfo, phases, callback) {
 * @param gameid id of the game to retrieve
 */
 function getGameFromTournament(tournamentid, gameid, callback) {
-    // if get game, then remove game from teams and players, then remove the actual game
     var tournamentQuery = {_id : tournamentid, "games.shortID" : gameid};
-    Tournament.findOne(tournamentQuery, function(err, result) {
-        if (err || result == null) {
+    Tournament.findOne(tournamentQuery, (err, result) => {
+        if (err) {
             callback(err);
-        } else {
+        } else if (result) {
             for (var i = 0; i < result.games.length; i++) {
                 if (result.games[i].shortID == gameid) {
                     removeGameFromTournament(tournamentid, result.games[i]);
-                    i = result.games.length + 1;
-                    callback(null);
+                    return callback(null);
                 }
             }
+        } else {
+            callback(null);
         }
     });
 }
@@ -356,9 +362,9 @@ function getGameFromTournament(tournamentid, gameid, callback) {
 function removeGameFromTournament(tournamentid, gameShortID, callback) {
     var tournamentQuery = {_id : tournamentid, "games.shortID" : gameShortID};
     var pullQuery = {$pull : {games : {shortID : gameShortID}}};
-    Tournament.findOne({_id : tournamentid}, function(err, tournament) {
+    Tournament.findOne({_id : tournamentid}, (err, tournament) => {
         if (err) {
-            callback(err, null);
+            callback(err);
         } else {
             for (var i = 0; i < tournament.games.length; i++) {
                 var phases = [];
@@ -367,7 +373,7 @@ function removeGameFromTournament(tournamentid, gameShortID, callback) {
                     break;
                 }
             }
-            Tournament.update(tournamentQuery, pullQuery, function(err) {
+            Tournament.update(tournamentQuery, pullQuery, err => {
                 callback(err, phases);
             });
         }
@@ -386,34 +392,38 @@ function removeGameFromTournament(tournamentid, gameShortID, callback) {
 */
 function removeTeamFromTournament(tournamentid, teaminfo, callback) {
     var tournamentQuery = {_id : tournamentid, "teams.shortID" : teaminfo.teamid_form};
-    Tournament.findOne(tournamentQuery, function(err, result) {
+    var fields = {teams : 1, games : 1};
+    Tournament.findOne(tournamentQuery, fields, (err, result) => {
         if (err || result == null) {
             callback(err, null);
         } else {
             var teamid = -1;
+            var teamMap = statsController.makeTeamMap(result.teams);
             for (var i = 0; i < result.teams.length; i++) {
                 if (result.teams[i].shortID === teaminfo.teamid_form) {
                     teamid = result.teams[i]._id.toString();
-                    i = result.teams.length + 1;
+                    var gamesWithTeam = result.games.filter(game => {
+                        return game.team1.team_id == teamid || game.team2.team_id == teamid;
+                    });
+                    if (gamesWithTeam.length > 0) {
+                        return callback(null, {teamID : teamid, removed : false});
+                    }
+                    break;
                 }
             }
-            if (teamid === -1) {
-                callback(err);
-            } else {
-                Tournament.update({_id : tournamentid}, {$pull : {players : {teamID : teamid}}}, function(err) {
-                    if (err) {
-                        callback(err, null);
-                    } else {
-                        Tournament.update({_id : tournamentid}, {$pull : {teams : {_id : teamid}}}, function(err) {
-                            if (err) {
-                                callback(err, null);
-                            } else {
-                                callback(null, teamid);
-                            }
-                        });
-                    }
-                });
-            }
+            Tournament.update({_id : tournamentid}, {$pull : {players : {teamID : teamid}}}, err => {
+                if (err) {
+                    callback(err);
+                } else {
+                    Tournament.update({_id : tournamentid}, {$pull : {teams : {_id : teamid}}}, err => {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            callback(null, {teamID : teamid, removed : true});
+                        }
+                    });
+                }
+            });
         }
     });
 }
@@ -427,7 +437,7 @@ function removeTeamFromTournament(tournamentid, teaminfo, callback) {
 * new name
 */
 function updateTeam(tournamentid, teamid, newinfo, callback) {
-    Tournament.findOne({_id : tournamentid}, function(err, result) {
+    Tournament.findOne({_id : tournamentid}, (err, result) => {
         if (err) {
             console.log(err);
             return callback(err);
@@ -440,7 +450,7 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
             }
             Tournament.update({_id : tournamentid, "teams._id" : newinfo.teamID},
                         {"$set" : {"teams.$.team_name" : newinfo.teamName, "teams.$.divisions" : newinfo.divisions || {}}},
-                    function(err) {
+                    err => {
                         if (err) {
                             console.log(err);
                             return callback(err);
@@ -462,12 +472,8 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
 */
 function updatePlayer(tournamentID, playerID, newPlayerName, callback) {
     Tournament.update({_id : tournamentID, "players._id" : playerID},
-            {"$set" : {"players.$.player_name" : newPlayerName}}, function(err) {
-                if (err) {
-                    callback(err);
-                } else {
-                    callback(null);
-                }
+            {"$set" : {"players.$.player_name" : newPlayerName}}, err => {
+                callback(err);
             });
 }
 
@@ -481,7 +487,7 @@ function updatePlayer(tournamentID, playerID, newPlayerName, callback) {
 function removePlayer(tournamentID, playerID, callback) {
     var tournamentQuery = {_id : tournamentID, "players._id" : playerID};
     var pullQuery = {$pull : {players : {_id : playerID}}};
-    Tournament.update(tournamentQuery, pullQuery, function(err) {
+    Tournament.update(tournamentQuery, pullQuery, err => {
         callback(err);
     });
 }
@@ -502,14 +508,13 @@ function addPlayer(tournamentID, teamName, teamID, playerName, callback) {
         teamID : teamID
     });
     newPlayer.shortID = shortid.generate();
-    Tournament.findOne(tournamentQuery, function(err, result) {
+    Tournament.findOne(tournamentQuery, (err, result) => {
         if (!result) {
             callback(err, null);
         } else {
             newPlayer.pointValues = result.pointScheme;
-            // console.log(newPlayer);
             var pushQuery = {$push : {players : newPlayer}};
-            Tournament.update(tournamentQuery, pushQuery, function(err) {
+            Tournament.update(tournamentQuery, pushQuery, err => {
                 if (err) {
                     callback(err);
                 } else {
@@ -530,7 +535,7 @@ function addPlayer(tournamentID, teamName, teamID, playerName, callback) {
 */
 function changeGameShortID(tournamentid, currentID, newID, callback) {
     Tournament.update({_id : tournamentid, "games.shortID" : currentID},
-            {"$set" : {"games.$.shortID" : newID}}, function(err) {
+            {"$set" : {"games.$.shortID" : newID}}, err => {
                 callback(err);
             });
 }
@@ -543,10 +548,11 @@ function changeGameShortID(tournamentid, currentID, newID, callback) {
 * @param callback callback function with error (or null)
 */
 function changePointScheme(tournamentid, newPointScheme, newPointTypes, callback) {
-    // console.log(newPointScheme);
     Tournament.update({_id : tournamentid},
-            {"$set" : {pointScheme : newPointScheme, pointsTypes : newPointTypes}}, function(err) {
-                console.log(err);
+            {"$set" : {pointScheme : newPointScheme, pointsTypes : newPointTypes}}, err => {
+                if (err) {
+                    console.log(err);
+                }
                 callback(err);
             });
 }
@@ -559,15 +565,15 @@ function changePointScheme(tournamentid, newPointScheme, newPointTypes, callback
 */
 function updateDivisions(tournamentid, divisions, callback) {
     Tournament.update({_id : tournamentid},
-            {"$set" : {divisions : divisions}}, function(err) {
+            {"$set" : {divisions : divisions}}, err => {
                 if (err) {
                     callback(err);
                 } else {
-                    Tournament.findOne({_id : tournamentid}, {divisions : 1}, function(err, tournament) {
+                    Tournament.findOne({_id : tournamentid}, {divisions : 1}, (err, tournament) => {
                         if (err) {
-                            callback(err, []);
+                            callback(err);
                         } else {
-                            tournament.divisions.sort(function(first, second) {
+                            tournament.divisions.sort((first, second) => {
                                 if (first.phase_id === second.phase_id) {
                                     return first.name.localeCompare(second.name);
                                 } else {
@@ -588,20 +594,20 @@ function updateDivisions(tournamentid, divisions, callback) {
 * @param callback callback with an error (or null)
 */
 function updateTournamentInformation(tournamentid, information, directorid, callback) {
-    Tournament.findOne({_id : tournamentid}, {directorid : 1, collaborators : 1}, function(err, result) {
+    Tournament.findOne({_id : tournamentid}, {directorid : 1, collaborators : 1}, (err, result) => {
         if (err) {
-            callback(err, null);
+            callback(err);
         } else if (!result) {
             callback(null, null);
         } else {
-            var filtered = result.collaborators.filter(function(collab) {
+            var filtered = result.collaborators.filter(collab => {
                 return collab._id == directorid;
             });
             if (result.directorid == directorid || filtered.length > 0) {
                 Tournament.update({_id : tournamentid},
                         {"$set" : {tournament_name : information.tournament_name, location : information.tournament_location,
                                 date : information.tournament_date, description : information.tournament_description,
-                                    questionSet : information.tournament_qset}}, function(err) {
+                                    questionSet : information.tournament_qset}}, err => {
                                     callback(err, null);
                                 });
             } else {
@@ -620,12 +626,12 @@ function findDirectors(query, callback) {
     query = query.trim();
     try {
         var rex = new RegExp(".*" + query + ".*", "i");
-        TournamentDirector.find({$or : [{email : rex}, {name : rex}]}, function(err, directors) {
+        TournamentDirector.find({$or : [{email : rex}, {name : rex}]}, (err, directors) => {
             if (err) {
                 console.log(err);
-                callback(err, []);
+                callback(err);
             } else {
-                directors.sort(function(first, second) {
+                directors.sort((first, second) => {
                     return first.name.localeCompare(second.name);
                 });
                 callback(null, directors);
@@ -645,22 +651,20 @@ function findDirectors(query, callback) {
 * already existed before-hand
 */
 function addCollaborator(tournamentid, collaborator, callback) {
-    Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
-        if (err || tournament == null) {
+    Tournament.findOne({shortID : tournamentid}, (err, tournament) => {
+        if (err) {
             callback(err);
-        } else {
+        } else if (tournament) {
             for (var j = 0; j < tournament.collaborators.length; j++) {
                 if (tournament.collaborators[j].id == collaborator.id || collaborator.id == tournament.directorid) {
                     return callback(null, true);
                 }
             }
-            Tournament.update({shortID : tournamentid}, {$push : {collaborators : collaborator}}, function(err) {
-                if (err) {
-                    return callback(err, false);
-                } else {
-                    return callback(null, false);
-                }
+            Tournament.update({shortID : tournamentid}, {$push : {collaborators : collaborator}}, err => {
+                return callback(err, false);
             });
+        } else {
+            callback(null, false);
         }
     });
 }
@@ -672,7 +676,7 @@ function addCollaborator(tournamentid, collaborator, callback) {
 * @param callback callback with an error (or null)
 */
 function removeCollaborator(tournamentid, collaboratorid, callback) {
-    Tournament.update({shortID : tournamentid}, {$pull : {collaborators : {id : collaboratorid}}}, function(err) {
+    Tournament.update({shortID : tournamentid}, {$pull : {collaborators : {id : collaboratorid}}}, err => {
         callback(err);
     });
 }
@@ -683,10 +687,10 @@ function removeCollaborator(tournamentid, collaboratorid, callback) {
 * @param callback callback function with an array of collaborators
 */
 function findCollaborators(tournamentid, callback) {
-    Tournament.findOne({shortID : tournamentid}, function(err, result) {
+    Tournament.findOne({shortID : tournamentid}, {collaborators : 1}, (err, result) => {
         if (err) {
             console.log(err);
-            callback(err, []);
+            callback(err);
         } else {
             callback(null, result.collaborators);
         }
@@ -720,10 +724,10 @@ function addScoresheetAsGame(tournamentid, game, scoresheet, callback) {
             newGame.phases[i].bonus.bonusParts = [];
         }
     }
-    Tournament.update({_id : tournamentid}, {$push : {games : newGame}}, function(err) {
+    Tournament.update({_id : tournamentid}, {$push : {games : newGame}}, err => {
         if (err) {
             console.log(err);
-            callback(err, "");
+            callback(err);
         } else {
             callback(null, newGame.shortID);
         }
@@ -737,7 +741,7 @@ function addScoresheetAsGame(tournamentid, game, scoresheet, callback) {
 * @param callback callback function with new tournament id and an error (or null)
 */
 function cloneTournament(tournamentid, phaseName, callback) {
-    Tournament.findOne({_id : tournamentid}, function(err, tournament) {
+    Tournament.findOne({_id : tournamentid}, (err, tournament) => {
         if (err) {
             callback(err, null);
         } else if (!tournament) {
@@ -757,11 +761,12 @@ function cloneTournament(tournamentid, phaseName, callback) {
             newTournament.pointScheme = tournament.pointScheme;
             newTournament.pointsTypes = tournament.pointsTypes;
 
-            newTournament.save(function(err) {
+            newTournament.save(err => {
                 if (err) {
                     console.log(err);
+                    return callback(err);
                 }
-                callback(err, newTournament.shortID);
+                callback(null, newTournament.shortID);
             });
         }
     });
@@ -769,13 +774,13 @@ function cloneTournament(tournamentid, phaseName, callback) {
 
 function newPhase(tournamentid, phaseName, callback) {
     var phase = {phase_id : shortid.generate(), name : phaseName};
-    Tournament.update({_id : tournamentid}, {$push : {phases : phase}}, function(err) {
+    Tournament.update({_id : tournamentid}, {$push : {phases : phase}}, err => {
         callback(err, phase);
     });
 }
 
 function removePhase(tournamentid, phaseID, directorid, callback) {
-    Tournament.findOne({shortID : tournamentid}, {directorid : 1, phases : 1, games : 1}, function(err, tournament) {
+    Tournament.findOne({shortID : tournamentid}, {directorid : 1, phases : 1, games : 1}, (err, tournament) => {
         if (err) {
             return callback(err);
         } else if (!tournament) {
@@ -791,7 +796,7 @@ function removePhase(tournamentid, phaseID, directorid, callback) {
                     return callback(null, null, false);
                 }
             }
-            Tournament.update({_id : tournament._id}, {$pull : {phases : {phase_id : phaseID}}}, function(err) {
+            Tournament.update({_id : tournament._id}, {$pull : {phases : {phase_id : phaseID}}}, err => {
                 return callback(err, null, true);
             });
         }
@@ -799,7 +804,7 @@ function removePhase(tournamentid, phaseID, directorid, callback) {
 }
 
 function switchPhases(tournamentid, phaseID, directorid, callback) {
-    Tournament.findOne({shortID : tournamentid}, {directorid : 1, phases : 1}, function(err, tournament) {
+    Tournament.findOne({shortID : tournamentid}, {directorid : 1, phases : 1}, (err, tournament) => {
         if (err) {
             return callback(err);
         } else if (!tournament) {
@@ -815,7 +820,7 @@ function switchPhases(tournamentid, phaseID, directorid, callback) {
                 }
                 newPhases.push(phase);
             }
-            Tournament.update({_id : tournament._id}, {$set : {phases : newPhases}}, function(err) {
+            Tournament.update({_id : tournament._id}, {$set : {phases : newPhases}}, err => {
                 callback(err, null, true);
             });
         }
@@ -823,7 +828,7 @@ function switchPhases(tournamentid, phaseID, directorid, callback) {
 }
 
 function editPhases(tournamentid, directorid, newPhases, callback) {
-    Tournament.findOne({shortID : tournamentid}, {directorid : 1}, function(err, tournament) {
+    Tournament.findOne({shortID : tournamentid}, {directorid : 1}, (err, tournament) => {
         if (err) {
             return callback(err);
         } else if (!tournament) {
@@ -831,11 +836,11 @@ function editPhases(tournamentid, directorid, newPhases, callback) {
         } else if (tournament.directorid != directorid) {
             return callback(null, "unauthorized", null);
         } else {
-            Tournament.update({shortID : tournamentid}, {$set : {phases : newPhases}}, function(err) {
+            Tournament.update({shortID : tournamentid}, {$set : {phases : newPhases}}, err => {
                 if (err) {
                     return callback(err);
                 } else {
-                    Tournament.findOne({shortID : tournamentid}, {games : 1, teams : 1, shortID : 1, directorid : 1, phases : 1}, function(err, result) {
+                    Tournament.findOne({shortID : tournamentid}, {games : 1, teams : 1, shortID : 1, directorid : 1, phases : 1}, (err, result) => {
                         if (err) {
                             return callback(err);
                         } else {
@@ -863,10 +868,10 @@ function mergeTournaments(firstTournamentID, secondTournamentID, name, callback)
     mergedTourney.teams = [];
     mergedTourney.players = [];
     mergedTourney.games = [];
-    Tournament.findOne({_id : firstTournamentID}, function(err, first) {
+    Tournament.findOne({_id : firstTournamentID}, (err, first) => {
         if (err) {
             console.log(err);
-            callback(err, null);
+            callback(err);
         } else if (!first) {
             callback(null, null);
         } else {
@@ -884,10 +889,10 @@ function mergeTournaments(firstTournamentID, secondTournamentID, name, callback)
             mergedTourney.pointsTypes = first.pointsTypes;
             mergedTourney.pointScheme = first.pointScheme;
 
-            Tournament.findOne({_id : secondTournamentID}, function(err, second) {
+            Tournament.findOne({_id : secondTournamentID}, (err, second) => {
                 if (err) {
                     console.log(err);
-                    callback(err, null);
+                    callback(err);
                 } else if (!second) {
                     callback(null, null);
                 } else {
@@ -910,9 +915,10 @@ function mergeTournaments(firstTournamentID, secondTournamentID, name, callback)
                             mergedTourney.players.push(second.players[i]);
                         }
                     }
-                    mergedTourney.save(function(err) {
+                    mergedTourney.save(err => {
                         if (err) {
                             console.log(err);
+                            return callback(err);
                         }
                         callback(err, mergedTourney);
                     });
@@ -931,13 +937,13 @@ function mergeTournaments(firstTournamentID, secondTournamentID, name, callback)
 * @param callback callback with an error (or null) and indication of success
 */
 function deleteTournament(directorid, tournamentid, callback) {
-    Tournament.findOne({_id : tournamentid}, function(err, tournament) {
+    Tournament.findOne({_id : tournamentid}, (err, tournament) => {
         if (err) {
             callback(err, null);
         } else if (tournament.directorid == directorid) {
-            Tournament.remove({_id : tournamentid}, function(err) {
+            Tournament.remove({_id : tournamentid}, err => {
                 if (err) {
-                    callback(err, null);
+                    callback(err);
                 } else {
                     callback(null, null);
                 }

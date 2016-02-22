@@ -116,7 +116,7 @@ a {
 }
 
 .btn {
-    background-color: transparent;
+    /*background-color: transparent;*/
     border-width: 3px;
     border-right-width:0px;
     border-left-width: 0px;
@@ -124,8 +124,8 @@ a {
     padding: 15px 22px;
     line-height: 1.33;
     margin: 10px;
-    font-size: 20px;
-    color:black;
+    font-size: 1.6em;
+    /*color:black;*/
     -webkit-transition: background-color .5s;
     -moz-transition: background-color .5s;
     -o-transition: background-color .5s;

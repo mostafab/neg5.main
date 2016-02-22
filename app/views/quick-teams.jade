@@ -60,7 +60,10 @@ block content
                                                                 td(class='stat-td')  #{teamInfo[i].stats.pointTotals[val]}
                                                         else if statHeaders[j] == "Team"
                                                             td(class='stat-td')
-                                                                a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}#" + teamInfo[i].id) #{teamInfo[i].stats["Team"]}
+                                                                if tournament.phaseInfo
+                                                                    a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}#" + teamInfo[i].id) #{teamInfo[i].stats["Team"]}
+                                                                else
+                                                                    p #{teamInfo[i].stats["Team"]}
                                                         else if name != "Rank"
                                                             td(class='stat-td') #{teamInfo[i].stats[name]}
 
@@ -85,7 +88,7 @@ block content
                                                             th(class="table-head") #{statHeaders[i]}
                                             tbody
                                                 each team, i in teamInfo
-                                                    if team.stats["Division"] == tournament.divisions[index].name
+                                                    if team.stats["Division"] == tournament.divisions[index]
                                                         tr
                                                             td(class='stat-td') #{teamInfo[i].stats["Rank"]}
                                                             each name, j in statHeaders
@@ -94,7 +97,10 @@ block content
                                                                         td(class='stat-td') #{teamInfo[i].stats.pointTotals[val]}
                                                                 else if statHeaders[j] == "Team"
                                                                     td(class='stat-td')
-                                                                        a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}#" + teamInfo[i].id) #{teamInfo[i].stats["Team"]}
+                                                                        if tournament.phaseInfo
+                                                                            a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}#" + teamInfo[i].id) #{teamInfo[i].stats["Team"]}
+                                                                        else
+                                                                            p #{teamInfo[i].stats["Team"]}
                                                                 else if name != "Rank"
                                                                     td(class='stat-td') #{teamInfo[i].stats[name]}
 
@@ -127,6 +133,9 @@ block content
                                                                 td #{noDivisionTeams[i].stats.pointTotals[val]}
                                                         else if statHeaders[j] == "Team"
                                                             td(class='stat-td')
-                                                                a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}#" + noDivisionTeams[i].id) #{noDivisionTeams[i].stats["Team"]}
+                                                                if tournament.phaseInfo
+                                                                    a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}#" + noDivisionTeams[i].id) #{noDivisionTeams[i].stats["Team"]}
+                                                                else
+                                                                    p #{noDivisionTeams[i].stats["Team"]}
                                                         else if statHeaders[j] != "Rank"
                                                             td(class='stat-td') #{noDivisionTeams[i].stats[name]}

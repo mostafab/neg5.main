@@ -345,6 +345,7 @@ $(document).ready(function() {
                 $("#team-list-div").show();
                 teamOptions = { valueNames : ["teamname", "division"]};
                 teamList = new List("teamdiv", teamOptions);
+                $("[data-toggle='tooltip']").tooltip();
             }
         });
     });
@@ -362,6 +363,7 @@ $(document).ready(function() {
                 $("#game-list-div").show();
                 gameOptions = { valueNames : ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"]};
                 gameList = new List("gamediv", gameOptions);
+                $("[data-toggle='tooltip']").tooltip();
             }
         });
     });
@@ -805,7 +807,7 @@ function sendTeamToServer(teamInfo) {
             showMessageInDiv("#addteammsg", "Successfully added team", null);
             teamOptions = { valueNames : ["teamname", "division"]};
             teamList = new List("teamdiv", teamOptions);
-            console.log(teamList);
+            $("[data-toggle='tooltip']").tooltip();
         },
         error : function(xhr, status, err) {
             if (xhr.status === 401) {
@@ -833,6 +835,7 @@ function sendGameToServer() {
             document.getElementById("gamedataform").reset();
             gameOptions = { valueNames : ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"]};
             gameList = new List("gamediv", gameOptions);
+            $("[data-toggle='tooltip']").tooltip();
         },
         error : function() {
             $("<p style='margin-left:10px; font-size:16px; color:#ff3300'>Couldn't add game<i class='fa fa-times-circle'></i></p>").
@@ -896,14 +899,15 @@ function removeGame(forminfo, button) {
 }
 
 function removeTeam(forminfo, button) {
-    $(button).text("Deleting team...");
     $.ajax({
         url : "/tournaments/teams/remove",
         type : "POST",
         data : forminfo,
         success : function(databack, status, xhr) {
-            var teamid = databack.teamid;
-            if (teamid) {
+            var teamid = databack.teamID;
+            console.log(databack);
+            if (databack.removed) {
+                $(button).text("Deleting team...");
                 $(".team-tr[data-team-id='" + teamid + "']").fadeOut(200, function() {
                     $(this).remove();
                 });
@@ -911,6 +915,8 @@ function removeTeam(forminfo, button) {
                 $("#rightchoice option[value='" + teamid + "']").remove();
                 teamOptions = { valueNames : ["teamname", "division"]};
                 teamList = new List("teamdiv", teamOptions);
+            } else {
+                $(button).text("This team has games played.");
             }
         },
         error : function(xhr, status, err) {

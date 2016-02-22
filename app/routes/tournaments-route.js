@@ -1,23 +1,25 @@
-var tournamentController = require('../../app/controllers/tournament-controller');
-var registrationController = require("../../app/controllers/registration-controller");
-var statsController = require("../../app/controllers/stats-controller");
 var mongoose = require("mongoose");
 var shortid = require("shortid");
 var Tournament = mongoose.model("Tournament");
 
+var tournamentController = require('../../app/controllers/tournament-controller');
+var registrationController = require("../../app/controllers/registration-controller");
+var statsController = require("../../app/controllers/stats-controller");
+
 module.exports = function(app) {
 
-    app.get("/t", function(req, res, next) {
+    app.get("/t", (req, res, next) => {
         res.redirect("/tournaments");
     });
 
-    app.get("/tournaments", function(req, res, next) {
+    app.get("/tournaments", (req, res, next) => {
         if (!req.session.director) {
             res.redirect("/");
         } else {
             tournamentController.findTournamentsByDirector(req.session.director._id, function(err, result) {
-                if (err || result == null) {
-                    res.status(500).render("alltournaments", {tournaments : [], tournamentd : req.session.director});
+                if (err) {
+                    console.log(err);
+                    res.status(500).send({err : err});
                 } else {
                     res.render("alltournaments", {tournaments : result, tournamentd : req.session.director});
                 }
@@ -25,7 +27,7 @@ module.exports = function(app) {
         }
     });
 
-    app.post("/tournaments/edit", function(req, res, next) {
+    app.post("/tournaments/edit", (req, res, next) => {
         if (!req.session.director) {
             res.status(401).end();
         } else {
@@ -43,7 +45,7 @@ module.exports = function(app) {
     });
 
     app.route('/create')
-        .get(function(req, res, next) {
+        .get((req, res, next) => {
             if (!req.session.director) {
                 res.redirect("/");
             } else {
@@ -51,7 +53,7 @@ module.exports = function(app) {
             }
         });
 
-    app.post("/t/:tid/delete", function(req, res) {
+    app.post("/t/:tid/delete", (req, res) => {
         if (!req.session.director) {
             return res.status(401).redirect("/");
         }
@@ -67,7 +69,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/removephase", function(req, res) {
+    app.post("/tournaments/removephase", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
@@ -82,7 +84,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/switchphases", function(req, res) {
+    app.post("/tournaments/switchphases", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
@@ -98,7 +100,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/editphases", function(req, res) {
+    app.post("/tournaments/editphases", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
@@ -135,7 +137,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/newphase", function(req, res) {
+    app.post("/tournaments/newphase", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
@@ -148,7 +150,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/merge", function(req, res) {
+    app.post("/tournaments/merge", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
@@ -157,7 +159,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/tournaments/findDirectors", function(req, res, next) {
+    app.get("/tournaments/findDirectors", (req, res, next) => {
         tournamentController.findDirectors(req.query.collab, function(err, directors) {
             if (err) {
                 res.status(500).send({err : err});
@@ -167,7 +169,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/addCollaborator", function(req, res, next) {
+    app.post("/tournaments/addCollaborator", (req, res, next) => {
         var collaborator = JSON.parse(req.body.collaborators);
         collaborator.admin = !req.body.admin ? false : true;
         tournamentController.addCollaborator(req.body.tournamentid, collaborator, function(err, duplicate) {
@@ -179,7 +181,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/removeCollab", function(req, res, next) {
+    app.post("/tournaments/removeCollab", (req, res, next) => {
         tournamentController.removeCollaborator(req.body.tournamentid, req.body.collab, function(err) {
             if (err) {
                 res.status(500).send({err : err});
@@ -189,7 +191,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/tournaments/findCollaborators", function(req, res, next) {
+    app.get("/tournaments/findCollaborators", (req, res, next) => {
         tournamentController.findCollaborators(req.query.tournamentid, function(err, collaborators) {
             if (err) {
                 return res.status(500).send({collabs : []});
@@ -199,7 +201,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/editPointSchema", function(req, res, next) {
+    app.post("/tournaments/editPointSchema", (req, res, next) => {
         var newPointValues = {};
         var newPointTypes = JSON.parse(req.body.pointtypes);
         var playerNum = 1;
@@ -220,7 +222,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/tournaments/editDivisions", function(req, res, next) {
+    app.post("/tournaments/editDivisions", (req, res, next) => {
         var divisions = !req.body.divisions ? [] : req.body.divisions;
         tournamentController.updateDivisions(req.body.tid, divisions, function(err, newDivisions) {
             if (err) {
@@ -232,7 +234,7 @@ module.exports = function(app) {
     });
 
     app.route("/tournaments/createteam")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
@@ -266,7 +268,7 @@ module.exports = function(app) {
         });
 
     app.route("/tournaments/creategame")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
@@ -292,7 +294,7 @@ module.exports = function(app) {
             }
         });
 
-    app.post("/tournaments/scoresheet/submit", function(req, res) {
+    app.post("/tournaments/scoresheet/submit", (req, res) => {
         if (!req.session.director) {
             res.status(401).end();
         } else {
@@ -307,19 +309,19 @@ module.exports = function(app) {
     });
 
     app.route("/tournaments/teams/remove")
-        .post(function(req, res, next) {
-            tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, function(err, teamid) {
+        .post((req, res, next) => {
+            tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, function(err, removedInfo) {
                 if (err) {
                     console.log(err);
                     res.status(500).end();
                 } else {
-                    res.status(200).send({"err" : null, "teamid" : teamid});
+                    res.status(200).send(removedInfo);
                 }
             });
         });
 
     app.route("/tournaments/games/remove")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.redirect("/");
             } else {
@@ -337,7 +339,7 @@ module.exports = function(app) {
         });
 
     app.route("/tournaments/players/remove")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             // console.log(req.body);
             if (!req.session.director) {
                 res.status(401).send({msg : "Hmm, doesn't seem like you're logged in."});
@@ -353,7 +355,7 @@ module.exports = function(app) {
         });
 
     app.route("/tournaments/games/edit")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
@@ -383,7 +385,7 @@ module.exports = function(app) {
             }
         });
 
-    app.get("/t/:tid/scoresheet", function(req, res, next) {
+    app.get("/t/:tid/scoresheet", (req, res, next) => {
         if (!req.session.director) {
             res.redirect("/");
         } else {
@@ -407,7 +409,7 @@ module.exports = function(app) {
     });
 
     app.route("/tournaments/teams/edit")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
@@ -427,7 +429,7 @@ module.exports = function(app) {
         });
 
     app.route("/tournaments/players/edit")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
@@ -443,7 +445,7 @@ module.exports = function(app) {
         });
 
     app.route("/tournaments/players/create")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             // console.log(req.body);
             if (!req.session.director) {
                 res.status(401).end();
@@ -461,7 +463,7 @@ module.exports = function(app) {
         });
 
     app.route("/create/submit")
-        .post(function(req, res, next) {
+        .post((req, res, next) => {
             if (!req.session.director) {
                 res.redirect("/");
             } else {
@@ -481,7 +483,7 @@ module.exports = function(app) {
         });
 
     app.route("/tournaments/getplayers")
-        .get(function(req, res, next) {
+        .get((req, res, next) => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
@@ -500,7 +502,7 @@ module.exports = function(app) {
             }
         });
 
-    app.get("/t/:tid/teams/:teamid", function(req, res) {
+    app.get("/t/:tid/teams/:teamid", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
@@ -542,7 +544,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/teams", function(req, res) {
+    app.get("/t/:tid/teams", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
@@ -569,7 +571,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/games/:gid", function(req, res) {
+    app.get("/t/:tid/games/:gid", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
@@ -611,7 +613,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/games", function(req, res) {
+    app.get("/t/:tid/games", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
@@ -632,7 +634,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid", function(req, res, next) {
+    app.get("/t/:tid", (req, res, next) => {
         if (!req.session.director) {
             res.redirect("/");
         } else {
@@ -655,7 +657,7 @@ module.exports = function(app) {
         }
     });
 
-    app.get('/shortid', function(req, res) {
+    app.get('/shortid', (req, res) => {
         res.send(shortid.generate());
     });
 

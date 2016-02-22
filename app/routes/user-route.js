@@ -4,7 +4,7 @@ var userController = require('../../app/controllers/user-controller');
 
 module.exports = function(app) {
 
-    app.get("/account", function(req, res, next) {
+    app.get("/account", (req, res, next) => {
         if (!req.session.director) {
             res.redirect("/");
         } else {
@@ -14,7 +14,7 @@ module.exports = function(app) {
 
     // app.get("/auth/google", passport.authenticate("google", {scope : ["profile", "email"]}));
 
-    // app.get("/auth/google/callback", function(req, res, next) {
+    // app.get("/auth/google/callback", (req, res, next) => {
     //     passport.authenticate("google", function(err, director) {
     //         if (err) {
     //             res.redirect("/");
@@ -27,7 +27,7 @@ module.exports = function(app) {
     //     })(req, res, next);
     // });
 
-    app.post("/register/local", function(req, res, next) {
+    app.post("/register/local", (req, res, next) => {
         userController.register(req.body, function(err, message) {
             if (err) {
                 return res.status(500).send({err : err});
@@ -39,7 +39,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/auth/local", function(req, res, next) {
+    app.post("/auth/local", (req, res, next) => {
         userController.validateLocalLogin(req.body, function(err, valid, user) {
             if (err) {
                 // res.status(500).send("The validation process isn't working right now");
@@ -61,11 +61,11 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/auth/local", function(req, res, next) {
+    app.get("/auth/local", (req, res, next) => {
         res.redirect("/");
     });
 
-    app.post("/auth/local/edit", function(req, res, next) {
+    app.post("/auth/local/edit", (req, res, next) => {
         // console.log(req.body);
         if (!req.session.director) {
             res.status(401).end();
@@ -84,7 +84,7 @@ module.exports = function(app) {
         }
     });
 
-    app.post("/auth/local/pass", function(req, res, next) {
+    app.post("/auth/local/pass", (req, res, next) => {
         if (!req.session.director) {
             res.status(401).end();
         } else {
@@ -101,7 +101,7 @@ module.exports = function(app) {
         }
     });
 
-    app.get("/home", function(req, res, next) {
+    app.get("/home", (req, res, next) => {
         // console.log(req.session);
         if (!req.session.director) {
             res.redirect("/");
@@ -113,7 +113,7 @@ module.exports = function(app) {
     });
 
     app.route("/logout")
-        .get(function(req, res, next) {
+        .get((req, res, next) => {
             req.session.reset();
             // req.logout();
             res.redirect("/");

@@ -14,21 +14,22 @@ var tournamentController = require('../../app/controllers/tournament-controller'
 * @param callback callback with an error (or null) and indication of login
 */
 function validateLocalLogin(credentials, callback) {
-    User.findOne({"local.email" : credentials["usrname"].toLowerCase()}, function(err, result) {
+    User.findOne({"local.email" : credentials["usrname"].toLowerCase()}, (err, result) => {
         if (err) {
             console.log(err);
             callback(err, "", null);
         } else if (result == null) {
             callback(null, "NONE", "");
         } else {
-            bcryptjs.compare(credentials["pswd"], result.local.password, function(err, res) {
+            bcryptjs.compare(credentials["pswd"], result.local.password, (err, res) => {
                 if (res) {
-                    TournamentDirector.findOne({usertoken : result._id}, function(err, result) {
-                        if (err || result == null) {
-                            callback(null, "NONE", null);
+                    TournamentDirector.findOne({usertoken : result._id}, (err, director) => {
+                        if (err) {
+                            callback(err);
+                        } else if (director) {
+                            callback(null, "OK", director);
                         } else {
-                            // console.log("Tournament director found");
-                            callback(null, "OK", result);
+                            callback(null, "NONE", null);
                         }
                     });
                 } else {
@@ -46,18 +47,16 @@ function validateLocalLogin(credentials, callback) {
 * registration was successful
 */
 function register(credentials, callback) {
-    // console.log(credentials);
-    User.findOne({"local.email" : credentials["r_usrname"]}, function(err, result) {
+    User.findOne({"local.email" : credentials["r_usrname"]}, (err, result) => {
         if (err) {
             console.log(err);
-            callback(err, "");
+            callback(err);
         } else if (result) {
             callback(null, "EXISTS");
         } else {
-            // console.log("Got here");
-            makeUser(credentials, function(err) {
+            makeUser(credentials, err => {
                 if (err) {
-                    callback(err, "");
+                    callback(err);
                 } else {
                     callback(null, "OK");
                 }
@@ -75,12 +74,12 @@ function makeUser(req, callback) {
     var name = req["r_name"];
     var email = req["r_usrname"].toLowerCase();
     var password = req["r_pswd"];
-    bcryptjs.genSalt(10, function(err, salt) {
+    bcryptjs.genSalt(10, (err, salt) => {
         if (err) {
             console.log("Error: " + err);
             callback(err);
         } else {
-            bcryptjs.hash(password, salt, function(err, hash) {
+            bcryptjs.hash(password, salt, (err, hash) => {
                 if (err) {
                     callback(err);
                 } else {
@@ -88,14 +87,12 @@ function makeUser(req, callback) {
                     user.local.name = name;
                     user.local.email = email;
                     user.local.password = hash;
-                    // console.log(user);
-                    user.save(function(err) {
+                    user.save(err => {
                         if (err) {
                             console.log(err);
                             callback(err);
                         } else {
-                            // callback(null);
-                            TournamentDirector.findOne({email : email}, function(err, result) {
+                            TournamentDirector.findOne({email : email}, (err, result) => {
                                 if (err) {
                                     callback(err);
                                 } else if (result) {
@@ -106,8 +103,7 @@ function makeUser(req, callback) {
                                         email : email,
                                         usertoken : user._id
                                     });
-                                    // console.log(td);
-                                    td.save(function(err) {
+                                    td.save(err => {
                                         if (err) {
                                             console.log(err);
                                             callback(err);
@@ -131,25 +127,24 @@ function makeUser(req, callback) {
 * propapage changes to the TournamentDirector collection.
 */
 function updateEmailAndName(director, newName, newEmail, callback) {
-    TournamentDirector.findOne({email : newEmail, _id : {$ne : director._id}}, function(err, result) {
-        // console.log(result);
+    TournamentDirector.findOne({email : newEmail, _id : {$ne : director._id}}, (err, result) => {
         if (err) {
             console.log(err);
-            callback(err, null, false);
+            callback(err);
         } else if (result) {
             callback(null, null, true);
         } else {
-            User.update({_id : director.usertoken}, {"local.name" : newName, "local.email" : newEmail}, function(err) {
+            User.update({_id : director.usertoken}, {"local.name" : newName, "local.email" : newEmail}, err => {
                 if (err) {
                     callback(err, null, false);
                 } else {
-                    TournamentDirector.update({_id : director._id}, {name : newName, email : newEmail}, function(err) {
+                    TournamentDirector.update({_id : director._id}, {name : newName, email : newEmail}, err => {
                         if (err) {
                             callback(err, null, false);
                         } else {
-                            TournamentDirector.findOne({_id : director._id}, function(err, result) {
+                            TournamentDirector.findOne({_id : director._id}, (err, result) => {
                                 if (err) {
-                                    callback(err, null, false);
+                                    callback(err);
                                 } else {
                                     callback(null, result, false);
                                 }
@@ -171,30 +166,27 @@ function updateEmailAndName(director, newName, newEmail, callback) {
 * success or failure
 */
 function updateUserPassword(director, oldPassword, newPassword, callback) {
-    // console.log(oldPassword);
     User.findOne({_id : director.usertoken}, function(err, result) {
-        // console.log(result);
         if (err) {
             callback(err, false);
         } else if (result) {
-            bcryptjs.compare(oldPassword, result.local.password, function(err, res) {
+            bcryptjs.compare(oldPassword, result.local.password, (err, res) => {
                 if (err) {
                     callback(err, false);
                 } else if (!res) {
                     callback(null, true);
                 } else {
-                    bcryptjs.genSalt(10, function(err, salt) {
+                    bcryptjs.genSalt(10, (err, salt) => {
                         if (err) {
                             callback(err, false);
                         } else {
-                            bcryptjs.hash(newPassword, salt, function(err, hash) {
+                            bcryptjs.hash(newPassword, salt, (err, hash) => {
                                 if (err) {
-                                    callback(err, false);
+                                    callback(err);
                                 } else {
-                                    // console.log(hash);
-                                    User.update({_id : director.usertoken}, {"local.password" : hash}, function(err) {
+                                    User.update({_id : director.usertoken}, {"local.password" : hash}, err => {
                                         if (err) {
-                                            callback(err, false);
+                                            callback(err);
                                         } else {
                                             callback(null, false);
                                         }

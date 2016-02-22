@@ -4,11 +4,11 @@ var statsController = require("../../app/controllers/stats-controller");
 
 module.exports = function(app) {
 
-    // app.get("/search", function(req, res) {
+    // app.get("/search", (req, res) => {
     //     res.render("search", {tournamentd : req.session.director});
     // });
     //
-    // app.get("/search/submit", function(req, res) {
+    // app.get("/search/submit", (req, res) => {
     //     statsController.findTournamentsByNameAndSet(req.query.t_name, req.query.t_qset, function(err, tournaments) {
     //         if (err) {
     //             res.status(500).end();
@@ -19,12 +19,12 @@ module.exports = function(app) {
     //     });
     // });
 
-    app.get("/t/:tid/stats", function(req, res, next) {
+    app.get("/t/:tid/stats", (req, res, next) => {
         var tournament = req.params.tid;
         res.redirect("/t/" + tournament + "/stats/team?phase=1");
     });
 
-    app.get("/t/:tid/stats/team", function(req, res, next) {
+    app.get("/t/:tid/stats/team", (req, res, next) => {
         statsController.getTeamsInfo(req.params.tid, req.query.phase, function(err, tournament, teamInfo) {
             if (err) {
                 res.status(500).send(err);
@@ -38,7 +38,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/stats/team/dl", function(req, res, next) {
+    app.get("/t/:tid/stats/team/dl", (req, res, next) => {
         statsController.getTeamsInfo(req.params.tid, req.query.phase, function(err, tournament, teamInfo) {
             if (err) {
                 res.status(500).end();
@@ -53,7 +53,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/stats/player", function(req, res, next) {
+    app.get("/t/:tid/stats/player", (req, res, next) => {
         statsController.getPlayersInfo(req.params.tid, req.query.phase, function(err, tournament, playersInfo) {
             if (err) {
                 res.status(500).end();
@@ -67,7 +67,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/stats/player/dl", function(req, res, next) {
+    app.get("/t/:tid/stats/player/dl", (req, res, next) => {
         statsController.getPlayersInfo(req.params.tid, req.query.phase, function(err, tournament, playersInfo) {
             if (err) {
                 res.status(500).end();
@@ -82,7 +82,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/stats/teamfull", function(req, res, next) {
+    app.get("/t/:tid/stats/teamfull", (req, res, next) => {
         statsController.getFullTeamsGameInformation(req.params.tid, req.query.phase, function(err, tournament, teamsGames, playersInfo, teamTotals) {
             if (err) {
                 res.status(500).end();
@@ -97,7 +97,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/stats/teamfull/dl", function(req, res, next) {
+    app.get("/t/:tid/stats/teamfull/dl", (req, res, next) => {
         statsController.getFullTeamsGameInformation(req.params.tid, req.query.phase, function(err, tournament, teamsGames, playersInfo, teamTotals) {
             if (err) {
                 res.status(500).end();
@@ -114,7 +114,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/stats/playerfull", function(req, res, next) {
+    app.get("/t/:tid/stats/playerfull", (req, res, next) => {
         statsController.getFullPlayersGameInformation(req.params.tid, req.query.phase, function(err, tournament, playersInfo, playerTotals) {
             if (err) {
                 res.status(500).end();
@@ -128,7 +128,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/stats/playerfull/dl", function(req, res, next) {
+    app.get("/t/:tid/stats/playerfull/dl", (req, res, next) => {
         statsController.getFullPlayersGameInformation(req.params.tid, req.query.phase, function(err, tournament, playersInfo, playerTotals) {
             if (err) {
                 res.status(500).end();
@@ -144,7 +144,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/stats/roundreport", function(req, res, next) {
+    app.get("/t/:tid/stats/roundreport", (req, res, next) => {
         statsController.getRoundReport(req.params.tid, req.query.phase, function(err, tournament, roundsInfo) {
             if (err) {
                 res.status(500).end();
@@ -157,7 +157,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/stats/roundreport/dl", function(req, res, next) {
+    app.get("/t/:tid/stats/roundreport/dl", (req, res, next) => {
         statsController.getRoundReport(req.params.tid, req.query.phase, function(err, tournament, roundsInfo) {
             if (err) {
                 res.status(500).end();
@@ -171,18 +171,18 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/t/:tid/stats/filter/teams', function(req, res) {
+    app.get('/t/:tid/stats/filter/teams', (req, res) => {
         var constraints = {};
-        constraints.teams = req.body.teams;
-        if (req.body.minround.length == 0) {
+        constraints.teams = req.query.teams;
+        if (req.query.minround.length == 0) {
             constraints.minround = Number.NEGATIVE_INFINITY;
         } else {
-            constraints.minround = req.body.minround;
+            constraints.minround = req.query.minround;
         }
-        if (req.body.maxround.length == 0) {
+        if (req.query.maxround.length == 0) {
             constraints.maxround = Number.POSITIVE_INFINITY;
         } else {
-            constraints.maxround = req.body.maxround;
+            constraints.maxround = req.query.maxround;
         }
         statsController.getFilteredTeamsInformation(req.params.tid, constraints, function(err, tournament, teamInfo) {
             if (err) {
@@ -190,6 +190,7 @@ module.exports = function(app) {
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
+                tournament.divisions = [];
                 var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, divisions : tournament.divisions};
                 res.render("quick-teams", {tournament : tournamentData, teamInfo : teamInfo, custom : true});
@@ -197,24 +198,24 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/t/:tid/stats/filter/players", function(req, res) {
+    app.get("/t/:tid/stats/filter/players", (req, res) => {
         var constraints = {};
-        constraints.teams = req.body.teams;
-        if (req.body.minround.length == 0) {
+        constraints.teams = req.query.teams;
+        if (req.query.minround.length == 0) {
             constraints.minround = Number.NEGATIVE_INFINITY;
         } else {
-            constraints.minround = req.body.minround;
+            constraints.minround = req.query.minround;
         }
-        if (req.body.maxround.length == 0) {
+        if (req.query.maxround.length == 0) {
             constraints.maxround = Number.POSITIVE_INFINITY;
         } else {
-            constraints.maxround = req.body.maxround;
+            constraints.maxround = req.query.maxround;
         }
         statsController.getFilteredPlayersInformation(req.params.tid, constraints, function(err, tournament, playersInfo) {
             if (err) {
                 res.send(err);
             } else if (tournament == null) {
-                res.send("Couldn't find that tournament");
+                res.status(404).send("Couldn't find that tournament");
             } else {
                 var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme};
@@ -223,7 +224,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("/t/:tid/export/qbj", function(req, res) {
+    app.get("/t/:tid/export/qbj", (req, res) => {
         statsController.convertToQuizbowlSchema(req.params.tid, function(err, json) {
             if (err) {
                 res.status(500).end();
@@ -235,7 +236,7 @@ module.exports = function(app) {
         });
     });
 
-    // app.get("/t/:tid/export/sqbs", function(req, res) {
+    // app.get("/t/:tid/export/sqbs", (req, res) => {
     //     statsController.convertToSQBS(req.params.tid, function(err, sqbs) {
     //         if (err) {
     //             res.status(500).end();
@@ -247,7 +248,7 @@ module.exports = function(app) {
     //     });
     // });
 
-    app.get("/t/:tid/export/scoresheets", function(req, res) {
+    app.get("/t/:tid/export/scoresheets", (req, res) => {
         statsController.exportScoresheets(req.params.tid, function(err, scoresheets) {
             if (err) {
                 res.status(500).end();
@@ -259,7 +260,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get("*", function(req, res, next) {
+    app.get("*", (req, res, next) => {
         res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That page doesn't exist."});
     });
 };
