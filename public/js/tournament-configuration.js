@@ -332,6 +332,24 @@ $(document).ready(function() {
         }
     });
 
+    $("body").on("click", "#refresh-teams", function() {
+        console.log("refreshing teams");
+        var href = $(this).attr("data-href");
+        $.ajax({
+            url : href,
+            type : "GET",
+            success : function(databack, status, xhr) {
+                $("#team-view-div").empty();
+                $("#team-list-template").html(databack);
+                $("#add-team-div").show();
+                $("#team-list-div").show();
+                teamOptions = { valueNames : ["teamname", "division"]};
+                teamList = new List("teamdiv", teamOptions);
+                $("[data-toggle='tooltip']").tooltip();
+            }
+        });
+    });
+
     $("body").on("click", "#back-to-teams", function(e) {
         e.preventDefault();
         var href = $(this).attr("href");
