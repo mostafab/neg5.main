@@ -72,10 +72,20 @@ $(document).ready(function() {
         }
     });
 
-    $("body").on("click", ".saveplayerbutton", function() {
-        var form = $(this).parent().prev().children("form");
-        $(this).prop("disabled", true);
-        editPlayerAJAX($(form).serialize(), $(this));
+    // $("body").on("click", ".saveplayerbutton", function() {
+    //     var form = $(this).parent().prev().children("form");
+    //     $(this).prop("disabled", true);
+    //     editPlayerAJAX($(form).serialize(), $(this));
+    // });
+
+    $("body").on("click", ".player-name-box", function() {
+        $(this).prop("readonly", false);
+    });
+
+    $("body").on("blur", ".player-name-box", function() {
+        $(this).prop("readonly", true);
+        var form = $(this).parent().serialize();
+        editPlayerAJAX(form);
     });
 
     $("body").on("click", ".deleteplayerbutton", function() {
@@ -197,14 +207,13 @@ function editTeamAJAX() {
     });
 }
 
-function editPlayerAJAX(playerForm, button) {
+function editPlayerAJAX(playerForm) {
     showBeforeSentMessage("Saving Player");
     $.ajax({
         url : "/tournaments/players/edit",
         type : "POST",
         data : playerForm,
         success : function(databack, status, xhr) {
-            // console.log(databack.msg);
             showAfterSentMessage(databack.msg, databack.err);
         },
         error : function(xhr, status, err) {
@@ -213,9 +222,6 @@ function editPlayerAJAX(playerForm, button) {
             } else {
                 showMessageInDiv("#player-add-msg", "Could not update player", err);
             }
-        },
-        complete : function(databack) {
-            $(button).prop("disabled", false);
         }
     });
 }
@@ -317,11 +323,10 @@ function addNewPlayerRow(player, tid) {
     html += "<td><form name='editplayerform'>";
     html += "<input type='hidden' name='tournamentidform' value='" + tid + "'/>";
     html += "<input type='hidden' name='playerid' value='" + player._id + "'>";
-    html += "<input type='text' class='form-control' name='playername' value='" + player.player_name + "'/>";
+    html += "<input type='text' class='form-control player-name-box saved' name='playername' value='" + player.player_name + "'/>";
     html += "</form></td>";
     html += "<td>";
-    html += "<button type='button' class='btn btn-sm btn-success saveplayerbutton' onclick='savePlayerSender(this)'>Save Name</button>";
-    html += "<button type='button' class='btn btn-sm btn-danger deleteplayerbutton' onclick='deletePlayerSender(this)'>Remove</button>";
+    html += "<button type='button' class='btn btn-sm btn-danger deleteplayerbutton' onclick='deletePlayerSender(this)'><i class='fa fa-trash'></i></button>";
     html += "</td></tr>";
     $(html).hide().appendTo("#playersbody").fadeIn(300);
 }
@@ -378,5 +383,5 @@ function showAfterSentMessage(message, err) {
 
 function showBeforeSentMessage(message) {
     $("#player-add-msg").empty().
-        append("<p style='margin:10px; font-size:16px;'>" + message + "<i class='fa fa-spinner fa-spin'></i></p>");
+        append("<p style='margin:10px; font-size:16px;color:black'>" + message + "<i class='fa fa-spinner fa-spin'></i></p>");
 }

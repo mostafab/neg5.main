@@ -13,7 +13,7 @@ div(class="panel panel-default")
                 input(type="hidden" value="#{team._id}" name="teamid" id='team-id')
                 div(class="col-md-6")
                         label(class="label label-primary col-xs-4") Name
-                        div(class="form-group col-xs-8")
+                        div(class="form-group col-xs-5")
                             input(
                                 type="text",
                                 name="team_name",
@@ -23,7 +23,7 @@ div(class="panel panel-default")
                             )
                         hr
                         label(class="label label-primary col-xs-4") Divisions
-                        div(class="form-group col-md-8")
+                        div(class="form-group col-md-7")
                             each phase, i in tournament.phases
                                 div(class="row")
                                     div(class="col-md-4")
@@ -32,7 +32,7 @@ div(class="panel panel-default")
                                     div(class="col-md-5")
                                         select(class="form-control edit-team-division" data-phase-id='#{phase.phase_id}')
                                             each division in tournament.divisions
-                                                if division.phase_id == phase.phase_id && team.divisons && team.divisions[phase.phase_id] == division.name
+                                                if division.phase_id == phase.phase_id && team.divisions && team.divisions[phase.phase_id] == division.name
                                                     option(selected value='#{division.name}') #{division.name}
                                                 else if division.phase_id == phase.phase_id
                                                     option(value='#{division.name}') #{division.name}
@@ -54,19 +54,19 @@ div(class="panel panel-default")
                     thead
                         tr
                             th(class="table-head") Name
-                            th(class="table-head") Edit
+                            th(class="table-head")
                     tbody(id="playersbody")
                         each player, i in teamPlayers
                                 tr
                                     td
-                                        form(name="editplayerform")
+                                        form
                                             input(type="hidden" name="tournamentidform" value="#{tournament._id}")
                                             input(type="hidden" name="playerid" value="#{teamPlayers[i]._id}")
-                                            input(type="text" class="form-control" name="playername" value="#{teamPlayers[i].player_name}")
+                                            input(readonly type="text" class="form-control saved player-name-box" name="playername" value="#{teamPlayers[i].player_name}")
                                     td
-                                        button(type="button" class="btn btn-sm btn-success saveplayerbutton") Save Name
                                         if admin
-                                            button(type="button" class="btn btn-sm btn-danger deleteplayerbutton") Remove
+                                            button(type="button" class="btn btn-sm btn-danger deleteplayerbutton")
+                                                i(class="fa fa-trash")
 
             div(class="row col-md-3 col-lg-3 col-sm-3")
                 form(name="addplayerform")
