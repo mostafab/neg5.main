@@ -1,13 +1,13 @@
-var mongoose = require("mongoose");
-var shortid = require("shortid");
+const mongoose = require("mongoose");
+const shortid = require("shortid");
 
-var Tournament = mongoose.model("Tournament");
-var TournamentDirector = mongoose.model("TournamentDirector");
-var Team = mongoose.model("Team");
-var Player = mongoose.model("Player");
-var Game = mongoose.model("Game");
+const Tournament = mongoose.model("Tournament");
+const TournamentDirector = mongoose.model("TournamentDirector");
+const Team = mongoose.model("Team");
+const Player = mongoose.model("Player");
+const Game = mongoose.model("Game");
 
-var statsController = require("./stats-controller");
+const statsController = require("./stats-controller");
 
 /**
 * Adds a tournament to the specified td - "tournament director" array of tournaments

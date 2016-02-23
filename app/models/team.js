@@ -1,11 +1,11 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
-var playerSchema = require("./player").schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const playerSchema = require("./player").schema;
 
 /**
 * Schema for a team
 */
-var teamSchema = new Schema({
+const teamSchema = new Schema({
     team_name : {type : String, required : true},
     divisions : {},
     shortID : {type : String, required : true},

@@ -350,6 +350,24 @@ $(document).ready(function() {
         });
     });
 
+    $("body").on("click", "#refresh-games", function() {
+        console.log("refreshing games");
+        var href = $(this).attr("data-href");
+        $.ajax({
+            url : href,
+            type : "GET",
+            success : function(databack, status, xhr) {
+                $("#game-view-div").empty();
+                $("#game-list-template").html(databack);
+                $("#add-game-div").show();
+                $("#game-list-div").show();
+                gameOptions = { valueNames : ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"]};
+                gameList = new List("gamediv", gameOptions);
+                $("[data-toggle='tooltip']").tooltip();
+            }
+        });
+    });
+
     $("body").on("click", "#back-to-teams", function(e) {
         e.preventDefault();
         var href = $(this).attr("href");

@@ -1,9 +1,9 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-var teamSchema = require("./team").schema;
-var gameSchema = require("./game").schema;
-var playerSchema = require("./player").schema;
+const teamSchema = require("./team").schema;
+const gameSchema = require("./game").schema;
+const playerSchema = require("./player").schema;
 
 /**
 * Schema for a tournament. Tournaments include a list of collaborators,
@@ -14,7 +14,7 @@ var playerSchema = require("./player").schema;
 *                   "B" : Base Point Value
 *                   "N" : Neg
 */
-var TournamentSchema = new Schema({
+const TournamentSchema = new Schema({
     createdAt : {type : Date, default : Date.now()},
     directorid : String, // Foreign key,
     tournament_name : {type : String, required : true},

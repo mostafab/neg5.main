@@ -1,8 +1,8 @@
-var bktree = require("bktree");
-var mongoose = require("mongoose");
-var Tournament = mongoose.model("Tournament");
+const bktree = require("bktree");
+const mongoose = require("mongoose");
+const Tournament = mongoose.model("Tournament");
 
-var SCHEMA_VERSION = "1.1";
+const SCHEMA_VERSION = "1.1";
 
 /**
 * Responsible for gathering basic statistics information about a tournament's teams
@@ -16,7 +16,7 @@ function getTeamsInfo(tournamentid, phaseID, callback) {
     var teamInfo = [];
     Tournament.findOne({shortID : tournamentid}, (err, result) => {
         if (err) {
-            callback(err, null, []);
+            callback(err);
         } else if (result == null) {
             callback(null, null, []);
         } else {

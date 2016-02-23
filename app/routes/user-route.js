@@ -1,6 +1,4 @@
-var userController = require('../../app/controllers/user-controller');
-// var passportP = require("passport");
-// var passport = require("../../config/passport")(passportP);
+const userController = require('../../app/controllers/user-controller');
 
 module.exports = function(app) {
 

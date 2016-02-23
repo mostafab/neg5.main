@@ -1,6 +1,6 @@
-var mongoose = require("mongoose");
-var Tournament = mongoose.model("Tournament");
-var statsController = require("../../app/controllers/stats-controller");
+const mongoose = require("mongoose");
+const Tournament = mongoose.model("Tournament");
+const statsController = require("../../app/controllers/stats-controller");
 
 module.exports = function(app) {
 

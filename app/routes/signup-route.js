@@ -1,5 +1,5 @@
-var signupController = require('../../app/controllers/registration-controller');
-var tournamentController = require("../../app/controllers/tournament-controller");
+const signupController = require('../../app/controllers/registration-controller');
+const tournamentController = require("../../app/controllers/tournament-controller");
 
 module.exports = function(app) {
 
