@@ -16,7 +16,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             res.redirect("/");
         } else {
-            tournamentController.findTournamentsByDirector(req.session.director._id, function(err, result) {
+            tournamentController.findTournamentsByDirector(req.session.director._id, (err, result) => {
                 if (err) {
                     console.log(err);
                     res.status(500).send({err : err});
@@ -31,7 +31,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             res.status(401).end();
         } else {
-            tournamentController.updateTournamentInformation(req.body.tournamentid, req.body, req.session.director._id, function(err, unauthorized) {
+            tournamentController.updateTournamentInformation(req.body.tournamentid, req.body, req.session.director._id, (err, unauthorized) => {
                 if (err) {
                     console.log(err);
                     res.status(500).end();
@@ -57,7 +57,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             return res.status(401).redirect("/");
         }
-        tournamentController.deleteTournament(req.session.director._id, req.params.tid, function(err, status) {
+        tournamentController.deleteTournament(req.session.director._id, req.params.tid, (err, status) => {
             if (err) {
                 console.log(err);
                 res.status(500).redirect("/");
@@ -73,7 +73,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        tournamentController.removePhase(req.body.tid, req.body.phaseID, req.session.director._id, function(err, unauthorized, removed) {
+        tournamentController.removePhase(req.body.tid, req.body.phaseID, req.session.director._id, (err, unauthorized, removed) => {
             if (err) {
                 res.status(500).end();
             } else if (unauthorized) {
@@ -88,13 +88,12 @@ module.exports = function(app) {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        tournamentController.switchPhases(req.body.tid, req.body.newPhaseID, req.session.director._id, function(err, unauthorized, switched) {
+        tournamentController.switchPhases(req.body.tid, req.body.newPhaseID, req.session.director._id, (err, unauthorized, switched) => {
             if (err) {
                 res.status(500).end();
             } else if (unauthorized) {
                 res.status(401).end();
             } else {
-                console.log(unauthorized);
                 res.send({switched : switched});
             }
         });
@@ -141,7 +140,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        tournamentController.newPhase(req.body.tournamentid, req.body.phaseName, function(err, newPhase) {
+        tournamentController.newPhase(req.body.tournamentid, req.body.phaseName, (err, newPhase) => {
             if (err) {
                 return res.status(401).end();
             } else {
@@ -154,13 +153,13 @@ module.exports = function(app) {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        tournamentController.mergeTournaments(req.body.first, req.body.second, req.body.name, function(err, merged) {
+        tournamentController.mergeTournaments(req.body.first, req.body.second, req.body.name, (err, merged) => {
             res.send(merged);
         });
     });
 
     app.get("/tournaments/findDirectors", (req, res, next) => {
-        tournamentController.findDirectors(req.query.collab, function(err, directors) {
+        tournamentController.findDirectors(req.query.collab, (err, directors) => {
             if (err) {
                 res.status(500).send({err : err});
             } else {
@@ -172,9 +171,9 @@ module.exports = function(app) {
     app.post("/tournaments/addCollaborator", (req, res, next) => {
         var collaborator = JSON.parse(req.body.collaborators);
         collaborator.admin = !req.body.admin ? false : true;
-        tournamentController.addCollaborator(req.body.tournamentid, collaborator, function(err, duplicate) {
+        tournamentController.addCollaborator(req.body.tournamentid, collaborator, (err, duplicate) => {
             if (err) {
-                res.status(500).send({err : err});
+                res.status(500).end();
             } else {
                 res.status(200).send({duplicate : duplicate, collab : collaborator});
             }
@@ -182,9 +181,9 @@ module.exports = function(app) {
     });
 
     app.post("/tournaments/removeCollab", (req, res, next) => {
-        tournamentController.removeCollaborator(req.body.tournamentid, req.body.collab, function(err) {
+        tournamentController.removeCollaborator(req.body.tournamentid, req.body.collab, err => {
             if (err) {
-                res.status(500).send({err : err});
+                res.status(500).end();
             } else {
                 res.status(200).send({err : null});
             }
@@ -192,7 +191,7 @@ module.exports = function(app) {
     });
 
     app.get("/tournaments/findCollaborators", (req, res, next) => {
-        tournamentController.findCollaborators(req.query.tournamentid, function(err, collaborators) {
+        tournamentController.findCollaborators(req.query.tournamentid, (err, collaborators) => {
             if (err) {
                 return res.status(500).send({collabs : []});
             } else {
@@ -213,9 +212,9 @@ module.exports = function(app) {
             playerNum++;
             currentVal = "pointval" + playerNum;
         }
-        tournamentController.changePointScheme(req.body["tournamentid"], newPointValues, newPointTypes, function(err) {
+        tournamentController.changePointScheme(req.body["tournamentid"], newPointValues, newPointTypes, err => {
             if (err) {
-                res.status(500).send({err : err});
+                res.status(500).end();
             } else {
                 res.status(200).send({err : null});
             }
@@ -224,7 +223,7 @@ module.exports = function(app) {
 
     app.post("/tournaments/editDivisions", (req, res, next) => {
         var divisions = !req.body.divisions ? [] : req.body.divisions;
-        tournamentController.updateDivisions(req.body.tid, divisions, function(err, newDivisions) {
+        tournamentController.updateDivisions(req.body.tid, divisions, (err, newDivisions) => {
             if (err) {
                 res.status(500).end();
             } else {
@@ -239,7 +238,7 @@ module.exports = function(app) {
                 res.status(401).end();
             } else {
                 var id = req.body.tid;
-                tournamentController.addTeamToTournament(id, req.body.teamInfo, function(err, tournament) {
+                tournamentController.addTeamToTournament(id, req.body.teamInfo, (err, tournament) => {
                     if (err) {
                         res.status(500).end();
                     } else {
@@ -254,7 +253,7 @@ module.exports = function(app) {
                                 }
                             }
                         }
-                        res.render("team-list", {tournament : tournament, admin : admin}, function(err, html) {
+                        res.render("team-list", {tournament : tournament, admin : admin}, (err, html) => {
                             if (err) {
                                 console.log(err);
                                 res.status(500).end();
@@ -273,7 +272,7 @@ module.exports = function(app) {
                 res.status(401).end();
             } else {
                 var id = req.body["tournament_id_form"];
-                tournamentController.addGameToTournament(id, req.body, [], function(err, tournament, newGame) {
+                tournamentController.addGameToTournament(id, req.body, [], (err, tournament, newGame) => {
                     if (err) {
                         res.status(500).end();
                     } else {
@@ -298,7 +297,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             res.status(401).end();
         } else {
-            tournamentController.addScoresheetAsGame(req.body.tournamentid, req.body.game, req.body.scoresheet, function(err, gameid) {
+            tournamentController.addScoresheetAsGame(req.body.tournamentid, req.body.game, req.body.scoresheet, (err, gameid) => {
                 if (err) {
                     res.status(500).end();
                 } else {
@@ -310,7 +309,7 @@ module.exports = function(app) {
 
     app.route("/tournaments/teams/remove")
         .post((req, res, next) => {
-            tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, function(err, removedInfo) {
+            tournamentController.removeTeamFromTournament(req.body["tournament_idteam"], req.body, (err, removedInfo) => {
                 if (err) {
                     console.log(err);
                     res.status(500).end();
@@ -327,7 +326,7 @@ module.exports = function(app) {
             } else {
                 var gameid = req.body["gameid_form"];
                 var tournamentid = req.body["tournament_idgame"];
-                tournamentController.removeGameFromTournament(tournamentid, gameid, function(err, phases) {
+                tournamentController.removeGameFromTournament(tournamentid, gameid, (err, phases) => {
                     if (err) {
                         console.log(err);
                         res.status(500).end();
@@ -340,11 +339,10 @@ module.exports = function(app) {
 
     app.route("/tournaments/players/remove")
         .post((req, res, next) => {
-            // console.log(req.body);
             if (!req.session.director) {
                 res.status(401).send({msg : "Hmm, doesn't seem like you're logged in."});
             } else {
-                tournamentController.removePlayer(req.body.tournamentidform, req.body.playerid, function(err) {
+                tournamentController.removePlayer(req.body.tournamentidform, req.body.playerid, err => {
                     if (err) {
                         res.status(500).send({err : err, msg : "Something went wrong"});
                     } else {
@@ -361,17 +359,17 @@ module.exports = function(app) {
             } else {
                 var tournamentid = req.body["tournament_id_form"];
                 var gameid = req.body["oldgameid"];
-                tournamentController.removeGameFromTournament(tournamentid, gameid, function(err, phases) {
+                tournamentController.removeGameFromTournament(tournamentid, gameid, (err, phases) => {
                     if (err) {
                         console.log(err);
                         res.status(500).end();
                     } else {
-                        tournamentController.addGameToTournament(tournamentid, req.body, phases, function(err, tournament, game) {
+                        tournamentController.addGameToTournament(tournamentid, req.body, phases, (err, tournament, game) => {
                             if (err) {
                                 console.log(err);
                                 res.status(500).end();
                             } else {
-                                tournamentController.changeGameShortID(tournamentid, game.shortID, gameid, function(err) {
+                                tournamentController.changeGameShortID(tournamentid, game.shortID, gameid, err => {
                                     if (err) {
                                         res.status(500).end();
                                     } else {
@@ -389,7 +387,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             res.redirect("/");
         } else {
-            tournamentController.loadTournamentScoresheet(req.params.tid, function(err, tournament) {
+            tournamentController.loadTournamentScoresheet(req.params.tid, (err, tournament) => {
                 if (err) {
                     res.status(500).send({err : err});
                 } else if (!tournament) {
@@ -404,7 +402,6 @@ module.exports = function(app) {
                     }
                 }
             });
-
         }
     });
 
@@ -415,10 +412,10 @@ module.exports = function(app) {
             } else {
                 var tournamentid = req.body.tid;
                 var teamid = req.body.teamInfo.teamID;
-                tournamentController.updateTeam(tournamentid, teamid, req.body.teamInfo, function(err, team) {
+                tournamentController.updateTeam(tournamentid, teamid, req.body.teamInfo, (err, team) => {
                     if (err) {
-                        res.status(500).end();
                         console.log(err);
+                        res.status(500).end();
                     } else if (!team){
                         res.status(200).send({team : null, msg : "A team with that name already exists."});
                     } else {
@@ -433,8 +430,7 @@ module.exports = function(app) {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
-                // console.log(req.body);
-                tournamentController.updatePlayer(req.body.tournamentidform, req.body.playerid, req.body.playername, function(err) {
+                tournamentController.updatePlayer(req.body.tournamentidform, req.body.playerid, req.body.playername, err => {
                     if (err) {
                         res.status(500).end();
                     } else {
@@ -446,17 +442,22 @@ module.exports = function(app) {
 
     app.route("/tournaments/players/create")
         .post((req, res, next) => {
-            // console.log(req.body);
             if (!req.session.director) {
                 res.status(401).end();
             } else {
-                tournamentController.addPlayer(req.body.tournamentidform, req.body.teamnameform, req.body.teamidform, req.body.newplayername, function(err, player, pointScheme, pointTypes) {
+                tournamentController.addPlayer(req.body.tournamentidform, req.body.teamnameform, req.body.teamidform, req.body.newplayername, (err, player, pointScheme, pointTypes) => {
                     if (err) {
                         console.log(err);
                         res.status(500).end();
                     } else {
-                        // console.log("Added player");
-                        res.status(200).send({err : null, player : player, msg : "Successfully added player", tid : req.body.tournamentidform, pointScheme : pointScheme, pointTypes : pointTypes});
+                        res.status(200).send({
+                            err : null,
+                            player : player,
+                            msg : "Successfully added player",
+                            tid : req.body.tournamentidform,
+                            pointScheme : pointScheme,
+                            pointTypes : pointTypes
+                        });
                     }
                 });
             }
@@ -472,7 +473,7 @@ module.exports = function(app) {
                 var description = req.body.t_description;
                 var date = req.body.t_date;
                 var questionset = req.body.t_qset;
-                tournamentController.addTournament(req.session.director, name, date, location, description, questionset, function(err, ref) {
+                tournamentController.addTournament(req.session.director, name, date, location, description, questionset, (err, ref) => {
                     if (err) {
                         res.redirect("/create");
                     } else {
@@ -487,12 +488,10 @@ module.exports = function(app) {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
-                // console.log(req.query);
                 var id = req.query["tournamentid"];
                 var teamname = req.query["teamname"];
-                tournamentController.findTeamMembers(id, teamname, function(err, players, pointScheme, pointTypes) {
+                tournamentController.findTeamMembers(id, teamname, (err, players, pointScheme, pointTypes) => {
                     if (err) {
-                        // DO STUFF
                         console.log(err);
                         res.status(500).end();
                     } else {
@@ -506,7 +505,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        tournamentController.findTournamentById(req.params.tid, function(err, result) {
+        tournamentController.findTournamentById(req.params.tid, (err, result) => {
             var team = null;
             if (result) {
                 var hasPermission = getPermission(result, req.session.director);
@@ -548,7 +547,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        tournamentController.getTeams(req.params.tid, function(err, tournament) {
+        tournamentController.getTeams(req.params.tid, (err, tournament) => {
             if (err) {
                 return res.status(500).end();
             } else if (!tournament) {
@@ -575,7 +574,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        tournamentController.findTournamentById(req.params.tid, function(err, result) {
+        tournamentController.findTournamentById(req.params.tid, (err, result) => {
             var game = null;
             var teamMap = statsController.makeTeamMap(result.teams);
             if (result) {
@@ -617,7 +616,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        tournamentController.getGames(req.params.tid, function(err, tournament) {
+        tournamentController.getGames(req.params.tid, (err, tournament) => {
             if (err) {
                 return res.status(500).end();
             } else if (!tournament) {
@@ -638,7 +637,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             res.redirect("/");
         } else {
-            tournamentController.findTournamentById(req.params.tid, function(err, result, director) {
+            tournamentController.findTournamentById(req.params.tid, (err, result, director) => {
                 if (err) {
                     res.status(500).send(err);
                 } else if (result == null) {

@@ -26,7 +26,7 @@ module.exports = function(app) {
     // });
 
     app.post("/register/local", (req, res, next) => {
-        userController.register(req.body, function(err, message) {
+        userController.register(req.body, (err, message) => {
             if (err) {
                 return res.status(500).send({err : err});
             } else if (message === "EXISTS") {
@@ -38,9 +38,8 @@ module.exports = function(app) {
     });
 
     app.post("/auth/local", (req, res, next) => {
-        userController.validateLocalLogin(req.body, function(err, valid, user) {
+        userController.validateLocalLogin(req.body, (err, valid, user) => {
             if (err) {
-                // res.status(500).send("The validation process isn't working right now");
                 res.status(500).render("index", {title : "Neg 5",
                                                 message : "Quizbowl for the Cloud",
                                                 errormsg : "The validation process isn't working right now."});
@@ -64,18 +63,16 @@ module.exports = function(app) {
     });
 
     app.post("/auth/local/edit", (req, res, next) => {
-        // console.log(req.body);
         if (!req.session.director) {
             res.status(401).end();
         } else {
-            userController.updateEmailAndName(req.session.director, req.body.dname, req.body.demail.toLowerCase(), function(err, newDirector, duplicate) {
+            userController.updateEmailAndName(req.session.director, req.body.dname, req.body.demail.toLowerCase(), (err, newDirector, duplicate) => {
                 if (err) {
                     res.status(500).end();
                 } else if (duplicate) {
                     res.status(403).end();
                 } else {
                     req.session.director = newDirector;
-                    // console.log(req.session.director);
                     res.status(200).end();
                 }
             });
@@ -86,8 +83,7 @@ module.exports = function(app) {
         if (!req.session.director) {
             res.status(401).end();
         } else {
-            // console.log(req.body);
-            userController.updateUserPassword(req.session.director, req.body.oldpass, req.body.newpass, function(err, wrong) {
+            userController.updateUserPassword(req.session.director, req.body.oldpass, req.body.newpass, (err, wrong) => {
                 if (err) {
                     res.status(500).end();
                 } else if (wrong) {
@@ -100,12 +96,9 @@ module.exports = function(app) {
     });
 
     app.get("/home", (req, res, next) => {
-        // console.log(req.session);
         if (!req.session.director) {
             res.redirect("/");
         } else {
-            // console.log("About to render home page...");
-            // res.render("home", {tournamentd : req.session.director});
             res.redirect("/tournaments");
         }
     });
@@ -113,7 +106,6 @@ module.exports = function(app) {
     app.route("/logout")
         .get((req, res, next) => {
             req.session.reset();
-            // req.logout();
             res.redirect("/");
         });
 };

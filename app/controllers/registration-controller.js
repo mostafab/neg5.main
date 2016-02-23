@@ -26,7 +26,7 @@ function createRegistration(tournamentid, directorid, information, callback) {
         tournamentid : tournamentid,
         directorid : directorid
     });
-    Tournament.findOne({shortID : tournamentid}, function(err, tournament) {
+    Tournament.findOne({shortID : tournamentid}, (err, tournament) => {
         if (err || tournament == null) {
             callback(err, null);
         } else if (!tournament.openRegistration) {
@@ -41,7 +41,7 @@ function createRegistration(tournamentid, directorid, information, callback) {
                 var update = {teamName : reg.teamName, numTeams : reg.numTeams, email : reg.email,
                     message : reg.message, tournamentid : reg.tournamentid, directorid : reg.directorid, signupTime : Date.now(), tournamentName : tournament.tournament_name};
                 var options = {upsert : true};
-                Registration.update(query, update, options, function(err) {
+                Registration.update(query, update, options, err => {
                     callback(err, null);
                 });
             }
@@ -56,11 +56,11 @@ function createRegistration(tournamentid, directorid, information, callback) {
 * @param asynchronous callback function called after this function is done.
 */
 function findRegistrationsByTournament(tournamentid, callback) {
-    Registration.find({tournamentid : tournamentid}, function(err, registrations) {
+    Registration.find({tournamentid : tournamentid}, (err, registrations) => {
         if (err) {
-            callback(err, []);
+            callback(err);
         } else {
-            registrations.sort(function(first, second) {
+            registrations.sort((first, second) => {
                 return second.signupTime - first.signupTime;
             });
             callback(null, registrations);
@@ -75,11 +75,11 @@ function findRegistrationsByTournament(tournamentid, callback) {
 * @param asynchronous callback function called after this function is done.
 */
 function findDirectorRegistrations(director, callback) {
-    Registration.find({directorid : director._id}, function(err, registrations) {
+    Registration.find({directorid : director._id}, (err, registrations) => {
         if (err) {
-            return callback(err, []);
+            return callback(err);
         } else {
-            registrations.sort(function(first, second) {
+            registrations.sort((first, second) => {
                 return second.signupTime - first.signupTime;
             });
             callback(null, registrations);
@@ -95,9 +95,9 @@ function findDirectorRegistrations(director, callback) {
 * @param asynchronous callback function called after this function is done.
 */
 function findOneRegistration(tournamentid, directorid, callback) {
-    Registration.findOne({tournamentid : tournamentid, directorid : directorid}, function(err, registration) {
+    Registration.findOne({tournamentid : tournamentid, directorid : directorid}, (err, registrations) => {
         if (err) {
-            callback(err, null);
+            callback(err);
         } else {
             callback(null, registration);
         }
@@ -111,7 +111,7 @@ function findOneRegistration(tournamentid, directorid, callback) {
 * @param asynchronous callback function called after this function is done.
 */
 function removeRegistration(regid, callback) {
-    Registration.remove({_id : regid}, function(err) {
+    Registration.remove({_id : regid}, err => {
         callback(err);
     });
 }
