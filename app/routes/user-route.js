@@ -1,3 +1,5 @@
+'use strict';
+
 const userController = require('../../app/controllers/user-controller');
 
 module.exports = app => {
@@ -9,21 +11,6 @@ module.exports = app => {
             res.render("account", {tournamentd : req.session.director});
         }
     });
-
-    // app.get("/auth/google", passport.authenticate("google", {scope : ["profile", "email"]}));
-
-    // app.get("/auth/google/callback", (req, res, next) => {
-    //     passport.authenticate("google", function(err, director) {
-    //         if (err) {
-    //             res.redirect("/");
-    //         } else if (!director) {
-    //             res.redirect("/");
-    //         } else {
-    //             req.session.director = director;
-    //             res.redirect("/home");
-    //         }
-    //     })(req, res, next);
-    // });
 
     app.post("/register/local", (req, res, next) => {
         userController.register(req.body, (err, message) => {

@@ -1,3 +1,5 @@
+'use strict';
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -16,9 +18,9 @@ const playerSchema = require("./player").schema;
 */
 const TournamentSchema = new Schema({
     createdAt : {type : Date, default : Date.now()},
-    directorid : String, // Foreign key,
+    directorid : String,
     tournament_name : {type : String, required : true},
-    collaborators : [{}], // List of ids of collaborators
+    collaborators : [{}],
     location : String,
     date : {type : Date, set : setDate},
     questionSet : String,

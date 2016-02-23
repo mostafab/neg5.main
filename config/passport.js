@@ -1,19 +1,18 @@
-var LocalStrategy = require("passport-local").Strategy;
-var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
-var configAuth = require("./auth");
+const LocalStrategy = require("passport-local").Strategy;
+const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const configAuth = require("./auth");
 
-var User = require("../app/models/user");
-var TournamentDirector = require("../app/models/tournament-director");
+const User = require("../app/models/user");
+const TournamentDirector = require("../app/models/tournament-director");
 
 module.exports = function(passport) {
 
-    passport.serializeUser(function(director, done) {
+    passport.serializeUser((director, done) => {
         done(null, director._id);
     });
 
-    passport.deserializeUser(function(id, done) {
-        TournamentDirector.findById(id, function(err, user) {
-            console.log(user);
+    passport.deserializeUser((id, done) => {
+        TournamentDirector.findById(id, (err, user) => {
             done(err, user);
         });
     });
@@ -22,40 +21,36 @@ module.exports = function(passport) {
         clientID : configAuth.googleAuth.clientID,
         clientSecret : configAuth.googleAuth.clientSecret,
         callbackURL : configAuth.googleAuth.callbackURLLocal
-    }, function(token, refreshToken, profile, done) {
+    }, (token, refreshToken, profile, done) => {
         process.nextTick(function() {
-            // console.log("Google method was called for some reason");
-            User.findOne({ $or : [{"google.id" : profile.id}, {"local.email" : profile.emails[0].value}]}, function(err, user) {
-                console.log(user);
+            User.findOne({ $or : [{"google.id" : profile.id}, {"local.email" : profile.emails[0].value}]}, (err, user) => {
                 if (err) {
                     return done(err);
                 } else if (user) {
-                    TournamentDirector.findOne({ usertoken : user._id}, function(err, director) {
-                        console.log(director);
+                    TournamentDirector.findOne({ usertoken : user._id}, (err, director) => {
                         return done(null, director);
                     });
                 } else {
-                    var newUser = new User();
+                    const newUser = new User();
                     newUser.google.id = profile.id;
                     newUser.google.token = token;
                     newUser.google.name = profile.displayName;
                     newUser.google.email = profile.emails[0].value;
-                    // newUser.local.email = profile.emails[0].value;
-                    newUser.save(function(err) {
+                    newUser.save(err => {
                         if (err) {
                             return done(err);
                         } else {
-                            TournamentDirector.findOne({email : profile.emails[0].value}, function(err, director) {
+                            TournamentDirector.findOne({email : profile.emails[0].value}, (err, director) => {
                                 if (err) {
                                     return done(err);
                                 } else if (director) {
                                     return done(null, director);
                                 } else {
-                                    var td = new TournamentDirector();
+                                    const td = new TournamentDirector();
                                     td.name = profile.displayName;
                                     td.email = profile.emails[0].value;
                                     td.usertoken = newUser._id;
-                                    td.save(function(err) {
+                                    td.save(err => {
                                         if (err) {
                                             return done(err);
                                         } else {

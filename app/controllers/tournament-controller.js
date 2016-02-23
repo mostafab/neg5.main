@@ -1,3 +1,5 @@
+'use strict';
+
 const mongoose = require("mongoose");
 const shortid = require("shortid");
 
@@ -14,7 +16,7 @@ const statsController = require("./stats-controller");
 * @return true if adding tournament succeesed, false otherwise
 */
 function addTournament(director, name, date, location, description, questionset, callback) {
-    var tourney = new Tournament({
+    const tourney = new Tournament({
         directorid : director._id,
         directoremail : director.email,
         tournament_name : name,
@@ -45,19 +47,19 @@ function findTournamentsByDirector(directorKey, callback) {
         if (err) {
             callback(err);
         } else {
-            var tournamentInfo = [];
-            for (var i = 0; i < result.length; i++) {
-                var tournament = {};
-                tournament._id = result[i]._id;
-                tournament.directorid = result[i].directorid;
-                tournament.tournament_name = result[i].tournament_name;
-                tournament.shortID = result[i].shortID;
-                tournament.location = result[i].location;
-                tournament.date = result[i].date;
-                tournament.questionSet = result[i].questionSet;
-                tournament.teamsAdded = result[i].teams.length;
+            let tournamentInfo = [];
+            result.forEach(doc => {
+                const tournament = {};
+                tournament._id = doc._id;
+                tournament.directorid = doc.directorid;
+                tournament.tournament_name = doc.tournament_name;
+                tournament.shortID = doc.shortID;
+                tournament.location = doc.location;
+                tournament.date = doc.date;
+                tournament.questionSet = doc.questionSet;
+                tournament.teamsAdded = doc.teams.length;
                 tournamentInfo.push(tournament);
-            }
+            });
             tournamentInfo.sort((first, second) => {
                 return second.date - first.date;
             });
@@ -73,7 +75,7 @@ function findTournamentsByDirector(directorKey, callback) {
 * @param callback callback with the tournament found, or null
 */
 function findTournamentById(id, callback) {
-    var query = Tournament.findOne({shortID : id}, {"games.phases" : 0}).exec((err, result) => {
+    const query = Tournament.findOne({shortID : id}, {"games.phases" : 0}).exec((err, result) => {
         if (err || result == null) {
             return callback(err, null);
         } else if (!result) {
@@ -86,7 +88,7 @@ function findTournamentById(id, callback) {
                     if (!result.phases) {
                         result.phaseName = "Full Tournament";
                     } else {
-                        for (var i = 0; i < result.phases.length; i++) {
+                        for (let i = 0; i < result.phases.length; i++) {
                             if (result.phases[i].active) {
                                 result.phaseName = result.phases[i].name;
                                 break;
@@ -159,7 +161,7 @@ function loadTournamentScoresheet(id, callback) {
                     return second.round - first.round;
                 });
                 if (tournament.games.length === 0) {
-                    tournmaent.maxRound = 1;
+                    tournament.maxRound = 1;
                 } else {
                     tournament.maxRound = tournament.games[0].round + 1;
                 }
@@ -177,43 +179,37 @@ function loadTournamentScoresheet(id, callback) {
 * @param callback callback with an error (or null), the tournament's teams, and the new team
 */
 function addTeamToTournament(tournamentid, teaminfo, callback) {
-    var newPlayers = [];
-    var newTeam = new Team({
+    let newPlayers = [];
+    const newTeam = new Team({
         team_name : teaminfo.teamName,
         divisions : teaminfo.divisions,
         shortID : shortid.generate()
     });
     if (teaminfo.players) {
-        for (var i = 0; i < teaminfo.players.length; i++) {
-            var newPlayer = new Player({
+        teaminfo.players.forEach(playerName => {
+            const newPlayer = new Player({
                 teamID : newTeam._id.toString(),
-                player_name : teaminfo.players[i],
+                player_name : playerName,
                 shortID : shortid.generate()
             });
             newPlayers.push(newPlayer);
-        }
+        });
     }
-    var tournament = {_id : tournamentid};
-    var updateQuery = {$push: {teams : newTeam}};
-    var updateQueryPlayers = {$push : {players : {$each : newPlayers}}};
+    const tournament = {_id : tournamentid};
+    const updateQuery = {$push: {teams : newTeam, players : {$each : newPlayers}}};
     Tournament.update(tournament, updateQuery, err => {
         if (err) {
+            console.log(err);
             callback(err);
         } else {
-            Tournament.update(tournament, updateQueryPlayers, err => {
+            Tournament.findOne({_id : tournamentid}, {teams : 1, collaborators : 1, directorid : 1, phases : 1, shortID : 1}, (err, result) => {
                 if (err) {
                     callback(err);
                 } else {
-                    Tournament.findOne({_id : tournamentid}, {teams : 1, collaborators : 1, directorid : 1, phases : 1, shortID : 1}, (err, result) => {
-                        if (err) {
-                            callback(err);
-                        } else {
-                            result.teams.sort((first, second) => {
-                                return first.team_name.localeCompare(second.team_name);
-                            });
-                            callback(null, result);
-                        }
+                    result.teams.sort((first, second) => {
+                        return first.team_name.localeCompare(second.team_name);
                     });
+                    callback(null, result);
                 }
             });
         }
@@ -229,16 +225,16 @@ function addTeamToTournament(tournamentid, teaminfo, callback) {
 * @param callback function called after players are found.
 */
 function findTeamMembers(tournamentid, teamid, callback) {
-    var query = Tournament.findOne({_id : tournamentid}, (err, result) => {
+    const query = Tournament.findOne({_id : tournamentid}, (err, result) => {
         if (err) {
             callback(err);
         } else if (result) {
-            var playersArr = result.players.filter((player) => {
+            let playersArr = result.players.filter((player) => {
                 return player.teamID == teamid;
             });
             playersArr.sort((first, second) => {
-                var secondGP = second.getTotalGamesPlayed(result);
-                var firstGP = first.getTotalGamesPlayed(result);
+                let secondGP = second.getTotalGamesPlayed(result);
+                let firstGP = first.getTotalGamesPlayed(result);
                 if (secondGP === firstGP) {
                     return first.player_name.localeCompare(second.player_name);
                 }
@@ -260,8 +256,8 @@ function findTeamMembers(tournamentid, teamid, callback) {
 * @param callback function called back with an error (or null) and the new game
 */
 function addGameToTournament(tournamentid, gameinfo, phases, callback) {
-    pointsJSONKeys = Object.keys(JSON.parse(gameinfo["pointValueForm"]));
-    var newGame = new Game({
+    const pointsJSONKeys = Object.keys(JSON.parse(gameinfo["pointValueForm"]));
+    const newGame = new Game({
         round : !gameinfo.round ? 0 : gameinfo.round,
         tossupsheard : !gameinfo.tossupsheard ? 0 : gameinfo.tossupsheard,
         room : !gameinfo.room ? "-" : gameinfo.room,
@@ -278,37 +274,34 @@ function addGameToTournament(tournamentid, gameinfo, phases, callback) {
     newGame.team2.team_id = gameinfo.rightteamselect;
     newGame.team2.score = !gameinfo.rightteamscore ? 0 : gameinfo.rightteamscore;
     newGame.team2.bouncebacks = !gameinfo.rightbounceback ? 0 : gameinfo.rightbounceback;
-    var playerNum = 1;
-    var playerleft = "player" + playerNum + "_leftid";
+    let playerNum = 1;
+    let playerleft = "player" + playerNum + "_leftid";
     newGame.team1.playerStats = {};
     while (gameinfo[playerleft]) {
         newGame.team1.playerStats[gameinfo[playerleft]] = {
                                                         gp : gameinfo["player" + playerNum + "_leftgp"]
                                                         };
-
-        for (var i = 0; i < pointsJSONKeys.length; i++) {
-            var currentVal = pointsJSONKeys[i];
-            newGame.team1.playerStats[gameinfo[playerleft]][currentVal] = gameinfo["player" + playerNum + "_left_" + currentVal + "val"];
-        }
+        pointsJSONKeys.forEach(pv => {
+            newGame.team1.playerStats[gameinfo[playerleft]][pv] = gameinfo["player" + playerNum + "_left_" + pv + "val"];
+        });
         playerNum++;
         playerleft = "player" + playerNum + "_leftid";
     }
     playerNum = 1;
-    var playerright = "player" + playerNum + "_rightid";
+    let playerright = "player" + playerNum + "_rightid";
     newGame.team2.playerStats = {};
     while (gameinfo[playerright]) {
         newGame.team2.playerStats[gameinfo[playerright]] = {
                                                         gp : gameinfo["player" + playerNum + "_rightgp"]
                                                           };
-        for (var i = 0; i < pointsJSONKeys.length; i++) {
-            var currentVal = pointsJSONKeys[i];
-            newGame.team2.playerStats[gameinfo[playerright]][currentVal] = gameinfo["player" + playerNum + "_right_" + currentVal + "val"];
-        }
+        pointsJSONKeys.forEach(pv => {
+            newGame.team2.playerStats[gameinfo[playerright]][pv] = gameinfo["player" + playerNum + "_right_" + pv + "val"];
+        });
         playerNum++;
         playerright = "player" + playerNum + "_rightid";
     }
-    var tournament = {_id : tournamentid};
-    var updateQuery = {$push: {games : newGame}};
+    const tournament = {_id : tournamentid};
+    const updateQuery = {$push: {games : newGame}};
     Tournament.update(tournament, updateQuery, err => {
         if (err) {
             callback(err);
@@ -335,12 +328,12 @@ function addGameToTournament(tournamentid, gameinfo, phases, callback) {
 * @param gameid id of the game to retrieve
 */
 function getGameFromTournament(tournamentid, gameid, callback) {
-    var tournamentQuery = {_id : tournamentid, "games.shortID" : gameid};
+    const tournamentQuery = {_id : tournamentid, "games.shortID" : gameid};
     Tournament.findOne(tournamentQuery, (err, result) => {
         if (err) {
             callback(err);
         } else if (result) {
-            for (var i = 0; i < result.games.length; i++) {
+            for (let i = 0; i < result.games.length; i++) {
                 if (result.games[i].shortID == gameid) {
                     removeGameFromTournament(tournamentid, result.games[i]);
                     return callback(null);
@@ -360,14 +353,14 @@ function getGameFromTournament(tournamentid, gameid, callback) {
 * @param callback function called back with an error (or null)
 */
 function removeGameFromTournament(tournamentid, gameShortID, callback) {
-    var tournamentQuery = {_id : tournamentid, "games.shortID" : gameShortID};
-    var pullQuery = {$pull : {games : {shortID : gameShortID}}};
+    const tournamentQuery = {_id : tournamentid, "games.shortID" : gameShortID};
+    const pullQuery = {$pull : {games : {shortID : gameShortID}}};
     Tournament.findOne({_id : tournamentid}, (err, tournament) => {
         if (err) {
             callback(err);
         } else {
-            for (var i = 0; i < tournament.games.length; i++) {
-                var phases = [];
+            let phases = [];
+            for (let i = 0; i < tournament.games.length; i++) {
                 if (tournament.games[i].shortID === gameShortID) {
                     phases = tournament.games[i].phases ? tournament.games[i].phases : [];
                     break;
@@ -391,18 +384,18 @@ function removeGameFromTournament(tournamentid, gameShortID, callback) {
 * @param callback callback function called back after function is done
 */
 function removeTeamFromTournament(tournamentid, teaminfo, callback) {
-    var tournamentQuery = {_id : tournamentid, "teams.shortID" : teaminfo.teamid_form};
-    var fields = {teams : 1, games : 1};
+    const tournamentQuery = {_id : tournamentid, "teams.shortID" : teaminfo.teamid_form};
+    const fields = {teams : 1, games : 1};
     Tournament.findOne(tournamentQuery, fields, (err, result) => {
         if (err || result == null) {
             callback(err, null);
         } else {
-            var teamid = -1;
-            var teamMap = statsController.makeTeamMap(result.teams);
-            for (var i = 0; i < result.teams.length; i++) {
+            let teamid = -1;
+            const teamMap = statsController.makeTeamMap(result.teams);
+            for (let i = 0; i < result.teams.length; i++) {
                 if (result.teams[i].shortID === teaminfo.teamid_form) {
                     teamid = result.teams[i]._id.toString();
-                    var gamesWithTeam = result.games.filter(game => {
+                    let gamesWithTeam = result.games.filter(game => {
                         return game.team1.team_id == teamid || game.team2.team_id == teamid;
                     });
                     if (gamesWithTeam.length > 0) {
@@ -442,7 +435,7 @@ function updateTeam(tournamentid, teamid, newinfo, callback) {
             console.log(err);
             return callback(err);
         } else {
-            for (var i = 0; i < result.teams.length; i++) {
+            for (let i = 0; i < result.teams.length; i++) {
                 if (result.teams[i].team_name == newinfo.teamName
                         && result.teams[i]._id != newinfo.teamID) {
                     return callback(null, null);
@@ -485,8 +478,8 @@ function updatePlayer(tournamentID, playerID, newPlayerName, callback) {
 * @param callback callback called with an error or null
 */
 function removePlayer(tournamentID, playerID, callback) {
-    var tournamentQuery = {_id : tournamentID, "players._id" : playerID};
-    var pullQuery = {$pull : {players : {_id : playerID}}};
+    const tournamentQuery = {_id : tournamentID, "players._id" : playerID};
+    const pullQuery = {$pull : {players : {_id : playerID}}};
     Tournament.update(tournamentQuery, pullQuery, err => {
         callback(err);
     });
@@ -502,8 +495,8 @@ function removePlayer(tournamentID, playerID, callback) {
 * @param callback callback function with the new player and the tournament's point scheme
 */
 function addPlayer(tournamentID, teamName, teamID, playerName, callback) {
-    var tournamentQuery = {_id : tournamentID};
-    var newPlayer = new Player({
+    const tournamentQuery = {_id : tournamentID};
+    const newPlayer = new Player({
         player_name : playerName,
         teamID : teamID
     });
@@ -513,7 +506,7 @@ function addPlayer(tournamentID, teamName, teamID, playerName, callback) {
             callback(err, null);
         } else {
             newPlayer.pointValues = result.pointScheme;
-            var pushQuery = {$push : {players : newPlayer}};
+            const pushQuery = {$push : {players : newPlayer}};
             Tournament.update(tournamentQuery, pushQuery, err => {
                 if (err) {
                     callback(err);
@@ -600,7 +593,7 @@ function updateTournamentInformation(tournamentid, information, directorid, call
         } else if (!result) {
             callback(null, null);
         } else {
-            var filtered = result.collaborators.filter(collab => {
+            let filtered = result.collaborators.filter(collab => {
                 return collab._id == directorid;
             });
             if (result.directorid == directorid || filtered.length > 0) {
@@ -625,7 +618,7 @@ function updateTournamentInformation(tournamentid, information, directorid, call
 function findDirectors(query, callback) {
     query = query.trim();
     try {
-        var rex = new RegExp(".*" + query + ".*", "i");
+        const rex = new RegExp(".*" + query + ".*", "i");
         TournamentDirector.find({$or : [{email : rex}, {name : rex}]}, (err, directors) => {
             if (err) {
                 console.log(err);
@@ -637,8 +630,8 @@ function findDirectors(query, callback) {
                 callback(null, directors);
             }
         });
-    } catch (err) {
-        callback(err, []);
+    } catch (exception) {
+        callback(exception, []);
     }
 }
 
@@ -655,7 +648,7 @@ function addCollaborator(tournamentid, collaborator, callback) {
         if (err) {
             callback(err);
         } else if (tournament) {
-            for (var j = 0; j < tournament.collaborators.length; j++) {
+            for (let j = 0; j < tournament.collaborators.length; j++) {
                 if (tournament.collaborators[j].id == collaborator.id || collaborator.id == tournament.directorid) {
                     return callback(null, true);
                 }
@@ -704,7 +697,7 @@ function findCollaborators(tournamentid, callback) {
 * @param callback callback with the new game's shortID
 */
 function addScoresheetAsGame(tournamentid, game, scoresheet, callback) {
-    var newGame = new Game();
+    const newGame = new Game();
     newGame.team1 = game.team1;
     newGame.team2 = game.team2;
     newGame.round = game.round;
@@ -716,7 +709,7 @@ function addScoresheetAsGame(tournamentid, game, scoresheet, callback) {
     newGame.phase_id = game.phase_id;
     newGame.phases = !scoresheet.phases ? [] : scoresheet.phases;
     newGame.shortID = shortid.generate();
-    for (var i = 0; i < newGame.phases.length; i++) {
+    for (let i = 0; i < newGame.phases.length; i++) {
         if (!newGame.phases[i].tossup) {
             newGame.phases[i].tossup = {answers : []};
         }
@@ -747,7 +740,7 @@ function cloneTournament(tournamentid, phaseName, callback) {
         } else if (!tournament) {
             callback(null, null);
         } else {
-            var newTournament = new Tournament();
+            const newTournament = new Tournament();
             newTournament.tournament_name = phaseName;
             newTournament.shortID = shortid.generate();
             newTournament.teams = tournament.teams;
@@ -791,7 +784,7 @@ function removePhase(tournamentid, phaseID, directorid, callback) {
             if (tournament.phases.length === 1) {
                 return callback(null, null, false);
             }
-            for (var i = 0; i < tournament.games.length; i++) {
+            for (let i = 0; i < tournament.games.length; i++) {
                 if (tournament.games[i].phase_id.indexOf(phaseID) != -1) {
                     return callback(null, null, false);
                 }
@@ -812,14 +805,14 @@ function switchPhases(tournamentid, phaseID, directorid, callback) {
         } else if (tournament.directorid != directorid) {
             return callback(null, 'unauthorized', false);
         } else {
-            var newPhases = [];
-            for (var i = 0; i < tournament.phases.length; i++) {
-                var phase = {phase_id : tournament.phases[i].phase_id, name : tournament.phases[i].name, active : false};
+            let newPhases = [];
+            tournament.phases.forEach(phase => {
+                var phaseObj = {phase_id : phase.phase_id, name : phase.name, active : false};
                 if (phase.phase_id == phaseID) {
                     phase.active = true;
                 }
                 newPhases.push(phase);
-            }
+            });
             Tournament.update({_id : tournament._id}, {$set : {phases : newPhases}}, err => {
                 callback(err, null, true);
             });
@@ -862,7 +855,7 @@ function editPhases(tournamentid, directorid, newPhases, callback) {
 * @param callback callback with the new tournament (or null if error) and an error (or null)
 */
 function mergeTournaments(firstTournamentID, secondTournamentID, name, callback) {
-    var mergedTourney = new Tournament();
+    const mergedTourney = new Tournament();
     mergedTourney.tournament_name = name;
     mergedTourney.shortID = shortid.generate();
     mergedTourney.teams = [];
@@ -880,7 +873,7 @@ function mergeTournaments(firstTournamentID, secondTournamentID, name, callback)
             mergedTourney.divisions = first.divisions;
             mergedTourney.games = mergedTourney.games.concat(first.games);
             mergedTourney.collaborators = first.collaborators;
-            var date = new Date(first.date);
+            const date = new Date(first.date);
             mergedTourney.date = date;
             mergedTourney.location = first.location;
             mergedTourney.directorid = first.directorid;
@@ -897,24 +890,24 @@ function mergeTournaments(firstTournamentID, secondTournamentID, name, callback)
                     callback(null, null);
                 } else {
                     mergedTourney.games = mergedTourney.games.concat(second.games);
-                    var existingTeams = {};
-                    var existingPlayers = {};
-                    for (var i = 0; i < mergedTourney.teams.length; i++) {
-                        existingTeams[mergedTourney.teams[i]._id] = true;
-                    }
-                    for (var i = 0; i < mergedTourney.players.length; i++) {
-                        existingPlayers[mergedTourney.players[i]._id] = true;
-                    }
-                    for (var i = 0; i < second.teams.length; i++) {
-                        if (!existingTeams[second.teams[i]._id]) {
-                            mergedTourney.teams.push(second.teams[i]);
+                    const existingTeams = {};
+                    const existingPlayers = {};
+                    mergedTourney.teams.forEach(team => {
+                        existingTeams[team._id] = true;
+                    });
+                    mergedTourney.players.forEach(player => {
+                        existingPlayers[player._id] = true;
+                    });
+                    second.teams.forEach(team => {
+                        if (!existingTeams[team._id]) {
+                            mergedTourney.teams.push(team);
                         }
-                    }
-                    for (var i = 0; i < second.players.length; i++) {
-                        if (!existingPlayers[second.players[i]._id]) {
-                            mergedTourney.players.push(second.players[i]);
+                    });
+                    second.players.forEach(player => {
+                        if (!existingPlayers[player._id]) {
+                            mergedTourney.players.push(player);
                         }
-                    }
+                    });
                     mergedTourney.save(err => {
                         if (err) {
                             console.log(err);

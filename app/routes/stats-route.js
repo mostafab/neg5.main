@@ -1,3 +1,5 @@
+'use strict';
+
 const mongoose = require("mongoose");
 const Tournament = mongoose.model("Tournament");
 const statsController = require("../../app/controllers/stats-controller");
@@ -20,7 +22,7 @@ module.exports = app => {
     // });
 
     app.get("/t/:tid/stats", (req, res, next) => {
-        var tournament = req.params.tid;
+        const tournament = req.params.tid;
         res.redirect("/t/" + tournament + "/stats/team?phase=1");
     });
 
@@ -31,7 +33,7 @@ module.exports = app => {
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, divisions : tournament.divisions, phaseInfo : tournament.phaseInfo};
                 res.render("quick-teams", {tournament : tournamentData, teamInfo : teamInfo, custom : false});
             }
@@ -45,8 +47,8 @@ module.exports = app => {
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                var linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(/\s/g, "_").toLowerCase();
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                const linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(/\s/g, "_").toLowerCase();
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, divisions : tournament.divisions, phaseInfo : tournament.phaseInfo};
                 res.render("quick-teams-simple", {tournament : tournamentData, teamInfo : teamInfo, linkName : linkTournamentName});
             }
@@ -60,7 +62,7 @@ module.exports = app => {
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, phaseInfo : tournament.phaseInfo};
                 res.render("quick-players", {tournament : tournamentData, playersInfo : playersInfo, custom : false});
             }
@@ -74,8 +76,8 @@ module.exports = app => {
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                var linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                const linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, phaseInfo : tournament.phaseInfo};
                 res.render("quick-players-simple", {tournament : tournamentData, playersInfo : playersInfo, linkName : linkTournamentName});
             }
@@ -89,7 +91,7 @@ module.exports = app => {
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, phaseInfo : tournament.phaseInfo};
                 res.render("full-teams", {tournament : tournamentData, teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals});
             }
@@ -103,9 +105,8 @@ module.exports = app => {
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                // console.log(teamTotals);
-                var linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                const linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, phaseInfo : tournament.phaseInfo};
                 res.render("full-team-simple", {tournament : tournamentData, teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals,
                     linkName : linkTournamentName});
@@ -120,7 +121,7 @@ module.exports = app => {
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, phaseInfo : tournament.phaseInfo};
                 res.render("full-player", {playersInfo : playersInfo, tournament : tournamentData, playerTotals : playerTotals});
             }
@@ -134,8 +135,8 @@ module.exports = app => {
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                var linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                const linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, phaseInfo : tournament.phaseInfo};
                 res.render("full-players-simple", {playersInfo : playersInfo, tournament : tournamentData, playerTotals : playerTotals,
                     linkName : linkTournamentName});
@@ -150,7 +151,7 @@ module.exports = app => {
             } else if (tournament == null) {
                 res.status(404).end();
             } else {
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID, phaseInfo : tournament.phaseInfo};
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID, phaseInfo : tournament.phaseInfo};
                 res.render("round-report", {tournament : tournamentData, roundsInfo : roundsInfo});
             }
         });
@@ -163,15 +164,15 @@ module.exports = app => {
             } else if (tournament == null) {
                 res.status(404).end();
             } else {
-                var linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID, phaseInfo : tournament.phaseInfo};
+                const linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID, phaseInfo : tournament.phaseInfo};
                 res.render("round-report-simple", {tournament : tournamentData, roundsInfo : roundsInfo, linkName : linkTournamentName});
             }
         });
     });
 
     app.get('/t/:tid/stats/filter/teams', (req, res) => {
-        var constraints = {};
+        const constraints = {};
         constraints.teams = req.query.teams;
         if (req.query.minround.length == 0) {
             constraints.minround = Number.NEGATIVE_INFINITY;
@@ -190,7 +191,7 @@ module.exports = app => {
                 res.send("Couldn't find that tournament");
             } else {
                 tournament.divisions = [];
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, divisions : tournament.divisions};
                 res.render("quick-teams", {tournament : tournamentData, teamInfo : teamInfo, custom : true});
             }
@@ -198,7 +199,7 @@ module.exports = app => {
     });
 
     app.get("/t/:tid/stats/filter/players", (req, res) => {
-        var constraints = {};
+        const constraints = {};
         constraints.teams = req.query.teams;
         if (req.query.minround.length == 0) {
             constraints.minround = Number.NEGATIVE_INFINITY;
@@ -216,7 +217,7 @@ module.exports = app => {
             } else if (tournament == null) {
                 res.status(404).send("Couldn't find that tournament");
             } else {
-                var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme};
                 res.render("quick-players", {tournament : tournamentData, playersInfo : playersInfo, custom : true});
             }

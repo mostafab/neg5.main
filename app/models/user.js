@@ -1,3 +1,5 @@
+'use strict';
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcryptjs = require("bcryptjs");
@@ -36,7 +38,7 @@ UserSchema.methods.validPassword = function(password) {
 }
 
 UserSchema.methods.comparePassword = function(testingPassword, cb) {
-    bcryptjs.compare(testingPassword, this.password, function(err, isMatch) {
+    bcryptjs.compare(testingPassword, this.password, (err, isMatch) => {
         if (err) {
             return cb(err);
         } else {

@@ -1,3 +1,5 @@
+'use strict';
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const playerSchema = require("./player").schema;
@@ -18,9 +20,8 @@ const teamSchema = new Schema({
 * @return team record
 */
 teamSchema.methods.getRecord = function(tournament) {
-    var record = {"wins" : 0, "losses" : 0, "ties" : 0};
-    for (var i = 0; i < tournament.games.length; i++) {
-        var current = tournament.games[i];
+    const record = {"wins" : 0, "losses" : 0, "ties" : 0};
+    tournament.games.forEach(current => {
         if ((current.team1.team_id == this._id && current.team1.score > current.team2.score)
                 || (current.team2.team_id == this._id && current.team2.score > current.team1.score)) {
             record.wins++;
@@ -31,7 +32,7 @@ teamSchema.methods.getRecord = function(tournament) {
                 || (current.team2.team_id == this._id && current.team2.score == current.team1.score)) {
             record.ties++;
         }
-    }
+    });
     return record;
 }
 
@@ -41,12 +42,11 @@ teamSchema.methods.getRecord = function(tournament) {
 * @param constraints bounds on rounds
 */
 teamSchema.methods.getRecordFiltered = function(tournament, constraints) {
-    var record = {"wins" : 0, "losses" : 0, "ties" : 0};
-    var filteredGames = tournament.games.filter(function(game) {
+    const record = {"wins" : 0, "losses" : 0, "ties" : 0};
+    var filteredGames = tournament.games.filter(game => {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
     });
-    for (var i = 0; i < filteredGames.length; i++) {
-        var current = filteredGames[i];
+    filteredGames.forEach(current => {
         if ((current.team1.team_id == this._id && current.team1.score > current.team2.score)
                 || (current.team2.team_id == this._id && current.team2.score > current.team1.score)) {
             record.wins++;
@@ -57,7 +57,7 @@ teamSchema.methods.getRecordFiltered = function(tournament, constraints) {
                 || (current.team2.team_id == this._id && current.team2.score == current.team1.score)) {
             record.ties++;
         }
-    }
+    });
     return record;
 }
 
@@ -80,10 +80,9 @@ teamSchema.methods.getWinPercentage = function(record) {
 * @return team ppg
 */
 teamSchema.methods.getPointsPerGame = function(tournament) {
-    totalPoints = 0;
-    totalGames = 0;
-    for (var i = 0; i < tournament.games.length; i++) {
-        var currentGame = tournament.games[i];
+    let totalPoints = 0;
+    let totalGames = 0;
+    tournament.games.forEach(currentGame => {
         if (currentGame.team1.team_id == this._id) {
             totalPoints += currentGame.team1.score;
             totalGames++;
@@ -91,7 +90,7 @@ teamSchema.methods.getPointsPerGame = function(tournament) {
             totalPoints += currentGame.team2.score;
             totalGames++;
         }
-    }
+    });
     if (totalGames == 0) {
         return 0;
     } else {
@@ -105,13 +104,12 @@ teamSchema.methods.getPointsPerGame = function(tournament) {
 * @param constraints limits on rounds
 */
 teamSchema.methods.getPointsPerGameFiltered = function(tournament, constraints) {
-    totalPoints = 0;
-    totalGames = 0;
-    var filteredGames = tournament.games.filter(function(game) {
+    let totalPoints = 0;
+    let totalGames = 0;
+    const filteredGames = tournament.games.filter(game => {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
     });
-    for (var i = 0; i < filteredGames.length; i++) {
-        var currentGame = filteredGames[i];
+    filteredGames.forEach(currentGame => {
         if (currentGame.team1.team_id == this._id) {
             totalPoints += currentGame.team1.score;
             totalGames++;
@@ -119,7 +117,7 @@ teamSchema.methods.getPointsPerGameFiltered = function(tournament, constraints) 
             totalPoints += currentGame.team2.score;
             totalGames++;
         }
-    }
+    });
     if (totalGames == 0) {
         return 0;
     } else {
@@ -133,10 +131,9 @@ teamSchema.methods.getPointsPerGameFiltered = function(tournament, constraints) 
 * @return opponent ppg
 */
 teamSchema.methods.getOpponentPPG = function(tournament) {
-    totalPoints = 0;
-    totalGames = 0;
-    for (var i = 0; i < tournament.games.length; i++) {
-        var currentGame = tournament.games[i];
+    let totalPoints = 0;
+    let totalGames = 0;
+    tournament.games.forEach(currentGame => {
         if (currentGame.team1.team_id == this._id) {
             totalPoints += currentGame.team2.score;
             totalGames++;
@@ -144,7 +141,7 @@ teamSchema.methods.getOpponentPPG = function(tournament) {
             totalPoints += currentGame.team1.score;
             totalGames++;
         }
-    }
+    });
     if (totalGames == 0) {
         return 0;
     } else {
@@ -158,13 +155,12 @@ teamSchema.methods.getOpponentPPG = function(tournament) {
 * @param constraints bounds on rounds
 */
 teamSchema.methods.getOpponentPPGFiltered = function(tournament, constraints) {
-    totalPoints = 0;
-    totalGames = 0;
-    var filteredGames = tournament.games.filter(function(game) {
+    let totalPoints = 0;
+    let totalGames = 0;
+    const filteredGames = tournament.games.filter(game => {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
     });
-    for (var i = 0; i < filteredGames.length; i++) {
-        var currentGame = filteredGames[i];
+    filteredGames.forEach(currentGame => {
         if (currentGame.team1.team_id == this._id) {
             totalPoints += currentGame.team2.score;
             totalGames++;
@@ -172,7 +168,7 @@ teamSchema.methods.getOpponentPPGFiltered = function(tournament, constraints) {
             totalPoints += currentGame.team1.score;
             totalGames++;
         }
-    }
+    });
     if (totalGames == 0) {
         return 0;
     } else {
@@ -186,19 +182,18 @@ teamSchema.methods.getOpponentPPGFiltered = function(tournament, constraints) {
 * @return a team's total tossups in JSON
 */
 teamSchema.methods.getTossupTotals = function(tournament) {
-    var pointTotals = {};
-    for (var pointValue in tournament.pointScheme) {
+    const pointTotals = {};
+    for (let pointValue in tournament.pointScheme) {
         if (tournament.pointScheme.hasOwnProperty(pointValue)) {
             pointTotals[pointValue] = 0;
         }
     }
-    for (var i = 0; i < tournament.games.length; i++) {
-        var current = tournament.games[i];
+    tournament.games.forEach(current => {
         if (current.team1.team_id == this._id && current.team1.playerStats) {
-            for (var player in current.team1.playerStats) {
+            for (let player in current.team1.playerStats) {
                 if (current.team1.playerStats.hasOwnProperty(player)) {
-                    var stats = current.team1.playerStats[player];
-                    for (var pointValue in tournament.pointScheme) {
+                    const stats = current.team1.playerStats[player];
+                    for (let pointValue in tournament.pointScheme) {
                         if (tournament.pointScheme.hasOwnProperty(pointValue)) {
                             if (stats[pointValue] && pointTotals[pointValue] != undefined) {
                                 pointTotals[pointValue] += parseFloat(stats[pointValue]);
@@ -208,10 +203,10 @@ teamSchema.methods.getTossupTotals = function(tournament) {
                 }
             }
         } else if (current.team2.team_id == this._id && current.team2.playerStats) {
-            for (var player in current.team2.playerStats) {
+            for (let player in current.team2.playerStats) {
                 if (current.team2.playerStats.hasOwnProperty(player)) {
-                    var stats = current.team2.playerStats[player];
-                    for (var pointValue in tournament.pointScheme) {
+                    const stats = current.team2.playerStats[player];
+                    for (let pointValue in tournament.pointScheme) {
                         if (tournament.pointScheme.hasOwnProperty(pointValue)) {
                             if (stats[pointValue] && pointTotals[pointValue] != undefined) {
                                 pointTotals[pointValue] += parseFloat(stats[pointValue]);
@@ -221,7 +216,7 @@ teamSchema.methods.getTossupTotals = function(tournament) {
                 }
             }
         }
-    }
+    });
     return pointTotals;
 }
 
@@ -232,22 +227,21 @@ teamSchema.methods.getTossupTotals = function(tournament) {
 * @return a team's total tossups in JSON
 */
 teamSchema.methods.getTossupTotalsFiltered = function(tournament, constraints) {
-    var pointTotals = {};
-    for (var pointValue in tournament.pointScheme) {
+    const pointTotals = {};
+    for (let pointValue in tournament.pointScheme) {
         if (tournament.pointScheme.hasOwnProperty(pointValue)) {
             pointTotals[pointValue] = 0;
         }
     }
-    var filteredGames = tournament.games.filter(function(game) {
+    const filteredGames = tournament.games.filter(function(game) {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
     });
-    for (var i = 0; i < filteredGames.length; i++) {
-        var current = filteredGames[i];
+    filteredGames.forEach(current => {
         if (current.team1.team_id == this._id && current.team1.playerStats) {
-            for (var player in current.team1.playerStats) {
+            for (let player in current.team1.playerStats) {
                 if (current.team1.playerStats.hasOwnProperty(player)) {
-                    var stats = current.team1.playerStats[player];
-                    for (var pointValue in tournament.pointScheme) {
+                    const stats = current.team1.playerStats[player];
+                    for (let pointValue in tournament.pointScheme) {
                         if (tournament.pointScheme.hasOwnProperty(pointValue)) {
                             if (stats[pointValue] && pointTotals[pointValue] != undefined) {
                                 pointTotals[pointValue] += parseFloat(stats[pointValue]);
@@ -257,10 +251,10 @@ teamSchema.methods.getTossupTotalsFiltered = function(tournament, constraints) {
                 }
             }
         } else if (current.team2.team_id == this._id && current.team2.playerStats) {
-            for (var player in current.team2.playerStats) {
+            for (let player in current.team2.playerStats) {
                 if (current.team2.playerStats.hasOwnProperty(player)) {
-                    var stats = current.team2.playerStats[player];
-                    for (var pointValue in tournament.pointScheme) {
+                    const stats = current.team2.playerStats[player];
+                    for (let pointValue in tournament.pointScheme) {
                         if (tournament.pointScheme.hasOwnProperty(pointValue)) {
                             if (stats[pointValue] && pointTotals[pointValue] != undefined) {
                                 pointTotals[pointValue] += parseFloat(stats[pointValue]);
@@ -270,7 +264,7 @@ teamSchema.methods.getTossupTotalsFiltered = function(tournament, constraints) {
                 }
             }
         }
-    }
+    });
     return pointTotals;
 }
 
@@ -281,17 +275,17 @@ teamSchema.methods.getTossupTotalsFiltered = function(tournament, constraints) {
 * @return tossup totals for one game
 */
 teamSchema.methods.getTossupTotalsOneGame = function(game, tournament) {
-    var pointTotals = {};
-    for (var pointValue in tournament.pointScheme) {
+    const pointTotals = {};
+    for (let pointValue in tournament.pointScheme) {
         if (tournament.pointScheme.hasOwnProperty(pointValue)) {
             pointTotals[pointValue] = 0;
         }
     }
     if (game.team1.team_id == this._id && game.team1.playerStats) {
-        for (var player in game.team1.playerStats) {
+        for (let player in game.team1.playerStats) {
             if (game.team1.playerStats.hasOwnProperty(player)) {
-                var stats = game.team1.playerStats[player];
-                for (var pointValue in tournament.pointScheme) {
+                const stats = game.team1.playerStats[player];
+                for (let pointValue in tournament.pointScheme) {
                     if (tournament.pointScheme.hasOwnProperty(pointValue)) {
                         if (stats[pointValue] && pointTotals[pointValue] != undefined) {
                             pointTotals[pointValue] += parseFloat(stats[pointValue]);
@@ -301,10 +295,10 @@ teamSchema.methods.getTossupTotalsOneGame = function(game, tournament) {
             }
         }
     } else if (game.team2.team_id == this._id && game.team2.playerStats) {
-        for (var player in game.team2.playerStats) {
+        for (let player in game.team2.playerStats) {
             if (game.team2.playerStats.hasOwnProperty(player)) {
-                var stats = game.team2.playerStats[player];
-                for (var pointValue in tournament.pointScheme) {
+                const stats = game.team2.playerStats[player];
+                for (let pointValue in tournament.pointScheme) {
                     if (tournament.pointScheme.hasOwnProperty(pointValue)) {
                         if (stats[pointValue] && pointTotals[pointValue] != undefined) {
                             pointTotals[pointValue] += parseFloat(stats[pointValue]);
@@ -324,17 +318,16 @@ teamSchema.methods.getTossupTotalsOneGame = function(game, tournament) {
 * @return total bonus points
 */
 teamSchema.methods.getTotalBonusPoints = function(tournament) {
-    var pointTotals = this.getTossupTotals(tournament);
-    var totalPoints = 0;
-    for (var i = 0; i < tournament.games.length; i++) {
-        var currentGame = tournament.games[i];
+    const pointTotals = this.getTossupTotals(tournament);
+    let totalPoints = 0;
+    tournament.games.forEach(currentGame => {
         if (currentGame.team1.team_id == this._id) {
             totalPoints += currentGame.team1.score - currentGame.team1.bouncebacks;
         } else if (currentGame.team2.team_id == this._id) {
             totalPoints += currentGame.team2.score - currentGame.team2.bouncebacks;
         }
-    }
-    for (var point in pointTotals) {
+    });
+    for (let point in pointTotals) {
         if (pointTotals.hasOwnProperty(point)) {
             totalPoints -= parseFloat(point) * parseFloat(pointTotals[point]);
         }
@@ -349,20 +342,19 @@ teamSchema.methods.getTotalBonusPoints = function(tournament) {
 * @return total bonus points
 */
 teamSchema.methods.getTotalBonusPointsFiltered = function(tournament, constraints) {
-    var filteredGames = tournament.games.filter(function(game) {
+    const filteredGames = tournament.games.filter(game => {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
     });
-    var pointTotals = this.getTossupTotalsFiltered(tournament, constraints);
-    var totalPoints = 0;
-    for (var i = 0; i < filteredGames.length; i++) {
-        var currentGame = filteredGames[i];
+    const pointTotals = this.getTossupTotalsFiltered(tournament, constraints);
+    let totalPoints = 0;
+    filteredGames.forEach(currentGame => {
         if (currentGame.team1.team_id == this._id) {
             totalPoints += currentGame.team1.score - currentGame.team1.bouncebacks;
         } else if (currentGame.team2.team_id == this._id) {
             totalPoints += currentGame.team2.score - currentGame.team2.bouncebacks;
         }
-    }
-    for (var point in pointTotals) {
+    });
+    for (let point in pointTotals) {
         if (pointTotals.hasOwnProperty(point)) {
             totalPoints -= parseFloat(point) * parseFloat(pointTotals[point]);
         }
@@ -377,14 +369,14 @@ teamSchema.methods.getTotalBonusPointsFiltered = function(tournament, constraint
 * @return bonus points for team
 */
 teamSchema.methods.getBonusPointsOneGame = function(game, tournament) {
-    var pointTotals = this.getTossupTotalsOneGame(game, tournament);
-    var bonusPoints = 0;
+    const pointTotals = this.getTossupTotalsOneGame(game, tournament);
+    let bonusPoints = 0;
     if (game.team1.team_id == this._id) {
         bonusPoints += game.team1.score - game.team1.bouncebacks;
     } else {
         bonusPoints += game.team2.score - game.team2.bouncebacks;
     }
-    for (var point in pointTotals) {
+    for (let point in pointTotals) {
         if (pointTotals.hasOwnProperty(point)) {
             bonusPoints -= parseFloat(point) * parseFloat(pointTotals[point]);
         }
@@ -399,14 +391,13 @@ teamSchema.methods.getBonusPointsOneGame = function(game, tournament) {
 * @return team's total gets
 */
 teamSchema.methods.getTotalGets = function(tournament) {
-    var pointTotals = this.getTossupTotals(tournament);
-    var totalGets = 0;
-    for (var values in pointTotals) {
+    const pointTotals = this.getTossupTotals(tournament);
+    let totalGets = 0;
+    for (let values in pointTotals) {
         if (pointTotals.hasOwnProperty(values) && tournament.pointsTypes[values] != "N") {
             totalGets += pointTotals[values];
         }
     }
-    // console.log("Gets: " + totalGets);
     return totalGets;
 }
 
@@ -417,14 +408,13 @@ teamSchema.methods.getTotalGets = function(tournament) {
 * @return team's total gets
 */
 teamSchema.methods.getTotalGetsFiltered = function(tournament, constraints) {
-    var pointTotals = this.getTossupTotalsFiltered(tournament, constraints);
-    var totalGets = 0;
-    for (var values in pointTotals) {
+    const pointTotals = this.getTossupTotalsFiltered(tournament, constraints);
+    let totalGets = 0;
+    for (let values in pointTotals) {
         if (pointTotals.hasOwnProperty(values) && tournament.pointsTypes[values] != "N") {
             totalGets += pointTotals[values];
         }
     }
-    // console.log("Gets: " + totalGets);
     return totalGets;
 }
 
@@ -435,9 +425,9 @@ teamSchema.methods.getTotalGetsFiltered = function(tournament, constraints) {
 * @return total gets for one game
 */
 teamSchema.methods.getTotalGetsOneGame = function(game, tournament) {
-    var pointTotals = this.getTossupTotalsOneGame(game, tournament);
-    var totalGets = 0;
-    for (var values in pointTotals) {
+    const pointTotals = this.getTossupTotalsOneGame(game, tournament);
+    let totalGets = 0;
+    for (let values in pointTotals) {
         if (pointTotals.hasOwnProperty(values) && tournament.pointsTypes[values] != "N") {
             totalGets += pointTotals[values];
         }
@@ -451,9 +441,9 @@ teamSchema.methods.getTotalGetsOneGame = function(game, tournament) {
 * @return a team's total negs
 */
 teamSchema.methods.getTotalNegs = function(tournament) {
-    var pointTotals = this.getTossupTotals(tournament);
-    var totalNegs = 0;
-    for (var values in pointTotals) {
+    const pointTotals = this.getTossupTotals(tournament);
+    let totalNegs = 0;
+    for (let values in pointTotals) {
         if (pointTotals.hasOwnProperty(values) && tournament.pointsTypes[values] == "N") {
             totalNegs += pointTotals[values];
         }
@@ -467,13 +457,12 @@ teamSchema.methods.getTotalNegs = function(tournament) {
 * @return tossups heard
 */
 teamSchema.methods.getTossupsHeard = function(tournament) {
-    totalTossups = 0;
-    for (var i = 0; i < tournament.games.length; i++) {
-        var currentGame = tournament.games[i];
+    let totalTossups = 0;
+    tournament.games.forEach(currentGame => {
         if (currentGame.team1.team_id == this._id || currentGame.team2.team_id == this._id) {
             totalTossups += currentGame.tossupsheard;
         }
-    }
+    });
     return totalTossups;
 }
 
@@ -484,16 +473,15 @@ teamSchema.methods.getTossupsHeard = function(tournament) {
 * @return tossups heard
 */
 teamSchema.methods.getTossupsHeardFiltered = function(tournament, constraints) {
-    totalTossups = 0;
-    var filteredGames = tournament.games.filter(function(game) {
+    let totalTossups = 0;
+    const filteredGames = tournament.games.filter(game => {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
     });
-    for (var i = 0; i < filteredGames.length; i++) {
-        var currentGame = filteredGames[i];
+    filteredGames.forEach(currentGame => {
         if (currentGame.team1.team_id == this._id || currentGame.team2.team_id == this._id) {
             totalTossups += currentGame.tossupsheard;
         }
-    }
+    });
     return totalTossups;
 }
 
@@ -503,8 +491,8 @@ teamSchema.methods.getTossupsHeardFiltered = function(tournament, constraints) {
 * @return team's overall points-per-bonus
 */
 teamSchema.methods.getOverallPPB = function(tournament) {
-    var totalBonusPoints = this.getTotalBonusPoints(tournament);
-    var totalGets = this.getTotalGets(tournament);
+    const totalBonusPoints = this.getTotalBonusPoints(tournament);
+    const totalGets = this.getTotalGets(tournament);
     if (totalGets == 0) {
         return 0;
     }
@@ -518,8 +506,8 @@ teamSchema.methods.getOverallPPB = function(tournament) {
 * @return team's overall points-per-bonus
 */
 teamSchema.methods.getOverallPPBFiltered = function(tournament, constraints) {
-    var totalBonusPoints = this.getTotalBonusPointsFiltered(tournament, constraints);
-    var totalGets = this.getTotalGetsFiltered(tournament, constraints);
+    const totalBonusPoints = this.getTotalBonusPointsFiltered(tournament, constraints);
+    const totalGets = this.getTotalGetsFiltered(tournament, constraints);
     if (totalGets == 0) {
         return 0;
     }
@@ -533,8 +521,8 @@ teamSchema.methods.getOverallPPBFiltered = function(tournament, constraints) {
 * @return points-per-bonus for one game
 */
 teamSchema.methods.getPPBOneGame = function(game, tournament) {
-    var bonusPoints = this.getBonusPointsOneGame(game, tournament);
-    var totalGets = this.getTotalGetsOneGame(game, tournament);
+    const bonusPoints = this.getBonusPointsOneGame(game, tournament);
+    const totalGets = this.getTotalGetsOneGame(game, tournament);
     if (totalGets == 0) {
         return 0;
     }
@@ -566,15 +554,14 @@ teamSchema.methods.getAverageMarginOfVictoryFiltered = function(tournament, cons
 * @return total bounceback points
 */
 teamSchema.methods.getTotalBouncebackPoints = function(tournament) {
-    var totalBouncebackPoints = 0;
-    for (var i = 0; i < tournament.games.length; i++) {
-        var currentGame = tournament.games[i];
+    let totalBouncebackPoints = 0;
+    tournament.games.forEach(currentGame => {
         if (currentGame.team1.team_id == this._id) {
             totalBouncebackPoints += currentGame.team1.bouncebacks;
         } else if (currentGame.team2.team_id == this._id) {
             totalBouncebackPoints += currentGame.team2.bouncebacks;
         }
-    }
+    });
     return totalBouncebackPoints;
 }
 
@@ -585,12 +572,13 @@ teamSchema.methods.getTotalBouncebackPoints = function(tournament) {
 * @return average information about a team's stats
 */
 teamSchema.methods.getAverageInformationFiltered = function(tournament, constraints) {
-    var record = this.getRecordFiltered(tournament, constraints);
-    var teamInfo = {};
-    var activePhase = "";
-    for (var i = 0; i < tournament.phases.length; i++) {
+    const record = this.getRecordFiltered(tournament, constraints);
+    const teamInfo = {};
+    let activePhase = "";
+    for (let i = 0; i < tournament.phases.length; i++) {
         if (tournament.phases[i].active) {
             activePhase = tournament.phases[i].phase_id;
+            break;
         }
     }
     teamInfo["Division"] = this.divisions[activePhase];
@@ -615,8 +603,8 @@ teamSchema.methods.getAverageInformationFiltered = function(tournament, constrai
 * @return average information about a team's stats
 */
 teamSchema.methods.getAverageInformation = function(tournament) {
-    var record = this.getRecord(tournament);
-    var teamInfo = {};
+    const record = this.getRecord(tournament);
+    const teamInfo = {};
     teamInfo["Team"] = this.team_name;
     if (tournament.divisions.length !== 0 && tournament.currentPhaseID != 1
         && this.divisions && this.divisions[tournament.currentPhaseID]) {
@@ -644,15 +632,14 @@ teamSchema.methods.getAverageInformation = function(tournament) {
 * @return all information about a team's games
 */
 teamSchema.methods.getAllGamesInformation = function(tournament, teamMap) {
-    var playedGames = [];
-    for (var i = 0; i < tournament.games.length; i++) {
-        var currentGame = tournament.games[i];
+    let playedGames = [];
+    tournament.games.forEach(currentGame => {
         if (currentGame.team1.team_id == this._id || currentGame.team2.team_id == this._id) {
-            var formattedGame = this.formatGameInformation(currentGame, tournament, teamMap);
+            const formattedGame = this.formatGameInformation(currentGame, tournament, teamMap);
             playedGames.push(formattedGame);
         }
-    }
-    playedGames.sort(function(first, second) {
+    });
+    playedGames.sort((first, second) => {
         return first["Round"] - second["Round"];
     });
     return playedGames;
@@ -665,18 +652,17 @@ teamSchema.methods.getAllGamesInformation = function(tournament, teamMap) {
 * @return all information about a team's games
 */
 teamSchema.methods.getAllGamesInformationFiltered = function(tournament, constraints, teamMap) {
-    var playedGames = [];
-    var filteredGames = tournament.games.filter(function(game) {
+    let playedGames = [];
+    const filteredGames = tournament.games.filter(game => {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
     });
-    for (var i = 0; i < filteredGames.length; i++) {
-        var currentGame = filteredGames[i];
+    filteredGames.forEach(currentGame => {
         if (currentGame.team1.team_id == this._id || currentGame.team2.team_id == this._id) {
-            var formattedGame = this.formatGameInformation(currentGame, tournament, teamMap);
+            const formattedGame = this.formatGameInformation(currentGame, tournament, teamMap);
             playedGames.push(formattedGame);
         }
-    }
-    playedGames.sort(function(first, second) {
+    });
+    playedGames.sort((first, second) => {
         return first["Round"] - second["Round"];
     });
     return playedGames;
@@ -689,7 +675,7 @@ teamSchema.methods.getAllGamesInformationFiltered = function(tournament, constra
 * @return formatted info about a game
 */
 teamSchema.methods.formatGameInformation = function(game, tournament, teamMap) {
-    var gameinfo = {};
+    const gameinfo = {};
     gameinfo["Round"] = game.round;
     if (game.team1.team_id == this._id) {
         gameinfo["Opponent"] = teamMap[game.team2.team_id].name;
@@ -731,14 +717,14 @@ teamSchema.methods.formatGameInformation = function(game, tournament, teamMap) {
 * @return array of player statistics
 */
 teamSchema.methods.getPlayerStats = function(tournament, teamMap) {
-    var playerStats = [];
-    var team = this;
-    var filtered = tournament.players.filter(function(player) {
+    let playerStats = [];
+    const team = this;
+    const filtered = tournament.players.filter(function(player) {
         return player.teamID == team._id;
     });
-    for (var i = 0; i < filtered.length; i++) {
-        playerStats.push(filtered[i].getAllInformation(tournament, teamMap));
-    }
+    filtered.forEach(player => {
+        playerStats.push(player.getAllInformation(tournament, teamMap));
+    });
     return playerStats;
 }
 
@@ -748,10 +734,10 @@ teamSchema.methods.getPlayerStats = function(tournament, teamMap) {
 * @return statistics about all a team's games
 */
 teamSchema.methods.getTotalGameStats = function(tournament) {
-    var totals = this.getAverageInformation(tournament);
-    var record = this.getRecord(tournament);
-    var gp = 0;
-    for (var total in record) {
+    const totals = this.getAverageInformation(tournament);
+    const record = this.getRecord(tournament);
+    let gp = 0;
+    for (let total in record) {
         if (record.hasOwnProperty(total)) {
             gp += record[total];
         }

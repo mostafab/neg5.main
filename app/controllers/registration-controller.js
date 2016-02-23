@@ -1,3 +1,5 @@
+'use strict';
+
 const mongoose = require("mongoose");
 const Tournament = mongoose.model("Tournament");
 const TournamentDirector = mongoose.model("TournamentDirector");
@@ -18,7 +20,7 @@ const Registration = mongoose.model("Registration");
 * @param asynchronous callback function called after this function is done.
 */
 function createRegistration(tournamentid, directorid, information, callback) {
-    var reg = new Registration({
+    const reg = new Registration({
         teamName : information.team_name,
         numTeams : information.teamnumber,
         email : information.email,
@@ -37,10 +39,10 @@ function createRegistration(tournamentid, directorid, information, callback) {
                     callback(err, null);
                 });
             } else {
-                var query = {tournamentid : reg.tournamentid, directorid : reg.directorid};
-                var update = {teamName : reg.teamName, numTeams : reg.numTeams, email : reg.email,
+                const query = {tournamentid : reg.tournamentid, directorid : reg.directorid};
+                const update = {teamName : reg.teamName, numTeams : reg.numTeams, email : reg.email,
                     message : reg.message, tournamentid : reg.tournamentid, directorid : reg.directorid, signupTime : Date.now(), tournamentName : tournament.tournament_name};
-                var options = {upsert : true};
+                const options = {upsert : true};
                 Registration.update(query, update, options, err => {
                     callback(err, null);
                 });

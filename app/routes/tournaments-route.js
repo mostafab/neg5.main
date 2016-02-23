@@ -1,3 +1,5 @@
+'use strict';
+
 const mongoose = require("mongoose");
 const shortid = require("shortid");
 const Tournament = mongoose.model("Tournament");
@@ -103,8 +105,8 @@ module.exports = app => {
         if (!req.session.director) {
             return res.status(401).end();
         }
-        var phases = !req.body.phases ? [] : req.body.phases.map(phase => {
-            var editedPhase = phase;
+        const phases = !req.body.phases ? [] : req.body.phases.map(phase => {
+            const editedPhase = phase;
             editedPhase.active = phase.active == 'true' ? true : false;
             return editedPhase;
         });
@@ -169,7 +171,7 @@ module.exports = app => {
     });
 
     app.post("/tournaments/addCollaborator", (req, res, next) => {
-        var collaborator = JSON.parse(req.body.collaborators);
+        const collaborator = JSON.parse(req.body.collaborators);
         collaborator.admin = !req.body.admin ? false : true;
         tournamentController.addCollaborator(req.body.tournamentid, collaborator, (err, duplicate) => {
             if (err) {
@@ -201,10 +203,10 @@ module.exports = app => {
     });
 
     app.post("/tournaments/editPointSchema", (req, res, next) => {
-        var newPointValues = {};
-        var newPointTypes = JSON.parse(req.body.pointtypes);
-        var playerNum = 1;
-        currentVal = "pointval" + playerNum
+        const newPointValues = {};
+        const newPointTypes = JSON.parse(req.body.pointtypes);
+        let playerNum = 1;
+        let currentVal = "pointval" + playerNum
         while (req.body[currentVal] != undefined) {
             if (req.body[currentVal].length !== 0) {
                 newPointValues[req.body[currentVal]] = 0;
@@ -222,7 +224,7 @@ module.exports = app => {
     });
 
     app.post("/tournaments/editDivisions", (req, res, next) => {
-        var divisions = !req.body.divisions ? [] : req.body.divisions;
+        const divisions = !req.body.divisions ? [] : req.body.divisions;
         tournamentController.updateDivisions(req.body.tid, divisions, (err, newDivisions) => {
             if (err) {
                 res.status(500).end();
@@ -237,21 +239,21 @@ module.exports = app => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
-                var id = req.body.tid;
+                const id = req.body.tid;
                 tournamentController.addTeamToTournament(id, req.body.teamInfo, (err, tournament) => {
                     if (err) {
                         res.status(500).end();
                     } else {
-                        var admin = false;
+                        let admin = false;
                         if (req.session.director._id == tournament.directorid) {
                             admin = true;
                         }
                         if (!admin) {
-                            for (var i = 0; i < tournament.collaborators.length; i++) {
-                                if (tournament.collaborators[i].id == req.session.director._id && tournament.collaborators[i].admin) {
+                            tournament.collaborators.forEach(collab => {
+                                if (collab.id == req.session.director._id && collab.admin) {
                                     admin = true;
                                 }
-                            }
+                            });
                         }
                         res.render("team-list", {tournament : tournament, admin : admin}, (err, html) => {
                             if (err) {
@@ -271,19 +273,20 @@ module.exports = app => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
-                var id = req.body["tournament_id_form"];
+                const id = req.body["tournament_id_form"];
                 tournamentController.addGameToTournament(id, req.body, [], (err, tournament, newGame) => {
                     if (err) {
                         res.status(500).end();
                     } else {
-                        var admin = false;
+                        let admin = false;
                         if (req.session.director._id == tournament.directorid) {
                             admin = true;
                         }
                         if (!admin) {
-                            for (var i = 0; i < tournament.collaborators.length; i++) {
+                            for (let i = 0; i < tournament.collaborators.length; i++) {
                                 if (tournament.collaborators[i].id == req.session.director._id && tournament.collaborators[i].admin) {
                                     admin = true;
+                                    break;
                                 }
                             }
                         }
@@ -324,8 +327,8 @@ module.exports = app => {
             if (!req.session.director) {
                 res.redirect("/");
             } else {
-                var gameid = req.body["gameid_form"];
-                var tournamentid = req.body["tournament_idgame"];
+                const gameid = req.body["gameid_form"];
+                const tournamentid = req.body["tournament_idgame"];
                 tournamentController.removeGameFromTournament(tournamentid, gameid, (err, phases) => {
                     if (err) {
                         console.log(err);
@@ -357,8 +360,8 @@ module.exports = app => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
-                var tournamentid = req.body["tournament_id_form"];
-                var gameid = req.body["oldgameid"];
+                const tournamentid = req.body["tournament_id_form"];
+                const gameid = req.body["oldgameid"];
                 tournamentController.removeGameFromTournament(tournamentid, gameid, (err, phases) => {
                     if (err) {
                         console.log(err);
@@ -393,7 +396,7 @@ module.exports = app => {
                 } else if (!tournament) {
                     res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
                 } else {
-                    var hasPermission = getPermission(tournament, req.session.director);
+                    const hasPermission = getPermission(tournament, req.session.director);
                     if (hasPermission.permission) {
                         res.render("scoresheet", {tournamentd : req.session.director, tournamentName : tournament.tournament_name, tid : tournament._id,
                             shortID : tournament.shortID, teams : tournament.teams, maxRound : tournament.maxRound, phases : tournament.phases});
@@ -410,8 +413,8 @@ module.exports = app => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
-                var tournamentid = req.body.tid;
-                var teamid = req.body.teamInfo.teamID;
+                const tournamentid = req.body.tid;
+                const teamid = req.body.teamInfo.teamID;
                 tournamentController.updateTeam(tournamentid, teamid, req.body.teamInfo, (err, team) => {
                     if (err) {
                         console.log(err);
@@ -468,11 +471,11 @@ module.exports = app => {
             if (!req.session.director) {
                 res.redirect("/");
             } else {
-                var name = req.body.t_name;
-                var location = req.body.t_location;
-                var description = req.body.t_description;
-                var date = req.body.t_date;
-                var questionset = req.body.t_qset;
+                const name = req.body.t_name;
+                const location = req.body.t_location;
+                const description = req.body.t_description;
+                const date = req.body.t_date;
+                const questionset = req.body.t_qset;
                 tournamentController.addTournament(req.session.director, name, date, location, description, questionset, (err, ref) => {
                     if (err) {
                         res.redirect("/create");
@@ -488,8 +491,8 @@ module.exports = app => {
             if (!req.session.director) {
                 res.status(401).end();
             } else {
-                var id = req.query["tournamentid"];
-                var teamname = req.query["teamname"];
+                const id = req.query["tournamentid"];
+                const teamname = req.query["teamname"];
                 tournamentController.findTeamMembers(id, teamname, (err, players, pointScheme, pointTypes) => {
                     if (err) {
                         console.log(err);
@@ -506,24 +509,24 @@ module.exports = app => {
             return res.status(401).end();
         }
         tournamentController.findTournamentById(req.params.tid, (err, result) => {
-            var team = null;
+            let team = null;
             if (result) {
-                var hasPermission = getPermission(result, req.session.director);
+                const hasPermission = getPermission(result, req.session.director);
                 if (hasPermission.permission) {
-                    for (var i = 0; i < result.teams.length; i++) {
+                    for (let i = 0; i < result.teams.length; i++) {
                         if (result.teams[i].shortID == req.params.teamid) {
                             team = result.teams[i];
-                            i = result.teams.length + 1;
+                            break;
                         }
                     }
                     if (team !== null) {
-                        var teamPlayers = [];
-                        for (var i = 0; i < result.players.length; i++) {
+                        let teamPlayers = [];
+                        for (let i = 0; i < result.players.length; i++) {
                             if (result.players[i].teamID == team._id) {
                                 teamPlayers.push(result.players[i]);
                             }
                         }
-                        var tourney = {};
+                        const tourney = {};
                         tourney.tournament_name = result.tournament_name;
                         tourney._id = result._id;
                         tourney.directorid = result.directorid;
@@ -554,14 +557,15 @@ module.exports = app => {
                 return res.status(404).end();
             } else {
                 tournament.teamMap = statsController.makeTeamMap(tournament.teams);
-                var admin = false;
+                let admin = false;
                 if (req.session.director._id == tournament.directorid) {
                     admin = true;
                 }
                 if (!admin) {
-                    for (var i = 0; i < tournament.collaborators.length; i++) {
+                    for (let i = 0; i < tournament.collaborators.length; i++) {
                         if (tournament.collaborators[i].id == req.session.director._id && tournament.collaborators[i].admin) {
                             admin = true;
+                            break;
                         }
                     }
                 }
@@ -575,12 +579,12 @@ module.exports = app => {
             return res.status(401).end();
         }
         tournamentController.findTournamentById(req.params.tid, (err, result) => {
-            var game = null;
-            var teamMap = statsController.makeTeamMap(result.teams);
+            let game = null;
+            const teamMap = statsController.makeTeamMap(result.teams);
             if (result) {
-                var hasPermission = getPermission(result, req.session.director)
+                const hasPermission = getPermission(result, req.session.director)
                 if (hasPermission.permission) {
-                    for (var i = 0; i < result.games.length; i++) {
+                    for (let i = 0; i < result.games.length; i++) {
                         if (result.games[i].shortID == req.params.gid) {
                             game = result.games[i];
                             break;
@@ -589,9 +593,9 @@ module.exports = app => {
                     if (game !== null) {
                         game.team1.team_name = teamMap[game.team1.team_id].name;
                         game.team2.team_name = teamMap[game.team2.team_id].name;
-                        var team1Players = [];
-                        var team2Players = [];
-                        for (var i = 0; i < result.players.length; i++) {
+                        let team1Players = [];
+                        let team2Players = [];
+                        for (let i = 0; i < result.players.length; i++) {
                             if (result.players[i].teamID == game.team1.team_id) {
                                 team1Players.push(result.players[i]);
                             } else if (result.players[i].teamID == game.team2.team_id) {
@@ -622,7 +626,7 @@ module.exports = app => {
             } else if (!tournament) {
                 return res.status(404).end();
             } else {
-                var hasPermission = getPermission(tournament, req.session.director);
+                const hasPermission = getPermission(tournament, req.session.director);
                 if (hasPermission.permission) {
                     tournament.teamMap = statsController.makeTeamMap(tournament.teams);
                     return res.render('game-list', {tournament : tournament, admin : hasPermission.admin});
@@ -643,9 +647,9 @@ module.exports = app => {
                 } else if (result == null) {
                     res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
                 } else {
-                    var hasPermission = getPermission(result, req.session.director);
+                    const hasPermission = getPermission(result, req.session.director);
                     if (hasPermission.permission) {
-                        var linkName = result.tournament_name.replace(/\s/g, "_").toLowerCase();
+                        const linkName = result.tournament_name.replace(/\s/g, "_").toLowerCase();
                         res.render("tournament-view", {tournament : result, tournamentd : req.session.director, linkName : linkName,
                             admin : hasPermission.admin, tournamentDirector : director});
                     } else {
@@ -669,7 +673,7 @@ module.exports = app => {
 * @return true if empty query, false otherwise
 */
 function checkEmptyQuery(query) {
-    for (var key in query) {
+    for (let key in query) {
         if (key) {
             return false;
         }
@@ -684,7 +688,7 @@ function getPermission(tournament, director) {
     if (tournament.directorid == director._id) {
         return {permission : true, admin : true};
     }
-    for (var i = 0; i < tournament.collaborators.length; i++) {
+    for (let i = 0; i < tournament.collaborators.length; i++) {
         if (director._id == tournament.collaborators[i].id && tournament.collaborators[i].admin) {
             return {permission : true, admin : true};
         } else if (director._id == tournament.collaborators[i].id) {

@@ -1,3 +1,5 @@
+'use strict';
+
 const bktree = require('bktree');
 const mongoose = require('mongoose');
 const Tournament = mongoose.model('Tournament');
@@ -13,19 +15,19 @@ const SCHEMA_VERSION = '1.1';
 * list of team statistics
 */
 function getTeamsInfo(tournamentid, phaseID, callback) {
-    var teamInfo = [];
+    let teamInfo = [];
     Tournament.findOne({shortID : tournamentid}, (err, result) => {
         if (err) {
             callback(err);
         } else if (result == null) {
             callback(null, null, []);
         } else {
-            var phaseInfo = {phase_id : "1", name : "All"};
-            var teamMap = makeTeamMap(result.teams);
+            let phaseInfo = {phase_id : "1", name : "All"};
+            const teamMap = makeTeamMap(result.teams);
             result.currentPhaseID = 1;
             if (phaseID && phaseID != 1) {
                 result.currentPhaseID = phaseID;
-                for (var i = 0; i < result.phases.length; i++) {
+                for (let i = 0; i < result.phases.length; i++) {
                     if (result.phases[i].phase_id == phaseID) {
                         phaseInfo.phase_id = result.phases[i].phase_id;
                         phaseInfo.name = result.phases[i].name;
@@ -41,7 +43,7 @@ function getTeamsInfo(tournamentid, phaseID, callback) {
                 result.games = result.games.filter(game => {
                     return teamMap[game.team1.team_id] && teamMap[game.team2.team_id];
                 });
-                for (var i = 0; i < result.phases.length; i++) {
+                for (let i = 0; i < result.phases.length; i++) {
                     if (result.phases[i].active) {
                         result.divisions = result.divisions.filter(division => {
                             return division.phase_id == result.phases[i].phase_id;
@@ -52,9 +54,9 @@ function getTeamsInfo(tournamentid, phaseID, callback) {
                 }
             }
             result.phaseInfo = phaseInfo;
-            for (var i = 0; i < result.teams.length; i++) {
-                teamInfo.push(result.teams[i].getAverageInformation(result));
-            }
+            result.teams.forEach(team => {
+                teamInfo.push(team.getAverageInformation(result));
+            });
             teamInfo.sort((first, second) => {
                 if (second.stats["Win %"] == first.stats["Win %"]) {
                     if (second.stats["PPG"] == first.stats["PPG"]) {
@@ -65,9 +67,11 @@ function getTeamsInfo(tournamentid, phaseID, callback) {
                     return second.stats["Win %"] - first.stats["Win %"];
                 }
             });
-            for (var i = 0; i < teamInfo.length; i++) {
-                teamInfo[i].stats["Rank"] = i + 1;
-            }
+            let rank = 1;
+            teamInfo.forEach(team => {
+                team.stats["Rank"] = rank;
+                rank++;
+            });
             result.divisions = result.divisions.map(division => {
                 if (!division.name) {
                     return division;
@@ -90,7 +94,7 @@ function getTeamsInfo(tournamentid, phaseID, callback) {
 * list of team statistics
 */
 function getFilteredTeamsInformation(tournamentid, constraints, callback) {
-    var teamInfo = [];
+    let teamInfo = [];
     Tournament.findOne({shortID : tournamentid}, (err, result) => {
         if (err) {
             callback(err, null, []);
@@ -98,15 +102,15 @@ function getFilteredTeamsInformation(tournamentid, constraints, callback) {
             callback(null, null, [])
         } else {
             if (constraints.teams) {
-                for (var i = 0; i < result.teams.length; i++) {
-                    if (constraints.teams.indexOf(result.teams[i]._id.toString()) != -1) {
-                        teamInfo.push(result.teams[i].getAverageInformationFiltered(result, constraints));
+                result.teams.forEach(team => {
+                    if (constraints.teams.indexOf(team._id.toString()) !== -1) {
+                        teamInfo.push(team.getAverageInformationFiltered(result, constraints));
                     }
-                }
+                });
             } else {
-                for (var i = 0; i < result.teams.length; i++) {
-                    teamInfo.push(result.teams[i].getAverageInformationFiltered(result, constraints));
-                }
+                result.teams.forEach(team => {
+                    teamInfo.push(team.getAverageInformationFiltered(result, constraints));
+                });
             }
             teamInfo.sort((first, second) => {
                 if (second.stats["Win %"] == first.stats["Win %"]) {
@@ -133,17 +137,17 @@ function getFilteredTeamsInformation(tournamentid, constraints, callback) {
 * list of player statistics
 */
 function getPlayersInfo(tournamentid, phaseID, callback) {
-    var playersInfo = [];
+    let playersInfo = [];
     Tournament.findOne({shortID : tournamentid}, (err, result) => {
         if (err) {
             callback(err);
         } else if (result == null) {
             callback(null, null, []);
         } else {
-            var teamMap = makeTeamMap(result.teams);
-            var phaseInfo = {phase_id : "1", name : "All"};
+            const teamMap = makeTeamMap(result.teams);
+            let phaseInfo = {phase_id : "1", name : "All"};
             if (phaseID && phaseID != 1) {
-                for (var i = 0; i < result.phases.length; i++) {
+                for (let i = 0; i < result.phases.length; i++) {
                     if (result.phases[i].phase_id == phaseID) {
                         phaseInfo.phase_id = result.phases[i].phase_id;
                         phaseInfo.name = result.phases[i].name;
@@ -157,9 +161,9 @@ function getPlayersInfo(tournamentid, phaseID, callback) {
                     return teamMap[game.team1.team_id] && teamMap[game.team2.team_id];
                 });
             }
-            for (var i = 0; i < result.players.length; i++) {
-                playersInfo.push(result.players[i].getAllInformation(result, teamMap));
-            }
+            result.players.forEach(player => {
+                playersInfo.push(player.getAllInformation(result, teamMap));
+            });
             playersInfo.sort((first, second) => {
                 return second.stats["PPG"] - first.stats["PPG"];
             });
@@ -179,27 +183,27 @@ function getPlayersInfo(tournamentid, phaseID, callback) {
 * list of player statistics
 */
 function getFilteredPlayersInformation(tournamentid, constraints, callback) {
-    var playersInfo = [];
+    let playersInfo = [];
     Tournament.findOne({shortID : tournamentid}, (err, result) => {
         if (err) {
             callback(err);
         } else if (result == null) {
             callback(null, null, []);
         } else {
-            var teamMap = makeTeamMap(result.teams);
+            const teamMap = makeTeamMap(result.teams);
             result.games = result.games.filter(game => {
                 return teamMap[game.team1.team_id] && teamMap[game.team2.team_id];
             });
             if (constraints.teams) {
-                for (var i = 0; i < result.players.length; i++) {
-                    if (constraints.teams.indexOf(result.players[i].teamID) != -1) {
-                        playersInfo.push(result.players[i].getAllInformationFiltered(result, constraints, teamMap));
+                result.players.forEach(player => {
+                    if (constraints.teams.indexOf(player.teamID) != -1) {
+                        playersInfo.push(player.getAllInformationFiltered(result, constraints, teamMap));
                     }
-                }
+                });
             } else {
-                for (var i = 0; i < result.players.length; i++) {
-                    playersInfo.push(result.players[i].getAllInformationFiltered(result, constraints, teamMap));
-                }
+                result.players.forEach(player => {
+                    playersInfo.push(player.getAllInformationFiltered(result, constraints, teamMap));
+                });
             }
             playersInfo.sort((first, second) => {
                 return second.stats["PPG"] - first.stats["PPG"];
@@ -218,19 +222,19 @@ function getFilteredPlayersInformation(tournamentid, constraints, callback) {
 * list of team statistics
 */
 function getFullTeamsGameInformation(tournamentid, phaseID, callback) {
-    var teamsInfo = {};
-    var playersInfo = {};
-    var teamTotals = {};
+    let teamsInfo = {};
+    let playersInfo = {};
+    let teamTotals = {};
     Tournament.findOne({shortID : tournamentid}, (err, result) => {
         if (err) {
-            callback(err, null, {}, {});
+            callback(err);
         } else if (result == null) {
             callback(null, null, {}, {});
         } else {
-            var teamMap = makeTeamMap(result.teams);
-            var phaseInfo = {phase_id : "1", name : "All"};
+            const teamMap = makeTeamMap(result.teams);
+            let phaseInfo = {phase_id : "1", name : "All"};
             if (phaseID && phaseID != 1) {
-                for (var i = 0; i < result.phases.length; i++) {
+                for (let i = 0; i < result.phases.length; i++) {
                     if (result.phases[i].phase_id == phaseID) {
                         phaseInfo.phase_id = result.phases[i].phase_id;
                         phaseInfo.name = result.phases[i].name;
@@ -245,11 +249,11 @@ function getFullTeamsGameInformation(tournamentid, phaseID, callback) {
                 });
             }
             result.phaseInfo = phaseInfo;
-            for (var i = 0; i < result.teams.length; i++) {
-                teamsInfo[result.teams[i].shortID] = {team : result.teams[i].team_name, games : result.teams[i].getAllGamesInformation(result, teamMap)};
-                playersInfo[result.teams[i].shortID] = {team : result.teams[i].team_name, stats : result.teams[i].getPlayerStats(result, teamMap)};
-                teamTotals[result.teams[i].shortID] = {team : result.teams[i].team_name, stats : result.teams[i].getTotalGameStats(result)};
-            }
+            result.teams.forEach(team => {
+                teamsInfo[team.shortID] = {team : team.team_name, games : team.getAllGamesInformation(result, teamMap)};
+                playersInfo[team.shortID] = {team : team.team_name, stats : team.getPlayerStats(result, teamMap)};
+                teamTotals[team.shortID] = {team : team.team_name, stats : team.getTotalGameStats(result)};
+            });
             callback(null, result, teamsInfo, playersInfo, teamTotals);
         }
     });
@@ -264,18 +268,18 @@ function getFullTeamsGameInformation(tournamentid, phaseID, callback) {
 * list of player statistics
 */
 function getFullPlayersGameInformation(tournamentid, phaseID, callback) {
-    var playersInfo = {};
-    var playerTotals = {};
+    let playersInfo = {};
+    let playerTotals = {};
     Tournament.findOne({shortID : tournamentid}, (err, tournament) => {
         if (err) {
             callback(err);
         } else if (tournament == null) {
             callback(null, null, {}, {});
         } else {
-            var teamMap = makeTeamMap(tournament.teams);
-            var phaseInfo = {phase_id : "1", name : "All"};
+            const teamMap = makeTeamMap(tournament.teams);
+            let phaseInfo = {phase_id : "1", name : "All"};
             if (phaseID && phaseID != 1) {
-                for (var i = 0; i < tournament.phases.length; i++) {
+                for (let i = 0; i < tournament.phases.length; i++) {
                     if (tournament.phases[i].phase_id == phaseID) {
                         phaseInfo.phase_id = tournament.phases[i].phase_id;
                         phaseInfo.name = tournament.phases[i].name;
@@ -289,11 +293,11 @@ function getFullPlayersGameInformation(tournamentid, phaseID, callback) {
                     return teamMap[game.team1.team_id] && teamMap[game.team2.team_id];
                 });
             }
-            for (var i = 0; i < tournament.players.length; i++) {
-                var teamName = teamMap[tournament.players[i].teamID].name;
-                playersInfo[tournament.players[i].shortID] = {name : tournament.players[i].player_name, team : teamName, games : tournament.players[i].getAllGamesInformation(tournament, teamMap)};
-                playerTotals[tournament.players[i].shortID] = tournament.players[i].getTotalGameStats(tournament, teamMap);
-            }
+            tournament.players.forEach(player => {
+                var teamName = teamMap[player.teamID].name;
+                playersInfo[player.shortID] = {name : player.player_name, team : teamName, games : player.getAllGamesInformation(tournament, teamMap)};
+                playerTotals[player.shortID] = player.getTotalGameStats(tournament, teamMap);
+            });
             tournament.phaseInfo = phaseInfo
             callback(null, tournament, playersInfo, playerTotals);
         }
@@ -312,9 +316,9 @@ function getRoundReport(tournamentid, phaseID, callback) {
         } else if (!tournament) {
             callback(null, null, null);
         } else {
-            var phaseInfo = {phase_id : "1", name : "All"};
+            let phaseInfo = {phase_id : "1", name : "All"};
             if (phaseID && phaseID != 1) {
-                for (var i = 0; i < tournament.phases.length; i++) {
+                for (let i = 0; i < tournament.phases.length; i++) {
                     if (tournament.phases[i].phase_id == phaseID) {
                         phaseInfo.phase_id = tournament.phases[i].phase_id;
                         phaseInfo.name = tournament.phases[i].name;
@@ -324,22 +328,22 @@ function getRoundReport(tournamentid, phaseID, callback) {
                     return game.phase_id.indexOf(phaseID) != -1;
                 });
             }
-            var gameRounds = {};
-            for (var i = 0; i < tournament.games.length; i++) {
+            let gameRounds = {};
+            for (let i = 0; i < tournament.games.length; i++) {
                 var round = tournament.games[i].round;
                 if (!gameRounds[round]) {
                     gameRounds[round] = [];
                 }
                 gameRounds[round].push(tournament.games[i]);
             }
-            var roundAverages = {};
-            var rounds = Object.keys(gameRounds);
-            for (var i = 0; i < rounds.length; i++) {
-                roundAverages[rounds[i]] = {};
-                roundAverages[rounds[i]]["PPG/Team"] = getRoundPPG(gameRounds[rounds[i]]);
-                roundAverages[rounds[i]]["TUPts/TUH"] = getRoundTUPts(gameRounds[rounds[i]], tournament.pointScheme);
-                roundAverages[rounds[i]]["PPB"] = getPPBForRounds(gameRounds[rounds[i]], tournament.pointScheme, tournament.pointsTypes);
-            }
+            let roundAverages = {};
+            const rounds = Object.keys(gameRounds);
+            rounds.forEach(round => {
+                roundAverages[round] = {};
+                roundAverages[round]["PPG/Team"] = getRoundPPG(gameRounds[round]);
+                roundAverages[round]["TUPts/TUH"] = getRoundTUPts(gameRounds[round], tournament.pointScheme);
+                roundAverages[round]["PPB"] = getPPBForRounds(gameRounds[round], tournament.pointScheme, tournament.pointsTypes);
+            });
             tournament.phaseInfo = phaseInfo;
             callback(null, tournament, roundAverages);
         }
@@ -354,17 +358,16 @@ function getRoundReport(tournamentid, phaseID, callback) {
 function getRoundPPG(games) {
     var totalPoints = 0;
     var totalTeams = 0;
-    for (var i = 0; i < games.length; i++) {
-        var currentGame = games[i];
-        if (currentGame.team1) {
-            totalPoints += currentGame.team1.score;
+    games.forEach(game => {
+        if (game.team1) {
+            totalPoints += game.team1.score;
             totalTeams++;
         }
-        if (currentGame.team2) {
-            totalPoints += currentGame.team2.score;
+        if (game.team2) {
+            totalPoints += game.team2.score;
             totalTeams++;
         }
-    }
+    });
     return +(totalPoints / totalTeams).toFixed(2);
 }
 
@@ -375,38 +378,38 @@ function getRoundPPG(games) {
 * @return average TUPts/TUH
 */
 function getRoundTUPts(games, pointScheme) {
-    var pointTypes = Object.keys(pointScheme);
-    var totalTossupsHeard = 0;
-    var tossupPoints = 0;
-    for (var i = 0; i < games.length; i++) {
-        totalTossupsHeard +=  games[i].tossupsheard;
-        if (games[i].team1 && games[i].team1.playerStats) {
-            for (var player in games[i].team1.playerStats) {
-                if (games[i].team1.playerStats.hasOwnProperty(player)) {
-                    var stats = games[i].team1.playerStats[player];
-                    for (var j = 0; j < pointTypes.length; j++) {
-                        if (stats[pointTypes[j]]) {
-                            var total = parseFloat(pointTypes[j]) * parseFloat(stats[pointTypes[j]]);
+    const pointTypes = Object.keys(pointScheme);
+    let totalTossupsHeard = 0;
+    let tossupPoints = 0;
+    games.forEach(game => {
+        totalTossupsHeard +=  game.tossupsheard;
+        if (game.team1 && game.team1.playerStats) {
+            for (let player in game.team1.playerStats) {
+                if (game.team1.playerStats.hasOwnProperty(player)) {
+                    let stats = game.team1.playerStats[player];
+                    pointTypes.forEach(pt => {
+                        if (stats[pt]) {
+                            const total = parseFloat(pt) * parseFloat(stats[pt]);
                             tossupPoints += total;
                         }
-                    }
+                    });
                 }
             }
         }
-        if (games[i].team2 && games[i].team2.playerStats) {
-            for (var player in games[i].team2.playerStats) {
-                if (games[i].team2.playerStats.hasOwnProperty(player)) {
-                    var stats = games[i].team2.playerStats[player];
-                    for (var j = 0; j < pointTypes.length; j++) {
-                        if (stats[pointTypes[j]]) {
-                            var total = parseFloat(pointTypes[j]) * parseFloat(stats[pointTypes[j]]);
+        if (game.team2 && game.team2.playerStats) {
+            for (let player in game.team2.playerStats) {
+                if (game.team2.playerStats.hasOwnProperty(player)) {
+                    let stats = game.team2.playerStats[player];
+                    pointTypes.forEach(pt => {
+                        if (stats[pt]) {
+                            const total = parseFloat(pt) * parseFloat(stats[pt]);
                             tossupPoints += total;
                         }
-                    }
+                    });
                 }
             }
         }
-    }
+    });
     if (totalTossupsHeard === 0) {
         return 0;
     } else {
@@ -422,46 +425,46 @@ function getRoundTUPts(games, pointScheme) {
 * @return average ppb for a round's games
 */
 function getPPBForRounds(games, pointScheme, pointTypes) {
-    var totalBonusPoints = 0;
-    var totalTossupsGotten = 0;
-    var pointKeys = Object.keys(pointScheme);
+    let totalBonusPoints = 0;
+    let totalTossupsGotten = 0;
+    const pointKeys = Object.keys(pointScheme);
 
-    for (var i = 0; i < games.length; i++) {
-        if (games[i].team1 && games[i].team1.playerStats) {
-            var bonusPoints = games[i].team1.score - games[i].team1.bouncebacks;
-            for (var player in games[i].team1.playerStats) {
-                if (games[i].team1.playerStats.hasOwnProperty(player)) {
-                    var stats = games[i].team1.playerStats[player];
-                    for (var j = 0; j < pointKeys.length; j++) {
-                        if (pointTypes[pointKeys[j]] != "N" && stats[pointKeys[j]]) {
-                            totalTossupsGotten += parseFloat(stats[pointKeys[j]]);
+    games.forEach(game => {
+        if (game.team1 && game.team1.playerStats) {
+            let bonusPoints = game.team1.score - game.team1.bouncebacks;
+            for (let player in game.team1.playerStats) {
+                if (game.team1.playerStats.hasOwnProperty(player)) {
+                    let stats = game.team1.playerStats[player];
+                    pointKeys.forEach(pt => {
+                        if (pointTypes[pt] != "N" && stats[pt]) {
+                            totalTossupsGotten += parseFloat(stats[pt]);
                         }
-                        if (stats[pointKeys[j]]) {
-                            bonusPoints -= parseFloat(stats[pointKeys[j]]) * parseFloat(pointKeys[j]);
+                        if (stats[pt]) {
+                            bonusPoints -= parseFloat(stats[pt]) * parseFloat(pt);
                         }
-                    }
+                    });
                 }
             }
             totalBonusPoints += bonusPoints;
         }
-        if (games[i].team2 && games[i].team2.playerStats) {
-            var bonusPoints = games[i].team2.score - games[i].team2.bouncebacks;
-            for (var player in games[i].team2.playerStats) {
-                if (games[i].team2.playerStats.hasOwnProperty(player)) {
-                    var stats = games[i].team2.playerStats[player];
-                    for (var j = 0; j < pointKeys.length; j++) {
-                        if (pointTypes[pointKeys[j]] != "N" && stats[pointKeys[j]]) {
-                            totalTossupsGotten += parseFloat(stats[pointKeys[j]]);
+        if (game.team2 && game.team2.playerStats) {
+            let bonusPoints = game.team2.score - game.team2.bouncebacks;
+            for (let player in game.team2.playerStats) {
+                if (game.team2.playerStats.hasOwnProperty(player)) {
+                    let stats = game.team2.playerStats[player];
+                    pointKeys.forEach(pt => {
+                        if (pointTypes[pt] != "N" && stats[pt]) {
+                            totalTossupsGotten += parseFloat(stats[pt]);
                         }
-                        if (stats[pointKeys[j]]) {
-                            bonusPoints -= parseFloat(stats[pointKeys[j]]) * parseFloat(pointKeys[j]);
+                        if (stats[pt]) {
+                            bonusPoints -= parseFloat(stats[pt]) * parseFloat(pt);
                         }
-                    }
+                    });
                 }
             }
             totalBonusPoints += bonusPoints;
         }
-    }
+    });
     return totalTossupsGotten == 0 ? 0 : +(totalBonusPoints / totalTossupsGotten).toFixed(2);
 }
 
@@ -474,10 +477,10 @@ function makeTeamMap(teams) {
     if (!teams) {
         return {};
     }
-    var map = {};
-    for (var i = 0; i < teams.length; i++) {
-        map[teams[i]._id] = {name : teams[i].team_name, shortID : teams[i].shortID};
-    }
+    const map = {};
+    teams.forEach(team => {
+        map[team._id] = {name : team.team_name, shortID : team.shortID};
+    });
     return map;
 }
 
@@ -488,87 +491,83 @@ function exportScoresheets(tournamentid, callback) {
         } else if (!tournament) {
             callback(null, null);
         } else {
-            var rounds = {};
-            var teamMap = makeTeamMap(tournament.teams);
-            var playerMap = makePlayerMap(tournament.players);
-            for (var i = 0; i < tournament.games.length; i++) {
-                var currentGame = tournament.games[i];
-                if (currentGame.phases && teamMap[currentGame.team1.team_id] && teamMap[currentGame.team2.team_id]) {
-                    if (!rounds[currentGame.round]) {
-                        rounds[currentGame.round] = [];
+            const rounds = {};
+            const teamMap = makeTeamMap(tournament.teams);
+            const playerMap = makePlayerMap(tournament.players);
+            tournament.games.forEach(game => {
+                if (game.phases && teamMap[game.team1.team_id] && teamMap[game.team2.team_id]) {
+                    if (!rounds[game.round]) {
+                        rounds[game.round] = [];
                     }
-                    for (var j = 0; j < currentGame.phases.length; j++) {
-                        var phase = currentGame.phases[j];
+                    game.phases.forEach(phase => {
                         phase.question_number = parseFloat(phase.question_number);
-                        for (var k = 0; k < phase.tossup.answers.length; k++) {
-                            phase.tossup.answers[k].player =
-                                playerMap[phase.tossup.answers[k].player] ? playerMap[phase.tossup.answers[k].player].name : "";
-                            phase.tossup.answers[k].team =
-                                teamMap[phase.tossup.answers[k].team] ? teamMap[phase.tossup.answers[k].team].name : "";
-                            phase.tossup.answers[k].value = parseFloat(phase.tossup.answers[k].value);
-                        }
+                        phase.tossup.answers.forEach(answer => {
+                            answer.player = playerMap[answer.player] ? playerMap[answer.player].name : "";
+                            answer.team = teamMap[answer.team] ? teamMap[answer.team].name : "";
+                            answer.value = parseFloat(answer.value);
+                        });
                         if (phase.bonus.forTeam) {
                             phase.bonus.forTeam = teamMap[phase.bonus.forTeam].name;
                         }
-                        for (var k = 0; k < phase.bonus.bonusParts.length; k++) {
-                            if (phase.bonus.bonusParts[k].gettingTeam) {
-                                phase.bonus.bonusParts[k].gettingTeam = teamMap[phase.bonus.bonusParts[k].gettingTeam].name;
+                        phase.bonus.bonusParts.forEach(bonusPart => {
+                            if (bonusPart.gettingTeam) {
+                                bonusPart.gettingTeam = teamMap[bonusPart.gettingTeam].name;
                             }
-                            phase.bonus.bonusParts[k].number = parseFloat(phase.bonus.bonusParts[k].number);
-                            phase.bonus.bonusParts[k].value = parseFloat(phase.bonus.bonusParts[k].value);
-                        }
-                    }
-                    var team1Players = [];
-                    for (var playerid in currentGame.team1.playerStats) {
-                        if (currentGame.team1.playerStats.hasOwnProperty(playerid)) {
-                            var player = {name : playerMap[playerid] ? playerMap[playerid].name : ""};
-                            var pointTotals = {};
-                            for (var pv in tournament.pointScheme) {
+                            bonusPart.number = parseFloat(bonusPart.number);
+                            bonusPart.value = parseFloat(bonusPart.value);
+                        });
+                    });
+                    let team1Players = [];
+                    for (let playerid in game.team1.playerStats) {
+                        if (game.team1.playerStats.hasOwnProperty(playerid)) {
+                            const player = {name : playerMap[playerid] ? playerMap[playerid].name : ""};
+                            const pointTotals = {};
+                            for (let pv in tournament.pointScheme) {
                                 if (tournament.pointScheme.hasOwnProperty(pv)) {
-                                    if (currentGame.team1.playerStats[playerid][pv]) {
-                                        pointTotals[pv] = parseFloat(currentGame.team1.playerStats[playerid][pv]);
+                                    if (game.team1.playerStats[playerid][pv]) {
+                                        pointTotals[pv] = parseFloat(game.team1.playerStats[playerid][pv]);
                                     } else {
                                         pointTotals[pv] = 0;
                                     }
                                 }
                             }
                             player.pointTotals = pointTotals;
-                            player.tuh = Math.floor(parseFloat(currentGame.team1.playerStats[playerid].gp) * currentGame.tossupsheard);
+                            player.tuh = Math.floor(parseFloat(game.team1.playerStats[playerid].gp) * game.tossupsheard);
                             team1Players.push(player);
                         }
                     }
-                    var team2Players = [];
-                    for (var playerid in currentGame.team2.playerStats) {
-                        if (currentGame.team2.playerStats.hasOwnProperty(playerid)) {
-                            var player = {name : playerMap[playerid] ? playerMap[playerid].name : ""};
-                            var pointTotals = {};
-                            for (var pv in tournament.pointScheme) {
+                    let team2Players = [];
+                    for (let playerid in game.team2.playerStats) {
+                        if (game.team2.playerStats.hasOwnProperty(playerid)) {
+                            const player = {name : playerMap[playerid] ? playerMap[playerid].name : ""};
+                            const pointTotals = {};
+                            for (let pv in tournament.pointScheme) {
                                 if (tournament.pointScheme.hasOwnProperty(pv)) {
-                                    if (currentGame.team2.playerStats[playerid][pv]) {
-                                        pointTotals[pv] = parseFloat(currentGame.team2.playerStats[playerid][pv]);
+                                    if (game.team2.playerStats[playerid][pv]) {
+                                        pointTotals[pv] = parseFloat(game.team2.playerStats[playerid][pv]);
                                     } else {
                                         pointTotals[pv] = 0;
                                     }
                                 }
                             }
                             player.pointTotals = pointTotals;
-                            player.tuh = Math.floor(parseFloat(currentGame.team2.playerStats[playerid].gp) * currentGame.tossupsheard);
+                            player.tuh = Math.floor(parseFloat(game.team2.playerStats[playerid].gp) * game.tossupsheard);
                             team2Players.push(player);
                         }
                     }
-                    var team1 = {name : teamMap[currentGame.team1.team_id].name, score : currentGame.team1.score, players : team1Players};
-                    var team2 = {name : teamMap[currentGame.team2.team_id].name, score : currentGame.team2.score, players : team2Players};
-                    var round = currentGame.round;
-                    var room = currentGame.room;
-                    var moderator = currentGame.moderator;
-                    var packet = currentGame.packet;
-                    var notes = currentGame.notes;
-                    var gameTitle = team1.name.replace(" ", "_").toLowerCase() + "_" +
+                    const team1 = {name : teamMap[game.team1.team_id].name, score : game.team1.score, players : team1Players};
+                    const team2 = {name : teamMap[game.team2.team_id].name, score : game.team2.score, players : team2Players};
+                    const round = game.round;
+                    const room = game.room;
+                    const moderator = game.moderator;
+                    const packet = game.packet;
+                    const notes = game.notes;
+                    const gameTitle = team1.name.replace(" ", "_").toLowerCase() + "_" +
                         team2.name.replace(" ", "_").toLowerCase();
-                    rounds[currentGame.round].push({round : round, team1 : team1, team2 : team2, room : room, moderator : moderator,
-                        packet : packet, notes : notes, gameTitle : gameTitle, questions : tournament.games[i].phases});
+                    rounds[game.round].push({round : round, team1 : team1, team2 : team2, room : room, moderator : moderator,
+                        packet : packet, notes : notes, gameTitle : gameTitle, questions : game.phases});
                 }
-            }
+            });
             callback(null, {rounds : rounds, pointScheme : tournament.pointScheme});
         }
     });
@@ -587,44 +586,44 @@ function convertToSQBS(tournamentid, callback) {
         } else if (!tournament) {
             callback(null, null);
         } else {
+            let sqbsString = "";
             sqbsString += tournament.teams.length + "\n"; // Number of teams
             tournament.teams.sort((first, second) => {
                 return first.team_name.localeCompare(second.team_name);
             });
             // Build the team map where key is team's _id and value contains the team's name, its players, and the team index
-            var teamMap = {};
-            var teamIndex = 0;
-            for (var i = 0; i < tournament.teams.length; i++) {
-                teamMap[tournament.teams[i]._id] = {team_name : tournament.teams[i].team_name, players : [], team_index : teamIndex};
+            const teamMap = {};
+            let teamIndex = 0;
+            tournament.teams.forEach(team => {
+                teamMap[team._id] = {team_name : team.team_name, players : [], team_index : teamIndex};
                 teamIndex++;
-            }
+            });
             tournament.players.sort((first, second) => {
                 return first.player_name.localeCompare(second.player_name);
             });
-            for (var i = 0; i < tournament.players.length; i++) {
-                var numPlayers = teamMap[tournament.players[i].teamID].players.length; // The number of players already in a team's players array. This represents the a player's index
-                teamMap[tournament.players[i].teamID].players.push({name : tournament.players[i].player_name, id : tournament.players[i]._id, player_index : numPlayers});
-            }
-            for (var teamid in teamMap) {
+            tournament.players.forEach(player => {
+                let numPlayers = teamMap[player.teamID].players.length;
+                teamMap[player.teamID].players.push({name : player.player_name, id : player._id, player_index : numPlayers});
+            });
+            for (let teamid in teamMap) {
                 if (teamMap.hasOwnProperty(teamid)) {
                     sqbsString += (teamMap[teamid].players.length + 1) + "\n"; // Number of players on each team plus the team itself
                     sqbsString += teamMap[teamid].team_name + "\n"; // Team name
-                    for (var i = 0; i < teamMap[teamid].players.length; i++) {
-                        sqbsString += teamMap[teamid].players[i].name + "\n"; // Player name
-                    }
+                    teamMap[teamid].players.forEach(player => {
+                        sqbsString += player.name + "\n"; // Player name
+                    });
                 }
             }
             sqbsString += tournament.games.length + "\n"; // Number of games
-            for (var i = 0; i < tournament.games.length; i++) {
-                var currentGame = tournament.games[i];
-                if (teamMap[currentGame.team1.team_id] && teamMap[currentGame.team2.team_id]) {
+            tournament.games.forEach(game => {
+                if (teamMap[game.team1.team_id] && teamMap[game.team2.team_id]) {
                     sqbsString += i + "\n"; // Identifier for current game
-                    sqbsString += teamMap[currentGame.team1.team_id].team_index + "\n"; // Index of team 1
-                    sqbsString += teamMap[currentGame.team2.team_id].team_index + "\n"; // Index of team 2
-                    sqbsString += currentGame.team1.score + "\n"; // Team 1 Score
-                    sqbsString += currentGame.team2.score + "\n"; // Team 2 Score
-                    sqbsString += currentGame.tossupsheard + "\n"; // Game tossups heard
-                    sqbsString += currentGame.round + "\n"; // Game round
+                    sqbsString += teamMap[game.team1.team_id].team_index + "\n"; // Index of team 1
+                    sqbsString += teamMap[game.team2.team_id].team_index + "\n"; // Index of team 2
+                    sqbsString += game.team1.score + "\n"; // Team 1 Score
+                    sqbsString += game.team2.score + "\n"; // Team 2 Score
+                    sqbsString += game.tossupsheard + "\n"; // Game tossups heard
+                    sqbsString += game.round + "\n"; // Game round
                     sqbsString += "3\n"; // Team 1 bonus count
                     sqbsString += "200\n"; // Team 1 bonus points
                     sqbsString += "5\n"; // Team 2 bonus count
@@ -635,16 +634,15 @@ function convertToSQBS(tournamentid, callback) {
                     sqbsString += "0\n"; // Forfeit == team1?
                     sqbsString += "0\n"; // Lightning round, not supported
                     sqbsString += "0\n"; // Lightning round, not supported
-                    var current = 0;
-                    for (var player in currentGame.team1.playerStats) {
-                        if (currentGame.team1.playerStats.hasOwnProperty(player)) {
-                            var index = -1;
-                            for (var j = 0; j < teamMap[currentGame.team1.team_id].players.length; j++) {
-                                if (player == teamMap[currentGame.team1.team_id].players[j].id) {
-                                    index = teamMap[currentGame.team1.team_id].players[j].player_index;
-                                    break;
+                    let current = 0;
+                    for (let player in game.team1.playerStats) {
+                        if (game.team1.playerStats.hasOwnProperty(player)) {
+                            let index = -1;
+                            teamMap[game.team1.team_id].players.forEach(playerID => {
+                                if (player == playerID.id) {
+                                    index = playerID.player_index;
                                 }
-                            }
+                            });
                             sqbsString += index + "\n"; // Player index
                             sqbsString += "1\n"; // Fraction of game played
                             sqbsString += "2\n"; // Powers
@@ -660,16 +658,14 @@ function convertToSQBS(tournamentid, callback) {
                         current++;
                     }
                     current = 0;
-                    for (var player in currentGame.team2.playerStats) {
-                        if (currentGame.team2.playerStats.hasOwnProperty(player)) {
-                            var index = -1;
-                            for (var j = 0; j < teamMap[currentGame.team2.team_id].players.length; j++) {
-                                if (player == teamMap[currentGame.team2.team_id].players[j].id) {
-                                    index = teamMap[currentGame.team2.team_id].players[j].player_index;
-                                    // console.log(index);
-                                    break;
+                    for (let player in game.team2.playerStats) {
+                        if (game.team2.playerStats.hasOwnProperty(player)) {
+                            let index = -1;
+                            teamMap[game.team2.team_id].players.forEach(playerID => {
+                                if (player == playerID.id) {
+                                    index = playerID.player_index;
                                 }
-                            }
+                            });
                             sqbsString += index + "\n"; // Player index
                             sqbsString += "1\n"; // Fraction of game played
                             sqbsString += "2\n"; // Powers
@@ -685,7 +681,7 @@ function convertToSQBS(tournamentid, callback) {
                         current++;
                     }
                 }
-            }
+            });
             sqbsString = sqbsString.replace(/\n$/, "");
             callback(null, sqbsString);
         }
@@ -705,43 +701,41 @@ function convertToQuizbowlSchema(tournamentid, callback) {
         } else if (!tournament) {
             callback(null, null);
         } else {
-            var qbjObj = {version : SCHEMA_VERSION, objects : []};
-            var tournamentObject = {matches : [], registrations : [], type : "Tournament", name : tournament.tournament_name};
-            var teamMap = {};
+            const qbjObj = {version : SCHEMA_VERSION, objects : []};
+            const tournamentObject = {matches : [], registrations : [], type : "Tournament", name : tournament.tournament_name};
+            const teamMap = {};
             // var registrationObjects = makeRegistrationObjects(tournament.teams);
-            for (var i = 0; i < tournament.teams.length; i++) {
-                var teamObj = {id : "team_" + tournament.teams[i].shortID,
-                    name : tournament.teams[i].team_name, players : [], shortID : tournament.teams[i].shortID}
-                teamMap[tournament.teams[i]._id] = {id : "team_" + tournament.teams[i].shortID,
-                    name : tournament.teams[i].team_name, players : [], shortID : tournament.teams[i].shortID};
+            tournament.teams.forEach(team => {
+                let teamObj = {id : "team_" + team.shortID, name : team.team_name, players : [], shortID : team.shortID};
+                teamMap[team._id] = {id : "team_" + team.shortID,
+                    name : team.team_name, players : [], shortID : team.shortID};
                 // tournamentObject.registrations.push({$ref : "school_" + tournament.teams[i].shortID});
-            }
-            for (var i = 0; i < tournament.players.length; i++) {
-                var teamid = tournament.players[i].teamID;
-                var playerObj = {id : "player_" + tournament.players[i].shortID, name : tournament.players[i].player_name};
+            });
+            tournament.players.forEach(player => {
+                let teamid = player.teamID;
+                let playerObj = {id : "player_" + player.shortID, name : player.player_name};
                 teamMap[teamid].players.push(playerObj);
-            }
-            // var teams =
-            for (var teamid in teamMap) {
+            });
+            for (let teamid in teamMap) {
                 if (teamMap.hasOwnProperty(teamid)) {
-
-                    var teamObj = {type : "Registration"};
+                    const teamObj = {type : "Registration"};
                     teamObj.id = "school_" + teamMap[teamid].shortID;
                     teamObj.name = teamMap[teamid].name;
                     teamObj.teams = [];
-                    var newTeam = {id : teamMap[teamid].id, name : teamMap[teamid].name, players : teamMap[teamid].players};
+                    let newTeam = {id : teamMap[teamid].id, name : teamMap[teamid].name, players : teamMap[teamid].players};
                     teamObj.teams.push(newTeam);
                     qbjObj.objects.push(teamObj);
                 }
             }
-            var playerMap = makePlayerMap(tournament.players);
-            for (var i = 0; i < tournament.games.length; i++) {
-                tournamentObject.matches.push({$ref : "game_" + tournament.games[i].shortID});
-                var game = makeGameObject(tournament.games[i], teamMap, playerMap, Object.keys(tournament.pointScheme));
-                if (game) {
-                    qbjObj.objects.push(makeGameObject(tournament.games[i], teamMap, playerMap, Object.keys(tournament.pointScheme)));
+            const playerMap = makePlayerMap(tournament.players);
+            const pointScheme = Object.keys(tournament.pointScheme);
+            tournament.games.forEach(game => {
+                tournamentObject.matches.push({$ref : "game_" + game.shortID});
+                let gameObj = makeGameObject(game, teamMap, playerMap, pointScheme);
+                if (gameObj) {
+                    qbjObj.objects.push(gameObj);
                 }
-            }
+            });
             qbjObj.objects.push(tournamentObject);
             callback(null, qbjObj);
         }
@@ -750,9 +744,10 @@ function convertToQuizbowlSchema(tournamentid, callback) {
 
 /**
 * Couples teams together based on bktree and longest-common-subsequence
+* TODO
 */
 function makeRegistrationObjects(teams) {
-    var teamNames = teams.map(team => {
+    let teamNames = teams.map(team => {
         return team.team_name;
     });
 }
@@ -764,10 +759,10 @@ function makeRegistrationObjects(teams) {
 * @return map of all players
 */
 function makePlayerMap(players) {
-    var playerMap = {};
-    for (var i = 0; i < players.length; i++) {
-        playerMap[players[i]._id] = {shortID : players[i].shortID, name : players[i].player_name};
-    }
+    const playerMap = {};
+    players.forEach(player => {
+        playerMap[player._id] = {shortID : player.shortID, name : player.player_name};
+    });
     return playerMap;
 }
 
@@ -781,21 +776,20 @@ function makePlayerMap(players) {
 * @return a game object adhering to .qbj format
 */
 function makeGameObject(game, teamMap, playerMap, pointScheme) {
-    var gameObject = {id : "game_" + game.shortID, location : game.room,
+    const gameObject = {id : "game_" + game.shortID, location : game.room,
         match_teams : [], match_questions : [], round : game.round, tossups : game.tossupsheard, type : "Match",
         moderator : game.moderator, notes : game.notes};
-
-    var numPlayersTeam1 = Object.keys(game.team1.playerStats).length;
-    var numPlayersTeam2 = Object.keys(game.team2.playerStats).length;
+    const numPlayersTeam1 = Object.keys(game.team1.playerStats).length;
+    const numPlayersTeam2 = Object.keys(game.team2.playerStats).length;
     if (teamMap[game.team1.team_id] && teamMap[game.team2.team_id]) {
-        var firstTeamObj = {match_players : [], team : {$ref : "team_" + teamMap[game.team1.team_id].shortID}};
+        const firstTeamObj = {match_players : [], team : {$ref : "team_" + teamMap[game.team1.team_id].shortID}};
         if (numPlayersTeam1 === 0) {
             firstTeamObj.points = game.team1.score;
         } else {
-            var bonusPoints = game.team1.score;
-            for (var player in game.team1.playerStats) {
+            let bonusPoints = game.team1.score;
+            for (let player in game.team1.playerStats) {
                 if (game.team1.playerStats.hasOwnProperty(player)) {
-                    var playerObject = makePlayerObject(playerMap, player, game.team1.playerStats, game, pointScheme);
+                    const playerObject = makePlayerObject(playerMap, player, game.team1.playerStats, game, pointScheme);
                     bonusPoints -= playerObject.tossupTotal;
                     if (playerObject.playerObject) {
                         firstTeamObj.match_players.push(playerObject.playerObject);
@@ -805,14 +799,14 @@ function makeGameObject(game, teamMap, playerMap, pointScheme) {
             firstTeamObj.bonus_points = bonusPoints;
             firstTeamObj.bonus_bounceback_points = !game.team1.bouncebacks ? 0 : parseFloat(game.team1.bouncebacks);
         }
-        var secondTeamObj = {match_players : [], team : {$ref : "team_" + teamMap[game.team2.team_id].shortID}};
+        const secondTeamObj = {match_players : [], team : {$ref : "team_" + teamMap[game.team2.team_id].shortID}};
         if (numPlayersTeam2 === 0) {
             secondTeamObj.points = game.team2.score;
         } else {
-            var bonusPoints = game.team2.score;
-            for (var player in game.team2.playerStats) {
+            let bonusPoints = game.team2.score;
+            for (let player in game.team2.playerStats) {
                 if (game.team2.playerStats.hasOwnProperty(player)) {
-                    var playerObject = makePlayerObject(playerMap, player, game.team2.playerStats, game, pointScheme);
+                    const playerObject = makePlayerObject(playerMap, player, game.team2.playerStats, game, pointScheme);
                     bonusPoints -= playerObject.tossupTotal;
                     if (playerObject.playerObject) {
                         secondTeamObj.match_players.push(playerObject.playerObject);
@@ -825,9 +819,9 @@ function makeGameObject(game, teamMap, playerMap, pointScheme) {
         gameObject.match_teams.push(firstTeamObj);
         gameObject.match_teams.push(secondTeamObj);
         if (game.phases) {
-            for (var i = 0; i < game.phases.length; i++) {
-                gameObject.match_questions.push(makeMatchQuestionObject(game.phases[i], teamMap, playerMap));
-            }
+            game.phases.forEach(phase => {
+                gameObject.match_questions.push(makeMatchQuestionObject(phase, teamMap, playerMap));
+            });
         }
         return gameObject;
     }
@@ -842,32 +836,31 @@ function makeGameObject(game, teamMap, playerMap, pointScheme) {
 * @return a match question object with a number, bonus_points, bounceback_bonus_points, and an array of buzzes
 */
 function makeMatchQuestionObject(phase, teamMap, playerMap) {
-    var bonusPoints = 0;
-    var bouncebackPoints = 0;
-    for (var i = 0; i < phase.bonus.bonusParts.length; i++) {
-        if (phase.bonus.bonusParts[i].gettingTeam) {
-            bonusPoints += parseFloat(phase.bonus.bonusParts[i].value);
-            if (phase.bonus.bonusParts[i].gettingTeam !== phase.bonus.forTeam) {
-                bouncebackPoints += parseFloat(phase.bonus.bonusParts[i].value);
+    let bonusPoints = 0;
+    let bouncebackPoints = 0;
+    phase.bonus.bonusParts.forEach(bonusPart => {
+        if (bonusPart.gettingTeam) {
+            bonusPoints += parseFloat(bonusPart.value);
+            if (bonusPart.gettingTeam !== phase.bonus.forTeam) {
+                bouncebackPoints += parseFloat(bonusPart.value);
             }
         }
-    }
-    var matchQuestion = {
+    });
+    const matchQuestion = {
                     number : parseFloat(phase.question_number),
                     bonus_points : bonusPoints,
                     bounceback_bonus_points : bouncebackPoints,
                     buzzes : []
                 };
-    for (var i = 0; i < phase.tossup.answers.length; i++) {
-        var answer = phase.tossup.answers[i];
+    phase.tossup.answers.forEach(answer => {
         if (teamMap[answer.team] && playerMap[answer.player]) {
-            var buzzObject = {};
+            const buzzObject = {};
             buzzObject.team = {$ref : "team_" + teamMap[answer.team].shortID};
             buzzObject.player = {$ref : "player_" + playerMap[answer.player].shortID};
             buzzObject.result = {value : parseFloat(answer.value)};
             matchQuestion.buzzes.push(buzzObject);
         }
-    }
+    });
     return matchQuestion;
 }
 
@@ -880,7 +873,7 @@ function makeMatchQuestionObject(phase, teamMap, playerMap) {
 * @return a player object and the total sum of points this player scored in a game
 */
 function makePlayerObject(playerMap, player, playerStats, game, pointScheme) {
-    var playerObject = null;
+    let playerObject = null;
     if (playerMap[player]) {
         playerObject = {
             player : {name : playerMap[player].name},
@@ -888,12 +881,12 @@ function makePlayerObject(playerMap, player, playerStats, game, pointScheme) {
             answer_counts : []
         };
     }
-    var tossupTotal = 0;
-    for (var j = 0; j < pointScheme.length; j++) {
-        var answerObject = {};
-        answerObject.value = parseFloat(pointScheme[j]);
-        if (playerStats[player][pointScheme[j]]) {
-            var number = parseFloat(playerStats[player][pointScheme[j]]);
+    let tossupTotal = 0;
+    pointScheme.forEach(pv => {
+        const answerObject = {};
+        answerObject.value = parseFloat(pv);
+        if (playerStats[player][pv]) {
+            let number = parseFloat(playerStats[player][pv]);
             if (number == null) {
                 answerObject.number = 0;
             } else {
@@ -906,15 +899,15 @@ function makePlayerObject(playerMap, player, playerStats, game, pointScheme) {
         if (playerObject) {
             playerObject.answer_counts.push(answerObject);
         }
-    }
+    });
     return {playerObject : playerObject, tossupTotal : tossupTotal};
 }
 
 function findTournamentsByNameAndSet(name, set, callback) {
     try {
-        var query;
-        var trex = new RegExp(".*" + name.trim() + ".*", "i");
-        var qrex = new RegExp(".*" + set.trim() + ".*", "i");
+        let query = {};
+        const trex = new RegExp(".*" + name.trim() + ".*", "i");
+        const qrex = new RegExp(".*" + set.trim() + ".*", "i");
         if (name.trim().length === 0) {
             query = {questionSet : qrex};
         } else if (set.trim().length === 0) {
@@ -922,7 +915,7 @@ function findTournamentsByNameAndSet(name, set, callback) {
         } else {
             query = {$and : [{tournament_name : trex}, {questionSet : qrex}]};
         }
-        var fields = {tournament_name : 1, questionSet : 1, shortID : 1};
+        const fields = {tournament_name : 1, questionSet : 1, shortID : 1};
         Tournament.find(query, fields, (err, tournaments) => {
             if (err) {
                 console.log(err);

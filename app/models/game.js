@@ -1,3 +1,5 @@
+'use strict';
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -10,13 +12,13 @@ const gameSchema = new Schema({
     shortID : {type : String, required : true},
     phase_id : {type : Array, required : true, default : []},
     forfeit : {type : Boolean, default : false},
-    round : {type : Number, default : 0, set : function(num) {
+    round : {type : Number, default : 0, set : num => {
         if (num == null) {
             return 0;
         }
         return num;
     }},
-    tossupsheard : {type : Number, default: 20, set : function(tossups) {
+    tossupsheard : {type : Number, default: 20, set : tossups => {
         if (tossups == null) {
             return 20;
         }
@@ -25,10 +27,10 @@ const gameSchema = new Schema({
     team1 : {
         team_name : String,
         team_id : String,
-        score : {type : Number, default : 0, set : function(score) {
+        score : {type : Number, default : 0, set : score => {
             return score == null ? 0 : score;
         }},
-        bouncebacks : {type : Number, default : 0, set : function(bb) {
+        bouncebacks : {type : Number, default : 0, set : bb => {
             return bb == null ? 0 : bb;
         }},
         playerStats : {type : {}, default : {}}
@@ -36,10 +38,10 @@ const gameSchema = new Schema({
     team2 : {
         team_name : String,
         team_id : String,
-        score : {type : Number, default : 0, set : function(score) {
+        score : {type : Number, default : 0, set : score => {
             return score == null ? 0 : score;
         }},
-        bouncebacks : {type : Number, default : 0, set : function(bb) {
+        bouncebacks : {type : Number, default : 0, set : bb => {
             return bb == null ? 0 : bb;
         }},
         playerStats : {type : {}, default : {}}

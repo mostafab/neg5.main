@@ -1,3 +1,5 @@
+'use strict';
+
 const signupController = require('../../app/controllers/registration-controller');
 const tournamentController = require("../../app/controllers/tournament-controller");
 
@@ -40,8 +42,8 @@ module.exports = app => {
     });
 
     app.post("/t/:tid/signup/submit", (req, res) => {
-        var directorid = req.session.director == null ? null : req.session.director._id;
-        var tournamentid = req.params.tid;
+        const directorid = req.session.director == null ? null : req.session.director._id;
+        const tournamentid = req.params.tid;
         signupController.createRegistration(tournamentid, directorid, req.body, (err, closed) => {
             if (err) {
                 res.status(500).end();

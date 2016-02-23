@@ -5,7 +5,7 @@ const clientsession = require("client-sessions");
 const cookieParser = require("cookie-parser");
 
 module.exports = function() {
-    var app = express();
+    const app = express();
 
     app.use(bodyParser.urlencoded({
         extended: true

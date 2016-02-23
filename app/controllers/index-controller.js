@@ -1,3 +1,4 @@
+'use strict';
 
 /**
 * Renders the home screen using the response object and index.jade

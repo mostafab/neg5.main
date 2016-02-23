@@ -71,9 +71,9 @@ function register(credentials, callback) {
 * @param callback
 */
 function makeUser(req, callback) {
-    var name = req["r_name"];
-    var email = req["r_usrname"].toLowerCase();
-    var password = req["r_pswd"];
+    const name = req["r_name"];
+    const email = req["r_usrname"].toLowerCase();
+    const password = req["r_pswd"];
     bcryptjs.genSalt(10, (err, salt) => {
         if (err) {
             console.log("Error: " + err);
@@ -83,7 +83,7 @@ function makeUser(req, callback) {
                 if (err) {
                     callback(err);
                 } else {
-                    var user = new User();
+                    const user = new User();
                     user.local.name = name;
                     user.local.email = email;
                     user.local.password = hash;
@@ -98,7 +98,7 @@ function makeUser(req, callback) {
                                 } else if (result) {
                                     callback(null);
                                 } else {
-                                    var td = new TournamentDirector({
+                                    const td = new TournamentDirector({
                                         name : name,
                                         email : email,
                                         usertoken : user._id
