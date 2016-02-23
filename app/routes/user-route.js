@@ -1,6 +1,6 @@
 const userController = require('../../app/controllers/user-controller');
 
-module.exports = function(app) {
+module.exports = app => {
 
     app.get("/account", (req, res, next) => {
         if (!req.session.director) {

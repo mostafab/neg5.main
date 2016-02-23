@@ -6,7 +6,7 @@ const tournamentController = require('../../app/controllers/tournament-controlle
 const registrationController = require("../../app/controllers/registration-controller");
 const statsController = require("../../app/controllers/stats-controller");
 
-module.exports = function(app) {
+module.exports = app => {
 
     app.get("/t", (req, res, next) => {
         res.redirect("/tournaments");

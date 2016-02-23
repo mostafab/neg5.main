@@ -1,7 +1,7 @@
 const signupController = require('../../app/controllers/registration-controller');
 const tournamentController = require("../../app/controllers/tournament-controller");
 
-module.exports = function(app) {
+module.exports = app => {
 
     app.get("/registrations", (req, res) => {
         if (!req.session.director) {

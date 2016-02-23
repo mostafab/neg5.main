@@ -166,7 +166,7 @@ function updateEmailAndName(director, newName, newEmail, callback) {
 * success or failure
 */
 function updateUserPassword(director, oldPassword, newPassword, callback) {
-    User.findOne({_id : director.usertoken}, function(err, result) {
+    User.findOne({_id : director.usertoken}, (err, result) => {
         if (err) {
             callback(err, false);
         } else if (result) {

@@ -1,4 +1,4 @@
-module.exports = function(app) {
+module.exports = app => {
 
     const index = require('../controllers/index-controller');
 
