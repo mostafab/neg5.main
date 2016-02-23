@@ -471,6 +471,9 @@ function getPPBForRounds(games, pointScheme, pointTypes) {
 * @return key value pairing of teams
 */
 function makeTeamMap(teams) {
+    if (!teams) {
+        return {};
+    }
     var map = {};
     for (var i = 0; i < teams.length; i++) {
         map[teams[i]._id] = {name : teams[i].team_name, shortID : teams[i].shortID};

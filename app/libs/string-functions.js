@@ -29,6 +29,4 @@ function levenshteinDistance(first, second) {
     return distanceMatrix[first.length - 1][second.length - 1];
 }
 
-console.log(levenshteinDistance("Norcross A", "Waycross"));
-
 exports.levenshteinDistance = levenshteinDistance;

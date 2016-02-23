@@ -25,7 +25,7 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/team", (req, res, next) => {
-        statsController.getTeamsInfo(req.params.tid, req.query.phase, function(err, tournament, teamInfo) {
+        statsController.getTeamsInfo(req.params.tid, req.query.phase, (err, tournament, teamInfo) => {
             if (err) {
                 res.status(500).send(err);
             } else if (tournament == null) {
@@ -39,7 +39,7 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/team/dl", (req, res, next) => {
-        statsController.getTeamsInfo(req.params.tid, req.query.phase, function(err, tournament, teamInfo) {
+        statsController.getTeamsInfo(req.params.tid, req.query.phase, (err, tournament, teamInfo) => {
             if (err) {
                 res.status(500).end();
             } else if (tournament == null) {
@@ -54,7 +54,7 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/player", (req, res, next) => {
-        statsController.getPlayersInfo(req.params.tid, req.query.phase, function(err, tournament, playersInfo) {
+        statsController.getPlayersInfo(req.params.tid, req.query.phase, (err, tournament, playersInfo) => {
             if (err) {
                 res.status(500).end();
             } else if (tournament == null) {
@@ -68,7 +68,7 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/player/dl", (req, res, next) => {
-        statsController.getPlayersInfo(req.params.tid, req.query.phase, function(err, tournament, playersInfo) {
+        statsController.getPlayersInfo(req.params.tid, req.query.phase, (err, tournament, playersInfo) => {
             if (err) {
                 res.status(500).end();
             } else if (tournament == null) {
@@ -83,13 +83,12 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/teamfull", (req, res, next) => {
-        statsController.getFullTeamsGameInformation(req.params.tid, req.query.phase, function(err, tournament, teamsGames, playersInfo, teamTotals) {
+        statsController.getFullTeamsGameInformation(req.params.tid, req.query.phase, (err, tournament, teamsGames, playersInfo, teamTotals) => {
             if (err) {
                 res.status(500).end();
             } else if (tournament == null) {
                 res.send("Couldn't find that tournament");
             } else {
-                // console.log(teamTotals);
                 var tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
                     pointScheme : tournament.pointScheme, phaseInfo : tournament.phaseInfo};
                 res.render("full-teams", {tournament : tournamentData, teamsGames : teamsGames, playersInfo : playersInfo, teamTotals : teamTotals});
@@ -98,7 +97,7 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/teamfull/dl", (req, res, next) => {
-        statsController.getFullTeamsGameInformation(req.params.tid, req.query.phase, function(err, tournament, teamsGames, playersInfo, teamTotals) {
+        statsController.getFullTeamsGameInformation(req.params.tid, req.query.phase, (err, tournament, teamsGames, playersInfo, teamTotals) => {
             if (err) {
                 res.status(500).end();
             } else if (tournament == null) {
@@ -115,7 +114,7 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/playerfull", (req, res, next) => {
-        statsController.getFullPlayersGameInformation(req.params.tid, req.query.phase, function(err, tournament, playersInfo, playerTotals) {
+        statsController.getFullPlayersGameInformation(req.params.tid, req.query.phase, (err, tournament, playersInfo, playerTotals) => {
             if (err) {
                 res.status(500).end();
             } else if (tournament == null) {
@@ -129,7 +128,7 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/playerfull/dl", (req, res, next) => {
-        statsController.getFullPlayersGameInformation(req.params.tid, req.query.phase, function(err, tournament, playersInfo, playerTotals) {
+        statsController.getFullPlayersGameInformation(req.params.tid, req.query.phase, (err, tournament, playersInfo, playerTotals) => {
             if (err) {
                 res.status(500).end();
             } else if (tournament == null) {
@@ -145,7 +144,7 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/roundreport", (req, res, next) => {
-        statsController.getRoundReport(req.params.tid, req.query.phase, function(err, tournament, roundsInfo) {
+        statsController.getRoundReport(req.params.tid, req.query.phase, (err, tournament, roundsInfo) => {
             if (err) {
                 res.status(500).end();
             } else if (tournament == null) {
@@ -158,7 +157,7 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/stats/roundreport/dl", (req, res, next) => {
-        statsController.getRoundReport(req.params.tid, req.query.phase, function(err, tournament, roundsInfo) {
+        statsController.getRoundReport(req.params.tid, req.query.phase, (err, tournament, roundsInfo) => {
             if (err) {
                 res.status(500).end();
             } else if (tournament == null) {
@@ -184,7 +183,7 @@ module.exports = function(app) {
         } else {
             constraints.maxround = req.query.maxround;
         }
-        statsController.getFilteredTeamsInformation(req.params.tid, constraints, function(err, tournament, teamInfo) {
+        statsController.getFilteredTeamsInformation(req.params.tid, constraints, (err, tournament, teamInfo) => {
             if (err) {
                 res.status(500).end();
             } else if (tournament == null) {
@@ -211,7 +210,7 @@ module.exports = function(app) {
         } else {
             constraints.maxround = req.query.maxround;
         }
-        statsController.getFilteredPlayersInformation(req.params.tid, constraints, function(err, tournament, playersInfo) {
+        statsController.getFilteredPlayersInformation(req.params.tid, constraints, (err, tournament, playersInfo) => {
             if (err) {
                 res.send(err);
             } else if (tournament == null) {
@@ -225,7 +224,7 @@ module.exports = function(app) {
     });
 
     app.get("/t/:tid/export/qbj", (req, res) => {
-        statsController.convertToQuizbowlSchema(req.params.tid, function(err, json) {
+        statsController.convertToQuizbowlSchema(req.params.tid, (err, json) => {
             if (err) {
                 res.status(500).end();
             } else if (!json) {
@@ -249,7 +248,7 @@ module.exports = function(app) {
     // });
 
     app.get("/t/:tid/export/scoresheets", (req, res) => {
-        statsController.exportScoresheets(req.params.tid, function(err, scoresheets) {
+        statsController.exportScoresheets(req.params.tid, (err, scoresheets) => {
             if (err) {
                 res.status(500).end();
             } else if (!scoresheets) {
