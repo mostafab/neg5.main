@@ -33,7 +33,7 @@ function createRegistration(tournamentid, directorid, information, callback) {
             callback(null, "CLOSED");
         } else {
             if (reg.directorid == null) {
-                reg.save(function(err) {
+                reg.save(err => {
                     callback(err, null);
                 });
             } else {

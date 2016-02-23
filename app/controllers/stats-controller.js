@@ -1,8 +1,8 @@
-const bktree = require("bktree");
-const mongoose = require("mongoose");
-const Tournament = mongoose.model("Tournament");
+const bktree = require('bktree');
+const mongoose = require('mongoose');
+const Tournament = mongoose.model('Tournament');
 
-const SCHEMA_VERSION = "1.1";
+const SCHEMA_VERSION = '1.1';
 
 /**
 * Responsible for gathering basic statistics information about a tournament's teams
@@ -588,7 +588,7 @@ function convertToSQBS(tournamentid, callback) {
             callback(null, null);
         } else {
             sqbsString += tournament.teams.length + "\n"; // Number of teams
-            tournament.teams.sort(function(first, second) {
+            tournament.teams.sort((first, second) => {
                 return first.team_name.localeCompare(second.team_name);
             });
             // Build the team map where key is team's _id and value contains the team's name, its players, and the team index
@@ -614,7 +614,6 @@ function convertToSQBS(tournamentid, callback) {
                     }
                 }
             }
-            // console.log(JSON.stringify(teamMap, null, 2));
             sqbsString += tournament.games.length + "\n"; // Number of games
             for (var i = 0; i < tournament.games.length; i++) {
                 var currentGame = tournament.games[i];
@@ -929,7 +928,7 @@ function findTournamentsByNameAndSet(name, set, callback) {
                 console.log(err);
                 callback(err);
             } else {
-                tournaments.sort(function(first, second) {
+                tournaments.sort((first, second) => {
                     return first.tournament_name.localeCompare(second.tournament_name);
                 });
                 callback(null, tournaments);

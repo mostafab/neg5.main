@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Tournament = mongoose.model("Tournament");
 const statsController = require("../../app/controllers/stats-controller");
 
-module.exports = function(app) {
+module.exports = app => {
 
     // app.get("/search", (req, res) => {
     //     res.render("search", {tournamentd : req.session.director});
