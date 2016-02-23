@@ -249,6 +249,15 @@ td {
     cursor: pointer;
 }
 
+.tournament-anchor {
+    font-size: 1.2em;
+}
+
+.tournament-anchor:hover {
+    background-color: #DFF0D8;
+    cursor: pointer;
+}
+
 .loading {
     margin-left:10px;
     margin-right:10px;

@@ -1,12 +1,12 @@
 'use strict';
 
-var mongoose = require("mongoose");
-var bcryptjs = require("bcryptjs");
+const mongoose = require("mongoose");
+const bcryptjs = require("bcryptjs");
 
-var User = mongoose.model("User");
-var Tournament = mongoose.model("Tournament");
-var TournamentDirector = mongoose.model("TournamentDirector");
-var tournamentController = require('../../app/controllers/tournament-controller');
+const User = mongoose.model("User");
+const Tournament = mongoose.model("Tournament");
+const TournamentDirector = mongoose.model("TournamentDirector");
+const tournamentController = require('../../app/controllers/tournament-controller');
 
 /**
 * Validates a login given a username and password

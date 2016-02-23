@@ -1,7 +1,7 @@
-var mongoose = require("mongoose");
-var Tournament = mongoose.model("Tournament");
-var TournamentDirector = mongoose.model("TournamentDirector");
-var Registration = mongoose.model("Registration");
+const mongoose = require("mongoose");
+const Tournament = mongoose.model("Tournament");
+const TournamentDirector = mongoose.model("TournamentDirector");
+const Registration = mongoose.model("Registration");
 
 /**
 * Function responsible for creating a registration and adding it to the

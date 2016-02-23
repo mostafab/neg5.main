@@ -1,8 +1,8 @@
-var config = require('./config');
-var express = require('express');
-var bodyParser = require("body-parser");
-var clientsession = require("client-sessions");
-var cookieParser = require("cookie-parser");
+const config = require('./config');
+const express = require('express');
+const bodyParser = require("body-parser");
+const clientsession = require("client-sessions");
+const cookieParser = require("cookie-parser");
 
 module.exports = function() {
     var app = express();

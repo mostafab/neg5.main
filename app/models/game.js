@@ -1,12 +1,12 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 /**
 * Schema representing a game in the mongoDB database
 * Each game has a round, tossupsheard, two teams, and
 * other miscellaneous information
 */
-var gameSchema = new Schema({
+const gameSchema = new Schema({
     shortID : {type : String, required : true},
     phase_id : {type : Array, required : true, default : []},
     forfeit : {type : Boolean, default : false},

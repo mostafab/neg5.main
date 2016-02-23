@@ -1,7 +1,7 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
-var bcryptjs = require("bcryptjs");
-var SALT_WORK_FACTOR = 10;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const bcryptjs = require("bcryptjs");
+const SALT_WORK_FACTOR = 10;
 
 
 function toLower(string) {
@@ -10,9 +10,9 @@ function toLower(string) {
 
 /**
 * Schema representing a user of the application. Password and email are saved here.
-* Future support for google authentication added 
+* Future support for google authentication added
 */
-var UserSchema = new Schema({
+const UserSchema = new Schema({
     local : {
         name : String,
         email : String,

@@ -1,10 +1,10 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 /**
 * Schema for a registration
 */
-var RegistrationSchema = new Schema({
+const RegistrationSchema = new Schema({
     teamName : String,
     numTeams : Number,
     email : {type : String, set : function(email) {
