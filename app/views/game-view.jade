@@ -1,6 +1,6 @@
-h2(class="title" style="width:35%;") #{tournamentName} Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
+h2(class="subtitle btn-shadow" style="width:35%;") #{tournamentName} Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
 h3(style="width:50%;border-radius:0")
-    a(class="btn btn-sm btn-info" href="/t/" + tournament.shortID + "/games" id='back-to-games') Games
+    a(class="btn btn-sm btn-info btn-shadow" href="/t/" + tournament.shortID + "/games" id='back-to-games') Games
 br
 br
 
@@ -16,14 +16,14 @@ div(class="panel panel-default")
                         div(class="row")
                             input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
                             div(class="col-lg-6 col-md-6 col-sm-6")
-                                    select(id="leftchoice-edit" class="form-control teamselect-edit" name="leftteamselect")
+                                    select(id="leftchoice-edit" class="form-control teamselect-edit btn-shadow" name="leftteamselect")
                                         each team in tournament.teams
                                             if team._id == game.team1.team_id
                                                 option(selected value="#{team._id}") #{team.team_name}
                                             else
                                                 option(value="#{team._id}") #{team.team_name}
                             div(class="col-lg-6 col-md-6 col-sm-6")
-                                    select(id="rightchoice-edit" class="form-control teamselect-edit" name="rightteamselect")
+                                    select(id="rightchoice-edit" class="form-control teamselect-edit btn-shadow" name="rightteamselect")
                                         each team in tournament.teams
                                             if team._id == game.team2.team_id
                                                 option(selected value="#{team._id}") #{team.team_name}
@@ -51,11 +51,11 @@ div(class="panel panel-default")
                                                     td #{current.player_name}
                                                     td
                                                         - var inputGP = "player" + playerNum + "_leftgp"
-                                                        input(type="number" name="#{inputGP}" class="form-control gp-box-edit" value="#{game.team1.playerStats[current._id]['gp']}")
+                                                        input(type="number" name="#{inputGP}" class="form-control gp-box-edit btn-shadow" value="#{game.team1.playerStats[current._id]['gp']}")
                                                     each score, j in points
                                                         td
                                                             - var inputPoints = "player" + playerNum + "_left_" + points[j] + "val"
-                                                            input(type="number" name="#{inputPoints}" class="form-control point-box-edit" value="#{game.team1.playerStats[current._id]['' + points[j]]}")
+                                                            input(type="number" name="#{inputPoints}" class="form-control point-box-edit btn-shadow" value="#{game.team1.playerStats[current._id]['' + points[j]]}")
                                             - playerNum++
                             div(id="right-text-edit" class="col-lg-6 col-md-6 col-sm-6")
                                 table(class='table table-condensed')
@@ -77,11 +77,11 @@ div(class="panel panel-default")
                                                     td #{current.player_name}
                                                     td
                                                         - var inputGP = "player" + playerNum + "_rightgp"
-                                                        input(type="number" name="#{inputGP}" class="form-control gp-box-edit" value="#{game.team2.playerStats[current._id]['gp']}")
+                                                        input(type="number" name="#{inputGP}" class="form-control gp-box-edit btn-shadow" value="#{game.team2.playerStats[current._id]['gp']}")
                                                     each score, j in points
                                                         td
                                                             - var inputPoints = "player" + playerNum + "_right_" + points[j] + "val"
-                                                            input(type="number" name="#{inputPoints}" class="form-control point-box-edit" value="#{game.team2.playerStats[current._id]['' + points[j]]}")
+                                                            input(type="number" name="#{inputPoints}" class="form-control point-box-edit btn-shadow" value="#{game.team2.playerStats[current._id]['' + points[j]]}")
 
                                             - playerNum++
                         div(class="row")
@@ -91,23 +91,23 @@ div(class="panel panel-default")
                                     div(class='col-md-3')
                                         label(class="label label-warning btn-block" style='float:right') Team 1 Score *
                                     div(class='col-md-3')
-                                        input(type="number" class="form-control scorebox-edit" name="leftteamscore" placeholder="Team 1 Score" pattern="[0-9]" value="#{game.team1.score}")
+                                        input(type="number" class="form-control scorebox-edit btn-shadow" name="leftteamscore" placeholder="Team 1 Score" pattern="[0-9]" value="#{game.team1.score}")
                                 div(class="row")
                                     div(class="col-md-6")
                                     div(class="col-md-3")
                                         label(class="label label-primary btn-block" style='float:right') Bouncebacks
                                     div(class="col-md-3")
-                                        input(type="number" class="form-control" name="leftbounceback" placeholder="Bounceback Points" value="#{game.team1.bouncebacks}")
+                                        input(type="number" class="form-control btn-shadow" name="leftbounceback" placeholder="Bounceback Points" value="#{game.team1.bouncebacks}")
                                 br
                             div(class="col-lg-6 col-md-6 col-sm-6")
                                 div(class="row")
                                     div(class="col-md-3")
-                                        input(type="number" class="form-control scorebox-edit" name="rightteamscore" placeholder="Team 2 Score" pattern="[0-9]" value="#{game.team2.score}")
+                                        input(type="number" class="form-control scorebox-edit btn-shadow" name="rightteamscore" placeholder="Team 2 Score" pattern="[0-9]" value="#{game.team2.score}")
                                     div(class="col-md-3")
                                         label(class="label label-warning btn-block" style='float:right') Team 2 Score *
                                 div(class="row")
                                     div(class="col-md-3")
-                                        input(type="number" class="form-control" name="rightbounceback" placeholder="Bounceback Points" value="#{game.team2.bouncebacks}")
+                                        input(type="number" class="form-control btn-shadow" name="rightbounceback" placeholder="Bounceback Points" value="#{game.team2.bouncebacks}")
                                     div(class="col-md-3")
                                         label(class="label label-primary btn-block" style='float:right') Bouncebacks
                                 br
@@ -118,7 +118,7 @@ div(class="panel panel-default")
                                     div(class="col-md-3")
                                         label(class="label label-primary btn-block" style='float:right') Round
                                     div(class="col-md-3")
-                                        input(type="number" class="form-control" name="round" placeholder="Round" value="#{game.round}")
+                                        input(type="number" class="form-control btn-shadow" name="round" placeholder="Round" value="#{game.round}")
                         div(class="row")
                             div(class="col-lg-6 col-md-6 col-sm-6")
                                 div(class="row")
@@ -126,7 +126,7 @@ div(class="panel panel-default")
                                     div(class="col-md-3")
                                         label(class="label label-primary btn-block" style='float:right') TUH
                                     div(class="col-md-3")
-                                        input(type="number" class="form-control" name="tossupsheard" placeholder="Tossups Heard" value="#{game.tossupsheard}")
+                                        input(type="number" class="form-control btn-shadow" name="tossupsheard" placeholder="Tossups Heard" value="#{game.tossupsheard}")
                                 br
 
                         div(class="row")
@@ -136,19 +136,19 @@ div(class="panel panel-default")
                                     div(class="col-md-3")
                                         label(class="label label-primary btn-block" style='float:right') Room
                                     div(class="col-md-3")
-                                        input(type="text" class="form-control" name="room" placeholder="Room Number" value="#{!game.room ? '' : game.room}")
+                                        input(type="text" class="form-control btn-shadow" name="room" placeholder="Room Number" value="#{!game.room ? '' : game.room}")
                                 div(class="row")
                                     div(class="col-md-6")
                                     div(class="col-md-3")
                                         label(class="label label-primary btn-block" style='float:right') Moderator
                                     div(class="col-md-3")
-                                        input(type="text" class="form-control" name="moderator" placeholder="Moderator" value="#{!game.moderator ? '' : game.moderator}")
+                                        input(type="text" class="form-control btn-shadow" name="moderator" placeholder="Moderator" value="#{!game.moderator ? '' : game.moderator}")
                                 div(class="row")
                                     div(class="col-md-6")
                                     div(class="col-md-3")
                                         label(class="label label-primary btn-block" style='float:right') Packet
                                     div(class="col-md-3")
-                                        input(type="text" class="form-control" name="packet" placeholder="Packet" value="#{!game.packet ? '' : game.packet}")
+                                        input(type="text" class="form-control btn-shadow" name="packet" placeholder="Packet" value="#{!game.packet ? '' : game.packet}")
                                 br
 
                         div(class="row")
@@ -158,7 +158,7 @@ div(class="panel panel-default")
                                     div(class="col-md-3")
                                         label(class="label label-primary btn-block" style='float:right') Phases
                                     div(class="col-md-3")
-                                        select(multiple class="form-control phase-selection" name='phase_id' size='#{tournament.phases.length}')
+                                        select(multiple class="form-control phase-selection btn-shadow" name='phase_id' size='#{tournament.phases.length}')
                                             each phase in tournament.phases
                                                 if game.phase_id.indexOf(phase.phase_id)
                                                     option(selected value='#{phase.phase_id}') #{phase.name}
@@ -173,9 +173,9 @@ div(class="panel panel-default")
                                     div(class="col-md-2")
                                         label(class="label label-primary btn-block" style='float:right') Notes
                                     div(class="col-md-4")
-                                        textarea(class="form-control" name="notes" placeholder="Notes" style='min-height:200px') #{game.notes}
+                                        textarea(class="form-control btn-shadow" name="notes" placeholder="Notes" style='min-height:200px') #{game.notes}
 
-                        button(type="button" class="btn btn-md btn-info" id="entergamebutton-edit") Save Changes
+                        button(type="button" class="btn btn-md btn-info btn-shadow" id="entergamebutton-edit") Save Changes
 
                         br
                         br

@@ -19,8 +19,8 @@ block content
                                     ul(class="nav nav-pills no-border-radius")
                                         li
                                             a(href="/t/" + tournament.shortID + "/stats/team?phase=#{tournament.phaseInfo.phase_id}") Team Standings
-                                        li(class="active")
-                                            a(href="/t/" + tournament.shortID + "/stats/player?phase=#{tournament.phaseInfo.phase_id}") Player Standings
+                                        li
+                                            a(class='stat-title' href="/t/" + tournament.shortID + "/stats/player?phase=#{tournament.phaseInfo.phase_id}") Player Standings
                                         li
                                             a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}") Teams Full
                                         li
@@ -30,25 +30,23 @@ block content
 
 
                         if (tournament.phaseInfo)
-                            h2(class="title" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Team Standings
+                            h2(class="subtitle btn-shadow" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Player Standings
                         else
-                            h2(class="title" style="width:50%") #{tournament.tournament_name} - Team Standings
+                            h2(class="subtitle btn-shadow" style="width:50%") #{tournament.tournament_name} - Player Standings
 
                         br
                         br
 
                         if playersInfo.length != 0
-                            - var statHeaders = Object.keys(playersInfo[0].stats)
-                            - var points = Object.keys(tournament.pointScheme);
-
-                            div(class="panel panel-default" id="players" style="background-color:transparent;border-width:0")
-                                div(class="row")
-                                    div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
-
-                                        input(type="text" class="form-control search" placeholder="Filter by any of the column headers")
-                                        span(class="input-group-addon")
-                                            i(class="glyphicon glyphicon-search")
-                                table(class="table table-striped table-condensed" id="playerstatstable")
+                            - const statHeaders = Object.keys(playersInfo[0].stats)
+                            - const points = Object.keys(tournament.pointScheme);
+                            div(class="row")
+                                div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
+                                    input(type="text" class="form-control search" placeholder="Filter by any of the column headers")
+                                    span(class="input-group-addon")
+                                        i(class="glyphicon glyphicon-search")
+                            div(class="panel panel-default" id="players")
+                                table(class="table table-condensed" id="playerstatstable")
                                     thead
                                         tr
                                             th(class="table-head sort" data-sort="Rank") Rank

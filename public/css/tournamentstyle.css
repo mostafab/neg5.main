@@ -3,31 +3,62 @@
     color: white;
     font-size: 18px;
     background-color:#363B40;
-    border-width: 10px;
     padding: 15px;
     width: 100%;
+    border-bottom-width: 10px;
+    border-bottom-style: solid;
+    border-bottom-color: #008888;
     border-radius: 3px;
 }
 
 .subtitle {
     font-weight: bold;
     color: white;
-    font-size: 14px;
-    background-color:rgb(83, 90, 98);
-    border-width: 10px;
+    font-size: 18px;
+    background-color:#363B40;
     padding: 15px;
     width: 100%;
+    border-bottom-width: 10px;
+    border-bottom-style: solid;
+    border-bottom-color:  #EC971F;
     border-radius: 3px;
 }
 
-.box {
-    /*background-color : #e9f5e4;*/
-    /*background-color: transparent;*/
+.stat-title {
+    color: white;
+    font-size: 12px;
+    background-color:#363B40;
+    padding: 15px;
+    width: 100%;
+    border-bottom-width: 7px;
+    border-bottom-style: solid;
+    border-bottom-color:  #008888;
 }
 
-.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+.form-control {
+    -webkit-transition: 1.0s ease border-bottom-color;
+    -moz-transition: 1.0s ease border-bottom-color;
+    -o-transition: 1.0s ease border-bottom-color;
+    -ms-transition: 1.0s ease border-bottom-color;
+    transition: 1.0s ease border-bottom-color;
+    outline:none;
+}
+
+.nav-bar > li > a {
+    color: black;
+    border-radius: 0px;
+    border-left: 15px solid #EC971F;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.nav-bar > li.active > a, .nav-bar > li.active > a:hover, .nav-bar > li.active > a:focus {
     background-color:rgb(0, 136, 136);
-    border-radius: 5px;
+    border-left-width: 15px;
+    border-left-style: solid;
+    border-left-color: #EC971F;
+    border-radius: 3px;
+    color: white;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .no-border-radius {
@@ -171,6 +202,10 @@ td {
     cursor: pointer;
 }
 
+.removecollab {
+    float:right;
+}
+
 .collab-box {
     -webkit-transition: background-color .5s;
     -moz-transition: background-color .5s;
@@ -182,6 +217,7 @@ td {
     border-left-style: solid;
     border-radius: 2px;
     margin: 10px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .collab-box:hover {
@@ -249,6 +285,10 @@ td {
     cursor: pointer;
 }
 
+.bordered-button-green {
+    border-left: 10px solid green;
+}
+
 .tournament-anchor {
     font-size: 1.2em;
 }
@@ -256,6 +296,14 @@ td {
 .tournament-anchor:hover {
     background-color: #DFF0D8;
     cursor: pointer;
+}
+
+.btn-shadow {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.btn-shadow:hover {
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
 }
 
 .loading {
@@ -275,7 +323,7 @@ th.sortable:hover {
 }
 
 .team-name-list {
-    font-size: 1.1em;
+    font-size: 1.0em;
     text-align: center;
     border-left-width: 20px;
     border-left-style: solid;
@@ -283,7 +331,7 @@ th.sortable:hover {
 }
 
 .game-list-element {
-    font-size: 1.1em;
+    font-size: 1.0em;
     text-align: center;
 }
 

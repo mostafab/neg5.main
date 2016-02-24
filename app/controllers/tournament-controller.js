@@ -807,11 +807,11 @@ function switchPhases(tournamentid, phaseID, directorid, callback) {
         } else {
             let newPhases = [];
             tournament.phases.forEach(phase => {
-                var phaseObj = {phase_id : phase.phase_id, name : phase.name, active : false};
-                if (phase.phase_id == phaseID) {
-                    phase.active = true;
+                let phaseObj = {phase_id : phase.phase_id, name : phase.name, active : false};
+                if (phaseObj.phase_id == phaseID) {
+                    phaseObj.active = true;
                 }
-                newPhases.push(phase);
+                newPhases.push(phaseObj);
             });
             Tournament.update({_id : tournament._id}, {$set : {phases : newPhases}}, err => {
                 callback(err, null, true);

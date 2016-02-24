@@ -22,12 +22,12 @@ block content
                                         a(href="/t/" + tournament.shortID + "/stats/player?phase=#{tournament.phaseInfo.phase_id}") Player Standings
                                     li
                                         a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}") Teams Full
-                                    li(class="active")
-                                        a(href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}") Players Full
+                                    li
+                                        a(class='stat-title' href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}") Players Full
                                     li
                                         a(href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{tournament.phaseInfo.phase_id}") Round Report
 
-                        h2(class="title" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Full Player Details
+                        h2(class="subtitle btn-shadow" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Full Player Details
 
                         br
                         br

@@ -26,656 +26,658 @@ block content
     -    return formattedDate;
     - }
 
-    div(class="content-wrapper box" style='padding-left:100px;padding-right:100px;padding-top:20px;')
+    div(class="content-wrapper box" style='padding-left:50px;padding-right:50px;padding-top:20px;')
         input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
-        div(class="row")
+        div(class="col-md-2")
             div(class="col-md-12")
-                div(class="col-md-12")
-                    div(style="margin:20px; margin-bottom:50px")
-                    h2(class="title" style='text-align:center;font-size:1.6em') #{tournament.tournament_name}
-                    hr
-                    h2(class="title" style='text-align:center;font-size:.9em;width:25%' id='current-phase-header') Current Phase: #{tournament.phaseName}
-                    div(style="margin:20px; margin-bottom:10px")
-                    div(class="panel-body" id='anchor-links')
-                        div(class="row")
-                            ul(class="nav nav-pills no-border-radius")
-                                li(class="active")
-                                    a(href="#overview" data-toggle="tab" class='tournament-tab') Overview
-                                if admin
-                                    li
-                                        a(href="#divisions" data-toggle="tab" class='tournament-tab') Divisions/Point Scheme
-                                li
-                                    a(href="#games" data-toggle="tab" class='tournament-tab') Games/Scoresheet
-                                li
-                                    a(href="#teams" data-toggle="tab" class='tournament-tab') Teams
-                                li
-                                    a(href="#stats" data-toggle="tab" class='tournament-tab') Statistics
-                                if tournamentd._id == tournament.directorid
-                                    li
-                                        a(href="#phase" data-toggle="tab" class='tournament-tab') Phases
-                                    li
-                                        a(href="#delete" class="btn-danger" data-toggle="tab" class='tournament-tab') Delete
-                    br
-        div(class="row")
-                div(class='col-sm-12 col-md-12')
-                    div(class="tab-content")
-                        div(class="tab-pane fade active in" id="overview")
+                div(style="margin:20px; margin-bottom:50px")
+                h2(class="title btn-shadow" style='text-align:center;font-size:1.6em') #{tournament.tournament_name}
+                hr
+                h2(class="title btn-shadow" style='text-align:center;font-size:.9em;' id='current-phase-header') Current Phase: #{tournament.phaseName}
+                div(style="margin:20px; margin-bottom:10px")
+                div(class="panel-body" id='anchor-links')
+                    div(class="row")
+                        ul(class="nav nav-bar no-border-radius")
+                            li(class="active")
+                                a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
+                            li
+                                a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
                             if admin
-                                div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") Tournament Overview
-                                    div(class="panel-body tournament-panel")
-                                        form(id="tournament-overview-form")
-                                            input(type="hidden" value="#{tournament._id}" name="tournamentid")
-                                            div(class="row")
-                                                div(class="col-md-6")
-                                                        label(class="label label-primary col-xs-4") Name
-                                                        div(class="form-group col-xs-8")
-                                                            input(
-                                                                type="text",
-                                                                name="tournament_name",
-                                                                value="#{tournament.tournament_name}",
-                                                                class="form-control input-medium center-text no-border-radius"
-                                                            )
-                                                        label(class="label label-primary col-xs-4") Location
-                                                        div(class="form-group col-xs-8")
-                                                            input(
-                                                                type="text",
-                                                                name="tournament_location",
-                                                                value="#{tournament.location}",
-                                                                class="form-control input-medium center-text no-border-radius"
-                                                            )
-                                                        label(class="label label-primary col-xs-4") Question Set
-                                                        div(class="form-group col-xs-8")
-                                                            input(
-                                                                type="text",
-                                                                name="tournament_qset",
-                                                                value="#{tournament.questionSet}",
-                                                                class="form-control input-medium center-text no-border-radius"
-                                                            )
-                                                        label(class="label label-primary col-xs-4") Date
-                                                        div(class="form-group col-xs-8")
-                                                            if tournament.date
-                                                                input(
-                                                                    type="date",
-                                                                    name="tournament_date",
-                                                                    value="#{dateConverter(tournament.date)}",
-                                                                    class="form-control input-medium center-text no-border-radius"
-                                                                )
-                                                            else
-                                                                input(
-                                                                    type="date",
-                                                                    name="tournament_date",
-                                                                    class="form-control input-medium center-text no-border-radius"
-                                                                )
-
-                                            div(class="row")
-                                                div(class="col-md-12")
-                                                    label(class="label label-primary col-xs-2") Description
-                                                    div(class="form-group col-xs-8")
-                                                        textarea(name="tournament_description" class="form-control" rows="10") #{tournament.description}
-
-                                                    div(class="col-md-6")
-                                                        button(type="button" class="btn btn-lg btn-success" id="edittournamentbutton") Save Changes
-                                                        div(id="tournament-update-msgdiv")
-                                                            p(style="margin:10px; font-size:18px")
-                            else
-                                div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") Tournament Overview
-                                    div(class="panel-body tournament-panel")
-                                        div(class="row")
-                                            div(class="col-md-6")
+                                li
+                                    a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Divisions/Point Scheme
+                            li
+                                a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games
+                            li
+                                a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
+                            li
+                                a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
+                            li
+                                a(target='_blank' href="/t/#{tournament.shortID}/scoresheet" class='btn-md') Scoresheet
+                            if tournamentd._id == tournament.directorid
+                                li
+                                    a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
+                                div(style='margin-top:50px')
+                                li(class='btn-shadow')
+                                    a(href="#delete" class="btn-danger btn-md tournament-tab" data-toggle="tab" style='color:white')
+                                        i(class='fa fa-trash')
+                    
+                    
+        div(class='col-sm-10 col-md-10 col-lg-10')
+            div(class="tab-content")
+                div(style="margin:20px; margin-bottom:50px")
+                div(class="tab-pane fade active in" id="overview")
+                    if admin
+                        div(class="panel panel-default")
+                            div(class="panel-heading collapsable") Tournament Overview
+                            div(class="panel-body tournament-panel")
+                                form(id="tournament-overview-form")
+                                    input(type="hidden" value="#{tournament._id}" name="tournamentid")
+                                    div(class="row")
+                                        div(class="col-md-6")
                                                 label(class="label label-primary col-xs-4") Name
                                                 div(class="form-group col-xs-8")
-                                                    input(readonly
+                                                    input(
+                                                        type="text",
+                                                        name="tournament_name",
                                                         value="#{tournament.tournament_name}",
-                                                        class="form-control input-medium center-text no-border-radius"
+                                                        class="form-control input-medium center-text no-border-radius btn-shadow"
                                                     )
                                                 label(class="label label-primary col-xs-4") Location
                                                 div(class="form-group col-xs-8")
-                                                    input(readonly
+                                                    input(
                                                         type="text",
+                                                        name="tournament_location",
                                                         value="#{tournament.location}",
-                                                        class="form-control input-medium center-text no-border-radius"
+                                                        class="form-control input-medium center-text no-border-radius btn-shadow"
                                                     )
                                                 label(class="label label-primary col-xs-4") Question Set
                                                 div(class="form-group col-xs-8")
-                                                    input(readonly
+                                                    input(
                                                         type="text",
+                                                        name="tournament_qset",
                                                         value="#{tournament.questionSet}",
-                                                        class="form-control input-medium center-text no-border-radius"
+                                                        class="form-control input-medium center-text no-border-radius btn-shadow"
                                                     )
                                                 label(class="label label-primary col-xs-4") Date
                                                 div(class="form-group col-xs-8")
                                                     if tournament.date
-                                                        input(readonly
+                                                        input(
                                                             type="date",
+                                                            name="tournament_date",
                                                             value="#{dateConverter(tournament.date)}",
-                                                            class="form-control input-medium center-text no-border-radius"
+                                                            class="form-control input-medium center-text no-border-radius btn-shadow"
                                                         )
                                                     else
-                                                        input(readonly
+                                                        input(
                                                             type="date",
-                                                            class="form-control input-medium center-text no-border-radius"
+                                                            name="tournament_date",
+                                                            class="form-control input-medium center-text no-border-radius btn-shadow"
                                                         )
 
-                                        div(class="row")
-                                            div(class="col-md-12")
-                                                label(class="label label-primary col-xs-2") Description
-                                                div(class="form-group col-xs-8")
-                                                    textarea(readonly class="form-control" rows="10") #{tournament.description}
-
-
-                            div(class="panel panel-default")
-                                div(class="panel-heading collapsable") Collaborators
-
-                                div(class="panel-body tournament-panel")
-                                    if admin
-                                        div(class="row")
-                                            div(class="col-md-3" style='background-color:transparent')
-                                                form(id="searchcollabform")
-                                                    input(id="searchcollabinput" type="text" class="form-control" placeholder="Add Collaborator. Enter at least 5 characters" name="collab")
-                                                    button(type="button" class="btn btn-sm btn-info" id="searchcollabbutton") Search
-
-                                            div(class="col-md-5" style="background-color:transparent;margin-top:0")
-                                                form(name="collabs" id="addcollabform")
-                                                    input(type='hidden' name="tournamentid" value="#{tournament.shortID}")
-                                                    select(name="collaborators" class="form-control" size="5" id="directorsoptions")
-                                                        option(value="" disabled) Directors will show here.
-                                                    label(class="btn btn-sm btn-info"
-                                                            data-toggle='tooltip' title='Admins have access to remove games and teams, as well as add new collaborators and remove non-admin collaborators. They can also change divisions, point scheme, and tournament overview info. They cannot delete the tournament or make a new phase.') Admin Privileges
-                                                        input(type="checkbox" name='admin' style='margin-left:10px;border-width:0px;')
-                                                button(type="button" class="btn btn-sm btn-success" id="addcollabbutton") Add Selected
-                                        hr
-
                                     div(class="row")
-                                        div(class="row")
-                                            span(class="label label-info" style='margin-left:50px;font-size:16px;') Director
-                                        hr
-                                        div(style='margin-left:25px')
-                                            div(class="col-md-3 center-text collab-box master-admin" style='padding:20px;font-size:18px;border-radius:2px')
-                                                p Name: #{tournamentDirector.name}
-                                                p Email : #{tournamentDirector.email}
-                                    hr
-                                    div(class="row")
-                                        div(class="row")
-                                            span(class="label label-primary" style='margin-left:50px;font-size:16px') Admins
-                                        hr
-                                        div(style='margin-left:25px' id='admin-div')
-                                            each person, i in tournament.collaborators
-                                                if person.admin || person.id == tournament.directorid
-                                                    div(class="col-md-3 center-text collab-box admin" style='padding:20px;font-size:18px;border-radius:2px')
-                                                        p Name : #{person.name}
-                                                        p Email : #{person.email}
-                                                        if (admin && person.id != tournamentd._id && tournamentd._id == tournament.directorid)
-                                                            button(class="btn btn-sm btn-danger removcollab" style='margin-top:20px;' data-collabid="#{person.id}") Remove
-                                    hr
-                                    div(class="row")
-                                        div(class="row")
-                                            span(class="label label-warning" style='margin-left:50px;font-size:16px') Non-Admins
-                                        hr
-                                        div(style='margin-left:25px' id='non-admin-div')
-                                            each person, i in tournament.collaborators
-                                                if !(person.admin || person.id == tournament.directorid)
-                                                    div(class="col-md-3 center-text collab-box not-admin" style='padding:20px;font-size:18px;border-radius:2px')
-                                                        p Name : #{person.name}
-                                                        p Email : #{person.email}
-                                                        if (admin && person.id != tournamentd._id)
-                                                            button(class="btn btn-sm btn-danger removcollab" style='margin-top:20px;' data-collabid="#{person.id}") Remove
-
-                        if admin
-                            div(class="tab-pane fade" id="divisions")
-                                div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") Divisions and Point Scheme
-                                    div(class="panel-body tournament-panel")
-                                        div(class="col-md-6")
-                                            label(class="label label-primary col-xs-4") Point Scheme
-                                            br
-                                            br
-                                            div(class="form-group col-md-12")
-                                                form(id="point-schema-form")
-                                                    input(type="hidden" name="tournamentid" value="#{tournament._id}" id="tournamentidajax")
-                                                    input(type="hidden" name="pointtypes" id="pointtypesfield")
-                                                    each num, i in Object.keys(tournament.pointScheme)
-                                                        div(class='row')
-                                                            div(class="form-group col-md-3")
-                                                                input(type="number" style="width:100%" value="#{num}" class="form-control input-medium no-border-radius pointval" name="val" + num)
-
-                                                            div(class="col-md-9")
-                                                                each type, j in ["B", "N", "P"]
-
-                                                                    if type == "P"
-                                                                        label(class="radio-inline btn-sm btn-success") Power
-                                                                            if tournament.pointsTypes[num] == "P"
-                                                                                input(checked type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
-                                                                            else
-                                                                                input(type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
-                                                                    else if type == "N"
-                                                                        label(class="radio-inline btn-sm btn-danger") Neg
-                                                                            if tournament.pointsTypes[num] == "N"
-                                                                                input(checked type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
-                                                                            else
-                                                                                input(type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
-
-                                                                    else
-                                                                        label(class="radio-inline btn-sm btn-info") Base
-                                                                            if tournament.pointsTypes[num] == "B"
-                                                                                input(checked type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
-                                                                            else
-                                                                                input(type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
-                                                            br
-                                                            br
-
-                                            div(class="btn-group" style="margin-top:15px")
-                                                button(type="button" class="btn btn-md btn-info" style="margin:0;margin-bottom:15px" id="add-point-value-button" onclick='addPointSchemaRow()') Add A Point Value
-                                                button(type="button" class="btn btn-md btn-success" style="margin:0;margin-bottom:15px" id="save-point-schema-button" data-toggle='tooltip' title='Empty boxes are ignored.') Save Point Scheme
-
-                                        div(class="col-md-6")
-                                            label(class="label label-primary col-xs-4") Divisions
-                                            div(class="col-md-1")
-                                            div(class="form-group col-xs-7")
-                                                form(id="divisions-form")
-                                                    input(type="hidden" name="tournamentid" value="#{tournament._id}" id="tid-divisions")
-                                                    each phase in tournament.phases
-                                                        div(class="row")
-                                                            label(class="label label-info col-xs-3 col-md-3 col-sm-3 phase-name" data-phase-id='#{phase.phase_id}') #{phase.name}
-                                                            button(type='button' data-toggle='tooltip' class="btn btn-sm btn-info add-division" data-phase-id="#{phase.phase_id}" title='Add Division to #{phase.name}.')
-                                                                i(class="fa fa-plus")
-                                                            div(class="col-md-7 division-box" data-phase-id='#{phase.phase_id}')
-                                                                each division, i in tournament.divisions
-                                                                    if (division.phase_id == phase.phase_id)
-                                                                        input(readonly type='text' style="width:100%" value="#{tournament.divisions[i].name}" class='form-control input-medium no-border-radius division-name saved' data-phase-id='#{phase.phase_id}' data-division-id='#{tournament.divisions[i].division_id}')
-
-                                                        br
-                                                        br
-
-                                            div(class="btn-group" style="margin-top:15px")
-                                                button(type="button" class="btn btn-md btn-success" style="margin:0" id="save-divisions-button" data-toggle="tooltip" title='Empty boxes are ignored.') Save All Divisions
-
                                         div(class="col-md-12")
-                                        br
-                                        br
-                                        div(class="col-md-6")
-                                            div(class="form-group" style="text-align:center")
-                                                br
-                                                br
-                                                div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="pointdivmsg")
+                                            label(class="label label-primary col-xs-2") Description
+                                            div(class="form-group col-xs-8")
+                                                textarea(name="tournament_description" class="form-control btn-shadow" rows="10") #{tournament.description}
 
-                        div(class="tab-pane fade" id="games")
-                            div(id='add-game-div')
+                                            div(class="col-md-6")
+                                                button(type="button" class="btn btn-lg btn-success btn-shadow" id="edittournamentbutton") Save Changes
+                                                div(id="tournament-update-msgdiv")
+                                                    p(style="margin:10px; font-size:18px")
+                    else
+                        div(class="panel panel-default")
+                            div(class="panel-heading collapsable") Tournament Overview
+                            div(class="panel-body tournament-panel")
                                 div(class="row")
-                                    div(class="col-md-3 col-sm-3")
-                                        a(class="btn btn-lg btn-info btn-block" target="_blank" href="/t/" + tournament.shortID + "/scoresheet") Scoresheet
-                                div(class="panel panel-default")
-                                        div(class="panel-heading collapsable") Add a Game
-                                        div(class="panel-body tournament-panel" id="addgamepanel")
-
-                                                form(name="gameinfoform" id="gamedataform")
-                                                    input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
-                                                    div(class="row")
-                                                        input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
-                                                        div(class="col-lg-6 col-md-6 col-sm-6")
-                                                                input(type="hidden" name="leftteamname" id="leftteamnameID")
-                                                                select(id="leftchoice" class="form-control teamselect" name="leftteamselect")
-                                                                    option(selected value="") Choose a Team
-                                                                    each team in tournament.teams
-                                                                        option(value="#{team._id}") #{team.team_name}
-
-                                                        div(class="col-lg-6 col-md-6 col-sm-6")
-                                                                input(type="hidden" name="rightteamname" id="rightteamnameID")
-                                                                select(id="rightchoice" class="form-control teamselect" name="rightteamselect")
-                                                                    option(selected value="") Choose a Team
-                                                                    each team in tournament.teams
-                                                                        option(value="#{team._id}") #{team.team_name}
-                                                    br
-                                                    div(class="row")
-                                                        div(id="left-text" class="col-lg-6 col-md-6 col-sm-6")
-                                                        div(id="right-text" class="col-lg-6 col-md-6 col-sm-6")
-                                                    div(class="row")
-                                                        div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(class="row")
-                                                                div(class="col-md-6")
-                                                                div(class="col-md-3")
-                                                                    label(class="label label-primary btn-block" style='float:right') Team 1 Score *
-                                                                div(class="col-md-3")
-                                                                    input(type="number" class="form-control scorebox" name="leftteamscore" placeholder="Team 1 Score")
-                                                            div(class='row')
-                                                                div(class="col-md-3")
-                                                                div(class="col-md-3")
-                                                                div(class="col-md-3")
-                                                                    label(class="label label-primary btn-block" style='float:right') Bouncebacks
-                                                                div(class="col-md-3")
-                                                                    input(type="number" class="form-control" name="leftbounceback" placeholder="Bounceback Points")
-                                                            br
-                                                        div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(class="row")
-                                                                div(class="col-md-3")
-                                                                    input(type="number" class="form-control scorebox" name="rightteamscore" placeholder="Team 2 Score")
-                                                                div(class="col-md-3")
-                                                                    label(class="label label-primary btn-block" style='float:right') Team 2 Score *
-                                                            div(class="row")
-                                                                div(class="col-md-3")
-                                                                    input(type="number" class="form-control" name="rightbounceback" placeholder="Bounceback Points")
-                                                                div(class="col-md-3")
-                                                                    label(class="label label-primary btn-block" style='float:right') Bouncebacks
-                                                            br
-                                                    div(class="row")
-                                                        div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(class="row")
-                                                                div(class="col-md-6")
-                                                                div(class="col-md-3")
-                                                                    label(class="label label-primary btn-block" style='float:right') Round
-                                                                div(class="col-md-3")
-                                                                    input(type="number" class="form-control" name="round" placeholder="Round")
-                                                    div(class="row")
-                                                        div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(class="row")
-                                                                div(class="col-md-6")
-                                                                div(class="col-md-3")
-                                                                    label(class="label label-primary btn-block" style='float:right') TUH
-                                                                div(class="col-md-3")
-                                                                    input(type="number" class="form-control" name="tossupsheard" placeholder="Tossups Heard")
-                                                            br
-                                                    div(class="row")
-                                                        div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(class="row")
-                                                                div(class="col-md-6")
-                                                                div(class="col-md-3")
-                                                                    label(class="label label-primary btn-block" style='float:right') Room
-                                                                div(class="col-md-3")
-                                                                    input(type="text" class="form-control" name="room" placeholder="Room")
-                                                    div(class="row")
-                                                        div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(class="row")
-                                                                div(class="col-md-6")
-                                                                div(class="col-md-3")
-                                                                    label(class="label label-primary btn-block" style='float:right') Moderator
-                                                                div(class="col-md-3")
-                                                                    input(type="text" class="form-control" name="moderator" placeholder="Moderator")
-                                                    div(class="row")
-                                                        div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(class="row")
-                                                                div(class="col-md-6")
-                                                                div(class="col-md-3")
-                                                                    label(class="label label-primary btn-block" style='float:right') Packet
-                                                                div(class="col-md-3")
-                                                                    input(type="text" class="form-control" name="packet" placeholder="Packet")
-                                                            br
-                                                    div(class="row")
-                                                        div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(class="row")
-                                                                div(class="col-md-6")
-                                                                div(class="col-md-3")
-                                                                    label(class="label label-primary btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases
-                                                                div(class="col-md-3")
-                                                                    select(multiple class="form-control phase-selection" name='phase_id[]' id='game-phases' size='#{tournament.phases.length}')
-                                                                        each phase in tournament.phases
-                                                                            if phase.active
-                                                                                option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
-                                                                            else
-                                                                                option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
-                                                            br
-                                                    div(class='row')
-                                                        div(class="col-lg-6 col-md-6 col-sm-6")
-                                                            div(class="row")
-                                                                div(class="col-md-6")
-                                                                div(class="col-md-3")
-                                                                    label(class="label label-primary btn-block" style='float:right;') Notes
-                                                                div(class="col-md-3")
-                                                                    textarea(class="form-control" name="notes" placeholder="Notes" style='min-height:200px')
-
-                                                    button(type="button" class="btn btn-md btn-success" id="entergamebutton") Add Game Information
-
-                                                    div(id="add-game-message")
-                            div(id='game-list-div')
-                                div(id='game-list-template')
-                                    include ./game-list.jade
-
-                            div(class='row')
-                                div(class='col-md-12' id='game-view-div')
-
-                        div(class="tab-pane fade" id="teams")
-                            div(class="panel panel-default" id='add-team-div')
-                                    div(class="panel-heading collapsable" id="add-team-panel") Add a Team
-                                    div(class="panel-body tournament-panel" id="add-team-body")
-
-                                        div(class="col-md-6")
-                                            form(id="teamform" name="createTeam")
-                                                input(
-                                                    type="hidden",
-                                                    name="tournament_id",
-                                                    value="#{tournament._id}"
+                                    div(class="col-md-6")
+                                        label(class="label label-primary col-xs-4") Name
+                                        div(class="form-group col-xs-8")
+                                            input(readonly
+                                                value="#{tournament.tournament_name}",
+                                                class="form-control input-medium center-text no-border-radius"
+                                            )
+                                        label(class="label label-primary col-xs-4") Location
+                                        div(class="form-group col-xs-8")
+                                            input(readonly
+                                                type="text",
+                                                value="#{tournament.location}",
+                                                class="form-control input-medium center-text no-border-radius"
+                                            )
+                                        label(class="label label-primary col-xs-4") Question Set
+                                        div(class="form-group col-xs-8")
+                                            input(readonly
+                                                type="text",
+                                                value="#{tournament.questionSet}",
+                                                class="form-control input-medium center-text no-border-radius"
+                                            )
+                                        label(class="label label-primary col-xs-4") Date
+                                        div(class="form-group col-xs-8")
+                                            if tournament.date
+                                                input(readonly
+                                                    type="date",
+                                                    value="#{dateConverter(tournament.date)}",
+                                                    class="form-control input-medium center-text no-border-radius"
                                                 )
-                                                div(class="form-group")
-                                                    label Name *
-                                                    input(
-                                                        type="text",
-                                                        name="team_name",
-                                                        id="team_name_input",
-                                                        placeholder="Team Name",
-                                                        class="form-control input-md center-text no-border-radius"
-                                                    )
-                                                hr
-                                                div(class="form-group")
+                                            else
+                                                input(readonly
+                                                    type="date",
+                                                    class="form-control input-medium center-text no-border-radius"
+                                                )
+
+                                div(class="row")
+                                    div(class="col-md-12")
+                                        label(class="label label-primary col-xs-2") Description
+                                        div(class="form-group col-xs-8")
+                                            textarea(readonly class="form-control" rows="10") #{tournament.description}
+                                            
+                div(class='tab-pane fade' id='collaborators')
+                    div(class="panel panel-default")
+                        div(class="panel-heading collapsable") Collaborators
+                        div(class="panel-body tournament-panel")
+                            if admin
+                                div(class="row")
+                                    div(class="col-md-3" style='background-color:transparent')
+                                        form(id="searchcollabform")
+                                            input(id="searchcollabinput" type="text" class="form-control btn-shadow" placeholder="Add Collaborator. Enter at least 5 characters" name="collab")
+                                            button(type="button" class="btn btn-sm btn-info btn-shadow" id="searchcollabbutton") Search
+
+                                    div(class="col-md-5" style="background-color:transparent;margin-top:0")
+                                        form(name="collabs" id="addcollabform")
+                                            input(type='hidden' name="tournamentid" value="#{tournament.shortID}")
+                                            select(name="collaborators" class="form-control btn-shadow" size="5" id="directorsoptions")
+                                                option(value="" disabled) Directors will show here.
+                                            label(class="btn btn-sm btn-info btn-shadow"
+                                                    data-toggle='tooltip' title='Admins have access to remove games and teams, as well as add new collaborators and remove non-admin collaborators. They can also change divisions, point scheme, and tournament overview info. They cannot delete the tournament or make a new phase.') Admin Privileges
+                                                input(type="checkbox" name='admin' style='margin-left:10px;border-width:0px;')
+                                        button(type="button" class="btn btn-sm btn-success btn-shadow" id="addcollabbutton") Add Selected
+                                hr
+
+                    div(class="row")
+                        div(class="row")
+                            span(class="label label-info btn-shadow" style='margin-left:50px;font-size:16px;') Director
+                        hr
+                        div(style='margin-left:25px')
+                            div(class="col-md-3 center-text collab-box master-admin" style='padding:20px;font-size:18px;border-radius:2px')
+                                p Name: #{tournamentDirector.name}
+                                p Email : #{tournamentDirector.email}
+                    hr
+                    div(class="row")
+                        div(class="row")
+                            span(class="label label-primary btn-shadow" style='margin-left:50px;font-size:16px') Admins
+                        hr
+                        div(style='margin-left:25px' id='admin-div')
+                            each person, i in tournament.collaborators
+                                if person.admin || person.id == tournament.directorid
+                                    div(class="col-md-3 center-text collab-box admin" style='padding:20px;font-size:18px;border-radius:2px')
+                                        p Name : #{person.name}
+                                        p Email : #{person.email}
+                                        if (admin && person.id != tournamentd._id && tournamentd._id == tournament.directorid)
+                                            button(class="btn btn-sm btn-danger removecollab" style='margin-top:20px;' data-collabid="#{person.id}") Remove
+                    hr
+                    div(class="row")
+                        div(class="row")
+                            span(class="label label-warning btn-shadow" style='margin-left:50px;font-size:16px') Non-Admins
+                        hr
+                        div(style='margin-left:25px' id='non-admin-div')
+                            each person, i in tournament.collaborators
+                                if !(person.admin || person.id == tournament.directorid)
+                                    div(class="col-md-3 center-text collab-box not-admin" style='padding:20px;font-size:18px;border-radius:2px')
+                                        p Name : #{person.name}
+                                        p Email : #{person.email}
+                                        if (admin && person.id != tournamentd._id)
+                                            button(class="btn btn-sm btn-danger removecollab btn-shadow" style='margin-top:20px;' data-collabid="#{person.id}") Remove
+                if admin
+                    div(class="tab-pane fade" id="divisions")
+                        div(class="panel panel-default")
+                            div(class="panel-heading collapsable") Divisions and Point Scheme
+                            div(class="panel-body tournament-panel")
+                                div(class="col-md-6")
+                                    label(class="label label-primary col-xs-4") Point Scheme
+                                    br
+                                    br
+                                    div(class="form-group col-md-12")
+                                        form(id="point-schema-form")
+                                            input(type="hidden" name="tournamentid" value="#{tournament._id}" id="tournamentidajax")
+                                            input(type="hidden" name="pointtypes" id="pointtypesfield")
+                                            each num, i in Object.keys(tournament.pointScheme)
+                                                div(class='row')
+                                                    div(class="form-group col-md-3")
+                                                        input(type="number" style="width:100%" value="#{num}" class="form-control btn-shadow input-medium no-border-radius pointval" name="val" + num)
+
+                                                    div(class="col-md-9")
+                                                        each type, j in ["B", "N", "P"]
+
+                                                            if type == "P"
+                                                                label(class="radio-inline btn-sm btn-success btn-shadow") Power
+                                                                    if tournament.pointsTypes[num] == "P"
+                                                                        input(checked type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                                                                    else
+                                                                        input(type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                                                            else if type == "N"
+                                                                label(class="radio-inline btn-sm btn-danger btn-shadow") Neg
+                                                                    if tournament.pointsTypes[num] == "N"
+                                                                        input(checked type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                                                                    else
+                                                                        input(type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+
+                                                            else
+                                                                label(class="radio-inline btn-sm btn-info btn-shadow") Base
+                                                                    if tournament.pointsTypes[num] == "B"
+                                                                        input(checked type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                                                                    else
+                                                                        input(type="checkbox" value="#{type}" class="pointgroup" style="margin-left:5px" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                                                    br
+                                                    br
+
+                                    div(class="btn-group" style="margin-top:15px")
+                                        button(type="button" class="btn btn-md btn-info btn-shadow" style="margin:0;margin-bottom:15px" id="add-point-value-button" onclick='addPointSchemaRow()') Add A Point Value
+                                        button(type="button" class="btn btn-md btn-success btn-shadow" style="margin:0;margin-bottom:15px" id="save-point-schema-button" data-toggle='tooltip' title='Empty boxes are ignored.') Save Point Scheme
+
+                                div(class="col-md-6")
+                                    label(class="label label-primary col-xs-4") Divisions
+                                    div(class="col-md-1")
+                                    div(class="form-group col-xs-7")
+                                        form(id="divisions-form")
+                                            input(type="hidden" name="tournamentid" value="#{tournament._id}" id="tid-divisions")
+                                            each phase in tournament.phases
+                                                div(class="row")
+                                                    label(class="label label-info col-xs-3 col-md-3 col-sm-3 phase-name" data-phase-id='#{phase.phase_id}') #{phase.name}
+                                                    button(type='button' data-toggle='tooltip' class="btn btn-sm btn-info add-division btn-shadow" data-phase-id="#{phase.phase_id}" title='Add Division to #{phase.name}.')
+                                                        i(class="fa fa-plus")
+                                                    div(class="col-md-7 division-box" data-phase-id='#{phase.phase_id}')
+                                                        each division, i in tournament.divisions
+                                                            if (division.phase_id == phase.phase_id)
+                                                                input(readonly type='text' style="width:100%" value="#{tournament.divisions[i].name}" class='btn-shadow form-control input-medium no-border-radius division-name saved' data-phase-id='#{phase.phase_id}' data-division-id='#{tournament.divisions[i].division_id}')
+
+                                                br
+                                                br
+
+                                    div(class="btn-group" style="margin-top:15px")
+                                        button(type="button" class="btn btn-md btn-success btn-shadow" style="margin:0" id="save-divisions-button" data-toggle="tooltip" title='Empty boxes are ignored.') Save All Divisions
+
+                                div(class="col-md-12")
+                                br
+                                br
+                                div(class="col-md-6")
+                                    div(class="form-group" style="text-align:center")
+                                        br
+                                        br
+                                        div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="pointdivmsg")
+
+                div(class="tab-pane fade" id="games")
+                    div(id='add-game-div')
+                        div(class="panel panel-default")
+                                div(class="panel-heading collapsable") Add a Game
+                                div(class="panel-body tournament-panel" id="addgamepanel")
+
+                                        form(name="gameinfoform" id="gamedataform")
+                                            input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
+                                            div(class="row")
+                                                input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                        input(type="hidden" name="leftteamname" id="leftteamnameID")
+                                                        select(id="leftchoice" class="form-control teamselect btn-shadow" name="leftteamselect")
+                                                            option(selected value="") Choose a Team
+                                                            each team in tournament.teams
+                                                                option(value="#{team._id}") #{team.team_name}
+
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                        input(type="hidden" name="rightteamname" id="rightteamnameID")
+                                                        select(id="rightchoice" class="form-control teamselect btn-shadow" name="rightteamselect")
+                                                            option(selected value="") Choose a Team
+                                                            each team in tournament.teams
+                                                                option(value="#{team._id}") #{team.team_name}
+                                            br
+                                            div(class="row")
+                                                div(id="left-text" class="col-lg-6 col-md-6 col-sm-6")
+                                                div(id="right-text" class="col-lg-6 col-md-6 col-sm-6")
+                                            div(class="row")
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
                                                     div(class="row")
                                                         div(class="col-md-6")
-                                                            label Divisions
+                                                        div(class="col-md-3")
+                                                            label(class="label label-primary btn-block" style='float:right') Team 1 Score *
+                                                        div(class="col-md-3")
+                                                            input(type="number" class="form-control scorebox btn-shadow" name="leftteamscore" placeholder="Team 1 Score")
+                                                    div(class='row')
+                                                        div(class="col-md-3")
+                                                        div(class="col-md-3")
+                                                        div(class="col-md-3")
+                                                            label(class="label label-primary btn-block" style='float:right') Bouncebacks
+                                                        div(class="col-md-3")
+                                                            input(type="number" class="form-control btn-shadow" name="leftbounceback" placeholder="Bounceback Points")
                                                     br
-                                                    each phase, i in tournament.phases
-                                                        div(class="row")
-                                                            div(class="col-md-4")
-                                                                div(class='alert alert-info phase-name' data-phase-id='#{phase.phase_id}')
-                                                                    p #{phase.name}
-                                                            div(class="col-md-5")
-                                                                select(class="form-control new-team-division" data-phase-id='#{phase.phase_id}')
-                                                                    each division in tournament.divisions
-                                                                        if division.phase_id == phase.phase_id
-                                                                            option(value='#{division.name}') #{division.name}
-                                                        br
-                                                hr
-                                                div(id="player-dynamic" class="form-group")
-                                                    label Players
-                                                    button(type="button" class="btn btn-sm btn-success no-border-radius" id="newlineplayer" style="margin: 5px") Add Player
-                                                    input(
-                                                        type="hidden",
-                                                        id="player_team_dynamic",
-                                                        name="players_team",
-                                                    )
-                                                    input(
-                                                        type="text",
-                                                        name="player1_name",
-                                                        placeholder="Player 1",
-                                                        autocomplete="off",
-                                                        class="form-control input-medium center-text no-border-radius player-name"
-                                                    )
-                                                    input(
-                                                        type="text",
-                                                        name="player2_name",
-                                                        autocomplete="off",
-                                                        class="form-control input-medium center-text no-border-radius player-name"
-                                                        placeholder="Player 2",
-                                                    )
-                                                    input(
-                                                        type="text",
-                                                        name="player3_name",
-                                                        placeholder="Player 3",
-                                                        autocomplete="off"
-                                                        class="form-control input-medium center-text no-border-radius player-name"
-                                                    )
-                                                    input(
-                                                        type="text",
-                                                        name="player4_name",
-                                                        placeholder="Player 4",
-                                                        autocomplete="off",
-                                                        class="form-control input-medium center-text no-border-radius player-name"
-                                                    )
-                                                br
-                                                button(type="button" class="btn btn-lg btn-info no-border-radius" id="add-team-button") Add Team To Tournament
-                                                br
-                                                br
-                                                div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="addteammsg")
-
-                            div(id='team-list-div')
-                                div(id='team-list-template')
-                                    include ./team-list.jade
-
-                            div(class='row')
-                                div(class='col-md-12' id='team-view-div')
-
-                        div(class="tab-pane fade" id="stats")
-                            div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") Generate Complete Statistics
-                                    div(class="panel-body tournament-panel")
-                                        - var phaseID = 1
-                                        div(class="col-md-5")
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(class="row")
+                                                        div(class="col-md-3")
+                                                            input(type="number" class="form-control scorebox btn-shadow" name="rightteamscore" placeholder="Team 2 Score")
+                                                        div(class="col-md-3")
+                                                            label(class="label label-primary btn-block" style='float:right') Team 2 Score *
+                                                    div(class="row")
+                                                        div(class="col-md-3")
+                                                            input(type="number" class="form-control btn-shadow" name="rightbounceback" placeholder="Bounceback Points")
+                                                        div(class="col-md-3")
+                                                            label(class="label label-primary btn-block" style='float:right') Bouncebacks
+                                                    br
                                             div(class="row")
-                                                div(class='col-md-6')
-                                                    select(class="form-control no-border-radius phase-selection" id='phase-select-stats')
-                                                        option(value='1') All
-                                                        each phase in tournament.phases
-                                                            if phase.active
-                                                                - phaseID = phase.phase_id
-                                                                option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
-                                                            else
-                                                                option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(class="row")
+                                                        div(class="col-md-6")
+                                                        div(class="col-md-3")
+                                                            label(class="label label-primary btn-block" style='float:right') Round
+                                                        div(class="col-md-3")
+                                                            input(type="number" class="form-control btn-shadow" name="round" placeholder="Round")
                                             div(class="row")
-                                                div(class='col-md-12')
-                                                    ul(class="nav nav-pills no-border-radius")
-                                                        li
-                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/team?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='team') Team Stats
-                                                        li
-                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/player?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='player') Player Stats
-                                                        li
-                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='teamfull') Full Report
-                                                        li
-                                                            a(target="_blank" href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link" data-tid='#{tournament.shortID}' data-stats-type='roundreport') Round Report
-
-                                        - var activePhase = 'all'
-                                        each phase in tournament.phases
-                                            if phase.active
-                                                - activePhase = phase.name.replace(/\s/g, "_").toLowerCase()
-                                        div(class="col-md-7")
-                                            ul(class="nav nav-pills no-border-radius")
-                                                li
-                                                    a(href="/t/" + tournament.shortID + "/stats/team/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download" data-tid='#{tournament.shortID}' data-stats-type='team' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_standings.html') Download Team Stats
-                                                li
-                                                    a(href="/t/" + tournament.shortID + "/stats/player/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download" data-tid='#{tournament.shortID}' data-stats-type='player' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_individuals.html') Download Player Stats
-                                                li
-                                                    a(href="/t/" + tournament.shortID + "/stats/teamfull/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download" data-tid='#{tournament.shortID}' data-stats-type='teamfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_teamdetail.html') Download Team Full Report
-                                                li
-                                                    a(href="/t/" + tournament.shortID + "/stats/playerfull/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download" data-tid='#{tournament.shortID}' data-stats-type='playerfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_playerdetail.html') Download Players Full Report
-                                                li
-                                                    a(href="/t/" + tournament.shortID + "/stats/roundreport/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download" data-tid='#{tournament.shortID}' data-stats-type='roundreport' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_rounds.html') Download Round Report
-
-                                        div(class="col-md-6")
-
-                                            a(href="/t/" + tournament.shortID + "/export/qbj" class="btn btn-md btn-warning" data-link="#{linkName}_qbj.qbj" id="download-json") Export to QBJ Format
-                                            // a(href="/t/" + tournament.shortID + "/export/sqbs" class="btn btn-md btn-warning" data-link="#{linkName}_sqbs.sqbs" id="download-sqbs") Export to SQBS Format
-                                            a(href="/t/" + tournament.shortID + "/export/scoresheets" class="btn btn-md btn-warning" data-link="#{linkName}_scoresheets.zip" id='download-scoresheets') Export Scoresheets
-
-                            div(class="panel panel-default")
-                                div(class="panel-heading collapsable") Custom Team Statistics
-
-                                div(class="panel-body tournament-panel")
-                                        div(class="col-md-12")
-                                            form(target="_blank" method="get" action="/t/" + tournament.shortID + "/stats/filter/teams" id="filterstatsform")
-                                                div(class="form-group")
-                                                    label Teams
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(class="row")
+                                                        div(class="col-md-6")
+                                                        div(class="col-md-3")
+                                                            label(class="label label-primary btn-block" style='float:right') TUH
+                                                        div(class="col-md-3")
+                                                            input(type="number" class="form-control btn-shadow" name="tossupsheard" placeholder="Tossups Heard")
                                                     br
+                                            div(class="row")
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(class="row")
+                                                        div(class="col-md-6")
+                                                        div(class="col-md-3")
+                                                            label(class="label label-primary btn-block" style='float:right') Room
+                                                        div(class="col-md-3")
+                                                            input(type="text" class="form-control btn-shadow" name="room" placeholder="Room")
+                                            div(class="row")
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(class="row")
+                                                        div(class="col-md-6")
+                                                        div(class="col-md-3")
+                                                            label(class="label label-primary btn-block" style='float:right') Moderator
+                                                        div(class="col-md-3")
+                                                            input(type="text" class="form-control btn-shadow" name="moderator" placeholder="Moderator")
+                                            div(class="row")
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(class="row")
+                                                        div(class="col-md-6")
+                                                        div(class="col-md-3")
+                                                            label(class="label label-primary btn-block" style='float:right') Packet
+                                                        div(class="col-md-3")
+                                                            input(type="text" class="form-control btn-shadow" name="packet" placeholder="Packet")
                                                     br
-                                                    select(name="teams[]" class="form-control" size="#{tournament.teams.length}" multiple)
-                                                        each val, i in tournament.teams
-                                                            option(value="#{tournament.teams[i]._id}") #{tournament.teams[i].team_name}
-                                                div(class="form-group")
-                                                    input(class="form-control" type="number" name="minround" placeholder="Min Round" style="width:40%")
-                                                div(class="form-group")
-                                                    input(class="form-control" type="number" name="maxround" placeholder="Max Round" style="width:40%")
-                                                div(class="form-group")
-                                                    ul(class="nav nav-pills no-border-radius")
-                                                        li
-                                                            button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/teams") Team Stats
-                                                        li
-                                                            button(type="button" class="btn btn-lg btn-stats" style="border-radius:5px" class="custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/players") Player Stats
-
-                        if (tournamentd._id == tournament.directorid)
-                            div(class="tab-pane fade" id="phase")
-
-                                div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") New Tournament Phase
-                                    div(class="panel-body tournament-panel")
-                                        div(class="row")
-                                            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
-                                                p(class="alert alert-success")
-                                                    | Create a new phase for your tournament. You'll be able to switch between different phases using the drop-down below.
-
-                                            div(class="col-md-3 col-sm-3 col=lg-3")
-                                                div(class="form-group")
-                                                    input(type='text' placeholder='Enter New Phase Name Here' class="form-control" id="new-phase-name")
-                                            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="success-phase-div")
-                                                button(class="btn btn-md btn-success" data-tournament='#{tournament._id}' id="new-phase") New Phase
-
-                                            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
-                                                p(class="alert alert-success")
-                                                    | Set the Active Phase Here. New games will be added as part of this phase by default.
-
-                                            div(class='col-md-3 col-sm-3 col-lg-3')
-                                                select(class='form-control phase-selection' name='phase' id='phase-select')
-                                                    each phase in tournament.phases
-                                                        if phase.active
-                                                            option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
-                                                        else
-                                                            option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
-
-                                                button(class='btn btn-info btn-md' id='switch-phases') Switch Phases
-
-                                div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") Current Phases
-                                    div(class="panel-body tournament-panel")
-                                        div(class="row")
-                                            div(class="col-md-5 col-sm-5 col-lg-5")
-                                                div(class="table-responsive")
-                                                    div(class="panel panel-default")
-                                                        table(class="table table-condensed")
-                                                            tbody(id='phases-body')
+                                            div(class="row")
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(class="row")
+                                                        div(class="col-md-6")
+                                                        div(class="col-md-3")
+                                                            label(class="label label-primary btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases
+                                                        div(class="col-md-3")
+                                                            select(multiple class="form-control phase-selection btn-shadow" name='phase_id[]' id='game-phases' size='#{tournament.phases.length}')
                                                                 each phase in tournament.phases
                                                                     if phase.active
-                                                                        tr(class='active-phase')
-                                                                            td
-                                                                                input(class='form-control phase-box input-sm' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
-                                                                            td
-                                                                                button(class="btn btn-danger btn-sm remove-phase" data-phase-id='#{phase.phase_id}') Remove
+                                                                        option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
                                                                     else
-                                                                        tr
-                                                                            td
-                                                                                input(class='form-control phase-box input-sm' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
-                                                                            td
-                                                                                button(class="btn btn-danger btn-sm remove-phase" data-phase-id='#{phase.phase_id}') Remove
+                                                                        option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+                                                    br
+                                            div(class='row')
+                                                div(class="col-lg-6 col-md-6 col-sm-6")
+                                                    div(class="row")
+                                                        div(class="col-md-6")
+                                                        div(class="col-md-3")
+                                                            label(class="label label-primary btn-block" style='float:right;') Notes
+                                                        div(class="col-md-3")
+                                                            textarea(class="form-control btn-shadow" name="notes" placeholder="Notes" style='min-height:200px')
 
+                                            button(type="button" class="btn btn-md btn-success btn-shadow" id="entergamebutton") Add Game Information
 
+                                            div(id="add-game-message")
+                    div(id='game-list-div')
+                        div(id='game-list-template')
+                            include ./game-list.jade
+
+                    div(class='row')
+                        div(class='col-md-12' id='game-view-div')
+
+                div(class="tab-pane fade" id="teams")
+                    div(class="panel panel-default" id='add-team-div')
+                            div(class="panel-heading collapsable" id="add-team-panel") Add a Team
+                            div(class="panel-body tournament-panel" id="add-team-body")
+
+                                div(class="col-md-6")
+                                    form(id="teamform" name="createTeam")
+                                        input(
+                                            type="hidden",
+                                            name="tournament_id",
+                                            value="#{tournament._id}"
+                                        )
+                                        div(class="form-group")
+                                            label Name *
+                                            input(
+                                                type="text",
+                                                name="team_name",
+                                                id="team_name_input",
+                                                placeholder="Team Name",
+                                                class="form-control input-md center-text no-border-radius btn-shadow"
+                                            )
+                                        hr
+                                        div(class="form-group")
+                                            div(class="row")
+                                                div(class="col-md-6")
+                                                    label Divisions
+                                            br
+                                            each phase, i in tournament.phases
                                                 div(class="row")
-                                                    div(class="col-md-3 col-sm-3 col-lg-3")
-                                                        button(class="btn btn-success btn-md" id='save-phases' data-tid='#{tournament.shortID}') Save Phases
+                                                    div(class="col-md-4")
+                                                        div(class='alert alert-info phase-name' data-phase-id='#{phase.phase_id}')
+                                                            p #{phase.name}
+                                                    div(class="col-md-5")
+                                                        select(class="form-control new-team-division btn-shadow" data-phase-id='#{phase.phase_id}')
+                                                            each division in tournament.divisions
+                                                                if division.phase_id == phase.phase_id
+                                                                    option(value='#{division.name}') #{division.name}
+                                                br
+                                        hr
+                                        div(id="player-dynamic" class="form-group")
+                                            label Players
+                                            button(type="button" class="btn btn-sm btn-success no-border-radius btn-shadow" id="newlineplayer" style="margin: 5px") Add Player
+                                            input(
+                                                type="hidden",
+                                                id="player_team_dynamic",
+                                                name="players_team",
+                                            )
+                                            input(
+                                                type="text",
+                                                name="player1_name",
+                                                placeholder="Player 1",
+                                                autocomplete="off",
+                                                class="form-control input-medium center-text no-border-radius player-name btn-shadow"
+                                            )
+                                            input(
+                                                type="text",
+                                                name="player2_name",
+                                                autocomplete="off",
+                                                class="form-control input-medium center-text no-border-radius player-name btn-shadow"
+                                                placeholder="Player 2",
+                                            )
+                                            input(
+                                                type="text",
+                                                name="player3_name",
+                                                placeholder="Player 3",
+                                                autocomplete="off"
+                                                class="form-control input-medium center-text no-border-radius player-name btn-shadow"
+                                            )
+                                            input(
+                                                type="text",
+                                                name="player4_name",
+                                                placeholder="Player 4",
+                                                autocomplete="off",
+                                                class="form-control input-medium center-text no-border-radius player-name btn-shadow"
+                                            )
+                                        br
+                                        button(type="button" class="btn btn-lg btn-info no-border-radius btn-shadow" id="add-team-button") Add Team To Tournament
+                                        br
+                                        br
+                                        div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="addteammsg")
 
-                        if (tournamentd._id == tournament.directorid)
-                            div(class="tab-pane fade" id="delete")
+                    div(id='team-list-div')
+                        div(id='team-list-template')
+                            include ./team-list.jade
 
-                                div(class="panel panel-default")
-                                    div(class="panel-heading collapsable") Delete #{tournament.tournament_name}
-                                    div(class="panel-body tournament-panel")
+                    div(class='row')
+                        div(class='col-md-12' id='team-view-div')
+
+                div(class="tab-pane fade" id="stats")
+                    div(class="panel panel-default")
+                            div(class="panel-heading collapsable") Generate Complete Statistics
+                            div(class="panel-body tournament-panel")
+                                - var phaseID = 1
+                                div(class="col-md-5")
+                                    div(class="row")
+                                        div(class='col-md-6')
+                                            select(class="form-control no-border-radius phase-selection btn-shadow" id='phase-select-stats')
+                                                option(value='1') All
+                                                each phase in tournament.phases
+                                                    if phase.active
+                                                        - phaseID = phase.phase_id
+                                                        option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+                                                    else
+                                                        option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+                                    div(class="row")
+                                        div(class='col-md-12')
+                                            ul(class="nav nav-pills no-border-radius")
+                                                li
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/team?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link btn-shadow" data-tid='#{tournament.shortID}' data-stats-type='team') Team Stats
+                                                li
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/player?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link btn-shadow" data-tid='#{tournament.shortID}' data-stats-type='player') Player Stats
+                                                li
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link btn-shadow" data-tid='#{tournament.shortID}' data-stats-type='teamfull') Full Report
+                                                li
+                                                    a(target="_blank" href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{phaseID}" class="btn btn-sm btn-stats stat-link btn-shadow" data-tid='#{tournament.shortID}' data-stats-type='roundreport') Round Report
+
+                                - var activePhase = 'all'
+                                each phase in tournament.phases
+                                    if phase.active
+                                        - activePhase = phase.name.replace(/\s/g, "_").toLowerCase()
+                                div(class="col-md-7")
+                                    ul(class="nav nav-pills no-border-radius")
+                                        li
+                                            a(href="/t/" + tournament.shortID + "/stats/team/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download btn-shadow" data-tid='#{tournament.shortID}' data-stats-type='team' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_standings.html') Download Team Stats
+                                        li
+                                            a(href="/t/" + tournament.shortID + "/stats/player/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download btn-shadow" data-tid='#{tournament.shortID}' data-stats-type='player' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_individuals.html') Download Player Stats
+                                        li
+                                            a(href="/t/" + tournament.shortID + "/stats/teamfull/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download btn-shadow" data-tid='#{tournament.shortID}' data-stats-type='teamfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_teamdetail.html') Download Team Full Report
+                                        li
+                                            a(href="/t/" + tournament.shortID + "/stats/playerfull/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download btn-shadow" data-tid='#{tournament.shortID}' data-stats-type='playerfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_playerdetail.html') Download Players Full Report
+                                        li
+                                            a(href="/t/" + tournament.shortID + "/stats/roundreport/dl?phase=#{phaseID}" class="btn btn-sm btn-stats download btn-shadow" data-tid='#{tournament.shortID}' data-stats-type='roundreport' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_rounds.html') Download Round Report
+
+                                div(class="col-md-6")
+
+                                    a(href="/t/" + tournament.shortID + "/export/qbj" class="btn btn-md btn-warning btn-shadow" data-link="#{linkName}_qbj.qbj" id="download-json") Export to QBJ Format
+                                    // a(href="/t/" + tournament.shortID + "/export/sqbs" class="btn btn-md btn-warning" data-link="#{linkName}_sqbs.sqbs" id="download-sqbs") Export to SQBS Format
+                                    a(href="/t/" + tournament.shortID + "/export/scoresheets" class="btn btn-md btn-warning btn-shadow" data-link="#{linkName}_scoresheets.zip" id='download-scoresheets') Export Scoresheets
+
+                    div(class="panel panel-default")
+                        div(class="panel-heading collapsable") Custom Team Statistics
+
+                        div(class="panel-body tournament-panel")
+                                div(class="col-md-12")
+                                    form(target="_blank" method="get" action="/t/" + tournament.shortID + "/stats/filter/teams" id="filterstatsform")
+                                        div(class="form-group")
+                                            label Teams
+                                            br
+                                            br
+                                            select(name="teams[]" class="form-control btn-shadow" size="#{tournament.teams.length}" multiple)
+                                                each val, i in tournament.teams
+                                                    option(value="#{tournament.teams[i]._id}") #{tournament.teams[i].team_name}
+                                        div(class="form-group")
+                                            input(class="form-control btn-shadow" type="number" name="minround" placeholder="Min Round" style="width:40%")
+                                        div(class="form-group")
+                                            input(class="form-control btn-shadow" type="number" name="maxround" placeholder="Max Round" style="width:40%")
+                                        div(class="form-group")
+                                            ul(class="nav nav-pills no-border-radius")
+                                                li
+                                                    button(type="button" class="btn btn-lg btn-stats btn-shadow" style="border-radius:5px" class="custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/teams") Team Stats
+                                                li
+                                                    button(type="button" class="btn btn-lg btn-stats btn-shadow" style="border-radius:5px" class="custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/players") Player Stats
+
+                if (tournamentd._id == tournament.directorid)
+                    div(class="tab-pane fade" id="phase")
+
+                        div(class="panel panel-default")
+                            div(class="panel-heading collapsable") New Tournament Phase
+                            div(class="panel-body tournament-panel")
+                                div(class="row")
+                                    div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
+                                        p(class="alert alert-success")
+                                            | Create a new phase for your tournament. You'll be able to switch between different phases using the drop-down below.
+
+                                    div(class="col-md-3 col-sm-3 col=lg-3")
+                                        div(class="form-group")
+                                            input(type='text' placeholder='Enter New Phase Name Here' class="form-control btn-shadow" id="new-phase-name")
+                                    div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="success-phase-div")
+                                        button(class="btn btn-md btn-success btn-shadow" data-tournament='#{tournament._id}' id="new-phase") New Phase
+
+                                    div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
+                                        p(class="alert alert-success")
+                                            | Set the Active Phase Here. New games will be added as part of this phase by default.
+
+                                    div(class='col-md-3 col-sm-3 col-lg-3')
+                                        select(class='form-control phase-selection btn-shadow' name='phase' id='phase-select')
+                                            each phase in tournament.phases
+                                                if phase.active
+                                                    option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+                                                else
+                                                    option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+
+                                        button(class='btn btn-info btn-md btn-shadow' id='switch-phases') Switch Phases
+
+                        div(class="panel panel-default")
+                            div(class="panel-heading collapsable") Current Phases
+                            div(class="panel-body tournament-panel")
+                                div(class="row")
+                                    div(class="col-md-5 col-sm-5 col-lg-5")
+                                        div(class="table-responsive")
+                                            div(class="panel panel-default")
+                                                table(class="table table-condensed")
+                                                    tbody(id='phases-body')
+                                                        each phase in tournament.phases
+                                                            if phase.active
+                                                                tr(class='active-phase')
+                                                                    td
+                                                                        input(class='form-control phase-box input-sm btn-shadow' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
+                                                                    td
+                                                                        button(class="btn btn-danger btn-sm remove-phase btn-shadow" data-phase-id='#{phase.phase_id}') Remove
+                                                            else
+                                                                tr
+                                                                    td
+                                                                        input(class='form-control phase-box input-sm btn-shadow' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
+                                                                    td
+                                                                        button(class="btn btn-danger btn-sm remove-phase btn-shadow" data-phase-id='#{phase.phase_id}') Remove
+
+
                                         div(class="row")
-                                            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
-                                                div(class="alert alert-danger")
-                                                    | If you no longer need this tournament, you can delete it here. Please make sure this is what you want
-                                                    | to do. This action is final.
-                                                    strong There is no way to undo a tournament deletion.
+                                            div(class="col-md-3 col-sm-3 col-lg-3")
+                                                button(class="btn btn-success btn-md btn-shadow" id='save-phases' data-tid='#{tournament.shortID}') Save Phases
 
-                                                form(method="post" action="/t/#{tournament._id}/delete" name="deleteTournament")
-                                                    button(type="button" class="btn btn-md btn-danger" id="delete-tournament-button") Delete This Tournament
+                if (tournamentd._id == tournament.directorid)
+                    div(class="tab-pane fade" id="delete")
 
-                                        div(class="col-md-6" id="confirm-delete-div" style='display:none')
-                                            div(class="col-md-6")
-                                                button(type="button" class="btn btn-md btn-danger btn-block" id="yes-delete") Yes
-                                            div(class="col-md-6")
-                                                button(type="button" class="btn btn-md btn-success btn-block" id="no-delete") Never Mind
+                        div(class="panel panel-default")
+                            div(class="panel-heading collapsable") Delete #{tournament.tournament_name}
+                            div(class="panel-body tournament-panel")
+                                div(class="row")
+                                    div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
+                                        div(class="alert alert-danger")
+                                            | If you no longer need this tournament, you can delete it here. Please make sure this is what you want
+                                            | to do. This action is final.
+                                            strong There is no way to undo a tournament deletion.
+
+                                        form(method="post" action="/t/#{tournament._id}/delete" name="deleteTournament")
+                                            button(type="button" class="btn btn-md btn-danger btn-shadow" id="delete-tournament-button") Delete This Tournament
+
+                                div(class="col-md-6" id="confirm-delete-div" style='display:none')
+                                    div(class="col-md-6")
+                                        button(type="button" class="btn btn-md btn-danger btn-block btn-shadow" id="no-delete") Never Mind
+                                    div(class="col-md-6")
+                                        button(type="button" class="btn btn-md btn-success btn-block btn-shadow" id="yes-delete") Yes
+                                    
 
 block scripts
     script(src="/js/tournament-configuration.js")

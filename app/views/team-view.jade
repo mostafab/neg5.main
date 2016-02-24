@@ -1,6 +1,6 @@
-h2(class="title" style="width:25%" id="team-name-header") #{team.team_name}
+h2(class="subtitle btn-shadow" style="width:25%" id="team-name-header") #{team.team_name}
 h3(style="width:50%;border-radius:0")
-    a(class="btn btn-md btn-info" id='back-to-teams' href="/t/" + tournament.shortID + "/teams") Teams
+    a(class="btn btn-md btn-info btn-shadow" id='back-to-teams' href="/t/" + tournament.shortID + "/teams") Teams
 
 br
 br
@@ -19,7 +19,7 @@ div(class="panel panel-default")
                                 name="team_name",
                                 value="#{team.team_name}",
                                 id = "team-name-input",
-                                class="form-control input-medium center-text no-border-radius"
+                                class="form-control input-medium center-text no-border-radius btn-shadow"
                             )
                         hr
                         label(class="label label-primary col-xs-4") Divisions
@@ -30,7 +30,7 @@ div(class="panel panel-default")
                                         div(class='alert alert-info phase-name' data-phase-id='#{phase.phase_id}')
                                             p #{phase.name}
                                     div(class="col-md-5")
-                                        select(class="form-control edit-team-division" data-phase-id='#{phase.phase_id}')
+                                        select(class="form-control edit-team-division btn-shadow" data-phase-id='#{phase.phase_id}')
                                             each division in tournament.divisions
                                                 if division.phase_id == phase.phase_id && team.divisions && team.divisions[phase.phase_id] == division.name
                                                     option(selected value='#{division.name}') #{division.name}
@@ -40,7 +40,7 @@ div(class="panel panel-default")
                                 hr
 
                         div(class="col-md-6")
-                            button(type="button" class="btn btn-lg btn-success" id="editteambutton") Save Changes
+                            button(type="button" class="btn btn-lg btn-success btn-shadow" id="editteambutton") Save Changes
                             div(id="team-update-msgdiv")
                                 p(style="margin:10px; font-size:18px")
 
@@ -62,10 +62,10 @@ div(class="panel panel-default")
                                         form
                                             input(type="hidden" name="tournamentidform" value="#{tournament._id}")
                                             input(type="hidden" name="playerid" value="#{teamPlayers[i]._id}")
-                                            input(readonly type="text" class="form-control saved player-name-box" name="playername" value="#{teamPlayers[i].player_name}")
+                                            input(readonly type="text" class="form-control saved player-name-box btn-shadow" name="playername" value="#{teamPlayers[i].player_name}")
                                     td
                                         if admin
-                                            button(type="button" class="btn btn-sm btn-danger deleteplayerbutton")
+                                            button(type="button" class="btn btn-sm btn-danger deleteplayerbutton btn-shadow")
                                                 i(class="fa fa-trash")
 
             div(class="row col-md-3 col-lg-3 col-sm-3")
@@ -73,9 +73,9 @@ div(class="panel panel-default")
                     input(type="hidden" name="tournamentidform" value="#{tournament._id}")
                     input(type="hidden" name="teamidform" value="#{team._id}")
                     input(type="hidden" name="teamnameform" value="#{team.team_name}")
-                    input(type="text" class="form-control" name="newplayername" placeholder="Add a Player" id="newplayerinput")
+                    input(type="text" class="form-control btn-shadow" name="newplayername" placeholder="Add a Player" id="newplayerinput")
 
-                    button(type="button" class="btn btn-md btn-info" id="add-player-button") Add Player
+                    button(type="button" class="btn btn-md btn-info btn-shadow" id="add-player-button") Add Player
                 br
                 br
                 div(class="col-md-12 input-lg center-text no-border-radius tournament-info-field" id="player-add-msg" style="text-align:center")

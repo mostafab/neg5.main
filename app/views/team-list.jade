@@ -1,10 +1,10 @@
 div(class="table-responsive" id="teamdiv")
     div(class="row" style="width:95%")
         div(class="input-group col-lg-2 col-md-2 col-sm-2" style="margin-left:20px;margin-bottom:20px;")
-            span(class='input-group-addon btn btn-stats' id='refresh-teams' data-href='/t/' + tournament.shortID + "/teams")
+            span(class='input-group-addon btn btn-stats btn-shadow' id='refresh-teams' data-href='/t/' + tournament.shortID + "/teams")
                 i(class='fa fa-refresh')
-            input(type="text" class="form-control search" placeholder="Filter by Name or Division")
-            span(class="input-group-addon btn-stats")
+            input(type="text" class="form-control search btn-shadow" placeholder="Filter by Name or Division")
+            span(class="input-group-addon btn-stats btn-shadow")
                 i(class="glyphicon glyphicon-search")
 
     div(class="panel panel-default")
@@ -26,7 +26,7 @@ div(class="table-responsive" id="teamdiv")
                                     li(style='list-style-type:none') #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
                         if admin
                             td
-                                button(type="button" class="btn btn-xs btn-danger start-delete-team" data-toggle='tooltip' data-placement='right' title='Delete #{tournament.teams[i].team_name}.')
+                                button(type="button" class="btn btn-xs btn-danger start-delete-team btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete #{tournament.teams[i].team_name}.')
                                     i(class="fa fa-trash")
 
                     if admin
@@ -35,9 +35,9 @@ div(class="table-responsive" id="teamdiv")
                             td
                             td
                                 div(class="col-md-3 col-lg-3 col-sm-3")
-                                    button(class="btn btn-stats btn-sm btn-block cancel-delete-team") Never Mind
+                                    button(class="btn btn-stats btn-sm btn-block cancel-delete-team btn-shadow") Never Mind
                                 div(class="col-md-3 col-lg-3 col-sm-3")
                                     form()
                                         input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
                                         input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
-                                        button(type="button" class="btn btn-sm btn-danger btn-block deleteteambutton") Confirm
+                                        button(type="button" class="btn btn-sm btn-danger btn-block deleteteambutton btn-shadow") Confirm
