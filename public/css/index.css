@@ -35,10 +35,11 @@ a {
 }
 
 .list-element:hover {
-    background: rgba(100, 100, 100, .1);
-    border-left-width: thick;
-    border-left-color: black;
-    border-left-style: solid;
+    border-left: 5px solid #EC971F;
+}
+
+.navbar-anchor {
+    color: white;
 }
 
 .body {

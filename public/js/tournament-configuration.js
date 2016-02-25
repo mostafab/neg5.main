@@ -62,7 +62,6 @@ $(document).ready(function() {
         if ($(this).attr("id") == "leftchoice") {
             findPlayersByTeamnameAndTournament("LEFT");
             $("#leftteamnameID").val($(this).find(":selected").text());
-            // console.log($("#leftteamnameID").val());
         } else {
             findPlayersByTeamnameAndTournament("RIGHT");
             $("#rightteamnameID").val($(this).find(":selected").text());
@@ -156,6 +155,16 @@ $(document).ready(function() {
         loadTeamAJAX($(this).attr("data-href"), td);
     });
 
+    $("body").on("click", ".pointval", function() {
+        $(this).prop("readonly", false);
+    });
+
+    $("body").on("blur", ".pointval", function() {
+        if ($(this).val().trim().length > 0) {
+            $(this).prop("readonly", true);
+        }
+    });
+
     $("#save-point-schema-button").click(function(e) {
         var pointTypes = formatPointTypes();
         formatPointSchemaForm(pointTypes);
@@ -225,17 +234,7 @@ $(document).ready(function() {
 
     $("body").on("blur", ".division-name", function() {
         if ($(this).val().trim().length > 0) {
-            $(this).prop("readonly", true).removeClass("not-saved").addClass("saved");
-            var divisions = [];
-            $(".division-name").each(function() {
-                var name = $(this).val();
-                var phaseID = $(this).attr('data-phase-id');
-                if (name.trim().length !== 0) {
-                    var division = {phase_id : phaseID, name : name};
-                    divisions.push(division);
-                }
-            });
-            changeDivisionsAJAX(divisions, false);
+            $(this).prop("readonly", true);
         }
     });
 
@@ -970,6 +969,18 @@ function changePointSchemeAJAX(pointTypes) {
         data : $("#point-schema-form").serialize(),
         success : function(databack, status, xhr) {
             showMessageInDiv("#pointdivmsg", "Updated point scheme successfully", null);
+            $(".pointval").each(function() {
+                if ($(this).val().trim().length === 0) {
+                    $(this).parents(".point-schema-row").fadeOut(200, function() {
+                        $(this).remove();
+                    });
+                } else {
+                    $(this).removeClass("not-saved").addClass("saved").prop("readonly", true);
+                }
+            });
+            $(".empty").fadeOut(200, function() {
+                $(this).remove();
+            });
         },
         error : function(xhr, status, err) {
             showMessageInDiv("#pointdivmsg", "Could not update point scheme", err);
@@ -992,7 +1003,7 @@ function changeDivisionsAJAX(divisions, clearEmpty) {
                     if ($(this).val().trim().length === 0) {
                         $(this).addClass("empty");
                     } else {
-                        $(this).prop("readonly", true);
+                        $(this).prop("readonly", true).addClass("saved").removeClass('not-saved');
                     }
                 });
                 $(".empty").fadeOut(200, function() {
@@ -1137,7 +1148,7 @@ function addCollaboratorBox(collaborator) {
 
 function createPlayerInputField() {
     var newInput = "<input type='text'/>";
-    var classes = "form-control input-medium center-text no-border-radius player-name";
+    var classes = "form-control input-medium center-text no-border-radius player-name btn-shadow";
     var name = "player" + nextPlayerNum + "_name";
     var placeholder = "Player " + nextPlayerNum;
     var autocomplete = "off";
@@ -1164,7 +1175,7 @@ function generatePlayerRows(players, pointScheme, side) {
         html += "<tr>";
         html += "<input type='hidden' value='" + players[i]._id +  "' " + "name='" + "player" + playerNum + sideText + "id'" + "/>";
         html += "<td>" + players[i].player_name + "</td>";
-        html += "<td> <input class='form-control gp-box btn-shadow' type='number' value='1' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
+        html += "<td> <input class='form-control gp-box btn-shadow input-sm' type='number' value='1' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
         for (var j = 0; j < points.length; j++) {
             var keyNameStr = "name='player" + playerNum + sideText + "_" + points[j] + "val' ";
             var keyId = "id='player" + playerNum + "_" + points[j] + sideText + "id' ";
@@ -1174,10 +1185,10 @@ function generatePlayerRows(players, pointScheme, side) {
             onkeyupString += playerNum + ',' + json + ', "' + sideText + '"' + ")' ";
             var onchangeString = "onchange=";
             onchangeString += "'updatePoints(" + playerNum + ',' + json + ', "' + sideText + '"' + ")'";
-            html += "<td><input class='form-control point-box btn-shadow' type='number' " + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
+            html += "<td><input class='form-control input-sm point-box btn-shadow' type='number' " + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
         }
         var idTag = "id='" + playerNum + sideText + "pts'";
-        html += "<td> <input " + idTag + "class='form-control point-box-disabled disabledview btn-shadow' type='input' placeholder='0' readonly/> </td>";
+        html += "<td> <input " + idTag + "class='input-sm form-control point-box-disabled disabledview btn-shadow' type='input' placeholder='0' readonly/> </td>";
         html += "</tr>";
         playerNum++;
     }
@@ -1272,18 +1283,17 @@ function updateTeamList(team, admin, phases) {
 
 function addPointSchemaRow() {
     var arr = ["B", "N", "P"];
-    var html = "<div class='row'><div class='form-group col-md-3'><input type='number' style='width:100%' class='form-control pointval input-medium no-border-radius btn-shadow'/></div>";
+    var html = "<div class='row point-schema-row'><div class='form-group col-md-3'><input type='number' style='width:100%' class='form-control pointval not-saved input-medium no-border-radius btn-shadow'/></div>";
     html += "<div class='col-md-9'>";
     for (var i = 0; i < arr.length; i++) {
         if (arr[i] == "P") {
-            html += "<label class='radio-inline btn-sm btn-success btn-shadow'>Power<input type='checkbox' value='" + arr[i] + "' class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
+            html += "<label class='radio-inline btn-sm btn-success btn-shadow'>Power<input type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
         } else if (arr[i] == "N") {
-            html += "<label class='radio-inline btn-sm btn-danger btn-shadow'>Neg<input type='checkbox' value='" + arr[i] + "' class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
+            html += "<label class='radio-inline btn-sm btn-danger btn-shadow'>Neg<input type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
         } else {
-            html += "<label class='radio-inline btn-sm btn-info btn-shadow'>Base<input checked type='checkbox' value='" + arr[i] + "' class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
+            html += "<label class='radio-inline btn-sm btn-info btn-shadow'>Base<input checked type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
         }
     }
-    html += "<br><br>";
     html += "</div></div>";
     $(html).hide().appendTo("#point-schema-form").fadeIn(200);
 }

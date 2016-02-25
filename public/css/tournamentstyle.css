@@ -5,9 +5,7 @@
     background-color:#363B40;
     padding: 15px;
     width: 100%;
-    border-bottom-width: 10px;
-    border-bottom-style: solid;
-    border-bottom-color: #008888;
+    border-left: 20px solid #008888;
     border-radius: 3px;
 }
 
@@ -18,9 +16,7 @@
     background-color:#363B40;
     padding: 15px;
     width: 100%;
-    border-bottom-width: 10px;
-    border-bottom-style: solid;
-    border-bottom-color:  #EC971F;
+    border-left: 20px solid #EC971F;
     border-radius: 3px;
 }
 
@@ -34,6 +30,18 @@
     border-bottom-style: solid;
     border-bottom-color:  #008888;
 }
+
+.top-nav-bar {
+    background-color: #008888;
+    box-shadow: 0 4px 4px rgba(200, 200, 200, 0.9);
+    border-radius:0px;
+    border-bottom: 10px solid #008888;
+}
+
+.logo {
+    background-image: url("../img/logo.png");
+}
+
 
 .form-control {
     -webkit-transition: 1.0s ease border-bottom-color;
@@ -198,10 +206,6 @@ td {
     border-right-width: 20px;
 }
 
-.division-name:hover {
-    cursor: pointer;
-}
-
 .removecollab {
     float:right;
 }
@@ -238,7 +242,7 @@ td {
 
 .btn {
     margin: 10px;
-    border-radius: 2px;
+    border-radius: 1px;
     -webkit-transition: background-color .5s;
     -moz-transition: background-color .5s;
     -o-transition: background-color .5s;
@@ -303,7 +307,7 @@ td {
 }
 
 .btn-shadow:hover {
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 .loading {
