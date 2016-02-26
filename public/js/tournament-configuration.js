@@ -1139,7 +1139,7 @@ function addCollaboratorBox(collaborator) {
     }
     html += "<p>Name : " + collaborator.name + "</p>";
     html += "<p>Email : " + collaborator.email + "</p>";
-    html += "<button class='btn btn-sm btn-danger' style='margin-top:20px' onclick='removeCollabAJAX(this)' data-collabid='"
+    html += "<button class='btn btn-sm btn-danger removecollab' style='margin-top:20px' onclick='removeCollabAJAX(this)' data-collabid='"
         + collaborator.id + "'>Remove</button>";
     html += "</div>";
     var div = collaborator.admin ? "#admin-div" : "#non-admin-div";

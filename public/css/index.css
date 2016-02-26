@@ -45,7 +45,7 @@ a {
 .body {
     /*background-image: url("../img/backgrounds/gplaypattern.png");*/
     /*background-color: black;*/
-    /*background-image: url("../img/backgrounds/brushed.png");*/
+    background-image: url("../img/backgrounds/brushed.png");
 }
 
 .header {
@@ -116,8 +116,14 @@ a {
     text-align: center;
 }
 
+.title-header {
+    padding: 15px;
+    width: 100%;
+    border-bottom: 10px solid #EC971F;
+    border-radius: 3px;
+}
+
 .btn {
-    /*background-color: transparent;*/
     border-width: 3px;
     border-right-width:0px;
     border-left-width: 0px;
@@ -126,12 +132,16 @@ a {
     line-height: 1.33;
     margin: 10px;
     font-size: 1.6em;
-    /*color:black;*/
     -webkit-transition: background-color .5s;
     -moz-transition: background-color .5s;
     -o-transition: background-color .5s;
     -ms-transition: background-color .5s;
     transition: background-color .5s;
+}
+
+.btn:hover {
+    color: white;
+    background-color:#406266;
 }
 
 .list-group-item {

@@ -33,7 +33,7 @@
 
 .top-nav-bar {
     background-color: #008888;
-    box-shadow: 0 4px 4px rgba(200, 200, 200, 0.9);
+    box-shadow: 0 5px 4px rgba(150, 200, 200, 1);
     border-radius:0px;
     border-bottom: 10px solid #008888;
 }
@@ -178,7 +178,7 @@ td {
 .tournament-info-field {
     border-radius: 3px;
     border-color: transparent;
-    color: white;
+    color: black;
 }
 
 .division-name {
@@ -252,22 +252,22 @@ td {
 
 .tournament-info-field::-webkit-input-placeholder
 {
-  color: white;
+  color: black;
 }
 
 .tournament-info-field:-moz-placeholder
 {
-  color: white;
+  color: black;
 }
 
 .tournament-info-field::-moz-placeholder
 {
-  color: white;
+  color: black;
 }
 
 .tournament-info-field:-ms-input-placeholder
 {
-  color: white;
+  color: black;
 }
 
 .panel {
