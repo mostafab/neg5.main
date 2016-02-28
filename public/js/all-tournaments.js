@@ -30,10 +30,7 @@ $(document).ready(function() {
 
     $(".tournament-anchor").click(function() {
         var href = $(this).attr("data-href");
-        var anchor = document.createElement("a");
-        anchor.href= href;
-        anchor.click();
-        anchor.remove();
+        document.location = href;
     });
 
 });

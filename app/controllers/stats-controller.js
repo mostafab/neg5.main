@@ -1,6 +1,5 @@
 'use strict';
 
-const bktree = require('bktree');
 const mongoose = require('mongoose');
 const Tournament = mongoose.model('Tournament');
 
