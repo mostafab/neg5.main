@@ -22,6 +22,9 @@ function validateLocalLogin(credentials, callback) {
             callback(null, "NONE", "");
         } else {
             bcryptjs.compare(credentials["pswd"], result.local.password, (err, res) => {
+                if (err) {
+                    return callback(err);
+                }
                 if (res) {
                     TournamentDirector.findOne({usertoken : result._id}, (err, director) => {
                         if (err) {

@@ -54,6 +54,12 @@ $(document).ready(function() {
             wrong = true;
             $(".teamselect-edit").addClass("alert-danger");
         }
+        var gamePhasesEdit = $("#game-phases-edit");
+        gamePhasesEdit.removeClass("alert-danger");
+        if (!gamePhasesEdit.val()) {
+            wrong = true;
+            gamePhasesEdit.addClass("alert-danger");
+        }
         if (!wrong) {
             editGameAJAX();
         }

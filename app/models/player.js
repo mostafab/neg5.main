@@ -89,7 +89,7 @@ playerSchema.methods.getTotalPointValuesFiltered = function(tournament, constrai
             pointValues[pv] = 0;
         }
     }
-    var filteredGames = tournament.games.filter(game => {
+    const filteredGames = tournament.games.filter(game => {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
     });
     filteredGames.forEach(currentGame => {
@@ -293,7 +293,7 @@ playerSchema.methods.getTossupsHeard = function(tournament) {
 */
 playerSchema.methods.getTossupsHeardFiltered = function(tournament, constraints) {
     let totalTossups = 0;
-    var filteredGames = tournament.games.filter(game => {
+    const filteredGames = tournament.games.filter(game => {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
     });
     filteredGames.forEach(currentGame => {
@@ -409,7 +409,7 @@ playerSchema.methods.getAllGamesInformation = function(tournament, teamMap) {
     const playedGames = [];
     tournament.games.forEach(currentGame => {
         if (currentGame.team1.team_id == this.teamID || currentGame.team2.team_id == this.teamID) {
-            var formattedGame = this.formatGameInformation(currentGame, tournament, teamMap);
+            const formattedGame = this.formatGameInformation(currentGame, tournament, teamMap);
             playedGames.push(formattedGame);
         }
     });

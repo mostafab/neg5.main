@@ -33,9 +33,14 @@
 
 .top-nav-bar {
     background-color: #008888;
-    box-shadow: 0 5px 4px rgba(150, 200, 200, 1);
+    box-shadow: 0 5px 4px rgba(150, 150, 150, .5);
     border-radius:0px;
     border-bottom: 10px solid #008888;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
 }
 
 .logo {

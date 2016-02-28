@@ -34,10 +34,6 @@ a {
     transition: background-color .5s;
 }
 
-.list-element:hover {
-    border-left: 5px solid #EC971F;
-}
-
 .navbar-anchor {
     color: white;
 }

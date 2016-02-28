@@ -1,4 +1,4 @@
-h2(class="subtitle btn-shadow" style="width:35%;") #{tournamentName} Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
+h2(class="subtitle btn-shadow" style="width:35%;") Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
 h3(style="width:50%;border-radius:0")
     a(class="btn btn-sm btn-info btn-shadow" href="/t/" + tournament.shortID + "/games" id='back-to-games') Games
 br
@@ -158,7 +158,7 @@ div(class="panel panel-default")
                                     div(class="col-md-3")
                                         label(class="label label-primary btn-block" style='float:right') Phases
                                     div(class="col-md-3")
-                                        select(multiple class="form-control phase-selection btn-shadow" name='phase_id' size='#{tournament.phases.length}')
+                                        select(multiple class="form-control phase-selection btn-shadow" name='phase_id' id='game-phases-edit' size='#{tournament.phases.length}')
                                             each phase in tournament.phases
                                                 if game.phase_id.indexOf(phase.phase_id)
                                                     option(selected value='#{phase.phase_id}') #{phase.name}

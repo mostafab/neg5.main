@@ -294,7 +294,7 @@ function getFullPlayersGameInformation(tournamentid, phaseID, callback) {
                 });
             }
             tournament.players.forEach(player => {
-                var teamName = teamMap[player.teamID].name;
+                let teamName = teamMap[player.teamID].name;
                 playersInfo[player.shortID] = {name : player.player_name, team : teamName, games : player.getAllGamesInformation(tournament, teamMap)};
                 playerTotals[player.shortID] = player.getTotalGameStats(tournament, teamMap);
             });
@@ -330,7 +330,7 @@ function getRoundReport(tournamentid, phaseID, callback) {
             }
             let gameRounds = {};
             for (let i = 0; i < tournament.games.length; i++) {
-                var round = tournament.games[i].round;
+                let round = tournament.games[i].round;
                 if (!gameRounds[round]) {
                     gameRounds[round] = [];
                 }
@@ -356,8 +356,8 @@ function getRoundReport(tournamentid, phaseID, callback) {
 * @return round ppg
 */
 function getRoundPPG(games) {
-    var totalPoints = 0;
-    var totalTeams = 0;
+    let totalPoints = 0;
+    let totalTeams = 0;
     games.forEach(game => {
         if (game.team1) {
             totalPoints += game.team1.score;
@@ -704,7 +704,7 @@ function convertToQuizbowlSchema(tournamentid, callback) {
             const qbjObj = {version : SCHEMA_VERSION, objects : []};
             const tournamentObject = {matches : [], registrations : [], type : "Tournament", name : tournament.tournament_name};
             const teamMap = {};
-            // var registrationObjects = makeRegistrationObjects(tournament.teams);
+            // const registrationObjects = makeRegistrationObjects(tournament.teams);
             tournament.teams.forEach(team => {
                 let teamObj = {id : "team_" + team.shortID, name : team.team_name, players : [], shortID : team.shortID};
                 teamMap[team._id] = {id : "team_" + team.shortID,

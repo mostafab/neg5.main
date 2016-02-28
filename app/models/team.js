@@ -43,7 +43,7 @@ teamSchema.methods.getRecord = function(tournament) {
 */
 teamSchema.methods.getRecordFiltered = function(tournament, constraints) {
     const record = {"wins" : 0, "losses" : 0, "ties" : 0};
-    var filteredGames = tournament.games.filter(game => {
+    const filteredGames = tournament.games.filter(game => {
         return game.round >= constraints.minround && game.round <= constraints.maxround;
     });
     filteredGames.forEach(current => {

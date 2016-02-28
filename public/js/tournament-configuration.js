@@ -117,6 +117,12 @@ $(document).ready(function() {
             wrong = true;
             $(".teamselect").addClass("alert-danger");
         }
+        var gamePhases = $("#game-phases");
+        gamePhases.removeClass("alert-danger");
+        if (!gamePhases.val()) {
+            wrong = true;
+            gamePhases.addClass("alert-danger");
+        }
         if (!wrong) {
             $(this).prop("disabled", true);
             $("#add-game-message").empty().
@@ -163,6 +169,11 @@ $(document).ready(function() {
         if ($(this).val().trim().length > 0) {
             $(this).prop("readonly", true);
         }
+        if ($(this).attr("data-last-name") != $(this).val().trim()) {
+            $(this).addClass("not-saved").removeClass("saved");
+        } else {
+            $(this).addClass("saved").removeClass("not-saved");
+        }
     });
 
     $("#save-point-schema-button").click(function(e) {
@@ -174,9 +185,9 @@ $(document).ready(function() {
     $("#save-divisions-button").click(function(e) {
         var divisions = [];
         $(".division-name").each(function() {
-            var name = $(this).val();
+            var name = $(this).val().trim();
             var phaseID = $(this).attr('data-phase-id');
-            if (name.trim().length !== 0) {
+            if (name.length !== 0) {
                 var division = {phase_id : phaseID, name : name};
                 divisions.push(division);
             }
@@ -235,6 +246,11 @@ $(document).ready(function() {
     $("body").on("blur", ".division-name", function() {
         if ($(this).val().trim().length > 0) {
             $(this).prop("readonly", true);
+        }
+        if ($(this).attr("data-last-name") !== $(this).val().trim()) {
+            $(this).addClass("not-saved").removeClass("saved");
+        } else {
+            $(this).addClass("saved").removeClass("not-saved");
         }
     });
 
@@ -975,7 +991,7 @@ function changePointSchemeAJAX(pointTypes) {
                         $(this).remove();
                     });
                 } else {
-                    $(this).removeClass("not-saved").addClass("saved").prop("readonly", true);
+                    $(this).removeClass("not-saved").addClass("saved").prop("readonly", true).attr("data-last-name", $(this).val().trim());
                 }
             });
             $(".empty").fadeOut(200, function() {
@@ -1003,7 +1019,8 @@ function changeDivisionsAJAX(divisions, clearEmpty) {
                     if ($(this).val().trim().length === 0) {
                         $(this).addClass("empty");
                     } else {
-                        $(this).prop("readonly", true).addClass("saved").removeClass('not-saved');
+                        var lastName = $(this).val().trim();
+                        $(this).prop("readonly", true).addClass("saved").removeClass('not-saved').attr("data-last-name", lastName);
                     }
                 });
                 $(".empty").fadeOut(200, function() {

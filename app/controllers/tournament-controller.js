@@ -766,7 +766,7 @@ function cloneTournament(tournamentid, phaseName, callback) {
 }
 
 function newPhase(tournamentid, phaseName, callback) {
-    var phase = {phase_id : shortid.generate(), name : phaseName};
+    const phase = {phase_id : shortid.generate(), name : phaseName};
     Tournament.update({_id : tournamentid}, {$push : {phases : phase}}, err => {
         callback(err, phase);
     });
