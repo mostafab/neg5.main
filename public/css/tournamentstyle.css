@@ -371,13 +371,16 @@ th.sortable:hover {
     cursor: pointer;
 }
 
-#gamedataform input {
-    border-radius: 1px;
+.tournament-options {
+    background-color: rgba(200, 200, 200, .6);
+    box-shadow: 3px 5px 4px rgba(150, 150, 150, .5);
+    position: fixed;
+    border-radius: 2px;
 }
 
-#changegameform input {
-    border-radius: 2px;
-    /*padding: 1px;*/
+#gamedataform input, #changegameform-edit input {
+    border-radius: 1px;
+    text-align: right;
 }
 
 .label {

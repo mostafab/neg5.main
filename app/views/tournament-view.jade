@@ -26,9 +26,9 @@ block content
     -    return formattedDate;
     - }
 
-    div(class="content-wrapper box" style='padding-left:20px;padding-right:50px;padding-top:20px;')
+    div(class="content-wrapper box" style='padding-left:0px;padding-right:50px;padding-top:20px;')
         input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
-        div(class="col-md-2" style='position:fixed')
+        div(class="col-md-2 tournament-options")
             div(style="margin:20px; margin-bottom:50px")
             h2(class="title btn-shadow" style='text-align:center;font-size:1.6em') #{tournament.tournament_name}
             hr
@@ -401,10 +401,10 @@ block content
                                             div(class="row")
                                                 div(class="col-lg-6 col-md-6 col-sm-6")
                                                     div(class="row")
-                                                        div(class="col-md-5")
+                                                        div(class="col-md-4")
                                                         div(class="col-md-3")
                                                             label(class="label label-primary btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases
-                                                        div(class="col-md-4")
+                                                        div(class="col-md-5")
                                                             select(multiple class="form-control phase-selection btn-shadow" name='phase_id[]' id='game-phases' size='#{tournament.phases.length}')
                                                                 each phase in tournament.phases
                                                                     if phase.active
