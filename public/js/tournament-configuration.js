@@ -385,7 +385,9 @@ $(document).ready(function() {
 
     $("body").on("click", "#back-to-teams", function(e) {
         e.preventDefault();
-        var href = $(this).attr("href");
+        var button = $(this);
+        var href = button.attr("href");
+        button.text("Loading...");
         $.ajax({
             url : href,
             type : "GET",
@@ -397,13 +399,18 @@ $(document).ready(function() {
                 teamOptions = { valueNames : ["teamname", "division"]};
                 teamList = new List("teamdiv", teamOptions);
                 $("[data-toggle='tooltip']").tooltip();
+            },
+            complete : function() {
+                button.text("Teams");
             }
         });
     });
 
     $("body").on("click", "#back-to-games", function(e) {
         e.preventDefault();
-        var href = $(this).attr("href");
+        var button = $(this);
+        button.text("Loading...");
+        var href = button.attr("href");
         $.ajax({
             url : href,
             type : "GET",
@@ -415,6 +422,9 @@ $(document).ready(function() {
                 gameOptions = { valueNames : ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"]};
                 gameList = new List("gamediv", gameOptions);
                 $("[data-toggle='tooltip']").tooltip();
+            },
+            complete : function() {
+                button.text("Games");
             }
         });
     });

@@ -520,12 +520,9 @@ module.exports = app => {
                         }
                     }
                     if (team !== null) {
-                        let teamPlayers = [];
-                        for (let i = 0; i < result.players.length; i++) {
-                            if (result.players[i].teamID == team._id) {
-                                teamPlayers.push(result.players[i]);
-                            }
-                        }
+                        let teamPlayers = result.players.filter(player => {
+                            return player.teamID == team._id;
+                        });
                         const tourney = {};
                         tourney.tournament_name = result.tournament_name;
                         tourney._id = result._id;
@@ -535,6 +532,8 @@ module.exports = app => {
                         tourney.phases = result.phases;
                         team.record = team.getRecord(result);
                         team.ppg = team.getPointsPerGame(result);
+                        team.papg = team.getOpponentPPG(result);
+                        team.ppb = team.getOverallPPB(result);
                         res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, admin : hasPermission.admin});
                     } else {
                         res.status(404).end();

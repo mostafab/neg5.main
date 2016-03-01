@@ -20,7 +20,7 @@ const teamSchema = new Schema({
 * @return team record
 */
 teamSchema.methods.getRecord = function(tournament) {
-    const record = {"wins" : 0, "losses" : 0, "ties" : 0};
+    const record = {wins : 0, losses : 0, ties : 0};
     tournament.games.forEach(current => {
         if ((current.team1.team_id == this._id && current.team1.score > current.team2.score)
                 || (current.team2.team_id == this._id && current.team2.score > current.team1.score)) {

@@ -51,40 +51,45 @@ div(class='row')
             div(class="panel panel-default")
                     div(class="panel-heading collapsable") Player Information
                     div(class="panel-body tournament-panel")
+                        div(class='row')
+                            div(class='col-md-1')
+                            div(class="table-responsive")
+                                table(class="table table-condensed" style="width:auto")
+                                    thead
+                                        tr
+                                            th(class="table-head") Name
+                                            th(class="table-head")
+                                    tbody(id="playersbody")
+                                        each player, i in teamPlayers
+                                                tr(style='background:transparent')
+                                                    td
+                                                        form
+                                                            input(type="hidden" name="tournamentidform" value="#{tournament._id}")
+                                                            input(type="hidden" name="playerid" value="#{teamPlayers[i]._id}")
+                                                            input(readonly type="text" class="form-control saved player-name-box btn-shadow" name="playername" value="#{teamPlayers[i].player_name}")
+                                                    td
+                                                        if admin
+                                                            button(type="button" class="btn btn-sm btn-danger deleteplayerbutton btn-shadow")
+                                                                i(class="fa fa-trash")
+                        div(class='row')
+                            div(class="col-md-5 col-lg-5 col-sm-5")
+                                form(name="addplayerform")
+                                    input(type="hidden" name="tournamentidform" value="#{tournament._id}")
+                                    input(type="hidden" name="teamidform" value="#{team._id}")
+                                    input(type="hidden" name="teamnameform" value="#{team.team_name}")
+                                    input(type="text" class="form-control btn-shadow" name="newplayername" placeholder="Add a Player" id="newplayerinput")
 
-                        div(class="table-responsive")
-                            table(class="table table-condensed" style="width:auto")
-                                thead
-                                    tr
-                                        th(class="table-head") Name
-                                        th(class="table-head")
-                                tbody(id="playersbody")
-                                    each player, i in teamPlayers
-                                            tr
-                                                td
-                                                    form
-                                                        input(type="hidden" name="tournamentidform" value="#{tournament._id}")
-                                                        input(type="hidden" name="playerid" value="#{teamPlayers[i]._id}")
-                                                        input(readonly type="text" class="form-control saved player-name-box btn-shadow" name="playername" value="#{teamPlayers[i].player_name}")
-                                                td
-                                                    if admin
-                                                        button(type="button" class="btn btn-sm btn-danger deleteplayerbutton btn-shadow")
-                                                            i(class="fa fa-trash")
+                                    button(type="button" class="btn btn-md btn-info btn-shadow" id="add-player-button") Add Player
+                                br
+                                br
+                                div(class="col-md-12 input-lg center-text no-border-radius tournament-info-field" id="player-add-msg" style="text-align:center")
 
-                        div(class="row col-md-3 col-lg-3 col-sm-3")
-                            form(name="addplayerform")
-                                input(type="hidden" name="tournamentidform" value="#{tournament._id}")
-                                input(type="hidden" name="teamidform" value="#{team._id}")
-                                input(type="hidden" name="teamnameform" value="#{team.team_name}")
-                                input(type="text" class="form-control btn-shadow" name="newplayername" placeholder="Add a Player" id="newplayerinput")
-
-                                button(type="button" class="btn btn-md btn-info btn-shadow" id="add-player-button") Add Player
-                            br
-                            br
-                            div(class="col-md-12 input-lg center-text no-border-radius tournament-info-field" id="player-add-msg" style="text-align:center")
-                            
     div(class='col-md-3')
-        div(class='col-md-12 collab-box admin team-summary-box' style='text-align:center')
+        div(class='col-md-12 title team-summary-box btn-shadow' style='text-align:center')
             h3 #{team.record.wins} W | #{team.record.losses} L | #{team.record.ties} T
-        div(class='col-md-12 collab-box admin team-summary-box' style='text-align:center')
+        div(class='col-md-12 title team-summary-box btn-shadow' style='text-align:center')
             h3 #{team.ppg} PPG
+        div(class='col-md-12 title team-summary-box btn-shadow' style='text-align:center')
+            h3 #{team.papg} PAPG
+        div(class='col-md-12 title team-summary-box btn-shadow' style='text-align:center')
+            h3 #{team.ppb} PPB

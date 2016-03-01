@@ -377,6 +377,8 @@ th.sortable:hover {
     padding:20px;
     font-size:1.6em;
     border-radius:2px;
+    margin-bottom: 5px;
+    /*color: black;*/
 }
 
 .tournament-options {
