@@ -581,7 +581,7 @@ teamSchema.methods.getAverageInformationFiltered = function(tournament, constrai
             break;
         }
     }
-    teamInfo["Division"] = this.divisions[activePhase];
+    teamInfo["Division"] = this.divisions ? this.divisions[activePhase] : "";
     teamInfo["Team"] = this.team_name;
     teamInfo["W"] = record.wins;
     teamInfo["L"] = record.losses;

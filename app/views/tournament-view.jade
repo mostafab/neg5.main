@@ -26,9 +26,9 @@ block content
     -    return formattedDate;
     - }
 
-    div(class="content-wrapper box" style='padding-left:0px;padding-right:50px;padding-top:20px;')
+    div(class="content-wrapper box" style='padding-left:0px;padding-right:50px;padding-top:120px;')
         input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
-        div(class="col-md-2 tournament-options")
+        div(class="col-md-2 col-sm-2 col-lg-2 tournament-options")
             div(style="margin:20px; margin-bottom:50px")
             h2(class="title btn-shadow" style='text-align:center;font-size:1.6em') #{tournament.tournament_name}
             hr
@@ -207,7 +207,7 @@ block content
                         div(style='margin-left:25px' id='admin-div')
                             each person, i in tournament.collaborators
                                 if person.admin || person.id == tournament.directorid
-                                    div(class="col-md-3 center-text collab-box admin" style='padding:20px;font-size:18px;border-radius:2px')
+                                    div(class="col-md-3 center-text collab-box admin summary-box")
                                         p Name : #{person.name}
                                         p Email : #{person.email}
                                         if (admin && person.id != tournamentd._id && tournamentd._id == tournament.directorid)
@@ -516,7 +516,7 @@ block content
                         div(id='team-list-template')
                             include ./team-list.jade
 
-                    div(class='row')
+                    div(class='row' style='margin-left:20px')
                         div(class='col-md-12' id='team-view-div')
 
                 div(class="tab-pane fade" id="stats")

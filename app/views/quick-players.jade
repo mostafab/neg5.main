@@ -67,7 +67,10 @@ block content
                                                             td(class='#{val} stat-td') #{playersInfo[i].stats.pointTotals[val]}
                                                     else if statHeaders[j] == "Player"
                                                         td(class='stat-td')
-                                                            a(class="Player" href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}#" + playersInfo[i].id) #{playersInfo[i].stats[name]}
+                                                            if tournament.phaseInfo
+                                                                a(class="Player" href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}#" + playersInfo[i].id) #{playersInfo[i].stats[name]}
+                                                            else
+                                                                p(class="Player") #{playersInfo[i].stats[name]}
                                                     else
                                                         td(class="#{statHeaders[j]} stat-td") #{playersInfo[i].stats[name]}
 block scripts

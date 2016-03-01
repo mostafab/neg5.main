@@ -150,22 +150,18 @@ td {
 
 ::-webkit-input-placeholder {
    color: white;
-   font-weight: bold;
 }
 
 :-moz-placeholder { /* Firefox 18- */
    color: white;
-   font-weight: bold;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
    color: white;
-   font-weight: bold;
 }
 
 :-ms-input-placeholder {
    color: white;
-   font-weight: bold;
 }
 
 .point-box {
@@ -371,11 +367,30 @@ th.sortable:hover {
     cursor: pointer;
 }
 
+.summary-box {
+    padding:20px;
+    font-size:18px;
+    border-radius:2px;
+}
+
+.team-summary-box {
+    padding:20px;
+    font-size:1.6em;
+    border-radius:2px;
+}
+
 .tournament-options {
-    background-color: rgba(200, 200, 200, .6);
+    background-color: rgba(170, 200, 200, .2);
     box-shadow: 3px 5px 4px rgba(150, 150, 150, .5);
+    border: 2px solid rgba(180, 200, 200, .6);
+    border-left: 0px;
     position: fixed;
-    border-radius: 2px;
+    border-radius: 4px;
+}
+
+.tournament-options:hover {
+    background-color: rgba(180, 200, 200, .25);
+    box-shadow: 4px 6px 4px rgba(150, 150, 150, .55);
 }
 
 #gamedataform input, #changegameform-edit input {

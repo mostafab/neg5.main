@@ -533,6 +533,8 @@ module.exports = app => {
                         tourney.shortID = result.shortID;
                         tourney.divisions = result.divisions;
                         tourney.phases = result.phases;
+                        team.record = team.getRecord(result);
+                        console.log(team);
                         res.render("team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, admin : hasPermission.admin});
                     } else {
                         res.status(404).end();

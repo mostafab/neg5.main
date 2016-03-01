@@ -5,77 +5,84 @@ h3(style="width:50%;border-radius:0")
 br
 br
 
-div(class="panel panel-default")
-        div(class="panel-heading collapsable") Team Details
-        div(class="panel-body tournament-panel")
-            form(id="teamdetailsform")
-                input(type="hidden" value="#{tournament._id}" name="tournamentid" id='tournament-id-team')
-                input(type="hidden" value="#{team._id}" name="teamid" id='team-id')
-                div(class="col-md-10")
-                        label(class="label label-primary col-xs-4") Name
-                        div(class="form-group col-xs-5")
-                            input(
-                                type="text",
-                                name="team_name",
-                                value="#{team.team_name}",
-                                id = "team-name-input",
-                                class="form-control input-medium center-text no-border-radius btn-shadow"
-                            )
-                        hr
-                        label(class="label label-primary col-xs-4") Divisions
-                        div(class="form-group col-md-7")
-                            each phase, i in tournament.phases
-                                div(class="row")
-                                    div(class="col-md-4")
-                                        div(class='alert alert-info phase-name' data-phase-id='#{phase.phase_id}')
-                                            p #{phase.name}
-                                    div(class="col-md-5")
-                                        select(class="form-control edit-team-division btn-shadow" data-phase-id='#{phase.phase_id}')
-                                            each division in tournament.divisions
-                                                if division.phase_id == phase.phase_id && team.divisions && team.divisions[phase.phase_id] == division.name
-                                                    option(selected value='#{division.name}') #{division.name}
-                                                else if division.phase_id == phase.phase_id
-                                                    option(value='#{division.name}') #{division.name}
+div(class='row')
+    div(class='col-md-6')
+        div(class='col-md-12')
+            div(class="panel panel-default")
+                    div(class="panel-heading collapsable") Team Details
+                    div(class="panel-body tournament-panel")
+                        form(id="teamdetailsform")
+                            input(type="hidden" value="#{tournament._id}" name="tournamentid" id='tournament-id-team')
+                            input(type="hidden" value="#{team._id}" name="teamid" id='team-id')
+                            div(class="col-md-10")
+                                    label(class="label label-primary col-xs-4") Name
+                                    div(class="form-group col-xs-5")
+                                        input(
+                                            type="text",
+                                            name="team_name",
+                                            value="#{team.team_name}",
+                                            id = "team-name-input",
+                                            class="form-control input-medium center-text no-border-radius btn-shadow"
+                                        )
+                                    hr
+                                    label(class="label label-primary col-xs-4") Divisions
+                                    div(class="form-group col-md-8")
+                                        each phase, i in tournament.phases
+                                            div(class="row")
+                                                div(class="col-md-6")
+                                                    div(class='alert alert-info phase-name' data-phase-id='#{phase.phase_id}')
+                                                        p #{phase.name}
+                                                div(class="col-md-6")
+                                                    select(class="form-control edit-team-division btn-shadow" data-phase-id='#{phase.phase_id}')
+                                                        each division in tournament.divisions
+                                                            if division.phase_id == phase.phase_id && team.divisions && team.divisions[phase.phase_id] == division.name
+                                                                option(selected value='#{division.name}') #{division.name}
+                                                            else if division.phase_id == phase.phase_id
+                                                                option(value='#{division.name}') #{division.name}
 
-                                hr
+                                            hr
 
-                        div(class="col-md-6")
-                            button(type="button" class="btn btn-lg btn-success btn-shadow" id="editteambutton") Save Changes
-                            div(id="team-update-msgdiv")
-                                p(style="margin:10px; font-size:18px")
+                                    div(class="col-md-6")
+                                        button(type="button" class="btn btn-lg btn-success btn-shadow" id="editteambutton") Save Changes
+                                        div(id="team-update-msgdiv")
+                                            p(style="margin:10px; font-size:18px")
 
+        div(class='col-md-12')
+            div(class="panel panel-default")
+                    div(class="panel-heading collapsable") Player Information
+                    div(class="panel-body tournament-panel")
 
-div(class="panel panel-default")
-        div(class="panel-heading collapsable") Player Information
-        div(class="panel-body tournament-panel")
+                        div(class="table-responsive")
+                            table(class="table table-condensed" style="width:auto")
+                                thead
+                                    tr
+                                        th(class="table-head") Name
+                                        th(class="table-head")
+                                tbody(id="playersbody")
+                                    each player, i in teamPlayers
+                                            tr
+                                                td
+                                                    form
+                                                        input(type="hidden" name="tournamentidform" value="#{tournament._id}")
+                                                        input(type="hidden" name="playerid" value="#{teamPlayers[i]._id}")
+                                                        input(readonly type="text" class="form-control saved player-name-box btn-shadow" name="playername" value="#{teamPlayers[i].player_name}")
+                                                td
+                                                    if admin
+                                                        button(type="button" class="btn btn-sm btn-danger deleteplayerbutton btn-shadow")
+                                                            i(class="fa fa-trash")
 
-            div(class="table-responsive")
-                table(class="table table-condensed" style="width:auto")
-                    thead
-                        tr
-                            th(class="table-head") Name
-                            th(class="table-head")
-                    tbody(id="playersbody")
-                        each player, i in teamPlayers
-                                tr
-                                    td
-                                        form
-                                            input(type="hidden" name="tournamentidform" value="#{tournament._id}")
-                                            input(type="hidden" name="playerid" value="#{teamPlayers[i]._id}")
-                                            input(readonly type="text" class="form-control saved player-name-box btn-shadow" name="playername" value="#{teamPlayers[i].player_name}")
-                                    td
-                                        if admin
-                                            button(type="button" class="btn btn-sm btn-danger deleteplayerbutton btn-shadow")
-                                                i(class="fa fa-trash")
+                        div(class="row col-md-3 col-lg-3 col-sm-3")
+                            form(name="addplayerform")
+                                input(type="hidden" name="tournamentidform" value="#{tournament._id}")
+                                input(type="hidden" name="teamidform" value="#{team._id}")
+                                input(type="hidden" name="teamnameform" value="#{team.team_name}")
+                                input(type="text" class="form-control btn-shadow" name="newplayername" placeholder="Add a Player" id="newplayerinput")
 
-            div(class="row col-md-3 col-lg-3 col-sm-3")
-                form(name="addplayerform")
-                    input(type="hidden" name="tournamentidform" value="#{tournament._id}")
-                    input(type="hidden" name="teamidform" value="#{team._id}")
-                    input(type="hidden" name="teamnameform" value="#{team.team_name}")
-                    input(type="text" class="form-control btn-shadow" name="newplayername" placeholder="Add a Player" id="newplayerinput")
-
-                    button(type="button" class="btn btn-md btn-info btn-shadow" id="add-player-button") Add Player
-                br
-                br
-                div(class="col-md-12 input-lg center-text no-border-radius tournament-info-field" id="player-add-msg" style="text-align:center")
+                                button(type="button" class="btn btn-md btn-info btn-shadow" id="add-player-button") Add Player
+                            br
+                            br
+                            div(class="col-md-12 input-lg center-text no-border-radius tournament-info-field" id="player-add-msg" style="text-align:center")
+                            
+    div(class='col-md-6')
+        div(class='col-md-6 collab-box admin team-summary-box' style='text-align:center')
+            h3 #{team.record.wins} W | #{team.record.losses} L | #{team.record.ties} T
