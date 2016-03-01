@@ -6,7 +6,7 @@ br
 br
 
 div(class='row')
-    div(class='col-md-6')
+    div(class='col-md-9')
         div(class='col-md-12')
             div(class="panel panel-default")
                     div(class="panel-heading collapsable") Team Details
@@ -83,6 +83,8 @@ div(class='row')
                             br
                             div(class="col-md-12 input-lg center-text no-border-radius tournament-info-field" id="player-add-msg" style="text-align:center")
                             
-    div(class='col-md-6')
-        div(class='col-md-6 collab-box admin team-summary-box' style='text-align:center')
+    div(class='col-md-3')
+        div(class='col-md-12 collab-box admin team-summary-box' style='text-align:center')
             h3 #{team.record.wins} W | #{team.record.losses} L | #{team.record.ties} T
+        div(class='col-md-12 collab-box admin team-summary-box' style='text-align:center')
+            h3 #{team.ppg} PPG
