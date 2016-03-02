@@ -30,7 +30,10 @@ $(document).ready(function() {
 
     $(".collapsable").click(function(e) {
         e.stopImmediatePropagation();
-        $(this).next().toggle(300);
+        var collapsable = $(this);
+        collapsable.next().toggle(300, function() {
+            collapsable.children(".arrow").toggleClass("fa-arrow-up").toggleClass("fa-arrow-down");
+        });
     });
 
     $("body").on("click", ".remove-phase", function() {

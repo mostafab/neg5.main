@@ -34,7 +34,7 @@ block content
             hr
             h2(class="title btn-shadow" style='text-align:center;font-size:.9em;' id='current-phase-header') Current Phase: #{tournament.phaseName}
             div(style="margin:20px; margin-bottom:10px")
-            div(class="panel-body" id='anchor-links')
+            div(class="panel-body btn-shadow" id='anchor-links')
                 div(class="row")
                     ul(class="nav nav-bar no-border-radius")
                         li(class="active")
@@ -52,6 +52,7 @@ block content
                             a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
                         li
                             a(target='_blank' href="/t/#{tournament.shortID}/scoresheet" class='btn-md') Scoresheet
+                                i(class='fa fa-arrow-right' style='float:right')
                         if tournamentd._id == tournament.directorid
                             li
                                 a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
@@ -68,7 +69,8 @@ block content
                     if admin
                         div(class="panel panel-default")
                             div(class="panel-heading collapsable") Tournament Overview
-                            div(class="panel-body tournament-panel")
+                                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+                            div(class="panel-body btn-shadow tournament-panel")
                                 form(id="tournament-overview-form")
                                     input(type="hidden" value="#{tournament._id}" name="tournamentid")
                                     div(class="row")
@@ -126,7 +128,8 @@ block content
                     else
                         div(class="panel panel-default")
                             div(class="panel-heading collapsable") Tournament Overview
-                            div(class="panel-body tournament-panel")
+                                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+                            div(class="panel-body btn-shadow tournament-panel")
                                 div(class="row")
                                     div(class="col-md-6")
                                         label(class="label label-primary col-xs-4") Name
@@ -172,7 +175,8 @@ block content
                 div(class='tab-pane fade' id='collaborators')
                     div(class="panel panel-default")
                         div(class="panel-heading collapsable") Collaborators
-                        div(class="panel-body tournament-panel")
+                            i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+                        div(class="panel-body btn-shadow tournament-panel")
                             if admin
                                 div(class="row")
                                     div(class="col-md-3" style='background-color:transparent')
@@ -229,7 +233,8 @@ block content
                     div(class="tab-pane fade" id="divisions")
                         div(class="panel panel-default")
                             div(class="panel-heading collapsable") Divisions and Point Scheme
-                            div(class="panel-body tournament-panel")
+                                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+                            div(class="panel-body btn-shadow tournament-panel")
                                 div(class="col-md-6")
                                     label(class="label label-primary col-xs-4") Point Scheme
                                     br
@@ -306,7 +311,8 @@ block content
                     div(id='add-game-div')
                         div(class="panel panel-default")
                                 div(class="panel-heading collapsable") Add a Game
-                                div(class="panel-body tournament-panel" id="addgamepanel")
+                                    i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+                                div(class="panel-body btn-shadow tournament-panel" id="addgamepanel")
 
                                         form(name="gameinfoform" id="gamedataform")
                                             input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
@@ -434,7 +440,8 @@ block content
                 div(class="tab-pane fade" id="teams")
                     div(class="panel panel-default" id='add-team-div')
                             div(class="panel-heading collapsable" id="add-team-panel") Add a Team
-                            div(class="panel-body tournament-panel" id="add-team-body")
+                                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+                            div(class="panel-body btn-shadow tournament-panel" id="add-team-body")
 
                                 div(class="col-md-6")
                                     form(id="teamform" name="createTeam")
@@ -522,7 +529,8 @@ block content
                 div(class="tab-pane fade" id="stats")
                     div(class="panel panel-default")
                             div(class="panel-heading collapsable") Generate Complete Statistics
-                            div(class="panel-body tournament-panel")
+                                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+                            div(class="panel-body btn-shadow tournament-panel")
                                 - var phaseID = 1
                                 div(class="col-md-5")
                                     div(class="row")
@@ -572,8 +580,9 @@ block content
 
                     div(class="panel panel-default")
                         div(class="panel-heading collapsable") Custom Team Statistics
+                            i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
 
-                        div(class="panel-body tournament-panel")
+                        div(class="panel-body btn-shadow tournament-panel")
                                 div(class="col-md-12")
                                     form(target="_blank" method="get" action="/t/" + tournament.shortID + "/stats/filter/teams" id="filterstatsform")
                                         div(class="form-group")
@@ -599,7 +608,8 @@ block content
 
                         div(class="panel panel-default")
                             div(class="panel-heading collapsable") New Tournament Phase
-                            div(class="panel-body tournament-panel")
+                                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+                            div(class="panel-body btn-shadow tournament-panel")
                                 div(class="row")
                                     div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
                                         p(class="alert alert-success")
@@ -627,7 +637,8 @@ block content
 
                         div(class="panel panel-default")
                             div(class="panel-heading collapsable") Current Phases
-                            div(class="panel-body tournament-panel")
+                                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+                            div(class="panel-body btn-shadow tournament-panel")
                                 div(class="row")
                                     div(class="col-md-5 col-sm-5 col-lg-5")
                                         div(class="table-responsive")
@@ -658,7 +669,8 @@ block content
 
                         div(class="panel panel-default")
                             div(class="panel-heading collapsable") Delete #{tournament.tournament_name}
-                            div(class="panel-body tournament-panel")
+                                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+                            div(class="panel-body btn-shadow tournament-panel")
                                 div(class="row")
                                     div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
                                         div(class="alert alert-danger")

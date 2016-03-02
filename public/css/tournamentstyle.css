@@ -367,6 +367,10 @@ th.sortable:hover {
     cursor: pointer;
 }
 
+.panel-body {
+    border-radius: 5px;
+}
+
 .summary-box {
     padding:20px;
     font-size:18px;
@@ -375,10 +379,14 @@ th.sortable:hover {
 
 .team-summary-box {
     padding:20px;
-    font-size:1.6em;
+    font-size:1.4em;
     border-radius:2px;
     margin-bottom: 5px;
-    /*color: black;*/
+    box-shadow: 3px 2px 4px rgba(150, 150, 150, .5);
+}
+
+.team-summary-box:hover {
+    box-shadow: 4px 3px 4px rgba(150, 150, 150, .5);
 }
 
 .tournament-options {
