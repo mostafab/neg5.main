@@ -1,9 +1,12 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const mdiff = require('mdiff');
 const Tournament = mongoose.model('Tournament');
 
-const SCHEMA_VERSION = '1.1';
+const stringFunctions = require('../libs/string-functions');
+
+const SCHEMA_VERSION = '1.2';
 
 /**
 * Responsible for gathering basic statistics information about a tournament's teams
@@ -701,41 +704,64 @@ function convertToQuizbowlSchema(tournamentid, callback) {
             callback(null, null);
         } else {
             const qbjObj = {version : SCHEMA_VERSION, objects : []};
-            const tournamentObject = {matches : [], registrations : [], type : "Tournament", name : tournament.tournament_name};
+            const tournamentObject = {phases : [{name : 'All Rounds', rounds : []}], registrations : [], name : tournament.tournament_name};
             const teamMap = {};
             // const registrationObjects = makeRegistrationObjects(tournament.teams);
+            const teamNameMap = {};
             tournament.teams.forEach(team => {
-                let teamObj = {id : "team_" + team.shortID, name : team.team_name, players : [], shortID : team.shortID};
-                teamMap[team._id] = {id : "team_" + team.shortID,
-                    name : team.team_name, players : [], shortID : team.shortID};
+                // let teamObj = {id : "team_" + team.shortID, name : team.team_name, players : [], shortID : team.shortID};
+                let matchingTeams = tournament.teams.filter(otherTeam => {
+                    return !teamMap[otherTeam._id] && stringFunctions.levenshteinDistance(otherTeam.team_name.toLowerCase(), team.team_name.toLowerCase()) < 2;
+                });
+                matchingTeams.forEach(otherTeam => {
+                    teamMap[otherTeam._id] = {id : "team_" + otherTeam.shortID,
+                        name : otherTeam.team_name, players : [], shortID : otherTeam.shortID};
+                });
+                matchingTeams = matchingTeams.map(otherTeam => {
+                    const copy = {team_name : otherTeam.team_name, _id : otherTeam._id, shortID : otherTeam.shortID};
+                    const teamPlayers = tournament.players.filter(player => {
+                        return player.teamID == otherTeam._id;
+                    });
+                    // console.log(teamPlayers);
+                    copy.players = teamPlayers;
+                    console.log(copy);
+                    return copy;
+                });
+                if (matchingTeams.length === 1) {
+                    teamNameMap[matchingTeams[0].team_name] = matchingTeams;
+                } else if (matchingTeams.length > 1) {
+                    const lcs = mdiff(matchingTeams[0].team_name, matchingTeams[1].team_name).getLcs();
+                    // const lcs = stringFunctions.longestCommonSubsequence(matchingTeams[0].team_name, matchingTeams[1].team_name);
+                    teamNameMap[lcs] = matchingTeams;
+                }
                 // tournamentObject.registrations.push({$ref : "school_" + tournament.teams[i].shortID});
             });
-            tournament.players.forEach(player => {
-                let teamid = player.teamID;
-                let playerObj = {id : "player_" + player.shortID, name : player.player_name};
-                teamMap[teamid].players.push(playerObj);
-            });
-            for (let teamid in teamMap) {
-                if (teamMap.hasOwnProperty(teamid)) {
-                    const teamObj = {type : "Registration"};
-                    teamObj.id = "school_" + teamMap[teamid].shortID;
-                    teamObj.name = teamMap[teamid].name;
-                    teamObj.teams = [];
-                    let newTeam = {id : teamMap[teamid].id, name : teamMap[teamid].name, players : teamMap[teamid].players};
-                    teamObj.teams.push(newTeam);
-                    qbjObj.objects.push(teamObj);
+            // console.log(teamNameMap);
+            // tournament.players.forEach(player => {
+            //     let teamid = player.teamID;
+            //     let playerObj = {id : "player_" + player.shortID, name : player.player_name};
+            //     teamMap[teamid].players.push(playerObj);
+            // });
+            let counter = 1;
+            for (let teamName in teamNameMap) {
+                if (teamNameMap.hasOwnProperty(teamName)) {
+                    const regObj = makeRegistrationObject(teamName, teamNameMap[teamName], counter);
+                    qbjObj.objects.push(regObj);
+                    tournamentObject.registrations.push({$ref : regObj.id});
+                    counter++;
                 }
             }
-            const playerMap = makePlayerMap(tournament.players);
-            const pointScheme = Object.keys(tournament.pointScheme);
-            tournament.games.forEach(game => {
-                tournamentObject.matches.push({$ref : "game_" + game.shortID});
-                let gameObj = makeGameObject(game, teamMap, playerMap, pointScheme);
-                if (gameObj) {
-                    qbjObj.objects.push(gameObj);
-                }
-            });
             qbjObj.objects.push(tournamentObject);
+            // const playerMap = makePlayerMap(tournament.players);
+            // const pointScheme = Object.keys(tournament.pointScheme);
+            // tournament.games.forEach(game => {
+            //     tournamentObject.matches.push({$ref : "game_" + game.shortID});
+            //     let gameObj = makeGameObject(game, teamMap, playerMap, pointScheme);
+            //     if (gameObj) {
+            //         qbjObj.objects.push(gameObj);
+            //     }
+            // });
+            // qbjObj.objects.push(tournamentObject);
             callback(null, qbjObj);
         }
     });
@@ -745,10 +771,16 @@ function convertToQuizbowlSchema(tournamentid, callback) {
 * Couples teams together based on bktree and longest-common-subsequence
 * TODO
 */
-function makeRegistrationObjects(teams) {
-    let teamNames = teams.map(team => {
-        return team.team_name;
+function makeRegistrationObject(schoolName, teams, counter) {
+    const regObj = {name : schoolName, teams : [], id : 'school_' + counter, type : 'Registration'};
+    teams.forEach(team => {
+        const teamObj = {name : team.team_name, id : 'team_' + team.shortID, players : []};
+        team.players.forEach(player => {
+            teamObj.players.push({name : player.player_name, id : 'player_' + player.shortID});
+        });
+        regObj.teams.push(teamObj);
     });
+    return regObj;
 }
 
 /**
