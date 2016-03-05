@@ -33,6 +33,7 @@ const gameSchema = new Schema({
         bouncebacks : {type : Number, default : 0, set : bb => {
             return bb == null ? 0 : bb;
         }},
+        overtimeTossupsGotten : Number,
         playerStats : {type : {}, default : {}}
     },
     team2 : {
@@ -44,9 +45,9 @@ const gameSchema = new Schema({
         bouncebacks : {type : Number, default : 0, set : bb => {
             return bb == null ? 0 : bb;
         }},
+        overtimeTossupsGotten : Number,
         playerStats : {type : {}, default : {}}
     },
-    overtime_tossups : Number,
     room : String,
     moderator : String,
     packet : String,
