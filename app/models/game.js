@@ -46,6 +46,7 @@ const gameSchema = new Schema({
         }},
         playerStats : {type : {}, default : {}}
     },
+    overtime_tossups : Number,
     room : String,
     moderator : String,
     packet : String,

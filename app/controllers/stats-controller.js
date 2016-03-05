@@ -704,7 +704,7 @@ function convertToQuizbowlSchema(tournamentid, callback) {
             callback(null, null);
         } else {
             const qbjObj = {version : SCHEMA_VERSION, objects : []};
-            const tournamentObject = {phases : [{name : 'All Rounds', rounds : []}], registrations : [], name : tournament.tournament_name};
+            const tournamentObject = {type : "Tournament", phases : [{name : 'All Rounds', rounds : []}], registrations : [], name : tournament.tournament_name, question_set : tournament.questionSet, info : tournament.description};
             const teamMap = {};
             // const registrationObjects = makeRegistrationObjects(tournament.teams);
             const teamNameMap = {};
@@ -751,16 +751,27 @@ function convertToQuizbowlSchema(tournamentid, callback) {
                     counter++;
                 }
             }
+            const playerMap = makePlayerMap(tournament.players);
+            const pointScheme = Object.keys(tournament.pointScheme);
+            const gameMap = {};
+            tournament.games.forEach(game => {
+                // tournamentObject.matches.push({$ref : "game_" + game.shortID});
+                let gameObj = makeGameObject(game, teamMap, playerMap, pointScheme);
+                if (gameObj) {
+                    qbjObj.objects.push(gameObj);
+                }
+                if (!gameMap[game.round]) {
+                    gameMap[game.round] = [];
+                }
+                gameMap[game.round].push({$ref : 'game_' + game.shortID});
+            });
+            for (let roundNumber in gameMap) {
+                if (gameMap.hasOwnProperty(roundNumber)) {
+                    var roundObject = {name : "Round " + roundNumber, matches : gameMap[roundNumber]};
+                    tournamentObject.phases[0].rounds.push(roundObject);
+                }
+            }
             qbjObj.objects.push(tournamentObject);
-            // const playerMap = makePlayerMap(tournament.players);
-            // const pointScheme = Object.keys(tournament.pointScheme);
-            // tournament.games.forEach(game => {
-            //     tournamentObject.matches.push({$ref : "game_" + game.shortID});
-            //     let gameObj = makeGameObject(game, teamMap, playerMap, pointScheme);
-            //     if (gameObj) {
-            //         qbjObj.objects.push(gameObj);
-            //     }
-            // });
             // qbjObj.objects.push(tournamentObject);
             callback(null, qbjObj);
         }
@@ -772,7 +783,8 @@ function convertToQuizbowlSchema(tournamentid, callback) {
 * TODO
 */
 function makeRegistrationObject(schoolName, teams, counter) {
-    const regObj = {name : schoolName, teams : [], id : 'school_' + counter, type : 'Registration'};
+    const lowercaseTeamName = schoolName.toLowerCase().replace(/\s/g, '_');
+    const regObj = {name : schoolName, teams : [], id : 'school_' + counter + '_' + lowercaseTeamName, type : 'Registration'};
     teams.forEach(team => {
         const teamObj = {name : team.team_name, id : 'team_' + team.shortID, players : []};
         team.players.forEach(player => {
@@ -808,8 +820,9 @@ function makePlayerMap(players) {
 */
 function makeGameObject(game, teamMap, playerMap, pointScheme) {
     const gameObject = {id : "game_" + game.shortID, location : game.room,
-        match_teams : [], match_questions : [], round : game.round, tossups : game.tossupsheard, type : "Match",
-        moderator : game.moderator, notes : game.notes};
+        match_teams : [], match_questions : [], round : game.round, tossups_read : game.tossupsheard,
+        overtime_tossups_read : !game.overtime_tossups ? 0 : game.overtime_tossups,
+        type : "Match", moderator : game.moderator, notes : game.notes};
     const numPlayersTeam1 = Object.keys(game.team1.playerStats).length;
     const numPlayersTeam2 = Object.keys(game.team2.playerStats).length;
     if (teamMap[game.team1.team_id] && teamMap[game.team2.team_id]) {
@@ -907,15 +920,15 @@ function makePlayerObject(playerMap, player, playerStats, game, pointScheme) {
     let playerObject = null;
     if (playerMap[player]) {
         playerObject = {
-            player : {name : playerMap[player].name},
+            player : {$ref : 'player_' + playerMap[player].shortID},
             tossups_heard : Math.floor(parseFloat(playerStats[player].gp) * game.tossupsheard),
             answer_counts : []
         };
     }
     let tossupTotal = 0;
     pointScheme.forEach(pv => {
-        const answerObject = {};
-        answerObject.value = parseFloat(pv);
+        const answerObject = {answer_type : {}};
+        answerObject.answer_type.value = parseFloat(pv);
         if (playerStats[player][pv]) {
             let number = parseFloat(playerStats[player][pv]);
             if (number == null) {
@@ -926,7 +939,7 @@ function makePlayerObject(playerMap, player, playerStats, game, pointScheme) {
         } else {
             answerObject.number = 0;
         }
-        tossupTotal += (answerObject.value * answerObject.number);
+        tossupTotal += (answerObject.answer_type.value * answerObject.number);
         if (playerObject) {
             playerObject.answer_counts.push(answerObject);
         }

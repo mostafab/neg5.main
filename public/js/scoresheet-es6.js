@@ -991,12 +991,10 @@ function parseScoresheet(submittedGame) {
     gameToAdd.team1 = {};
     gameToAdd.team2 = {};
     gameToAdd.team1.team_id = submittedGame.team1.id;
-    // gameToAdd.team1.team_name = submittedGame.team1.name;
     gameToAdd.team1.score = submittedGame.getTeamScore(submittedGame.team1.id);
     gameToAdd.team1.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team1.id);
     gameToAdd.team1.playerStats = submittedGame.getPlayersPointValues(submittedGame.team1);
     gameToAdd.team2.team_id = submittedGame.team2.id;
-    // gameToAdd.team2.team_name = submittedGame.team2.name;
     gameToAdd.team2.score = submittedGame.getTeamScore(submittedGame.team2.id);
     gameToAdd.team2.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team2.id);
     gameToAdd.team2.playerStats = submittedGame.getPlayersPointValues(submittedGame.team2);
@@ -1007,7 +1005,7 @@ function parseScoresheet(submittedGame) {
     gameToAdd.packet = $("#packet").val();
     gameToAdd.phase_id = $("#phase").val();
     gameToAdd.notes = $("#notes").val();
-
+    gameToAdd.overtime_tossups = $("#overtime-tossups").val();
     for (var playerid in gameToAdd.team1.playerStats) {
         if (gameToAdd.team1.playerStats.hasOwnProperty(playerid)) {
             if (gameToAdd.tossupsheard !== 0) {

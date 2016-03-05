@@ -260,6 +260,7 @@ function addGameToTournament(tournamentid, gameinfo, phases, callback) {
     const newGame = new Game({
         round : !gameinfo.round ? 0 : gameinfo.round,
         tossupsheard : !gameinfo.tossupsheard ? 0 : gameinfo.tossupsheard,
+        overtime_tossups : !gameinfo.overtimetu ? 0 : gameinfo.overtimetu,
         room : !gameinfo.room ? "-" : gameinfo.room,
         moderator : !gameinfo.moderator ? "-" : gameinfo.moderator,
         packet : !gameinfo.packet ? "-" : gameinfo.packet,
@@ -702,6 +703,7 @@ function addScoresheetAsGame(tournamentid, game, scoresheet, callback) {
     newGame.team2 = game.team2;
     newGame.round = game.round;
     newGame.tossupsheard = game.tossupsheard;
+    newGame.overtime_tossups = !game.overtime_tossups ? 0 : parseFloat(game.overtime_tossups);
     newGame.room = game.room;
     newGame.moderator = game.moderator;
     newGame.packet = game.packet;
