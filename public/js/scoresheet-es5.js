@@ -618,9 +618,9 @@ $(document).ready(function () {
         $("#error-div").fadeOut(0);
     });
 
-    // $(window).bind("beforeunload", function() {
-    //     return "You will lose this scoresheet info if you leave/reload.";
-    // });
+    $(window).bind("beforeunload", function () {
+        return "You will lose this scoresheet info if you leave/reload.";
+    });
 
     $("body").on("click", ".btn-point", function () {
         if (game.team1 != null && game.team2 != null) {
@@ -695,13 +695,13 @@ $(document).ready(function () {
 
     $("body").on("keydown", ".player-name-input", function (e) {
         $(this).css("border-color", "white");
-        if (e.which === 13 && $(this).val().length !== 0) {
+        if (e.which === 13 && $(this).val().trim().length !== 0) {
             var button = $(this).next(".add-player-button");
             var player = $(this).val();
             var teamid = button.attr("data-team");
             var team = button.attr("data-team-name");
             addPlayer(escapeHtml(player), teamid, team);
-        } else if (e.which === 13 && $(this).val().length === 0) {
+        } else if (e.which === 13 && $(this).val().trim().length === 0) {
             $(this).css("border-color", "red");
         }
     });
@@ -710,7 +710,6 @@ $(document).ready(function () {
         $(this).prev(".player-name-input").css("border-color", "transparent");
         if ($(this).prev(".player-name-input").val().length !== 0) {
             $(this).prop("disabled", true);
-            console.log($(this).attr("side"));
             addPlayer(escapeHtml($(this).prev(".player-name-input").val()), $(this).attr("data-team"), $(this).attr("data-team-name"));
         } else {
             $(this).prev(".player-name-input").css("border-color", "red");
@@ -993,31 +992,34 @@ function replaceTossupTD(td, game) {
     var player = td.attr("data-player");
     var team = game.getPlayerTeam(player);
     var validAnswerTypes = [];
-    if (game.getPhases()[row - 1].hasNeg(game.pointMap, player)) {
-        validAnswerTypes = game.pointScheme.filter(function (value) {
-            return game.pointMap[value] !== "N";
-        });
-    } else if (game.getPhases()[row - 1].hasCorrectAnswer(game.pointMap, player)) {
-        validAnswerTypes = game.pointScheme.filter(function (value) {
-            return game.pointMap[value] === "N";
-        });
-    } else {
-        validAnswerTypes = game.pointScheme;
-    }
-    if (game.getPhases()[row - 1] && !game.getPhases()[row - 1].teamAlreadyAnswered(player, team) && validAnswerTypes.length !== 0) {
-        var currentVal = td.text();
-        var html = "<select class='input-xs center-text'><option value='-'>-</option>";
-        for (var i = 0; i < validAnswerTypes.length; i++) {
-            var option = "";
-            if (currentVal == validAnswerTypes[i]) {
-                option = "<option selected value='" + validAnswerTypes[i] + "'>" + validAnswerTypes[i] + "</option>";
-            } else {
-                option = "<option value='" + validAnswerTypes[i] + "'>" + validAnswerTypes[i] + "</option>";
-            }
-            html += option;
+    var phase = game.getPhases()[row - 1];
+    if (phase) {
+        if (phase.hasNeg(game.pointMap, player)) {
+            validAnswerTypes = game.pointScheme.filter(function (value) {
+                return game.pointMap[value] !== "N";
+            });
+        } else if (phase.hasCorrectAnswer(game.pointMap, player)) {
+            validAnswerTypes = game.pointScheme.filter(function (value) {
+                return game.pointMap[value] === "N";
+            });
+        } else {
+            validAnswerTypes = game.pointScheme;
         }
-        html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-tossup'></button>";
-        td.addClass("editing").html(html);
+        if (!phase.teamAlreadyAnswered(player, team) && validAnswerTypes.length !== 0) {
+            var currentVal = td.text();
+            var html = "<select class='input-xs center-text btn-shadow'><option value='-'>-</option>";
+            for (var i = 0; i < validAnswerTypes.length; i++) {
+                var option = "";
+                if (currentVal == validAnswerTypes[i]) {
+                    option = "<option selected value='" + validAnswerTypes[i] + "'>" + validAnswerTypes[i] + "</option>";
+                } else {
+                    option = "<option value='" + validAnswerTypes[i] + "'>" + validAnswerTypes[i] + "</option>";
+                }
+                html += option;
+            }
+            html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-tossup'></button>";
+            td.addClass("editing").html(html);
+        }
     }
 }
 
@@ -1026,7 +1028,7 @@ function replaceBonusTD(td, game) {
     var team = td.attr("data-team");
     if (game.getPhases()[row - 1] && game.getPhases()[row - 1].bonus.forTeam) {
         var currentVal = td.text();
-        var html = "<select multiple size='3' class='input-xs center-text form-control bonus-select'>";
+        var html = "<select multiple size='3' class='input-xs center-text form-control bonus-select btn-shadow'>";
         var bonusParts = game.getPhases()[row - 1].bonus.bonusParts;
         for (var i = 0; i < bonusParts.length; i++) {
             if (bonusParts[i].gettingTeam === team) {
@@ -1052,22 +1054,22 @@ function parseScoresheet(submittedGame) {
     gameToAdd.team1 = {};
     gameToAdd.team2 = {};
     gameToAdd.team1.team_id = submittedGame.team1.id;
-    gameToAdd.team1.team_name = submittedGame.team1.name;
     gameToAdd.team1.score = submittedGame.getTeamScore(submittedGame.team1.id);
     gameToAdd.team1.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team1.id);
     gameToAdd.team1.playerStats = submittedGame.getPlayersPointValues(submittedGame.team1);
+    gameToAdd.team1.overtimeTossupsGotten = $(".overtime-tu[data-team='" + submittedGame.team1.id + "']").val() || 0;
     gameToAdd.team2.team_id = submittedGame.team2.id;
-    gameToAdd.team2.team_name = submittedGame.team2.name;
     gameToAdd.team2.score = submittedGame.getTeamScore(submittedGame.team2.id);
     gameToAdd.team2.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team2.id);
     gameToAdd.team2.playerStats = submittedGame.getPlayersPointValues(submittedGame.team2);
+    gameToAdd.team2.overtimeTossupsGotten = $(".overtime-tu[data-team='" + submittedGame.team2.id + "']").val() || 0;
     gameToAdd.round = $("#round-number").val();
     gameToAdd.tossupsheard = submittedGame.getPhases().length;
     gameToAdd.room = $("#room-number").val();
     gameToAdd.moderator = $("#moderator").val();
     gameToAdd.packet = $("#packet").val();
+    gameToAdd.phase_id = $("#phase").val();
     gameToAdd.notes = $("#notes").val();
-
     for (var playerid in gameToAdd.team1.playerStats) {
         if (gameToAdd.team1.playerStats.hasOwnProperty(playerid)) {
             if (gameToAdd.tossupsheard !== 0) {
@@ -1092,7 +1094,9 @@ function parseScoresheet(submittedGame) {
 function incrementTossupsHeardForPlayers(number) {
     $(".player-table .active-player input").each(function (index, input) {
         var currentTUH = parseFloat($(input).val());
-        $(input).val(currentTUH + number + "");
+        if (currentTUH + number >= 0) {
+            $(input).val(currentTUH + number + "");
+        }
     });
 }
 
@@ -1123,13 +1127,13 @@ function findTossupsHeardForPlayer(playerid) {
 function createScoresheet(team1, team2) {
     var html = "<thead><tr>";
     for (var i = 0; i < team1.players.length; i++) {
-        html += "<th class='player-header' title='" + team1.players[i].name + "'>" + team1.players[i].name.slice(0, 2).toUpperCase() + "</th>";
+        html += "<th class='player-header' data-toggle='tooltip' data-container='body' title='" + team1.players[i].name + "'>" + team1.players[i].name.slice(0, 2).toUpperCase() + "</th>";
     }
     html += "<th>Bonus</th><th>Total</th>";
     html += "<th class='alert alert-info'> TU # </th>";
     html += "<th>Total</th><th>Bonus</th>";
     for (var i = 0; i < team2.players.length; i++) {
-        html += "<th class='player-header' title='" + team2.players[i].name + "'>" + team2.players[i].name.slice(0, 2).toUpperCase() + "</th>";
+        html += "<th class='player-header' data-toggle='tooltip' data-container='body' title='" + team2.players[i].name + "'>" + team2.players[i].name.slice(0, 2).toUpperCase() + "</th>";
     }
     html += "</tr></thead>";
     html += "<tbody id='scoresheet-body'>";
@@ -1157,6 +1161,7 @@ function createScoresheet(team1, team2) {
     html += "<tfoot><tr class='alert alert-warning'><td id='tfoot-msg' colspan='" + colspan + "'>More rows will appear as needed.</td></tr></tfoot>";
     $("#scoresheet").empty();
     $(html).hide().appendTo("#scoresheet").fadeIn(500);
+    $('[data-toggle="tooltip"]').tooltip();
 }
 
 function createScoresheetRow(team1, team2, number) {
@@ -1241,7 +1246,8 @@ function createPlayerLabels(side, players, pointValues, pointTypes) {
     }
     var teamid = $(side).val();
     var teamname = $(side).find(":selected").text();
-    html += "<br><input type='text' class='form-control player-name-input' placeholder='New Player'/><button class='btn btn-md btn-success add-player-button' data-team='" + teamid + "' data-team-name='" + teamname + "'> Add a Player </button>";
+    html += "<br><input type='text' class='form-control player-name-input btn-shadow' placeholder='New Player'/><button class='btn btn-md btn-success add-player-button' data-team='" + teamid + "' data-team-name='" + teamname + "'> Add a Player </button>";
+    html += "<br><br><div class='row'><div class='col-md-2'></div><div class='col-md-8'><input type='number' class='form-control btn-shadow overtime-tu' data-team='" + teamid + "' placeholder='Overtime TUs gotten by " + teamname + "'/></div><div class='col-md-2'></div></div>";
     $(list).empty().append(html);
 }
 
@@ -1262,7 +1268,7 @@ function createPlayerTable(side, players, pointScheme) {
                 html += "<td class='player-point active-player' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
             }
             html += "<td class='player-total active-player' data-player='" + players[i].id + "'>0</td>";
-            html += "<td class='player-tossups td-scoresheet active-player' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet' value='0' style='font-size:14px'/></td>";
+            html += "<td class='player-tossups td-scoresheet active-player' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet btn-shadow' value='0' style='font-size:14px'/></td>";
             html += "</tr>";
         } else {
             html += "<th>" + players[i].name;+"</th>";
@@ -1270,7 +1276,7 @@ function createPlayerTable(side, players, pointScheme) {
                 html += "<td class='player-point' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
             }
             html += "<td class='player-total' data-player='" + players[i].id + "'>0</td>";
-            html += "<td class='player-tossups td-scoresheet' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet' value='0' style='font-size:14px'/></td>";
+            html += "<td class='player-tossups td-scoresheet' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet btn-shadow' value='0' style='font-size:14px'/></td>";
             html += "</tr>";
         }
     }
@@ -1285,7 +1291,7 @@ function addPlayerTableRow(side, player, pointScheme) {
         html += "<td class='player-point' data-player='" + player.id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
     }
     html += "<td class='player-total' data-player='" + player.id + "'>0</td>";
-    html += "<td class='player-tossups td-scoresheet' data-player='" + player.id + "' width='75'><input type='number' class='input-scoresheet' value='0' style='font-size:14px'/></td>";
+    html += "<td class='player-tossups td-scoresheet' data-player='" + player.id + "' width='75'><input type='number' class='input-scoresheet btn-shadow' value='0' style='font-size:14px'/></td>";
     html += "</tr>";
     $(table).append(html);
 }
@@ -1375,18 +1381,19 @@ function editAddBonusAttributes(team1, team2) {
 
 function addPlayerColumn(side, player) {
     if (side == "right") {
-        $("#scoresheet thead tr").append("<th class='player-header' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
+        $("#scoresheet thead tr").append("<th class='player-header' data-toggle='tooltip' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
         $("#scoresheet tbody tr").each(function (index, tableRow) {
             var row = index + 1;
             $(this).append("<td data-player='" + player._id + "' data-row='" + row + "'>-</td>");
         });
     } else {
-        $("#scoresheet thead tr").prepend("<th class='player-header' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
+        $("#scoresheet thead tr").prepend("<th class='player-header' data-toggle='tooltip' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
         $("#scoresheet tbody tr").each(function (index, tableRow) {
             var row = index + 1;
             $(this).prepend("<td data-player='" + player._id + "' data-row='" + row + "'>-</td>");
         });
     }
+    $('[data-toggle="tooltip"]').tooltip();
     var colspan = game.team1.players.length + game.team2.players.length + 5;
     changeFooterColSpan(colspan);
 }
