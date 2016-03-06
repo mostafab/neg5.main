@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const clientsession = require("client-sessions");
 const cookieParser = require("cookie-parser");
+const helmet = require('helmet');
 
 module.exports = function() {
     const app = express();
@@ -10,6 +11,7 @@ module.exports = function() {
     app.use(bodyParser.urlencoded({
         extended: true
     }));
+    app.use(helmet());
     app.use(cookieParser());
     app.use(bodyParser.json());
     app.use(clientsession({
