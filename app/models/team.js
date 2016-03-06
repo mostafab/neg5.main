@@ -268,6 +268,55 @@ teamSchema.methods.getTossupTotalsFiltered = function(tournament, constraints) {
     return pointTotals;
 }
 
+teamSchema.methods.getOvertimeGets = function(tournament) {
+    const thisTeam = this;
+    try {
+        let numGets = tournament.games.filter(game => {
+            return game.team1.team_id == thisTeam._id || game.team2.team_id == thisTeam._id;
+        }).map(game => {
+            if (game.team1.team_id == thisTeam._id) {
+                return game.team1.overtimeTossupsGotten || 0;
+            } else {
+                return game.team2.overtimeTossupsGotten || 0;
+            }
+        }).reduce((prevTUTotal, currentTUTotal) => {
+            return prevTUTotal + currentTUTotal;
+        });
+        return numGets;
+    } catch (lengthZeroException) {
+        return 0;
+    }
+}
+
+teamSchema.methods.getOvertimeGetsFiltered = function(tournament, constraints) {
+    const thisTeam = this;
+    try {
+        let numGets = tournament.games.filter(game => {
+            return (game.team1.team_id == thisTeam._id || game.team2.team_id == thisTeam._id)
+                && (game.round >= constraints.minround && game.round <= constraints.maxround);
+        }).map(game => {
+            if (game.team1.team_id == thisTeam._id) {
+                return game.team1.overtimeTossupsGotten || 0;
+            } else {
+                return game.team2.overtimeTossupsGotten || 0;
+            }
+        }).reduce((prevTUTotal, currentTUTotal) => {
+            return prevTUTotal + currentTUTotal;
+        });
+        return numGets;
+    } catch (lengthZeroException) {
+        return 0;
+    }
+}
+
+teamSchema.methods.getOvertimeGetsOneGame = function(game) {
+    if (game.team1.team_id == this._id) {
+        return game.team1.overtimeTossupsGotten || 0;
+    } else {
+        return game.team2.overtimeTossupsGotten || 0;
+    }
+}
+
 /**
 * Get a team's tossups in one game by summing the player totals
 * @param game game to check
@@ -492,7 +541,7 @@ teamSchema.methods.getTossupsHeardFiltered = function(tournament, constraints) {
 */
 teamSchema.methods.getOverallPPB = function(tournament) {
     const totalBonusPoints = this.getTotalBonusPoints(tournament);
-    const totalGets = this.getTotalGets(tournament);
+    const totalGets = this.getTotalGets(tournament) - this.getOvertimeGets(tournament);
     if (totalGets == 0) {
         return 0;
     }
@@ -507,7 +556,7 @@ teamSchema.methods.getOverallPPB = function(tournament) {
 */
 teamSchema.methods.getOverallPPBFiltered = function(tournament, constraints) {
     const totalBonusPoints = this.getTotalBonusPointsFiltered(tournament, constraints);
-    const totalGets = this.getTotalGetsFiltered(tournament, constraints);
+    const totalGets = this.getTotalGetsFiltered(tournament, constraints) - this.getOvertimeGetsFiltered(tournament, constraints);
     if (totalGets == 0) {
         return 0;
     }
@@ -522,7 +571,7 @@ teamSchema.methods.getOverallPPBFiltered = function(tournament, constraints) {
 */
 teamSchema.methods.getPPBOneGame = function(game, tournament) {
     const bonusPoints = this.getBonusPointsOneGame(game, tournament);
-    const totalGets = this.getTotalGetsOneGame(game, tournament);
+    const totalGets = this.getTotalGetsOneGame(game, tournament) - this.getOvertimeGetsOneGame(game);
     if (totalGets == 0) {
         return 0;
     }

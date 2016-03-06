@@ -944,7 +944,7 @@ function replaceTossupTD(td, game) {
         if (!phase.teamAlreadyAnswered(player, team)
                 && validAnswerTypes.length !== 0) {
             var currentVal = td.text();
-            var html = "<select class='input-xs center-text'><option value='-'>-</option>";
+            var html = "<select class='input-xs center-text btn-shadow'><option value='-'>-</option>";
             for (var i = 0; i < validAnswerTypes.length; i++) {
                 var option = "";
                 if (currentVal == validAnswerTypes[i]) {
@@ -965,7 +965,7 @@ function replaceBonusTD(td, game) {
     var team = td.attr("data-team");
     if (game.getPhases()[row - 1] && game.getPhases()[row - 1].bonus.forTeam) {
         var currentVal = td.text();
-        var html = "<select multiple size='3' class='input-xs center-text form-control bonus-select'>";
+        var html = "<select multiple size='3' class='input-xs center-text form-control bonus-select btn-shadow'>";
         var bonusParts = game.getPhases()[row - 1].bonus.bonusParts;
         for (var i = 0; i < bonusParts.length; i++) {
             if (bonusParts[i].gettingTeam === team) {
@@ -994,10 +994,12 @@ function parseScoresheet(submittedGame) {
     gameToAdd.team1.score = submittedGame.getTeamScore(submittedGame.team1.id);
     gameToAdd.team1.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team1.id);
     gameToAdd.team1.playerStats = submittedGame.getPlayersPointValues(submittedGame.team1);
+    gameToAdd.team1.overtimeTossupsGotten = $(".overtime-tu[data-team='" + submittedGame.team1.id + "']").val() || 0;
     gameToAdd.team2.team_id = submittedGame.team2.id;
     gameToAdd.team2.score = submittedGame.getTeamScore(submittedGame.team2.id);
     gameToAdd.team2.bouncebacks = submittedGame.getTeamBouncebacks(submittedGame.team2.id);
     gameToAdd.team2.playerStats = submittedGame.getPlayersPointValues(submittedGame.team2);
+    gameToAdd.team2.overtimeTossupsGotten = $(".overtime-tu[data-team='" + submittedGame.team2.id + "']").val() || 0;
     gameToAdd.round = $("#round-number").val();
     gameToAdd.tossupsheard = submittedGame.getPhases().length;
     gameToAdd.room = $("#room-number").val();
@@ -1005,7 +1007,6 @@ function parseScoresheet(submittedGame) {
     gameToAdd.packet = $("#packet").val();
     gameToAdd.phase_id = $("#phase").val();
     gameToAdd.notes = $("#notes").val();
-    gameToAdd.overtime_tossups = $("#overtime-tossups").val();
     for (var playerid in gameToAdd.team1.playerStats) {
         if (gameToAdd.team1.playerStats.hasOwnProperty(playerid)) {
             if (gameToAdd.tossupsheard !== 0) {
@@ -1030,7 +1031,9 @@ function parseScoresheet(submittedGame) {
 function incrementTossupsHeardForPlayers(number) {
     $(".player-table .active-player input").each(function(index, input) {
         var currentTUH = parseFloat($(input).val());
-        $(input).val((currentTUH + number) + "");
+        if (currentTUH + number >= 0) {
+            $(input).val((currentTUH + number) + "");
+        }
     });
 }
 
@@ -1188,8 +1191,10 @@ function createPlayerLabels(side, players, pointValues, pointTypes) {
     }
     var teamid = $(side).val();
     var teamname = $(side).find(":selected").text();
-    html += "<br><input type='text' class='form-control player-name-input' placeholder='New Player'/><button class='btn btn-md btn-success add-player-button' data-team='" +
+    html += "<br><input type='text' class='form-control player-name-input btn-shadow' placeholder='New Player'/><button class='btn btn-md btn-success add-player-button' data-team='" +
         teamid + "' data-team-name='" + teamname + "'> Add a Player </button>";
+    html += "<br><br><div class='row'><div class='col-md-2'></div><div class='col-md-8'><input type='number' class='form-control btn-shadow overtime-tu' data-team='" + teamid + "' placeholder='Overtime TUs gotten by " +
+        teamname + "'/></div><div class='col-md-2'></div></div>";
     $(list).empty().append(html);
 }
 
@@ -1210,7 +1215,7 @@ function createPlayerTable(side, players, pointScheme) {
                 html += "<td class='player-point active-player' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
             }
             html += "<td class='player-total active-player' data-player='" + players[i].id + "'>0</td>";
-            html += "<td class='player-tossups td-scoresheet active-player' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet' value='0' style='font-size:14px'/></td>";
+            html += "<td class='player-tossups td-scoresheet active-player' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet btn-shadow' value='0' style='font-size:14px'/></td>";
             html += "</tr>";
         } else {
             html += "<th>" + players[i].name; + "</th>";
@@ -1218,10 +1223,9 @@ function createPlayerTable(side, players, pointScheme) {
                 html += "<td class='player-point' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
             }
             html += "<td class='player-total' data-player='" + players[i].id + "'>0</td>";
-            html += "<td class='player-tossups td-scoresheet' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet' value='0' style='font-size:14px'/></td>";
+            html += "<td class='player-tossups td-scoresheet' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet btn-shadow' value='0' style='font-size:14px'/></td>";
             html += "</tr>";
         }
-
     }
     $(table).empty().append(html);
 }
@@ -1234,7 +1238,7 @@ function addPlayerTableRow(side, player, pointScheme) {
         html += "<td class='player-point' data-player='" + player.id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
     }
     html += "<td class='player-total' data-player='" + player.id + "'>0</td>";
-    html += "<td class='player-tossups td-scoresheet' data-player='" + player.id + "' width='75'><input type='number' class='input-scoresheet' value='0' style='font-size:14px'/></td>";
+    html += "<td class='player-tossups td-scoresheet' data-player='" + player.id + "' width='75'><input type='number' class='input-scoresheet btn-shadow' value='0' style='font-size:14px'/></td>";
     html += "</tr>";
     $(table).append(html);
 }

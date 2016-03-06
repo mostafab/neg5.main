@@ -706,10 +706,8 @@ function convertToQuizbowlSchema(tournamentid, callback) {
             const qbjObj = {version : SCHEMA_VERSION, objects : []};
             const tournamentObject = {type : "Tournament", phases : [{name : 'All Rounds', rounds : []}], registrations : [], name : tournament.tournament_name, question_set : tournament.questionSet, info : tournament.description};
             const teamMap = {};
-            // const registrationObjects = makeRegistrationObjects(tournament.teams);
             const teamNameMap = {};
             tournament.teams.forEach(team => {
-                // let teamObj = {id : "team_" + team.shortID, name : team.team_name, players : [], shortID : team.shortID};
                 let matchingTeams = tournament.teams.filter(otherTeam => {
                     return !teamMap[otherTeam._id] && stringFunctions.levenshteinDistance(otherTeam.team_name.toLowerCase(), team.team_name.toLowerCase()) < 2;
                 });
@@ -722,26 +720,16 @@ function convertToQuizbowlSchema(tournamentid, callback) {
                     const teamPlayers = tournament.players.filter(player => {
                         return player.teamID == otherTeam._id;
                     });
-                    // console.log(teamPlayers);
                     copy.players = teamPlayers;
-                    console.log(copy);
                     return copy;
                 });
                 if (matchingTeams.length === 1) {
                     teamNameMap[matchingTeams[0].team_name] = matchingTeams;
                 } else if (matchingTeams.length > 1) {
                     const lcs = mdiff(matchingTeams[0].team_name, matchingTeams[1].team_name).getLcs();
-                    // const lcs = stringFunctions.longestCommonSubsequence(matchingTeams[0].team_name, matchingTeams[1].team_name);
                     teamNameMap[lcs] = matchingTeams;
                 }
-                // tournamentObject.registrations.push({$ref : "school_" + tournament.teams[i].shortID});
             });
-            // console.log(teamNameMap);
-            // tournament.players.forEach(player => {
-            //     let teamid = player.teamID;
-            //     let playerObj = {id : "player_" + player.shortID, name : player.player_name};
-            //     teamMap[teamid].players.push(playerObj);
-            // });
             let counter = 1;
             for (let teamName in teamNameMap) {
                 if (teamNameMap.hasOwnProperty(teamName)) {
@@ -755,7 +743,6 @@ function convertToQuizbowlSchema(tournamentid, callback) {
             const pointScheme = Object.keys(tournament.pointScheme);
             const gameMap = {};
             tournament.games.forEach(game => {
-                // tournamentObject.matches.push({$ref : "game_" + game.shortID});
                 let gameObj = makeGameObject(game, teamMap, playerMap, pointScheme);
                 if (gameObj) {
                     qbjObj.objects.push(gameObj);
@@ -772,7 +759,6 @@ function convertToQuizbowlSchema(tournamentid, callback) {
                 }
             }
             qbjObj.objects.push(tournamentObject);
-            // qbjObj.objects.push(tournamentObject);
             callback(null, qbjObj);
         }
     });
@@ -821,8 +807,12 @@ function makePlayerMap(players) {
 function makeGameObject(game, teamMap, playerMap, pointScheme) {
     const gameObject = {id : "game_" + game.shortID, location : game.room,
         match_teams : [], match_questions : [], round : game.round, tossups_read : game.tossupsheard,
-        overtime_tossups_read : !game.overtime_tossups ? 0 : game.overtime_tossups,
         type : "Match", moderator : game.moderator, notes : game.notes};
+    if (game.team1.overtimeTossupsGotten && game.team2.overtimeTossupsGotten) {
+        gameObject.overtime_tossups_read = game.team1.overtimeTossupsGotten + game.team2.overtimeTossupsGotten;
+    } else {
+        gameObject.overtime_tossups_read = 0;
+    }
     const numPlayersTeam1 = Object.keys(game.team1.playerStats).length;
     const numPlayersTeam2 = Object.keys(game.team2.playerStats).length;
     if (teamMap[game.team1.team_id] && teamMap[game.team2.team_id]) {
