@@ -20,6 +20,41 @@ $(document).ready(function() {
         });
     }
 
+    function downloadJSON(anchor) {
+        $.ajax({
+            url : $(anchor).attr("href"),
+            type : "GET",
+            success : function(databack, status, xhr) {
+                if (window.navigator.msSaveOrOpenBlob) {
+                    var fileData = [JSON.stringify(databack, null, 4)];
+                    var blobObject = new Blob(fileData);
+                    $(anchor).click(function() {
+                        window.navigator.msSaveOrOpenBlob(blobObject, $(anchor).attr("data-link"));
+                    });
+                } else {
+                    var type = xhr.getResponseHeader('Content-Type');
+                    var blob = new Blob([JSON.stringify(databack, null, 4)], { type: type });
+                    var URL = window.URL || window.webkitURL;
+                    var downloadUrl = URL.createObjectURL(blob);
+                    var tempAnchor = document.createElement("a");
+                       // safari doesn't support this yet
+                       if (typeof tempAnchor.download === 'undefined') {
+                           window.location = downloadUrl;
+                       } else {
+                           tempAnchor.href = downloadUrl;
+                           tempAnchor.download = $(anchor).attr("data-link") + $(anchor).attr("data-extension");
+                           document.body.appendChild(tempAnchor);
+                           tempAnchor.click();
+                           setTimeout(function() {
+                               document.body.removeChild(tempAnchor);
+                               window.URL.revokeObjectURL(downloadUrl);
+                           }, 100);
+                       }
+                }
+            }
+        });
+    }
+
     $("#search-submit").click(function() {
         var empty = 0;
         $("#search-tournaments").find("input").each(function() {
@@ -32,4 +67,10 @@ $(document).ready(function() {
             getTournaments();
         }
     });
+
+    $("body").on("click", ".download-json", function(e) {
+        e.preventDefault();
+        downloadJSON($(this));
+    });
+
 });

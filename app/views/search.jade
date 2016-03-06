@@ -11,46 +11,49 @@ block extrastylesheets
 block content
 
     +navbar
-    div(class="content-wrapper box" style='padding:100px;padding-top:10px;')
-        div(class="row")
+    div(class="content-wrapper box" style='padding:20px;padding-top:100px;')
+    
+        div(class='row')
             div(class="col-md-12")
-                div(style="margin:20px; margin-bottom:50px")
-                h2(class="title" style="width:50%") Search for a tournament's statistics here.
-                div(class="col-md-4")
-                    br
-                    br
-
-                    div(class="panel panel-default")
-                        div(class="panel-heading collapsable" style='font-size:20px') Search
-                        div(class="panel-body")
-                            div(class="row")
-                                form(method="get" action="/search/submit" id="search-tournaments")
-                                    div(class='col-md-12')
-                                        label(class="label label-primary col-xs-4") Name
-                                        div(class="form-group col-xs-8")
-                                           input(
-                                               type="text",
-                                               name="t_name",
-                                               placeholder="Tournament Name",
-                                               class="form-control input-md center-text no-border-radius",
-                                           )
-                                        label(class="label label-primary col-xs-4") Question Set
-                                        div(class="form-group col-xs-8")
-                                           input(
-                                               type="text",
-                                               name="t_qset",
-                                               placeholder="Question Set",
-                                               class="form-control input-md center-text no-border-radius"
-                                           )
-                            div(class="row")
-                                div(class="col-md-4")
-                                    button(type='button' class='btn btn-info btn-lg' id='search-submit') Search
-                br
-                br
-                div(class="col-md-8")
-                    div(class="panel panel-default")
-                        div(class="panel-heading collapsable" style='font-size:20px') Results
-                        div(class="panel-body" id='results-body')
+                div(class="row" style='text-align:center')
+                    div(class='col-md-4')
+                    div(class='col-md-4')
+                        h2(class='title-header subtitle btn-shadow') Find Tournament Results
+        br
+        br
+                
+        div(class='row')
+            div(class="col-md-3" style='position:fixed')
+                div(class="panel panel-default")
+                    div(class="panel-heading collapsable" style='font-size:20px') Search
+                    div(class="panel-body btn-shadow")
+                        div(class="row")
+                            form(method="get" action="/search/submit" id="search-tournaments")
+                                div(class='col-md-12')
+                                    label(class="label label-primary col-xs-4") Name
+                                    div(class="form-group col-xs-8")
+                                       input(
+                                           type="text",
+                                           name="t_name",
+                                           placeholder="Tournament Name",
+                                           class="form-control input-md center-text no-border-radius",
+                                       )
+                                    label(class="label label-primary col-xs-4") Question Set
+                                    div(class="form-group col-xs-8")
+                                       input(
+                                           type="text",
+                                           name="t_qset",
+                                           placeholder="Question Set",
+                                           class="form-control input-md center-text no-border-radius"
+                                       )
+                        div(class="row")
+                            div(class="col-md-4")
+                                button(type='button' class='btn btn-info btn-lg' id='search-submit') Search
+                    
+            div(class="col-md-9 col-lg-offset-3" id='results-body')
+                //- div(class="panel panel-default")
+                    //- div(class="panel-heading collapsable" style='font-size:20px') Results
+                    //- div(class="panel-body" id='results-body')
 
 block scripts
     script(src="/js/search.js")

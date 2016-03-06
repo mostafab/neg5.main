@@ -6,20 +6,20 @@ const statsController = require("../../app/controllers/stats-controller");
 
 module.exports = app => {
 
-    // app.get("/search", (req, res) => {
-    //     res.render("search", {tournamentd : req.session.director});
-    // });
-    //
-    // app.get("/search/submit", (req, res) => {
-    //     statsController.findTournamentsByNameAndSet(req.query.t_name, req.query.t_qset, function(err, tournaments) {
-    //         if (err) {
-    //             res.status(500).end();
-    //         } else {
-    //             // res.send(tournaments);
-    //             res.render("tournament-search-result", {tournaments : tournaments});
-    //         }
-    //     });
-    // });
+    app.get("/search", (req, res) => {
+        res.render("search", {tournamentd : req.session.director});
+    });
+
+    app.get("/search/submit", (req, res) => {
+        statsController.findTournamentsByNameAndSet(req.query.t_name, req.query.t_qset, function(err, tournaments) {
+            if (err) {
+                console.log(err);
+                res.status(500).end();
+            } else {
+                res.render("tournament-search-result", {tournaments : tournaments});
+            }
+        });
+    });
 
     app.get("/t/:tid/stats", (req, res, next) => {
         const tournament = req.params.tid;

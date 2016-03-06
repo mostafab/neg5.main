@@ -949,7 +949,7 @@ function findTournamentsByNameAndSet(name, set, callback) {
         } else {
             query = {$and : [{tournament_name : trex}, {questionSet : qrex}]};
         }
-        const fields = {tournament_name : 1, questionSet : 1, shortID : 1};
+        const fields = {tournament_name : 1, questionSet : 1, shortID : 1, _id : 0};
         Tournament.find(query, fields, (err, tournaments) => {
             if (err) {
                 console.log(err);

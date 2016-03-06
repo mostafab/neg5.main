@@ -22,7 +22,6 @@
     "jade": "^1.11.0",
     "mdiff": "^0.4.0",
     "mongoose": "^4.2.5",
-    "short-mongo-id": "^0.1.1",
     "shortid": "^2.2.4"
   }
 }
