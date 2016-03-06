@@ -33,6 +33,7 @@ const TournamentSchema = new Schema({
     pointScheme : {type : {}, default : {"15" : 0, "10" : 0, "-5" : 0}},
     pointsTypes : {type : {}, default : {"15" : "P", "10" : "B", "-5" : "N"}},
     shortID : {type : String, index : true, unique : true, required : true},
+    hidden : {type : Boolean, default : true}
 });
 
 function setDate(date) {

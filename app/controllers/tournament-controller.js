@@ -602,7 +602,7 @@ function updateTournamentInformation(tournamentid, information, directorid, call
                 Tournament.update({_id : tournamentid},
                         {"$set" : {tournament_name : information.tournament_name, location : information.tournament_location,
                                 date : information.tournament_date, description : information.tournament_description,
-                                    questionSet : information.tournament_qset}}, err => {
+                                    questionSet : information.tournament_qset, hidden : information.hidden || false}}, err => {
                                     callback(err, null);
                                 });
             } else {

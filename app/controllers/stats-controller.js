@@ -943,11 +943,11 @@ function findTournamentsByNameAndSet(name, set, callback) {
         const trex = new RegExp(".*" + name.trim() + ".*", "i");
         const qrex = new RegExp(".*" + set.trim() + ".*", "i");
         if (name.trim().length === 0) {
-            query = {questionSet : qrex};
+            query = {$and : [{questionSet : qrex}, {hidden : false}]};
         } else if (set.trim().length === 0) {
-            query = {tournament_name : trex};
+            query = {$and : [{tournament_name : trex}, {hidden : false}]};
         } else {
-            query = {$and : [{tournament_name : trex}, {questionSet : qrex}]};
+            query = {$and : [{tournament_name : trex}, {questionSet : qrex}, {hidden : false}]};
         }
         const fields = {tournament_name : 1, questionSet : 1, shortID : 1, _id : 0};
         Tournament.find(query, fields, (err, tournaments) => {

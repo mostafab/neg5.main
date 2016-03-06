@@ -115,6 +115,12 @@ block content
                                                             name="tournament_date",
                                                             class="form-control input-medium center-text no-border-radius btn-shadow"
                                                         )
+                                                label(class='label label-primary col-xs-4') Hidden
+                                                div(class='form-group col-xs-8')
+                                                    if tournament.hidden
+                                                        input(checked type='checkbox' value='1' name='hidden' class='form-control input-sm')
+                                                    else
+                                                        input(type='checkbox' value='1' name='hidden' class='form-control input-sm')
 
                                     div(class="row")
                                         div(class="col-md-12")
