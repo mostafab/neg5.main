@@ -44,7 +44,9 @@ block content
                                     td #{tournaments[i].questionSet}
                                     td #{tournaments[i].teamsAdded}
 
-
+        div(class='row')
+            div(class='col-md-3')
+                a(class='btn btn-md btn-info btn-shadow btn-block' href='/create') New Tournament
 
 block scripts
     script(src="/js/all-tournaments.js")

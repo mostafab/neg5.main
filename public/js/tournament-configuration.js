@@ -390,7 +390,7 @@ $(document).ready(function() {
     $("body").on("click", "#back-to-teams", function(e) {
         e.preventDefault();
         var button = $(this);
-        var href = button.attr("href");
+        var href = button.attr("data-href");
         button.text("Loading...");
         $.ajax({
             url : href,
@@ -414,7 +414,7 @@ $(document).ready(function() {
         e.preventDefault();
         var button = $(this);
         button.text("Loading...");
-        var href = button.attr("href");
+        var href = button.attr("data-href");
         $.ajax({
             url : href,
             type : "GET",
@@ -697,10 +697,13 @@ function removePhase(phaseID, button) {
 }
 
 function downloadScoresheets(anchor) {
+    var progressBar = $(".progress-indicator");
+    progressBar.addClass(progressBarClasses);
     $.ajax({
         url : $(anchor).attr("href"),
         type : "GET",
         success : function(rounds, status, xhr) {
+            progressBar.removeClass(progressBarClasses);
             var zip = new JSZip();
             var pointScheme = Object.keys(rounds.pointScheme);
             for (var roundNumber in rounds.scoresheets) {
@@ -732,10 +735,13 @@ function downloadScoresheets(anchor) {
 function downloadStats(anchor) {
     var downloadFileName = $(anchor).attr("data-link") + "_" +
         $(anchor).attr("data-phase") + $(anchor).attr("data-file");
+    var progressBar = $(".progress-indicator");
+    progressBar.addClass(progressBarClasses);
     $.ajax({
         url : $(anchor).attr("href"),
         type : "GET",
         success : function(databack, status, xhr) {
+            progressBar.removeClass(progressBarClasses);
             if (window.navigator.msSaveOrOpenBlob) {
                 var fileData = [databack];
                 var blobObject = new Blob(fileData);
@@ -766,10 +772,13 @@ function downloadStats(anchor) {
 }
 
 function downloadJSON(anchor) {
+    var progressBar = $(".progress-indicator");
+    progressBar.addClass(progressBarClasses);
     $.ajax({
         url : $(anchor).attr("href"),
         type : "GET",
         success : function(databack, status, xhr) {
+            progressBar.removeClass(progressBarClasses);
             if (window.navigator.msSaveOrOpenBlob) {
                 var fileData = [JSON.stringify(databack, null, 4)];
                 var blobObject = new Blob(fileData);

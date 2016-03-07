@@ -24,7 +24,7 @@ function addTournament(director, name, date, location, description, questionset,
         date : date,
         description : description,
         questionSet : questionset,
-        phases : [{phase_id : shortid.generate(), name : "Default", active : true}]
+        phases : [{phase_id : shortid.generate(), name : "Default Phase", active : true}]
     });
     tourney.shortID = shortid.generate();
     tourney.save(err => {

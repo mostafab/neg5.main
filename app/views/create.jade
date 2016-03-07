@@ -17,12 +17,12 @@ block content
             div(class="col-md-12")
                 div(class="col-md-12")
                     div(style="margin:20px; margin-bottom:50px")
-                    h2(class="title" style="width:50%") Create a Tournament. You only need to provide a name.
+                    h2(class="title btn-shadow" style="width:50%") Create a Tournament. You only need to provide a name.
                     br
                     br
                     div(class="panel panel-default")
                         div(class="panel-heading collapsable" style='font-size:20px') Information
-                        div(class="panel-body")
+                        div(class="panel-body btn-shadow")
                             div(class="row")
                                 div(class='col-md-8')
                                    form(name="createTournament" method="post" action="/create/submit")
@@ -32,7 +32,7 @@ block content
                                                type="text",
                                                name="t_name",
                                                placeholder="Tournament Name",
-                                               class="form-control input-lg center-text no-border-radius",
+                                               class="form-control input-lg center-text no-border-radius btn-shadow",
                                                required
                                            )
                                         label(class="label label-primary col-xs-4") Question Set
@@ -41,7 +41,7 @@ block content
                                                type="text",
                                                name="t_qset",
                                                placeholder="Question Set",
-                                               class="form-control input-lg center-text no-border-radius"
+                                               class="form-control input-lg center-text no-border-radius btn-shadow"
                                            )
                                         label(class="label label-primary col-xs-4") Location
                                         div(class="form-group col-xs-8")
@@ -49,7 +49,7 @@ block content
                                                type="text",
                                                name="t_location",
                                                placeholder="Location",
-                                               class="form-control input-lg center-text no-border-radius"
+                                               class="form-control input-lg center-text no-border-radius btn-shadow"
                                            )
                                         label(class="label label-primary col-xs-4") Date
                                         div(class="form-group col-xs-8")
@@ -58,16 +58,16 @@ block content
                                                name="t_date",
                                                placeholder="Tournament Date",
                                                id="date-box",
-                                               class="form-control input-lg center-text no-border-radius"
+                                               class="form-control input-lg center-text no-border-radius btn-shadow"
                                            )
                                         label(class='label label-primary col-xs-4') Description
                                         div(class="form-group col-xs-8")
                                            textarea(
                                                name="t_description",
                                                placeholder="Enter any other important information about the tournament here.",
-                                               class="form-control input-lg no-border-radius",
+                                               class="form-control input-lg no-border-radius btn-shadow",
                                                style="min-height:300px;"
                                            )
 
-                                         button(type="submit" class="btn btn-lg btn-success no-border-radius") Confirm
-                                         button(type="reset" class="btn btn-lg btn-info no-border-radius") Clear Fields
+                                         button(type="submit" class="btn btn-lg btn-success no-border-radius btn-shadow") Confirm
+                                         button(type="reset" class="btn btn-lg btn-info no-border-radius btn-shadow") Clear Fields

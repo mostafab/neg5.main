@@ -1,6 +1,6 @@
 h2(class="subtitle btn-shadow" style="width:35%;") Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
 h3(style="width:50%;border-radius:0")
-    a(class="btn btn-sm btn-info btn-shadow" href="/t/" + tournament.shortID + "/games" id='back-to-games') Games
+    button(class="btn btn-sm btn-info btn-shadow" data-href="/t/" + tournament.shortID + "/games" id='back-to-games') Games
 br
 br
 
