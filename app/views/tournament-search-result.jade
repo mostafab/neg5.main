@@ -1,4 +1,4 @@
-- var TOURNAMENTS_PER_PAGE = 25
+- var TOURNAMENTS_PER_PAGE = 15
 
 if tournaments.length === 0
     div(class='row')
@@ -17,8 +17,8 @@ else
                             li(class="#{count === 0 ? 'active' : ''}")
                                 a(href='##{count}' data-toggle='tab' class='btn-sm') #{count + 1}
                             - count = count + 1
-
-        div(class='col-md-11 col-lg-offset-1')
+        div(class='col-md-1')
+        div(class='col-md-10 col-lg-offset-1')
             div(class='tab-content')
                 - var count = 0
                 - for (var i = 0; i < tournaments.length; i++) {
@@ -27,23 +27,22 @@ else
                     div(class='col-md-12 #{classes}' id='#{count}')
                         table(class="table table-condensed btn-shadow")
                             thead
-                                tr()
+                                tr
                                     th(class="table-head" style='text-align:center') Name
                                     th(class="table-head" style='text-align:center') Question set
                                     th(class="table-head" style='text-align:center') Link to Stats
-                                    th(class="table-head" style='text-align:center') QBJ Format
+                                    th(class="table-head" style='text-align:center') Download QBJ
                             tbody
                                 each val, j in tournamentSubArray
-                                    tr()
+                                    tr
                                         td(style='text-align:center') #{tournamentSubArray[j].tournament_name}
                                         td(style='text-align:center') #{tournamentSubArray[j].questionSet}
                                         td(style='text-align:center')
-                                            a(href="/t/" + "#{tournamentSubArray[j].shortID}" + "/stats" target='_blank') All Stats
+                                            a(href="/t/" + "#{tournamentSubArray[j].shortID}" + "/stats" target='_blank') All
                                             br
                                             if tournamentSubArray[j].phases
-                                                - console.log(tournamentSubArray[j].phases)
                                                 each phase in tournamentSubArray[j].phases
-                                                    a(href='/t/' + '#{tournamentSubArray[j].shortID}' + '/stats/team?phase=' + phase_id) #{phase.name} Stats
+                                                    a(href='/t/' + '#{tournamentSubArray[j].shortID}' + '/stats/team?phase=' + phase.phase_id target='_blank') #{phase.name} 
                                                     br
                                         td(style='text-align:center')
                                             a(href='/t/' + '#{tournamentSubArray[j].shortID}' + "/export/qbj" class='download-json' data-extension='.qbj' data-link='#{tournamentSubArray[j].tournament_name.toLowerCase().replace(/\s/g, "_")}') QBJ

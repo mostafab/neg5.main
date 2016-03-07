@@ -1,3 +1,5 @@
+var progressBarClasses = 'progress-bar progress-bar-striped progress-bar-warning active';
+
 $(document).ready(function() {
 
     function getTournaments() {
@@ -21,6 +23,8 @@ $(document).ready(function() {
     }
 
     function downloadJSON(anchor) {
+        var progressBar = $(".progress-indicator");
+        progressBar.addClass(progressBarClasses);
         $.ajax({
             url : $(anchor).attr("href"),
             type : "GET",
@@ -51,6 +55,11 @@ $(document).ready(function() {
                            }, 100);
                        }
                 }
+            },
+            complete : function() {
+                setTimeout(function() {
+                    progressBar.removeClass(progressBarClasses);
+                }, 500);
             }
         });
     }

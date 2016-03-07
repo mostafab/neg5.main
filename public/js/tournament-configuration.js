@@ -5,6 +5,7 @@ var playerOptions;
 var gameList;
 var teamList;
 var playerList;
+var progressBarClasses = 'progress-bar progress-bar-striped progress-bar-warning active';
 
 var entityMap = {
    "&": "&amp;",
@@ -578,6 +579,8 @@ function loadTeamAJAX(href, td) {
     var html = "<p class='loading'><i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>";
     var lastText = td.text();
     td.html(html);
+    var progressBar = $(".progress-indicator");
+    progressBar.addClass(progressBarClasses);
     $.ajax({
         url : href,
         type : 'GET',
@@ -590,6 +593,9 @@ function loadTeamAJAX(href, td) {
         },
         error : function(xhr, status, err) {
             td.html(lastText);
+        },
+        complete : function() {
+            progressBar.removeClass(progressBarClasses);
         }
     });
 }
@@ -598,6 +604,8 @@ function loadGameAJAX(href, td) {
     var html = "<p class='loading'><i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>";
     var lastText = td.text();
     td.html(html);
+    var progressBar = $(".progress-indicator");
+    progressBar.addClass(progressBarClasses);
     $.ajax({
         url : href,
         type : 'GET',
@@ -610,6 +618,9 @@ function loadGameAJAX(href, td) {
         },
         error : function(xhr, status, err) {
             td.html(lastText);
+        },
+        complete : function() {
+            progressBar.removeClass(progressBarClasses);
         }
     });
 }
