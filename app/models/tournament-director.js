@@ -15,7 +15,8 @@ function toLower(string) {
 const TournamentDirectorSchema = new Schema({
     usertoken : {type : String, required : true},
     name : {type : String, required : true},
-    email : {type : String, required : true, set : toLower}
+    email : {type : String, required : true, set : toLower},
+    visible : {type : Boolean, default : false}
 });
 
 module.exports = mongoose.model("TournamentDirector", TournamentDirectorSchema);

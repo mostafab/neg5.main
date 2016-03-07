@@ -129,7 +129,7 @@ function makeUser(req, callback) {
 * already has this email. If no one does, proceed as normal and change user's email and name and
 * propapage changes to the TournamentDirector collection.
 */
-function updateEmailAndName(director, newName, newEmail, callback) {
+function updateEmailAndName(director, newName, newEmail, visible, callback) {
     TournamentDirector.findOne({email : newEmail, _id : {$ne : director._id}}, (err, result) => {
         if (err) {
             console.log(err);
@@ -141,7 +141,8 @@ function updateEmailAndName(director, newName, newEmail, callback) {
                 if (err) {
                     callback(err, null, false);
                 } else {
-                    TournamentDirector.update({_id : director._id}, {name : newName, email : newEmail}, err => {
+                    const directorVisibility = !visible ? false : true;
+                    TournamentDirector.update({_id : director._id}, {name : newName, email : newEmail, visible : directorVisibility}, err => {
                         if (err) {
                             callback(err, null, false);
                         } else {

@@ -53,7 +53,7 @@ module.exports = app => {
         if (!req.session.director) {
             res.status(401).end();
         } else {
-            userController.updateEmailAndName(req.session.director, req.body.dname, req.body.demail.toLowerCase(), (err, newDirector, duplicate) => {
+            userController.updateEmailAndName(req.session.director, req.body.dname, req.body.demail.toLowerCase(), req.body.dvisible, (err, newDirector, duplicate) => {
                 if (err) {
                     res.status(500).end();
                 } else if (duplicate) {

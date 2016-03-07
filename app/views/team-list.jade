@@ -19,15 +19,15 @@ div(class="table-responsive" id="teamdiv")
                 each val, i in tournament.teams
                     tr(class='team-tr clickable-link team-anchor tournament-panel' data-href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID id='#{tournament.teams[i].shortID}')
                         td(class="teamname team-name-list teamname") #{tournament.teams[i].team_name}
-                        td(class="division division-list division")
+                        td(class="division division-list")
                             for phase, j in tournament.phases
                                 - var phaseID = tournament.phases[j].phase_id
                                 if tournament.teams[i].divisions
                                     li(style='list-style-type:none') #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
                         if admin
                             td
-                                button(type="button" class="btn btn-xs btn-danger start-delete-team btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete #{tournament.teams[i].team_name}.')
-                                    i(class="fa fa-trash")
+                                button(type="button" class="btn btn-sm btn-danger start-delete-team btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete #{tournament.teams[i].team_name}.')
+                                    // i(class="fa fa-trash")
 
                     if admin
                         tr(class='team-tr' style='display:none' data-team-id='#{tournament.teams[i]._id}')

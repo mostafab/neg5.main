@@ -621,7 +621,8 @@ function findDirectors(query, callback) {
     query = query.trim();
     try {
         const rex = new RegExp(".*" + query + ".*", "i");
-        TournamentDirector.find({$or : [{email : rex}, {name : rex}]}, (err, directors) => {
+        const finalQuery = {$and : [{visible : true}, {$or : [{email : rex}, {name : rex}]}]};
+        TournamentDirector.find(finalQuery, (err, directors) => {
             if (err) {
                 console.log(err);
                 callback(err);
@@ -633,6 +634,7 @@ function findDirectors(query, callback) {
             }
         });
     } catch (exception) {
+        console.log(exception);
         callback(exception, []);
     }
 }

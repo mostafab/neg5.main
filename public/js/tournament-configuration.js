@@ -590,6 +590,7 @@ function loadTeamAJAX(href, td) {
             $("#add-team-div").slideUp(300);
             $("#team-list-div").slideUp(300);
             $("#team-view-div").slideUp(0).html(databack).slideDown(300);
+            $("[data-toggle='tooltip']").tooltip();
         },
         error : function(xhr, status, err) {
             td.html(lastText);
