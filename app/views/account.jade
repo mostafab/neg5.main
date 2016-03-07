@@ -71,13 +71,21 @@ block content
                                                     
                                         div(class="col-md-6")
                                             div(class="form-group")
-                                                input(
-                                                    type="checkbox",
-                                                    value="false",
-                                                    name="dvisible",
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
-                                                    style="background-color:rgb(255, 255, 204);color:black")
-                                                    
+                                                if tournamentd.visible
+                                                    input(
+                                                        checked
+                                                        type="checkbox",
+                                                        value="false",
+                                                        name="dvisible",
+                                                        class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                        style="background-color:rgb(255, 255, 204);color:black")
+                                                else
+                                                    input(
+                                                        type="checkbox",
+                                                        value="false",
+                                                        name="dvisible",
+                                                        class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                        style="background-color:rgb(255, 255, 204);color:black")
                                     div(class="row")
                                         div(class="col-md-6")
                                         div(class="col-md-6")
