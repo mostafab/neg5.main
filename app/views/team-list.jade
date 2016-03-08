@@ -17,7 +17,7 @@ div(class="table-responsive" id="teamdiv")
                         th(class="table-head")
             tbody(id="teamtablebody" class="list")
                 each val, i in tournament.teams
-                    tr(class='team-tr clickable-link team-anchor tournament-panel' data-href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID id='#{tournament.teams[i].shortID}')
+                    tr(class='team-tr clickable-link team-anchor tournament-panel' data-href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID id='#{tournament.teams[i].shortID}' data-team-id='#{tournament.teams[i]._id}')
                         td(class="teamname team-name-list teamname") #{tournament.teams[i].team_name}
                         td(class="division division-list")
                             for phase, j in tournament.phases
@@ -27,7 +27,6 @@ div(class="table-responsive" id="teamdiv")
                         if admin
                             td
                                 button(type="button" class="btn btn-sm btn-danger start-delete-team btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete #{tournament.teams[i].team_name}.')
-                                    // i(class="fa fa-trash")
 
                     if admin
                         tr(class='team-tr' style='display:none' data-team-id='#{tournament.teams[i]._id}')

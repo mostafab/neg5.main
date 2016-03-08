@@ -990,10 +990,9 @@ function removeTeam(forminfo, button) {
         data : forminfo,
         success : function(databack, status, xhr) {
             var teamid = databack.teamID;
-            console.log(databack);
             if (databack.removed) {
                 $(button).text("Deleting team...");
-                $(".team-tr[data-team-id='" + teamid + "']").fadeOut(200, function() {
+                $(".team-tr[data-team-id='" + teamid + "']").each(function() {
                     $(this).remove();
                 });
                 $("#leftchoice option[value='" + teamid + "']").remove();
