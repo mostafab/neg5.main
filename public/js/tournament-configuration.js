@@ -1209,7 +1209,9 @@ function createPlayerInputField() {
 
 function generatePlayerRows(players, pointScheme, side) {
     var choice = side == "LEFT" ? "#left-text" : "#right-text";
-    var points = Object.keys(pointScheme);
+    var points = Object.keys(pointScheme).sort(function(first, second) {
+        return parseFloat(second) - parseFloat(first);
+    });
     $(choice).empty();
     var html = "<table class='table table-condensed'><thead><tr>";
     html += "<th class='table-head'>Name</th>";

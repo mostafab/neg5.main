@@ -33,7 +33,7 @@ div(class="panel panel-default")
                         div(class="row")
                             div(id="left-text-edit" class="col-lg-6 col-md-6 col-sm-6")
                                 table(class='table table-condensed')
-                                    - var points = Object.keys(tournament.pointScheme)
+                                    - var points = Object.keys(tournament.pointScheme).sort(function(first, second) {return parseFloat(second) - parseFloat(first)})
                                     thead
                                         tr
                                             td(class="table-head") Name

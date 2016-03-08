@@ -52,12 +52,14 @@ block content
                             a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
                         li
                             a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
-                        li
-                            a(target='_blank' href="/t/#{tournament.shortID}/scoresheet" class='btn-md') Scoresheet
-                                i(class='fa fa-arrow-right' style='float:right')
                         if tournamentd._id == tournament.directorid
                             li
                                 a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
+                        div(style='margin-top:30px')
+                        li(class='btn-shadow')
+                            a(target='_blank' href="/t/#{tournament.shortID}/scoresheet" class='btn-md btn-warning') Go To Scoresheet
+                                i(class='fa fa-arrow-right' style='float:right')
+                        if tournamentd._id == tournament.directorid
                             div(style='margin-top:50px')
                             li(class='btn-shadow')
                                 a(href="#delete" class="btn-danger btn-md tournament-tab" data-toggle="tab" style='color:white')
