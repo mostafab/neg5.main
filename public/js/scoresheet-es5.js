@@ -1,6 +1,6 @@
 'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37,7 +37,7 @@ var Answer = function Answer(team, player, value) {
     this.value = value;
 };
 
-var Tossup = (function () {
+var Tossup = function () {
     function Tossup() {
         _classCallCheck(this, Tossup);
 
@@ -65,7 +65,7 @@ var Tossup = (function () {
     }]);
 
     return Tossup;
-})();
+}();
 
 var BonusPart = function BonusPart(number, value, gettingTeam) {
     _classCallCheck(this, BonusPart);
@@ -75,7 +75,7 @@ var BonusPart = function BonusPart(number, value, gettingTeam) {
     this.value = value;
 };
 
-var Bonus = (function () {
+var Bonus = function () {
     function Bonus() {
         _classCallCheck(this, Bonus);
 
@@ -127,9 +127,9 @@ var Bonus = (function () {
     }]);
 
     return Bonus;
-})();
+}();
 
-var Phase = (function () {
+var Phase = function () {
     function Phase(number) {
         _classCallCheck(this, Phase);
 
@@ -303,9 +303,9 @@ var Phase = (function () {
     }]);
 
     return Phase;
-})();
+}();
 
-var Game = (function () {
+var Game = function () {
     function Game() {
         _classCallCheck(this, Game);
 
@@ -601,7 +601,7 @@ var Game = (function () {
     }]);
 
     return Game;
-})();
+}();
 
 var game = new Game();
 
