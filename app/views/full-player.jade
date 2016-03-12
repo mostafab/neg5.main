@@ -34,7 +34,7 @@ block content
 
                         each playerid in Object.keys(playersInfo)
                             h2(class="title" style="width:20%;margin-top:5px;margin-bottom:5px" id="#{playerid}") #{playersInfo[playerid].name}   (#{playersInfo[playerid].team})
-                            - var points = Object.keys(tournament.pointScheme);
+                            - var points = Object.keys(tournament.pointScheme).sort((first, second) => {return parseFloat(second) - parseFloat(first);});
                             if playersInfo[playerid].games.length != 0
                                 - var gameHeaders = Object.keys(playersInfo[playerid].games[0])
                                 div(class="panel panel-default")

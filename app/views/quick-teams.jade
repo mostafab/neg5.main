@@ -34,7 +34,7 @@ block content
                             h2(class="subtitle btn-shadow" style="width:50%") #{tournament.tournament_name} - Team Standings
                         br
                         br
-                        - var points = Object.keys(tournament.pointScheme);
+                        - var points = Object.keys(tournament.pointScheme).sort((first, second) => {return parseFloat(second) - parseFloat(first);});
                         if tournament.divisions.length === 0
                             if teamInfo.length != 0
                                 - var statHeaders = Object.keys(teamInfo[0].stats)

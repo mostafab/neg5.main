@@ -12,7 +12,7 @@ block content
 
         if playersInfo.length != 0
             - var statHeaders = Object.keys(playersInfo[0].stats)
-            - var points = Object.keys(tournament.pointScheme);
+            - var points = Object.keys(tournament.pointScheme).sort((first, second) => {return parseFloat(second) - parseFloat(first);});
 
             table
                 tr

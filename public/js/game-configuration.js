@@ -116,6 +116,12 @@ $(document).ready(function() {
         }
     });
 
+    $("body").on("blur", ".gp-box-edit", function() {
+        if (!$(this).val()) {
+            $(this).val(0);
+        }
+    });
+
     $("body").on("click", "#add-player-button", function() {
         if ($("#newplayerinput").val().trim().length == 0) {
             showMessageInDiv("#player-add-msg", "Enter a name, please", "zero");

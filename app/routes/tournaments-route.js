@@ -16,6 +16,7 @@ module.exports = app => {
 
     app.get("/tournaments", (req, res, next) => {
         if (!req.session.director) {
+            req.session.lastURL = req.url;
             res.redirect("/");
         } else {
             tournamentController.findTournamentsByDirector(req.session.director._id, (err, result) => {
@@ -388,6 +389,7 @@ module.exports = app => {
 
     app.get("/t/:tid/scoresheet", (req, res, next) => {
         if (!req.session.director) {
+            req.session.lastURL = req.url;
             res.redirect("/");
         } else {
             tournamentController.loadTournamentScoresheet(req.params.tid, (err, tournament) => {
@@ -640,6 +642,7 @@ module.exports = app => {
 
     app.get("/t/:tid", (req, res, next) => {
         if (!req.session.director) {
+            req.session.lastURL = req.url;
             res.redirect("/");
         } else {
             tournamentController.findTournamentById(req.params.tid, (err, result, director) => {
@@ -660,11 +663,6 @@ module.exports = app => {
             });
         }
     });
-
-    app.get('/shortid', (req, res) => {
-        res.send(shortid.generate());
-    });
-
 
 };
 

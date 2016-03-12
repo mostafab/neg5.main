@@ -12,7 +12,7 @@ block content
 
         each teamid in Object.keys(teamsGames)
             h3(id=teamid) #{teamsGames[teamid].team}
-            - var points = Object.keys(tournament.pointScheme);
+            - var points = Object.keys(tournament.pointScheme).sort((first, second) => {return parseFloat(second) - parseFloat(first);});
             if teamsGames[teamid].games.length != 0
                 table
                     - var gameHeaders = Object.keys(teamsGames[teamid].games[0])

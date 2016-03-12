@@ -35,7 +35,7 @@ block content
                         each teamid in Object.keys(teamsGames)
 
                             h2(class="title" style="width:20%" id=teamid) #{teamsGames[teamid].team}
-                            - var points = Object.keys(tournament.pointScheme);
+                            - var points = Object.keys(tournament.pointScheme).sort((first, second) => {return parseFloat(second) - parseFloat(first);});
                             if teamsGames[teamid].games.length != 0
                                 div(class="panel panel-default")
                                     table(class="table table-condensed btn-shadow")

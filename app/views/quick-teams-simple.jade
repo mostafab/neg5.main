@@ -9,7 +9,7 @@ block content
         +statlinks
 
         h2 #{tournament.tournament_name} #{tournament.phaseInfo.name} - Team Standings
-        - var points = Object.keys(tournament.pointScheme);
+        - var points = Object.keys(tournament.pointScheme).sort((first, second) => {return parseFloat(second) - parseFloat(first);});
         if tournament.divisions.length === 0
             if teamInfo.length != 0
                 - var statHeaders = Object.keys(teamInfo[0].stats)

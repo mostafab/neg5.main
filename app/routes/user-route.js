@@ -40,7 +40,13 @@ module.exports = app => {
                                                 errormsg : "Invalid credentials. Please try again."});
             } else {
                 req.session.director = user;
-                res.redirect("/home");
+                if (req.session.lastURL) {
+                    const lastURL = req.session.lastURL;
+                    req.session.lastURL = null;
+                    res.redirect(lastURL);
+                } else {
+                    res.redirect("/home");
+                }
             }
         });
     });

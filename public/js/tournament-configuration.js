@@ -180,6 +180,12 @@ $(document).ready(function() {
         }
     });
 
+    $("body").on("blur", ".gp-box", function() {
+        if (!$(this).val()) {
+            $(this).val(0);
+        }
+    });
+
     $("#save-point-schema-button").click(function(e) {
         var pointTypes = formatPointTypes();
         formatPointSchemaForm(pointTypes);
