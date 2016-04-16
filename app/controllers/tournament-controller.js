@@ -937,6 +937,8 @@ function deleteTournament(directorid, tournamentid, callback) {
     Tournament.findOne({_id : tournamentid}, (err, tournament) => {
         if (err) {
             callback(err, null);
+        } else if (!tournament) {
+            callback('not found', null);
         } else if (tournament.directorid == directorid) {
             Tournament.remove({_id : tournamentid}, err => {
                 if (err) {
