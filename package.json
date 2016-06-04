@@ -4,10 +4,11 @@
   "description": "Quiz Bowl for the Cloud!",
   "main": "server.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "node server.js"
   },
   "author": "mostafa",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.3.0",
     "bktree": "^0.1.4",

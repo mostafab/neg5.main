@@ -171,7 +171,7 @@ module.exports = app => {
         });
     });
 
-    app.post("/tournaments/addCollaborator", (req, res, next) => {
+    app.post("/tournaments/addCollaborator", (req, res, next) => {        
         const collaborator = JSON.parse(req.body.collaborators);
         collaborator.admin = !req.body.admin ? false : true;
         tournamentController.addCollaborator(req.body.tournamentid, collaborator, (err, duplicate) => {

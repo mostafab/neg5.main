@@ -340,7 +340,7 @@
         html += "<input type='text' class='form-control player-name-box saved' name='playername' value='" + player.player_name + "'/>";
         html += "</form></td>";
         html += "<td>";
-        html += "<button type='button' class='btn btn-sm btn-danger deleteplayerbutton' onclick='deletePlayerSender(this)'><i class='fa fa-trash'></i></button>";
+        html += "<button type='button' class='btn btn-sm nf-red deleteplayerbutton' onclick='deletePlayerSender(this)'><i class='fa fa-trash'></i></button>";
         html += "</td></tr>";
         $(html).hide().appendTo("#playersbody").fadeIn(300);
     }

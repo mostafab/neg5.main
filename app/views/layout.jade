@@ -10,7 +10,8 @@ html
     link(href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css')
     link(rel="stylesheet" href="/css/reset.css")
     link(rel="stylesheet" href="/css/style.css")
-
+    link(rel="stylesheet" href="/css/neg-five-main.css")
+    
     block extrastylesheets
 
     block extrascripts
@@ -41,7 +42,7 @@ html
     //- Declaration
     mixin navbar
 
-        nav(class="navbar navbar-default top-nav-bar navbar-fixed-top")
+        nav(class="navbar navbar-default top-nav-bar navbar-fixed-top nf-dark-blue")
             div(class="container")
                 if tournamentd
                     div(class="collapse navbar-collapse")
@@ -70,7 +71,7 @@ html
 
     mixin navbar-bottom
 
-        nav(class="navbar navbar-default top-nav-bar navbar-fixed-bottom")
+        nav(class="navbar navbar-default top-nav-bar navbar-fixed-bottom nf-dark-blue")
             div(class="container")
                 if !tournament
                     div(class="collapse navbar-collapse")
@@ -93,7 +94,7 @@ html
     //- Use
 
 
-  body(class="body" style='background-color:white')
+  body(class="body nf-gray")
     block content
 
     script(src="/js/jquery-2.1.4.js")

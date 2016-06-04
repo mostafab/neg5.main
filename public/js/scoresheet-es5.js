@@ -1019,7 +1019,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     }
                     html += option;
                 }
-                html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-tossup'></button>";
+                html += "</select><button class='btn btn-sm nf-red cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-tossup'></button>";
                 td.addClass("editing").html(html);
             }
         }
@@ -1039,7 +1039,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     html += "<option value='" + bonusParts[i].value + "' data-part=" + bonusParts[i].number + ">" + bonusParts[i].value + "</option>";
                 }
             }
-            html += "</select><button class='btn btn-sm btn-danger cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-bonus'></button>";
+            html += "</select><button class='btn btn-sm nf-red cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-bonus'></button>";
             td.addClass("editing").html(html);
         }
     }
@@ -1203,7 +1203,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         html += "<div class='row'>";
         for (var j = 0; j < pointValues.length; j++) {
             if (pointTypes[pointValues[j]] === "N") {
-                html += "<button" + " data-team='" + player.teamID + "' data-neg='true' data-point-value='" + pointValues[j] + "' data-player='" + player._id + "' class='btn btn-md btn-danger btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + player.teamID + "' data-neg='true' data-point-value='" + pointValues[j] + "' data-player='" + player._id + "' class='btn btn-md nf-red btn-point'>" + pointValues[j] + "</button>";
             } else if (pointTypes[pointValues[j]] === "P") {
                 html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j] + "' data-player='" + player._id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
             } else {
@@ -1235,7 +1235,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             html += "<div class='row'>";
             for (var j = 0; j < pointValues.length; j++) {
                 if (pointTypes[pointValues[j]] === "N") {
-                    html += "<button" + " data-team='" + players[i].teamid + "' data-neg='true' data-point-value='" + pointValues[j] + "' data-player='" + players[i].id + "' class='btn btn-md btn-danger btn-point'>" + pointValues[j] + "</button>";
+                    html += "<button" + " data-team='" + players[i].teamid + "' data-neg='true' data-point-value='" + pointValues[j] + "' data-player='" + players[i].id + "' class='btn btn-md nf-red btn-point'>" + pointValues[j] + "</button>";
                 } else if (pointTypes[pointValues[j]] === "P") {
                     html += "<button" + " data-team='" + players[i].teamid + "' data-neg='false' data-point-value='" + pointValues[j] + "' data-player='" + players[i].id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
                 } else {
@@ -1367,7 +1367,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }
 
     function addBonusRow(list) {
-        var html = "<li class='list-group-item'>10<button class='btn btn-sm btn-danger fa fa-times remove-bonus'></button></li>";
+        var html = "<li class='list-group-item'>10<button class='btn btn-sm nf-red fa fa-times remove-bonus'></button></li>";
         $(html).hide().appendTo(list).fadeIn(200);
     }
 

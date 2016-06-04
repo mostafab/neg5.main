@@ -17,7 +17,7 @@ div(class="table-responsive" id="teamdiv")
                         th(class="table-head")
             tbody(id="teamtablebody" class="list")
                 each val, i in tournament.teams
-                    tr(class='team-tr clickable-link team-anchor tournament-panel' data-href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID id='#{tournament.teams[i].shortID}' data-team-id='#{tournament.teams[i]._id}')
+                    tr(class='team-tr clickable-link team-anchor tournament-panel nf-tr' data-href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID id='#{tournament.teams[i].shortID}' data-team-id='#{tournament.teams[i]._id}')
                         td(class="teamname team-name-list teamname") #{tournament.teams[i].team_name}
                         td(class="division division-list")
                             for phase, j in tournament.phases
@@ -26,7 +26,7 @@ div(class="table-responsive" id="teamdiv")
                                     li(style='list-style-type:none') #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
                         if admin
                             td
-                                button(type="button" class="btn btn-sm btn-danger start-delete-team btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete #{tournament.teams[i].team_name}.')
+                                button(type="button" class="btn btn-sm nf-red start-delete-team btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete #{tournament.teams[i].team_name}.')
 
                     if admin
                         tr(class='team-tr' style='display:none' data-team-id='#{tournament.teams[i]._id}')
@@ -39,4 +39,4 @@ div(class="table-responsive" id="teamdiv")
                                     form()
                                         input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
                                         input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
-                                        button(type="button" class="btn btn-sm btn-danger btn-block deleteteambutton btn-shadow") Confirm
+                                        button(type="button" class="btn btn-sm nf-red btn-block deleteteambutton btn-shadow") Confirm

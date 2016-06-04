@@ -4,8 +4,6 @@ block titleContent
     title Scoresheet | #{tournamentName} | Neg 5
 
 block extrastylesheets
-    link(rel="stylesheet" href="/css/home.css")
-    link(rel="stylesheet" href="/css/tournamentstyle.css")
     link(rel="stylesheet" href="/css/scoresheet.css")
 
 block content
@@ -42,7 +40,7 @@ block content
                                             option(value="#{team._id}") #{team.team_name}
 
                 div(class="row col-md-12" id='lock-teams-div')
-                    button(type='button' class='btn btn-lg btn-danger' id='lock-teams') Lock Teams
+                    button(type='button' class='btn btn-lg nf-red' id='lock-teams') Lock Teams
 
                 br
 
@@ -54,7 +52,7 @@ block content
                             div(class="panel-body" style='position:relative')
                                 div(id="leftplayerlist" class='player-list')
                                 div(class="neg-box")
-                                    button(class='btn btn-lg btn-danger btn-block undo-neg') Undo Neg
+                                    button(class='btn btn-lg nf-red btn-block undo-neg') Undo Neg
 
                     div(class="col-md-6 col-lg-6 col-sm-6" id="right-team-players")
                         div(class="panel panel-default" style="text-align:center")
@@ -62,11 +60,11 @@ block content
                             div(class="panel-body" style='position:relative')
                                 div(id="rightplayerlist" class='player-list')
                                 div(class="neg-box")
-                                    button(class='btn btn-lg btn-danger btn-block undo-neg') Undo Neg
+                                    button(class='btn btn-lg nf-red btn-block undo-neg') Undo Neg
 
                     div(class="row col-md-12 col-sm-12 col-lg-12" id="dead-tossup-div" style='display:none;')
                         div(class="col-md-6 col-lg-6 col-sm-6")
-                            btn(class="btn btn-block btn-danger" id='last-tossup') Back to Last Tossup
+                            btn(class="btn btn-block nf-red" id='last-tossup') Back to Last Tossup
                         div(class='col-md-6 col-lg-6 col-sm-6')
                             btn(class="btn btn-block" id='dead-tossup') Dead Tossup
 
@@ -89,9 +87,9 @@ block content
                                 br
                                 div(class="row")
                                     div(class="col-md-6")
-                                        button(class="btn btn-lg btn-danger btn-block" style='margin:0px' id="undo-tossup") Undo this Tossup
+                                        button(class="btn btn-lg nf-red btn-block" style='margin:0px' id="undo-tossup") Undo this Tossup
                                     div(class="col-md-6")
-                                        button(class="btn btn-lg btn-warning btn-block" style='margin:0px' id="next-tossup") Next Tossup
+                                        button(class="btn btn-lg nf-orange btn-block" style='margin:0px' id="next-tossup") Next Tossup
 
                 div(class="row")
                     div(class="col-md-6")
@@ -166,7 +164,7 @@ block content
 
                 div(class="row col-md-12 col-lg-12 col-sm-12" id="goto-game-div" style='display:none')
                     div(class="col-md-12 col-sm-12 col-lg-12")
-                        button(class="btn btn-xl btn-warning btn-block" data-tournament='#{tid}' id='undo-game') Undo Submission
+                        button(class="btn btn-xl nf-orange btn-block" data-tournament='#{tid}' id='undo-game') Undo Submission
                             i(class="fa fa-arrow-left" style='margin-left:20px')
 
 block scripts

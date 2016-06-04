@@ -1,0 +1,42 @@
+.nf-button {
+    border-radius: 2px;
+}
+
+.nf-panel-heading {
+    padding: 20px;
+    font-size: 1.5em;
+}
+
+.nf-tr:hover {
+    cursor: pointer;
+    background-color: #E8F5E9;
+}
+
+/** Neg 5 colors */
+
+.nf-dark-blue {
+    background-color: #455A64 !important;
+    color: white !important;
+}
+
+.nf-gray {
+   background-color: #ECEFF1;
+}
+
+.nf-red {
+    background-color: #B71C1C;
+    color: white;
+}
+
+.nf-orange {
+    background-color: #FFA000;
+    color: white;
+}
+
+/* End Neg 5 colors */
+
+.tournament-navigation-panel {
+    position: fixed;
+}
+
+

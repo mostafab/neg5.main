@@ -22,7 +22,7 @@ div(class="table-responsive" id="gamediv")
             tbody(id="gametablebody" class="list")
                 each val, i in tournament.games
                     if tournament.teamMap[tournament.games[i].team1.team_id] && tournament.teamMap[tournament.games[i].team2.team_id]
-                        tr(class='clickable-link game-anchor tournament-panel' data-href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID id='game_#{tournament.games[i].shortID}')
+                        tr(class='clickable-link game-anchor tournament-panel nf-tr' data-href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID id='game_#{tournament.games[i].shortID}')
                             td(class="round game-list-element bordered-game-list-element round") #{tournament.games[i].round}
                             td(class="phase game-list-element phases-n")
                                 each phase in tournament.phases
@@ -39,4 +39,4 @@ div(class="table-responsive" id="gamediv")
                                     form()
                                         input(type="hidden" name="gameid_form" value='#{tournament.games[i].shortID}')
                                         input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
-                                        button(type="button" class="btn btn-sm btn-danger deletebutton btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete game.')
+                                        button(type="button" class="btn btn-sm nf-red deletebutton btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete game.')

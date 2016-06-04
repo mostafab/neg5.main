@@ -29,7 +29,7 @@
         playerOptions = { valueNames : []};
 
         $("#entergamebutton").prop("disabled", true);
-        $("#entergamebutton").removeClass("btn-success").addClass("btn-danger");
+        $("#entergamebutton").removeClass("btn-success").addClass("nf-red");
 
         $(".collapsable").click(function(e) {
             e.stopImmediatePropagation();
@@ -37,6 +37,10 @@
             collapsable.next().toggle(300, function() {
                 collapsable.children(".arrow").toggleClass("fa-arrow-up").toggleClass("fa-arrow-down");
             });
+        });
+        
+        $("#add-point-value-button").click(function() {
+            addPointSchemaRow();
         });
 
         $("body").on("click", ".remove-phase", function() {
@@ -76,13 +80,13 @@
             $(".teamselect").each(function(i, obj) {
                 if ($(this).val() === "") {
                     $("#entergamebutton").prop("disabled", true);
-                    $("#entergamebutton").removeClass("btn-success").addClass("btn-danger");
+                    $("#entergamebutton").removeClass("btn-success").addClass("nf-red");
                     bothselect = false;
                 }
             });
             if (bothselect) {
                 $("#entergamebutton").prop("disabled", false);
-                $("#entergamebutton").removeClass("btn-danger").addClass("btn-success");
+                $("#entergamebutton").removeClass("nf-red").addClass("btn-success");
             }
         });
 
@@ -867,7 +871,7 @@
                     });
                     var tableHTML = "<tr><td><input type='text' data-phase-id='" + databack.newPhase.phase_id + "'"
                         + "value='" + databack.newPhase.name + "' class='form-control phase-box input-sm'/></td>";
-                    tableHTML += "<td><button data-phase-id='" + databack.newPhase.phase_id + "' class='btn btn-danger btn-sm remove-phase'>Remove</button></td></tr>";
+                    tableHTML += "<td><button data-phase-id='" + databack.newPhase.phase_id + "' class='btn nf-red btn-sm remove-phase'>Remove</button></td></tr>";
                     $("#phases-body").append(tableHTML);
                     $("#new-phase-name").val("");
                 } else {
@@ -1197,7 +1201,7 @@
         }
         html += "<p>Name : " + collaborator.name + "</p>";
         html += "<p>Email : " + collaborator.email + "</p>";
-        html += "<button class='btn btn-sm btn-danger removecollab' style='margin-top:20px' onclick='removeCollabAJAX(this)' data-collabid='"
+        html += "<button class='btn btn-sm nf-red removecollab' style='margin-top:20px' onclick='removeCollabAJAX(this)' data-collabid='"
             + collaborator.id + "'>Remove</button>";
         html += "</div>";
         var div = collaborator.admin ? "#admin-div" : "#non-admin-div";
@@ -1305,7 +1309,7 @@
         html += "<input type='hidden' name='tournament_idgame' value='" + id + "'/>";
         html += "<a class='btn btn-xs btn-info editbutton' href='/t/" + $("#tournamentshortid").val() + "/games/" + game.shortID + "'> Details </a>";
         if (gameinfo.admin) {
-            html += "<button type='button' class='btn btn-xs btn-warning deletebutton' onclick='removeGameSender(this)'> Remove Game </button>";
+            html += "<button type='button' class='btn btn-xs nf-orange deletebutton' onclick='removeGameSender(this)'> Remove Game </button>";
         }
         html += "</form> </td>";
         html += "</tr>";
@@ -1324,7 +1328,7 @@
         html += "</td>";
         html += "<td><a class='btn btn-xs btn-info' href='/t/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'>Details</a>";
         if (admin) {
-            html += "<button type='button' class='btn btn-warning btn-xs start-delete-team'><i class='glyphicon glyphicon-remove'></i></button>";
+            html += "<button type='button' class='btn nf-orange btn-xs start-delete-team'><i class='glyphicon glyphicon-remove'></i></button>";
         }
         html += "</td></tr>";
         if (admin) {
@@ -1333,7 +1337,7 @@
             html += "<div class='col-md-3 col-lg-3 col-sm-3'>";
             html += "<form><input type='hidden' name='teamid_form' value='" + team.shortID + "'/>";
             html += "<input type='hidden' name='tournament_idteam' value='" + $("#tournament_id_change").val() + "'/>";
-            html += "<button type='button' class='btn btn-sm btn-danger btn-block deleteteambutton'>Confirm</button></form></div></td></tr>";
+            html += "<button type='button' class='btn btn-sm nf-red btn-block deleteteambutton'>Confirm</button></form></div></td></tr>";
         }
         $(html).hide().appendTo("#teamtablebody").fadeIn(0);
         if (admin) {
@@ -1349,7 +1353,7 @@
             if (arr[i] == "P") {
                 html += "<label class='radio-inline btn-sm btn-success btn-shadow'>Power<input type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
             } else if (arr[i] == "N") {
-                html += "<label class='radio-inline btn-sm btn-danger btn-shadow'>Neg<input type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
+                html += "<label class='radio-inline btn-sm nf-red btn-shadow'>Neg<input type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
             } else {
                 html += "<label class='radio-inline btn-sm btn-info btn-shadow'>Base<input checked type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
             }

@@ -46,7 +46,7 @@ block content
                                         a(href="/t/" + reg.tournamentid + "/signup") #{reg.tournamentName}
                                             i(class="fa fa-pencil" style="margin:5px")
                                     td
-                                        button(class="btn btn-xs btn-danger cancel-reg")
+                                        button(class="btn btn-xs nf-red cancel-reg")
                                             i(class="fa fa-times" style='margin:5px')
 
                                 tr(style='display:none')
@@ -54,7 +54,7 @@ block content
                                         div(class="col-md-6 col-lg-6 col-sm-6")
                                             button(class="btn btn-stats btn-sm btn-block cancel-delete-reg") Never Mind
                                         div(class="col-md-6 col-lg-6 col-sm-6")
-                                            button(class="btn btn-danger btn-sm btn-block confirm-delete-reg" data-reg="#{reg._id}") Confirm
+                                            button(class="btn nf-red btn-sm btn-block confirm-delete-reg" data-reg="#{reg._id}") Confirm
 
 block scripts
     script(src="/js/tournament-configuration.js")
