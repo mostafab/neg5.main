@@ -3,6 +3,13 @@
     margin: 5px;
 }
 
+.nf-card {
+    box-shadow: 0 2px 3px rgba(0,0,0,.05);
+    padding: 20px;
+    font-size: 18px;
+    border-radius: 2px;
+}
+
 .nf-label {
     padding: 10px;
     font-size: .9em;
@@ -15,6 +22,10 @@
 .nf-panel-heading {
     padding: 20px;
     font-size: 1.5em;
+}
+
+.nf-select {
+    border-radius: 2px;
 }
 
 .nf-th {
@@ -31,6 +42,10 @@
 }
 
 /** Neg 5 colors */
+
+.nf-white {
+    background-color: #F5F5F5;
+}
 
 .nf-black {
     background-color: #212121;

@@ -2,12 +2,6 @@
     font-family: 'Lato', sans-serif;
 }
 
-.body {
-    /*background-color: #DFF0D8;*/
-    background-image: url("../img/backgrounds/brushed.png");
-    /*background-image: url("../img/backgrounds/geometry2.png");*/
-}
-
 .list-element {
     -webkit-transition: background-color .5s;
     -moz-transition: background-color .5s;
