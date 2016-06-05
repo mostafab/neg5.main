@@ -13,30 +13,26 @@ div(class="table-responsive" id="gamediv")
                     th(class="table-head sort sortable" data-sort='round') Round
                     th(class="table-head sort sortable" data-sort='phases-n') Phase(s)
                     th(class="table-head sort sortable" data-sort='team1name') Team 1
-                    th(class="table-head sort sortable" data-sort='team-1-score') Team 1 Score
                     th(class="table-head sort sortable" data-sort='team2name') Team 2
-                    th(class="table-head sort sortable" data-sort='team-2-score') Team 2 Score
                     th(class="table-head sort sortable" data-sort='tuh') Tossups Heard
                     if admin
                         th(class="table-head")
             tbody(id="gametablebody" class="list")
-                each val, i in tournament.games
-                    if tournament.teamMap[tournament.games[i].team1.team_id] && tournament.teamMap[tournament.games[i].team2.team_id]
-                        tr(class='clickable-link game-anchor tournament-panel nf-tr' data-href="/t/" + tournament.shortID + "/games/" + tournament.games[i].shortID id='game_#{tournament.games[i].shortID}')
-                            td(class="round game-list-element bordered-game-list-element round") #{tournament.games[i].round}
+                each game in tournament.games
+                    if tournament.teamMap[game.team1.team_id] && tournament.teamMap[game.team2.team_id]
+                        tr(class='clickable-link game-anchor tournament-panel nf-tr' data-href="/t/" + tournament.shortID + "/games/" + game.shortID id='game_#{game.shortID}')
+                            td(class="round game-list-element bordered-game-list-element round") #{game.round}
                             td(class="phase game-list-element phases-n")
                                 each phase in tournament.phases
-                                    each includedPhase in tournament.games[i].phase_id
+                                    each includedPhase in game.phase_id
                                         if phase.phase_id == includedPhase
                                             li(style='list-style-type:none') #{phase.name}
-                            td(class="team1name game-list-element team1name") #{tournament.teamMap[tournament.games[i].team1.team_id].name}
-                            td(class="team1score game-list-element team-1-score") #{tournament.games[i].team1.score}
-                            td(class="team2name game-list-element team2name") #{tournament.teamMap[tournament.games[i].team2.team_id].name}
-                            td(class="team2score game-list-element team-2-score") #{tournament.games[i].team2.score}
-                            td(class="tuheard game-list-element tuh") #{tournament.games[i].tossupsheard}
+                            td(class="team1name game-list-element team1name") #{tournament.teamMap[game.team1.team_id].name} (#{game.team1.score})
+                            td(class="team2name game-list-element team2name") #{tournament.teamMap[game.team2.team_id].name} (#{game.team2.score})
+                            td(class="tuheard game-list-element tuh") #{game.tossupsheard}
                             if admin
                                 td
                                     form()
-                                        input(type="hidden" name="gameid_form" value='#{tournament.games[i].shortID}')
+                                        input(type="hidden" name="gameid_form" value='#{game.shortID}')
                                         input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
                                         button(type="button" class="btn btn-sm nf-red deletebutton btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete game.')

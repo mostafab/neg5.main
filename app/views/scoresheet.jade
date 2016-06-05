@@ -10,13 +10,13 @@ block content
 
     +navbar
 
-    div(class="content-wrapper box"  style='padding:75px;padding-top:100px')
+    div(class="content-wrapper box"  style='padding:75px')
         input(type="hidden" value="#{tid}" id="tournamentid")
         div(class="row")
             div(class="col-md-6 col-lg-6 col-sm-6")
                 div(style="margin:10px; margin-bottom:50px")
                 div(style="text-align:center")
-                    h2(class="title" style="width:100%;font-size:14px") #{tournamentName} Teams Select
+                    h2(class="nf-dark-blue nf-panel-heading" style="width:100%;font-size:14px") #{tournamentName} Teams Select
 
                 div(class="row" id="team-select-div")
                     div(class="row")
@@ -38,9 +38,6 @@ block content
                                         option(disabled selected value="") Select Team 2
                                         each team in teams
                                             option(value="#{team._id}") #{team.team_name}
-
-                div(class="row col-md-12" id='lock-teams-div')
-                    button(type='button' class='btn btn-lg nf-red' id='lock-teams') Lock Teams
 
                 br
 
@@ -64,9 +61,9 @@ block content
 
                     div(class="row col-md-12 col-sm-12 col-lg-12" id="dead-tossup-div" style='display:none;')
                         div(class="col-md-6 col-lg-6 col-sm-6")
-                            btn(class="btn btn-block nf-red" id='last-tossup') Back to Last Tossup
+                            btn(class="btn btn-block nf-red nf-button" id='last-tossup') Back to Last Tossup
                         div(class='col-md-6 col-lg-6 col-sm-6')
-                            btn(class="btn btn-block" id='dead-tossup') Dead Tossup
+                            btn(class="btn btn-block nf-button nf-black" id='dead-tossup') Dead Tossup
 
 
                 div(class="row" id="bonus-div" style='display:none')
@@ -113,7 +110,7 @@ block content
                 div(class="row")
                     div(class="col-md-12 col-sm-12 col-lg-12")
                         div(style="text-align:center")
-                            h2(class="title" style="width:100%;font-size:14px") #{tournamentName} Scoresheet
+                            h2(class="nf-panel-heading nf-dark-blue" style="width:100%;font-size:14px") #{tournamentName} Scoresheet
 
                 br
 
@@ -122,12 +119,12 @@ block content
                         div(class="panel panel-default")
                             table(class="table table-bordered table-condensed" id="game-metadata")
                                 thead
-                                    th(class="table-head" style='text-align:center') Round
-                                    th(class="table-head" style='text-align:center') Room
-                                    th(class="table-head" style='text-align:center') Moderator
-                                    th(class='table-head' style='text-align:center') Packet
-                                    th(class="table-head" style="text-align:center") Phases
-                                    th(class="table-head" style='text-align:center') Notes
+                                    th(class="table-head nf-th nf-th-short") Round
+                                    th(class="table-head nf-th nf-th-short") Room
+                                    th(class="table-head nf-th nf-th-short") Moderator
+                                    th(class='table-head nf-th nf-th-short') Packet
+                                    th(class="table-head nf-th") Phases
+                                    th(class="table-head nf-th nf-th-short") Notes
                                 tbody
                                     tr(id="tr-metadata")
                                         td(class='td-scoresheet' width='100')
@@ -168,4 +165,4 @@ block content
                             i(class="fa fa-arrow-left" style='margin-left:20px')
 
 block scripts
-    script(src="/js/scoresheet-es5.js")
+    script(src="/js/scoresheet-es6.js")

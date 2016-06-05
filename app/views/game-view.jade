@@ -1,6 +1,7 @@
-h2(class="subtitle btn-shadow" style="width:35%;") Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
-h3(style="width:50%;border-radius:0")
-    button(class="btn btn-sm btn-info btn-shadow" data-href="/t/" + tournament.shortID + "/games" id='back-to-games') Games
+h3(style="width:50%")
+    button(class="btn btn-md nf-blue nf-button" data-href="/t/" + tournament.shortID + "/games" id='back-to-games') Back
+h2(class="nf-dark-blue nf-panel-heading nf-margin" style="width:50%;") Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
+
 br
 br
 
@@ -89,13 +90,13 @@ div(class="panel panel-default")
                                 div(class="row")
                                     div(class='col-md-5')
                                     div(class='col-md-3')
-                                        label(class="label label-warning btn-block" style='float:right') Team 1 Score *
+                                        label(class="label btn-block nf-label nf-dark-blue" style='float:right') Team 1 Score
                                     div(class='col-md-4')
                                         input(type="number" class="form-control scorebox-edit btn-shadow" name="leftteamscore" placeholder="Team 1 Score" pattern="[0-9]" value="#{game.team1.score}")
                                 div(class="row")
                                     div(class="col-md-5")
                                     div(class="col-md-3")
-                                        label(class="label label-primary btn-block" style='float:right') Bouncebacks
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
                                     div(class="col-md-4")
                                         input(type="number" class="form-control btn-shadow" name="leftbounceback" placeholder="Bounceback Points" value="#{game.team1.bouncebacks}")
                                 br
@@ -104,19 +105,19 @@ div(class="panel panel-default")
                                     div(class="col-md-4")
                                         input(type="number" class="form-control scorebox-edit btn-shadow" name="rightteamscore" placeholder="Team 2 Score" pattern="[0-9]" value="#{game.team2.score}")
                                     div(class="col-md-3")
-                                        label(class="label label-warning btn-block" style='float:right') Team 2 Score *
+                                        label(class="label label-warning btn-block nf-label nf-dark-blue" style='float:right') Team 2 Score
                                 div(class="row")
                                     div(class="col-md-4")
                                         input(type="number" class="form-control btn-shadow" name="rightbounceback" placeholder="Bounceback Points" value="#{game.team2.bouncebacks}")
                                     div(class="col-md-3")
-                                        label(class="label label-primary btn-block" style='float:right') Bouncebacks
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
                                 br
                         div(class="row")
                             div(class="col-lg-6 col-md-6 col-sm-6")
                                 div(class="row")
                                     div(class="col-md-5")
                                     div(class="col-md-3")
-                                        label(class="label label-primary btn-block" style='float:right') Round
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Round
                                     div(class="col-md-4")
                                         input(type="number" class="form-control btn-shadow" name="round" placeholder="Round" value="#{game.round}")
                         div(class="row")
@@ -124,7 +125,7 @@ div(class="panel panel-default")
                                 div(class="row")
                                     div(class="col-md-5")
                                     div(class="col-md-3")
-                                        label(class="label label-primary btn-block" style='float:right') Total TUH
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Total TUH
                                     div(class="col-md-4")
                                         input(type="number" class="form-control btn-shadow" name="tossupsheard" placeholder="Tossups Heard" value="#{game.tossupsheard}")
                         br
@@ -133,7 +134,7 @@ div(class="panel panel-default")
                                 div(class="row")
                                     div(class="col-md-5")
                                     div(class="col-md-3")
-                                        label(class="label label-primary btn-block" style='float:right') Overtime TU Team 1
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 1
                                     div(class="col-md-4")
                                         input(type="number" class="form-control btn-shadow" name="overtimetu1" placeholder="# Overtime TU Team 1" value='#{game.team1.overtimeTossupsGotten}')
                             div(class="col-lg-6 col-md-6 col-sm-6")
@@ -141,26 +142,26 @@ div(class="panel panel-default")
                                     div(class="col-md-4")
                                         input(type="number" class="form-control btn-shadow" name="overtimetu2" placeholder="# Overtime TU Team 2" value='#{game.team2.overtimeTossupsGotten}')
                                     div(class="col-md-3")
-                                        label(class="label label-primary btn-block" style='float:right') Overtime TU Team 2
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 2
                         br
                         div(class="row")
                             div(class="col-lg-6 col-md-6 col-sm-6")
                                 div(class="row")
                                     div(class="col-md-5")
                                     div(class="col-md-3")
-                                        label(class="label label-primary btn-block" style='float:right') Room
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Room
                                     div(class="col-md-4")
                                         input(type="text" class="form-control btn-shadow" name="room" placeholder="Room Number" value="#{!game.room ? '' : game.room}")
                                 div(class="row")
                                     div(class="col-md-5")
                                     div(class="col-md-3")
-                                        label(class="label label-primary btn-block" style='float:right') Moderator
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Moderator
                                     div(class="col-md-4")
                                         input(type="text" class="form-control btn-shadow" name="moderator" placeholder="Moderator" value="#{!game.moderator ? '' : game.moderator}")
                                 div(class="row")
                                     div(class="col-md-5")
                                     div(class="col-md-3")
-                                        label(class="label label-primary btn-block" style='float:right') Packet
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Packet
                                     div(class="col-md-4")
                                         input(type="text" class="form-control btn-shadow" name="packet" placeholder="Packet" value="#{!game.packet ? '' : game.packet}")
                                 br
@@ -170,7 +171,7 @@ div(class="panel panel-default")
                                 div(class="row")
                                     div(class="col-md-4")
                                     div(class="col-md-3")
-                                        label(class="label label-primary btn-block" style='float:right') Phases
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Phases
                                     div(class="col-md-5")
                                         select(multiple class="form-control phase-selection btn-shadow" name='phase_id' id='game-phases-edit' size='#{tournament.phases.length}')
                                             each phase in tournament.phases
@@ -185,11 +186,11 @@ div(class="panel panel-default")
                                 div(class="row")
                                     div(class="col-md-4")
                                     div(class="col-md-2")
-                                        label(class="label label-primary btn-block" style='float:right') Notes
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Notes
                                     div(class="col-md-6")
                                         textarea(class="form-control btn-shadow" name="notes" placeholder="Notes" style='min-height:200px') #{game.notes}
 
-                        button(type="button" class="btn btn-md btn-info btn-shadow" id="entergamebutton-edit") Save Changes
+                        button(type="button" class="btn btn-md nf-blue btn-shadow" id="entergamebutton-edit") Save Changes
 
                         br
                         br

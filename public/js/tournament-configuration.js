@@ -29,7 +29,7 @@
         playerOptions = { valueNames : []};
 
         $("#entergamebutton").prop("disabled", true);
-        $("#entergamebutton").removeClass("btn-success").addClass("nf-red");
+        $("#entergamebutton").removeClass("nf-blue").addClass("nf-red");
 
         $(".collapsable").click(function(e) {
             e.stopImmediatePropagation();
@@ -80,13 +80,13 @@
             $(".teamselect").each(function(i, obj) {
                 if ($(this).val() === "") {
                     $("#entergamebutton").prop("disabled", true);
-                    $("#entergamebutton").removeClass("btn-success").addClass("nf-red");
+                    $("#entergamebutton").removeClass("nf-blue").addClass("nf-red");
                     bothselect = false;
                 }
             });
             if (bothselect) {
                 $("#entergamebutton").prop("disabled", false);
-                $("#entergamebutton").removeClass("nf-red").addClass("btn-success");
+                $("#entergamebutton").removeClass("nf-red").addClass("nf-blue");
             }
         });
 
@@ -1294,72 +1294,21 @@
         }
     }
 
-    function updateGameList(gameinfo) {
-        var game = gameinfo.game;
-        var id = gameinfo.tid;
-        var html = "<tr>";
-        html += "<td>" + game.round + "</td>";
-        html += "<td>" + gameinfo.phaseName + "</td>";
-        html += "<td>" + game.team1.team_name + "</td>";
-        html += "<td>" + game.team1.score + "</td>";
-        html += "<td>" + game.team2.team_name + "</td>";
-        html += "<td>" + game.team2.score + "</td>";
-        html += "<td>" + game.tossupsheard + "</td>";
-        html += "<td> <form> <input type='hidden' name='gameid_form' value='" + game.shortID + "'/>";
-        html += "<input type='hidden' name='tournament_idgame' value='" + id + "'/>";
-        html += "<a class='btn btn-xs btn-info editbutton' href='/t/" + $("#tournamentshortid").val() + "/games/" + game.shortID + "'> Details </a>";
-        if (gameinfo.admin) {
-            html += "<button type='button' class='btn btn-xs nf-orange deletebutton' onclick='removeGameSender(this)'> Remove Game </button>";
-        }
-        html += "</form> </td>";
-        html += "</tr>";
-        $(html).hide().appendTo("#gametablebody").fadeIn(300);
-        gameList = new List("gamediv", gameOptions);
-    }
-
-    function updateTeamList(team, admin, phases) {
-        var html = "<tr>";
-        html += "<td class='teamname'>" + team.team_name + "</td>";
-        html += "<td class='division'>";
-        for (var i = 0; i < phases.length; i++) {
-            var phaseID = phases[i].phase_id;
-            html += "<li>" + phases[i].name + " : " + team.divisions[phaseID] + "</li>";
-        }
-        html += "</td>";
-        html += "<td><a class='btn btn-xs btn-info' href='/t/" + $("#tournamentshortid").val() + "/teams/" + team.shortID + "'>Details</a>";
-        if (admin) {
-            html += "<button type='button' class='btn nf-orange btn-xs start-delete-team'><i class='glyphicon glyphicon-remove'></i></button>";
-        }
-        html += "</td></tr>";
-        if (admin) {
-            html += "<tr style='display:none'><td></td><td></td><td>";
-            html += "<div class='col-md-3 col-lg-3 col-sm-3'><button class='btn btn-stats btn-sm btn-block cancel-delete-team'>Never Mind</button></div>";
-            html += "<div class='col-md-3 col-lg-3 col-sm-3'>";
-            html += "<form><input type='hidden' name='teamid_form' value='" + team.shortID + "'/>";
-            html += "<input type='hidden' name='tournament_idteam' value='" + $("#tournament_id_change").val() + "'/>";
-            html += "<button type='button' class='btn btn-sm nf-red btn-block deleteteambutton'>Confirm</button></form></div></td></tr>";
-        }
-        $(html).hide().appendTo("#teamtablebody").fadeIn(0);
-        if (admin) {
-            $("#teamtablebody tr").last().fadeOut(0);
-        }
-    }
-
     function addPointSchemaRow() {
         var arr = ["B", "N", "P"];
         var html = "<div class='row point-schema-row'><div class='form-group col-md-3'><input type='number' style='width:100%' class='form-control pointval not-saved input-medium no-border-radius btn-shadow'/></div>";
         html += "<div class='col-md-9'>";
         for (var i = 0; i < arr.length; i++) {
             if (arr[i] == "P") {
-                html += "<label class='radio-inline btn-sm btn-success btn-shadow'>Power<input type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
+                html += "<label class='radio-inline btn-sm nf-green nf-button'>Power<input type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
             } else if (arr[i] == "N") {
-                html += "<label class='radio-inline btn-sm nf-red btn-shadow'>Neg<input type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
+                html += "<label class='radio-inline btn-sm nf-red nf-button'>Neg<input type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
             } else {
-                html += "<label class='radio-inline btn-sm btn-info btn-shadow'>Base<input checked type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
+                html += "<label class='radio-inline btn-sm nf-blue nf-button'>Base<input checked type='checkbox' value=" + arr[i] + " class='pointgroup' style='margin-left:5px' onclick='uncheckBoxes(this)'/></label>";
             }
         }
         html += "</div></div>";
-        $(html).hide().appendTo("#point-schema-form").fadeIn(200);
+        $(html).hide().appendTo("#point-schema-form").fadeIn(0);
     }
 
     function addDivisionRow(phase) {

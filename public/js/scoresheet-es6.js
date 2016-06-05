@@ -666,24 +666,6 @@
                 $(this).css({'cursor' : 'default'});
             });
 
-        $("#lock-teams").click(function() {
-            $(".teamselect").each(function() {
-                $(this).css("color", "white");
-            });
-            if (game.team1 && game.team2) {
-                $("#team-select-div").slideUp("fast");
-                $("#lock-teams-div").slideUp("fast");
-            } else {
-                if (!game.team1) {
-                    $("#leftselect").css("color", "#D9534F");
-                }
-                if (!game.team2) {
-                    $("#rightselect").css("color", "#D9534F");
-                }
-            }
-
-        });
-
         $(".undo-neg").click(function() {
             var lastAnswer = game.getCurrentPhase().removeLastTossup();
             revertPlayerAnswerOnScoresheet(lastAnswer, game.getCurrentPhase().getNumber());
@@ -956,7 +938,7 @@
                     }
                     html += option;
                 }
-                html += "</select><button class='btn btn-sm nf-red cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-tossup'></button>";
+                html += "</select><button class='btn btn-sm nf-red cancel-change nf-button' data-point='" + currentVal + "'></button><button class='btn btn-sm nf-green confirm-change-tossup nf-button'></button>";
                 td.addClass("editing").html(html);
             }
         }
@@ -976,7 +958,7 @@
                     html += "<option value='" +  bonusParts[i].value + "' data-part=" + bonusParts[i].number + ">" + bonusParts[i].value + "</option>";
                 }
             }
-            html += "</select><button class='btn btn-sm nf-red cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm btn-success confirm-change-bonus'></button>";
+            html += "</select><button class='btn btn-sm nf-red cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm nf-blue confirm-change-bonus'></button>";
             td.addClass("editing").html(html);
         }
     }
@@ -1040,7 +1022,7 @@
     }
 
     function createSubmitGameButton() {
-        var html = "<button type='button' class='btn btn-lg btn-block btn-stats' id='submit-game'> Submit Game </button>";
+        var html = "<button type='button' class='btn btn-lg btn-block nf-green nf-button' id='submit-game'> Submit Game </button>";
         $("#submit-game-div").empty().append(html);
     }
 
@@ -1142,13 +1124,13 @@
         for (var j = 0; j < pointValues.length; j++) {
             if (pointTypes[pointValues[j]] === "N") {
                 html += "<button" + " data-team='" + player.teamID + "' data-neg='true' data-point-value='" + pointValues[j] +
-                    "' data-player='" + player._id + "' class='btn btn-md nf-red btn-point'>" + pointValues[j] + "</button>";
+                    "' data-player='" + player._id + "' class='btn btn-md nf-red nf-button btn-point'>" + pointValues[j] + "</button>";
             } else if (pointTypes[pointValues[j]] === "P") {
                 html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j] +
-                    "' data-player='" + player._id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
+                    "' data-player='" + player._id + "' class='btn btn-md nf-green nf-button btn-point'>" + pointValues[j] + "</button>";
             } else {
                 html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j] +
-                    "' data-player='" + player._id + "' class='btn btn-md btn-info btn-point'>" + pointValues[j] + "</button>";
+                    "' data-player='" + player._id + "' class='btn btn-md nf-blue nf-button btn-point'>" + pointValues[j] + "</button>";
             }
         }
         html += "</div>";
@@ -1178,13 +1160,13 @@
             for (var j = 0; j < pointValues.length; j++) {
                 if (pointTypes[pointValues[j]] === "N") {
                     html += "<button" + " data-team='" + players[i].teamid + "' data-neg='true' data-point-value='" + pointValues[j] +
-                        "' data-player='" + players[i].id + "' class='btn btn-md nf-red btn-point'>" + pointValues[j] + "</button>";
+                        "' data-player='" + players[i].id + "' class='btn btn-md nf-red btn-point nf-button'>" + pointValues[j] + "</button>";
                 } else if (pointTypes[pointValues[j]] === "P") {
                     html += "<button" + " data-team='" + players[i].teamid + "' data-neg='false' data-point-value='" + pointValues[j] +
-                        "' data-player='" + players[i].id + "' class='btn btn-md btn-success btn-point'>" + pointValues[j] + "</button>";
+                        "' data-player='" + players[i].id + "' class='btn btn-md nf-green btn-point nf-button'>" + pointValues[j] + "</button>";
                 } else {
                     html += "<button" + " data-team='" + players[i].teamid + "' data-neg='false' data-point-value='" + pointValues[j] +
-                        "' data-player='" + players[i].id + "' class='btn btn-md btn-info btn-point'>" + pointValues[j] + "</button>";
+                        "' data-player='" + players[i].id + "' class='btn btn-md nf-blue btn-point nf-button'>" + pointValues[j] + "</button>";
                 }
             }
             html += "</div>";
@@ -1193,7 +1175,7 @@
         }
         var teamid = $(side).val();
         var teamname = $(side).find(":selected").text();
-        html += "<br><input type='text' class='form-control player-name-input btn-shadow' placeholder='New Player'/><button class='btn btn-md btn-success add-player-button' data-team='" +
+        html += "<br><input type='text' class='form-control player-name-input btn-shadow' placeholder='New Player'/><button class='btn btn-md nf-green add-player-button nf-button' data-team='" +
             teamid + "' data-team-name='" + teamname + "'> Add a Player </button>";
         html += "<br><br><div class='row'><div class='col-md-2'></div><div class='col-md-8'><input type='number' class='form-control btn-shadow overtime-tu' data-team='" + teamid + "' placeholder='Overtime TUs gotten by " +
             teamname + "'/></div><div class='col-md-2'></div></div>";

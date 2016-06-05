@@ -1,10 +1,28 @@
 .nf-button {
     border-radius: 2px;
+    margin: 5px;
+}
+
+.nf-label {
+    padding: 10px;
+    font-size: .9em;
+}
+
+.nf-margin {
+    margin: 5px;
 }
 
 .nf-panel-heading {
     padding: 20px;
     font-size: 1.5em;
+}
+
+.nf-th {
+    text-align: center;
+}
+
+.nf-th-short {
+    width: 100px;
 }
 
 .nf-tr:hover {
@@ -14,13 +32,28 @@
 
 /** Neg 5 colors */
 
+.nf-black {
+    background-color: #212121;
+    color: white;
+}
+
+.nf-blue {
+    background-color: #01579B;
+    color: white;
+}
+
 .nf-dark-blue {
-    background-color: #455A64 !important;
+    background-color: #37474F !important;
     color: white !important;
 }
 
 .nf-gray {
    background-color: #ECEFF1;
+}
+
+.nf-green {
+    background-color: #00695C;
+    color: white;
 }
 
 .nf-red {
