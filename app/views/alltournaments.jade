@@ -1,11 +1,7 @@
 extends layout
 
 block titleContent
-    title Your Tournaments | Neg 5
-
-block extrastylesheets
-    //- link(rel="stylesheet" href="/css/home.css")
-    //- link(rel="stylesheet" href="/css/tournamentstyle.css")
+    title Tournaments | Neg 5
 
 block content
 
@@ -17,7 +13,7 @@ block content
         div(class="row")
             div(class="col-md-12")
                 div(style="margin:20px; margin-bottom:50px")
-                h2(class="title" style='width:50%') Your Tournaments
+                h2(class="nf-panel-heading nf-dark-blue" style='width:50%') Tournaments
                 br
                 div(class="panel panel-default table-grey")
                     table(class="table table-condensed btn-shadow")
@@ -30,7 +26,7 @@ block content
                                 th(class="table-head" style='text-align:center') Number of Teams Added
                         tbody(id="tournaments-body")
                             each val, i in tournaments
-                                tr(class='tournament-anchor' data-href='/t/' + tournaments[i].shortID)
+                                tr(class='tournament-anchor nf-tr' data-href='/t/' + tournaments[i].shortID)
                                     td #{tournaments[i].tournament_name}
                                     td #{tournaments[i].location}
                                     if tournaments[i].date
@@ -47,8 +43,8 @@ block content
         div(class='row')
             div(class='col-md-3')
                 if tournaments.length === 0
-                    a(class='btn btn-lg nf-blue btn-shadow btn-block' href='/create') First Tournament
+                    a(class='btn btn-md nf-blue btn-shadow btn-block' href='/create') First Tournament
                 else
-                    a(class='btn btn-lg nf-blue btn-shadow btn-block' href='/create') New Tournament
+                    a(class='btn btn-md nf-blue btn-shadow btn-block nf-button' href='/create') New Tournament
 block scripts
     script(src="/js/all-tournaments.js")

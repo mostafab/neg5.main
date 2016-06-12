@@ -10,7 +10,7 @@ div(class='row')
     div(class='col-md-9')
         div(class='col-md-12')
             div(class="panel panel-default")
-                    div(class="panel-heading collapsable") Team Details
+                    div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Team Details
                     div(class="panel-body tournament-panel btn-shadow")
                         form(id="teamdetailsform")
                             input(type="hidden" value="#{tournament._id}" name="tournamentid" id='tournament-id-team')
@@ -32,7 +32,7 @@ div(class='row')
                                             each phase, i in tournament.phases
                                                 div(class="row")
                                                     div(class="col-md-6")
-                                                        div(class='alert alert-info phase-name' data-phase-id='#{phase.phase_id}')
+                                                        div(class='nf-dark-blue nf-panel-heading phase-name nf-margin' data-phase-id='#{phase.phase_id}')
                                                             p #{phase.name}
                                                     div(class="col-md-6")
                                                         select(class="form-control edit-team-division btn-shadow" data-phase-id='#{phase.phase_id}')
@@ -88,11 +88,11 @@ div(class='row')
                                 div(class="col-md-12 input-lg center-text no-border-radius tournament-info-field" id="player-add-msg" style="text-align:center")
 
     div(class='col-md-3')
-        div(class='col-md-12 nf-dark-blue nf-panel-heading' style='text-align:center')
+        div(class='col-md-12 nf-dark-blue nf-panel-heading nf-margin')
             h3 #{team.record.wins} W | #{team.record.losses} L | #{team.record.ties} T
-        div(class='col-md-12 nf-dark-blue nf-panel-heading' style='text-align:center')
+        div(class='col-md-12 nf-dark-blue nf-panel-heading nf-margin')
             h3 #{team.ppg} PPG
-        div(class='col-md-12 nf-dark-blue nf-panel-heading' style='text-align:center')
+        div(class='col-md-12 nf-dark-blue nf-panel-heading nf-margin')
             h3 #{team.papg} PAPG
-        div(class='col-md-12 nf-dark-blue nf-panel-heading' style='text-align:center')
+        div(class='col-md-12 nf-dark-blue nf-panel-heading nf-margin')
             h3 #{team.ppb} PPB

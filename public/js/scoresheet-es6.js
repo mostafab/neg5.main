@@ -1051,7 +1051,7 @@
             html += "<th class='player-header' data-toggle='tooltip' data-container='body' title='" + team1.players[i].name + "'>" + team1.players[i].name.slice(0,2).toUpperCase() + "</th>";
         }
         html += "<th>Bonus</th><th>Total</th>";
-        html += "<th class='alert alert-info'> TU # </th>";
+        html += "<th class='nf-gray'> TU # </th>";
         html += "<th>Total</th><th>Bonus</th>";
         for (var i = 0; i < team2.players.length; i++) {
             html += "<th class='player-header' data-toggle='tooltip' data-container='body' title='" + team2.players[i].name + "'>" + team2.players[i].name.slice(0,2).toUpperCase() + "</th>";
@@ -1069,7 +1069,7 @@
             }
             html += "<td class='bonus-td' data-team='" + team1.id + "' data-row='" + (i + 1) + "'>-</td>";
             html += "<td class='total-td' data-team='" + team1.id + "' data-row='" + (i + 1) + "'>-</td>";
-            html += "<td class='alert alert-info tossup-number'><strong>" + (i + 1) + "</strong></td>";
+            html += "<td class='nf-gray tossup-number'><strong>" + (i + 1) + "</strong></td>";
             html += "<td class='total-td' data-team='" + team2.id + "' data-row='" + (i + 1) + "'>-</td>";
             html += "<td class='bonus-td' data-team='" + team2.id + "' data-row='" + (i + 1) + "'>-</td>";
             for (var j = 0; j < team2.players.length; j++) {
@@ -1079,7 +1079,7 @@
         }
         html += "</tbody>";
         var colspan = team1.players.length + team2.players.length + 5;
-        html += "<tfoot><tr class='alert alert-warning'><td id='tfoot-msg' colspan='" + colspan + "'>More rows will appear as needed.</td></tr></tfoot>";
+        html += "<tfoot><tr class='nf-panel-heading nf-dark-blue'><td id='tfoot-msg' colspan='" + colspan + "'>More rows will appear as needed.</td></tr></tfoot>";
         $("#scoresheet").empty();
         $(html).hide().appendTo("#scoresheet").fadeIn(500);
         $('[data-toggle="tooltip"]').tooltip();
@@ -1093,7 +1093,7 @@
         }
         html += "<td class='bonus-td' data-team='" + team1.id + "' data-row='" + number + "'>-</td>";
         html += "<td class='total-td' data-team='" + team1.id + "' data-row='" + number + "'>-</td>";
-        html += "<td class='alert alert-info tossup-number'><strong>" + number + "</strong></td>";
+        html += "<td class='nf-gray tossup-number'><strong>" + number + "</strong></td>";
         html += "<td class='total-td' data-team='" + team2.id + "' data-row='" + number + "'>-</td>";
         html += "<td class='bonus-td' data-team='" + team2.id + "' data-row='" + number + "'>-</td>";
         for (var j = 0; j < team2.players.length; j++) {

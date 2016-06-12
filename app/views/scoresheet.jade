@@ -70,15 +70,15 @@ block content
 
                     div(class="col-md-12 col-lg-12 col-sm-12")
                         div(class="panel panel-default" style="text-align:center")
-                            div(class="panel-heading" style="font-size:20px" id="team-bonus-name") Team 1
+                            div(class="panel-heading nf-panel-heading nf-dark-blue" style="font-size:20px" id="team-bonus-name") Team 1
                             div(class="panel-body")
                                 div(class="row")
                                     each val, i in [1, 2, 3]
-                                        div(class="col-md-12 panel-body bonus-phase" style='padding:0px')
+                                        div(class="col-md-12 panel-body bonus-phase" style='padding:0px;margin:5px')
                                             div(class="col-md-5 bonus-box")
                                                 button(type='button' class='btn btn-sm not-gotten-bonus btn-block left-team-bonus bonus-part' data-toggle-row='#{val}')
                                             div(class="col-md-2")
-                                                label(class='alert alert-info btn-sm btn-block' style='font-size:16px;padding:5px') Part #{val}
+                                                label(class='btn-sm btn-block nf-dark-blue' style='font-size:16px;padding:5px') Part #{val}
                                             div(class="col-md-5 bonus-box")
                                                 button(type='button' class='btn btn-sm not-gotten-bonus btn-block right-team-bonus bonus-part' data-toggle-row='#{val}')
                                 br
@@ -98,12 +98,12 @@ block content
                             table(class="table table-hover table-condensed player-table"  id="rightplayertable")
 
                     div(class='col-md-12' id='toggle-message-div' style='display:none')
-                        div(class='alert alert-info btn-lg fade in' style='text-align:center')
+                        div(class='nf-panel-heading nf-dark-blue fade in alert' style='text-align:center')
                             a(href="#" data-dismiss='alert' aria-label="close" title="Close")
-                                strong
+                                strong(style='float:right')
                                     | X
                             strong(style='margin:10px')
-                                | Click player names on the table above to toggle them as active or unactive. Only active players have their TUH incremented after each tossup.
+                                | Click player names on the table above to toggle them as active or unactive.
 
             div(class="col-md-6 col-lg-6 col-sm-6")
                 div(style="margin:20px; margin-bottom:50px")
