@@ -24,7 +24,7 @@ div(class='row')
                                                 name="team_name",
                                                 value="#{team.team_name}",
                                                 id = "team-name-input",
-                                                class="form-control input-medium center-text no-border-radius btn-shadow"
+                                                class="form-control nf-input input-medium center-text no-border-radius btn-shadow"
                                             )
                                         hr
                                         label(class="label nf-dark-blue nf-label col-xs-4") Divisions
@@ -35,7 +35,7 @@ div(class='row')
                                                         div(class='nf-dark-blue nf-panel-heading phase-name nf-margin' data-phase-id='#{phase.phase_id}')
                                                             p #{phase.name}
                                                     div(class="col-md-6")
-                                                        select(class="form-control edit-team-division btn-shadow" data-phase-id='#{phase.phase_id}')
+                                                        select(class="form-control nf-input edit-team-division btn-shadow" data-phase-id='#{phase.phase_id}')
                                                             each division in tournament.divisions
                                                                 if division.phase_id == phase.phase_id && team.divisions && team.divisions[phase.phase_id] == division.name
                                                                     option(selected value='#{division.name}') #{division.name}
@@ -69,7 +69,7 @@ div(class='row')
                                                         form
                                                             input(type="hidden" name="tournamentidform" value="#{tournament._id}")
                                                             input(type="hidden" name="playerid" value="#{teamPlayers[i]._id}")
-                                                            input(readonly type="text" class="form-control saved player-name-box btn-shadow" name="playername" value="#{teamPlayers[i].player_name}")
+                                                            input(readonly type="text" class="form-control nf-input saved player-name-box btn-shadow" name="playername" value="#{teamPlayers[i].player_name}")
                                                     td
                                                         if admin
                                                             button(type="button" class="btn btn-sm nf-red deleteplayerbutton btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete #{teamPlayers[i].player_name}')
@@ -80,7 +80,7 @@ div(class='row')
                                     input(type="hidden" name="tournamentidform" value="#{tournament._id}")
                                     input(type="hidden" name="teamidform" value="#{team._id}")
                                     input(type="hidden" name="teamnameform" value="#{team.team_name}")
-                                    input(type="text" class="form-control btn-shadow" name="newplayername" placeholder="Add a Player" id="newplayerinput")
+                                    input(type="text" class="form-control nf-input btn-shadow" name="newplayername" placeholder="Add a Player" id="newplayerinput")
 
                                     button(type="button" class="btn btn-md nf-green nf-button" id="add-player-button") Add Player
                                 br

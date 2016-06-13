@@ -25,7 +25,7 @@ block content
                                 div(style="text-align:left")
                                     br
                                     br
-                                    select(class="form-control input-lg center-text teamselect btn-shadow" id='leftselect')
+                                    select(class="form-control nf-input input-lg center-text teamselect btn-shadow" id='leftselect')
                                         option(disabled selected value="") Select Team 1
                                         each team in teams
                                             option(value="#{team._id}") #{team.team_name}
@@ -34,7 +34,7 @@ block content
                                 div(style="text-align:center")
                                     br
                                     br
-                                    select(class="form-control input-lg center-text teamselect btn-shadow" id='rightselect')
+                                    select(class="form-control nf-input input-lg center-text teamselect btn-shadow" id='rightselect')
                                         option(disabled selected value="") Select Team 2
                                         each team in teams
                                             option(value="#{team._id}") #{team.team_name}
@@ -136,7 +136,7 @@ block content
                                         td(class="td-scoresheet")
                                             input(type='text' class='input-scoresheet' value='-' id='packet')
                                         td(class='td-scoresheet')
-                                            select(multiple class="form-control" id='phase' style='border-radius:1px;border-width:0px;' size='#{phases.length}')
+                                            select(multiple class="form-control nf-input" id='phase' style='border-radius:1px;border-width:0px;' size='#{phases.length}')
                                                 each phase in phases
                                                     if phase.active
                                                         option(selected value='#{phase.phase_id}') #{phase.name}

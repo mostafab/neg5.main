@@ -10,6 +10,10 @@
     border-radius: 2px;
 }
 
+.nf-input {
+    border-radius: 2px;
+}
+
 .nf-label {
     padding: 10px;
     font-size: .9em;

@@ -337,7 +337,7 @@
         html += "<td><form name='editplayerform'>";
         html += "<input type='hidden' name='tournamentidform' value='" + tid + "'/>";
         html += "<input type='hidden' name='playerid' value='" + player._id + "'>";
-        html += "<input type='text' class='form-control player-name-box saved' name='playername' value='" + player.player_name + "'/>";
+        html += "<input type='text' class='form-control nf-input player-name-box saved' name='playername' value='" + player.player_name + "'/>";
         html += "</form></td>";
         html += "<td>";
         html += "<button type='button' class='btn btn-sm nf-red deleteplayerbutton' onclick='deletePlayerSender(this)'><i class='fa fa-trash'></i></button>";
@@ -363,7 +363,7 @@
             html += "<tr>";
             html += "<input type='hidden' value='" + players[i]._id +  "' " + "name='" + "player" + playerNum + sideText + "id'" + "/>";
             html += "<td>" + players[i].player_name + "</td>";
-            html += "<td> <input class='form-control' type='number'" + "value='0' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
+            html += "<td> <input class='form-control nf-input' type='number'" + "value='0' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
             for (var j = 0; j < points.length; j++) {
                 var keyNameStr = "name='player" + playerNum + sideText + "_" + points[j] + "val' ";
                 var keyId = "id='player" + playerNum + "_" + points[j] + sideText + "id' ";
@@ -373,10 +373,10 @@
                 onkeyupString += playerNum + ',' + json + ', "' + sideText + '"' + ")' ";
                 var onchangeString = "onchange=";
                 onchangeString += "'updatePoints(" + playerNum + ',' + json + ', "' + sideText + '"' + ")'";
-                html += "<td><input class='form-control' type='number' " + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
+                html += "<td><input class='form-control nf-input' type='number' " + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
             }
             var idTag = "id='" + playerNum + sideText + "pts'";
-            html += "<td> <input " + idTag + "class='form-control disabledview' type='input' placeholder='0' disabled /> </td>";
+            html += "<td> <input " + idTag + "class='form-control nf-input disabledview' type='input' placeholder='0' disabled /> </td>";
             html += "</tr>";
             playerNum++;
         }

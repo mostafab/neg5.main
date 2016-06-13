@@ -870,7 +870,7 @@
                         $(this).append(selectHTML);
                     });
                     var tableHTML = "<tr><td><input type='text' data-phase-id='" + databack.newPhase.phase_id + "'"
-                        + "value='" + databack.newPhase.name + "' class='form-control phase-box input-sm'/></td>";
+                        + "value='" + databack.newPhase.name + "' class='form-control nf-input phase-box input-sm'/></td>";
                     tableHTML += "<td><button data-phase-id='" + databack.newPhase.phase_id + "' class='btn nf-red btn-sm remove-phase'>Remove</button></td></tr>";
                     $("#phases-body").append(tableHTML);
                     $("#new-phase-name").val("");
@@ -1195,9 +1195,9 @@
     function addCollaboratorBox(collaborator) {
         var html = "";
         if (collaborator.admin) {
-            html += "<div class='col-md-3 collab-box admin' style='padding:20px;font-size:18px;border-radius:2px'>";
+            html += "<div class='col-md-3 collab-box nf-card nf-white'>";
         } else {
-            html += "<div class='col-md-3 collab-box not-admin' style='padding:20px;font-size:18px;border-radius:2px'>";
+            html += "<div class='col-md-3 collab-box nf-card nf-white'>";
         }
         html += "<p>Name : " + collaborator.name + "</p>";
         html += "<p>Email : " + collaborator.email + "</p>";
@@ -1210,7 +1210,7 @@
 
     function createPlayerInputField() {
         var newInput = "<input type='text'/>";
-        var classes = "form-control input-medium center-text no-border-radius player-name btn-shadow";
+        var classes = "form-control nf-input input-medium center-text no-border-radius player-name btn-shadow";
         var name = "player" + nextPlayerNum + "_name";
         var placeholder = "Player " + nextPlayerNum;
         var autocomplete = "off";
@@ -1239,7 +1239,7 @@
             html += "<tr>";
             html += "<input type='hidden' value='" + players[i]._id +  "' " + "name='" + "player" + playerNum + sideText + "id'" + "/>";
             html += "<td>" + players[i].player_name + "</td>";
-            html += "<td> <input class='form-control gp-box btn-shadow input-sm' type='number' value='1' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
+            html += "<td> <input class='form-control nf-input gp-box btn-shadow input-sm' type='number' value='1' name='" + "player" + playerNum + sideText + "gp'" + "/> </td>";
             for (var j = 0; j < points.length; j++) {
                 var keyNameStr = "name='player" + playerNum + sideText + "_" + points[j] + "val' ";
                 var keyId = "id='player" + playerNum + "_" + points[j] + sideText + "id' ";
@@ -1249,10 +1249,10 @@
                 onkeyupString += playerNum + ',' + json + ', "' + sideText + '"' + ")' ";
                 var onchangeString = "onchange=";
                 onchangeString += "'updatePoints(" + playerNum + ',' + json + ', "' + sideText + '"' + ")'";
-                html += "<td><input class='form-control input-sm point-box btn-shadow' type='number' " + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
+                html += "<td><input class='form-control nf-input input-sm point-box btn-shadow' type='number' " + keyNameStr + keyId + onkeyupString + onchangeString + "/></td>";
             }
             var idTag = "id='" + playerNum + sideText + "pts'";
-            html += "<td> <input " + idTag + "class='input-sm form-control point-box-disabled disabledview btn-shadow' type='input' placeholder='0' readonly/> </td>";
+            html += "<td> <input " + idTag + "class='input-sm form-control nf-input point-box-disabled disabledview btn-shadow' type='input' placeholder='0' readonly/> </td>";
             html += "</tr>";
             playerNum++;
         }
@@ -1296,7 +1296,7 @@
 
     function addPointSchemaRow() {
         var arr = ["B", "N", "P"];
-        var html = "<div class='row point-schema-row'><div class='form-group col-md-3'><input type='number' style='width:100%' class='form-control pointval not-saved input-medium no-border-radius btn-shadow'/></div>";
+        var html = "<div class='row point-schema-row'><div class='form-group col-md-3'><input type='number' style='width:100%' class='form-control nf-input pointval not-saved input-medium no-border-radius btn-shadow'/></div>";
         html += "<div class='col-md-9'>";
         for (var i = 0; i < arr.length; i++) {
             if (arr[i] == "P") {
@@ -1312,7 +1312,7 @@
     }
 
     function addDivisionRow(phase) {
-        var html = "<input type='text' data-phase-id='" + phase + "' style='width:100%' class='form-control input-medium no-border-radius division-name not-saved btn-shadow'/>";
+        var html = "<input type='text' data-phase-id='" + phase + "' style='width:100%' class='form-control nf-input input-medium no-border-radius division-name not-saved btn-shadow'/>";
         $(html).hide().appendTo(".division-box[data-phase-id='" + phase + "']").fadeIn(200);
         $(".division-box[data-phase-id='" + phase + "']").children(".division-name").last().focus();
     }

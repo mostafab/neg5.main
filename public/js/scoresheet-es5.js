@@ -1030,7 +1030,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var team = td.attr("data-team");
         if (game.getPhases()[row - 1] && game.getPhases()[row - 1].bonus.forTeam) {
             var currentVal = td.text();
-            var html = "<select multiple size='3' class='input-xs center-text form-control bonus-select btn-shadow'>";
+            var html = "<select multiple size='3' class='input-xs center-text form-control nf-input bonus-select btn-shadow'>";
             var bonusParts = game.getPhases()[row - 1].bonus.bonusParts;
             for (var i = 0; i < bonusParts.length; i++) {
                 if (bonusParts[i].gettingTeam === team) {
@@ -1248,8 +1248,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
         var teamid = $(side).val();
         var teamname = $(side).find(":selected").text();
-        html += "<br><input type='text' class='form-control player-name-input btn-shadow' placeholder='New Player'/><button class='btn btn-md nf-blue add-player-button' data-team='" + teamid + "' data-team-name='" + teamname + "'> Add a Player </button>";
-        html += "<br><br><div class='row'><div class='col-md-2'></div><div class='col-md-8'><input type='number' class='form-control btn-shadow overtime-tu' data-team='" + teamid + "' placeholder='Overtime TUs gotten by " + teamname + "'/></div><div class='col-md-2'></div></div>";
+        html += "<br><input type='text' class='form-control nf-input player-name-input btn-shadow' placeholder='New Player'/><button class='btn btn-md nf-blue add-player-button' data-team='" + teamid + "' data-team-name='" + teamname + "'> Add a Player </button>";
+        html += "<br><br><div class='row'><div class='col-md-2'></div><div class='col-md-8'><input type='number' class='form-control nf-input btn-shadow overtime-tu' data-team='" + teamid + "' placeholder='Overtime TUs gotten by " + teamname + "'/></div><div class='col-md-2'></div></div>";
         $(list).empty().append(html);
     }
 

@@ -50,13 +50,13 @@ block content
                                     input(readonly,
                                         type="text",
                                         value="Name: #{tournament.tournament_name}",
-                                        class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                        class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                         style="background-color:#363B40")
                                 div(class="form-group")
                                     input(readonly,
                                         type="text",
                                         value="Location: #{tournament.location}",
-                                        class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                        class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                         style="background-color:#363B40")
 
                                 div(class="form-group")
@@ -65,14 +65,14 @@ block content
                                         input(readonly,
                                             type="text",
                                             value="Date: #{date}",
-                                            class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                            class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                             style="background-color:#363B40")
 
                                 div(class="form-group")
                                     input(readonly,
                                         type="text",
                                         value="Question Set: #{tournament.questionSet}",
-                                        class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                        class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                         style="background-color:#363B40")
 
                                 div(class="form-group")
@@ -80,18 +80,18 @@ block content
                                         input(readonly,
                                             type="text",
                                             value="Registration is open",
-                                            class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                            class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                             style="background-color:#363B40")
                                     else
                                         input(readonly,
                                             type="text",
                                             value="Registration is closed",
-                                            class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                            class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                             style="background-color:#363B40")
 
                                 div(class="form-group")
                                     textarea(readonly,
-                                        class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                        class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                         style="background-color:#363B40", rows="10") Description:&#10#{tournament.description}
 
                 div(class="col-xs-6")
@@ -116,7 +116,7 @@ block content
                                                     type="text",
                                                     name="team_name",
                                                     placeholder="Team Name",
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                                     style="background-color:#363B40"
                                                 )
                                             div(class="form-group")
@@ -124,14 +124,14 @@ block content
                                                     type="number",
                                                     name="teamnumber",
                                                     placeholder="Number of Teams",
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                                     id="team-number-s"
                                                     style="background-color:#363B40"
                                                 )
                                             div(class="form-group")
                                                 if director != null
                                                     input(
-                                                        class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                        class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                                         placeholder="Email",
                                                         value="#{director.email}",
                                                         name="email",
@@ -139,14 +139,14 @@ block content
                                                     )
                                                 else
                                                     input(
-                                                        class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                        class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                                         placeholder="Email",
                                                         name="email",
                                                         style="background-color:#363B40"
                                                     )
                                             div(class="form-group")
                                                 textarea(
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                                     placeholder="Other Information",
                                                     name="otherinfo",
                                                     rows="10",
@@ -156,7 +156,7 @@ block content
                                             div(class="form-group" style="text-align:center")
                                                 br
                                                 br
-                                                div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="tregmessage" style="background-color:#363B40")
+                                                div(class="form-control nf-input input-lg center-text no-border-radius tournament-info-field" id="tregmessage" style="background-color:#363B40")
                                     else
                                         form(id="submitsignup" method="post" action="/t/" + tournament.shortID + "/signup/submit")
                                             div(class="form-group")
@@ -165,7 +165,7 @@ block content
                                                     name="team_name",
                                                     placeholder="Team Name",
                                                     value="#{prevReg.teamName}",
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                                     style="background-color:#363B40"
                                                 )
                                             div(class="form-group")
@@ -174,13 +174,13 @@ block content
                                                     name="teamnumber",
                                                     placeholder="Number of Teams",
                                                     value="#{prevReg.numTeams}",
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                                     id="team-number-s",
                                                     style="background-color:#363B40"
                                                 )
                                             div(class="form-group")
                                                 input(
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                                     placeholder="Email",
                                                     value="#{prevReg.email}",
                                                     name="email",
@@ -188,7 +188,7 @@ block content
                                                 )
                                             div(class="form-group")
                                                 textarea(
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                                     placeholder="Other Information",
                                                     name="otherinfo",
                                                     rows="10",
@@ -199,7 +199,7 @@ block content
                                                 br
                                                 br
                                                 div(
-                                                    class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                                    class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                                     style="background-color:#363B40",
                                                     id="tregmessage"
                                                     )
@@ -209,7 +209,7 @@ block content
                                         input(readonly,
                                             type="text",
                                             placeholder="Registration for this tournament is closed",
-                                            class="form-control input-lg center-text no-border-radius tournament-info-field",
+                                            class="form-control nf-input input-lg center-text no-border-radius tournament-info-field",
                                             style="background-color:#363B40"
                                         )
 

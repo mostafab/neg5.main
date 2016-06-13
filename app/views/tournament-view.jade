@@ -79,7 +79,7 @@ block content
                                                         type="text",
                                                         name="tournament_name",
                                                         value="#{tournament.tournament_name}",
-                                                        class="form-control input-medium center-text no-border-radius "
+                                                        class="form-control nf-input input-medium center-text no-border-radius "
                                                     )
                                                 label(class="label nf-dark-blue nf-label col-xs-4") Location
                                                 div(class="form-group col-xs-8")
@@ -87,7 +87,7 @@ block content
                                                         type="text",
                                                         name="tournament_location",
                                                         value="#{tournament.location}",
-                                                        class="form-control input-medium center-text no-border-radius "
+                                                        class="form-control nf-input input-medium center-text no-border-radius "
                                                     )
                                                 label(class="label nf-dark-blue nf-label col-xs-4") Question Set
                                                 div(class="form-group col-xs-8")
@@ -95,7 +95,7 @@ block content
                                                         type="text",
                                                         name="tournament_qset",
                                                         value="#{tournament.questionSet}",
-                                                        class="form-control input-medium center-text no-border-radius "
+                                                        class="form-control nf-input input-medium center-text no-border-radius "
                                                     )
                                                 label(class="label nf-dark-blue nf-label col-xs-4") Date
                                                 div(class="form-group col-xs-8")
@@ -104,26 +104,26 @@ block content
                                                             type="date",
                                                             name="tournament_date",
                                                             value="#{dateConverter(tournament.date)}",
-                                                            class="form-control input-medium center-text no-border-radius "
+                                                            class="form-control nf-input input-medium center-text no-border-radius "
                                                         )
                                                     else
                                                         input(
                                                             type="date",
                                                             name="tournament_date",
-                                                            class="form-control input-medium center-text no-border-radius"
+                                                            class="form-control nf-input input-medium center-text no-border-radius"
                                                         )
                                                 label(class='label nf-dark-blue nf-label col-xs-4') Hidden
                                                 div(class='form-group col-xs-8')
                                                     if tournament.hidden
-                                                        input(checked type='checkbox' value='1' name='hidden' class='form-control input-sm')
+                                                        input(checked type='checkbox' value='1' name='hidden' class='form-control nf-input input-sm')
                                                     else
-                                                        input(type='checkbox' value='1' name='hidden' class='form-control input-sm')
+                                                        input(type='checkbox' value='1' name='hidden' class='form-control nf-input input-sm')
 
                                     div(class="row")
                                         div(class="col-md-12")
                                             label(class="label nf-dark-blue nf-label col-xs-2") Description
                                             div(class="form-group col-xs-8")
-                                                textarea(name="tournament_description" class="form-control " rows="10") #{tournament.description}
+                                                textarea(name="tournament_description" class="form-control nf-input " rows="10") #{tournament.description}
 
                                             div(class="col-md-6")
                                                 button(type="button" class="btn btn-md nf-green nf-button" id="edittournamentbutton") Save Changes
@@ -140,21 +140,21 @@ block content
                                         div(class="form-group col-xs-8")
                                             input(readonly
                                                 value="#{tournament.tournament_name}",
-                                                class="form-control input-medium center-text no-border-radius"
+                                                class="form-control nf-input input-medium center-text no-border-radius"
                                             )
                                         label(class="label nf-dark-blue nf-label col-xs-4") Location
                                         div(class="form-group col-xs-8")
                                             input(readonly
                                                 type="text",
                                                 value="#{tournament.location}",
-                                                class="form-control input-medium center-text no-border-radius"
+                                                class="form-control nf-input input-medium center-text no-border-radius"
                                             )
                                         label(class="label nf-dark-blue nf-label col-xs-4") Question Set
                                         div(class="form-group col-xs-8")
                                             input(readonly
                                                 type="text",
                                                 value="#{tournament.questionSet}",
-                                                class="form-control input-medium center-text no-border-radius"
+                                                class="form-control nf-input input-medium center-text no-border-radius"
                                             )
                                         label(class="label nf-dark-blue nf-label col-xs-4") Date
                                         div(class="form-group col-xs-8")
@@ -162,19 +162,19 @@ block content
                                                 input(readonly
                                                     type="date",
                                                     value="#{dateConverter(tournament.date)}",
-                                                    class="form-control input-medium center-text no-border-radius"
+                                                    class="form-control nf-input input-medium center-text no-border-radius"
                                                 )
                                             else
                                                 input(readonly
                                                     type="date",
-                                                    class="form-control input-medium center-text no-border-radius"
+                                                    class="form-control nf-input input-medium center-text no-border-radius"
                                                 )
 
                                 div(class="row")
                                     div(class="col-md-12")
                                         label(class="label nf-dark-blue nf-label col-xs-2") Description
                                         div(class="form-group col-xs-8")
-                                            textarea(readonly class="form-control" rows="10") #{tournament.description}
+                                            textarea(readonly class="form-control nf-input" rows="10") #{tournament.description}
 
                 div(class='tab-pane fade' id='collaborators')
                     div(class="panel panel-default")
@@ -185,13 +185,13 @@ block content
                                 div(class="row")
                                     div(class="col-md-3" style='background-color:transparent')
                                         form(id="searchcollabform")
-                                            input(id="searchcollabinput" type="text" class="form-control " placeholder="Add Collaborator. Enter at least 5 characters" name="collab")
+                                            input(id="searchcollabinput" type="text" class="form-control nf-input " placeholder="Add Collaborator. Enter at least 5 characters" name="collab")
                                             button(type="button" class="btn btn-sm nf-green nf-button" id="searchcollabbutton") Search
 
                                     div(class="col-md-5" style="background-color:transparent;margin-top:0")
                                         form(name="collabs" id="addcollabform")
                                             input(type='hidden' name="tournamentid" value="#{tournament.shortID}")
-                                            select(name="collaborators" class="form-control " size="5" id="directorsoptions")
+                                            select(name="collaborators" class="form-control nf-input " size="5" id="directorsoptions")
                                                 option(value="" disabled) Directors will show here.
                                             label(class="btn btn-sm nf-green nf-button"
                                                     data-toggle='tooltip' title='Admins have access to remove games and teams, as well as add new collaborators and remove non-admin collaborators. They can also change divisions, point scheme, and tournament overview info. They cannot delete the tournament or make a new phase.') Admin Privileges
@@ -251,7 +251,7 @@ block content
                                             each num, i in Object.keys(tournament.pointScheme)
                                                 div(class='row point-scheme-row')
                                                     div(class="form-group col-md-3")
-                                                        input(readonly data-last-name='#{num}' type="number" style="width:100%" value="#{num}" class="form-control  input-medium no-border-radius pointval saved" name="val" + num)
+                                                        input(readonly data-last-name='#{num}' type="number" style="width:100%" value="#{num}" class="form-control nf-input  input-medium no-border-radius pointval saved" name="val" + num)
 
                                                     div(class="col-md-9")
                                                         each type, j in ["B", "N", "P"]
@@ -295,7 +295,7 @@ block content
                                                     div(class="col-md-7 division-box" data-phase-id='#{phase.phase_id}')
                                                         each division, i in tournament.divisions
                                                             if (division.phase_id == phase.phase_id)
-                                                                input(readonly type='text' data-last-name='#{tournament.divisions[i].name}' style="width:100%" value="#{tournament.divisions[i].name}" class=' form-control input-medium no-border-radius division-name saved' data-phase-id='#{phase.phase_id}' data-division-id='#{tournament.divisions[i].division_id}')
+                                                                input(readonly type='text' data-last-name='#{tournament.divisions[i].name}' style="width:100%" value="#{tournament.divisions[i].name}" class=' form-control nf-input input-medium no-border-radius division-name saved' data-phase-id='#{phase.phase_id}' data-division-id='#{tournament.divisions[i].division_id}')
 
                                                 br
                                                 br
@@ -310,7 +310,7 @@ block content
                                     div(class="form-group" style="text-align:center")
                                         br
                                         br
-                                        div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="pointdivmsg")
+                                        div(class="form-control nf-input input-lg center-text no-border-radius tournament-info-field" id="pointdivmsg")
 
                 div(class="tab-pane fade" id="games")
                     div(id='add-game-div')
@@ -325,14 +325,14 @@ block content
                                                 input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
                                                 div(class="col-lg-6 col-md-6 col-sm-6")
                                                         input(type="hidden" name="leftteamname" id="leftteamnameID")
-                                                        select(id="leftchoice" class="form-control teamselect " name="leftteamselect")
+                                                        select(id="leftchoice" class="form-control nf-input teamselect " name="leftteamselect")
                                                             option(selected value="") Choose a Team
                                                             each team in tournament.teams
                                                                 option(value="#{team._id}") #{team.team_name}
 
                                                 div(class="col-lg-6 col-md-6 col-sm-6")
                                                         input(type="hidden" name="rightteamname" id="rightteamnameID")
-                                                        select(id="rightchoice" class="form-control teamselect " name="rightteamselect")
+                                                        select(id="rightchoice" class="form-control nf-input teamselect " name="rightteamselect")
                                                             option(selected value="") Choose a Team
                                                             each team in tournament.teams
                                                                 option(value="#{team._id}") #{team.team_name}
@@ -347,23 +347,23 @@ block content
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right') Team 1 Score *
                                                         div(class="col-md-4")
-                                                            input(type="number" class="form-control scorebox " name="leftteamscore" placeholder="Team 1 Score")
+                                                            input(type="number" class="form-control nf-input scorebox " name="leftteamscore" placeholder="Team 1 Score")
                                                     div(class='row')
                                                         div(class="col-md-5")
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
                                                         div(class="col-md-4")
-                                                            input(type="number" class="form-control " name="leftbounceback" placeholder="Bounceback Points")
+                                                            input(type="number" class="form-control nf-input " name="leftbounceback" placeholder="Bounceback Points")
                                                     br
                                                 div(class="col-lg-6 col-md-6 col-sm-6")
                                                     div(class="row")
                                                         div(class="col-md-4")
-                                                            input(type="number" class="form-control scorebox " name="rightteamscore" placeholder="Team 2 Score")
+                                                            input(type="number" class="form-control nf-input scorebox " name="rightteamscore" placeholder="Team 2 Score")
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right') Team 2 Score *
                                                     div(class="row")
                                                         div(class="col-md-4")
-                                                            input(type="number" class="form-control " name="rightbounceback" placeholder="Bounceback Points")
+                                                            input(type="number" class="form-control nf-input " name="rightbounceback" placeholder="Bounceback Points")
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
                                                     br
@@ -374,7 +374,7 @@ block content
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right') Round
                                                         div(class="col-md-4")
-                                                            input(type="number" class="form-control " name="round" placeholder="Round")
+                                                            input(type="number" class="form-control nf-input " name="round" placeholder="Round")
                                             div(class="row")
                                                 div(class="col-lg-6 col-md-6 col-sm-6")
                                                     div(class="row")
@@ -382,7 +382,7 @@ block content
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right') Total TUH
                                                         div(class="col-md-4")
-                                                            input(type="number" class="form-control " name="tossupsheard" placeholder="Tossups Heard")
+                                                            input(type="number" class="form-control nf-input " name="tossupsheard" placeholder="Tossups Heard")
                                             br
                                             div(class="row")
                                                 div(class="col-lg-6 col-md-6 col-sm-6")
@@ -391,11 +391,11 @@ block content
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 1
                                                         div(class="col-md-4")
-                                                            input(type="number" class="form-control " name="overtimetu1" placeholder="# Overtime TU Team 1")
+                                                            input(type="number" class="form-control nf-input " name="overtimetu1" placeholder="# Overtime TU Team 1")
                                                 div(class="col-lg-6 col-md-6 col-sm-6")
                                                     div(class="row")
                                                         div(class="col-md-4")
-                                                            input(type="number" class="form-control " name="overtimetu2" placeholder="# Overtime TU Team 2")
+                                                            input(type="number" class="form-control nf-input " name="overtimetu2" placeholder="# Overtime TU Team 2")
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 2
                                             br
@@ -406,7 +406,7 @@ block content
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right') Room
                                                         div(class="col-md-4")
-                                                            input(type="text" class="form-control " name="room" placeholder="Room")
+                                                            input(type="text" class="form-control nf-input " name="room" placeholder="Room")
                                             div(class="row")
                                                 div(class="col-lg-6 col-md-6 col-sm-6")
                                                     div(class="row")
@@ -414,7 +414,7 @@ block content
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right') Moderator
                                                         div(class="col-md-4")
-                                                            input(type="text" class="form-control " name="moderator" placeholder="Moderator")
+                                                            input(type="text" class="form-control nf-input " name="moderator" placeholder="Moderator")
                                             div(class="row")
                                                 div(class="col-lg-6 col-md-6 col-sm-6")
                                                     div(class="row")
@@ -422,7 +422,7 @@ block content
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right') Packet
                                                         div(class="col-md-4")
-                                                            input(type="text" class="form-control " name="packet" placeholder="Packet")
+                                                            input(type="text" class="form-control nf-input " name="packet" placeholder="Packet")
                                                     br
                                             div(class="row")
                                                 div(class="col-lg-6 col-md-6 col-sm-6")
@@ -431,7 +431,7 @@ block content
                                                         div(class="col-md-3")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases
                                                         div(class="col-md-5")
-                                                            select(multiple class="form-control phase-selection " name='phase_id[]' id='game-phases' size='#{tournament.phases.length}')
+                                                            select(multiple class="form-control nf-input phase-selection " name='phase_id[]' id='game-phases' size='#{tournament.phases.length}')
                                                                 each phase in tournament.phases
                                                                     if phase.active
                                                                         option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
@@ -445,7 +445,7 @@ block content
                                                         div(class="col-md-2")
                                                             label(class="label nf-dark-blue nf-label btn-block" style='float:right;') Notes
                                                         div(class="col-md-6")
-                                                            textarea(class="form-control " name="notes" placeholder="Notes" style='min-height:200px')
+                                                            textarea(class="form-control nf-input " name="notes" placeholder="Notes" style='min-height:200px')
 
                                             button(type="button" class="btn btn-md nf-blue " id="entergamebutton") Add Game Information
 
@@ -477,7 +477,7 @@ block content
                                                 name="team_name",
                                                 id="team_name_input",
                                                 placeholder="Team Name",
-                                                class="form-control input-md center-text no-border-radius "
+                                                class="form-control nf-input input-md center-text no-border-radius "
                                             )
                                         hr
                                         div(class="form-group")
@@ -491,7 +491,7 @@ block content
                                                         div(class='alert nf-dark-blue phase-name' data-phase-id='#{phase.phase_id}')
                                                             p #{phase.name}
                                                     div(class="col-md-5")
-                                                        select(class="form-control new-team-division " data-phase-id='#{phase.phase_id}')
+                                                        select(class="form-control nf-input new-team-division " data-phase-id='#{phase.phase_id}')
                                                             each division in tournament.divisions
                                                                 if division.phase_id == phase.phase_id
                                                                     option(value='#{division.name}') #{division.name}
@@ -510,13 +510,13 @@ block content
                                                 name="player1_name",
                                                 placeholder="Player 1",
                                                 autocomplete="off",
-                                                class="form-control input-medium center-text no-border-radius player-name "
+                                                class="form-control nf-input input-medium center-text no-border-radius player-name "
                                             )
                                             input(
                                                 type="text",
                                                 name="player2_name",
                                                 autocomplete="off",
-                                                class="form-control input-medium center-text no-border-radius player-name "
+                                                class="form-control nf-input input-medium center-text no-border-radius player-name "
                                                 placeholder="Player 2",
                                             )
                                             input(
@@ -524,20 +524,20 @@ block content
                                                 name="player3_name",
                                                 placeholder="Player 3",
                                                 autocomplete="off"
-                                                class="form-control input-medium center-text no-border-radius player-name "
+                                                class="form-control nf-input input-medium center-text no-border-radius player-name "
                                             )
                                             input(
                                                 type="text",
                                                 name="player4_name",
                                                 placeholder="Player 4",
                                                 autocomplete="off",
-                                                class="form-control input-medium center-text no-border-radius player-name "
+                                                class="form-control nf-input input-medium center-text no-border-radius player-name "
                                             )
                                         br
                                         button(type="button" class="btn btn-lg nf-green no-border-radius nf-button" id="add-team-button") Add Team To Tournament
                                         br
                                         br
-                                        div(class="form-control input-lg center-text no-border-radius tournament-info-field" id="addteammsg")
+                                        div(class="form-control nf-input input-lg center-text no-border-radius tournament-info-field" id="addteammsg")
 
                     div(id='team-list-div')
                         div(id='team-list-template')
@@ -555,7 +555,7 @@ block content
                                 div(class="col-md-5")
                                     div(class="row")
                                         div(class='col-md-6')
-                                            select(class="form-control no-border-radius phase-selection " id='phase-select-stats')
+                                            select(class="form-control nf-input no-border-radius phase-selection " id='phase-select-stats')
                                                 option(value='1') All
                                                 each phase in tournament.phases
                                                     if phase.active
@@ -608,13 +608,13 @@ block content
                                             label Teams
                                             br
                                             br
-                                            select(name="teams[]" class="form-control " size="#{tournament.teams.length}" multiple)
+                                            select(name="teams[]" class="form-control nf-input " size="#{tournament.teams.length}" multiple)
                                                 each val, i in tournament.teams
                                                     option(value="#{tournament.teams[i]._id}") #{tournament.teams[i].team_name}
                                         div(class="form-group")
-                                            input(class="form-control " type="number" name="minround" placeholder="Min Round" style="width:40%")
+                                            input(class="form-control nf-input " type="number" name="minround" placeholder="Min Round" style="width:40%")
                                         div(class="form-group")
-                                            input(class="form-control " type="number" name="maxround" placeholder="Max Round" style="width:40%")
+                                            input(class="form-control nf-input " type="number" name="maxround" placeholder="Max Round" style="width:40%")
                                         div(class="form-group")
                                             ul(class="nav nav-pills no-border-radius")
                                                 li
@@ -633,13 +633,13 @@ block content
                                 div(class="row")
                                     div(class="col-md-3 col-sm-3 col=lg-3")
                                         div(class="form-group")
-                                            input(type='text' placeholder='Enter New Phase Name Here' class="form-control " id="new-phase-name")
+                                            input(type='text' placeholder='Enter New Phase Name Here' class="form-control nf-input " id="new-phase-name")
                                     div(class="col-xs-1 col-sm-1 col-md-1 col-lg-1" id="success-phase-div")
                                         button(class="btn btn-md nf-blue nf-button" data-tournament='#{tournament._id}' id="new-phase") New Phase
                                         
                                 div(class='row')
                                     div(class='col-md-3 col-sm-3 col-lg-3')
-                                        select(class='form-control phase-selection ' name='phase' id='phase-select')
+                                        select(class='form-control nf-input phase-selection ' name='phase' id='phase-select')
                                             each phase in tournament.phases
                                                 if phase.active
                                                     option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
@@ -662,15 +662,15 @@ block content
                                                             if phase.active
                                                                 tr(class='active-phase')
                                                                     td
-                                                                        input(class='form-control phase-box input-sm ' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
+                                                                        input(class='form-control nf-input phase-box input-sm ' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
                                                                     td
-                                                                        button(class="btn nf-red btn-sm remove-phase " data-phase-id='#{phase.phase_id}') Remove
+                                                                        button(class="btn nf-red btn-sm remove-phase nf-button" data-phase-id='#{phase.phase_id}') Remove
                                                             else
                                                                 tr
                                                                     td
-                                                                        input(class='form-control phase-box input-sm ' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
+                                                                        input(class='form-control nf-input phase-box input-sm ' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
                                                                     td
-                                                                        button(class="btn nf-red btn-sm remove-phase " data-phase-id='#{phase.phase_id}') Remove
+                                                                        button(class="btn nf-red btn-sm remove-phase nf-button" data-phase-id='#{phase.phase_id}') Remove
 
 
                                         div(class="row")
