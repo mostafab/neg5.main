@@ -1,11 +1,10 @@
-const config = require('./config');
 const express = require('express');
 const bodyParser = require("body-parser");
 const clientsession = require("client-sessions");
 const cookieParser = require("cookie-parser");
 const helmet = require('helmet');
 
-module.exports = function() {
+module.exports = () => {
     const app = express();
 
     app.use(bodyParser.urlencoded({

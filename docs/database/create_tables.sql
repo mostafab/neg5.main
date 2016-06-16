@@ -7,7 +7,7 @@ CREATE TABLE account (
 
 CREATE TABLE tournament (
     id varchar(20) NOT NULL,
-    name varchar(255) NOT NULL,
+    name varchar(255) NOT NULL CHECK (char_length(name) > 0),
     tournament_date date,
     question_set varchar(255),
     comments text,
@@ -102,15 +102,16 @@ CREATE TABLE player_match_tossup (
     PRIMARY KEY (player_id, match_id, tournament_id, tossup_value),
     FOREIGN KEY (player_id, tournament_id) REFERENCES tournament_player(id, tournament_id) ON DELETE CASCADE,
     FOREIGN KEY (match_id, tournament_id) REFERENCES tournament_match(id, tournament_id) ON DELETE CASCADE,
-    FOREIGN KEY (tournament_id, tossup_value) REFERENCES tournament_tossup_values(tournament_id, tossup_value) ON DELETE NO ACTION
+    FOREIGN KEY (tournament_id, tossup_value) REFERENCES tournament_tossup_values(tournament_id, tossup_value)
 );
 
 CREATE TABLE tournament_phase (
     id varchar(20) NOT NULL,
-    name varchar(50) NOT NULL,
+    name varchar(50) NOT NULL CHECK (char_length(name) > 0),
     tournament_id varchar(20) NOT NULL,
     PRIMARY KEY (id, tournament_id),
-    FOREIGN KEY (tournament_id) REFERENCES tournament(id) ON DELETE CASCADE  
+    FOREIGN KEY (tournament_id) REFERENCES tournament(id) ON DELETE CASCADE,
+    UNIQUE (name, tournament_id)  
 );
 
 CREATE TABLE match_is_part_of_phase (
@@ -124,7 +125,7 @@ CREATE TABLE match_is_part_of_phase (
 
 CREATE TABLE tournament_division (
     id varchar(20) NOT NULL,
-    name varchar(50) NOT NULL,
+    name varchar(50) NOT NULL CHECK (char_length(name) > 0),
     tournament_id varchar(20) NOT NULL,
     phase_id varchar(20) NOT NULL,
     PRIMARY KEY (id, tournament_id),
