@@ -1,12 +1,12 @@
-var config = require("./config");
+var config = require("./configuration");
 var mongoose = require("mongoose");
 
-module.exports = function() {
-    var db = mongoose.connect(config.db_production);
+module.exports = () => {
+    var db = mongoose.connect(config.databaseConnections.mongo.development);
     var conn = mongoose.connection;
     conn.on('error', console.error.bind(console, "Connection Error: "));
-    conn.once('open', function(callback) {
-        // Nothing needs to go here
+    conn.once('open', () => {
+        console.log('Connected to mongo database');
     });
     require("../app/models/tournament");
     require("../app/models/user");
