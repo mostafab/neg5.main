@@ -8,7 +8,7 @@ module.exports = function (app) {
         if (!req.session.director) {
             res.redirect("/");
         } else {
-            res.render("account", { tournamentd: req.session.director });
+            res.render("index/account", { tournamentd: req.session.director });
         }
     });
 

@@ -24,7 +24,7 @@ module.exports = function (app) {
                     console.log(err);
                     res.status(500).send({ err: err });
                 } else {
-                    res.render("alltournaments", { tournaments: result, tournamentd: req.session.director });
+                    res.render("tournament/alltournaments", { tournaments: result, tournamentd: req.session.director });
                 }
             });
         }
@@ -51,7 +51,7 @@ module.exports = function (app) {
         if (!req.session.director) {
             res.redirect("/");
         } else {
-            res.render("create", { tournamentd: req.session.director });
+            res.render("tournament/create", { tournamentd: req.session.director });
         }
     });
 
@@ -119,12 +119,12 @@ module.exports = function (app) {
                 res.status(404).end();
             } else {
                 tournament.teamMap = statsController.makeTeamMap(tournament.teams);
-                res.render("game-list", { tournament: tournament, admin: true }, function (err, gameHTML) {
+                res.render("game/game-list", { tournament: tournament, admin: true }, function (err, gameHTML) {
                     if (err) {
                         console.log(err);
                         res.status(500).end();
                     } else {
-                        res.render("team-list", { tournament: tournament, admin: true }, function (err, teamHTML) {
+                        res.render("team/team-list", { tournament: tournament, admin: true }, function (err, teamHTML) {
                             if (err) {
                                 console.log(err);
                                 res.status(500).end();
@@ -254,7 +254,7 @@ module.exports = function (app) {
                             }
                         });
                     }
-                    res.render("team-list", { tournament: tournament, admin: admin }, function (err, html) {
+                    res.render("team/team-list", { tournament: tournament, admin: admin }, function (err, html) {
                         if (err) {
                             console.log(err);
                             res.status(500).end();
@@ -288,7 +288,7 @@ module.exports = function (app) {
                             }
                         }
                     }
-                    res.render("game-list", { tournament: tournament, admin: admin });
+                    res.render("game/game-list", { tournament: tournament, admin: admin });
                 }
             });
         }
@@ -391,11 +391,11 @@ module.exports = function (app) {
                 if (err) {
                     res.status(500).send({ err: err });
                 } else if (!tournament) {
-                    res.status(404).render("not-found", { tournamentd: req.session.director, msg: "That tournament doesn't exist." });
+                    res.status(404).render("index/not-found", { tournamentd: req.session.director, msg: "That tournament doesn't exist." });
                 } else {
                     var hasPermission = getPermission(tournament, req.session.director);
                     if (hasPermission.permission) {
-                        res.render("scoresheet", { tournamentd: req.session.director, tournamentName: tournament.tournament_name, tid: tournament._id,
+                        res.render("game/scoresheet", { tournamentd: req.session.director, tournamentName: tournament.tournament_name, tid: tournament._id,
                             shortID: tournament.shortID, teams: tournament.teams, maxRound: tournament.maxRound, phases: tournament.phases });
                     } else {
                         res.status(401).send("You don't have permission to view this tournament");
@@ -526,7 +526,7 @@ module.exports = function (app) {
                         team.ppg = team.getPointsPerGame(result);
                         team.papg = team.getOpponentPPG(result);
                         team.ppb = team.getOverallPPB(result);
-                        res.render("team-view", { team: team, teamPlayers: teamPlayers, tournament: tourney, admin: hasPermission.admin });
+                        res.render("team/team-view", { team: team, teamPlayers: teamPlayers, tournament: tourney, admin: hasPermission.admin });
                     } else {
                         res.status(404).end();
                     }
@@ -562,7 +562,7 @@ module.exports = function (app) {
                         }
                     }
                 }
-                res.render("team-list", { tournament: tournament, admin: admin });
+                res.render("team/team-list", { tournament: tournament, admin: admin });
             }
         });
     });
@@ -595,7 +595,7 @@ module.exports = function (app) {
                                 team2Players.push(result.players[_i]);
                             }
                         }
-                        res.render("game-view", { game: game, tournamentName: result.tournament_name,
+                        res.render("game/game-view", { game: game, tournamentName: result.tournament_name,
                             team1Players: team1Players, team2Players: team2Players, tournament: result });
                     } else {
                         res.status(404).end();
@@ -622,7 +622,7 @@ module.exports = function (app) {
                 var hasPermission = getPermission(tournament, req.session.director);
                 if (hasPermission.permission) {
                     tournament.teamMap = statsController.makeTeamMap(tournament.teams);
-                    return res.render('game-list', { tournament: tournament, admin: hasPermission.admin });
+                    return res.render('game/game-list', { tournament: tournament, admin: hasPermission.admin });
                 } else {
                     return res.status(401).end();
                 }
@@ -639,12 +639,12 @@ module.exports = function (app) {
                 if (err) {
                     res.status(500).send(err);
                 } else if (result == null) {
-                    res.status(404).render("not-found", { tournamentd: req.session.director, msg: "That tournament doesn't exist." });
+                    res.status(404).render("index/not-found", { tournamentd: req.session.director, msg: "That tournament doesn't exist." });
                 } else {
                     var hasPermission = getPermission(result, req.session.director);
                     if (hasPermission.permission) {
                         var linkName = result.tournament_name.replace(/\s/g, "_").toLowerCase();
-                        res.render("tournament-view", { tournament: result, tournamentd: req.session.director, linkName: linkName,
+                        res.render("tournament/tournament-view", { tournament: result, tournamentd: req.session.director, linkName: linkName,
                             admin: hasPermission.admin, tournamentDirector: director });
                     } else {
                         res.status(401).send("You don't have permission to view this tournament");

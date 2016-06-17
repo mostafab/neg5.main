@@ -13,6 +13,6 @@ module.exports = function (app) {
     });
 
     app.get("/about", function (req, res) {
-        res.render("about", { tournamentd: req.session.director });
+        res.render("index/about", { tournamentd: req.session.director });
     });
 };

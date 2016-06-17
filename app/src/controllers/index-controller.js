@@ -6,7 +6,7 @@
 * @param res The response object send from the server back to the client
 */
 exports.render = (req, res) => {
-    res.render("index", {title : "Neg 5",
+    res.render("index/index", {title : "Neg 5",
                         message : "Quizbowl for the Cloud",
                         errormsg : ""
     });

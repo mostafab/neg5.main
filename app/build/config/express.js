@@ -48,10 +48,10 @@ exports.default = function () {
         secure: true
     }));
 
-    app.set("views", _path2.default.join(__dirname, '../../../views'));
+    app.set("views", _path2.default.join(__dirname, '../../views'));
     app.set("view engine", "jade");
 
-    app.use(_express2.default.static(_path2.default.join(__dirname, '../../../public')));
+    app.use(_express2.default.static(_path2.default.join(__dirname, '../../public')));
 
     require('../routes/index.js')(app);
     require("../routes/user-route.js")(app);

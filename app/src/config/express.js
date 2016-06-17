@@ -5,7 +5,6 @@ import clientsession from 'client-sessions';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 
-
 export default () => {
     const app = express();
 
@@ -23,11 +22,11 @@ export default () => {
         httpOnly : true,
         secure : true
     }));
-
-    app.set("views", path.join(__dirname, '../../../views'));
+    
+    app.set("views", path.join(__dirname, '../../views'));
     app.set("view engine", "jade");
 
-    app.use(express.static(path.join(__dirname, '../../../public')));
+    app.use(express.static(path.join(__dirname, '../../public')));
 
     require('../routes/index.js')(app);
     require("../routes/user-route.js")(app);

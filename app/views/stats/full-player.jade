@@ -1,0 +1,81 @@
+extends ../layout
+
+block titleContent
+    title Players Full | #{tournament.tournament_name} | Neg 5
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+
+block content
+
+    main(class="cd-main-content" style='background-color:white;background-image:none')
+        div(class="box" style="padding:100px;")
+
+            div(class="row")
+                    div(class="col-md-12")
+                        div(class="panel-body")
+                            div(class="row" style="")
+                                ul(class="nav nav-pills no-border-radius")
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/team?phase=#{tournament.phaseInfo.phase_id}") Team Standings
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/player?phase=#{tournament.phaseInfo.phase_id}") Player Standings
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}") Teams Full
+                                    li
+                                        a(class='stat-title' href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}") Players Full
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{tournament.phaseInfo.phase_id}") Round Report
+
+                        h2(class="subtitle btn-shadow" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Full Player Details
+
+                        br
+                        br
+
+                        each playerid in Object.keys(playersInfo)
+                            h2(class="title" style="width:20%;margin-top:5px;margin-bottom:5px" id="#{playerid}") #{playersInfo[playerid].name}   (#{playersInfo[playerid].team})
+                            - var points = Object.keys(tournament.pointScheme).sort((first, second) => {return parseFloat(second) - parseFloat(first);});
+                            if playersInfo[playerid].games.length != 0
+                                - var gameHeaders = Object.keys(playersInfo[playerid].games[0])
+                                div(class="panel panel-default")
+                                    table(class="table table-condensed btn-shadow")
+                                        thead
+                                            tr
+                                                each stat, i in gameHeaders
+                                                    if stat == "pointValues"
+                                                        each val in points
+                                                            th(class="table-head") #{val}
+                                                    else
+                                                        th(class="table-head") #{gameHeaders[i]}
+
+                                        tbody
+                                            each game in playersInfo[playerid].games
+                                                tr
+                                                    each stat, i in gameHeaders
+                                                        if stat == "pointValues"
+                                                            each val in points
+                                                                td(class='stat-td') #{game["pointValues"][val]}
+                                                        else
+                                                            td(class='stat-td') #{game[stat]}
+
+                                        tfoot
+
+                                            tr(class="success" style="font-size:16px")
+                                                each stat, i in gameHeaders
+                                                    if i == 0
+                                                        td
+                                                            strong
+                                                                | Totals
+                                                    else
+                                                        if stat == "pointValues"
+                                                            each val in points
+                                                                td(class='stat-td')
+                                                                    strong
+                                                                        | #{playerTotals[playerid].pointTotals[val]}
+                                                        else
+                                                            if playerTotals[playerid][stat]
+                                                                td(class='stat-td')
+                                                                    strong
+                                                                        | #{playerTotals[playerid][stat]}
+                                                            else
+                                                                td

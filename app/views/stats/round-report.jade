@@ -1,0 +1,53 @@
+extends ../layout
+
+block titleContent
+    title Round Report | #{tournament.tournament_name} | Neg 5
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/tournamentstyle.css")
+
+block content
+
+    main(class="cd-main-content" style='background-color:white;background-image:none')
+        div(class="box" style="padding:100px;")
+
+            div(class="row")
+                    div(class="col-md-12")
+                        div(class="panel-body")
+                            div(class="row" style="")
+                                ul(class="nav nav-pills no-border-radius")
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/team?phase=#{tournament.phaseInfo.phase_id}") Team Standings
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/player?phase=#{tournament.phaseInfo.phase_id}") Player Standings
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}") Teams Full
+                                    li
+                                        a(href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}") Players Full
+                                    li
+                                        a(class='stat-title' href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{tournament.phaseInfo.phase_id}") Round Report
+
+                        h2(class="subtitle btn-shadow" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Round Report
+
+                        br
+                        br
+
+                        - var rounds = Object.keys(roundsInfo).sort(function(first, second) {
+                            - return (parseFloat(first) - parseFloat(second));
+                        - });
+
+                        div(class="panel panel-default")
+                            table(class="table table-condensed btn-shadow")
+                                thead
+                                    tr
+                                        th(class="table-head") Round
+                                        th(class="table-head") PPG/Team
+                                        th(class="table-head") TUPts / TUH
+                                        th(class="table-head") PPB
+                                tbody
+                                    each round, i in rounds
+                                        tr
+                                            td(class='stat-td') #{round}
+                                            td(class='stat-td') #{roundsInfo[round]["PPG/Team"]}
+                                            td(class='stat-td') #{roundsInfo[round]["TUPts/TUH"]}
+                                            td(class='stat-td') #{roundsInfo[round]["PPB"]}

@@ -1,0 +1,168 @@
+extends ../layout
+
+block titleContent
+    title Scoresheet | #{tournamentName} | Neg 5
+
+block extrastylesheets
+    link(rel="stylesheet" href="/css/scoresheet.css")
+
+block content
+
+    +navbar
+
+    div(class="content-wrapper box"  style='padding:75px')
+        input(type="hidden" value="#{tid}" id="tournamentid")
+        div(class="row")
+            div(class="col-md-6 col-lg-6 col-sm-6")
+                div(style="margin:10px; margin-bottom:50px")
+                div(style="text-align:center")
+                    h2(class="nf-dark-blue nf-panel-heading" style="width:100%;font-size:14px") #{tournamentName} Teams Select
+
+                div(class="row" id="team-select-div")
+                    div(class="row")
+                        div(class="col-md-12 col-lg-12 col-sm-12")
+                            div(class="col-md-6 col-lg-6 col-sm-6")
+                                div(style="text-align:left")
+                                    br
+                                    br
+                                    select(class="form-control nf-input input-lg center-text teamselect btn-shadow" id='leftselect')
+                                        option(disabled selected value="") Select Team 1
+                                        each team in teams
+                                            option(value="#{team._id}") #{team.team_name}
+
+                            div(class="col-md-6 col-lg-6 col-sm-6")
+                                div(style="text-align:center")
+                                    br
+                                    br
+                                    select(class="form-control nf-input input-lg center-text teamselect btn-shadow" id='rightselect')
+                                        option(disabled selected value="") Select Team 2
+                                        each team in teams
+                                            option(value="#{team._id}") #{team.team_name}
+
+                br
+
+                div(class="row" id="tossups-div")
+
+                    div(class="col-md-6 col-lg-6 col-sm-6" id="left-team-players")
+                        div(class="panel panel-default" style="text-align:center")
+                            div(class="panel-heading" id="team-1-name") Team 1
+                            div(class="panel-body" style='position:relative')
+                                div(id="leftplayerlist" class='player-list')
+                                div(class="neg-box")
+                                    button(class='btn btn-lg nf-red btn-block undo-neg') Undo Neg
+
+                    div(class="col-md-6 col-lg-6 col-sm-6" id="right-team-players")
+                        div(class="panel panel-default" style="text-align:center")
+                            div(class="panel-heading" id="team-2-name") Team 2
+                            div(class="panel-body" style='position:relative')
+                                div(id="rightplayerlist" class='player-list')
+                                div(class="neg-box")
+                                    button(class='btn btn-lg nf-red btn-block undo-neg') Undo Neg
+
+                    div(class="row col-md-12 col-sm-12 col-lg-12" id="dead-tossup-div" style='display:none;')
+                        div(class="col-md-6 col-lg-6 col-sm-6")
+                            btn(class="btn btn-block nf-red nf-button" id='last-tossup') Back to Last Tossup
+                        div(class='col-md-6 col-lg-6 col-sm-6')
+                            btn(class="btn btn-block nf-button nf-black" id='dead-tossup') Dead Tossup
+
+
+                div(class="row" id="bonus-div" style='display:none')
+
+                    div(class="col-md-12 col-lg-12 col-sm-12")
+                        div(class="panel panel-default" style="text-align:center")
+                            div(class="panel-heading nf-panel-heading nf-dark-blue" style="font-size:20px" id="team-bonus-name") Team 1
+                            div(class="panel-body")
+                                div(class="row")
+                                    each val, i in [1, 2, 3]
+                                        div(class="col-md-12 panel-body bonus-phase" style='padding:0px;margin:5px')
+                                            div(class="col-md-5 bonus-box")
+                                                button(type='button' class='btn btn-sm not-gotten-bonus btn-block left-team-bonus bonus-part' data-toggle-row='#{val}')
+                                            div(class="col-md-2")
+                                                label(class='btn-sm btn-block nf-dark-blue' style='font-size:16px;padding:5px') Part #{val}
+                                            div(class="col-md-5 bonus-box")
+                                                button(type='button' class='btn btn-sm not-gotten-bonus btn-block right-team-bonus bonus-part' data-toggle-row='#{val}')
+                                br
+                                div(class="row")
+                                    div(class="col-md-6")
+                                        button(class="btn btn-lg nf-red btn-block" style='margin:0px' id="undo-tossup") Undo this Tossup
+                                    div(class="col-md-6")
+                                        button(class="btn btn-lg nf-orange btn-block" style='margin:0px' id="next-tossup") Next Tossup
+
+                div(class="row")
+                    div(class="col-md-6")
+                        div(class="panel panel-default table-responsive")
+                            table(class="table table-hover table-condensed player-table" id="leftplayertable")
+
+                    div(class="col-md-6")
+                        div(class="panel panel-default table-responsive")
+                            table(class="table table-hover table-condensed player-table"  id="rightplayertable")
+
+                    div(class='col-md-12' id='toggle-message-div' style='display:none')
+                        div(class='nf-panel-heading nf-dark-blue fade in alert' style='text-align:center')
+                            a(href="#" data-dismiss='alert' aria-label="close" title="Close")
+                                strong(style='float:right')
+                                    | X
+                            strong(style='margin:10px')
+                                | Click player names on the table above to toggle them as active or unactive.
+
+            div(class="col-md-6 col-lg-6 col-sm-6")
+                div(style="margin:20px; margin-bottom:50px")
+                div(class="row")
+                    div(class="col-md-12 col-sm-12 col-lg-12")
+                        div(style="text-align:center")
+                            h2(class="nf-panel-heading nf-dark-blue" style="width:100%;font-size:14px") #{tournamentName} Scoresheet
+
+                br
+
+                div(class="row")
+                    div(class="col-md-12 col-sm-12 col-lg-12")
+                        div(class="panel panel-default")
+                            table(class="table table-bordered table-condensed" id="game-metadata")
+                                thead
+                                    th(class="table-head nf-th nf-th-short") Round
+                                    th(class="table-head nf-th nf-th-short") Room
+                                    th(class="table-head nf-th nf-th-short") Moderator
+                                    th(class='table-head nf-th nf-th-short') Packet
+                                    th(class="table-head nf-th") Phases
+                                    th(class="table-head nf-th nf-th-short") Notes
+                                tbody
+                                    tr(id="tr-metadata")
+                                        td(class='td-scoresheet' width='100')
+                                            input(type='number' class='input-scoresheet' id="round-number" value="#{maxRound}")
+                                        td(class="td-scoresheet" width='100')
+                                            input(type='text' class='input-scoresheet' value="-" id="room-number")
+                                        td(class="td-scoresheet" width='100')
+                                            input(type='text' class='input-scoresheet' value="-" id='moderator')
+                                        td(class="td-scoresheet")
+                                            input(type='text' class='input-scoresheet' value='-' id='packet')
+                                        td(class='td-scoresheet')
+                                            select(multiple class="form-control nf-input" id='phase' style='border-radius:1px;border-width:0px;' size='#{phases.length}')
+                                                each phase in phases
+                                                    if phase.active
+                                                        option(selected value='#{phase.phase_id}') #{phase.name}
+                                                    else
+                                                        option(value='#{phase.phase_id}') #{phase.name}
+                                        td(class='td-scoresheet' width='175')
+                                            textarea(class='input-scoresheet' id='notes' style='text-align:left') -
+
+                div(class="row")
+                    div(class="col-md-12")
+                        div(class="panel panel-default")
+                            table(class="table table-condensed"  id="scoresheet")
+
+                div(class="row col-md-12" id='submit-game-div')
+
+                div(class='row' id='error-div' style='display:none')
+                    div(class="col-md-12")
+                        div(class="panel panel-danger" style='text-align:center')
+                            div(class="panel-heading" style='font-size:16px') Error
+                                i(class="fa fa-times-circle" style='float:left' id='dismiss-error')
+                            div(class="panel-body" id='error-msg')
+
+                div(class="row col-md-12 col-lg-12 col-sm-12" id="goto-game-div" style='display:none')
+                    div(class="col-md-12 col-sm-12 col-lg-12")
+                        button(class="btn btn-xl nf-orange btn-block" data-tournament='#{tid}' id='undo-game') Undo Submission
+                            i(class="fa fa-arrow-left" style='margin-left:20px')
+
+block scripts
+    script(src="/js/scoresheet-es6.js")

@@ -13,6 +13,7 @@ module.exports = app => {
     });
 
     app.get("/about", (req, res) => {
-        res.render("about", {tournamentd : req.session.director});
+        res.render("index/about", {tournamentd : req.session.director});
     });
+    
 };

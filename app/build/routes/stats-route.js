@@ -7,7 +7,7 @@ var statsController = require("../controllers/stats-controller");
 module.exports = function (app) {
 
     app.get("/search", function (req, res) {
-        res.render("search", { tournamentd: req.session.director });
+        res.render("search/search", { tournamentd: req.session.director });
     });
 
     app.get("/search/submit", function (req, res) {
@@ -16,7 +16,7 @@ module.exports = function (app) {
                 console.log(err);
                 res.status(500).end();
             } else {
-                res.render("tournament-search-result", { tournaments: tournaments });
+                res.render("search/tournament-search-result", { tournaments: tournaments });
             }
         });
     });
@@ -35,7 +35,7 @@ module.exports = function (app) {
             } else {
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID,
                     pointScheme: tournament.pointScheme, divisions: tournament.divisions, phaseInfo: tournament.phaseInfo };
-                res.render("quick-teams", { tournament: tournamentData, teamInfo: teamInfo, custom: false });
+                res.render("stats/quick-teams", { tournament: tournamentData, teamInfo: teamInfo, custom: false });
             }
         });
     });
@@ -50,7 +50,7 @@ module.exports = function (app) {
                 var linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(/\s/g, "_").toLowerCase();
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID,
                     pointScheme: tournament.pointScheme, divisions: tournament.divisions, phaseInfo: tournament.phaseInfo };
-                res.render("quick-teams-simple", { tournament: tournamentData, teamInfo: teamInfo, linkName: linkTournamentName });
+                res.render("stats/quick-teams-simple", { tournament: tournamentData, teamInfo: teamInfo, linkName: linkTournamentName });
             }
         });
     });
@@ -64,7 +64,7 @@ module.exports = function (app) {
             } else {
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID,
                     pointScheme: tournament.pointScheme, phaseInfo: tournament.phaseInfo };
-                res.render("quick-players", { tournament: tournamentData, playersInfo: playersInfo, custom: false });
+                res.render("stats/quick-players", { tournament: tournamentData, playersInfo: playersInfo, custom: false });
             }
         });
     });
@@ -79,7 +79,7 @@ module.exports = function (app) {
                 var linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID,
                     pointScheme: tournament.pointScheme, phaseInfo: tournament.phaseInfo };
-                res.render("quick-players-simple", { tournament: tournamentData, playersInfo: playersInfo, linkName: linkTournamentName });
+                res.render("stats/quick-players-simple", { tournament: tournamentData, playersInfo: playersInfo, linkName: linkTournamentName });
             }
         });
     });
@@ -93,7 +93,7 @@ module.exports = function (app) {
             } else {
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID,
                     pointScheme: tournament.pointScheme, phaseInfo: tournament.phaseInfo };
-                res.render("full-teams", { tournament: tournamentData, teamsGames: teamsGames, playersInfo: playersInfo, teamTotals: teamTotals });
+                res.render("stats/full-teams", { tournament: tournamentData, teamsGames: teamsGames, playersInfo: playersInfo, teamTotals: teamTotals });
             }
         });
     });
@@ -108,7 +108,7 @@ module.exports = function (app) {
                 var linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID,
                     pointScheme: tournament.pointScheme, phaseInfo: tournament.phaseInfo };
-                res.render("full-team-simple", { tournament: tournamentData, teamsGames: teamsGames, playersInfo: playersInfo, teamTotals: teamTotals,
+                res.render("stats/full-team-simple", { tournament: tournamentData, teamsGames: teamsGames, playersInfo: playersInfo, teamTotals: teamTotals,
                     linkName: linkTournamentName });
             }
         });
@@ -123,7 +123,7 @@ module.exports = function (app) {
             } else {
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID,
                     pointScheme: tournament.pointScheme, phaseInfo: tournament.phaseInfo };
-                res.render("full-player", { playersInfo: playersInfo, tournament: tournamentData, playerTotals: playerTotals });
+                res.render("stats/full-player", { playersInfo: playersInfo, tournament: tournamentData, playerTotals: playerTotals });
             }
         });
     });
@@ -138,7 +138,7 @@ module.exports = function (app) {
                 var linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID,
                     pointScheme: tournament.pointScheme, phaseInfo: tournament.phaseInfo };
-                res.render("full-players-simple", { playersInfo: playersInfo, tournament: tournamentData, playerTotals: playerTotals,
+                res.render("stats/full-players-simple", { playersInfo: playersInfo, tournament: tournamentData, playerTotals: playerTotals,
                     linkName: linkTournamentName });
             }
         });
@@ -152,7 +152,7 @@ module.exports = function (app) {
                 res.status(404).end();
             } else {
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID, phaseInfo: tournament.phaseInfo };
-                res.render("round-report", { tournament: tournamentData, roundsInfo: roundsInfo });
+                res.render("stats/round-report", { tournament: tournamentData, roundsInfo: roundsInfo });
             }
         });
     });
@@ -166,7 +166,7 @@ module.exports = function (app) {
             } else {
                 var linkTournamentName = tournament.tournament_name.replace(/\s/g, "_").toLowerCase() + "_" + tournament.phaseInfo.name.replace(" ", "_").toLowerCase();
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID, phaseInfo: tournament.phaseInfo };
-                res.render("round-report-simple", { tournament: tournamentData, roundsInfo: roundsInfo, linkName: linkTournamentName });
+                res.render("stats/round-report-simple", { tournament: tournamentData, roundsInfo: roundsInfo, linkName: linkTournamentName });
             }
         });
     });
@@ -193,7 +193,7 @@ module.exports = function (app) {
                 tournament.divisions = [];
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID,
                     pointScheme: tournament.pointScheme, divisions: tournament.divisions };
-                res.render("quick-teams", { tournament: tournamentData, teamInfo: teamInfo, custom: true });
+                res.render("stats/quick-teams", { tournament: tournamentData, teamInfo: teamInfo, custom: true });
             }
         });
     });
@@ -219,7 +219,7 @@ module.exports = function (app) {
             } else {
                 var tournamentData = { tournament_name: tournament.tournament_name, shortID: tournament.shortID,
                     pointScheme: tournament.pointScheme };
-                res.render("quick-players", { tournament: tournamentData, playersInfo: playersInfo, custom: true });
+                res.render("stats/quick-players", { tournament: tournamentData, playersInfo: playersInfo, custom: true });
             }
         });
     });
@@ -236,18 +236,6 @@ module.exports = function (app) {
         });
     });
 
-    // app.get("/t/:tid/export/sqbs", (req, res) => {
-    //     statsController.convertToSQBS(req.params.tid, function(err, sqbs) {
-    //         if (err) {
-    //             res.status(500).end();
-    //         } else if (!sqbs) {
-    //             res.status(404).end();
-    //         } else {
-    //             res.status(200).send(sqbs);
-    //         }
-    //     });
-    // });
-
     app.get("/t/:tid/export/scoresheets", function (req, res) {
         statsController.exportScoresheets(req.params.tid, function (err, scoresheets) {
             if (err) {
@@ -261,6 +249,6 @@ module.exports = function (app) {
     });
 
     app.get("*", function (req, res, next) {
-        res.status(404).render("not-found", { tournamentd: req.session.director, msg: "That page doesn't exist." });
+        res.status(404).render("index/not-found", { tournamentd: req.session.director, msg: "That page doesn't exist." });
     });
 };

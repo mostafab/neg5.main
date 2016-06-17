@@ -29,9 +29,9 @@ gulp.task('babel-client', () => {
         console.log(err.message);        
     });
     
-    gulp.src(['public/es6/**/*.js'])
+    gulp.src(['app/public/es6/**/*.js'])
     .pipe(b)
-    .pipe(gulp.dest('public/js'));
+    .pipe(gulp.dest('app/public/js'));
 })
 
 gulp.task('watch', () => {

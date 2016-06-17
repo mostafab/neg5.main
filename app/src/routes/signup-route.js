@@ -13,7 +13,7 @@ module.exports = app => {
                 if (err) {
                     res.status(500).end();
                 } else {
-                    res.render("registrations", {tournamentd : req.session.director, registrations : registrations});
+                    res.render("registration/registrations", {tournamentd : req.session.director, registrations : registrations});
                 }
             });
         }
@@ -24,16 +24,16 @@ module.exports = app => {
             if (err) {
                 res.status(500).send(err);
             } else if (!result) {
-                res.status(404).render("not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
+                res.status(404).render("index/not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
             } else {
                 if (!req.session.director) {
-                    res.render("signup", {tournament : result, tournamentd : null});
+                    res.render("registration/signup", {tournament : result, tournamentd : null});
                 } else {
                     signupController.findOneRegistration(result.shortID, req.session.director._id, (err, registration) => {
                         if (err) {
                             res.status(500).end();
                         } else {
-                            res.render("signup", {tournament : result, tournamentd : req.session.director, prevReg : registration});
+                            res.render("registration/signup", {tournament : result, tournamentd : req.session.director, prevReg : registration});
                         }
                     });
                 }
