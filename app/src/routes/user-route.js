@@ -1,6 +1,6 @@
 'use strict';
 
-const userController = require('../../app/controllers/user-controller');
+const userController = require('../controllers/user-controller');
 
 module.exports = app => {
 

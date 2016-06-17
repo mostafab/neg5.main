@@ -1,0 +1,38 @@
+import path from 'path';
+import express from 'express';
+import bodyParser from 'body-parser';
+import clientsession from 'client-sessions';
+import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
+
+
+export default () => {
+    const app = express();
+
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+    app.use(helmet());
+    app.use(cookieParser());
+    app.use(bodyParser.json());
+    app.use(clientsession({
+        cookieName : "session",
+        secret : "TheresAlwaysMoneyInTheBananaStand",
+        duration : 180 * 60 * 1000,
+        activeDuration : 180 * 60 * 1000,
+        httpOnly : true,
+        secure : true
+    }));
+
+    app.set("views", path.join(__dirname, '../../../views'));
+    app.set("view engine", "jade");
+
+    app.use(express.static(path.join(__dirname, '../../../public')));
+
+    require('../routes/index.js')(app);
+    require("../routes/user-route.js")(app);
+    require("../routes/tournaments-route.js")(app);
+    require("../routes/stats-route.js")(app);
+
+    return app;
+};

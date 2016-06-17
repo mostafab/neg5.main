@@ -1,13 +1,14 @@
-const config = require('./config/configuration');
+import config from './config/configuration';
+import express from './config/express';
+
 const mongoose = require('./config/mongoose');
-const express = require('./config/express');
 
 const postgres = require('./database/postgres');
 
 const db = mongoose();
 const app = express();
 
-var PORT_NUM = config.port;
+const PORT_NUM = config.port;
 
 app.listen(PORT_NUM);
 

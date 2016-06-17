@@ -13,9 +13,9 @@ gulp.task('babel-server', () => {
         console.log(err.message);        
     });
     
-    gulp.src(['src/**/*.js', '!src/public/**/*'])
+    gulp.src(['app/src/**/*.js'])
     .pipe(b)
-    .pipe(gulp.dest('src/build'));
+    .pipe(gulp.dest('app/build'));
     
 });
 
@@ -29,14 +29,14 @@ gulp.task('babel-client', () => {
         console.log(err.message);        
     });
     
-    gulp.src(['src/public/es6/**/*.js'])
+    gulp.src(['public/es6/**/*.js'])
     .pipe(b)
-    .pipe(gulp.dest('src/public/js'));
+    .pipe(gulp.dest('public/js'));
 })
 
 gulp.task('watch', () => {
-   gulp.watch(['src/**/*.js', '!src/public/**/*'], ['babel-server']);
-   gulp.watch(['src/public/es6/**/*.js'], ['babel-client']);
+   gulp.watch(['app/src/**/*.js'], ['babel-server']);
+   gulp.watch(['public/es6/**/*.js'], ['babel-client']);
 });
 
 gulp.task('default', ['watch']);

@@ -4,9 +4,9 @@ const mongoose = require("mongoose");
 const shortid = require("shortid");
 const Tournament = mongoose.model("Tournament");
 
-const tournamentController = require('../../app/controllers/tournament-controller');
-const registrationController = require("../../app/controllers/registration-controller");
-const statsController = require("../../app/controllers/stats-controller");
+const tournamentController = require('../controllers/tournament-controller');
+const registrationController = require("../controllers/registration-controller");
+const statsController = require("../controllers/stats-controller");
 
 module.exports = app => {
 

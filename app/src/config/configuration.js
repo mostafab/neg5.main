@@ -1,9 +1,9 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-const configurationFilePath = path.join(__dirname, '../../configuration.json'); 
+const configurationFilePath = path.join(__dirname, '../../../../configuration.json'); 
 
 let buffer;
 let configurationJson;
@@ -15,4 +15,4 @@ try {
     throw err;
 }
 
-module.exports = configurationJson;
+export default configurationJson;

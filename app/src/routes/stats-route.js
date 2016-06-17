@@ -2,7 +2,7 @@
 
 const mongoose = require("mongoose");
 const Tournament = mongoose.model("Tournament");
-const statsController = require("../../app/controllers/stats-controller");
+const statsController = require("../controllers/stats-controller");
 
 module.exports = app => {
 

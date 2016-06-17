@@ -1,5 +1,5 @@
-const pg = require('pg');
-const configuration = require('../config/configuration');
+import pg from 'pg';
+import configuration from '../config/configuration';
 
 const connectionString = configuration.databaseConnections.postgres.local;
 
