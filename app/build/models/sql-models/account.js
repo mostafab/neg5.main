@@ -1,8 +1,15 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _account = require('../../data-access/account');
+
+var _account2 = _interopRequireDefault(_account);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = {
 
     createAccount: function createAccount(username, password) {
@@ -11,7 +18,7 @@ exports.default = {
                 username: username,
                 password: password
             };
-            db.saveAccount(newAccount).then(function (user) {
+            _account2.default.saveAccount(newAccount).then(function (user) {
                 return resolve(user);
             }).catch(function (error) {
                 return reject(error);
@@ -25,7 +32,7 @@ exports.default = {
                 username: username,
                 password: password
             };
-            db.getAccount(accountToRetrieve).then(function (user) {
+            _account2.default.getAccount(accountToRetrieve).then(function (user) {
                 return resolve(user);
             }).catch(function (error) {
                 return reject(error);

@@ -12,8 +12,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mongoose = require('./config/mongoose');
 
-var postgres = require('./database/postgres');
-
 var db = mongoose();
 var app = (0, _express2.default)();
 
