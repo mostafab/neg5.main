@@ -4,15 +4,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pg = require('pg');
+var _db = require('../config/database/db');
 
-var _pg2 = _interopRequireDefault(_pg);
-
-var _postgres = require('../config/database/postgres');
-
-var _postgres2 = _interopRequireDefault(_postgres);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _crypto = require('../helpers/crypto');
 
 exports.default = {
 
@@ -20,7 +14,17 @@ exports.default = {
         var username = _ref.username;
         var password = _ref.password;
 
-        return new Promise(function (resolve, reject) {});
+        return new Promise(function (resolve, reject) {
+            (0, _crypto.hashExpression)(password).then(function (hash) {
+                var query = 'INSERT INTO account (username, hash) VALUES ($1, $2) RETURNING *';
+                var params = [username, hash];
+                return (0, _db.singleQuery)(query, params);
+            }).then(function (user) {
+                resolve(user);
+            }).catch(function (error) {
+                reject(error);
+            });
+        });
     },
 
     getAccount: function getAccount(_ref2) {

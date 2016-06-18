@@ -2,6 +2,8 @@
 
 const userController = require('../controllers/user-controller');
 
+import Account from '../models/sql-models/account';
+
 module.exports = app => {
 
     app.get("/account", (req, res, next) => {
@@ -13,15 +15,24 @@ module.exports = app => {
     });
 
     app.post("/register/local", (req, res, next) => {
-        userController.register(req.body, (err, message) => {
-            if (err) {
-                return res.status(500).send({err : err});
-            } else if (message === "EXISTS") {
-                return res.send({msg : "A user with that email already exists.", exists : true});
-            } else {
-                return res.send({msg : "You're good to go! You can login now."});
-            }
-        });
+        // userController.register(req.body, (err, message) => {
+        //     if (err) {
+        //         return res.status(500).send({err : err});
+        //     } else if (message === "EXISTS") {
+        //         return res.send({msg : "A user with that email already exists.", exists : true});
+        //     } else {
+        //         return res.send({msg : "You're good to go! You can login now."});
+        //     }
+        // });
+        const {r_usrname, r_pswd} = req.body;
+        Account.createAccount(r_usrname, r_pswd)
+            .then(user=> {
+                return res.json({user: user});
+            })
+            .catch(error => {
+                console.log(error);
+                return res.status(500).send(error);
+            });
     });
 
     app.post("/auth/local", (req, res, next) => {

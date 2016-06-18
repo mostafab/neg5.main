@@ -1,11 +1,22 @@
-import pg from 'pg';
-import connectionString from '../config/database/postgres';
+import {singleQuery} from '../config/database/db';
+import {hashExpression, compareToHash} from '../helpers/crypto';
 
 export default {
     
     saveAccount: ({username, password}) => {
         return new Promise((resolve, reject) => {
-
+            hashExpression(password)
+                .then(hash => {
+                    let query = 'INSERT INTO account (username, hash) VALUES ($1, $2) RETURNING *';
+                    let params = [username, hash];
+                    return singleQuery(query, params);
+                })
+                .then(user => {
+                    resolve(user);
+                })
+                .catch(error => {
+                    reject(error);
+                })
         });
     },
     

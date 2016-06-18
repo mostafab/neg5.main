@@ -1,5 +1,11 @@
 'use strict';
 
+var _account = require('../models/sql-models/account');
+
+var _account2 = _interopRequireDefault(_account);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var userController = require('../controllers/user-controller');
 
 module.exports = function (app) {
@@ -13,14 +19,24 @@ module.exports = function (app) {
     });
 
     app.post("/register/local", function (req, res, next) {
-        userController.register(req.body, function (err, message) {
-            if (err) {
-                return res.status(500).send({ err: err });
-            } else if (message === "EXISTS") {
-                return res.send({ msg: "A user with that email already exists.", exists: true });
-            } else {
-                return res.send({ msg: "You're good to go! You can login now." });
-            }
+        // userController.register(req.body, (err, message) => {
+        //     if (err) {
+        //         return res.status(500).send({err : err});
+        //     } else if (message === "EXISTS") {
+        //         return res.send({msg : "A user with that email already exists.", exists : true});
+        //     } else {
+        //         return res.send({msg : "You're good to go! You can login now."});
+        //     }
+        // });
+        var _req$body = req.body;
+        var r_usrname = _req$body.r_usrname;
+        var r_pswd = _req$body.r_pswd;
+
+        _account2.default.createAccount(r_usrname, r_pswd).then(function (user) {
+            return res.json({ user: user });
+        }).catch(function (error) {
+            console.log(error);
+            return res.status(500).send(error);
         });
     });
 
