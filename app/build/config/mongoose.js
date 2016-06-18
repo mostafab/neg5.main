@@ -15,12 +15,12 @@ module.exports = function () {
     conn.once('open', function () {
         console.log('Connected to mongo database');
     });
-    require("../models/tournament");
-    require("../models/user");
-    require("../models/tournament-director");
-    require("../models/player");
-    require("../models/team");
-    require("../models/game");
-    require("../models/registration");
+    require("../models/mongo_schemas/tournament");
+    require("../models/mongo_schemas/user");
+    require("../models/mongo_schemas/tournament-director");
+    require("../models/mongo_schemas/player");
+    require("../models/mongo_schemas/team");
+    require("../models/mongo_schemas/game");
+    require("../models/mongo_schemas/registration");
     return db;
 };

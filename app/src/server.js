@@ -3,8 +3,6 @@ import express from './config/express';
 
 const mongoose = require('./config/mongoose');
 
-const postgres = require('./database/postgres');
-
 const db = mongoose();
 const app = express();
 

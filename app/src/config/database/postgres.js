@@ -1,5 +1,5 @@
 import pg from 'pg';
-import configuration from '../config/configuration';
+import configuration from '../configuration';
 
 const connectionString = configuration.databaseConnections.postgres.local;
 
