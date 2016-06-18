@@ -1,15 +1,15 @@
+import http from 'http';
 import config from './config/configuration';
 import express from './config/express';
 
 const mongoose = require('./config/mongoose');
 
+const PORT_NUM = config.port;
+
 const db = mongoose();
 const app = express();
 
-const PORT_NUM = config.port;
+const server = http.createServer(app);
+server.listen(PORT_NUM);
 
-app.listen(PORT_NUM);
-
-module.exports = app;
-
-console.log('Server running at http://localhost:' + PORT_NUM);
+console.log('Express server running on port ' + PORT_NUM);

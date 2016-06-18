@@ -1,12 +1,15 @@
-import pg from '../config/database/postgres';
+import pg from 'pg';
+import connectionString from '../config/database/postgres';
 
 export default {
     
-    saveAccount: (account) => {
-        
+    saveAccount: ({username, password}) => {
+        return new Promise((resolve, reject) => {
+
+        });
     },
     
-    getAccount: (account) => {
+    getAccount: ({username, password}) => {
         
     }
     

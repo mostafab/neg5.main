@@ -1,5 +1,9 @@
 'use strict';
 
+var _http = require('http');
+
+var _http2 = _interopRequireDefault(_http);
+
 var _configuration = require('./config/configuration');
 
 var _configuration2 = _interopRequireDefault(_configuration);
@@ -12,13 +16,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mongoose = require('./config/mongoose');
 
+var PORT_NUM = _configuration2.default.port;
+
 var db = mongoose();
 var app = (0, _express2.default)();
 
-var PORT_NUM = _configuration2.default.port;
+var server = _http2.default.createServer(app);
+server.listen(PORT_NUM);
 
-app.listen(PORT_NUM);
-
-module.exports = app;
-
-console.log('Server running at http://localhost:' + PORT_NUM);
+console.log('Express server running on port ' + PORT_NUM);
