@@ -13,7 +13,7 @@ export let singleQuery = (text, params) => {
                 values: params
             }, (err, result) => {
                 done();
-                if (err) reject (err);
+                if (err) return reject(err);
                 resolve(result);
             });
         });

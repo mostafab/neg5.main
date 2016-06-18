@@ -28,6 +28,10 @@ var _helmet = require('helmet');
 
 var _helmet2 = _interopRequireDefault(_helmet);
 
+var _account = require('../routes/api/account');
+
+var _account2 = _interopRequireDefault(_account);
+
 var _configuration = require('./configuration');
 
 var _configuration2 = _interopRequireDefault(_configuration);
@@ -66,6 +70,8 @@ exports.default = function () {
     require("../routes/user-route.js")(app);
     require("../routes/tournaments-route.js")(app);
     require("../routes/stats-route.js")(app);
+
+    (0, _account2.default)(app);
 
     return app;
 };

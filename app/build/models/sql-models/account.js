@@ -26,14 +26,14 @@ exports.default = {
         });
     },
 
-    retrieveAccount: function retrieveAccount(username, password) {
+    getAccount: function getAccount(username, password) {
         return new Promise(function (resolve, reject) {
             var accountToRetrieve = {
-                username: username,
+                user: username,
                 password: password
             };
-            _account2.default.getAccount(accountToRetrieve).then(function (user) {
-                return resolve(user);
+            _account2.default.authenticateAccount(accountToRetrieve).then(function (jwt) {
+                return resolve(jwt);
             }).catch(function (error) {
                 return reject(error);
             });

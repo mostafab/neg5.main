@@ -14,14 +14,14 @@ export default {
         }); 
     },
     
-    retrieveAccount: (username, password) => {
+    getAccount: (username, password) => {
         return new Promise((resolve, reject) => {
            let accountToRetrieve = {
-               username: username,
+               user: username,
                password: password
            };
-           db.getAccount(accountToRetrieve)
-                .then(user => resolve(user))
+           db.authenticateAccount(accountToRetrieve)
+                .then(jwt => resolve(jwt))
                 .catch(error => reject(error)); 
         });
     }

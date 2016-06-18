@@ -29,7 +29,7 @@ var singleQuery = exports.singleQuery = function singleQuery(text, params) {
                 values: params
             }, function (err, result) {
                 done();
-                if (err) reject(err);
+                if (err) return reject(err);
                 resolve(result);
             });
         });
