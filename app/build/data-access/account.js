@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _db = require('../config/database/db');
+var _db = require('../database/db');
 
 var _crypto = require('../helpers/crypto');
 

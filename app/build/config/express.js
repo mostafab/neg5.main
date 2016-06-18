@@ -28,7 +28,16 @@ var _helmet = require('helmet');
 
 var _helmet2 = _interopRequireDefault(_helmet);
 
+var _configuration = require('./configuration');
+
+var _configuration2 = _interopRequireDefault(_configuration);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _configuration$sessio = _configuration2.default.session;
+var cookieName = _configuration$sessio.cookieName;
+var secret = _configuration$sessio.secret;
+var duration = _configuration$sessio.duration;
 
 exports.default = function () {
     var app = (0, _express2.default)();
@@ -40,10 +49,10 @@ exports.default = function () {
     app.use((0, _cookieParser2.default)());
     app.use(_bodyParser2.default.json());
     app.use((0, _clientSessions2.default)({
-        cookieName: "session",
-        secret: "TheresAlwaysMoneyInTheBananaStand",
-        duration: 180 * 60 * 1000,
-        activeDuration: 180 * 60 * 1000,
+        cookieName: cookieName,
+        secret: secret,
+        duration: duration,
+        activeDuration: duration,
         httpOnly: true,
         secure: true
     }));

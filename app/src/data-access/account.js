@@ -1,4 +1,4 @@
-import {singleQuery} from '../config/database/db';
+import {singleQuery} from '../database/db';
 import {hashExpression, compareToHash} from '../helpers/crypto';
 
 export default {

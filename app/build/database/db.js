@@ -9,7 +9,7 @@ var _pg = require('pg');
 
 var _pg2 = _interopRequireDefault(_pg);
 
-var _configuration = require('../configuration');
+var _configuration = require('../config/configuration');
 
 var _configuration2 = _interopRequireDefault(_configuration);
 
@@ -24,10 +24,12 @@ var singleQuery = exports.singleQuery = function singleQuery(text, params) {
     return new Promise(function (resolve, reject) {
         _pg2.default.connect(connectionString, function (err, client, done) {
             if (err) return reject(err);
-            client.query(text, params, function (err, result) {
-                console.log(err);
+            client.query({
+                text: text,
+                values: params
+            }, function (err, result) {
                 done();
-                if (err) return reject(err);
+                if (err) reject(err);
                 resolve(result);
             });
         });

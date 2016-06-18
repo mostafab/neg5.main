@@ -5,6 +5,9 @@ import clientsession from 'client-sessions';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 
+import configuration from './configuration';
+const {cookieName, secret, duration} = configuration.session;
+
 export default () => {
     const app = express();
 
@@ -15,10 +18,10 @@ export default () => {
     app.use(cookieParser());
     app.use(bodyParser.json());
     app.use(clientsession({
-        cookieName : "session",
-        secret : "TheresAlwaysMoneyInTheBananaStand",
-        duration : 180 * 60 * 1000,
-        activeDuration : 180 * 60 * 1000,
+        cookieName : cookieName,
+        secret : secret,
+        duration : duration,
+        activeDuration : duration,
         httpOnly : true,
         secure : true
     }));

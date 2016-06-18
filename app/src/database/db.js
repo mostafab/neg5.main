@@ -1,5 +1,5 @@
 import pg from 'pg';
-import configuration from '../configuration';
+import configuration from '../config/configuration';
 
 const {env, databaseConnections} = configuration;
 const connectionString = databaseConnections.postgres[env];
@@ -8,12 +8,14 @@ export let singleQuery = (text, params) => {
     return new Promise((resolve, reject) => {
         pg.connect(connectionString, (err, client, done) => {
             if (err) return reject(err);
-            client.query(text, params, (err, result) => {
-                console.log(err);
+            client.query({
+                text: text,
+                values: params
+            }, (err, result) => {
                 done();
-                if (err) return reject(err);
-                resolve(result);                
-            })
+                if (err) reject (err);
+                resolve(result);
+            });
         });
     })
 }
