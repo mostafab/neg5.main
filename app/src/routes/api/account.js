@@ -2,10 +2,10 @@ import Account from '../../models/sql-models/account';
 
 export default (app) => {
     
-    app.route('/api/register')
+    app.route('/api/account')
         .post((req, res) => {
-            const {username, password} = req.body;
-            Account.createAccount(username, password)
+            const accountCredentials = req.body;
+            Account.create(accountCredentials)
                 .then(user => {
                     return res.json({user: user, success: true});
                 })
@@ -16,8 +16,8 @@ export default (app) => {
         
     app.route('/api/authenticate')
         .post((req, res) => {
-            const {username, password} = req.body;
-            Account.getAccount(username, password)
+            const accountCredentials = req.body;
+            Account.findOne(userCredentials)
                 .then(token => {
                     res.json({success: true, token: token})
                 })

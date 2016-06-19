@@ -9,39 +9,34 @@
         EMAIL_REGEX: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
     };
 
-    $(document).ready(function () {
-
-        $("#login").click(function () {
+    $("#login").click(function () {
+        checkLoginForms();
+    });
+    $("#regbutton").click(function () {
+        checkRegistrationForms();
+    });
+    $("#passwordinput").keypress(function (e) {
+        if (e.which == 13) {
             checkLoginForms();
+        }
+    });
+    $("#gotoregister").click(function () {
+        $("#loginpanel").fadeOut(200, function () {
+            $("#registerpanel").fadeIn(200);
         });
-        $("#regbutton").click(function () {
-            checkRegistrationForms();
-        });
-        $("#passwordinput").keypress(function (e) {
-            if (e.which == 13) {
-                checkLoginForms();
-            }
-        });
-
-        $("#gotoregister").click(function () {
-            $("#loginpanel").fadeOut(200, function () {
-                $("#registerpanel").fadeIn(200);
-            });
-        });
-
-        $("#closereg").click(function () {
-            $("#registerpanel").fadeOut(200, function () {
-                $("#loginpanel").fadeIn(200);
-            });
+    });
+    $("#closereg").click(function () {
+        $("#registerpanel").fadeOut(200, function () {
+            $("#loginpanel").fadeIn(200);
         });
     });
 
     function checkEmailInForm() {
-        return document.forms["logins"]["usrname"].value.length >= constants.MIN_USER_LENGTH;
+        return document.forms["logins"]["username"].value.length >= constants.MIN_USER_LENGTH;
     }
 
     function checkPasswordInForm() {
-        return document.forms["logins"]["pswd"].value.length >= constants.MIN_PASS_LENGTH;
+        return document.forms["logins"]["password"].value.length >= constants.MIN_PASS_LENGTH;
     }
 
     function submitLogin() {

@@ -14,14 +14,14 @@ const tournamentController = require('../controllers/tournament-controller');
 * @param callback callback with an error (or null) and indication of login
 */
 function validateLocalLogin(credentials, callback) {
-    User.findOne({"local.email" : credentials["usrname"].toLowerCase()}, (err, result) => {
+    User.findOne({"local.email" : credentials["username"].toLowerCase()}, (err, result) => {
         if (err) {
             console.log(err);
             callback(err, "", null);
         } else if (result == null) {
             callback(null, "NONE", "");
         } else {
-            bcryptjs.compare(credentials["pswd"], result.local.password, (err, res) => {
+            bcryptjs.compare(credentials["password"], result.local.password, (err, res) => {
                 if (err) {
                     return callback(err);
                 }

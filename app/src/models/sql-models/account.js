@@ -2,7 +2,7 @@ import db from '../../data-access/account';
 
 export default {
     
-    createAccount: (username, password) => {
+    create: ({username, password}) => {
         return new Promise((resolve, reject) => {
             let newAccount = {
                 username: username,
@@ -14,7 +14,7 @@ export default {
         }); 
     },
     
-    getAccount: (username, password) => {
+    findOne: ({username, password}) => {
         return new Promise((resolve, reject) => {
            let accountToRetrieve = {
                user: username,

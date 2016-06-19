@@ -18,8 +18,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var secret = _configuration2.default.jwt.secret;
 
 var encode = exports.encode = function encode(payload) {
-    return new Promise(function (resolve, reject) {
-        var token = _jwtSimple2.default.encode(payload, secret);
-        resolve(token);
-    });
+    return _jwtSimple2.default.encode(payload, secret);
 };

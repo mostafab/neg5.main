@@ -12,12 +12,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function (app) {
 
-    app.route('/api/register').post(function (req, res) {
-        var _req$body = req.body;
-        var username = _req$body.username;
-        var password = _req$body.password;
-
-        _account2.default.createAccount(username, password).then(function (user) {
+    app.route('/api/account').post(function (req, res) {
+        var accountCredentials = req.body;
+        _account2.default.create(accountCredentials).then(function (user) {
             return res.json({ user: user, success: true });
         }).catch(function (error) {
             return res.status(500).json({ error: error, success: false });
@@ -25,11 +22,8 @@ exports.default = function (app) {
     });
 
     app.route('/api/authenticate').post(function (req, res) {
-        var _req$body2 = req.body;
-        var username = _req$body2.username;
-        var password = _req$body2.password;
-
-        _account2.default.getAccount(username, password).then(function (token) {
+        var accountCredentials = req.body;
+        _account2.default.findOne(userCredentials).then(function (token) {
             res.json({ success: true, token: token });
         }).catch(function (errorMessage) {
             if (errorMessage.error) {

@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import accountApi from '../routes/api/account';
 
 import configuration from './configuration';
+
 const {cookieName, secret, duration} = configuration.session;
 
 export default () => {

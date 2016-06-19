@@ -36,7 +36,7 @@ gulp.task('babel-client', () => {
 
 gulp.task('watch', () => {
    gulp.watch(['app/src/**/*.js'], ['babel-server']);
-   gulp.watch(['public/es6/**/*.js'], ['babel-client']);
+   gulp.watch(['app/public/es6/**/*.js'], ['babel-client']);
 });
 
 gulp.task('default', ['watch']);

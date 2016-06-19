@@ -12,7 +12,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
 
-    createAccount: function createAccount(username, password) {
+    create: function create(_ref) {
+        var username = _ref.username;
+        var password = _ref.password;
+
         return new Promise(function (resolve, reject) {
             var newAccount = {
                 username: username,
@@ -26,7 +29,10 @@ exports.default = {
         });
     },
 
-    getAccount: function getAccount(username, password) {
+    findOne: function findOne(_ref2) {
+        var username = _ref2.username;
+        var password = _ref2.password;
+
         return new Promise(function (resolve, reject) {
             var accountToRetrieve = {
                 user: username,
