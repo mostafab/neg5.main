@@ -1,6 +1,6 @@
 "use strict";
 
-(function ($) {
+(function ($, global) {
 
     var nextPlayerNum = 5;
     var gameOptions;
@@ -1240,7 +1240,7 @@
 
     function updatePoints(num, pointvalues, side) {
         var total = 0;
-        for (key in pointvalues) {
+        for (var key in pointvalues) {
             var inputField = "player" + num + "_" + key + side + "id";
             var inputVal = $("#" + inputField).val();
             if (!isNaN(parseInt(inputVal))) {
@@ -1250,6 +1250,7 @@
         var ptLabelId = "#" + num + side + "pts";
         $(ptLabelId).val(total);
     }
+    global.updatePoints = updatePoints;
 
     /**
     * Updates the selection drop-down menu of teams after the ajax call
@@ -1413,4 +1414,4 @@
             return entityMap[s];
         });
     }
-})(jQuery);
+})(jQuery, window);

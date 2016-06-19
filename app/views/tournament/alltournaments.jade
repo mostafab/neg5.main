@@ -8,12 +8,18 @@ block content
     +navbar
     +navbar-bottom
 
-    div(class="content-wrapper box" style='padding:100px;padding-top:120px')
+    div(class="content-wrapper" style='padding:50px;padding-top:120px')
 
         div(class="row")
-            div(class="col-md-12")
+            div(class='col-md-6 col-sm-12 col-lg-6')
+                h2(class="btn btn-md btn-block nf-button nf-dark-blue") Tournaments
+            div(class='col-md-6 col-sm-12 col-lg-6')
+                a(class='btn btn-md nf-blue btn-shadow btn-block nf-button' href='/create') New Tournament                   
+                    
+         div(class='row')           
+            div(class="col-md-12 col-sm-12")
                 div(style="margin:20px; margin-bottom:50px")
-                h2(class="nf-panel-heading nf-dark-blue" style='width:50%') Tournaments
+                
                 br
                 div(class="panel panel-default table-grey")
                     table(class="table table-condensed btn-shadow")
@@ -39,12 +45,6 @@ block content
                                         td #{tournaments[i].date}
                                     td #{tournaments[i].questionSet}
                                     td #{tournaments[i].teamsAdded}
-
-        div(class='row')
-            div(class='col-md-3')
-                if tournaments.length === 0
-                    a(class='btn btn-md nf-blue btn-shadow btn-block' href='/create') First Tournament
-                else
-                    a(class='btn btn-md nf-blue btn-shadow btn-block nf-button' href='/create') New Tournament
+                
 block scripts
     script(src="/js/all-tournaments.js")

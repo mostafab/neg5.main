@@ -87,9 +87,12 @@
 
 /* End Neg 5 colors */
 
-.tournament-navigation-panel {
-    position: fixed;
+@media (min-width: 1200px) {
+    .tournament-navigation-panel {
+        position: fixed;
+    }
 }
+
 
 .center {
     text-align: center;
