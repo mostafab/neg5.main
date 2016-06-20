@@ -1,0 +1,80 @@
+div(class="panel panel-default" id='add-team-div')
+    div(class="panel-heading collapsable nf-panel-heading nf-dark-blue" id="add-team-panel") Add a Team
+        i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+    div(class="panel-body  tournament-panel" id="add-team-body")
+
+        div(class="col-md-8 col-sm-12")
+            form(id="teamform" name="createTeam")
+                input(
+                    type="hidden",
+                    name="tournament_id",
+                    value="#{tournament._id}"
+                )
+                div(class="form-group")
+                    label Name *
+                    input(
+                        type="text",
+                        name="team_name",
+                        id="team_name_input",
+                        placeholder="Team Name",
+                        class="form-control nf-input input-md center-text no-border-radius "
+                    )
+                hr
+                div(class="form-group")
+                    div(class="row")
+                        div(class="col-md-6")
+                            label Divisions
+                    br
+                    each phase, i in tournament.phases
+                        div(class="row")
+                            div(class="col-md-4 col-sm-4 col-lg-4")
+                                div(class='alert nf-dark-blue phase-name' data-phase-id='#{phase.phase_id}')
+                                    p #{phase.name}
+                            div(class="col-md-8 col-sm-8 col-lg-8")
+                                select(class="form-control nf-input new-team-division " data-phase-id='#{phase.phase_id}')
+                                    each division in tournament.divisions
+                                        if division.phase_id == phase.phase_id
+                                            option(value='#{division.name}') #{division.name}
+                        br
+                hr
+                div(id="player-dynamic" class="form-group")
+                    label Players
+                    button(type="button" class="btn btn-sm nf-blue no-border-radius " id="newlineplayer" style="margin: 5px") Add Player
+                    input(
+                        type="hidden",
+                        id="player_team_dynamic",
+                        name="players_team",
+                    )
+                    input(
+                        type="text",
+                        name="player1_name",
+                        placeholder="Player 1",
+                        autocomplete="off",
+                        class="form-control nf-input input-medium center-text no-border-radius player-name "
+                    )
+                    input(
+                        type="text",
+                        name="player2_name",
+                        autocomplete="off",
+                        class="form-control nf-input input-medium center-text no-border-radius player-name "
+                        placeholder="Player 2",
+                    )
+                    input(
+                        type="text",
+                        name="player3_name",
+                        placeholder="Player 3",
+                        autocomplete="off"
+                        class="form-control nf-input input-medium center-text no-border-radius player-name "
+                    )
+                    input(
+                        type="text",
+                        name="player4_name",
+                        placeholder="Player 4",
+                        autocomplete="off",
+                        class="form-control nf-input input-medium center-text no-border-radius player-name "
+                    )
+                br
+                button(type="button" class="btn btn-lg nf-green no-border-radius nf-button" id="add-team-button") Add Team To Tournament
+                br
+                br
+                div(class="form-control nf-input input-lg center-text no-border-radius tournament-info-field" id="addteammsg")
