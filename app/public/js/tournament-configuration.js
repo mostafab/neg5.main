@@ -3,13 +3,12 @@
 (function ($, global) {
 
     var nextPlayerNum = 5;
-    var gameOptions;
-    var teamOptions;
-    var playerOptions;
-    var gameList;
-    var teamList;
-    var playerList;
-    var progressBarClasses = 'progress-bar progress-bar-striped progress-bar-warning active';
+    var gameOptions = void 0;
+    var teamOptions = void 0;
+    var playerOptions = void 0;
+    var gameList = void 0;
+    var teamList = void 0;
+    var playerList = void 0;
 
     var entityMap = {
         "&": "&amp;",
@@ -20,7 +19,42 @@
         "/": '&#x2F;'
     };
 
+    var $refs = void 0;
+
     $(document).ready(function () {
+
+        $refs = {
+            $gameElements: {
+                $enterGameButton: $('#entergamebutton'),
+                $leftTeamSelectId: $("#leftteamnameID"),
+                $rightTeamSelectId: $("#rightteamnameID")
+            },
+            $teamElements: {
+                $teamNameInput: $('#team_name_input'),
+                $addTeamButton: $('#add-team-button'),
+                $teamSelect: $('.teamselect'),
+                $newPlayerButton: $("#newlineplayer")
+            },
+            $configurationElements: {
+                $addPointValueButton: $('#add-point-value-button'),
+                $savePointSchemaButton: $('#save-point-schema-button'),
+                $saveDivisionsButton: $('#save-divisions-button')
+            },
+            $tournamentElements: {
+                $editTournamentButton: $('#edittournamentbutton')
+            },
+            $phaseElements: {
+                $phaseSelect: $("#phase-select-stats")
+            }
+        };
+
+        var _$refs = $refs;
+        var $gameElements = _$refs.$gameElements;
+        var $teamElements = _$refs.$teamElements;
+        var $configurationElements = _$refs.$configurationElements;
+        var $tournamentElements = _$refs.$tournamentElements;
+        var $phaseElements = _$refs.$phaseElements;
+
 
         gameOptions = { valueNames: ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"] };
         gameList = new List("gamediv", gameOptions);
@@ -30,8 +64,8 @@
 
         playerOptions = { valueNames: [] };
 
-        $("#entergamebutton").prop("disabled", true);
-        $("#entergamebutton").removeClass("nf-blue").addClass("nf-red");
+        $gameElements.$enterGameButton.prop("disabled", true);
+        $gameElements.$enterGameButton.removeClass("nf-blue").addClass("nf-red");
 
         $(".collapsable").click(function (e) {
             e.stopImmediatePropagation();
@@ -41,7 +75,7 @@
             });
         });
 
-        $("#add-point-value-button").click(function () {
+        $configurationElements.$addPointValueButton.click(function () {
             addPointSchemaRow();
         });
 
@@ -50,49 +84,48 @@
             removePhase(pid, $(this));
         });
 
-        $("#add-team-button").click(function (e) {
-            $("#team_name_input").removeClass('alert-danger');
-            if ($("#team_name_input").val().length !== 0) {
+        $teamElements.$addTeamButton.click(function (e) {
+            var $teamNameInput = $teamElements.$teamNameInput;
+            $teamNameInput.removeClass('alert-danger');
+            if ($teamNameInput.val().length !== 0) {
                 var teamInfo = getNewTeamInfo();
                 sendTeamToServer(teamInfo);
             } else {
-                $("#team_name_input").addClass('alert-danger');
+                $teamNameInput.addClass('alert-danger');
             }
         });
 
-        $("#team_name_input").keyup(function (e) {
+        $teamElements.$teamNameInput.keyup(function (e) {
             $(this).removeClass('alert-danger');
-            var teamname = $("#team_name_input").val().trim();
+            var teamname = $teamElements.$teamNameInput.val().trim();
             $("#player_team_dynamic").val(teamname);
         });
 
-        $("#newlineplayer").click(function (e) {
+        $teamElements.$newPlayerButton.click(function (e) {
             createPlayerInputField();
         });
 
-        $(".teamselect").change(function (e) {
+        $teamElements.$teamSelect.change(function (e) {
             if ($(this).attr("id") == "leftchoice") {
                 findPlayersByTeamnameAndTournament("LEFT");
-                $("#leftteamnameID").val($(this).find(":selected").text());
+                $gameElements.$leftTeamSelectId.val($(this).find(":selected").text());
             } else {
                 findPlayersByTeamnameAndTournament("RIGHT");
-                $("#rightteamnameID").val($(this).find(":selected").text());
+                $gameElements.$rightTeamSelectId.val($(this).find(":selected").text());
             }
             var bothselect = true;
-            $(".teamselect").each(function (i, obj) {
+            $teamElements.$teamSelect.each(function () {
                 if ($(this).val() === "") {
-                    $("#entergamebutton").prop("disabled", true);
-                    $("#entergamebutton").removeClass("nf-blue").addClass("nf-red");
+                    $gameElements.$enterGameButton.prop("disabled", true).removeClass('nf-blue').addClass('nf-red');
                     bothselect = false;
                 }
             });
             if (bothselect) {
-                $("#entergamebutton").prop("disabled", false);
-                $("#entergamebutton").removeClass("nf-red").addClass("nf-blue");
+                $gameElements.$enterGameButton.prop("disabled", false).removeClass("nf-red").addClass("nf-blue");
             }
         });
 
-        $("#entergamebutton").click(function (e) {
+        $gameElements.$enterGameButton.click(function (e) {
             var wrong = false;
             $(".point-box").each(function () {
                 $(this).removeClass("alert-danger");
@@ -124,10 +157,10 @@
                     $(this).addClass("alert-danger");
                 }
             });
-            $(".teamselect").removeClass("alert-danger");
+            $gameElements.$teamSelect.removeClass("alert-danger");
             if ($("#leftchoice").val() === $("#rightchoice").val()) {
                 wrong = true;
-                $(".teamselect").addClass("alert-danger");
+                $gameElements.$teamSelect.addClass("alert-danger");
             }
             var gamePhases = $("#game-phases");
             gamePhases.removeClass("alert-danger");
@@ -192,13 +225,13 @@
             }
         });
 
-        $("#save-point-schema-button").click(function (e) {
+        $configurationElements.$savePointSchemaButton.click(function (e) {
             var pointTypes = formatPointTypes();
             formatPointSchemaForm(pointTypes);
             changePointSchemeAJAX(pointTypes);
         });
 
-        $("#save-divisions-button").click(function (e) {
+        $configurationElements.$saveDivisionsButton.click(function (e) {
             var divisions = [];
             $(".division-name").each(function () {
                 var name = $(this).val().trim();
@@ -211,11 +244,11 @@
             changeDivisionsAJAX(divisions, true);
         });
 
-        $("#edittournamentbutton").click(function (e) {
+        $tournamentElements.$editTournamentButton.click(function (e) {
             editTournamentAJAX();
         });
 
-        $("#phase-select-stats").change(function () {
+        $phaseElements.$phaseSelect.change(function () {
             var phaseID = $(this).val();
             var phaseName = $(this).find(":selected").text().replace(/\s/g, "_").toLowerCase();
             $(".stat-link").each(function () {
@@ -422,23 +455,22 @@
         $("body").on("click", "#back-to-games", function (e) {
             e.preventDefault();
             var button = $(this);
-            button.text("Loading...");
+            button.text("Loading");
             var href = button.attr("data-href");
             $.ajax({
                 url: href,
-                type: "GET",
-                success: function success(databack, status, xhr) {
-                    $("#game-view-div").empty();
-                    $("#game-list-template").html(databack);
-                    $("#add-game-div").show();
-                    $("#game-list-div").show();
-                    gameOptions = { valueNames: ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"] };
-                    gameList = new List("gamediv", gameOptions);
-                    $("[data-toggle='tooltip']").tooltip();
-                },
-                complete: function complete() {
-                    button.text("Games");
-                }
+                type: "GET"
+            }).then(function (response) {
+                $(".tournament-navigation-panel").removeClass('hidden-sm');
+                $("#game-view-div").empty();
+                $("#game-list-template").html(response);
+                $("#add-game-div").show();
+                $("#game-list-div").show();
+                gameOptions = { valueNames: ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"] };
+                gameList = new List("gamediv", gameOptions);
+                $("[data-toggle='tooltip']").tooltip();
+            }).always(function () {
+                button.text("Games");
             });
         });
 
@@ -582,8 +614,6 @@
         var html = "<p class='loading'><i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>";
         var lastText = td.text();
         td.html(html);
-        var progressBar = $(".progress-indicator");
-        progressBar.addClass(progressBarClasses);
         $.ajax({
             url: href,
             type: 'GET',
@@ -608,8 +638,6 @@
         var html = "<p class='loading'><i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>";
         var lastText = td.text();
         td.html(html);
-        var progressBar = $(".progress-indicator");
-        progressBar.addClass(progressBarClasses);
         $.ajax({
             url: href,
             type: 'GET',
@@ -619,12 +647,10 @@
                 $("#add-game-div").slideUp(300);
                 $("#game-list-div").slideUp(300);
                 $("#game-view-div").slideUp(0).html(databack).slideDown(300);
+                $(".tournament-navigation-panel").addClass("hidden-sm");
             },
             error: function error(xhr, status, err) {
                 td.html(lastText);
-            },
-            complete: function complete() {
-                progressBar.removeClass(progressBarClasses);
             }
         });
     }

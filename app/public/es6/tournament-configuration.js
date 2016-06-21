@@ -1,15 +1,14 @@
 (function($, global) {
 
-    var nextPlayerNum = 5;
-    var gameOptions;
-    var teamOptions;
-    var playerOptions;
-    var gameList;
-    var teamList;
-    var playerList;
-    var progressBarClasses = 'progress-bar progress-bar-striped progress-bar-warning active';
+    let nextPlayerNum = 5;
+    let gameOptions;
+    let teamOptions;
+    let playerOptions;
+    let gameList;
+    let teamList;
+    let playerList;
 
-    var entityMap = {
+    const entityMap = {
        "&": "&amp;",
        "<": "&lt;",
        ">": "&gt;",
@@ -17,9 +16,39 @@
        "'": '&#39;',
        "/": '&#x2F;'
      };
-
+     
+     let $refs;
+     
     $(document).ready(function() {
-
+        
+        $refs = {
+            $gameElements: {
+                $enterGameButton: $('#entergamebutton'),
+                $leftTeamSelectId: $("#leftteamnameID"),
+                $rightTeamSelectId: $("#rightteamnameID") 
+            },
+            $teamElements: {
+                $teamNameInput: $('#team_name_input'),
+                $addTeamButton: $('#add-team-button'),
+                $teamSelect: $('.teamselect'),
+                $newPlayerButton: $("#newlineplayer")
+            },
+            $configurationElements: {
+                $addPointValueButton: $('#add-point-value-button'),
+                $savePointSchemaButton: $('#save-point-schema-button'),
+                $saveDivisionsButton: $('#save-divisions-button')
+            },
+            $tournamentElements: {
+                $editTournamentButton: $('#edittournamentbutton')
+            },
+            $phaseElements: {
+                $phaseSelect: $("#phase-select-stats")
+            }
+        }
+        
+        let {$gameElements, $teamElements, $configurationElements, 
+            $tournamentElements, $phaseElements} = $refs;
+        
         gameOptions = { valueNames : ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"]};
         gameList = new List("gamediv", gameOptions);
 
@@ -28,18 +57,18 @@
 
         playerOptions = { valueNames : []};
 
-        $("#entergamebutton").prop("disabled", true);
-        $("#entergamebutton").removeClass("nf-blue").addClass("nf-red");
+        $gameElements.$enterGameButton.prop("disabled", true);
+        $gameElements.$enterGameButton.removeClass("nf-blue").addClass("nf-red");
 
         $(".collapsable").click(function(e) {
             e.stopImmediatePropagation();
-            var collapsable = $(this);
+            let collapsable = $(this);
             collapsable.next().toggle(300, function() {
                 collapsable.children(".arrow").toggleClass("fa-arrow-up").toggleClass("fa-arrow-down");
             });
         });
         
-        $("#add-point-value-button").click(function() {
+       $configurationElements.$addPointValueButton.click(function() {
             addPointSchemaRow();
         });
 
@@ -48,50 +77,51 @@
             removePhase(pid, $(this));
         });
 
-        $("#add-team-button").click(function(e) {
-            $("#team_name_input").removeClass('alert-danger');
-            if ($("#team_name_input").val().length !== 0) {
-                var teamInfo = getNewTeamInfo();
+        $teamElements.$addTeamButton.click(function(e) {
+            let $teamNameInput = $teamElements.$teamNameInput;
+            $teamNameInput.removeClass('alert-danger');
+            if ($teamNameInput.val().length !== 0) {
+                let teamInfo = getNewTeamInfo();
                 sendTeamToServer(teamInfo);
             } else {
-                $("#team_name_input").addClass('alert-danger');
+               $teamNameInput.addClass('alert-danger');
             }
         });
 
-        $("#team_name_input").keyup(function(e) {
+        $teamElements.$teamNameInput.keyup(function(e) {
             $(this).removeClass('alert-danger');
-            var teamname = $("#team_name_input").val().trim();
+            let teamname = $teamElements.$teamNameInput.val().trim();
             $("#player_team_dynamic").val(teamname);
         });
 
-        $("#newlineplayer").click(function(e) {
+        $teamElements.$newPlayerButton.click(function(e) {
             createPlayerInputField();
         });
 
-        $(".teamselect").change(function(e) {
+        $teamElements.$teamSelect.change(function(e) {
             if ($(this).attr("id") == "leftchoice") {
                 findPlayersByTeamnameAndTournament("LEFT");
-                $("#leftteamnameID").val($(this).find(":selected").text());
+                $gameElements.$leftTeamSelectId.val($(this).find(":selected").text());
             } else {
                 findPlayersByTeamnameAndTournament("RIGHT");
-                $("#rightteamnameID").val($(this).find(":selected").text());
+                $gameElements.$rightTeamSelectId.val($(this).find(":selected").text());
             }
-            var bothselect = true;
-            $(".teamselect").each(function(i, obj) {
+            let bothselect = true;
+            $teamElements.$teamSelect.each(function() {
                 if ($(this).val() === "") {
-                    $("#entergamebutton").prop("disabled", true);
-                    $("#entergamebutton").removeClass("nf-blue").addClass("nf-red");
+                    $gameElements.$enterGameButton.prop("disabled", true)
+                        .removeClass('nf-blue').addClass('nf-red');
                     bothselect = false;
                 }
             });
             if (bothselect) {
-                $("#entergamebutton").prop("disabled", false);
-                $("#entergamebutton").removeClass("nf-red").addClass("nf-blue");
+                $gameElements.$enterGameButton.prop("disabled", false)
+                    .removeClass("nf-red").addClass("nf-blue");
             }
         });
 
-        $("#entergamebutton").click(function(e) {
-            var wrong = false;
+        $gameElements.$enterGameButton.click(function(e) {
+            let wrong = false;
             $(".point-box").each(function() {
                 $(this).removeClass("alert-danger");
                 if ($(this).val()) {
@@ -122,10 +152,10 @@
                     $(this).addClass("alert-danger");
                 }
             });
-            $(".teamselect").removeClass("alert-danger");
+            $gameElements.$teamSelect.removeClass("alert-danger");
             if ($("#leftchoice").val() === $("#rightchoice").val()) {
                 wrong = true;
-                $(".teamselect").addClass("alert-danger");
+                $gameElements.$teamSelect.addClass("alert-danger");
             }
             var gamePhases = $("#game-phases");
             gamePhases.removeClass("alert-danger");
@@ -192,32 +222,32 @@
             }
         });
 
-        $("#save-point-schema-button").click(function(e) {
-            var pointTypes = formatPointTypes();
+       $configurationElements.$savePointSchemaButton.click(function(e) {
+            let pointTypes = formatPointTypes();
             formatPointSchemaForm(pointTypes);
             changePointSchemeAJAX(pointTypes);
         });
 
-        $("#save-divisions-button").click(function(e) {
-            var divisions = [];
+       $configurationElements.$saveDivisionsButton.click(function(e) {
+            let divisions = [];
             $(".division-name").each(function() {
-                var name = $(this).val().trim();
-                var phaseID = $(this).attr('data-phase-id');
+                let name = $(this).val().trim();
+                let phaseID = $(this).attr('data-phase-id');
                 if (name.length !== 0) {
-                    var division = {phase_id : phaseID, name : name};
+                    let division = {phase_id : phaseID, name : name};
                     divisions.push(division);
                 }
             });
             changeDivisionsAJAX(divisions, true);
         });
 
-        $("#edittournamentbutton").click(function(e) {
+        $tournamentElements.$editTournamentButton.click(function(e) {
             editTournamentAJAX();
         });
 
-        $("#phase-select-stats").change(function() {
-            var phaseID = $(this).val();
-            var phaseName = $(this).find(":selected").text().replace(/\s/g, "_").toLowerCase();
+        $phaseElements.$phaseSelect.change(function() {
+            let phaseID = $(this).val();
+            let phaseName = $(this).find(":selected").text().replace(/\s/g, "_").toLowerCase();
             $(".stat-link").each(function() {
                 var tid = $(this).attr("data-tid");
                 var statsType = $(this).attr('data-stats-type');
@@ -424,31 +454,32 @@
 
         $("body").on("click", "#back-to-games", function(e) {
             e.preventDefault();
-            var button = $(this);
-            button.text("Loading...");
-            var href = button.attr("data-href");
+            let button = $(this);
+            button.text("Loading");
+            let href = button.attr("data-href");
             $.ajax({
                 url : href,
-                type : "GET",
-                success : function(databack, status, xhr) {
-                    $("#game-view-div").empty();
-                    $("#game-list-template").html(databack);
-                    $("#add-game-div").show();
-                    $("#game-list-div").show();
-                    gameOptions = { valueNames : ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"]};
-                    gameList = new List("gamediv", gameOptions);
-                    $("[data-toggle='tooltip']").tooltip();
-                },
-                complete : function() {
-                    button.text("Games");
-                }
+                type : "GET"
+            })
+            .then(response => {
+                $(".tournament-navigation-panel").removeClass('hidden-sm');
+                $("#game-view-div").empty();
+                $("#game-list-template").html(response);
+                $("#add-game-div").show();
+                $("#game-list-div").show();
+                gameOptions = { valueNames : ["round", "team1name", "team2name", "team-1-score", "team-2-score", "tuh"]};
+                gameList = new List("gamediv", gameOptions);
+                $("[data-toggle='tooltip']").tooltip();
+            })
+            .always(() => {
+                button.text("Games");
             });
         });
 
         $("body").on("click", ".game-anchor", function(e) {
             e.preventDefault();
-            var href = $(this).attr("data-href");
-            var td = $(this).children("td").first();
+            let href = $(this).attr("data-href");
+            let td = $(this).children("td").first();
             loadGameAJAX(href, td);
         });
 
@@ -591,8 +622,6 @@
         var html = "<p class='loading'><i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>";
         var lastText = td.text();
         td.html(html);
-        var progressBar = $(".progress-indicator");
-        progressBar.addClass(progressBarClasses);
         $.ajax({
             url : href,
             type : 'GET',
@@ -614,11 +643,9 @@
     }
 
     function loadGameAJAX(href, td) {
-        var html = "<p class='loading'><i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>";
-        var lastText = td.text();
+        let html = "<p class='loading'><i class='fa fa-spinner fa-spin' style='margin-left:10px'></i></p>";
+        let lastText = td.text();
         td.html(html);
-        var progressBar = $(".progress-indicator");
-        progressBar.addClass(progressBarClasses);
         $.ajax({
             url : href,
             type : 'GET',
@@ -628,12 +655,10 @@
                 $("#add-game-div").slideUp(300);
                 $("#game-list-div").slideUp(300);
                 $("#game-view-div").slideUp(0).html(databack).slideDown(300);
+                $(".tournament-navigation-panel").addClass("hidden-sm");
             },
             error : function(xhr, status, err) {
                 td.html(lastText);
-            },
-            complete : function() {
-                progressBar.removeClass(progressBarClasses);
             }
         });
     }

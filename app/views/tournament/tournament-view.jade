@@ -24,45 +24,50 @@ block content
 
     div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;')
         input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
+        
         div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel")
-            div(style="margin:20px; margin-bottom:50px")
-            h2(class="nf-panel-heading nf-dark-blue " style='text-align:center;') #{tournament.tournament_name}
-            hr
-            h2(class="title " style='text-align:center;font-size:.9em;' id='current-phase-header') Current Phase: #{tournament.phaseName}
-            div(style="margin:20px; margin-bottom:10px")
+            div(class='row')
+                div(class='col-sm-7 col-lg-12 col-md-12')
+                    h2(class="nf-panel-heading nf-dark-blue center") #{tournament.tournament_name}
+                div(class='col-sm-5 col-lg-12 col-md-12')
+                    h2(class='nf-panel-heading nf-blue center' id='current-phase-header') Current Phase: #{tournament.phaseName}
+            
             div(class="panel-body" id='anchor-links')
                 div(class="row")
-                    ul(class="nav nav-bar no-border-radius")
-                        li(class="active")
-                            a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
-                        if admin
+                    div(class='col-sm-7 col-md-12 col-lg-12')
+                        ul(class="nav nav-bar no-border-radius")
+                            li(class="active")
+                                a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
+                            if admin
+                                li
+                                    a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
                             li
-                                a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
-                        li
-                            a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
+                                a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
 
-                        li
-                            a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games
-                        li
-                            a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
-                        li
-                            a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
-                        if tournamentd._id == tournament.directorid
                             li
-                                a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
-                        div(style='margin-top:30px')
-                        li
-                            a(target='_blank' href="/t/#{tournament.shortID}/scoresheet" class='btn-md nf-orange') Go To Scoresheet
-                        if tournamentd._id == tournament.directorid
-                            div(style='margin-top:50px')
-                            li(class='')
-                                a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
-                                    i(class='fa fa-trash')
+                                a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games
+                            li
+                                a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
+                            li
+                                a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
+                            if tournamentd._id == tournament.directorid
+                                li
+                                    a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
+                    
+                    
+                    div(class='col-sm-5 col-md-12 col-lg-12')
+                        ul(class="nav nav-bar no-border-radius")
+                            li
+                                a(target='_blank' href="/t/#{tournament.shortID}/scoresheet" class='btn-md nf-orange') Go To Scoresheet
+                            if tournamentd._id == tournament.directorid
+                                div(style='margin-top:10px')
+                                li
+                                    a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
+                                        i(class='fa fa-trash')
 
 
         div(class='col-sm-12 col-md-10 col-lg-10 col-lg-offset-2')
             div(class="tab-content")
-                div(style="margin:20px; margin-bottom:50px")
                 div(class="tab-pane fade active in" id="overview")
                     if admin
                         div(class="panel panel-default")
@@ -121,7 +126,7 @@ block content
 
                                     div(class="row")
                                         div(class="col-md-12")
-                                            label(class="label nf-dark-blue nf-label col-xs-2") Description
+                                            label(class="label nf-dark-blue nf-label col-xs-2 col-sm-4") Description
                                             div(class="form-group col-xs-8")
                                                 textarea(name="tournament_description" class="form-control nf-input " rows="10") #{tournament.description}
 
