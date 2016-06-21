@@ -1,4 +1,4 @@
-(function($, global) {
+(($, global) => {
 
     let nextPlayerNum = 5;
     let gameOptions;
