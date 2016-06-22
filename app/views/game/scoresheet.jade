@@ -99,7 +99,7 @@ block content
 
                     div(class='col-md-12' id='toggle-message-div' style='display:none')
                         div(class='nf-panel-heading nf-dark-blue fade in alert' style='text-align:center')
-                            a(href="#" data-dismiss='alert' aria-label="close" title="Close")
+                            a(href="#" data-dismiss='alert' aria-label="close" title="Close" id='close-tip')
                                 strong(style='float:right')
                                     | X
                             strong(style='margin:10px')
@@ -163,6 +163,10 @@ block content
                     div(class="col-md-12 col-sm-12 col-lg-12")
                         button(class="btn btn-xl nf-orange btn-block" data-tournament='#{tid}' id='undo-game') Undo Submission
                             i(class="fa fa-arrow-left" style='margin-left:20px')
-
+                
+    script.
+        let elem = document.getElementById('close-tip');
+        elem.onclick = () => document.cookie = 'closedTip=true'
+    
 block scripts
     script(src="/js/scoresheet-es6.js")

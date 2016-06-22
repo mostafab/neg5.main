@@ -25,7 +25,36 @@ block content
     div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;')
         input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
         
-        div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel")
+        div(class='hidden-md hidden-lg')
+            div(class='col-sm-2 col-xs-2')
+                h2(class="nf-label nf-dark-blue center") #{tournament.tournament_name} (#{tournament.phaseName})
+            div(class='col-sm-10 col-xs-10')
+                ul(class="breadcrumb")
+                    li(class="active center")
+                        a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
+                    if admin
+                        li(class="center")
+                            a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
+                    li(class="center")
+                        a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
+
+                    li(class="center")
+                        a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games
+                    li(class="center")
+                        a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
+                    li(class="center")
+                        a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
+                    if tournamentd._id == tournament.directorid
+                        li(class="center")
+                            a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
+                    li
+                        a(target='_blank' href="/t/#{tournament.shortID}/scoresheet") Scoresheet
+                    if tournamentd._id == tournament.directorid
+                        li(style='float:right')
+                            a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
+                                i(class='fa fa-trash')
+                                
+        div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
             div(class='row')
                 div(class='col-sm-7 col-lg-12 col-md-12')
                     h2(class="nf-panel-heading nf-dark-blue center") #{tournament.tournament_name}
@@ -498,7 +527,7 @@ block content
 
 
 block scripts
-    script(src="/js/tournament-configuration.js")
+    script(src="/js/tournament.js")
     script(src='/js/game-configuration.js')
     script(src="/js/jszip/dist/jszip.min.js")
     script(src='/js/jszip/dist/FileSaver.min.js')

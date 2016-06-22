@@ -1,6 +1,10 @@
-h3(style="width:50%")
-    button(class="btn btn-md nf-blue nf-button" data-href="/t/" + tournament.shortID + "/games" id='back-to-games') Back
-h2(class="nf-dark-blue nf-panel-heading nf-margin" style="width:50%;") Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
+div(class='row')
+    div(class='col-sm-2')
+        button(class="btn btn-md nf-blue nf-button btn-block" data-href="/t/" + tournament.shortID + "/games" id='back-to-games')
+            i(class='fa fa-arrow-left')
+    div(class='col-sm-5')
+        h2(class="nf-dark-blue nf-panel-heading nf-margin") Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
+
 
 br
 br
