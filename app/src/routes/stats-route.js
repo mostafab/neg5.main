@@ -248,7 +248,7 @@ module.exports = app => {
         });
     });
 
-    app.get("*", (req, res, next) => {
-        res.status(404).render("index/not-found", {tournamentd : req.session.director, msg : "That page doesn't exist."});
-    });
+    // app.get("*", (req, res, next) => {
+    //     res.status(404).render("index/not-found", {tournamentd : req.session.director, msg : "That page doesn't exist."});
+    // });
 };

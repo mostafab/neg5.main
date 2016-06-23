@@ -1,0 +1,54 @@
+div(class="tab-pane fade" id="phase")
+    
+    div(class='col-md-12 col-sm-12')
+        div(class="panel panel-default")
+            div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Phases
+                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+            div(class="panel-body tournament-panel")
+            
+                div(class="row")
+                    div(class="col-md-12 col-sm-12 col-lg-6")
+                        div(class='input-group')
+                            input(type='text' placeholder='Enter New Phase Name Here' class="form-control nf-input " id="new-phase-name")
+                            span(class='nf-button btn input-group-addon nf-green' id='new-phase')
+                                i(class='fa fa-plus')
+                                
+                hr
+                
+                div(class='row')
+                    div(class='col-md-12 col-sm-12 col-lg-6')
+                        div(class='input-group')
+                            select(class='form-control nf-input phase-selection ' name='phase' id='phase-select')
+                                each phase in tournament.phases
+                                    if phase.active
+                                        option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+                                    else
+                                        option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
+                            span(class='nf-button btn input-group-addon nf-green' id='switch-phases')
+                                i(class='fa fa-check')
+    
+    div(class='col-md-12 col-sm-12')
+        div(class="panel panel-default")
+            div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Current Phases
+                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+            div(class="panel-body  tournament-panel")
+                div(class="row")
+                    div(class="col-md-12 col-sm-12 col-lg-6")
+                        each phase in tournament.phases
+                            div(class='input-group')
+                                if phase.active
+                                    input(class='form-control nf-input phase-box input-md active-phase' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
+                                    span(class='input-group-addon nf-red remove-phase' data-phase-id='#{phase.phase_id}')
+                                        i(class='fa fa-trash')
+                                else
+                                    input(class='form-control nf-input phase-box input-md' type='text' data-phase-id='#{phase.phase_id}' data-active-phase='#{phase.active}' value='#{phase.name}')
+                                    span(class='input-group-addon nf-red remove-phase' data-phase-id='#{phase.phase_id}')
+                                        i(class='fa fa-trash')
+                            
+                            br
+                                              
+
+
+                div(class="row")
+                    div(class="col-md-3 col-sm-6 col-lg-3")
+                        button(class="btn nf-green btn-md nf-button btn-block" id='save-phases' data-tid='#{tournament.shortID}') Save Phases

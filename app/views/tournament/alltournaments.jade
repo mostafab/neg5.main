@@ -8,7 +8,7 @@ block content
     +navbar
     +navbar-bottom
 
-    div(class="content-wrapper" style='padding:50px;padding-top:120px')
+    div(class="content-wrapper" style='padding:25px;padding-top:100px')
 
         div(class="row")
             div(class='col-md-6 col-sm-8 col-lg-6')
@@ -29,7 +29,7 @@ block content
                                 th(class="table-head" style='text-align:center') Location
                                 th(class="table-head" style='text-align:center') Date
                                 th(class="table-head" style='text-align:center') Question set
-                                th(class="table-head" style='text-align:center') Number of Teams Added
+                                th(class="table-head" style='text-align:center') Teams Added
                         tbody(id="tournaments-body")
                             each val, i in tournaments
                                 tr(class='tournament-anchor nf-tr' data-href='/t/' + tournaments[i].shortID)

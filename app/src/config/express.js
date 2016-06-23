@@ -31,9 +31,9 @@ export default () => {
     
     app.set("views", path.join(__dirname, '../../views'));
     app.set("view engine", "jade");
-
+    
     app.use(express.static(path.join(__dirname, '../../public')));
-
+    
     require('../routes/index.js')(app);
     require("../routes/user-route.js")(app);
     require("../routes/tournaments-route.js")(app);

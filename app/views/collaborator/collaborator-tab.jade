@@ -1,0 +1,57 @@
+div(class="panel panel-default")
+    div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Collaborators
+        i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+    div(class="panel-body  tournament-panel")
+        if admin
+            div(class="row")
+                div(class="col-md-3" style='background-color:transparent')
+                    form(id="searchcollabform")
+                        input(id="searchcollabinput" type="text" class="form-control nf-input " placeholder="Add Collaborator. Enter at least 5 characters" name="collab")
+                        button(type="button" class="btn btn-sm nf-green nf-button" id="searchcollabbutton") Search
+
+                div(class="col-md-5" style="background-color:transparent;margin-top:0")
+                    form(name="collabs" id="addcollabform")
+                        input(type='hidden' name="tournamentid" value="#{tournament.shortID}")
+                        select(name="collaborators" class="form-control nf-input " size="5" id="directorsoptions")
+                            option(value="" disabled) Directors will show here.
+                        label(class="btn btn-sm nf-green nf-button"
+                                data-toggle='tooltip' title='Admins have access to remove games and teams, as well as add new collaborators and remove non-admin collaborators. They can also change divisions, point scheme, and tournament overview info. They cannot delete the tournament or make a new phase.') Admin Privileges
+                            input(type="checkbox" name='admin')
+                    button(type="button" class="btn btn-sm nf-blue nf-button" id="addcollabbutton") Add Selected
+            
+
+        div(class="row")
+            div(class="row")
+                span(class="label nf-dark-blue nf-label " style='margin-left:50px;font-size:16px;') Director
+            hr
+            div(style='margin-left:25px')
+                div(class="col-md-3 nf-card nf-white")
+                    p Name: #{tournamentDirector.name}
+                    p Email : #{tournamentDirector.email}
+        hr
+        div(class="row")
+            div(class="row")
+                span(class="label nf-dark-blue nf-label " style='margin-left:50px;font-size:16px') Admins
+            hr
+            div(style='margin-left:25px' id='admin-div')
+                each person, i in tournament.collaborators
+                    if person.admin || person.id == tournament.directorid
+                        div(class="col-md-3 nf-card nf-white")
+                            p Name : #{person.name}
+                            p Email : #{person.email}
+                            if (admin && person.id != tournamentd._id && tournamentd._id == tournament.directorid)
+                                button(class="btn btn-sm nf-red removecollab" style='margin-top:20px;' data-collabid="#{person.id}") Remove
+        hr
+        
+        div(class="row")
+            div(class="row")
+                span(class="label label-warning " style='margin-left:50px;font-size:16px') Non-Admins
+            hr
+            div(style='margin-left:25px' id='non-admin-div')
+                each person, i in tournament.collaborators
+                    if !(person.admin || person.id == tournament.directorid)
+                        div(class="col-md-3 nf-card nf-white" style='padding:20px;font-size:18px;border-radius:2px')
+                            p Name : #{person.name}
+                            p Email : #{person.email}
+                            if (admin && person.id != tournamentd._id)
+                                button(class="btn btn-sm nf-red removecollab " style='margin-top:20px;' data-collabid="#{person.id}") Remove

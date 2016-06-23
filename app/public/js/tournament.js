@@ -35,7 +35,8 @@
             $addPointValueButton: $('#add-point-value-button'),
             $savePointSchemaButton: $('#save-point-schema-button'),
             $saveDivisionsButton: $('#save-divisions-button'),
-            $navigationPanel: $(".tournament-navigation-panel")
+            $navigationPanel: $(".tournament-navigation-panel"),
+            $collapsable: $('.collapsable')
         },
         $tournamentElements: {
             $editTournamentButton: $('#edittournamentbutton')
@@ -63,7 +64,7 @@
     $gameElements.$enterGameButton.prop("disabled", true);
     $gameElements.$enterGameButton.removeClass("nf-blue").addClass("nf-red");
 
-    $(".collapsable").click(function (e) {
+    $configurationElements.$collapsable.click(function (e) {
         e.stopImmediatePropagation();
         var collapsable = $(this);
         collapsable.next().toggle(300, function () {
@@ -441,7 +442,6 @@
                 teamOptions = { valueNames: ["teamname", "division"] };
                 teamList = new List("teamdiv", teamOptions);
                 $("[data-toggle='tooltip']").tooltip();
-                $configurationElements.$navigationPanel.removeClass("hidden-sm");
             },
             complete: function complete() {
                 button.text("Teams");
@@ -458,7 +458,6 @@
             url: href,
             type: "GET"
         }).then(function (response) {
-            $configurationElements.$navigationPanel.removeClass('hidden-sm');
             $("#game-view-div").empty();
             $("#game-list-template").html(response);
             $("#add-game-div").show();
@@ -620,7 +619,6 @@
                 $("#team-list-div").slideUp(300);
                 $("#team-view-div").slideUp(0).html(databack).slideDown(300);
                 $("[data-toggle='tooltip']").tooltip();
-                $configurationElements.$navigationPanel.addClass("hidden-sm");
             },
             error: function error(xhr, status, err) {
                 td.html(lastText);
@@ -641,7 +639,6 @@
                 $("#add-game-div").slideUp(300);
                 $("#game-list-div").slideUp(300);
                 $("#game-view-div").slideUp(0).html(databack).slideDown(300);
-                $configurationElements.$navigationPanel.addClass("hidden-sm");
             },
             error: function error(xhr, status, err) {
                 td.html(lastText);

@@ -1,0 +1,111 @@
+if admin
+    div(class="panel panel-default")
+        div(class="panel-heading collapsable nf-dark-blue nf-panel-heading") Tournament Overview
+            i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+        div(class="panel-body tournament-panel")
+            form(id="tournament-overview-form")
+                input(type="hidden" value="#{tournament._id}" name="tournamentid")
+                div(class="row")
+                    div(class="col-md-12 col-lg-10")
+                            label(class="label nf-dark-blue nf-label col-xs-4 col-sm-4") Name
+                            div(class="form-group col-xs-8 col-sm-8")
+                                input(
+                                    type="text",
+                                    name="tournament_name",
+                                    value="#{tournament.tournament_name}",
+                                    class="form-control nf-input input-medium center-text no-border-radius "
+                                )
+                            label(class="label nf-dark-blue nf-label col-xs-4") Location
+                            div(class="form-group col-xs-8")
+                                input(
+                                    type="text",
+                                    name="tournament_location",
+                                    value="#{tournament.location}",
+                                    class="form-control nf-input input-medium center-text no-border-radius "
+                                )
+                            label(class="label nf-dark-blue nf-label col-xs-4") Question Set
+                            div(class="form-group col-xs-8")
+                                input(
+                                    type="text",
+                                    name="tournament_qset",
+                                    value="#{tournament.questionSet}",
+                                    class="form-control nf-input input-medium center-text no-border-radius "
+                                )
+                            label(class="label nf-dark-blue nf-label col-xs-4") Date
+                            div(class="form-group col-xs-8")
+                                if tournament.date
+                                    input(
+                                        type="date",
+                                        name="tournament_date",
+                                        value="#{dateConverter(tournament.date)}",
+                                        class="form-control nf-input input-medium center-text no-border-radius "
+                                    )
+                                else
+                                    input(
+                                        type="date",
+                                        name="tournament_date",
+                                        class="form-control nf-input input-medium center-text no-border-radius"
+                                    )
+                            label(class='label nf-dark-blue nf-label col-xs-4') Hidden
+                            div(class='form-group col-xs-8')
+                                if tournament.hidden
+                                    input(checked type='checkbox' value='1' name='hidden' class='form-control nf-input input-sm')
+                                else
+                                    input(type='checkbox' value='1' name='hidden' class='form-control nf-input input-sm')
+
+                div(class="row")
+                    div(class="col-md-12 col-lg-10")
+                        label(class="label nf-dark-blue nf-label col-xs-2 col-sm-4") Description
+                        div(class="form-group col-xs-8")
+                            textarea(name="tournament_description" class="form-control nf-input " rows="10") #{tournament.description}
+
+                        div(class="col-md-6")
+                            button(type="button" class="btn btn-md nf-green nf-button" id="edittournamentbutton") Save Changes
+                            div(id="tournament-update-msgdiv")
+                                p(style="margin:10px; font-size:18px")
+else
+    div(class="panel panel-default")
+        div(class="panel-heading collapsable nf-dark-blue nf-panel-heading") Tournament Overview
+            i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+        div(class="panel-body  tournament-panel")
+            div(class="row")
+                div(class="col-md-6")
+                    label(class="label nf-dark-blue nf-label col-xs-4") Name
+                    div(class="form-group col-xs-8")
+                        input(readonly
+                            value="#{tournament.tournament_name}",
+                            class="form-control nf-input input-medium center-text no-border-radius"
+                        )
+                    label(class="label nf-dark-blue nf-label col-xs-4") Location
+                    div(class="form-group col-xs-8")
+                        input(readonly
+                            type="text",
+                            value="#{tournament.location}",
+                            class="form-control nf-input input-medium center-text no-border-radius"
+                        )
+                    label(class="label nf-dark-blue nf-label col-xs-4") Question Set
+                    div(class="form-group col-xs-8")
+                        input(readonly
+                            type="text",
+                            value="#{tournament.questionSet}",
+                            class="form-control nf-input input-medium center-text no-border-radius"
+                        )
+                    label(class="label nf-dark-blue nf-label col-xs-4") Date
+                    div(class="form-group col-xs-8")
+                        if tournament.date
+                            input(readonly
+                                type="date",
+                                value="#{dateConverter(tournament.date)}",
+                                class="form-control nf-input input-medium center-text no-border-radius"
+                            )
+                        else
+                            input(readonly
+                                type="date",
+                                class="form-control nf-input input-medium center-text no-border-radius"
+                            )
+
+            div(class="row")
+                div(class="col-md-12")
+                    label(class="label nf-dark-blue nf-label col-xs-2") Description
+                    div(class="form-group col-xs-8")
+                        textarea(readonly class="form-control nf-input" rows="10") #{tournament.description}

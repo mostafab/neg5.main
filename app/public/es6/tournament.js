@@ -34,7 +34,7 @@
                 $savePointSchemaButton: $('#save-point-schema-button'),
                 $saveDivisionsButton: $('#save-divisions-button'),
                 $navigationPanel: $(".tournament-navigation-panel"),
-                $collapsable: $('.collapsable');
+                $collapsable: $('.collapsable')
             },
             $tournamentElements: {
                 $editTournamentButton: $('#edittournamentbutton')
