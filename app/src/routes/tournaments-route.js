@@ -572,7 +572,8 @@ module.exports = app => {
                         }
                     }
                 }
-                res.render("team/team-list", {tournament : tournament, admin : admin});
+                res.json({teams: tournament.teams, admin: admin})
+                // res.render("team/team-list", {tournament : tournament, admin : admin});
             }
         });
     });
