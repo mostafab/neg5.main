@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 
 import accountApi from '../routes/api/account';
+import tournamentApi from '../routes/api/tournament';
 
 import configuration from './configuration';
 
@@ -40,6 +41,7 @@ export default () => {
     require("../routes/stats-route.js")(app);
     
     accountApi(app);
+    tournamentApi(app);
 
     return app;
 };

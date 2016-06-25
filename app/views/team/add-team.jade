@@ -17,7 +17,8 @@ div(class="panel panel-default" id='add-team-div')
                         name="team_name",
                         id="team_name_input",
                         placeholder="Team Name",
-                        class="form-control nf-input input-md center-text no-border-radius "
+                        class="form-control nf-input input-md center-text no-border-radius",
+                        ng-model='newTeam.name'
                     )
                 hr
                 div(class="form-group")
@@ -37,44 +38,51 @@ div(class="panel panel-default" id='add-team-div')
                                             option(value='#{division.name}') #{division.name}
                         br
                 hr
-                div(id="player-dynamic" class="form-group")
+                div(id='player-dynamic' class='form-group')
                     label Players
-                    button(type="button" class="btn btn-sm nf-blue no-border-radius " id="newlineplayer" style="margin: 5px") Add Player
-                    input(
-                        type="hidden",
-                        id="player_team_dynamic",
-                        name="players_team",
-                    )
-                    input(
-                        type="text",
-                        name="player1_name",
-                        placeholder="Player 1",
-                        autocomplete="off",
-                        class="form-control nf-input input-medium center-text no-border-radius player-name "
-                    )
-                    input(
-                        type="text",
-                        name="player2_name",
-                        autocomplete="off",
-                        class="form-control nf-input input-medium center-text no-border-radius player-name "
-                        placeholder="Player 2",
-                    )
-                    input(
-                        type="text",
-                        name="player3_name",
-                        placeholder="Player 3",
-                        autocomplete="off"
-                        class="form-control nf-input input-medium center-text no-border-radius player-name "
-                    )
-                    input(
-                        type="text",
-                        name="player4_name",
-                        placeholder="Player 4",
-                        autocomplete="off",
-                        class="form-control nf-input input-medium center-text no-border-radius player-name "
-                    )
+                    button(type="button" class="btn btn-sm nf-blue no-border-radius " id="newlineplayer" style="margin: 5px" ng-click='addPlayer()') Add Player
+                    div(ng-repeat='player in newTeam.players')
+                        input(type='text' class='form-control nf-input input-medium center-text no-border-radius player-name' autocomplete='off' placeholder='Player {{$index + 1}}' ng-model='newTeam.players[$index].name')
+                        
+                    
+                //- div(id="player-dynamic" class="form-group")
+                //-     label Players
+                //-     button(type="button" class="btn btn-sm nf-blue no-border-radius " id="newlineplayer" style="margin: 5px") Add Player
+                //-     input(
+                //-         type="hidden",
+                //-         id="player_team_dynamic",
+                //-         name="players_team",
+                //-     )
+                //-     input(
+                //-         type="text",
+                //-         name="player1_name",
+                //-         placeholder="Player 1",
+                //-         autocomplete="off",
+                //-         class="form-control nf-input input-medium center-text no-border-radius player-name "
+                //-     )
+                //-     input(
+                //-         type="text",
+                //-         name="player2_name",
+                //-         autocomplete="off",
+                //-         class="form-control nf-input input-medium center-text no-border-radius player-name "
+                //-         placeholder="Player 2",
+                //-     )
+                //-     input(
+                //-         type="text",
+                //-         name="player3_name",
+                //-         placeholder="Player 3",
+                //-         autocomplete="off"
+                //-         class="form-control nf-input input-medium center-text no-border-radius player-name "
+                //-     )
+                //-     input(
+                //-         type="text",
+                //-         name="player4_name",
+                //-         placeholder="Player 4",
+                //-         autocomplete="off",
+                //-         class="form-control nf-input input-medium center-text no-border-radius player-name "
+                //-     )
                 br
-                button(type="button" class="btn btn-lg nf-green no-border-radius nf-button" id="add-team-button") Add Team To Tournament
+                button(type="button" class="btn btn-lg nf-green no-border-radius nf-button" id="add-team-button" ng-click='addTeam()') Add Team To Tournament
                 br
                 br
                 div(class="form-control nf-input input-lg center-text no-border-radius tournament-info-field" id="addteammsg")

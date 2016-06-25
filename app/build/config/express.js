@@ -32,6 +32,10 @@ var _account = require('../routes/api/account');
 
 var _account2 = _interopRequireDefault(_account);
 
+var _tournament = require('../routes/api/tournament');
+
+var _tournament2 = _interopRequireDefault(_tournament);
+
 var _configuration = require('./configuration');
 
 var _configuration2 = _interopRequireDefault(_configuration);
@@ -72,6 +76,7 @@ exports.default = function () {
     require("../routes/stats-route.js")(app);
 
     (0, _account2.default)(app);
+    (0, _tournament2.default)(app);
 
     return app;
 };

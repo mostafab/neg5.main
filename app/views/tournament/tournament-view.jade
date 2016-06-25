@@ -22,150 +22,152 @@ block content
     -    return formattedDate;
     - }
 
-    div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;' ng-app='TournamentApp')
-        input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
-        
-        div(class='hidden-md hidden-lg')
-            div(class='col-sm-2 col-xs-2')
-                h2(class="nf-label nf-dark-blue center") #{tournament.tournament_name} (#{tournament.phaseName})
-            div(class='col-sm-10 col-xs-10')
-                ul(class="breadcrumb")
-                    li(class="active center")
-                        a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
-                    if admin
-                        li(class="center")
-                            a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
-                    li(class="center")
-                        a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
-
-                    li(class="center")
-                        a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games
-                    li(class="center")
-                        a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
-                    li(class="center")
-                        a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
-                    if tournamentd._id == tournament.directorid
-                        li(class="center")
-                            a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
-                    li
-                        a(target='_blank' href="/t/#{tournament.shortID}/scoresheet") Scoresheet
-                    if tournamentd._id == tournament.directorid
-                        li(style='float:right')
-                            a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
-                                i(class='fa fa-trash')
-                                
-        div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
-            div(class='row')
-                div(class='col-sm-7 col-lg-12 col-md-12')
-                    h2(class="nf-panel-heading nf-dark-blue center") #{tournament.tournament_name}
-                div(class='col-sm-5 col-lg-12 col-md-12')
-                    h2(class='nf-panel-heading nf-blue center' id='current-phase-header') Current Phase: #{tournament.phaseName}
+    div(ng-app='TournamentApp')
+        div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;' ng-controller='TournamentController')
+            input(type="hidden" id="tournamentshortid" value="#{tournament.shortID}")
             
-            div(class="panel-body" id='anchor-links')
-                div(class="row")
-                    div(class='col-sm-7 col-md-12 col-lg-12')
-                        ul(class="nav nav-bar no-border-radius")
-                            li(class="active center")
-                                a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
-                            if admin
-                                li(class="center")
-                                    a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
+            div(class='hidden-md hidden-lg')
+                div(class='col-sm-2 col-xs-2')
+                    h2(class="nf-label nf-dark-blue center") {{tournamentContext.name}} (#{tournament.phaseName})
+                div(class='col-sm-10 col-xs-10')
+                    ul(class="breadcrumb")
+                        li(class="active center")
+                            a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
+                        if admin
                             li(class="center")
-                                a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
+                                a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
+                        li(class="center")
+                            a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
 
+                        li(class="center")
+                            a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games
+                        li(class="center")
+                            a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
+                        li(class="center")
+                            a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
+                        if tournamentd._id == tournament.directorid
                             li(class="center")
-                                a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games
-                            li(class="center")
-                                a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
-                            li(class="center")
-                                a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
-                            if tournamentd._id == tournament.directorid
-                                li(class="center")
-                                    a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
-                    
-                    
-                    div(class='col-sm-5 col-md-12 col-lg-12')
-                        ul(class="nav nav-bar no-border-radius")
-                            li
-                                a(target='_blank' href="/t/#{tournament.shortID}/scoresheet" class='btn-md nf-orange') Go To Scoresheet
-                            if tournamentd._id == tournament.directorid
-                                div(style='margin-top:10px')
-                                li
-                                    a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
-                                        i(class='fa fa-trash')
-
-
-        div(class='col-sm-12 col-md-10 col-lg-10 col-lg-offset-2')
-            div(class="tab-content")
-                div(class="tab-pane fade active in" id="overview")
-                    include ./tournament-tab.jade
-
-                div(class='tab-pane fade' id='collaborators')
-                    include ./../collaborator/collaborator-tab.jade
-                    
-                    
-                if admin
-                    div(class="tab-pane fade" id="divisions")
-                        include ./../config/config-tab.jade
-
-                div(class="tab-pane fade" id="games")
+                                a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
+                        li
+                            a(target='_blank' href="/t/#{tournament.shortID}/scoresheet") Scoresheet
+                        if tournamentd._id == tournament.directorid
+                            li(style='float:right')
+                                a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
+                                    i(class='fa fa-trash')
+                                    
+            div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
+                div(class='row')
+                    div(class='col-sm-7 col-lg-12 col-md-12')
+                        h2(class="nf-panel-heading nf-dark-blue center") {{tournamentContext.name}}
+                    div(class='col-sm-5 col-lg-12 col-md-12')
+                        h2(class='nf-panel-heading nf-blue center' id='current-phase-header') Current Phase: #{tournament.phaseName}
                 
-                    include ./../game/add-game.jade
-                            
-                    div(id='game-list-div')
-                        div(id='game-list-template')
-                            include ./../game/game-list.jade
+                div(class="panel-body" id='anchor-links')
+                    div(class="row")
+                        div(class='col-sm-7 col-md-12 col-lg-12')
+                            ul(class="nav nav-bar no-border-radius")
+                                li(class="active center")
+                                    a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
+                                if admin
+                                    li(class="center")
+                                        a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
+                                li(class="center")
+                                    a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
 
-                    div(class='row')
-                        div(class='col-md-12' id='game-view-div')
+                                li(class="center")
+                                    a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games
+                                li(class="center")
+                                    a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
+                                li(class="center")
+                                    a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
+                                if tournamentd._id == tournament.directorid
+                                    li(class="center")
+                                        a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
+                        
+                        
+                        div(class='col-sm-5 col-md-12 col-lg-12')
+                            ul(class="nav nav-bar no-border-radius")
+                                li
+                                    a(target='_blank' href="/t/#{tournament.shortID}/scoresheet" class='btn-md nf-orange') Go To Scoresheet
+                                if tournamentd._id == tournament.directorid
+                                    div(style='margin-top:10px')
+                                    li
+                                        a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
+                                            i(class='fa fa-trash')
 
-                div(class="tab-pane fade" id="teams" ng-controller='TeamController')
+
+            div(class='col-sm-12 col-md-10 col-lg-10 col-lg-offset-2')
+                div(class="tab-content")
+                    div(class="tab-pane fade active in" id="overview")
+                        include ./tournament-tab.jade
+
+                    div(class='tab-pane fade' id='collaborators')
+                        include ./../collaborator/collaborator-tab.jade
+                        
+                        
+                    if admin
+                        div(class="tab-pane fade" id="divisions")
+                            include ./../config/config-tab.jade
+
+                    div(class="tab-pane fade" id="games")
                     
-                    include ./../team/add-team.jade
+                        include ./../game/add-game.jade
+                                
+                        div(id='game-list-div')
+                            div(id='game-list-template')
+                                include ./../game/game-list.jade
 
-                    div(id='team-list-div')
-                        div(id='team-list-template')
-                            include ./../team/team-list.jade
+                        div(class='row')
+                            div(class='col-md-12' id='game-view-div')
 
-                    div(class='row' style='margin-left:20px')
-                        div(class='col-md-12' id='team-view-div')
+                    div(class="tab-pane fade" id="teams" ng-controller='TeamController')
+                        
+                        include ./../team/add-team.jade
 
-                div(class="tab-pane fade" id="stats")
-                    
-                    include ./../stats/tab/stats-tab.jade
+                        div(id='team-list-div')
+                            div(id='team-list-template')
+                                include ./../team/team-list.jade
 
-                if (tournamentd._id == tournament.directorid)
-                    include ./../phase/phase-tab.jade
-                    
+                        div(class='row' style='margin-left:20px')
+                            div(class='col-md-12' id='team-view-div')
 
-                if (tournamentd._id == tournament.directorid)
-                    div(class="tab-pane fade" id="delete")
+                    div(class="tab-pane fade" id="stats")
+                        
+                        include ./../stats/tab/stats-tab.jade
 
-                        div(class="panel panel-default")
-                            div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Delete #{tournament.tournament_name}
-                                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
-                            div(class="panel-body  tournament-panel")
-                                div(class="row")
-                                    div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
-                                        div(class="alert alert-danger")
-                                            | If you no longer need this tournament, you can delete it here. Please make sure this is what you want
-                                            | to do. This action is final.
-                                            strong There is no way to undo a tournament deletion.
+                    if (tournamentd._id == tournament.directorid)
+                        include ./../phase/phase-tab.jade
+                        
 
-                                        form(method="post" action="/t/#{tournament._id}/delete" name="deleteTournament")
-                                            button(type="button" class="btn btn-md nf-red " id="delete-tournament-button") Delete This Tournament
+                    if (tournamentd._id == tournament.directorid)
+                        div(class="tab-pane fade" id="delete")
 
-                                div(class="col-md-6" id="confirm-delete-div" style='display:none')
-                                    div(class="col-md-6")
-                                        button(type="button" class="btn btn-md nf-red btn-block " id="no-delete") Never Mind
-                                    div(class="col-md-6")
-                                        button(type="button" class="btn btn-md nf-blue btn-block " id="yes-delete") Yes
+                            div(class="panel panel-default")
+                                div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Delete #{tournament.tournament_name}
+                                    i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+                                div(class="panel-body  tournament-panel")
+                                    div(class="row")
+                                        div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
+                                            div(class="alert alert-danger")
+                                                | If you no longer need this tournament, you can delete it here. Please make sure this is what you want
+                                                | to do. This action is final.
+                                                strong There is no way to undo a tournament deletion.
+
+                                            form(method="post" action="/t/#{tournament._id}/delete" name="deleteTournament")
+                                                button(type="button" class="btn btn-md nf-red " id="delete-tournament-button") Delete This Tournament
+
+                                    div(class="col-md-6" id="confirm-delete-div" style='display:none')
+                                        div(class="col-md-6")
+                                            button(type="button" class="btn btn-md nf-red btn-block " id="no-delete") Never Mind
+                                        div(class="col-md-6")
+                                            button(type="button" class="btn btn-md nf-blue btn-block " id="yes-delete") Yes
 
 
 block scripts
-    script(src="/js/tournament.js")
+    //- script(src="/js/tournament.js")
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js")
-    script(src='/js/game-configuration.js')
+    //- script(src='/js/game-configuration.js')
+    script(src='/js/tournament-ng.js')
     script(src='/js/team-ng.js')
     script(src="/js/jszip/dist/jszip.min.js")
     script(src='/js/jszip/dist/FileSaver.min.js')

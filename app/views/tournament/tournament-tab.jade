@@ -7,13 +7,14 @@ if admin
                 input(type="hidden" value="#{tournament._id}" name="tournamentid")
                 div(class="row")
                     div(class="col-md-12 col-lg-10")
-                            label(class="label nf-dark-blue nf-label col-xs-4 col-sm-4") Name
+                            label(class="label nf-dark-blue nf-label col-xs-4 col-sm-4") Name 
                             div(class="form-group col-xs-8 col-sm-8")
                                 input(
                                     type="text",
                                     name="tournament_name",
                                     value="#{tournament.tournament_name}",
-                                    class="form-control nf-input input-medium center-text no-border-radius "
+                                    class="form-control nf-input input-medium center-text no-border-radius",
+                                    ng-model="tournamentContext.name"
                                 )
                             label(class="label nf-dark-blue nf-label col-xs-4") Location
                             div(class="form-group col-xs-8")

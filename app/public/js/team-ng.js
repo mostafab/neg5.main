@@ -2,12 +2,14 @@
 
 (function () {
 
-    var tournamentApp = angular.module('TournamentApp', []).controller('TeamController', ['$scope', '$http', function ($scope, $http) {
-
-        $scope.tournamentId = window.location.href.split('/')[4];
+    tournamentApp.controller('TeamController', ['$scope', '$http', function ($scope, $http) {
 
         $scope.teams = [];
-        $scope.admin = false;
+
+        $scope.newTeam = {
+            name: '',
+            players: [{ name: '' }, { name: '' }, { name: '' }, { name: '' }]
+        };
 
         $scope.getTournamentTeams = function () {
             var query = {
@@ -22,6 +24,14 @@
                 $scope.admin = false;
                 $scope.teams = teams;
             }, function (error) {});
+        };
+
+        $scope.addPlayer = function () {
+            return $scope.newTeam.players.push({ name: '' });
+        };
+
+        $scope.addTeam = function () {
+            console.log($scope.newTeam);
         };
 
         $scope.getTournamentTeams();

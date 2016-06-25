@@ -1,31 +1,43 @@
 (() => {
-    
-    let tournamentApp = angular.module('TournamentApp', [])
-        .controller('TeamController', ['$scope', '$http', ($scope, $http) => {
-    
-            $scope.tournamentId = window.location.href.split('/')[4];
-            
-            $scope.teams = [];
-            $scope.admin = false;
+        
+    tournamentApp.controller('TeamController', ['$scope', '$http', ($scope, $http) => {
+        
+        $scope.teams = [];
+        
+        $scope.newTeam = {
+            name: '',
+            players: [
+                {name: ''},
+                {name: ''},
+                {name: ''},
+                {name: ''}   
+            ]
+        }
 
-            $scope.getTournamentTeams = () => {
-                let query = {
-                    method: 'GET',
-                    url: '/t/' + $scope.tournamentId + "/teams"
-                }
-                $http(query)
-                    .then(({data}) => {
-                        
-                        let {admin, teams} = data;
-                        $scope.admin = false;
-                        $scope.teams = teams;
-                        
-                    }, error => {
-                        
-                    })
+        $scope.getTournamentTeams = () => {
+            let query = {
+                method: 'GET',
+                url: '/t/' + $scope.tournamentId + "/teams"
             }
-            
-            $scope.getTournamentTeams();
+            $http(query)
+                .then(({data}) => {
+                    
+                    let {admin, teams} = data;
+                    $scope.admin = false;
+                    $scope.teams = teams;
+                    
+                }, error => {
+                    
+                })
+        }
+        
+        $scope.addPlayer = () => $scope.newTeam.players.push({name: ''})
+        
+        $scope.addTeam = () => {
+            console.log($scope.newTeam)
+        }
+        
+        $scope.getTournamentTeams();
     
     }]);
     
