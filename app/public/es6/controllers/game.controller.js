@@ -1,14 +1,15 @@
 (() => {
     
     angular.module('tournamentApp')
-        .controller('GameCtrl', ['$scope', 'Team', 'Game', GameCtrl]);
+        .controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', GameCtrl]);
     
-    function GameCtrl($scope, Team, Game) {
+    function GameCtrl($scope, Team, Game, Phase) {
         
         let vm = this;
         
         vm.teams = Team.teams;
         vm.games = Game.games;
+        vm.phases = Phase.phases;
         
         vm.sortType = 'round';
         vm.sortReverse = false;
@@ -25,6 +26,9 @@
                 bouncebacks: 0,
                 overtime: 0
             },
+            phases: [
+                
+            ],
             round: 1,
             tuh: 20,
             room: '',
@@ -32,6 +36,8 @@
             packet: '',
             notes: ''
         }
+        
+        vm.test = () => console.log(vm.currentGame.phases);
         
         vm.getGames = () => Game.getGames($scope.tournamentId);
         

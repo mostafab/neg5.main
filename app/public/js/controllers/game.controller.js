@@ -2,14 +2,15 @@
 
 (function () {
 
-    angular.module('tournamentApp').controller('GameCtrl', ['$scope', 'Team', 'Game', GameCtrl]);
+    angular.module('tournamentApp').controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', GameCtrl]);
 
-    function GameCtrl($scope, Team, Game) {
+    function GameCtrl($scope, Team, Game, Phase) {
 
         var vm = this;
 
         vm.teams = Team.teams;
         vm.games = Game.games;
+        vm.phases = Phase.phases;
 
         vm.sortType = 'round';
         vm.sortReverse = false;
@@ -26,12 +27,17 @@
                 bouncebacks: 0,
                 overtime: 0
             },
+            phases: [],
             round: 1,
             tuh: 20,
             room: '',
             moderator: '',
             packet: '',
             notes: ''
+        };
+
+        vm.test = function () {
+            return console.log(vm.currentGame.phases);
         };
 
         vm.getGames = function () {

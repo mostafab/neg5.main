@@ -21,7 +21,14 @@
             function getPhases(tournamentId) {
                 $http.get('/t/' + tournamentId + '/phases')
                     .then(({data}) => {
-                        angular.copy(data.phases, service.phaseFactory.phases);
+                        let formattedPhases = data.phases.map(({active = false, name, phase_id: id}) => {
+                            return {
+                                active,
+                                name,
+                                id
+                            }
+                        });
+                        angular.copy(formattedPhases, service.phaseFactory.phases);
                     })
             }
             
@@ -29,7 +36,7 @@
 
             }
             
-            return service.gameFactory;
+            return service.phaseFactory;
             
         }]); 
         

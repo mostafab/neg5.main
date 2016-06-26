@@ -323,6 +323,12 @@ module.exports = app => {
             });
         });
 
+    app.get('/t/:tid/phases', (req, res, next) => {
+        Tournament.findOne({shortID: req.params.tid}, {phases: 1}, (err, result) => {
+            res.json({phases: result.phases});
+        })
+    })
+
     app.route("/tournaments/games/remove")
         .post((req, res, next) => {
             if (!req.session.director) {

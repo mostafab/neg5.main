@@ -319,6 +319,12 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/t/:tid/phases', function (req, res, next) {
+        Tournament.findOne({ shortID: req.params.tid }, { phases: 1 }, function (err, result) {
+            res.json({ phases: result.phases });
+        });
+    });
+
     app.route("/tournaments/games/remove").post(function (req, res, next) {
         if (!req.session.director) {
             res.redirect("/");

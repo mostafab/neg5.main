@@ -43,9 +43,8 @@ block content
                             a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
                         li(class="center")
                             a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
-                        if tournamentd._id == tournament.directorid
-                            li(class="center")
-                                a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
+                        li(class="center" ng-if='tournamentContext.admin === true')
+                            a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
                         li
                             a(target='_blank' href="{{'/t/' + tournamentId + '/scoresheet'}}") Scoresheet
                         li(style='float:right' ng-if='tournamentContext.owner === true')
@@ -65,21 +64,19 @@ block content
                             ul(class="nav nav-bar no-border-radius")
                                 li(class="active center")
                                     a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
-                                if admin
-                                    li(class="center")
-                                        a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
+                                li(class="center" ng-if='tournamentContext.admin === true')
+                                    a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
                                 li(class="center")
                                     a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
-
+                                    
                                 li(class="center")
                                     a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games
                                 li(class="center")
                                     a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
                                 li(class="center")
                                     a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
-                                if tournamentd._id == tournament.directorid
-                                    li(class="center")
-                                        a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
+                                li(class="center" ng-if='tournamentContext.admin === true')
+                                    a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
                         
                         
                         div(class='col-sm-5 col-md-12 col-lg-12')
@@ -128,8 +125,8 @@ block content
                     div(class="tab-pane fade" id="stats" ng-controller='StatisticsCtrl as Statistics')
                         
                         include ./../stats/tab/stats-tab.jade
-
-                    if (tournamentd._id == tournament.directorid)
+                    
+                    div(class="tab-pane fade" id="phase" ng-controller='PhaseCtrl as Phase' ng-if='tournamentContext.admin === true')
                         include ./../phase/phase-tab.jade
                         
 
@@ -160,6 +157,7 @@ block content
 block scripts
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js")
     script(src='/js/app.js')
+    script(src='/js/services/phase.service.js')
     script(src='/js/services/tournament.service.js')
     script(src='/js/services/team.service.js')
     script(src='/js/services/game.service.js')
@@ -167,5 +165,6 @@ block scripts
     script(src='/js/controllers/team.controller.js')
     script(src='/js/controllers/game.controller.js')
     script(src='/js/controllers/statistics.controller.js')
+    script(src='/js/controllers/phase.controller.js')
     script(src="/js/jszip/dist/jszip.min.js")
     script(src='/js/jszip/dist/FileSaver.min.js')

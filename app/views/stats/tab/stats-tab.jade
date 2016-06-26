@@ -6,14 +6,8 @@ div(class="panel panel-default")
         div(class="col-md-12")
             div(class="row")
                 div(class='col-md-8 col-lg-3 col-sm-12')
-                    select(class="form-control nf-input no-border-radius phase-selection " id='phase-select-stats')
+                    select(class="form-control nf-input" ng-options='phase.name for phase in Statistics.phases | orderBy:"name" track by phase.id' ng-model='Statistics.activePhase')
                         option(value='1') All
-                        each phase in tournament.phases
-                            if phase.active
-                                - phaseID = phase.phase_id
-                                option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
-                            else
-                                option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
             
             hr
             

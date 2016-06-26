@@ -21,12 +21,24 @@
             $http.get('/t/' + tournamentId + '/phases').then(function (_ref) {
                 var data = _ref.data;
 
-                angular.copy(data.phases, service.phaseFactory.phases);
+                var formattedPhases = data.phases.map(function (_ref2) {
+                    var _ref2$active = _ref2.active;
+                    var active = _ref2$active === undefined ? false : _ref2$active;
+                    var name = _ref2.name;
+                    var id = _ref2.phase_id;
+
+                    return {
+                        active: active,
+                        name: name,
+                        id: id
+                    };
+                });
+                angular.copy(formattedPhases, service.phaseFactory.phases);
             });
         }
 
         function deletePhase(id) {}
 
-        return service.gameFactory;
+        return service.phaseFactory;
     }]);
 })();
