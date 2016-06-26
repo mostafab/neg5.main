@@ -14,7 +14,7 @@ if admin
                                     name="tournament_name",
                                     value="#{tournament.tournament_name}",
                                     class="form-control nf-input input-medium center-text no-border-radius",
-                                    ng-model="tournamentContext.name"
+                                    ng-model="tournamentInfo.name"
                                 )
                             label(class="label nf-dark-blue nf-label col-xs-4") Location
                             div(class="form-group col-xs-8")
@@ -22,7 +22,8 @@ if admin
                                     type="text",
                                     name="tournament_location",
                                     value="#{tournament.location}",
-                                    class="form-control nf-input input-medium center-text no-border-radius "
+                                    class="form-control nf-input input-medium center-text no-border-radius",
+                                    ng-model='tournamentInfo.location'
                                 )
                             label(class="label nf-dark-blue nf-label col-xs-4") Question Set
                             div(class="form-group col-xs-8")
@@ -30,7 +31,8 @@ if admin
                                     type="text",
                                     name="tournament_qset",
                                     value="#{tournament.questionSet}",
-                                    class="form-control nf-input input-medium center-text no-border-radius "
+                                    class="form-control nf-input input-medium center-text no-border-radius",
+                                    ng-model='tournamentInfo.questionSet'
                                 )
                             label(class="label nf-dark-blue nf-label col-xs-4") Date
                             div(class="form-group col-xs-8")
@@ -58,7 +60,7 @@ if admin
                     div(class="col-md-12 col-lg-10")
                         label(class="label nf-dark-blue nf-label col-xs-2 col-sm-4") Description
                         div(class="form-group col-xs-8")
-                            textarea(name="tournament_description" class="form-control nf-input " rows="10") #{tournament.description}
+                            textarea(name="tournament_description" class="form-control nf-input " rows="10" ng-model='tournamentInfo.description') #{tournament.description}
 
                         div(class="col-md-6")
                             button(type="button" class="btn btn-md nf-green nf-button" id="edittournamentbutton") Save Changes

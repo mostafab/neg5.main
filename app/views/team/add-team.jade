@@ -5,11 +5,6 @@ div(class="panel panel-default" id='add-team-div')
 
         div(class="col-md-8 col-sm-12")
             form(id="teamform" name="createTeam")
-                input(
-                    type="hidden",
-                    name="tournament_id",
-                    value="#{tournament._id}"
-                )
                 div(class="form-group")
                     label Name *
                     input(
@@ -18,7 +13,7 @@ div(class="panel panel-default" id='add-team-div')
                         id="team_name_input",
                         placeholder="Team Name",
                         class="form-control nf-input input-md center-text no-border-radius",
-                        ng-model='newTeam.name'
+                        ng-model='Team.newTeam.name'
                     )
                 hr
                 div(class="form-group")
@@ -40,9 +35,9 @@ div(class="panel panel-default" id='add-team-div')
                 hr
                 div(id='player-dynamic' class='form-group')
                     label Players
-                    button(type="button" class="btn btn-sm nf-blue no-border-radius " id="newlineplayer" style="margin: 5px" ng-click='addPlayer()') Add Player
-                    div(ng-repeat='player in newTeam.players')
-                        input(type='text' class='form-control nf-input input-medium center-text no-border-radius player-name' autocomplete='off' placeholder='Player {{$index + 1}}' ng-model='newTeam.players[$index].name')
+                    button(type="button" class="btn btn-sm nf-blue no-border-radius " id="newlineplayer" style="margin: 5px" ng-click='Team.addPlayer()') Add Player
+                    div(ng-repeat='player in Team.newTeam.players')
+                        input(type='text' class='form-control nf-input input-medium center-text no-border-radius player-name' autocomplete='off' placeholder='Player {{$index + 1}}' ng-model='Team.newTeam.players[$index].name')
                         
                     
                 //- div(id="player-dynamic" class="form-group")
@@ -82,7 +77,7 @@ div(class="panel panel-default" id='add-team-div')
                 //-         class="form-control nf-input input-medium center-text no-border-radius player-name "
                 //-     )
                 br
-                button(type="button" class="btn btn-lg nf-green no-border-radius nf-button" id="add-team-button" ng-click='addTeam()') Add Team To Tournament
+                button(type="button" class="btn btn-lg nf-green no-border-radius nf-button" id="add-team-button" ng-click='Team.addTeam()') Add Team To Tournament
                 br
                 br
                 div(class="form-control nf-input input-lg center-text no-border-radius tournament-info-field" id="addteammsg")

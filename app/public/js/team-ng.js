@@ -2,16 +2,26 @@
 
 (function () {
 
-    tournamentApp.controller('TeamController', ['$scope', '$http', function ($scope, $http) {
+    angular.module('TournamentApp').controller('TeamController', ['$scope', '$http', function ($scope, $http) {
 
-        $scope.teams = [];
+        var teamModel = this;
 
-        $scope.newTeam = {
+        teamModel.teams = [];
+
+        teamModel.newTeam = {
             name: '',
             players: [{ name: '' }, { name: '' }, { name: '' }, { name: '' }]
         };
 
-        $scope.getTournamentTeams = function () {
+        teamModel.teamSortType = 'team_name';
+        teamModel.teamSortReverse = true;
+        teamModel.teamQuery = '';
+
+        teamModel.testClick = function (index) {
+            return console.log(index);
+        };
+
+        teamModel.getTournamentTeams = function () {
             var query = {
                 method: 'GET',
                 url: '/t/' + $scope.tournamentId + "/teams"
@@ -21,19 +31,20 @@
                 var admin = data.admin;
                 var teams = data.teams;
 
-                $scope.admin = false;
-                $scope.teams = teams;
-            }, function (error) {});
+                teamModel.teams = teams;
+            }).catch(function (error) {
+                console.log(error);
+            });
         };
 
-        $scope.addPlayer = function () {
-            return $scope.newTeam.players.push({ name: '' });
+        teamModel.addPlayer = function () {
+            return teamModel.newTeam.players.push({ name: '' });
         };
 
-        $scope.addTeam = function () {
-            console.log($scope.newTeam);
+        teamModel.addTeam = function () {
+            console.log(teamModel.newTeam);
         };
 
-        $scope.getTournamentTeams();
+        teamModel.getTournamentTeams();
     }]);
 })();

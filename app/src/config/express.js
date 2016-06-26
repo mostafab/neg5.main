@@ -15,6 +15,8 @@ const {cookieName, secret, duration} = configuration.session;
 export default () => {
     const app = express();
 
+    app.locals.pretty = true;
+
     app.use(bodyParser.urlencoded({
         extended: true
     }));

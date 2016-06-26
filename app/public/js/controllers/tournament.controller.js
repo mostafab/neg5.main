@@ -1,8 +1,9 @@
 'use strict';
 
 (function () {
-    angular.module('TournamentApp', []).controller('TournamentController', ['$scope', '$http', function ($scope, $http) {
+    angular.module('TournamentApp').controller('TournamentController', ['$scope', '$http', TournamentController]);
 
+    function TournamentController($scope, $http) {
         $scope.tournamentId = window.location.href.split('/')[4];
 
         $scope.tournamentContext = {
@@ -31,5 +32,5 @@
         };
 
         getTournamentContext();
-    }]);
+    }
 })();

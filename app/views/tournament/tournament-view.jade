@@ -28,7 +28,7 @@ block content
             
             div(class='hidden-md hidden-lg')
                 div(class='col-sm-2 col-xs-2')
-                    h2(class="nf-label nf-dark-blue center") {{tournamentContext.name}} (#{tournament.phaseName})
+                    h2(class="nf-label nf-dark-blue center") {{tournamentInfo.name}} (#{tournament.phaseName})
                 div(class='col-sm-10 col-xs-10')
                     ul(class="breadcrumb")
                         li(class="active center")
@@ -50,15 +50,14 @@ block content
                                 a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
                         li
                             a(target='_blank' href="/t/#{tournament.shortID}/scoresheet") Scoresheet
-                        if tournamentd._id == tournament.directorid
-                            li(style='float:right')
-                                a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
-                                    i(class='fa fa-trash')
+                        li(style='float:right' ng-if='tournamentContext.owner === true')
+                            a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
+                                i(class='fa fa-trash')
                                     
             div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
                 div(class='row')
                     div(class='col-sm-7 col-lg-12 col-md-12')
-                        h2(class="nf-panel-heading nf-dark-blue center") {{tournamentContext.name}}
+                        h2(class="nf-panel-heading nf-dark-blue center") {{tournamentInfo.name}}
                     div(class='col-sm-5 col-lg-12 col-md-12')
                         h2(class='nf-panel-heading nf-blue center' id='current-phase-header') Current Phase: #{tournament.phaseName}
                 
@@ -89,11 +88,10 @@ block content
                             ul(class="nav nav-bar no-border-radius")
                                 li
                                     a(target='_blank' href="/t/#{tournament.shortID}/scoresheet" class='btn-md nf-orange') Go To Scoresheet
-                                if tournamentd._id == tournament.directorid
                                     div(style='margin-top:10px')
-                                    li
-                                        a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
-                                            i(class='fa fa-trash')
+                                li(ng-if='tournamentContext.owner === true')
+                                    a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
+                                        i(class='fa fa-trash')
 
 
             div(class='col-sm-12 col-md-10 col-lg-10 col-lg-offset-2')
@@ -120,7 +118,7 @@ block content
                         div(class='row')
                             div(class='col-md-12' id='game-view-div')
 
-                    div(class="tab-pane fade" id="teams" ng-controller='TeamController')
+                    div(class="tab-pane fade" id="teams" ng-controller='TeamController as Team')
                         
                         include ./../team/add-team.jade
 
@@ -164,10 +162,11 @@ block content
 
 
 block scripts
-    //- script(src="/js/tournament.js")
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js")
-    //- script(src='/js/game-configuration.js')
-    script(src='/js/tournament-ng.js')
-    script(src='/js/team-ng.js')
+    script(src='/js/app.js')
+    script(src='/js/services/tournament.service.js')
+    script(src='/js/services/team.service.js')
+    script(src='/js/controllers/tournament.controller.js')
+    script(src='/js/controllers/team.controller.js')
     script(src="/js/jszip/dist/jszip.min.js")
     script(src='/js/jszip/dist/FileSaver.min.js')

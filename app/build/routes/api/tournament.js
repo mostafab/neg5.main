@@ -7,6 +7,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = function (app) {
 
     app.get('/api/t/:tid', function (req, res) {
-        res.json({ name: 'Test Tournament' });
+        res.json({ name: 'Test' });
     });
 };

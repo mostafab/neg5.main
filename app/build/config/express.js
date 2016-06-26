@@ -50,6 +50,8 @@ var duration = _configuration$sessio.duration;
 exports.default = function () {
     var app = (0, _express2.default)();
 
+    app.locals.pretty = true;
+
     app.use(_bodyParser2.default.urlencoded({
         extended: true
     }));
