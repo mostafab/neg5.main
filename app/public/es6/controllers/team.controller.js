@@ -22,8 +22,8 @@
             ]
         }
         
-        vm.teamSortType = 'team_name'
-        vm.teamSortReverse = true;
+        vm.teamSortType = 'name'
+        vm.teamSortReverse = false;
         vm.teamQuery = '';
         
         vm.testClick = (index) => console.log(index);
@@ -32,11 +32,9 @@
             Team.getTeams($scope.tournamentId);
         }
         
-        function watchTeams() {
-            return Team.teams;
-        }
-        
         vm.addPlayer = () => vm.newTeam.players.push({name: ''})
+        vm.removePlayerSlot = (index) => vm.newTeam.players.splice(index, 1);
+        
         
         vm.addTeam = () => {
             let {name, players} = vm.newTeam;
@@ -57,13 +55,10 @@
                         ],
                         divisions: []
                     }
-                    // $scope.$apply();
                 })
         }
-                
-        // $scope.$watch(watchTeams, function(current, previous) {
-        //     vm.teams = current;
-        // })
+        
+        vm.removeTeam = (id) => Team.deleteTeam(id);  
         
         vm.getTournamentTeams();
     }

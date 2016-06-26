@@ -17,7 +17,7 @@ div(class="table-responsive" id="teamdiv")
                     td {{team.name}}
                     td Test
                     td(ng-if='tournamentContext.admin === true') 
-                        button(type="button" class="btn btn-sm nf-red start-delete-team" data-toggle='tooltip' data-placement='right' title='Delete {{team.team_name}}.')
+                        button(type="button" class="btn btn-sm nf-red start-delete-team" data-toggle='tooltip' data-placement='right' title='Delete {{team.name}}.' ng-click='Team.removeTeam(team.id)')
                 
                     
                 //- each val, i in tournament.teams

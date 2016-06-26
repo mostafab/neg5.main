@@ -37,8 +37,10 @@ div(class="panel panel-default" id='add-team-div')
                     label Players
                     button(type="button" class="btn btn-sm nf-blue no-border-radius " id="newlineplayer" style="margin: 5px" ng-click='Team.addPlayer()') Add Player
                     div(ng-repeat='player in Team.newTeam.players')
-                        input(type='text' class='form-control nf-input input-medium center-text no-border-radius player-name' autocomplete='off' placeholder='Player {{$index + 1}}' ng-model='Team.newTeam.players[$index].name')
-                        
+                        div(class='input-group')
+                            input(type='text' class='form-control nf-input input-medium center-text no-border-radius player-name' autocomplete='off' placeholder='Player {{$index + 1}}' ng-model='Team.newTeam.players[$index].name')
+                            span(class='input-group-addon nf-red' ng-click='Team.removePlayerSlot($index)')
+                                i(class='fa fa-times')
                     
                 //- div(id="player-dynamic" class="form-group")
                 //-     label Players

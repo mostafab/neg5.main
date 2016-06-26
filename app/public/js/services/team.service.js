@@ -9,7 +9,8 @@
         var teamFactory = {
             teams: teams,
             postTeam: postTeam,
-            getTeams: getTeams
+            getTeams: getTeams,
+            deleteTeam: deleteTeam
         };
 
         function postTeam(_ref) {
@@ -48,6 +49,14 @@
                 });
                 angular.copy(formattedTeams, teamFactory.teams);
             });
+        }
+
+        function deleteTeam(id) {
+            var index = teamFactory.teams.map(function (team) {
+                return team.id;
+            }).indexOf(id);
+            console.log(index);
+            teamFactory.teams.splice(index, 1);
         }
 
         return teamFactory;

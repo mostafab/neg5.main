@@ -8,7 +8,8 @@
             let teamFactory = {
                 teams,
                 postTeam,
-                getTeams
+                getTeams,
+                deleteTeam
             }
             
             function postTeam({name, divisions = [], players = []}) {
@@ -36,7 +37,12 @@
                         angular.copy(formattedTeams, teamFactory.teams);
                     })
             }
-           
+            
+            function deleteTeam(id) {
+                let index = teamFactory.teams.map(team => team.id).indexOf(id);
+                console.log(index);
+                teamFactory.teams.splice(index, 1);
+            }
             
             return teamFactory;
             
