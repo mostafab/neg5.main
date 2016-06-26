@@ -42,44 +42,9 @@ div(class="panel panel-default" id='add-team-div')
                             span(class='input-group-addon nf-red' ng-click='Team.removePlayerSlot($index)')
                                 i(class='fa fa-times')
                     
-                //- div(id="player-dynamic" class="form-group")
-                //-     label Players
-                //-     button(type="button" class="btn btn-sm nf-blue no-border-radius " id="newlineplayer" style="margin: 5px") Add Player
-                //-     input(
-                //-         type="hidden",
-                //-         id="player_team_dynamic",
-                //-         name="players_team",
-                //-     )
-                //-     input(
-                //-         type="text",
-                //-         name="player1_name",
-                //-         placeholder="Player 1",
-                //-         autocomplete="off",
-                //-         class="form-control nf-input input-medium center-text no-border-radius player-name "
-                //-     )
-                //-     input(
-                //-         type="text",
-                //-         name="player2_name",
-                //-         autocomplete="off",
-                //-         class="form-control nf-input input-medium center-text no-border-radius player-name "
-                //-         placeholder="Player 2",
-                //-     )
-                //-     input(
-                //-         type="text",
-                //-         name="player3_name",
-                //-         placeholder="Player 3",
-                //-         autocomplete="off"
-                //-         class="form-control nf-input input-medium center-text no-border-radius player-name "
-                //-     )
-                //-     input(
-                //-         type="text",
-                //-         name="player4_name",
-                //-         placeholder="Player 4",
-                //-         autocomplete="off",
-                //-         class="form-control nf-input input-medium center-text no-border-radius player-name "
-                //-     )
+
                 br
-                button(type="button" class="btn btn-lg nf-green no-border-radius nf-button" id="add-team-button" ng-click='Team.addTeam()') Add Team To Tournament
+                button(type="button" class="btn btn-lg nf-green nf-button" ng-click='Team.addTeam()') Add Team To Tournament
                 br
                 br
-                div(class="form-control nf-input input-lg center-text no-border-radius tournament-info-field" id="addteammsg")
+                div(class="center-text" id="addteammsg")

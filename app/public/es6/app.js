@@ -1,4 +1,10 @@
-angular.module('TournamentApp', []);
+(() => {
+    
+  angular.module('tournamentApp', []);
+    
+})();
+
+
 
 
 

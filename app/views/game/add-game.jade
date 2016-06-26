@@ -6,22 +6,14 @@ div(id='add-game-div')
         div(class="panel-body  tournament-panel" id="addgamepanel")
 
                 form(name="gameinfoform" id="gamedataform")
-                    input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
                     div(class="row")
-                        input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                input(type="hidden" name="leftteamname" id="leftteamnameID")
-                                select(id="leftchoice" class="form-control nf-input teamselect " name="leftteamselect")
-                                    option(selected value="") Choose a Team
-                                    each team in tournament.teams
-                                        option(value="#{team._id}") #{team.team_name}
+                            input(type="hidden" name="leftteamname" id="leftteamnameID")
+                            select(class='form-control nf-input' ng-model='Game.selectedTeamOne' ng-options='team.name for team in Game.teams | orderBy:"name" track by team.id' ng-change='Game.currentGame.round = Game.currentGame.round + 1')
 
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                                input(type="hidden" name="rightteamname" id="rightteamnameID")
-                                select(id="rightchoice" class="form-control nf-input teamselect " name="rightteamselect")
-                                    option(selected value="") Choose a Team
-                                    each team in tournament.teams
-                                        option(value="#{team._id}") #{team.team_name}
+                            select(class='form-control nf-input' ng-model='Game.selectedTeamTwo' ng-options='team.name for team in Game.teams | orderBy:"name" track by team.id')
+                                
                     br
                     div(class="row")
                         div(id="left-text" class="col-lg-6 col-md-6 col-sm-6")
@@ -32,22 +24,22 @@ div(id='add-game-div')
                                 div(class="col-sm-6 col-md-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Team 1 Score *
                                 div(class="col-md-6 col-sm-6 col-md-6")
-                                    input(type="number" class="form-control nf-input scorebox " name="leftteamscore" placeholder="Team 1 Score")
+                                    input(type="number" class="form-control nf-input scorebox " name="leftteamscore" placeholder="Team 1 Score" ng-model='Game.currentGame.team1.score')
                             div(class='row')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="leftbounceback" placeholder="Bounceback Points")
+                                    input(type="number" class="form-control nf-input " name="leftbounceback" placeholder="Bounceback Points" ng-model='Game.currentGame.team1.bouncebacks')
                             br
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input scorebox " name="rightteamscore" placeholder="Team 2 Score")
+                                    input(type="number" class="form-control nf-input scorebox " name="rightteamscore" placeholder="Team 2 Score" ng-model='Game.currentGame.team2.score') 
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Team 2 Score *
                             div(class="row")
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="rightbounceback" placeholder="Bounceback Points")
+                                    input(type="number" class="form-control nf-input " name="rightbounceback" placeholder="Bounceback Points" ng-model='Game.currentGame.team2.bouncebacks')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
                             br
@@ -58,11 +50,11 @@ div(id='add-game-div')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 1
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="overtimetu1" placeholder="# Overtime TU Team 1")
+                                    input(type="number" class="form-control nf-input " name="overtimetu1" placeholder="# Overtime TU Team 1" ng-model='Game.currentGame.team1.overtime')
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="overtimetu2" placeholder="# Overtime TU Team 2")
+                                    input(type="number" class="form-control nf-input " name="overtimetu2" placeholder="# Overtime TU Team 2" ng-model='Game.currentGame.team1.overtime')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 2
                     hr
@@ -73,14 +65,14 @@ div(id='add-game-div')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Round
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="round" placeholder="Round")
+                                    input(type="number" class="form-control nf-input " name="round" placeholder="Round" ng-model='Game.currentGame.round')
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Total TUH
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="tossupsheard" placeholder="Tossups Heard")
+                                    input(type="number" class="form-control nf-input " name="tossupsheard" placeholder="Tossups Heard" ng-model='Game.currentGame.tuh')
                     
                     br
                     div(class="row")
@@ -89,21 +81,21 @@ div(id='add-game-div')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Room
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="text" class="form-control nf-input " name="room" placeholder="Room")
+                                    input(type="text" class="form-control nf-input " name="room" placeholder="Room" ng-model='Game.currentGame.room')
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Moderator
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="text" class="form-control nf-input " name="moderator" placeholder="Moderator")
+                                    input(type="text" class="form-control nf-input " name="moderator" placeholder="Moderator" ng-model='Game.currentGame.moderator')
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Packet
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="text" class="form-control nf-input " name="packet" placeholder="Packet")
+                                    input(type="text" class="form-control nf-input " name="packet" placeholder="Packet" ng-model='Game.currentGame.packet')
                             br
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
@@ -117,17 +109,18 @@ div(id='add-game-div')
                                                 option(selected value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
                                             else
                                                 option(value='#{phase.phase_id}' class='phase-name' data-phase-id='#{phase.phase_id}') #{phase.name}
-                            br
+                    br
+                    
                     div(class='row')
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")
                                 div(class="col-md-4 col-sm-4")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right;') Notes
                                 div(class="col-md-8 col-sm-8")
-                                    textarea(class="form-control nf-input " name="notes" placeholder="Notes" style='min-height:200px')
+                                    textarea(class="form-control nf-input " name="notes" placeholder="Notes" style='min-height:200px' ng-model='Game.currentGame.notes')
                     
                     hr
                     
-                    button(type="button" class="btn btn-md nf-blue " id="entergamebutton") Add Game Information
+                    button(type="button" class="btn btn-md nf-blue" ng-click='Game.addGame()') Add Game Information
 
                     div(id="add-game-message")

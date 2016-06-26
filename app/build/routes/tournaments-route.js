@@ -622,10 +622,11 @@ module.exports = function (app) {
                 var hasPermission = getPermission(tournament, req.session.director);
                 if (hasPermission.permission) {
                     tournament.teamMap = statsController.makeTeamMap(tournament.teams);
-                    return res.render('game/game-list', { tournament: tournament, admin: hasPermission.admin });
+                    res.json({ games: tournament.games });
+                    // return res.render('game/game-list', {tournament : tournament, admin : hasPermission.admin});
                 } else {
-                    return res.status(401).end();
-                }
+                        return res.status(401).end();
+                    }
             }
         });
     });

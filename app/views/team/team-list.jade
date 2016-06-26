@@ -12,8 +12,8 @@ div(class="table-responsive" id="teamdiv")
                     th(class="table-head" ng-click='Team.teamSortType="team_name" ; Team.teamSortReverse= !Team.teamSortReverse') Team
                     th(class="table-head" style='text-align:left' ng-click='teamSortType="divisions" ; teamSortReverse= !teamSortReverse') Divisions
                     th(class="table-head" ng-if='tournamentContext.admin === true')
-            tbody(id="teamtablebody" ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id')
-                tr
+            tbody(id="teamtablebody")
+                tr(class='nf-tr' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id')
                     td {{team.name}}
                     td Test
                     td(ng-if='tournamentContext.admin === true') 

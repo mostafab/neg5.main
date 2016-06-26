@@ -51,27 +51,29 @@ div(class="panel panel-default")
             div(class='col-sm-6')
                 a(href="/t/" + tournament.shortID + "/export/scoresheets" class="btn btn-md nf-orange nf-button btn-block" data-link="#{linkName}_scoresheets.zip" id='download-scoresheets') Scoresheets
 
-    div(class="panel panel-default")
-        div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Custom Team Statistics
-            i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+    
+    
+div(class="panel panel-default")
+    div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Custom Team Statistics
+        i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
 
-        div(class="panel-body  tournament-panel")
-                div(class="col-md-12")
-                    form(target="_blank" method="get" action="/t/" + tournament.shortID + "/stats/filter/teams" id="filterstatsform")
-                        div(class="form-group")
-                            label Teams
-                            br
-                            br
-                            select(name="teams[]" class="form-control nf-input " size="#{tournament.teams.length}" multiple)
-                                each val, i in tournament.teams
-                                    option(value="#{tournament.teams[i]._id}") #{tournament.teams[i].team_name}
-                        div(class="form-group")
-                            input(class="form-control nf-input " type="number" name="minround" placeholder="Min Round" style="width:40%")
-                        div(class="form-group")
-                            input(class="form-control nf-input " type="number" name="maxround" placeholder="Max Round" style="width:40%")
-                        div(class="form-group")
-                            ul(class="nav nav-pills no-border-radius")
-                                li
-                                    button(type="button" class="btn btn-lg nf-button nf-blue custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/teams") Team Stats
-                                li
-                                    button(type="button" class="btn btn-lg nf-button nf-blue custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/players") Player Stats
+    div(class="panel-body  tournament-panel")
+            div(class="col-md-12")
+                form(target="_blank" method="get" action='{{"/t/" + tournamentId + "/stats/filter/teams"}}' id="filterstatsform")
+                    div(class="form-group")
+                        label Teams
+                        br
+                        br
+                        select(name='teams[]' class='form-control nf-input' ng-attr-size='{{Statistics.teams.length}}' ng-model='Statistics.selectedTeams' ng-options='team.name for team in Statistics.teams | orderBy:"name" track by team.id' multiple)
+                            
+                            
+                    div(class="form-group")
+                        input(class="form-control nf-input " type="number" name="minround" placeholder="Min Round" style="width:40%")
+                    div(class="form-group")
+                        input(class="form-control nf-input " type="number" name="maxround" placeholder="Max Round" style="width:40%")
+                    div(class="form-group")
+                        ul(class="nav nav-pills no-border-radius")
+                            li
+                                button(type="button" class="btn btn-lg nf-button nf-blue custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/teams") Team Stats
+                            li
+                                button(type="button" class="btn btn-lg nf-button nf-blue custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/players") Player Stats

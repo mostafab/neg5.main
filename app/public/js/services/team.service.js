@@ -2,11 +2,13 @@
 
 (function () {
 
-    angular.module('TournamentApp').factory('Team', ['$http', '$q', function ($http, $q) {
+    angular.module('tournamentApp').factory('Team', ['$http', '$q', function ($http, $q) {
+
+        var service = this;
 
         var teams = [];
 
-        var teamFactory = {
+        service.teamFactory = {
             teams: teams,
             postTeam: postTeam,
             getTeams: getTeams,
@@ -21,7 +23,7 @@
             var players = _ref$players === undefined ? [] : _ref$players;
 
             return $q(function (resolve, reject) {
-                teamFactory.teams.push({
+                service.teamFactory.teams.push({
                     name: name,
                     players: players,
                     divisions: divisions
@@ -47,18 +49,18 @@
                         divisions: divisions
                     };
                 });
-                angular.copy(formattedTeams, teamFactory.teams);
+                angular.copy(formattedTeams, service.teamFactory.teams);
             });
         }
 
         function deleteTeam(id) {
-            var index = teamFactory.teams.map(function (team) {
+            var index = service.teamFactory.teams.map(function (team) {
                 return team.id;
             }).indexOf(id);
             console.log(index);
-            teamFactory.teams.splice(index, 1);
+            service.teamFactory.teams.splice(index, 1);
         }
 
-        return teamFactory;
+        return service.teamFactory;
     }]);
 })();

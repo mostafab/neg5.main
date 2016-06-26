@@ -2,9 +2,9 @@
 
 (function () {
 
-    angular.module('TournamentApp').controller('TeamController', ['$scope', '$http', 'Team', TeamController]);
+    angular.module('tournamentApp').controller('TeamCtrl', ['$scope', '$http', 'Team', TeamCtrl]);
 
-    function TeamController($scope, $http, Team) {
+    function TeamCtrl($scope, $http, Team) {
 
         var vm = this;
 

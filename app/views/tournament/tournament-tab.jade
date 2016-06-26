@@ -51,16 +51,14 @@ if admin
                                     )
                             label(class='label nf-dark-blue nf-label col-xs-4') Hidden
                             div(class='form-group col-xs-8')
-                                if tournament.hidden
-                                    input(checked type='checkbox' value='1' name='hidden' class='form-control nf-input input-sm')
-                                else
-                                    input(type='checkbox' value='1' name='hidden' class='form-control nf-input input-sm')
+                                input(type='checkbox' class='form-control nf-input input-sm' ng-model='tournamentInfo.hidden')
+                                    
 
                 div(class="row")
                     div(class="col-md-12 col-lg-10")
                         label(class="label nf-dark-blue nf-label col-xs-2 col-sm-4") Description
                         div(class="form-group col-xs-8")
-                            textarea(name="tournament_description" class="form-control nf-input " rows="10" ng-model='tournamentInfo.description') #{tournament.description}
+                            textarea(name="tournament_description" class="form-control nf-input" rows="10" ng-model='tournamentInfo.description') #{tournament.description}
 
                         div(class="col-md-6")
                             button(type="button" class="btn btn-md nf-green nf-button" id="edittournamentbutton") Save Changes

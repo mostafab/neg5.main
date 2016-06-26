@@ -1,11 +1,13 @@
 (() => {
    
-   angular.module('TournamentApp')
+   angular.module('tournamentApp')
         .factory('Team', ['$http', '$q', function($http, $q) {
+            
+            let service = this;
             
             let teams = [];
             
-            let teamFactory = {
+            service.teamFactory = {
                 teams,
                 postTeam,
                 getTeams,
@@ -14,11 +16,11 @@
             
             function postTeam({name, divisions = [], players = []}) {
                 return $q((resolve, reject) => {
-                    teamFactory.teams.push({
+                    service.teamFactory.teams.push({
                         name,
                         players,
                         divisions 
-                    })
+                    });
                     let id = Math.random();
                     resolve({id}); 
                 })
@@ -34,17 +36,17 @@
                                 divisions
                             }
                         })
-                        angular.copy(formattedTeams, teamFactory.teams);
+                        angular.copy(formattedTeams, service.teamFactory.teams);
                     })
             }
             
             function deleteTeam(id) {
-                let index = teamFactory.teams.map(team => team.id).indexOf(id);
+                let index = service.teamFactory.teams.map(team => team.id).indexOf(id);
                 console.log(index);
-                teamFactory.teams.splice(index, 1);
+                service.teamFactory.teams.splice(index, 1);
             }
             
-            return teamFactory;
+            return service.teamFactory;
             
         }]); 
         

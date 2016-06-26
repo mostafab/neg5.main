@@ -1,3 +1,6 @@
 'use strict';
 
-angular.module('TournamentApp', []);
+(function () {
+
+    angular.module('tournamentApp', []);
+})();
