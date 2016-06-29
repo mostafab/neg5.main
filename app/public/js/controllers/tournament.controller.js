@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
-    angular.module('tournamentApp').controller('TournamentCtrl', ['$scope', '$http', '$window', TournamentCtrl]);
+    angular.module('tournamentApp').controller('TournamentCtrl', ['$scope', '$http', '$window', 'Team', 'Game', TournamentCtrl]);
 
-    function TournamentCtrl($scope, $http, $window) {
+    function TournamentCtrl($scope, $http, $window, Team, Game) {
         $scope.tournamentId = $window.location.href.split('/')[4];
 
         $scope.tournamentContext = {
@@ -14,6 +14,11 @@
             name: '',
             hidden: false
         };
+
+        var vm = this;
+        vm.teams = Team.teams;
+        vm.games = Game.games;
+        console.log(vm.teams);
 
         var getTournamentContext = function getTournamentContext() {
             $http.get('/api/t/' + $scope.tournamentId).then(function (_ref) {

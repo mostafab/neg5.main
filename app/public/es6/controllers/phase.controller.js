@@ -24,6 +24,8 @@
             console.log(vm.phases);
         }
         
+        vm.activePhase = vm.phases.find(phase => phase.active);
+        
         vm.getPhases();
         
     }

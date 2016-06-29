@@ -1,6 +1,6 @@
 div(class='col-md-12 col-sm-12')
     div(class="panel panel-default")
-        div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Phases
+        div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") New Phase
             i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
         div(class="panel-body tournament-panel")
         
@@ -13,12 +13,15 @@ div(class='col-md-12 col-sm-12')
                             
             hr
             
-            div(class='row')
-                div(class='col-md-12 col-sm-12 col-lg-6')
-                    div(class='input-group')
-                        select(class='form-control nf-input' ng-options='phase.name for phase in Phase.phases | orderBy:"name" track by phase.id' ng-model='Phase.activePhase')
-                        span(class='nf-button btn input-group-addon nf-green' id='switch-phases')
-                            i(class='fa fa-check')
+            
+            //- div(class='row')
+            //-     div(class='col-md-12 col-sm-12 col-lg-6')
+            //-         div(class='input-group')
+            //-             select(class='form-control nf-input' ng-options='phase.name for phase in Phase.phases | orderBy:"name" track by phase.id' ng-model='Phase.activePhaseSetterGetter' ng-model-options='{getterSetter: true}')
+            //-             span(class='nf-button btn input-group-addon nf-green' id='switch-phases')
+            //-                 i(class='fa fa-check')
+            
+                            
 
 div(class='col-md-12 col-sm-12')
     div(class="panel panel-default")
@@ -32,8 +35,7 @@ div(class='col-md-12 col-sm-12')
                         span(class='input-group-addon nf-red')
                             i(class='fa fa-trash')
             
-            br
-            
+                        
             div(class="row")
                 div(class="col-md-3 col-sm-6 col-lg-3")
                     button(class="btn nf-green btn-md nf-button btn-block" ng-click='Phase.savePhases()') Save Phases

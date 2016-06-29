@@ -23,7 +23,7 @@ block content
     - }
 
     div(ng-app='tournamentApp')
-        div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;' ng-controller='TournamentCtrl')
+        div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;' ng-controller='TournamentCtrl as Tournament')
             div(class='hidden-md hidden-lg')
                 div(class='col-sm-2 col-xs-2')
                     h2(class="nf-label nf-dark-blue center") {{tournamentInfo.name}} (#{tournament.phaseName})
@@ -38,9 +38,9 @@ block content
                             a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
 
                         li(class="center")
-                            a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games
+                            a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games ({{Tournament.games.length}})
                         li(class="center")
-                            a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
+                            a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
                         li(class="center")
                             a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
                         li(class="center" ng-if='tournamentContext.admin === true')
@@ -70,9 +70,9 @@ block content
                                     a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
                                     
                                 li(class="center")
-                                    a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games
+                                    a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games ({{Tournament.games.length}})
                                 li(class="center")
-                                    a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams
+                                    a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
                                 li(class="center")
                                     a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
                                 li(class="center" ng-if='tournamentContext.admin === true')
@@ -161,9 +161,9 @@ block scripts
     script(src='/js/services/tournament.service.js')
     script(src='/js/services/team.service.js')
     script(src='/js/services/game.service.js')
-    script(src='/js/controllers/tournament.controller.js')
     script(src='/js/controllers/team.controller.js')
     script(src='/js/controllers/game.controller.js')
+    script(src='/js/controllers/tournament.controller.js')
     script(src='/js/controllers/statistics.controller.js')
     script(src='/js/controllers/phase.controller.js')
     script(src="/js/jszip/dist/jszip.min.js")

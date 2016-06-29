@@ -1,269 +1,316 @@
 'use strict';
 
-(function($) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function ($) {
 
     var entityMap = {
-       "&": "&amp;",
-       "<": "&lt;",
-       ">": "&gt;",
-       '"': '&quot;',
-       "'": '&#39;',
-       "/": '&#x2F;'
-     };
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': '&quot;',
+        "'": '&#39;',
+        "/": '&#x2F;'
+    };
 
-    class Player {
-        constructor(name, id, teamid) {
-            this.name = name;
-            this.id = id;
-            this.teamid = teamid;
-        }
-    }
+    var Player = function Player(name, id, teamid) {
+        _classCallCheck(this, Player);
 
-    class Team {
-        constructor(name, id) {
-            this.id = id;
-            this.name = name;
-            this.players = [];
-        }
-    }
+        this.name = name;
+        this.id = id;
+        this.teamid = teamid;
+    };
 
-    class Answer {
-        constructor(team, player, value) {
-            this.team = team;
-            this.player = player;
-            this.value = value;
-        }
-    }
+    var Team = function Team(name, id) {
+        _classCallCheck(this, Team);
 
-    class Tossup {
-        constructor() {
+        this.id = id;
+        this.name = name;
+        this.players = [];
+    };
+
+    var Answer = function Answer(team, player, value) {
+        _classCallCheck(this, Answer);
+
+        this.team = team;
+        this.player = player;
+        this.value = value;
+    };
+
+    var Tossup = function () {
+        function Tossup() {
+            _classCallCheck(this, Tossup);
+
             this.answers = [];
         }
 
-        getAnswers() {
-            return this.answers;
-        }
-
-        addAnswer(teamid, playerid, value) {
-            this.answers.push(new Answer(teamid, playerid, value));
-        }
-
-        removeLastAnswer() {
-            if (this.answers.length !== 0) {
-                return this.answers.pop();
+        _createClass(Tossup, [{
+            key: "getAnswers",
+            value: function getAnswers() {
+                return this.answers;
             }
-            return null;
-        }
-    }
+        }, {
+            key: "addAnswer",
+            value: function addAnswer(teamid, playerid, value) {
+                this.answers.push(new Answer(teamid, playerid, value));
+            }
+        }, {
+            key: "removeLastAnswer",
+            value: function removeLastAnswer() {
+                if (this.answers.length !== 0) {
+                    return this.answers.pop();
+                }
+                return null;
+            }
+        }]);
 
-    class BonusPart {
-        constructor(number, value, gettingTeam) {
-            this.number = number;
-            this.gettingTeam = gettingTeam;
-            this.value = value;
-        }
-    }
+        return Tossup;
+    }();
 
-    class Bonus {
-        constructor() {
+    var BonusPart = function BonusPart(number, value, gettingTeam) {
+        _classCallCheck(this, BonusPart);
+
+        this.number = number;
+        this.gettingTeam = gettingTeam;
+        this.value = value;
+    };
+
+    var Bonus = function () {
+        function Bonus() {
+            _classCallCheck(this, Bonus);
+
             this.forTeam = null;
             this.bonusParts = [];
         }
 
-        setForTeam(teamid) {
-            this.forTeam = teamid;
-        }
-
-        getForTeam() {
-            return this.forTeam;
-        }
-
-        getForTeamPoints() {
-            var points = 0;
-            if (this.forTeam) {
-                for (var i = 0; i < this.bonusParts.length; i++) {
-                    if (this.bonusParts[i].gettingTeam == this.forTeam) {
-                        points += this.bonusParts[i].value;
+        _createClass(Bonus, [{
+            key: "setForTeam",
+            value: function setForTeam(teamid) {
+                this.forTeam = teamid;
+            }
+        }, {
+            key: "getForTeam",
+            value: function getForTeam() {
+                return this.forTeam;
+            }
+        }, {
+            key: "getForTeamPoints",
+            value: function getForTeamPoints() {
+                var points = 0;
+                if (this.forTeam) {
+                    for (var i = 0; i < this.bonusParts.length; i++) {
+                        if (this.bonusParts[i].gettingTeam == this.forTeam) {
+                            points += this.bonusParts[i].value;
+                        }
                     }
                 }
+                return points;
             }
-            return points;
-        }
-
-        getAgainstTeamPoints() {
-            var points = 0;
-            if (this.forTeam) {
-                for (var i = 0; i < this.bonusParts.length; i++) {
-                    if (this.bonusParts[i].gettingTeam && this.bonusParts[i].gettingTeam != this.forTeam) {
-                        points += this.bonusParts[i].value;
+        }, {
+            key: "getAgainstTeamPoints",
+            value: function getAgainstTeamPoints() {
+                var points = 0;
+                if (this.forTeam) {
+                    for (var i = 0; i < this.bonusParts.length; i++) {
+                        if (this.bonusParts[i].gettingTeam && this.bonusParts[i].gettingTeam != this.forTeam) {
+                            points += this.bonusParts[i].value;
+                        }
                     }
                 }
+                return points;
             }
-            return points;
-        }
+        }, {
+            key: "addBonusPart",
+            value: function addBonusPart(partNumber, value, gettingTeam) {
+                this.bonusParts.push(new BonusPart(partNumber, value, gettingTeam));
+            }
+        }]);
 
-        addBonusPart(partNumber, value, gettingTeam) {
-            this.bonusParts.push(new BonusPart(partNumber, value, gettingTeam));
-        }
-    }
+        return Bonus;
+    }();
 
-    class Phase {
-        constructor(number) {
+    var Phase = function () {
+        function Phase(number) {
+            _classCallCheck(this, Phase);
+
             this.question_number = number;
             this.tossup = new Tossup();
             this.bonus = new Bonus();
         }
 
-        getNumber() {
-            return this.question_number;
-        }
-
-        getTossupPointsEarned(teamid) {
-            var sum = 0;
-            var answers = this.tossup.getAnswers();
-            for (var i = 0; i < answers.length; i++) {
-                if (answers[i].player.teamid == teamid) {
-                    sum += answers[i].value;
+        _createClass(Phase, [{
+            key: "getNumber",
+            value: function getNumber() {
+                return this.question_number;
+            }
+        }, {
+            key: "getTossupPointsEarned",
+            value: function getTossupPointsEarned(teamid) {
+                var sum = 0;
+                var answers = this.tossup.getAnswers();
+                for (var i = 0; i < answers.length; i++) {
+                    if (answers[i].player.teamid == teamid) {
+                        sum += answers[i].value;
+                    }
+                }
+                return sum;
+            }
+        }, {
+            key: "getBonusPointsEarned",
+            value: function getBonusPointsEarned(teamid) {
+                return 0;
+            }
+        }, {
+            key: "getBounceBackPoints",
+            value: function getBounceBackPoints(teamid) {
+                return 0;
+            }
+        }, {
+            key: "getTossup",
+            value: function getTossup() {
+                return this.tossup;
+            }
+        }, {
+            key: "getBonus",
+            value: function getBonus() {
+                return this.bonus;
+            }
+        }, {
+            key: "addAnswerToTossup",
+            value: function addAnswerToTossup(teamid, playerid, value) {
+                this.tossup.addAnswer(teamid, playerid, value);
+            }
+        }, {
+            key: "getBonusPointsForTeam",
+            value: function getBonusPointsForTeam(teamid) {
+                if (this.bonus.getForTeam() === teamid) {
+                    return this.bonus.getForTeamPoints();
+                } else {
+                    return this.bonus.getAgainstTeamPoints();
                 }
             }
-            return sum;
-        }
-
-        getBonusPointsEarned(teamid) {
-            return 0;
-        }
-
-        getBounceBackPoints(teamid) {
-            return 0;
-        }
-
-        getTossup() {
-            return this.tossup;
-        }
-
-        getBonus() {
-            return this.bonus;
-        }
-
-        addAnswerToTossup(teamid, playerid, value) {
-            this.tossup.addAnswer(teamid, playerid, value);
-        }
-
-        getBonusPointsForTeam(teamid) {
-            if (this.bonus.getForTeam() === teamid) {
-                return this.bonus.getForTeamPoints();
-            } else {
-                return this.bonus.getAgainstTeamPoints();
+        }, {
+            key: "setBonusTeam",
+            value: function setBonusTeam(forTeamID) {
+                this.bonus.setForTeam(forTeamID);
             }
-        }
-
-        setBonusTeam(forTeamID) {
-            this.bonus.setForTeam(forTeamID);
-        }
-
-        addBonusPart(partNumber, value, gettingTeam) {
-            this.bonus.addBonusPart(partNumber, value, gettingTeam)
-        }
-
-        removeLastTossup() {
-            return this.tossup.removeLastAnswer();
-        }
-
-        teamAlreadyAnswered(player, team) {
-            for (var i = 0; i < this.tossup.answers.length; i++) {
-                var ans = this.tossup.answers[i];
-                if (ans.player !== player && ans.team === team) {
-                    return true;
+        }, {
+            key: "addBonusPart",
+            value: function addBonusPart(partNumber, value, gettingTeam) {
+                this.bonus.addBonusPart(partNumber, value, gettingTeam);
+            }
+        }, {
+            key: "removeLastTossup",
+            value: function removeLastTossup() {
+                return this.tossup.removeLastAnswer();
+            }
+        }, {
+            key: "teamAlreadyAnswered",
+            value: function teamAlreadyAnswered(player, team) {
+                for (var i = 0; i < this.tossup.answers.length; i++) {
+                    var ans = this.tossup.answers[i];
+                    if (ans.player !== player && ans.team === team) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }, {
+            key: "hasCorrectAnswer",
+            value: function hasCorrectAnswer(pointMap, player) {
+                for (var i = 0; i < this.tossup.answers.length; i++) {
+                    if (pointMap[this.tossup.answers[i].value] !== "N" && this.tossup.answers[i].player !== player) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }, {
+            key: "hasNeg",
+            value: function hasNeg(pointMap, player) {
+                for (var i = 0; i < this.tossup.answers.length; i++) {
+                    if (pointMap[this.tossup.answers[i].value] === "N" && this.tossup.answers[i].player !== player) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }, {
+            key: "removeAnswer",
+            value: function removeAnswer(player, pointMap) {
+                this.tossup.answers = this.tossup.answers.filter(function (answer) {
+                    return answer.player !== player;
+                });
+                var allNegs = true;
+                for (var i = 0; i < this.tossup.answers.length; i++) {
+                    if (pointMap[this.tossup.answers[i].value] !== "N") {
+                        allNegs = false;
+                    }
+                }
+                if (this.tossup.answers.length === 0 || allNegs) {
+                    this.bonus.forTeam = null;
                 }
             }
-            return false;
-        }
-
-        hasCorrectAnswer(pointMap, player) {
-            for (var i = 0; i < this.tossup.answers.length; i++) {
-                if (pointMap[this.tossup.answers[i].value] !== "N"
-                        && this.tossup.answers[i].player !== player) {
-                    return true;
+        }, {
+            key: "replaceAnswer",
+            value: function replaceAnswer(player, team, value, pointMap) {
+                var replaced = false;
+                for (var i = 0; i < this.tossup.answers.length; i++) {
+                    var answer = this.tossup.answers[i];
+                    if (answer.player === player) {
+                        answer.value = value;
+                        replaced = true;
+                        break;
+                    }
                 }
-            }
-            return false;
-        }
-
-        hasNeg(pointMap, player) {
-            for (var i = 0; i < this.tossup.answers.length; i++) {
-                if (pointMap[this.tossup.answers[i].value] === "N"
-                        && this.tossup.answers[i].player !== player) {
-                    return true;
+                if (!replaced) {
+                    this.tossup.answers.push(new Answer(team, player, value));
+                    if (pointMap[value] !== "N") {
+                        this.bonus.forTeam = team;
+                    }
                 }
-            }
-            return false;
-        }
-
-        removeAnswer(player, pointMap) {
-            this.tossup.answers = this.tossup.answers.filter(function(answer) {
-                return answer.player !== player;
-            });
-            var allNegs = true;
-            for (var i = 0; i < this.tossup.answers.length; i++) {
-                if (pointMap[this.tossup.answers[i].value] !== "N") {
-                    allNegs = false;
+                var allNegs = true;
+                for (var i = 0; i < this.tossup.answers.length; i++) {
+                    if (pointMap[this.tossup.answers[i].value] !== "N") {
+                        allNegs = false;
+                    }
                 }
-            }
-            if (this.tossup.answers.length === 0 || allNegs) {
-                this.bonus.forTeam = null;
-            }
-        }
-
-        replaceAnswer(player, team, value, pointMap) {
-            var replaced = false;
-            for (var i = 0; i < this.tossup.answers.length; i++) {
-                var answer = this.tossup.answers[i];
-                if (answer.player === player) {
-                    answer.value = value;
-                    replaced = true;
-                    break;
-                }
-            }
-            if (!replaced) {
-                this.tossup.answers.push(new Answer(team, player, value));
-                if (pointMap[value] !== "N") {
+                if (allNegs) {
+                    this.bonus.forTeam = null;
+                } else {
                     this.bonus.forTeam = team;
                 }
             }
-            var allNegs = true;
-            for (var i = 0; i < this.tossup.answers.length; i++) {
-                if (pointMap[this.tossup.answers[i].value] !== "N") {
-                    allNegs = false;
+        }, {
+            key: "changeBonusPart",
+            value: function changeBonusPart(part, value, team) {
+                for (var i = 0; i < this.bonus.bonusParts.length; i++) {
+                    if (this.bonus.bonusParts[i].number === part) {
+                        this.bonus.bonusParts[i].value = value;
+                        this.bonus.bonusParts[i].gettingTeam = team;
+                    }
                 }
             }
-            if (allNegs) {
-                this.bonus.forTeam = null;
-            } else {
-                this.bonus.forTeam = team;
-            }
-        }
-
-        changeBonusPart(part, value, team) {
-            for (var i = 0; i < this.bonus.bonusParts.length; i++) {
-                if (this.bonus.bonusParts[i].number === part) {
-                    this.bonus.bonusParts[i].value = value;
-                    this.bonus.bonusParts[i].gettingTeam = team;
-                }
-            }
-        }
-
-        removeBonusFromTeam(part, team) {
-            for (var i = 0; i < this.bonus.bonusParts.length; i++) {
-                if (this.bonus.bonusParts[i].number === part
-                    && this.bonus.bonusParts[i].gettingTeam === team) {
+        }, {
+            key: "removeBonusFromTeam",
+            value: function removeBonusFromTeam(part, team) {
+                for (var i = 0; i < this.bonus.bonusParts.length; i++) {
+                    if (this.bonus.bonusParts[i].number === part && this.bonus.bonusParts[i].gettingTeam === team) {
                         this.bonus.bonusParts[i].gettingTeam = null;
+                    }
                 }
             }
-        }
-    }
+        }]);
 
-    class Game {
-        constructor() {
+        return Phase;
+    }();
+
+    var Game = function () {
+        function Game() {
+            _classCallCheck(this, Game);
+
             this.team1 = null;
             this.team2 = null;
             this.phases = [];
@@ -275,105 +322,158 @@
             this.bonusPointValue = 10;
         }
 
-        getPhases() {
-            return this.phases;
-        }
-
-        getCurrentPhase() {
-            return this.currentPhase;
-        }
-
-        deadTossup(bonusParts, bonusValue) {
-            for (var i = 0; i < bonusParts; i++) {
-                this.currentPhase.bonus.bonusParts.push(new BonusPart(i + 1, bonusValue, null));
+        _createClass(Game, [{
+            key: "getPhases",
+            value: function getPhases() {
+                return this.phases;
             }
-            this.stashPhase();
-        }
-
-        lastQuestion() {
-            this.currentPhase = this.phases.pop();
-            this.currentPhase.tossup.answers = [];
-            this.currentPhase.bonus.bonusParts = [];
-            this.currentPhase.bonus.forTeam = null;
-        }
-
-        nextPhase() {
-            var nextPhaseNum = this.currentPhase.getNumber() + 1;
-            if (nextPhaseNum > this.phases.length) {
-                this.currentPhase = new Phase(nextPhaseNum);
-            } else {
-                this.currentPhase = this.phases[nextPhaseNum - 1];
+        }, {
+            key: "getCurrentPhase",
+            value: function getCurrentPhase() {
+                return this.currentPhase;
             }
-        }
-
-        stashPhase() {
-            if (this.phases.length < this.currentPhase.getNumber()) {
-                this.phases.push(this.currentPhase);
-            } else {
-                this.phases[this.currentPhase.getNumber() - 1] = this.currentPhase;
-            }
-            this.nextPhase();
-        }
-
-        getPlayerTeam(playerid) {
-            var team1 = this.team1.players.filter(function(player) {
-                return player.id === playerid;
-            });
-            if (team1.length === 0) {
-                return this.team2.id;
-            } else {
-                return this.team1.id;
-            }
-        }
-
-        setTeam(number, name, id, players) {
-            if (number == 1) {
-                this.team1 = new Team(name, id);
-                for (var i = 0; i < players.length; i++) {
-                    this.team1.players.push(new Player(players[i].player_name, players[i]._id, players[i].teamID));
+        }, {
+            key: "deadTossup",
+            value: function deadTossup(bonusParts, bonusValue) {
+                for (var i = 0; i < bonusParts; i++) {
+                    this.currentPhase.bonus.bonusParts.push(new BonusPart(i + 1, bonusValue, null));
                 }
-                // this.team1.players.sort(function(player1, player2) {
-                //     return player1.name.localeCompare(player2.name);
-                // });
-            } else {
-                this.team2 = new Team(name, id);
-                for (var i = 0; i < players.length; i++) {
-                    this.team2.players.push(new Player(players[i].player_name, players[i]._id, players[i].teamID));
+                this.stashPhase();
+            }
+        }, {
+            key: "lastQuestion",
+            value: function lastQuestion() {
+                this.currentPhase = this.phases.pop();
+                this.currentPhase.tossup.answers = [];
+                this.currentPhase.bonus.bonusParts = [];
+                this.currentPhase.bonus.forTeam = null;
+            }
+        }, {
+            key: "nextPhase",
+            value: function nextPhase() {
+                var nextPhaseNum = this.currentPhase.getNumber() + 1;
+                if (nextPhaseNum > this.phases.length) {
+                    this.currentPhase = new Phase(nextPhaseNum);
+                } else {
+                    this.currentPhase = this.phases[nextPhaseNum - 1];
                 }
-                // this.team2.players.sort(function(player1, player2) {
-                //     return player1.name.localeCompare(player2.name);
-                // });
             }
-        }
-
-        addPlayer(name, id, teamid) {
-            var player = new Player(name, id, teamid);
-            if (teamid == this.team1.id) {
-                this.team1.players.push(player);
-            } else {
-                this.team2.players.push(player);
+        }, {
+            key: "stashPhase",
+            value: function stashPhase() {
+                if (this.phases.length < this.currentPhase.getNumber()) {
+                    this.phases.push(this.currentPhase);
+                } else {
+                    this.phases[this.currentPhase.getNumber() - 1] = this.currentPhase;
+                }
+                this.nextPhase();
             }
-        }
-
-        addAnswerToTossup(teamid, playerid, value) {
-            this.currentPhase.addAnswerToTossup(teamid, playerid, value);
-        }
-
-        getPlayersPointValues(team) {
-            var teamid = team.id;
-            var playerScores = {};
-            var allPlayers = teamid == this.team1.id ? this.team1.players : this.team2.players;
-            for (var i = 0; i < allPlayers.length; i++) {
-                playerScores[allPlayers[i].id] = {};
+        }, {
+            key: "getPlayerTeam",
+            value: function getPlayerTeam(playerid) {
+                var team1 = this.team1.players.filter(function (player) {
+                    return player.id === playerid;
+                });
+                if (team1.length === 0) {
+                    return this.team2.id;
+                } else {
+                    return this.team1.id;
+                }
             }
+        }, {
+            key: "setTeam",
+            value: function setTeam(number, name, id, players) {
+                if (number == 1) {
+                    this.team1 = new Team(name, id);
+                    for (var i = 0; i < players.length; i++) {
+                        this.team1.players.push(new Player(players[i].player_name, players[i]._id, players[i].teamID));
+                    }
+                    // this.team1.players.sort(function(player1, player2) {
+                    //     return player1.name.localeCompare(player2.name);
+                    // });
+                } else {
+                        this.team2 = new Team(name, id);
+                        for (var i = 0; i < players.length; i++) {
+                            this.team2.players.push(new Player(players[i].player_name, players[i]._id, players[i].teamID));
+                        }
+                        // this.team2.players.sort(function(player1, player2) {
+                        //     return player1.name.localeCompare(player2.name);
+                        // });
+                    }
+            }
+        }, {
+            key: "addPlayer",
+            value: function addPlayer(name, id, teamid) {
+                var player = new Player(name, id, teamid);
+                if (teamid == this.team1.id) {
+                    this.team1.players.push(player);
+                } else {
+                    this.team2.players.push(player);
+                }
+            }
+        }, {
+            key: "addAnswerToTossup",
+            value: function addAnswerToTossup(teamid, playerid, value) {
+                this.currentPhase.addAnswerToTossup(teamid, playerid, value);
+            }
+        }, {
+            key: "getPlayersPointValues",
+            value: function getPlayersPointValues(team) {
+                var teamid = team.id;
+                var playerScores = {};
+                var allPlayers = teamid == this.team1.id ? this.team1.players : this.team2.players;
+                for (var i = 0; i < allPlayers.length; i++) {
+                    playerScores[allPlayers[i].id] = {};
+                }
 
-            for (var i = 0; i < this.phases.length; i++) {
-                var currentTossup = this.phases[i].getTossup();
+                for (var i = 0; i < this.phases.length; i++) {
+                    var currentTossup = this.phases[i].getTossup();
+                    for (var j = 0; j < currentTossup.getAnswers().length; j++) {
+                        var answer = currentTossup.getAnswers()[j];
+                        if (answer.team == teamid) {
+                            if (!playerScores[answer.player]) {
+                                playerScores[answer.player] = {};
+                            }
+                            if (!playerScores[answer.player][answer.value + ""]) {
+                                playerScores[answer.player][answer.value + ""] = 1;
+                            } else {
+                                playerScores[answer.player][answer.value + ""]++;
+                            }
+                        }
+                    }
+                }
+                var currentTossup = this.currentPhase.getTossup();
                 for (var j = 0; j < currentTossup.getAnswers().length; j++) {
                     var answer = currentTossup.getAnswers()[j];
                     if (answer.team == teamid) {
+                        if (!playerScores[answer.player][answer.value + ""]) {
+                            playerScores[answer.player][answer.value + ""] = 1;
+                        } else {
+                            playerScores[answer.player][answer.value + ""]++;
+                        }
+                    }
+                }
+                return playerScores;
+            }
+        }, {
+            key: "getAllPlayerScores",
+            value: function getAllPlayerScores() {
+                var playerScores = {};
+                var allPlayers = this.team1.players.concat(this.team2.players);
+                for (var i = 0; i < allPlayers.length; i++) {
+                    playerScores[allPlayers[i].id] = { total: 0 };
+                }
+                for (var i = 0; i < this.phases.length; i++) {
+                    var currentTossup = this.phases[i].getTossup();
+                    for (var j = 0; j < currentTossup.getAnswers().length; j++) {
+                        var answer = currentTossup.getAnswers()[j];
                         if (!playerScores[answer.player]) {
                             playerScores[answer.player] = {};
+                        }
+                        if (!playerScores[answer.player]["total"]) {
+                            playerScores[answer.player]["total"] = answer.value;
+                        } else {
+                            playerScores[answer.player]["total"] += answer.value;
                         }
                         if (!playerScores[answer.player][answer.value + ""]) {
                             playerScores[answer.player][answer.value + ""] = 1;
@@ -382,29 +482,7 @@
                         }
                     }
                 }
-            }
-            var currentTossup = this.currentPhase.getTossup();
-            for (var j = 0; j < currentTossup.getAnswers().length; j++) {
-                var answer = currentTossup.getAnswers()[j];
-                if (answer.team == teamid) {
-                    if (!playerScores[answer.player][answer.value + ""]) {
-                        playerScores[answer.player][answer.value + ""] = 1;
-                    } else {
-                        playerScores[answer.player][answer.value + ""]++;
-                    }
-                }
-            }
-            return playerScores;
-        }
-
-        getAllPlayerScores() {
-            var playerScores = {};
-            var allPlayers = this.team1.players.concat(this.team2.players);
-            for (var i = 0; i < allPlayers.length; i++) {
-                playerScores[allPlayers[i].id] = {total : 0};
-            }
-            for (var i = 0; i < this.phases.length; i++) {
-                var currentTossup = this.phases[i].getTossup();
+                var currentTossup = this.currentPhase.getTossup();
                 for (var j = 0; j < currentTossup.getAnswers().length; j++) {
                     var answer = currentTossup.getAnswers()[j];
                     if (!playerScores[answer.player]) {
@@ -421,102 +499,36 @@
                         playerScores[answer.player][answer.value + ""]++;
                     }
                 }
+                return playerScores;
             }
-            var currentTossup = this.currentPhase.getTossup();
-            for (var j = 0; j < currentTossup.getAnswers().length; j++) {
-                var answer = currentTossup.getAnswers()[j];
-                if (!playerScores[answer.player]) {
-                    playerScores[answer.player] = {};
-                }
-                if (!playerScores[answer.player]["total"]) {
-                    playerScores[answer.player]["total"] = answer.value;
-                } else {
-                    playerScores[answer.player]["total"] += answer.value;
-                }
-                if (!playerScores[answer.player][answer.value + ""]) {
-                    playerScores[answer.player][answer.value + ""] = 1;
-                } else {
-                    playerScores[answer.player][answer.value + ""]++;
-                }
-            }
-            return playerScores;
-        }
-
-        getPlayerScore(player) {
-            var playerid = player.id;
-            var score = 0;
-            for (var i = 0; i < this.phases.length; i++) {
-                var currentTossup = this.phases[i].getTossup();
-                for (var j = 0; j < currentTossup.getAnswers().length; j++) {
-                    var answer = currentTossup.getAnswers()[j];
-                    if (answer.player == playerid) {
-                        score += answer.value;
+        }, {
+            key: "getPlayerScore",
+            value: function getPlayerScore(player) {
+                var playerid = player.id;
+                var score = 0;
+                for (var i = 0; i < this.phases.length; i++) {
+                    var currentTossup = this.phases[i].getTossup();
+                    for (var j = 0; j < currentTossup.getAnswers().length; j++) {
+                        var answer = currentTossup.getAnswers()[j];
+                        if (answer.player == playerid) {
+                            score += answer.value;
+                        }
                     }
                 }
-            }
-            var tossup = this.currentPhase.getTossup();
-            for (var j = 0; j < tossup.getAnswers().length; j++) {
-                var currentAnswer = tossup.getAnswers()[j];
-                if (currentAnswer.player == playerid) {
-                    score += currentAnswer.value;
-                }
-            }
-            return score;
-        }
-
-        getTeamScore(teamid) {
-            var score = 0;
-            for (var i = 0; i < this.phases.length; i++) {
-                var currentTossup = this.phases[i].getTossup();
-                var currentBonus = this.phases[i].getBonus();
-                for (var j = 0; j < currentTossup.getAnswers().length; j++) {
-                    var currentAnswer = currentTossup.getAnswers()[j];
-                    if (currentAnswer.team == teamid) {
+                var tossup = this.currentPhase.getTossup();
+                for (var j = 0; j < tossup.getAnswers().length; j++) {
+                    var currentAnswer = tossup.getAnswers()[j];
+                    if (currentAnswer.player == playerid) {
                         score += currentAnswer.value;
                     }
                 }
-                if (currentBonus.getForTeam() == teamid) {
-                    score += currentBonus.getForTeamPoints();
-                } else {
-                    score += currentBonus.getAgainstTeamPoints();
-                }
+                return score;
             }
-            var tossup = this.currentPhase.getTossup();
-            var bonus = this.currentPhase.getBonus();
-            for (var j = 0; j < tossup.getAnswers().length; j++) {
-                var currentAnswer = tossup.getAnswers()[j];
-                if (currentAnswer.team == teamid) {
-                    score += currentAnswer.value;
-                }
-            }
-            if (bonus.getForTeam() == teamid) {
-                score += bonus.getForTeamPoints();
-            } else {
-                score += bonus.getAgainstTeamPoints();
-            }
-            return score;
-        }
-
-        getTeamBouncebacks(teamid) {
-            var points = 0;
-            for (var i = 0; i < this.phases.length; i++) {
-                var currentBonus = this.phases[i].getBonus();
-                if (currentBonus.getForTeam() != teamid) {
-                    points += currentBonus.getAgainstTeamPoints();
-                }
-            }
-            var tossup = this.currentPhase.getTossup();
-            var bonus = this.currentPhase.getBonus();
-            if (bonus.getForTeam() != teamid) {
-                points += bonus.getAgainstTeamPoints();
-            }
-            return points;
-        }
-
-        getTeamScoreUpToPhase(teamid, maxPhase) {
-            var score = 0;
-            for (var i = 0; i < this.phases.length; i++) {
-                if (this.phases[i].getNumber() <= maxPhase) {
+        }, {
+            key: "getTeamScore",
+            value: function getTeamScore(teamid) {
+                var score = 0;
+                for (var i = 0; i < this.phases.length; i++) {
                     var currentTossup = this.phases[i].getTossup();
                     var currentBonus = this.phases[i].getBonus();
                     for (var j = 0; j < currentTossup.getAnswers().length; j++) {
@@ -525,40 +537,90 @@
                             score += currentAnswer.value;
                         }
                     }
-                    if (currentBonus.forTeam) {
-                        for (var j = 0; j < currentBonus.bonusParts.length; j++) {
-                            if (currentBonus.bonusParts[j].gettingTeam === teamid) {
-                                score += currentBonus.bonusParts[j].value;
+                    if (currentBonus.getForTeam() == teamid) {
+                        score += currentBonus.getForTeamPoints();
+                    } else {
+                        score += currentBonus.getAgainstTeamPoints();
+                    }
+                }
+                var tossup = this.currentPhase.getTossup();
+                var bonus = this.currentPhase.getBonus();
+                for (var j = 0; j < tossup.getAnswers().length; j++) {
+                    var currentAnswer = tossup.getAnswers()[j];
+                    if (currentAnswer.team == teamid) {
+                        score += currentAnswer.value;
+                    }
+                }
+                if (bonus.getForTeam() == teamid) {
+                    score += bonus.getForTeamPoints();
+                } else {
+                    score += bonus.getAgainstTeamPoints();
+                }
+                return score;
+            }
+        }, {
+            key: "getTeamBouncebacks",
+            value: function getTeamBouncebacks(teamid) {
+                var points = 0;
+                for (var i = 0; i < this.phases.length; i++) {
+                    var currentBonus = this.phases[i].getBonus();
+                    if (currentBonus.getForTeam() != teamid) {
+                        points += currentBonus.getAgainstTeamPoints();
+                    }
+                }
+                var tossup = this.currentPhase.getTossup();
+                var bonus = this.currentPhase.getBonus();
+                if (bonus.getForTeam() != teamid) {
+                    points += bonus.getAgainstTeamPoints();
+                }
+                return points;
+            }
+        }, {
+            key: "getTeamScoreUpToPhase",
+            value: function getTeamScoreUpToPhase(teamid, maxPhase) {
+                var score = 0;
+                for (var i = 0; i < this.phases.length; i++) {
+                    if (this.phases[i].getNumber() <= maxPhase) {
+                        var currentTossup = this.phases[i].getTossup();
+                        var currentBonus = this.phases[i].getBonus();
+                        for (var j = 0; j < currentTossup.getAnswers().length; j++) {
+                            var currentAnswer = currentTossup.getAnswers()[j];
+                            if (currentAnswer.team == teamid) {
+                                score += currentAnswer.value;
+                            }
+                        }
+                        if (currentBonus.forTeam) {
+                            for (var j = 0; j < currentBonus.bonusParts.length; j++) {
+                                if (currentBonus.bonusParts[j].gettingTeam === teamid) {
+                                    score += currentBonus.bonusParts[j].value;
+                                }
                             }
                         }
                     }
                 }
+                return score;
             }
-            return score;
-        }
+        }]);
 
-    }
+        return Game;
+    }();
 
     var game = new Game();
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
-        $(".teamselect").change(function() {
-            $(this).each(function() {
+        $(".teamselect").change(function () {
+            $(this).each(function () {
                 $(this).css("color", "black");
             });
             findPlayers($(this));
         });
 
-        $("#dismiss-error").click(function() {
+        $("#dismiss-error").click(function () {
             $("#error-div").fadeOut(0);
         });
 
-        $(window).bind("beforeunload", function() {
-            return "You will lose this scoresheet info if you leave/reload.";
-        });
-
-        $("body").on("click", ".btn-point", function() {
+        $("body").on("click", ".btn-point", function () {
             if (game.team1 != null && game.team2 != null) {
                 game.getCurrentPhase().addAnswerToTossup($(this).attr("data-team"), $(this).attr("data-player"), parseFloat($(this).attr("data-point-value")));
                 showAnswersOnScoresheet(game.currentPhase);
@@ -579,9 +641,9 @@
             }
         });
 
-        $("body").on("click", "#next-tossup", function() {
+        $("body").on("click", "#next-tossup", function () {
             if (game.team1 !== null && game.team2 !== null) {
-                $(".bonus-phase").each(function(index) {
+                $(".bonus-phase").each(function (index) {
                     var bonusButton = $(this).find(".gotten-bonus").first();
                     game.getCurrentPhase().addBonusPart(index + 1, game.bonusPointValue, $(bonusButton).attr("data-team"));
                 });
@@ -605,7 +667,7 @@
             }
         });
 
-        $("body").on("click", "#dead-tossup", function() {
+        $("body").on("click", "#dead-tossup", function () {
             if (game.team1 !== null && game.team2 !== null) {
                 showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team1.id, game.getCurrentPhase().getBonusPointsForTeam(game.team1.id));
                 showBonusOnScoresheetOneRow(game.getCurrentPhase().getNumber(), game.team2.id, game.getCurrentPhase().getBonusPointsForTeam(game.team2.id));
@@ -623,13 +685,13 @@
             }
         });
 
-        $("body").on("click", "#submit-game", function() {
+        $("body").on("click", "#submit-game", function () {
             var parsedGame = parseScoresheet(game);
             $(this).prop("disabled", true);
             submitScoresheet(game, parsedGame);
         });
 
-        $("body").on("keydown", ".player-name-input", function(e) {
+        $("body").on("keydown", ".player-name-input", function (e) {
             $(this).css("border-color", "white");
             if (e.which === 13 && $(this).val().trim().length !== 0) {
                 var button = $(this).next(".add-player-button");
@@ -642,7 +704,7 @@
             }
         });
 
-        $("body").on("click", ".add-player-button", function() {
+        $("body").on("click", ".add-player-button", function () {
             $(this).prev(".player-name-input").css("border-color", "transparent");
             if ($(this).prev(".player-name-input").val().length !== 0) {
                 $(this).prop("disabled", true);
@@ -652,7 +714,7 @@
             }
         });
 
-        $("body").on("click", "#undo-tossup", function() {
+        $("body").on("click", "#undo-tossup", function () {
             var lastAnswer = game.getCurrentPhase().removeLastTossup();
             revertPlayerAnswerOnScoresheet(lastAnswer, game.getCurrentPhase().getNumber());
             destroyBonusLabels();
@@ -660,13 +722,13 @@
             showPlayerPointTotals(game);
         });
 
-        $('body').ajaxStart(function() {
-                $(this).css({'cursor' : 'wait'});
-            }).ajaxStop(function() {
-                $(this).css({'cursor' : 'default'});
-            });
+        $('body').ajaxStart(function () {
+            $(this).css({ 'cursor': 'wait' });
+        }).ajaxStop(function () {
+            $(this).css({ 'cursor': 'default' });
+        });
 
-        $(".undo-neg").click(function() {
+        $(".undo-neg").click(function () {
             var lastAnswer = game.getCurrentPhase().removeLastTossup();
             revertPlayerAnswerOnScoresheet(lastAnswer, game.getCurrentPhase().getNumber());
             unlockTeam($(this));
@@ -674,7 +736,7 @@
             showPlayerPointTotals(game);
         });
 
-        $("body").on("click", ".player-table .player-body", function(e) {
+        $("body").on("click", ".player-table .player-body", function (e) {
             if (!$(e.target).is("input")) {
                 $(this).find("th").toggleClass("active-player");
                 $(this).find("td").toggleClass("active-player");
@@ -683,32 +745,32 @@
             }
         });
 
-        $("body").on("click", "#scoresheet tbody td:not(.tossup-number, .total-td, .bonus-td, .editing)", function(e) {
+        $("body").on("click", "#scoresheet tbody td:not(.tossup-number, .total-td, .bonus-td, .editing)", function (e) {
             e.stopPropagation();
             replaceTossupTD($(this), game);
         });
 
-        $("body").on("mousedown", ".bonus-select option", function(e) {
+        $("body").on("mousedown", ".bonus-select option", function (e) {
             this.selected = !this.selected;
             e.preventDefault();
         });
 
-        $("body").on("click", "#scoresheet tbody .bonus-td:not(.editing)", function(e) {
+        $("body").on("click", "#scoresheet tbody .bonus-td:not(.editing)", function (e) {
             e.stopPropagation();
             replaceBonusTD($(this), game);
         });
 
-        $("body").on("click", ".confirm-change-bonus", function() {
+        $("body").on("click", ".confirm-change-bonus", function () {
             var parent = $(this).parent();
             var index = parseInt(parent.attr('data-row')) - 1;
             var team = parent.attr("data-team");
             var select = $(this).siblings(".bonus-select");
-            select.children("option:selected").each(function() {
+            select.children("option:selected").each(function () {
                 var part = parseInt($(this).attr('data-part'));
                 var value = parseInt($(this).val());
                 game.getPhases()[index].changeBonusPart(part, value, team);
             });
-            select.children("option:not(:selected)").each(function() {
+            select.children("option:not(:selected)").each(function () {
                 var part = parseInt($(this).attr('data-part'));
                 game.getPhases()[index].removeBonusFromTeam(part, team);
             });
@@ -725,7 +787,7 @@
             showBonusOnScoresheetOneRow(index + 1, game.team2.id, bonus2);
         });
 
-        $("body").on("click", ".confirm-change-tossup", function() {
+        $("body").on("click", ".confirm-change-tossup", function () {
             var parent = $(this).parent();
             var index = parseInt(parent.attr("data-row")) - 1;
             var player = parent.attr("data-player");
@@ -750,13 +812,13 @@
             showPlayerPointTotals(game);
         });
 
-        $("body").on("click", ".cancel-change", function() {
+        $("body").on("click", ".cancel-change", function () {
             var oldValue = $(this).attr("data-point");
             var parentTD = $(this).parents("td");
             parentTD.empty().text(oldValue).removeClass("editing");
         });
 
-        $("body").on("click", "#last-tossup", function() {
+        $("body").on("click", "#last-tossup", function () {
             var phaseNum = game.getCurrentPhase().getNumber();
             if (game.phases[phaseNum - 2]) {
                 game.lastQuestion();
@@ -770,12 +832,12 @@
             }
         });
 
-        $("#undo-game").click(function() {
+        $("#undo-game").click(function () {
             $(this).prop("disabled", true);
             undoGameSubmission($(this).attr("data-tournament"), $(this).attr("data-game"));
         });
 
-        $(".bonus-part").click(function() {
+        $(".bonus-part").click(function () {
             $(this).toggleClass("gotten-bonus").toggleClass("not-gotten-bonus");
             if ($(this).hasClass("gotten-bonus")) {
                 var row = $(this).attr("data-toggle-row");
@@ -785,18 +847,17 @@
                 }
             }
         });
-
     });
 
     function findPlayers(side) {
         $.ajax({
-            url : "/tournaments/getplayers",
-            type : "GET",
-            data : {tournamentid : $("#tournamentid").val(),
-                    teamname : $(side).val()},
-            success : function(databack, status, xhr) {
+            url: "/tournaments/getplayers",
+            type: "GET",
+            data: { tournamentid: $("#tournamentid").val(),
+                teamname: $(side).val() },
+            success: function success(databack, status, xhr) {
                 changeTeamLabels(side);
-                var pointValues = Object.keys(databack.pointScheme).sort(function(first, second) {
+                var pointValues = Object.keys(databack.pointScheme).sort(function (first, second) {
                     return parseFloat(second) - parseFloat(first);
                 });
                 game.pointScheme = pointValues;
@@ -823,17 +884,17 @@
 
     function addPlayer(playerName, teamid, teamName) {
         var data = {
-                tournamentidform : $("#tournamentid").val(),
-                teamnameform : teamName,
-                teamidform : teamid,
-                newplayername : playerName
+            tournamentidform: $("#tournamentid").val(),
+            teamnameform: teamName,
+            teamidform: teamid,
+            newplayername: playerName
         };
         $.ajax({
-            url : "/tournaments/players/create",
-            type : "POST",
-            data : data,
-            success : function(databack, status, xhr) {
-                var pointScheme = Object.keys(databack.pointScheme).sort(function(first, second) {
+            url: "/tournaments/players/create",
+            type: "POST",
+            data: data,
+            success: function success(databack, status, xhr) {
+                var pointScheme = Object.keys(databack.pointScheme).sort(function (first, second) {
                     return parseFloat(second) - parseFloat(first);
                 });
                 if (game.team1.id == teamid) {
@@ -853,7 +914,7 @@
                 }
                 $(".player-name-input").val("");
             },
-            complete : function(xhr, status) {
+            complete: function complete(xhr, status) {
                 $(".add-player-button").prop("disabled", false);
             }
         });
@@ -861,21 +922,21 @@
 
     function submitScoresheet(game, parsedScoresheet) {
         var data = {
-                    "tournamentid" : $("#tournamentid").val(),
-                    "scoresheet" : game,
-                    "game" : parsedScoresheet,
+            "tournamentid": $("#tournamentid").val(),
+            "scoresheet": game,
+            "game": parsedScoresheet
         };
         $.ajax({
-            url : "/tournaments/scoresheet/submit",
-            type : "POST",
-            data : data,
-            success : function(databack, status, xhr) {
+            url: "/tournaments/scoresheet/submit",
+            type: "POST",
+            data: data,
+            success: function success(databack, status, xhr) {
                 $("#dead-tossup-div").slideUp(400);
                 $("#submit-game-div").slideUp(400);
                 setGameAnchorTag(databack.gameid);
                 $("#goto-game-div").slideDown(400);
             },
-            error : function(xhr, status, err) {
+            error: function error(xhr, status, err) {
                 if (xhr.status === 401) {
                     $("#error-div").fadeIn(0);
                     $("#error-msg").text(xhr.status + ": " + "You're not logged in!");
@@ -884,7 +945,7 @@
                     $("#error-msg").text(xhr.status + ": Couldn't submit scoresheet!");
                 }
             },
-            complete : function() {
+            complete: function complete() {
                 $("#submit-game").prop("disabled", false);
             }
         });
@@ -892,13 +953,13 @@
 
     function undoGameSubmission(tournament, game) {
         $.ajax({
-            url : "/tournaments/games/remove",
-            type : "POST",
-            data : {
-                gameid_form : game,
-                tournament_idgame : tournament
+            url: "/tournaments/games/remove",
+            type: "POST",
+            data: {
+                gameid_form: game,
+                tournament_idgame: tournament
             },
-            success : function(databack, status, xhr) {
+            success: function success(databack, status, xhr) {
                 $("#dead-tossup-div").slideDown(400);
                 $("#submit-game-div").slideDown(400);
                 $("#goto-game-div").slideUp(400);
@@ -915,18 +976,17 @@
         var phase = game.getPhases()[row - 1];
         if (phase) {
             if (phase.hasNeg(game.pointMap, player)) {
-                validAnswerTypes = game.pointScheme.filter(function(value) {
+                validAnswerTypes = game.pointScheme.filter(function (value) {
                     return game.pointMap[value] !== "N";
                 });
             } else if (phase.hasCorrectAnswer(game.pointMap, player)) {
-                validAnswerTypes = game.pointScheme.filter(function(value) {
+                validAnswerTypes = game.pointScheme.filter(function (value) {
                     return game.pointMap[value] === "N";
                 });
             } else {
                 validAnswerTypes = game.pointScheme;
             }
-            if (!phase.teamAlreadyAnswered(player, team)
-                    && validAnswerTypes.length !== 0) {
+            if (!phase.teamAlreadyAnswered(player, team) && validAnswerTypes.length !== 0) {
                 var currentVal = td.text();
                 var html = "<select class='input-xs center-text btn-shadow'><option value='-'>-</option>";
                 for (var i = 0; i < validAnswerTypes.length; i++) {
@@ -953,9 +1013,9 @@
             var bonusParts = game.getPhases()[row - 1].bonus.bonusParts;
             for (var i = 0; i < bonusParts.length; i++) {
                 if (bonusParts[i].gettingTeam === team) {
-                    html += "<option selected value='" +  bonusParts[i].value + "' data-part=" + bonusParts[i].number + ">" + bonusParts[i].value + "</option>";
+                    html += "<option selected value='" + bonusParts[i].value + "' data-part=" + bonusParts[i].number + ">" + bonusParts[i].value + "</option>";
                 } else {
-                    html += "<option value='" +  bonusParts[i].value + "' data-part=" + bonusParts[i].number + ">" + bonusParts[i].value + "</option>";
+                    html += "<option value='" + bonusParts[i].value + "' data-part=" + bonusParts[i].number + ">" + bonusParts[i].value + "</option>";
                 }
             }
             html += "</select><button class='btn btn-sm nf-red cancel-change' data-point='" + currentVal + "'></button><button class='btn btn-sm nf-blue confirm-change-bonus'></button>";
@@ -1013,10 +1073,10 @@
     }
 
     function incrementTossupsHeardForPlayers(number) {
-        $(".player-table .active-player input").each(function(index, input) {
+        $(".player-table .active-player input").each(function (index, input) {
             var currentTUH = parseFloat($(input).val());
             if (currentTUH + number >= 0) {
-                $(input).val((currentTUH + number) + "");
+                $(input).val(currentTUH + number + "");
             }
         });
     }
@@ -1048,13 +1108,13 @@
     function createScoresheet(team1, team2) {
         var html = "<thead><tr>";
         for (var i = 0; i < team1.players.length; i++) {
-            html += "<th class='player-header' data-toggle='tooltip' data-container='body' title='" + team1.players[i].name + "'>" + team1.players[i].name.slice(0,2).toUpperCase() + "</th>";
+            html += "<th class='player-header' data-toggle='tooltip' data-container='body' title='" + team1.players[i].name + "'>" + team1.players[i].name.slice(0, 2).toUpperCase() + "</th>";
         }
         html += "<th>Bonus</th><th>Total</th>";
         html += "<th class='nf-gray'> TU # </th>";
         html += "<th>Total</th><th>Bonus</th>";
         for (var i = 0; i < team2.players.length; i++) {
-            html += "<th class='player-header' data-toggle='tooltip' data-container='body' title='" + team2.players[i].name + "'>" + team2.players[i].name.slice(0,2).toUpperCase() + "</th>";
+            html += "<th class='player-header' data-toggle='tooltip' data-container='body' title='" + team2.players[i].name + "'>" + team2.players[i].name.slice(0, 2).toUpperCase() + "</th>";
         }
         html += "</tr></thead>";
         html += "<tbody id='scoresheet-body'>";
@@ -1083,7 +1143,6 @@
         $("#scoresheet").empty();
         $(html).hide().appendTo("#scoresheet").fadeIn(500);
         $('[data-toggle="tooltip"]').tooltip();
-
     }
 
     function createScoresheetRow(team1, team2, number) {
@@ -1123,14 +1182,11 @@
         html += "<div class='row'>";
         for (var j = 0; j < pointValues.length; j++) {
             if (pointTypes[pointValues[j]] === "N") {
-                html += "<button" + " data-team='" + player.teamID + "' data-neg='true' data-point-value='" + pointValues[j] +
-                    "' data-player='" + player._id + "' class='btn btn-md nf-red nf-button btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + player.teamID + "' data-neg='true' data-point-value='" + pointValues[j] + "' data-player='" + player._id + "' class='btn btn-md nf-red nf-button btn-point'>" + pointValues[j] + "</button>";
             } else if (pointTypes[pointValues[j]] === "P") {
-                html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j] +
-                    "' data-player='" + player._id + "' class='btn btn-md nf-green nf-button btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j] + "' data-player='" + player._id + "' class='btn btn-md nf-green nf-button btn-point'>" + pointValues[j] + "</button>";
             } else {
-                html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j] +
-                    "' data-player='" + player._id + "' class='btn btn-md nf-blue nf-button btn-point'>" + pointValues[j] + "</button>";
+                html += "<button" + " data-team='" + player.teamID + "' data-neg='false' data-point-value='" + pointValues[j] + "' data-player='" + player._id + "' class='btn btn-md nf-blue nf-button btn-point'>" + pointValues[j] + "</button>";
             }
         }
         html += "</div>";
@@ -1143,7 +1199,6 @@
         }
     }
 
-
     function createPlayerLabels(side, players, pointValues, pointTypes) {
         var list = $(side).attr("id") === "leftselect" ? "#leftplayerlist" : "#rightplayerlist";
         var html = "";
@@ -1153,20 +1208,17 @@
             } else {
                 html += "<div class='row cell' data-player='" + players[i].id + "' style='display:none'>";
             }
-            html += "<div class='col-md-5'>";
+            html += "<div class='col-md-5 col-sm-4'>";
             html += "<div class='playerbox'><strong style='color:white'>" + players[i].name + "</strong></div></div>";
-            html += "<div class='col-md-7'>";
+            html += "<div class='col-md-8 col-sm-8'>";
             html += "<div class='row'>";
             for (var j = 0; j < pointValues.length; j++) {
                 if (pointTypes[pointValues[j]] === "N") {
-                    html += "<button" + " data-team='" + players[i].teamid + "' data-neg='true' data-point-value='" + pointValues[j] +
-                        "' data-player='" + players[i].id + "' class='btn btn-md nf-red btn-point nf-button'>" + pointValues[j] + "</button>";
+                    html += "<button" + " data-team='" + players[i].teamid + "' data-neg='true' data-point-value='" + pointValues[j] + "' data-player='" + players[i].id + "' class='btn btn-md nf-red btn-point nf-button'>" + pointValues[j] + "</button>";
                 } else if (pointTypes[pointValues[j]] === "P") {
-                    html += "<button" + " data-team='" + players[i].teamid + "' data-neg='false' data-point-value='" + pointValues[j] +
-                        "' data-player='" + players[i].id + "' class='btn btn-md nf-green btn-point nf-button'>" + pointValues[j] + "</button>";
+                    html += "<button" + " data-team='" + players[i].teamid + "' data-neg='false' data-point-value='" + pointValues[j] + "' data-player='" + players[i].id + "' class='btn btn-md nf-green btn-point nf-button'>" + pointValues[j] + "</button>";
                 } else {
-                    html += "<button" + " data-team='" + players[i].teamid + "' data-neg='false' data-point-value='" + pointValues[j] +
-                        "' data-player='" + players[i].id + "' class='btn btn-md nf-blue btn-point nf-button'>" + pointValues[j] + "</button>";
+                    html += "<button" + " data-team='" + players[i].teamid + "' data-neg='false' data-point-value='" + pointValues[j] + "' data-player='" + players[i].id + "' class='btn btn-md nf-blue btn-point nf-button'>" + pointValues[j] + "</button>";
                 }
             }
             html += "</div>";
@@ -1175,10 +1227,8 @@
         }
         var teamid = $(side).val();
         var teamname = $(side).find(":selected").text();
-        html += "<br><input type='text' class='form-control nf-input player-name-input btn-shadow' placeholder='New Player'/><button class='btn btn-md nf-green add-player-button nf-button' data-team='" +
-            teamid + "' data-team-name='" + teamname + "'> Add a Player </button>";
-        html += "<br><br><div class='row'><div class='col-md-2'></div><div class='col-md-8'><input type='number' class='form-control nf-input btn-shadow overtime-tu' data-team='" + teamid + "' placeholder='Overtime TUs gotten by " +
-            teamname + "'/></div><div class='col-md-2'></div></div>";
+        html += "<br><input type='text' class='form-control nf-input player-name-input btn-shadow' placeholder='New Player'/><button class='btn btn-md nf-green add-player-button nf-button' data-team='" + teamid + "' data-team-name='" + teamname + "'> Add a Player </button>";
+        html += "<br><br><div class='row'><div class='col-md-2'></div><div class='col-md-8'><input type='number' class='form-control nf-input btn-shadow overtime-tu' data-team='" + teamid + "' placeholder='Overtime TUs gotten by " + teamname + "'/></div><div class='col-md-2'></div></div>";
         $(list).empty().append(html);
     }
 
@@ -1189,12 +1239,12 @@
             html += "<th class='table-head' scope='col' style='text-align:center'>" + pointScheme[i] + "</th>";
         }
         html += "<th class='table-head' scope='col' style='text-align:center'>Totals</th>";
-        html += "<th class='table-head' scope='col' style='text-align:center' width='75'>TUH</th>"
+        html += "<th class='table-head' scope='col' style='text-align:center' width='75'>TUH</th>";
         html += "</tr>";
         for (var i = 0; i < players.length; i++) {
             html += "<tr class='player-body' data-player='" + players[i].id + "'>";
             if (i < game.maxActivePlayers) {
-                html += "<th class='active-player'>" + players[i].name; + "</th>";
+                html += "<th class='active-player'>" + players[i].name;+"</th>";
                 for (var j = 0; j < pointScheme.length; j++) {
                     html += "<td class='player-point active-player' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
                 }
@@ -1202,7 +1252,7 @@
                 html += "<td class='player-tossups td-scoresheet active-player' data-player='" + players[i].id + "' width='75'><input type='number' class='input-scoresheet btn-shadow' value='0' style='font-size:14px'/></td>";
                 html += "</tr>";
             } else {
-                html += "<th>" + players[i].name; + "</th>";
+                html += "<th>" + players[i].name;+"</th>";
                 for (var j = 0; j < pointScheme.length; j++) {
                     html += "<td class='player-point' data-player='" + players[i].id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
                 }
@@ -1217,7 +1267,7 @@
     function addPlayerTableRow(side, player, pointScheme) {
         var table = side == "left" ? "#leftplayertable" : "#rightplayertable";
         var html = "<tr class='player-body' data-player='" + player.id + "'>";
-        html += "<th class='unactive-player'>" + player.name; + "</th>";
+        html += "<th class='unactive-player'>" + player.name;+"</th>";
         for (var j = 0; j < pointScheme.length; j++) {
             html += "<td class='player-point' data-player='" + player.id + "' data-point-value='" + pointScheme[j] + "'>0</td>";
         }
@@ -1313,13 +1363,13 @@
     function addPlayerColumn(side, player) {
         if (side == "right") {
             $("#scoresheet thead tr").append("<th class='player-header' data-toggle='tooltip' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
-            $("#scoresheet tbody tr").each(function(index, tableRow) {
+            $("#scoresheet tbody tr").each(function (index, tableRow) {
                 var row = index + 1;
                 $(this).append("<td data-player='" + player._id + "' data-row='" + row + "'>-</td>");
             });
         } else {
             $("#scoresheet thead tr").prepend("<th class='player-header' data-toggle='tooltip' title='" + player.player_name + "'>" + player.player_name.slice(0, 2).toUpperCase() + "</th>");
-            $("#scoresheet tbody tr").each(function(index, tableRow) {
+            $("#scoresheet tbody tr").each(function (index, tableRow) {
                 var row = index + 1;
                 $(this).prepend("<td data-player='" + player._id + "' data-row='" + row + "'>-</td>");
             });
@@ -1335,8 +1385,7 @@
 
     function escapeHtml(string) {
         return String(string).replace(/[&<>"'\/]/g, function (s) {
-             return entityMap[s];
+            return entityMap[s];
         });
     }
-
 })(jQuery);
