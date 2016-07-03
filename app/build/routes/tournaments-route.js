@@ -502,7 +502,7 @@ module.exports = function (app) {
         }
     });
 
-    app.get("/t/:tid/teams/:teamid", function (req, res) {
+    app.get("/api/t/:tid/teams/:teamid", function (req, res) {
         if (!req.session.director) {
             return res.status(401).end();
         }
@@ -521,21 +521,22 @@ module.exports = function (app) {
                         var teamPlayers = result.players.filter(function (player) {
                             return player.teamID == team._id;
                         });
-                        var tourney = {};
-                        tourney.tournament_name = result.tournament_name;
-                        tourney._id = result._id;
-                        tourney.directorid = result.directorid;
-                        tourney.shortID = result.shortID;
-                        tourney.divisions = result.divisions;
-                        tourney.phases = result.phases;
-                        team.record = team.getRecord(result);
-                        team.ppg = team.getPointsPerGame(result);
-                        team.papg = team.getOpponentPPG(result);
-                        team.ppb = team.getOverallPPB(result);
-                        res.render("team/team-view", { team: team, teamPlayers: teamPlayers, tournament: tourney, admin: hasPermission.admin });
+                        res.json({ team: team, players: teamPlayers });
+                        // const tourney = {};
+                        // tourney.tournament_name = result.tournament_name;
+                        // tourney._id = result._id;
+                        // tourney.directorid = result.directorid;
+                        // tourney.shortID = result.shortID;
+                        // tourney.divisions = result.divisions;
+                        // tourney.phases = result.phases;
+                        // team.record = team.getRecord(result);
+                        // team.ppg = team.getPointsPerGame(result);
+                        // team.papg = team.getOpponentPPG(result);
+                        // team.ppb = team.getOverallPPB(result);
+                        // res.render("team/team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, admin : hasPermission.admin});
                     } else {
-                        res.status(404).end();
-                    }
+                            res.status(404).end();
+                        }
                 } else {
                     res.status(401).end();
                 }
@@ -627,12 +628,17 @@ module.exports = function (app) {
             } else {
                 var hasPermission = getPermission(tournament, req.session.director);
                 if (hasPermission.permission) {
-                    tournament.teamMap = statsController.makeTeamMap(tournament.teams);
-                    res.json({ games: tournament.games });
-                    // return res.render('game/game-list', {tournament : tournament, admin : hasPermission.admin});
+                    (function () {
+                        var teamMap = statsController.makeTeamMap(tournament.teams);
+                        tournament.games.forEach(function (game) {
+                            game.team1.name = teamMap[game.team1.team_id].team_name;
+                            game.team2.name = teamMap[game.team2.team_id].team_name;
+                        });
+                        res.json({ games: tournament.games });
+                    })();
                 } else {
-                        return res.status(401).end();
-                    }
+                    return res.status(401).end();
+                }
             }
         });
     });

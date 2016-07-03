@@ -12,7 +12,8 @@
             games: games,
             postGame: postGame,
             getGames: getGames,
-            deleteGame: deleteGame
+            deleteGame: deleteGame,
+            getTeamPlayers: getTeamPlayers
         };
 
         function postGame() {}
@@ -37,6 +38,28 @@
                     };
                 });
                 angular.copy(formattedGames, service.gameFactory.games);
+            });
+        }
+
+        function getTeamPlayers(tournamentId, teamId) {
+            return $q(function (resolve, reject) {
+                $http.get('/api/t/' + tournamentId + '/teams/' + teamId).then(function (_ref3) {
+                    var data = _ref3.data;
+
+                    var formattedPlayers = data.players.map(function (_ref4) {
+                        var name = _ref4.player_name;
+                        var id = _ref4.shortID;
+
+                        return {
+                            id: id,
+                            name: name
+                        };
+                    });
+                    console.log(formattedPlayers);
+                    resolve(formattedPlayers);
+                }).catch(function (error) {
+                    reject(error);
+                });
             });
         }
 

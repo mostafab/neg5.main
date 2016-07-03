@@ -26,14 +26,13 @@ block content
         div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;' ng-controller='TournamentCtrl as Tournament')
             div(class='hidden-md hidden-lg')
                 div(class='col-sm-2 col-xs-2')
-                    h2(class="nf-label nf-dark-blue center") {{tournamentInfo.name}} (#{tournament.phaseName})
+                    h2(class="nf-label nf-dark-blue center") {{tournamentInfo.name}}
                 div(class='col-sm-10 col-xs-10')
                     ul(class="breadcrumb")
                         li(class="active center")
                             a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
-                        if admin
-                            li(class="center")
-                                a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
+                        li(class="center" ng-if='tournamentContext.owner === true')
+                            a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
                         li(class="center")
                             a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
 
@@ -55,8 +54,6 @@ block content
                 div(class='row')
                     div(class='col-sm-7 col-lg-12 col-md-12')
                         h2(class="nf-panel-heading nf-dark-blue center") {{tournamentInfo.name}}
-                    div(class='col-sm-5 col-lg-12 col-md-12')
-                        h2(class='nf-panel-heading nf-blue center' id='current-phase-header') Current Phase: #{tournament.phaseName}
                 
                 div(class="panel-body" id='anchor-links')
                     div(class="row")
@@ -64,7 +61,7 @@ block content
                             ul(class="nav nav-bar no-border-radius")
                                 li(class="active center")
                                     a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
-                                li(class="center" ng-if='tournamentContext.admin === true')
+                                li(class="center" ng-if='tournamentContext.owner === true')
                                     a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
                                 li(class="center")
                                     a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
@@ -95,12 +92,10 @@ block content
                         include ./tournament-tab.jade
 
                     div(class='tab-pane fade' id='collaborators')
-                        include ./../collaborator/collaborator-tab.jade
-                        
-                        
-                    if admin
-                        div(class="tab-pane fade" id="divisions")
-                            include ./../config/config-tab.jade
+                        include ./../collaborator/collaborator-tab.jade                        
+
+                    div(class="tab-pane fade" id="divisions" ng-if='tournamentContext.owner === true')
+                        include ./../config/config-tab.jade
 
                     div(class="tab-pane fade" id="games" ng-controller='GameCtrl as Game')
                     

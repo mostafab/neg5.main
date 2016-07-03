@@ -20,28 +20,8 @@ div(class="table-responsive" id="gamediv")
                 tr(class='nf-tr' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | filter:Game.gameQuery track by game.id')
                     td {{game.round}}
                     td
-                    td {{game.team1.score}}
-                    td {{game.team2.score}}
+                    td {{game.team1.team_name + ' (' + game.team1.score + ')'}}
+                    td {{game.team2.team_name + ' (' + game.team2.score + ')'}}
                     td {{game.tossupsheard}}
                     td(ng-if='tournamentContext.admin === true')
                         button(class='btn btn-sm nf-red' ng-click='Game.removeGame(game.id)')
-                            
-                
-                //- each game in tournament.games
-                //-     if tournament.teamMap[game.team1.team_id] && tournament.teamMap[game.team2.team_id]
-                //-         tr(class='clickable-link game-anchor tournament-panel nf-tr' data-href="/t/" + tournament.shortID + "/games/" + game.shortID id='game_#{game.shortID}')
-                //-             td(class="round game-list-element bordered-game-list-element round") #{game.round}
-                //-             td(class="phase game-list-element phases-n")
-                //-                 each phase in tournament.phases
-                //-                     each includedPhase in game.phase_id
-                //-                         if phase.phase_id == includedPhase
-                //-                             li(style='list-style-type:none') #{phase.name}
-                //-             td(class="team1name game-list-element team1name") #{tournament.teamMap[game.team1.team_id].name} (#{game.team1.score})
-                //-             td(class="team2name game-list-element team2name") #{tournament.teamMap[game.team2.team_id].name} (#{game.team2.score})
-                //-             td(class="tuheard game-list-element tuh") #{game.tossupsheard}
-                //-             if admin
-                //-                 td
-                //-                     form()
-                //-                         input(type="hidden" name="gameid_form" value='#{game.shortID}')
-                //-                         input(type="hidden" name="tournament_idgame" value="#{tournament._id}")
-                //-                         button(type="button" class="btn btn-sm nf-red deletebutton btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete game.')

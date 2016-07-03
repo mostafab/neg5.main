@@ -15,17 +15,28 @@
         vm.sortReverse = false;
         vm.gameQuery = '';
         
+        vm.pointScheme = [
+            {value: -5},
+            {value: 10},
+            {value: 20}
+        ]
+        
+        vm.pointSum = function(points) {
+            return points.map(({number, value}) => (number * value) || 0)
+                .reduce((sum, product) => sum + product, 0);
+        }
+        
         vm.currentGame = {
-            team1: {
-                score: 0,
-                bouncebacks: 0,
-                overtime: 0
-            },
-            team2: {
-                score: 0,
-                bouncebacks: 0,
-                overtime: 0
-            },
+            teams: [
+               {
+                  teamInfo: null,
+                  players: []
+               },
+               {
+                  teamInfo: null,
+                  players: []
+               } 
+            ],
             phases: [
                 
             ],
@@ -37,6 +48,28 @@
             notes: ''
         }
         
+        vm.addTeam = (index) => {
+            Game.getTeamPlayers($scope.tournamentId, vm.currentGame.teams[index].teamInfo.id)
+                .then(players => {
+                    vm.currentGame.teams[index].players = players.map(({name, id}) => {
+                        return {
+                            id,
+                            name,
+                            points: vm.pointScheme.slice().map(({value}) => {
+                                return {
+                                    value,
+                                    number: 0
+                                }
+                            })
+                        }
+                    });
+                    console.log(vm.currentGame.teams[index].players);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+        
         vm.test = () => console.log(vm.currentGame.phases);
         
         vm.getGames = () => Game.getGames($scope.tournamentId);
@@ -46,6 +79,8 @@
         vm.removeGame = (id) => console.log(id);
         
         vm.getGames();
+        
+        console.log(vm.currentGame);
         
     }
     

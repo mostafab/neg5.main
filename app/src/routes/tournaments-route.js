@@ -512,7 +512,7 @@ module.exports = app => {
             }
         });
 
-    app.get("/t/:tid/teams/:teamid", (req, res) => {
+    app.get("/api/t/:tid/teams/:teamid", (req, res) => {
         if (!req.session.director) {
             return res.status(401).end();
         }
@@ -528,21 +528,20 @@ module.exports = app => {
                         }
                     }
                     if (team !== null) {
-                        let teamPlayers = result.players.filter(player => {
-                            return player.teamID == team._id;
-                        });
-                        const tourney = {};
-                        tourney.tournament_name = result.tournament_name;
-                        tourney._id = result._id;
-                        tourney.directorid = result.directorid;
-                        tourney.shortID = result.shortID;
-                        tourney.divisions = result.divisions;
-                        tourney.phases = result.phases;
-                        team.record = team.getRecord(result);
-                        team.ppg = team.getPointsPerGame(result);
-                        team.papg = team.getOpponentPPG(result);
-                        team.ppb = team.getOverallPPB(result);
-                        res.render("team/team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, admin : hasPermission.admin});
+                        let teamPlayers = result.players.filter(player => player.teamID == team._id);
+                        res.json({team: team, players: teamPlayers});
+                        // const tourney = {};
+                        // tourney.tournament_name = result.tournament_name;
+                        // tourney._id = result._id;
+                        // tourney.directorid = result.directorid;
+                        // tourney.shortID = result.shortID;
+                        // tourney.divisions = result.divisions;
+                        // tourney.phases = result.phases;
+                        // team.record = team.getRecord(result);
+                        // team.ppg = team.getPointsPerGame(result);
+                        // team.papg = team.getOpponentPPG(result);
+                        // team.ppb = team.getOverallPPB(result);
+                        // res.render("team/team-view", {team : team, teamPlayers : teamPlayers, tournament : tourney, admin : hasPermission.admin});
                     } else {
                         res.status(404).end();
                     }
@@ -637,9 +636,12 @@ module.exports = app => {
             } else {
                 const hasPermission = getPermission(tournament, req.session.director);
                 if (hasPermission.permission) {
-                    tournament.teamMap = statsController.makeTeamMap(tournament.teams);
+                    let teamMap = statsController.makeTeamMap(tournament.teams);
+                    tournament.games.forEach(game => {
+                        game.team1.name = teamMap[game.team1.team_id].team_name;
+                        game.team2.name = teamMap[game.team2.team_id].team_name;
+                    })
                     res.json({games: tournament.games});
-                    // return res.render('game/game-list', {tournament : tournament, admin : hasPermission.admin});
                 } else {
                     return res.status(401).end();
                 }

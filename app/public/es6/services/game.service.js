@@ -11,7 +11,8 @@
                 games,
                 postGame,
                 getGames,
-                deleteGame
+                deleteGame,
+                getTeamPlayers
             }
             
             function postGame() {
@@ -32,6 +33,26 @@
                         });
                         angular.copy(formattedGames, service.gameFactory.games);
                     })
+            }
+            
+            function getTeamPlayers(tournamentId, teamId) {
+                return $q((resolve, reject) => {
+                   $http.get('/api/t/' + tournamentId + '/teams/' + teamId)
+                        .then(({data}) => {
+                            let formattedPlayers = data.players.map(({player_name: name, shortID: id}) => {
+                                return {
+                                    id,
+                                    name
+                                }
+                            })
+                            console.log(formattedPlayers);
+                            resolve(formattedPlayers);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        }) 
+                })
+                
             }
             
             function deleteGame(id) {
