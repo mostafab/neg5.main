@@ -3,7 +3,7 @@ import config from "./configuration";
 const mongoose = require("mongoose");
 
 module.exports = () => {
-    var db = mongoose.connect(config.databaseConnections.mongo.development);
+    var db = mongoose.connect(config.databaseConnections.mongo.production);
     var conn = mongoose.connection;
     conn.on('error', console.error.bind(console, "Connection Error: "));
     conn.once('open', () => {

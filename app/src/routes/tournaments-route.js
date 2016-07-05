@@ -202,6 +202,31 @@ module.exports = app => {
             }
         });
     });
+    
+    app.get('/api/users', (req, res) => {
+        console.log(req.query.searchQuery);
+        tournamentController.findDirectors(req.query.searchQuery, (err, directors) => {
+            if (err) {
+                res.status(500).send({err : err});
+            } else {
+                res.status(200).send({directors : directors});
+            }
+        });
+    })
+    
+    app.route('/api/t/:tid/collaborators')
+        .get((req, res) => {
+            tournamentController.findCollaborators(req.params.tid, (err, collaborators) => {
+                if (err) {
+                    return res.status(500).send({error: err});
+                } else {
+                    return res.status(200).send({collaborators : collaborators});
+                }
+            });
+        })
+        .post((req, res) => {
+            res.status(200).end();
+        })
 
     app.post("/tournaments/editPointSchema", (req, res, next) => {
         const newPointValues = {};

@@ -29,7 +29,7 @@ div(id='add-game-div')
                                             th(class='center') Total
                                     tbody
                                         tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id')
-                                            td(class='vertical-center') {{player.name}}
+                                            td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                             td(ng-repeat='point in Game.pointScheme | orderBy: "value" ')
                                                 input(type='number' class='form-control nf-input input-sm' ng-model='player.points[$index].number')
                                             td 
@@ -45,7 +45,7 @@ div(id='add-game-div')
                                             th(class='center') Total
                                     tbody
                                         tr(ng-repeat='player in Game.currentGame.teams[1].players | orderBy: "name" track by player.id')
-                                            td(class='vertical-center') {{player.name}}
+                                            td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                             td(ng-repeat='point in Game.pointScheme | orderBy: "value" ')
                                                 input(type='number' class='form-control nf-input input-sm' ng-model='player.points[$index].number')
                                             td 
