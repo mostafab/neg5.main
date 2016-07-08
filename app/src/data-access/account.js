@@ -1,4 +1,4 @@
-import {singleQuery} from '../database/db';
+import {singleQuery, promiseQuery} from '../database/db';
 import {hashExpression, compareToHash} from '../helpers/crypto';
 import {encode} from '../helpers/jwt';
 
@@ -8,14 +8,15 @@ export default {
         return new Promise((resolve, reject) => {
             hashExpression(password)
                 .then(hash => {
-                    let query = 'INSERT INTO account (username, hash) VALUES ($1, $2) RETURNING username';
+                    let insertQuery = 'INSERT INTO account (username, hash) VALUES ($1, $2) RETURNING username';
                     let params = [username, hash];
-                    return singleQuery(query, params);
+                    return promiseQuery(insertQuery, params);
                 })
                 .then(user => {
-                    resolve(user.rows[0]);
+                    resolve(user.username);
                 })
                 .catch(error => {
+                    console.log(error);
                     reject(error);
                 })
         });
@@ -23,12 +24,11 @@ export default {
     
     authenticateAccount: ({user, password}) => {
         return new Promise((resolve, reject) => {
-           let query = 'SELECT username, hash from account WHERE username=$1';
+           let selectQuery = 'SELECT username, hash from account WHERE username=$1 LIMIT 1';
            let params = [user];
-           singleQuery(query, params)
-                .then(({rows}) => {
-                    if (rows.length === 0) return reject({authenticated: false});
-                    let {username, hash} = rows[0];
+           promiseQuery(selectQuery, params)
+                .then(({username, hash}) => {
+
                     compareToHash(password, hash)
                         .then(({match}) => {
                             if (!match) return reject({authenticated: false})
@@ -36,8 +36,9 @@ export default {
                             resolve(token);
                         })
                         .catch((error) => reject({error: error})); 
+
                 })
-                .catch(error => reject({error: error})); 
+                .catch(error => reject(error)); 
         })
     }
     

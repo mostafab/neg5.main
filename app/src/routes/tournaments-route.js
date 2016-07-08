@@ -227,7 +227,18 @@ module.exports = app => {
         .post((req, res) => {
             res.status(200).end();
         })
-
+        
+    app.route('/api/t/:tid/collaborator/:collaboratorId')
+        .put((req, res) => {
+            
+        })
+        .delete((req, res) => {
+           tournamentController.removeCollaborator(req.params.tid, req.params.collaboratorId, (err) => {
+            if (err) return res.status(500).send({err: err});
+            return res.status(200).send({success: true, id: req.params.collaboratorId});
+        }); 
+    })
+   
     app.post("/tournaments/editPointSchema", (req, res, next) => {
         const newPointValues = {};
         const newPointTypes = JSON.parse(req.body.pointtypes);

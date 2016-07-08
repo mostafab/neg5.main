@@ -225,6 +225,13 @@ module.exports = function (app) {
         res.status(200).end();
     });
 
+    app.route('/api/t/:tid/collaborator/:collaboratorId').put(function (req, res) {}).delete(function (req, res) {
+        tournamentController.removeCollaborator(req.params.tid, req.params.collaboratorId, function (err) {
+            if (err) return res.status(500).send({ err: err });
+            return res.status(200).send({ success: true, id: req.params.collaboratorId });
+        });
+    });
+
     app.post("/tournaments/editPointSchema", function (req, res, next) {
         var newPointValues = {};
         var newPointTypes = JSON.parse(req.body.pointtypes);

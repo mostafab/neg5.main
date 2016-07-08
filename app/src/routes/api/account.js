@@ -17,11 +17,12 @@ export default (app) => {
     app.route('/api/authenticate')
         .post((req, res) => {
             const accountCredentials = req.body;
-            Account.findOne(userCredentials)
+            Account.findOne(accountCredentials)
                 .then(token => {
                     res.json({success: true, token: token})
                 })
                 .catch(errorMessage => {
+                    console.log(errorMessage);
                     if (errorMessage.error) {
                         return res.status(500).json({success: false, error: errorMessage})
                     } else if (!errorMessage.authenticated) {

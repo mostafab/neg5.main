@@ -4,9 +4,23 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _token = require('../../auth/middleware/token');
+
+var _tournament = require('../../models/sql-models/tournament');
+
+var _tournament2 = _interopRequireDefault(_tournament);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = function (app) {
 
-    app.route('/api/t').get(function (req, res) {}).post(function (req, res) {});
+    app.route('/api/t').get(function (req, res) {}).post(function (req, res) {
+        _tournament2.default.create(req.body).then(function (id) {
+            return res.json({ id: id });
+        }).catch(function (error) {
+            return res.json({ error: error });
+        });
+    });
 
     app.route('/api/t/:tid').get(function (req, res) {
         res.json({ name: 'Test' });

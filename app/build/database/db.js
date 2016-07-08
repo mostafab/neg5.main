@@ -3,11 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.singleQuery = undefined;
+exports.transaction = exports.promiseQuery = exports.singleQuery = undefined;
 
 var _pg = require('pg');
 
 var _pg2 = _interopRequireDefault(_pg);
+
+var _pgPromise = require('pg-promise');
+
+var _pgPromise2 = _interopRequireDefault(_pgPromise);
 
 var _configuration = require('../config/configuration');
 
@@ -36,8 +40,43 @@ var singleQuery = exports.singleQuery = function singleQuery(text, params) {
     });
 };
 
-var rollbackTransaction = function rollbackTransaction(client, done) {
-    client.query('ROLLBACK', function (err) {
-        return done(err);
+var pgPromise = (0, _pgPromise2.default)();
+
+var db = pgPromise(connectionString);
+
+var promiseQuery = exports.promiseQuery = function promiseQuery(text, params) {
+    return new Promise(function (resolve, reject) {
+        db.one(text, params).then(function (data) {
+            return resolve(data);
+        }).catch(function (error) {
+            return reject(error);
+        });
+    });
+};
+
+var transaction = exports.transaction = function transaction(queries) {
+
+    return new Promise(function (resolve, reject) {
+        db.tx(function (t) {
+
+            var dbQueries = [];
+
+            queries.forEach(function (_ref) {
+                var query = _ref.query;
+                var params = _ref.params;
+
+                if (!query || !params) {
+                    throw new Error("Invalid arguments passed");
+                } else {
+                    dbQueries.push(t.none(query, params));
+                }
+            });
+
+            return t.batch(dbQueries);
+        }).then(function (data) {
+            return resolve(data);
+        }).catch(function (error) {
+            return reject(error);
+        });
     });
 };

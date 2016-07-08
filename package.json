@@ -25,6 +25,7 @@
     "mdiff": "^0.4.0",
     "mongoose": "^4.2.5",
     "pg": "^5.1.0",
+    "pg-promise": "^5.1.0",
     "shortid": "^2.2.4"
   },
   "devDependencies": {

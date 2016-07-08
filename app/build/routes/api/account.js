@@ -23,9 +23,10 @@ exports.default = function (app) {
 
     app.route('/api/authenticate').post(function (req, res) {
         var accountCredentials = req.body;
-        _account2.default.findOne(userCredentials).then(function (token) {
+        _account2.default.findOne(accountCredentials).then(function (token) {
             res.json({ success: true, token: token });
         }).catch(function (errorMessage) {
+            console.log(errorMessage);
             if (errorMessage.error) {
                 return res.status(500).json({ success: false, error: errorMessage });
             } else if (!errorMessage.authenticated) {

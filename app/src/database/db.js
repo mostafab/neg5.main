@@ -1,4 +1,5 @@
 import pg from 'pg';
+import pgp from 'pg-promise';
 import configuration from '../config/configuration';
 
 const {env, databaseConnections} = configuration;
@@ -20,10 +21,46 @@ export let singleQuery = (text, params) => {
     })
 }
 
-let rollbackTransaction = (client, done) => {
-    client.query('ROLLBACK', (err) => {
-        return done(err);
+let pgPromise = pgp();
+
+let db = pgPromise(connectionString);
+
+export let promiseQuery = (text, params) => {
+    return new Promise((resolve, reject) => {
+        db.one(text, params)
+            .then(data => resolve(data))
+            .catch(error => reject(error));
     })
+}
+
+export let transaction = (queries) => {
+    
+
+    return new Promise((resolve, reject) => {
+        db.tx(t => {
+
+            let dbQueries = [];
+
+            queries.forEach(({query, params}) => {
+                if (!query || !params) {
+                    throw new Error("Invalid arguments passed");
+                } else {
+                    dbQueries.push(
+                        t.none(query, params)
+                    )   
+                }
+                
+            });
+
+            return t.batch(
+                dbQueries
+            )
+
+        })
+        .then(data => resolve(data))
+        .catch(error => reject(error));
+    })
+    
 }
 
 

@@ -1,3 +1,7 @@
+import {hasToken} from '../../auth/middleware/token';
+
+import Tournament from '../../models/sql-models/tournament';
+
 export default (app) => {
     
     
@@ -6,7 +10,9 @@ export default (app) => {
             
         })
         .post((req, res) => {
-            
+            Tournament.create(req.body)
+                .then(id => res.json({id: id}))
+                .catch(error => res.json({error}));
         })
         
     app.route('/api/t/:tid')
