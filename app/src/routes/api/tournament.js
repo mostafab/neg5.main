@@ -7,12 +7,14 @@ export default (app) => {
     
     app.route('/api/t')
         .get((req, res) => {
-            
+            Tournament.findByUser(req.query.token)
+                .then(data => res.json(data))
+                .catch(error => res.status(500).send(error));    
         })
         .post((req, res) => {
             Tournament.create(req.body)
                 .then(data => res.json(data))
-                .catch(error => res.json({error}));
+                .catch(error => res.status(500).send({error}));
         })
         
     app.route('/api/t/:tid')

@@ -10,7 +10,13 @@ var _shortid2 = _interopRequireDefault(_shortid);
 
 var _db = require('../database/db');
 
+var _sql = require('../database/sql');
+
+var _sql2 = _interopRequireDefault(_sql);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var tournament = _sql2.default.tournament;
 
 exports.default = {
 
@@ -30,31 +36,35 @@ exports.default = {
 
             var tournamentId = _shortid2.default.generate();
 
-            var tournamentQuery = 'INSERT INTO tournament (id, name, tournament_date, question_set, comments, director_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
             var tournamentParams = [tournamentId, name, date, questionSet, comments, 'mbadmin'];
 
             var _buildTournamentPoint = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
 
-            var tossupParams = _buildTournamentPoint.tossupParams;
-            var tossupValues = _buildTournamentPoint.values;
+            var tournamentIds = _buildTournamentPoint.tournamentIds;
+            var values = _buildTournamentPoint.values;
+            var types = _buildTournamentPoint.types;
 
 
-            var tossupQuery = 'INSERT INTO tournament_tossup_values (tournament_id, tossup_value, tossup_answer_type) VALUES ' + tossupValues.join(', ') + ' RETURNING *';
+            tournamentParams.push(tournamentIds, values, types);
 
-            (0, _db.transaction)([{
-                query: tournamentQuery,
-                params: tournamentParams,
-                queryType: _db.queryTypeMap.one
-            }, {
-                query: tossupQuery,
-                params: tossupParams,
-                queryType: _db.queryTypeMap.many
-            }]).then(function (data) {
-                var result = {
-                    tournament: data[0],
-                    points: data[1]
-                };
-                resolve(result);
+            (0, _db.query)(tournament.add, tournamentParams, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    findTournamentsByUser: function findTournamentsByUser(username) {
+
+        return new Promise(function (resolve, reject) {
+
+            var query = 'SELECT T.id, T.name, T.director_id, U.is_admin, CASE WHEN T.director_id=$1 THEN true ELSE false END AS is_owner FROM tournament T LEFT JOIN user_collaborates_on_tournament U ON T.id=U.tournament_id\n                        WHERE T.director_id=$1 OR U.username=$1';
+
+            var params = [username];
+
+            promiseQuery(query, params, _db.queryTypeMap.many).then(function (tournaments) {
+                return resolve(tournaments);
             }).catch(function (error) {
                 console.log(error);
                 reject(error);
@@ -66,26 +76,20 @@ exports.default = {
 
 
 function buildTournamentPointSchemeInsertQuery(rows, tournamentId) {
-    var tossupParams = [];
-    var values = [];
 
-    rows.forEach(function (row) {
-        var currentRowValues = [];
-
-        tossupParams.push(tournamentId);
-        currentRowValues.push('$' + tossupParams.length);
-
-        tossupParams.push(row.value);
-        currentRowValues.push('$' + tossupParams.length);
-
-        tossupParams.push(row.type);
-        currentRowValues.push('$' + tossupParams.length);
-
-        values.push('(' + currentRowValues.join(', ') + ')');
+    var tournamentIds = rows.map(function (row) {
+        return tournamentId;
+    });
+    var values = rows.map(function (row) {
+        return row.value;
+    });
+    var types = rows.map(function (row) {
+        return row.type;
     });
 
     return {
-        tossupParams: tossupParams,
-        values: values
+        tournamentIds: tournamentIds,
+        values: values,
+        types: types
     };
 }

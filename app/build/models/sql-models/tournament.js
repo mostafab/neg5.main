@@ -20,6 +20,16 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    findByUser: function findByUser(username) {
+        return new Promise(function (resolve, reject) {
+            _tournament2.default.findTournamentsByUser(username).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

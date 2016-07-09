@@ -1,6 +1,8 @@
 import shortid from 'shortid';
+import {query, queryTypeMap as qm} from '../database/db';
+import sql from '../database/sql';
 
-import {promiseQuery, transaction, queryTypeMap as qm} from '../database/db';
+const tournament = sql.tournament;
 
 export default {
     
@@ -12,64 +14,49 @@ export default {
         
             const tournamentId = shortid.generate();
             
-            let tournamentQuery = `INSERT INTO tournament (id, name, tournament_date, question_set, comments, director_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
             let tournamentParams = [tournamentId, name, date, questionSet, comments, 'mbadmin'];        
-            
-            let {tossupParams, values: tossupValues} = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
-            
-            let tossupQuery = `INSERT INTO tournament_tossup_values (tournament_id, tossup_value, tossup_answer_type) VALUES ${tossupValues.join(', ')} RETURNING *`;             
 
-            transaction([
-                {
-                    query: tournamentQuery,
-                    params: tournamentParams,
-                    queryType: qm.one
-                },
-                {
-                    query: tossupQuery,
-                    params: tossupParams,
-                    queryType: qm.many
-                }
-            ])
-            .then(data => {
-                let result = {
-                    tournament: data[0],
-                    points: data[1]
-                }
-                resolve(result);
-            })
-            .catch(error => {
-                console.log(error);
-                reject(error)
-            });
+            let {tournamentIds, values, types} = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
+            
+            tournamentParams.push(tournamentIds, values, types);
+
+            query(tournament.add, tournamentParams, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
             
         });
         
-    } 
+    },
+
+    findTournamentsByUser: (username) => {
+
+        return new Promise((resolve, reject) => {
+
+            let query = `SELECT T.id, T.name, T.director_id, U.is_admin, CASE WHEN T.director_id=$1 THEN true ELSE false END AS is_owner FROM tournament T LEFT JOIN user_collaborates_on_tournament U ON T.id=U.tournament_id
+                        WHERE T.director_id=$1 OR U.username=$1`;
+
+            let params = [username];
+
+             promiseQuery(query, params, qm.many)
+                .then(tournaments => resolve(tournaments))
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        })
+    }
     
 }
 
 function buildTournamentPointSchemeInsertQuery(rows, tournamentId) {
-    let tossupParams = [];
-    let values = [];
-    
-    rows.forEach(row => {
-        let currentRowValues = [];
-        
-        tossupParams.push(tournamentId);
-        currentRowValues.push('$' + tossupParams.length);
-        
-        tossupParams.push(row.value);
-        currentRowValues.push('$' + tossupParams.length);
-        
-        tossupParams.push(row.type);
-        currentRowValues.push('$' + tossupParams.length);
-        
-        values.push('(' + currentRowValues.join(', ') + ')');
-    });
-    
+
+    let tournamentIds = rows.map(row => tournamentId);
+    let values = rows.map(row => row.value);
+    let types = rows.map(row => row.type);
+
     return {
-        tossupParams,
-        values
-    }
+        tournamentIds,
+        values,
+        types
+    };
 }

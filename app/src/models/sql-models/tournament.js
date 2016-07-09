@@ -8,6 +8,14 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error)); 
         });
+    },
+
+    findByUser: (username) => {
+        return new Promise((resolve, reject) => {
+            db.findTournamentsByUser(username)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
     
 }
