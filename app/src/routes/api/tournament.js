@@ -11,7 +11,7 @@ export default (app) => {
         })
         .post((req, res) => {
             Tournament.create(req.body)
-                .then(id => res.json({id: id}))
+                .then(data => res.json(data))
                 .catch(error => res.json({error}));
         })
         

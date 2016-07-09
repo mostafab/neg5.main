@@ -15,8 +15,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = function (app) {
 
     app.route('/api/t').get(function (req, res) {}).post(function (req, res) {
-        _tournament2.default.create(req.body).then(function (id) {
-            return res.json({ id: id });
+        _tournament2.default.create(req.body).then(function (data) {
+            return res.json(data);
         }).catch(function (error) {
             return res.json({ error: error });
         });

@@ -30,7 +30,7 @@ exports.default = {
 
             var tournamentId = _shortid2.default.generate();
 
-            var tournamentQuery = 'INSERT INTO tournament (id, name, tournament_date, question_set, comments, director_id) VALUES ($1, $2, $3, $4, $5, $6)';
+            var tournamentQuery = 'INSERT INTO tournament (id, name, tournament_date, question_set, comments, director_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
             var tournamentParams = [tournamentId, name, date, questionSet, comments, 'mbadmin'];
 
             var _buildTournamentPoint = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
@@ -39,16 +39,22 @@ exports.default = {
             var tossupValues = _buildTournamentPoint.values;
 
 
-            var tossupQuery = 'INSERT INTO tournament_tossup_values (tournament_id, tossup_value, tossup_answer_type) VALUES ' + tossupValues.join(', ');
+            var tossupQuery = 'INSERT INTO tournament_tossup_values (tournament_id, tossup_value, tossup_answer_type) VALUES ' + tossupValues.join(', ') + ' RETURNING *';
 
             (0, _db.transaction)([{
                 query: tournamentQuery,
-                params: tournamentParams
+                params: tournamentParams,
+                queryType: _db.queryTypeMap.one
             }, {
                 query: tossupQuery,
-                params: tossupParams
+                params: tossupParams,
+                queryType: _db.queryTypeMap.many
             }]).then(function (data) {
-                resolve(tournamentId);
+                var result = {
+                    tournament: data[0],
+                    points: data[1]
+                };
+                resolve(result);
             }).catch(function (error) {
                 console.log(error);
                 reject(error);

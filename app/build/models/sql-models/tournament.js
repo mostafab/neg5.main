@@ -14,8 +14,8 @@ exports.default = {
 
     create: function create(tournamentPayload) {
         return new Promise(function (resolve, reject) {
-            _tournament2.default.saveTournament(tournamentPayload).then(function (tournamentId) {
-                return resolve(tournamentId);
+            _tournament2.default.saveTournament(tournamentPayload).then(function (result) {
+                return resolve(result);
             }).catch(function (error) {
                 return reject(error);
             });

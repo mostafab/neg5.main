@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.transaction = exports.promiseQuery = exports.singleQuery = undefined;
+exports.transaction = exports.promiseQuery = exports.queryTypeMap = undefined;
 
 var _pg = require('pg');
 
@@ -24,20 +24,27 @@ var databaseConnections = _configuration2.default.databaseConnections;
 
 var connectionString = databaseConnections.postgres[env];
 
-var singleQuery = exports.singleQuery = function singleQuery(text, params) {
-    return new Promise(function (resolve, reject) {
-        _pg2.default.connect(connectionString, function (err, client, done) {
-            if (err) return reject(err);
-            client.query({
-                text: text,
-                values: params
-            }, function (err, result) {
-                done();
-                if (err) return reject(err);
-                resolve(result);
-            });
-        });
-    });
+// export let singleQuery = (text, params) => {
+//     return new Promise((resolve, reject) => {
+//         pg.connect(connectionString, (err, client, done) => {
+//             if (err) return reject(err);
+//             client.query({
+//                 text: text,
+//                 values: params
+//             }, (err, result) => {
+//                 done();
+//                 if (err) return reject(err);
+//                 resolve(result);
+//             });
+//         });
+//     })
+// }
+
+var queryTypeMap = exports.queryTypeMap = {
+    one: _pgPromise2.default.queryResult.one,
+    many: _pgPromise2.default.queryResult.many,
+    none: _pgPromise2.default.queryResult.none,
+    any: _pgPromise2.default.queryResult.any
 };
 
 var pgPromise = (0, _pgPromise2.default)();
@@ -45,8 +52,10 @@ var pgPromise = (0, _pgPromise2.default)();
 var db = pgPromise(connectionString);
 
 var promiseQuery = exports.promiseQuery = function promiseQuery(text, params) {
+    var queryType = arguments.length <= 2 || arguments[2] === undefined ? _pgPromise2.default.queryResult.any : arguments[2];
+
     return new Promise(function (resolve, reject) {
-        db.one(text, params).then(function (data) {
+        db.query(text, params, queryType).then(function (data) {
             return resolve(data);
         }).catch(function (error) {
             return reject(error);
@@ -64,11 +73,13 @@ var transaction = exports.transaction = function transaction(queries) {
             queries.forEach(function (_ref) {
                 var query = _ref.query;
                 var params = _ref.params;
+                var _ref$queryType = _ref.queryType;
+                var queryType = _ref$queryType === undefined ? _pgPromise2.default.queryResult.any : _ref$queryType;
 
                 if (!query || !params) {
-                    throw new Error("Invalid arguments passed");
+                    throw new Error("Invalid arguments passed. Both query and params are required in each query");
                 } else {
-                    dbQueries.push(t.none(query, params));
+                    dbQueries.push(t.query(query, params, queryType));
                 }
             });
 

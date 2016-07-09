@@ -1,4 +1,4 @@
-import {singleQuery, promiseQuery} from '../database/db';
+import {promiseQuery, queryTypeMap as qm} from '../database/db';
 import {hashExpression, compareToHash} from '../helpers/crypto';
 import {encode} from '../helpers/jwt';
 
@@ -10,7 +10,7 @@ export default {
                 .then(hash => {
                     let insertQuery = 'INSERT INTO account (username, hash) VALUES ($1, $2) RETURNING username';
                     let params = [username, hash];
-                    return promiseQuery(insertQuery, params);
+                    return promiseQuery(insertQuery, params, qm.one);
                 })
                 .then(user => {
                     resolve(user.username);
@@ -26,7 +26,7 @@ export default {
         return new Promise((resolve, reject) => {
            let selectQuery = 'SELECT username, hash from account WHERE username=$1 LIMIT 1';
            let params = [user];
-           promiseQuery(selectQuery, params)
+           promiseQuery(selectQuery, params, qm.one)
                 .then(({username, hash}) => {
 
                     compareToHash(password, hash)

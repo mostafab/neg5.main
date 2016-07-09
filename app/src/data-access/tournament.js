@@ -1,6 +1,6 @@
 import shortid from 'shortid';
 
-import {promiseQuery, transaction} from '../database/db';
+import {promiseQuery, transaction, queryTypeMap as qm} from '../database/db';
 
 export default {
     
@@ -12,25 +12,31 @@ export default {
         
             const tournamentId = shortid.generate();
             
-            let tournamentQuery = `INSERT INTO tournament (id, name, tournament_date, question_set, comments, director_id) VALUES ($1, $2, $3, $4, $5, $6)`;
+            let tournamentQuery = `INSERT INTO tournament (id, name, tournament_date, question_set, comments, director_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
             let tournamentParams = [tournamentId, name, date, questionSet, comments, 'mbadmin'];        
             
             let {tossupParams, values: tossupValues} = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
             
-            let tossupQuery = `INSERT INTO tournament_tossup_values (tournament_id, tossup_value, tossup_answer_type) VALUES ${tossupValues.join(', ')}`;             
+            let tossupQuery = `INSERT INTO tournament_tossup_values (tournament_id, tossup_value, tossup_answer_type) VALUES ${tossupValues.join(', ')} RETURNING *`;             
 
             transaction([
                 {
                     query: tournamentQuery,
-                    params: tournamentParams
+                    params: tournamentParams,
+                    queryType: qm.one
                 },
                 {
                     query: tossupQuery,
-                    params: tossupParams
+                    params: tossupParams,
+                    queryType: qm.many
                 }
             ])
-            .then((data) => {
-                resolve(tournamentId);
+            .then(data => {
+                let result = {
+                    tournament: data[0],
+                    points: data[1]
+                }
+                resolve(result);
             })
             .catch(error => {
                 console.log(error);
