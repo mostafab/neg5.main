@@ -1,6 +1,10 @@
-import {promiseQuery, queryTypeMap as qm} from '../database/db';
 import {hashExpression, compareToHash} from '../helpers/crypto';
 import {encode} from '../helpers/jwt';
+
+import {query, queryTypeMap as qm} from '../database/db';
+import sql from '../database/sql';
+
+const account = sql.account;
 
 export default {
     
@@ -8,9 +12,9 @@ export default {
         return new Promise((resolve, reject) => {
             hashExpression(password)
                 .then(hash => {
-                    let insertQuery = 'INSERT INTO account (username, hash) VALUES ($1, $2) RETURNING username';
+
                     let params = [username, hash];
-                    return promiseQuery(insertQuery, params, qm.one);
+                    return query(account.add, params, qm.one);
                 })
                 .then(user => {
                     resolve(user.username);
@@ -24,9 +28,8 @@ export default {
     
     authenticateAccount: ({user, password}) => {
         return new Promise((resolve, reject) => {
-           let selectQuery = 'SELECT username, hash from account WHERE username=$1 LIMIT 1';
            let params = [user];
-           promiseQuery(selectQuery, params, qm.one)
+           query(account.findOne, params, qm.one)
                 .then(({username, hash}) => {
 
                     compareToHash(password, hash)

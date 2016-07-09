@@ -59,11 +59,9 @@ exports.default = {
 
         return new Promise(function (resolve, reject) {
 
-            var query = 'SELECT T.id, T.name, T.director_id, U.is_admin, CASE WHEN T.director_id=$1 THEN true ELSE false END AS is_owner FROM tournament T LEFT JOIN user_collaborates_on_tournament U ON T.id=U.tournament_id\n                        WHERE T.director_id=$1 OR U.username=$1';
-
             var params = [username];
 
-            promiseQuery(query, params, _db.queryTypeMap.many).then(function (tournaments) {
+            (0, _db.query)(tournament.findByUser, params, _db.queryTypeMap.many).then(function (tournaments) {
                 return resolve(tournaments);
             }).catch(function (error) {
                 console.log(error);

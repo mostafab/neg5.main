@@ -9,6 +9,11 @@ let getSQL = (file) => {
 
 export default {
     tournament: {
-        add: getSQL('tournament-sql/createTournament.sql')
+        add: getSQL('tournament-sql/createTournament.sql'),
+        findByUser: getSQL('tournament-sql/findByUser.sql')
+    },
+    account: {
+        add: getSQL('account-sql/createAccount.sql'),
+        findOne: getSQL('account-sql/findAccount.sql')
     }
 }

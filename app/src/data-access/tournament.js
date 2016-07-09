@@ -32,17 +32,15 @@ export default {
 
         return new Promise((resolve, reject) => {
 
-            let query = `SELECT T.id, T.name, T.director_id, U.is_admin, CASE WHEN T.director_id=$1 THEN true ELSE false END AS is_owner FROM tournament T LEFT JOIN user_collaborates_on_tournament U ON T.id=U.tournament_id
-                        WHERE T.director_id=$1 OR U.username=$1`;
-
             let params = [username];
 
-             promiseQuery(query, params, qm.many)
+            query(tournament.findByUser, params, qm.many)
                 .then(tournaments => resolve(tournaments))
                 .catch(error => {
                     console.log(error);
                     reject(error);
                 });
+                
         })
     }
     

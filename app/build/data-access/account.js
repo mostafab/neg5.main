@@ -4,11 +4,19 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _db = require('../database/db');
-
 var _crypto = require('../helpers/crypto');
 
 var _jwt = require('../helpers/jwt');
+
+var _db = require('../database/db');
+
+var _sql = require('../database/sql');
+
+var _sql2 = _interopRequireDefault(_sql);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var account = _sql2.default.account;
 
 exports.default = {
 
@@ -18,9 +26,9 @@ exports.default = {
 
         return new Promise(function (resolve, reject) {
             (0, _crypto.hashExpression)(password).then(function (hash) {
-                var insertQuery = 'INSERT INTO account (username, hash) VALUES ($1, $2) RETURNING username';
+
                 var params = [username, hash];
-                return (0, _db.promiseQuery)(insertQuery, params, _db.queryTypeMap.one);
+                return (0, _db.query)(account.add, params, _db.queryTypeMap.one);
             }).then(function (user) {
                 resolve(user.username);
             }).catch(function (error) {
@@ -35,9 +43,8 @@ exports.default = {
         var password = _ref2.password;
 
         return new Promise(function (resolve, reject) {
-            var selectQuery = 'SELECT username, hash from account WHERE username=$1 LIMIT 1';
             var params = [user];
-            (0, _db.promiseQuery)(selectQuery, params, _db.queryTypeMap.one).then(function (_ref3) {
+            (0, _db.query)(account.findOne, params, _db.queryTypeMap.one).then(function (_ref3) {
                 var username = _ref3.username;
                 var hash = _ref3.hash;
 
