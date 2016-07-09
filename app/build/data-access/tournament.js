@@ -47,7 +47,7 @@ exports.default = {
 
             tournamentParams.push(tournamentIds, values, types);
 
-            (0, _db.query)(tournament.add, tournamentParams, _db.queryTypeMap.one).then(function (result) {
+            (0, _db.query)(tournament.add, tournamentParams, _db.queryTypeMap.many).then(function (result) {
                 return resolve(result);
             }).catch(function (error) {
                 return reject(error);

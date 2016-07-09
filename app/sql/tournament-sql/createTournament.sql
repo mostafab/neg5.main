@@ -18,6 +18,7 @@ BEGIN;
                 unnest($7) AS id,
                 unnest($8) AS value,
                 unnest($9) AS type               
-        ) AS inner_table;
+        ) AS inner_table
+    RETURNING *;
 
 COMMIT;

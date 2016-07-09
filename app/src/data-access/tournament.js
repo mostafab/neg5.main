@@ -20,7 +20,7 @@ export default {
             
             tournamentParams.push(tournamentIds, values, types);
 
-            query(tournament.add, tournamentParams, qm.one)
+            query(tournament.add, tournamentParams, qm.many)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
             
