@@ -1,7 +1,7 @@
-div(class="panel panel-default" ng-if='tournamentContext.admin === true')
-    div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Add Collaborator
+div(class="panel panel-default nf-panel" ng-if='tournamentContext.admin === true')
+    div(class="collapsable nf-panel-heading nf-dark-blue") Add Collaborator
         i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
-    div(class="panel-body  tournament-panel")
+    div(class="panel-body nf-panel-body tournament-panel")
     
        .row
             div(class="col-md-12 col-sm-12 col-lg-12")
@@ -11,9 +11,10 @@ div(class="panel panel-default" ng-if='tournamentContext.admin === true')
                         i.fa.fa-search
         .row
             div(class="col-md-12 col-sm-12 col-lg-12")
-                hr
-                
-                .list-group()
+
+                br
+
+                .list-group
                     a.list-group-item.active Results
                     div(style='overflow:auto;max-height:300px')
                         .input-group(ng-repeat='result in Collab.searchResults | orderBy: "username" track by $index')
@@ -26,16 +27,16 @@ div(class="panel panel-default" ng-if='tournamentContext.admin === true')
                                 i.fa.fa-user-plus
         
 
-div(class="panel panel-default")
-    div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Collaborators
+div(class="panel panel-default nf-panel")
+    div(class="collapsable nf-panel-heading nf-dark-blue") Collaborators
         i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
-    div(class="panel-body  tournament-panel")        
+    div(class="panel-body tournament-panel nf-panel-body")        
             
         .row
-            .col-md-12.col-sm-12.col-lg-12
+            .col-md-12.col-sm-12.col-lg-6
                 .input-group(ng-repeat='collab in Collab.collaborators | orderBy: "admin"') 
-                        a.list-group-item
-                            p {{collab.name}} - {{collab.username}}
-                        span.input-group-addon.nf-red(ng-click='Collab.removeCollaborator(collab.username)' ng-if='tournamentContext.admin === true')
-                            i.fa.fa-trash  
+                    a.list-group-item
+                        p {{collab.name}} - {{collab.username}}
+                    span.input-group-addon.nf-red.btn.nf-button(role='button' ng-click='Collab.removeCollaborator(collab.username)' ng-if='tournamentContext.admin === true')
+                        i.fa.fa-trash  
                         

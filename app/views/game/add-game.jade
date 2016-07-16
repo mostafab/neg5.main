@@ -1,9 +1,8 @@
 div(id='add-game-div')
-    div(class="panel panel-default")
+    div(class="panel panel-default nf-panel")
 
-        div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Add a Game
-            i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
-        div(class="panel-body  tournament-panel" id="addgamepanel")
+        div(class="collapsable nf-panel-heading nf-dark-blue") Add a Game
+        div(class="nf-panel-body panel-body tournament-panel" id="addgamepanel")
 
                 form(name="new-game-form")
                     div(class="row")
@@ -20,23 +19,23 @@ div(id='add-game-div')
                     div(class="row")
                                                
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            div(class='panel panel-default')
+                            div(class='panel panel-default nf-panel')
                                 table(class='table')                                   
                                     thead
                                         tr(class='nf-dark-blue')
-                                            th 
-                                            th(class='center' ng-repeat='point in Game.pointScheme | orderBy: "value" ') {{point.value}}
-                                            th(class='center') Total
+                                            th(class='no-border') 
+                                            th(class='center no-border' ng-repeat='point in Game.pointScheme | orderBy: "value" ') {{point.value}}
+                                            th(class='center no-border') Total
                                     tbody
                                         tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id')
                                             td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                             td(ng-repeat='point in Game.pointScheme | orderBy: "value" ')
-                                                input(type='number' class='form-control nf-input input-sm' ng-model='player.points[$index].number')
+                                                input(type='number' class='form-control input-sm' ng-model='player.points[$index].number')
                                             td 
-                                                input(readonly class='form-control nf-input input-sm' value='{{Game.pointSum(player.points)}}')
+                                                input(readonly class='form-control input-sm' value='{{Game.pointSum(player.points)}}')
                                             
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            div(class='panel panel-default')
+                            div(class='panel panel-default nf-panel')
                                 table(class='table')                                   
                                     thead
                                         tr(class='nf-dark-blue')
@@ -47,9 +46,9 @@ div(id='add-game-div')
                                         tr(ng-repeat='player in Game.currentGame.teams[1].players | orderBy: "name" track by player.id')
                                             td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                             td(ng-repeat='point in Game.pointScheme | orderBy: "value" ')
-                                                input(type='number' class='form-control nf-input input-sm' ng-model='player.points[$index].number')
+                                                input(type='number' class='form-control input-sm' ng-model='player.points[$index].number')
                                             td 
-                                                input(readonly class='form-control nf-input input-sm' value='{{Game.pointSum(player.points)}}')
+                                                input(readonly class='form-control input-sm' value='{{Game.pointSum(player.points)}}')
                                     
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
@@ -90,8 +89,9 @@ div(id='add-game-div')
                                     input(type="number" class="form-control nf-input " name="overtimetu2" placeholder="# Overtime TU Team 2" ng-model='Game.currentGame.teams[1].overtime')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 2
-                    hr
-                                   
+
+                    br
+
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")

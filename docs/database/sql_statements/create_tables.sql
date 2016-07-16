@@ -9,6 +9,7 @@ CREATE TABLE tournament (
     id varchar(20) NOT NULL,
     name varchar(255) NOT NULL CHECK (char_length(name) > 0),
     tournament_date date,
+    location varchar(50),
     question_set varchar(255),
     comments text,
     hidden boolean,

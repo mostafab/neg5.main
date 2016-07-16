@@ -1,7 +1,7 @@
 BEGIN;
 
-    INSERT INTO tournament (id, name, tournament_date, question_set, comments, director_id) 
-    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
+    INSERT INTO tournament (id, name, tournament_date, question_set, comments, location, director_id) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;
 
 
     -- Using query file to load SQL Statements has an issue with multi insert queries.

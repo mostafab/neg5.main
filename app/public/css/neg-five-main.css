@@ -1,6 +1,7 @@
 .nf-button {
     border-radius: 2px;
     margin: 5px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .active-phase {
@@ -16,6 +17,10 @@
 
 .nf-input {
     border-radius: 2px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+.nf-input:focus {
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .nf-label {
@@ -23,17 +28,38 @@
     font-size: .9em;
 }
 
+.nf-list-item {
+    border: 0px solid black;
+}
+.nf-list-item:hover {
+    background: #90a4ae !important;
+}
+
 .nf-margin {
     margin: 5px;
+}
+
+.nf-panel {
+    border-color: #455a64;
+    border-radius: 2px;
 }
 
 .nf-panel-heading {
     padding: 20px;
     font-size: 1.5em;
+    border-color: #455a64 !important;
+}
+
+.nf-panel-body {
+    background-color: #455a64; 
 }
 
 .nf-select {
     border-radius: 2px;
+}
+
+.nf-shadow {
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .nf-th {
@@ -46,13 +72,13 @@
 
 .nf-tr:hover {
     cursor: pointer;
-    background-color: #E8F5E9;
+    background-color: #e0f7fa;
 }
 
 /** Neg 5 colors */
 
 .nf-white {
-    background-color: #F5F5F5;
+    background-color: #455a64;
 }
 
 .nf-black {
@@ -89,12 +115,33 @@
     color: white;
 }
 
+.no-border {
+    border-width: 0px;
+    border-radius: 0px;
+}
+
+.white {
+    color: white;
+}
+
 /* End Neg 5 colors */
 
 @media (min-width: 1200px) {
     .tournament-navigation-panel {
         position: fixed;
     }
+}
+
+.tournament-navigation-panel * a {
+    color: white;
+}
+.tournament-navigation-panel * a:hover {
+    color: black;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+.tournament-navigation-panel * a:focus {
+    color: black;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -110,6 +157,21 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+}
+
+/**
+Redefine Boostrap definitions
+*/
+.table > thead > tr > th {
+    border-bottom: 0px solid black;
+}
+
+.panel>.table:first-child>thead:first-child>tr:first-child td:last-child, .panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child td:last-child, .panel>.table:first-child>tbody:first-child>tr:first-child td:last-child, .panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child td:last-child, .panel>.table:first-child>thead:first-child>tr:first-child th:last-child, .panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child th:last-child, .panel>.table:first-child>tbody:first-child>tr:first-child th:last-child, .panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child th:last-child {
+    border-top-right-radius: 0px;
+}
+
+.panel>.table:first-child>thead:first-child>tr:first-child td:first-child, .panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child td:first-child, .panel>.table:first-child>tbody:first-child>tr:first-child td:first-child, .panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child td:first-child, .panel>.table:first-child>thead:first-child>tr:first-child th:first-child, .panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child th:first-child, .panel>.table:first-child>tbody:first-child>tr:first-child th:first-child, .panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child th:first-child {
+    border-top-left-radius: 0px;
 }
 
 

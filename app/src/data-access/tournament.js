@@ -10,11 +10,11 @@ export default {
 
         return new Promise((resolve, reject) => {
             
-            const {name, date = new Date(), questionSet = '', comments = '', tossupScheme = []} = tournamentInfo;
+            const {name, date = new Date(), questionSet = '', comments = '', location = '', tossupScheme = []} = tournamentInfo;
         
             const tournamentId = shortid.generate();
             
-            let tournamentParams = [tournamentId, name, date, questionSet, comments, 'mbadmin'];        
+            let tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mbadmin'];        
 
             let {tournamentIds, values, types} = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
             

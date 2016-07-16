@@ -1,7 +1,7 @@
-div(class="panel panel-default")
-    div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Divisions and Point Scheme
+div(class="panel panel-default nf-panel")
+    div(class="collapsable nf-panel-heading nf-dark-blue") Divisions and Point Scheme
         i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
-    div(class="panel-body tournament-panel")
+    div(class="panel-body tournament-panel nf-panel-body")
         div(class='row')
             div(class="col-md-6 col-sm-12")
                 div(class='col-sm-6')
@@ -10,37 +10,35 @@ div(class="panel panel-default")
                 div(class="col-md-12 col-sm-6")
                     div(class='form-group')
                         form(id="point-schema-form")
-                            input(type="hidden" name="tournamentid" value="#{tournament._id}" id="tournamentidajax")
-                            input(type="hidden" name="pointtypes" id="pointtypesfield")
-                            each num, i in Object.keys(tournament.pointScheme)
-                                div(class='row point-scheme-row')
-                                    div(class='input-group')
-                                        div(class="col-md-3 col-sm-4")
-                                            div(class='form-group')
-                                                input(readonly data-last-name='#{num}' type="number" style="width:100%" value="#{num}" class="form-control nf-input  input-medium no-border-radius pointval saved" name="val" + num)
+                            //- each num, i in Object.keys(tournament.pointScheme)
+                            //-     div(class='row point-scheme-row')
+                            //-         div(class='input-group')
+                            //-             div(class="col-md-3 col-sm-4")
+                            //-                 div(class='form-group')
+                            //-                     input(readonly data-last-name='#{num}' type="number" style="width:100%" value="#{num}" class="form-control nf-input  input-medium no-border-radius pointval saved" name="val" + num)
                                                 
-                                        div(class="col-md-9 col-sm-8")
-                                            each type, j in ["B", "N", "P"]
+                            //-             div(class="col-md-9 col-sm-8")
+                            //-                 each type, j in ["B", "N", "P"]
 
-                                                if type == "P"
-                                                    label(class="radio-inline btn-sm nf-green nf-button") Power
-                                                        if tournament.pointsTypes[num] == "P"
-                                                            input(checked type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
-                                                        else
-                                                            input(type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
-                                                else if type == "N"
-                                                    label(class="radio-inline btn-sm nf-red nf-button") Neg
-                                                        if tournament.pointsTypes[num] == "N"
-                                                            input(checked type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
-                                                        else
-                                                            input(type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                            //-                     if type == "P"
+                            //-                         label(class="radio-inline btn-sm nf-green nf-button") Power
+                            //-                             if tournament.pointsTypes[num] == "P"
+                            //-                                 input(checked type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                            //-                             else
+                            //-                                 input(type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                            //-                     else if type == "N"
+                            //-                         label(class="radio-inline btn-sm nf-red nf-button") Neg
+                            //-                             if tournament.pointsTypes[num] == "N"
+                            //-                                 input(checked type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                            //-                             else
+                            //-                                 input(type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
 
-                                                else
-                                                    label(class="radio-inline btn-sm nf-blue nf-button") Base
-                                                        if tournament.pointsTypes[num] == "B"
-                                                            input(checked type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
-                                                        else
-                                                            input(type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                            //-                     else
+                            //-                         label(class="radio-inline btn-sm nf-blue nf-button") Base
+                            //-                             if tournament.pointsTypes[num] == "B"
+                            //-                                 input(checked type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
+                            //-                             else
+                            //-                                 input(type="checkbox" value="#{type}" class="pointgroup" name="#{type + num}" data-radiogroup="#{j + 'group'}")
                                 br
                                 
 
@@ -53,29 +51,20 @@ div(class="panel panel-default")
                 label(class="label nf-dark-blue nf-label col-xs-4") Divisions
                 div(class="col-md-1")
                 div(class="form-group col-xs-7")
-                    form(id="divisions-form")
-                        input(type="hidden" name="tournamentid" value="#{tournament._id}" id="tid-divisions")
-                        each phase in tournament.phases
-                            div(class="row")
-                                label(class="label nf-dark-blue nf-label col-xs-3 col-md-3 col-sm-3 phase-name" data-phase-id='#{phase.phase_id}') #{phase.name}
-                                button(type='button' data-toggle='tooltip' class="btn btn-sm nf-blue add-division " data-phase-id="#{phase.phase_id}" title='Add Division to #{phase.name}.')
-                                    i(class="fa fa-plus")
-                                div(class="col-md-7 division-box" data-phase-id='#{phase.phase_id}')
-                                    each division, i in tournament.divisions
-                                        if (division.phase_id == phase.phase_id)
-                                            input(readonly type='text' data-last-name='#{tournament.divisions[i].name}' style="width:100%" value="#{tournament.divisions[i].name}" class=' form-control nf-input input-medium no-border-radius division-name saved' data-phase-id='#{phase.phase_id}' data-division-id='#{tournament.divisions[i].division_id}')
+                    //- form(id="divisions-form")
+                    //-     //- each phase in tournament.phases
+                    //-     //-     div(class="row")
+                    //-     //-         label(class="label nf-dark-blue nf-label col-xs-3 col-md-3 col-sm-3 phase-name" data-phase-id='#{phase.phase_id}') #{phase.name}
+                    //-     //-         button(type='button' data-toggle='tooltip' class="btn btn-sm nf-blue add-division " data-phase-id="#{phase.phase_id}" title='Add Division to #{phase.name}.')
+                    //-     //-             i(class="fa fa-plus")
+                    //-     //-         div(class="col-md-7 division-box" data-phase-id='#{phase.phase_id}')
+                    //-     //-             each division, i in tournament.divisions
+                    //-     //-                 if (division.phase_id == phase.phase_id)
+                    //-     //-                     input(readonly type='text' data-last-name='#{tournament.divisions[i].name}' style="width:100%" value="#{tournament.divisions[i].name}" class=' form-control nf-input input-medium no-border-radius division-name saved' data-phase-id='#{phase.phase_id}' data-division-id='#{tournament.divisions[i].division_id}')
 
-                            br
-                            br
+                    //-         br
+                    //-         br
+
 
                 div(class="btn-group" style="margin-top:15px")
                     button(type="button" class="btn btn-md nf-green nf-button" id="save-divisions-button" data-toggle="tooltip" title='Empty boxes are ignored.') Save All Divisions
-
-        div(class="col-md-12")
-        br
-        br
-        div(class="col-md-6")
-            div(class="form-group" style="text-align:center")
-                br
-                br
-                div(class="form-control nf-input input-lg center-text no-border-radius tournament-info-field" id="pointdivmsg")

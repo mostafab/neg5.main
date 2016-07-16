@@ -1,8 +1,8 @@
 div(class='col-md-12 col-sm-12')
-    div(class="panel panel-default")
-        div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") New Phase
+    div(class="panel nf-panel panel-default")
+        div(class="collapsable nf-panel-heading nf-dark-blue") New Phase
             i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
-        div(class="panel-body tournament-panel")
+        div(class="nf-panel-body panel-body tournament-panel")
         
             div(class="row")
                 div(class="col-md-12 col-sm-12 col-lg-6")
@@ -13,29 +13,21 @@ div(class='col-md-12 col-sm-12')
                             
             hr
             
-            
-            //- div(class='row')
-            //-     div(class='col-md-12 col-sm-12 col-lg-6')
-            //-         div(class='input-group')
-            //-             select(class='form-control nf-input' ng-options='phase.name for phase in Phase.phases | orderBy:"name" track by phase.id' ng-model='Phase.activePhaseSetterGetter' ng-model-options='{getterSetter: true}')
-            //-             span(class='nf-button btn input-group-addon nf-green' id='switch-phases')
-            //-                 i(class='fa fa-check')
-            
                             
 
 div(class='col-md-12 col-sm-12')
-    div(class="panel panel-default")
-        div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Current Phases
+    div(class="panel nf-panel panel-default")
+        div(class="collapsable nf-panel-heading nf-dark-blue") Current Phases
             i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
-        div(class="panel-body  tournament-panel")
-            div(class="row")
+        div(class="nf-panel-body panel-body  tournament-panel")
+            .row
                 div(class="col-md-12 col-sm-12 col-lg-6")
                     div(class='input-group' ng-repeat='phase in Phase.phases | orderBy: "name" track by phase.id')
                         input(type='text' class='form-control nf-input input-md' ng-model='phase.name')
-                        span(class='input-group-addon nf-red')
+                        span(role='button' class='btn nf-button input-group-addon nf-red')
                             i(class='fa fa-trash')
-            
                         
-            div(class="row")
+                        
+            .row
                 div(class="col-md-3 col-sm-6 col-lg-3")
-                    button(class="btn nf-green btn-md nf-button btn-block" ng-click='Phase.savePhases()') Save Phases
+                    button(class="btn nf-green btn-md nf-button btn-block" ng-show='Phase.phases.length !== 0' ng-click='Phase.savePhases()') Save Phases

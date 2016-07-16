@@ -678,22 +678,23 @@ module.exports = function (app) {
             req.session.lastURL = req.url;
             res.redirect("/");
         } else {
-            tournamentController.findTournamentById(req.params.tid, function (err, result, director) {
-                if (err) {
-                    res.status(500).send(err);
-                } else if (result == null) {
-                    res.status(404).render("index/not-found", { tournamentd: req.session.director, msg: "That tournament doesn't exist." });
-                } else {
-                    var hasPermission = getPermission(result, req.session.director);
-                    if (hasPermission.permission) {
-                        var linkName = result.tournament_name.replace(/\s/g, "_").toLowerCase();
-                        res.render("tournament/tournament-view", { tournament: result, tournamentd: req.session.director, linkName: linkName,
-                            admin: hasPermission.admin, tournamentDirector: director });
-                    } else {
-                        res.status(401).send("You don't have permission to view this tournament");
-                    }
-                }
-            });
+            // tournamentController.findTournamentById(req.params.tid, (err, result, director) => {
+            //     if (err) {
+            //         res.status(500).send(err);
+            //     } else if (result == null) {
+            //         res.status(404).render("index/not-found", {tournamentd : req.session.director, msg : "That tournament doesn't exist."});
+            //     } else {
+            //         const hasPermission = getPermission(result, req.session.director);
+            //         if (hasPermission.permission) {
+            //             const linkName = result.tournament_name.replace(/\s/g, "_").toLowerCase();
+            //             res.render("tournament/tournament-view", {tournament : result, tournamentd : req.session.director, linkName : linkName,
+            //                 admin : hasPermission.admin, tournamentDirector : director});
+            //         } else {
+            //             res.status(401).send("You don't have permission to view this tournament");
+            //         }
+            //     }
+            // });
+            res.render("tournament/tournament-view", { tournamentd: req.session.director });
         }
     });
 };

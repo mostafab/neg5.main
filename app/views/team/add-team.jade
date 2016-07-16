@@ -1,46 +1,81 @@
-div(class="panel panel-default" id='add-team-div')
-    div(class="panel-heading collapsable nf-panel-heading nf-dark-blue" id="add-team-panel") Add a Team
+div(class="panel panel-default nf-panel")
+    div(class="collapsable nf-panel-heading nf-dark-blue" id="add-team-panel") Add a Team
         i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
-    div(class="panel-body  tournament-panel" id="add-team-body")
+    div(class="panel-body  nf-panel-body tournament-panel")
 
-        div(class="col-md-8 col-sm-12")
-            form(id="teamform" name="createTeam")
-                div(class="form-group")
-                    label Name *
-                    input(
-                        type="text",
-                        name="team_name",
-                        id="team_name_input",
-                        placeholder="Team Name",
-                        class="form-control nf-input input-md center-text no-border-radius",
-                        ng-model='Team.newTeam.name'
-                    )
-                hr
-                div(class="form-group")
-                    div(class="row")
-                        div(class="col-md-6")
-                            label Divisions
-                    br
-                    each phase, i in tournament.phases
-                        div(class="row")
-                            div(class="col-md-4 col-sm-4 col-lg-4")
-                                div(class='alert nf-dark-blue phase-name' data-phase-id='#{phase.phase_id}')
-                                    p #{phase.name}
-                            div(class="col-md-8 col-sm-8 col-lg-8")
-                                select(class="form-control nf-input new-team-division " data-phase-id='#{phase.phase_id}')
-                                    each division in tournament.divisions
-                                        if division.phase_id == phase.phase_id
-                                            option(value='#{division.name}') #{division.name}
-                        br
-                hr
-                div(id='player-dynamic' class='form-group')
-                    label Players
-                    button(type="button" class="btn btn-sm nf-blue no-border-radius " id="newlineplayer" style="margin: 5px" ng-click='Team.addPlayer()') Add Player
-                    div(ng-repeat='player in Team.newTeam.players')
-                        div(class='input-group')
-                            input(type='text' class='form-control nf-input input-medium center-text no-border-radius player-name' autocomplete='off' placeholder='Player {{$index + 1}}' ng-model='Team.newTeam.players[$index].name')
-                            span(class='input-group-addon nf-red' ng-click='Team.removePlayerSlot($index)')
-                                i(class='fa fa-times')
+        div(class="col-md-12 col-sm-12")
+            form
+                .row
+                    .col-lg-4.col-md-4.col-sm-4
+                        label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Name
+                    .col-lg-8.col-md-8.col-sm-8
+                        input(
+                            type="text",
+                            placeholder="Team Name",
+                            class="form-control nf-input input-md center-text no-border-radius",
+                            ng-model='Team.newTeam.name'
+                        )
+
+                br
+
+                .row
+                    .col-lg-4.col-md-4.col-sm-4
+                        label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Divisions
+                    .col-lg-8.col-md-8.col-sm-4
+
+                br
+
+                .row
+                    .col-lg-4.col-md-4.col-sm-4
+                        .row
+                            .col-lg-8.col-md-8.col-sm-8
+                                label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Players
+                            .col-lg-4.col-md-4.col-sm-4
+                                span(role="button" class="btn btn-sm nf-blue nf-button btn-block" ng-click='Team.addPlayer()' style='margin:0px')
+                                    i.fa.fa-plus
+                    .col-lg-8.col-md-8.col-sm-8
+                        div(ng-repeat='player in Team.newTeam.players' style='margin:3px')
+                            div(class='input-group input-md')
+                                input(type='text' class='form-control nf-input input-medium center-text' autocomplete='off' placeholder='Player {{$index + 1}}' ng-model='Team.newTeam.players[$index].name')
+                                span(role='button' class='input-group-addon nf-red btn btn-md nf-button' ng-click='Team.removePlayerSlot($index)')
+                                    i(class='fa fa-times')
+
+                //- div(class="form-group")
+                //-     label Name *
+                //-     input(
+                //-         type="text",
+                //-         name="team_name",
+                //-         id="team_name_input",
+                //-         placeholder="Team Name",
+                //-         class="form-control nf-input input-md center-text no-border-radius",
+                //-         ng-model='Team.newTeam.name'
+                //-     )
+
+                //- div(class="form-group")
+                //-     div(class="row")
+                //-         div(class="col-md-6")
+                //-             label Divisions
+                //-     br
+                //-     //- each phase, i in tournament.phases
+                //-     //-     div(class="row")
+                //-     //-         div(class="col-md-4 col-sm-4 col-lg-4")
+                //-     //-             div(class='alert nf-dark-blue phase-name' data-phase-id='#{phase.phase_id}')
+                //-     //-                 p #{phase.name}
+                //-     //-         div(class="col-md-8 col-sm-8 col-lg-8")
+                //-     //-             select(class="form-control nf-input new-team-division " data-phase-id='#{phase.phase_id}')
+                //-     //-                 each division in tournament.divisions
+                //-     //-                     if division.phase_id == phase.phase_id
+                //-     //-                         option(value='#{division.name}') #{division.name}
+                //-         br
+
+                //- div(class='form-group')
+                //-     label Players
+                //-     button(type="button" class="btn btn-sm nf-blue no-border-radius " id="newlineplayer" style="margin: 5px" ng-click='Team.addPlayer()') Add Player
+                //-     div(ng-repeat='player in Team.newTeam.players')
+                //-         div(class='input-group')
+                //-             input(type='text' class='form-control nf-input input-medium center-text no-border-radius player-name' autocomplete='off' placeholder='Player {{$index + 1}}' ng-model='Team.newTeam.players[$index].name')
+                //-             span(class='input-group-addon nf-red' ng-click='Team.removePlayerSlot($index)')
+                //-                 i(class='fa fa-times')
                     
 
                 br

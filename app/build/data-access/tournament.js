@@ -30,13 +30,15 @@ exports.default = {
             var questionSet = _tournamentInfo$quest === undefined ? '' : _tournamentInfo$quest;
             var _tournamentInfo$comme = tournamentInfo.comments;
             var comments = _tournamentInfo$comme === undefined ? '' : _tournamentInfo$comme;
+            var _tournamentInfo$locat = tournamentInfo.location;
+            var location = _tournamentInfo$locat === undefined ? '' : _tournamentInfo$locat;
             var _tournamentInfo$tossu = tournamentInfo.tossupScheme;
             var tossupScheme = _tournamentInfo$tossu === undefined ? [] : _tournamentInfo$tossu;
 
 
             var tournamentId = _shortid2.default.generate();
 
-            var tournamentParams = [tournamentId, name, date, questionSet, comments, 'mbadmin'];
+            var tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mbadmin'];
 
             var _buildTournamentPoint = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
 
