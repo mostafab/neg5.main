@@ -1,42 +1,44 @@
-div(class="panel panel-default nf-panel" ng-if='tournamentContext.admin === true')
-    div(class="collapsable nf-panel-heading nf-dark-blue") Add Collaborator
-        i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
-    div(class="panel-body nf-panel-body tournament-panel")
-    
-       .row
-            div(class="col-md-12 col-sm-12 col-lg-12")
-                .input-group
-                    input(type="text" ng-model='Collab.searchQuery' class="form-control nf-input" ng-keypress='Collab.getKeyPress($event)' placeholder="Search for other users. Enter at least 5 characters")
-                    span(role='button' class="input-group-addon btn btn-md nf-green nf-button" ng-click='Collab.findUsers()')
-                        i.fa.fa-search
-        .row
-            div(class="col-md-12 col-sm-12 col-lg-12")
-
-                br
-
-                .list-group
-                    a.list-group-item.active Results
-                    div(style='overflow:auto;max-height:300px')
-                        .input-group(ng-repeat='result in Collab.searchResults | orderBy: "username" track by $index')
-                            a.list-group-item(href='')
-                                p(style='display:inline')
-                                    b(style='display:inline') {{result.name}}
-                                    p(style='display:inline') - {{result.username}} 
-                            span(role='button' title='{{"Add " + result.username + " as an admin."}}' class="input-group-addon btn btn-sm nf-green nf-button" ng-click='Collab.addCollaborator(result.username, true)') Add as Admin
-                            span(role='button' title='{{"Add " + result.username + "."}}' class="input-group-addon btn btn-sm nf-blue nf-button" ng-click='Collab.addCollaborator(result.username, false)')
-                                i.fa.fa-user-plus
-        
-
-div(class="panel panel-default nf-panel")
-    div(class="collapsable nf-panel-heading nf-dark-blue") Collaborators
-        i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
-    div(class="panel-body tournament-panel nf-panel-body")        
+.row
+    .col-lg-4.col-sm-12.col-md-6
+        div(class="panel panel-default nf-panel" ng-if='tournamentContext.admin === true')
+            div(class="collapsable nf-panel-heading nf-dark-blue") Add Collaborator
+                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+            div(class="panel-body nf-panel-body tournament-panel")
             
-        .row
-            .col-md-12.col-sm-12.col-lg-6
-                .input-group(ng-repeat='collab in Collab.collaborators | orderBy: "admin"') 
-                    a.list-group-item
-                        p {{collab.name}} - {{collab.username}}
-                    span.input-group-addon.nf-red.btn.nf-button(role='button' ng-click='Collab.removeCollaborator(collab.username)' ng-if='tournamentContext.admin === true')
-                        i.fa.fa-trash  
-                        
+                .row
+                        div(class="col-md-12 col-sm-12 col-lg-12")
+                            .input-group
+                                input(type="text" ng-model='Collab.searchQuery' class="form-control nf-input" ng-keypress='Collab.getKeyPress($event)' placeholder="Search for other users. Enter at least 5 characters")
+                                span(role='button' class="input-group-addon btn btn-md nf-green nf-button" ng-click='Collab.findUsers()')
+                                    i.fa.fa-search
+                .row
+                    div(class="col-md-12 col-sm-12 col-lg-12")
+
+                        br
+
+                        .list-group.nf-shadow
+                            a.list-group-item.active Results
+                            div(style='overflow:auto;max-height:800px')
+                                .input-group(ng-repeat='result in Collab.searchResults | orderBy: "username" track by $index')
+                                    a.list-group-item.nf-list-item.nf-dark-blue(href='')
+                                        p(style='display:inline')
+                                            b(style='display:inline') {{result.name}}
+                                            p(style='display:inline') - {{result.username}} 
+                                    span(role='button' title='{{"Add " + result.username + " as an admin."}}' class="input-group-addon btn btn-sm nf-green nf-button" ng-click='Collab.addCollaborator(result.username, true)') Add as Admin
+                                    span(role='button' title='{{"Add " + result.username + "."}}' class="input-group-addon btn btn-sm nf-blue nf-button" ng-click='Collab.addCollaborator(result.username, false)')
+                                        i.fa.fa-user-plus
+        
+    .col-lg-8.col-sm-12.col-md-6
+        div(class="panel panel-default nf-panel")
+            div(class="collapsable nf-panel-heading nf-dark-blue") Collaborators
+                i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+            div(class="panel-body tournament-panel nf-panel-body")        
+                    
+                .row
+                    .col-md-12.col-sm-12.col-lg-6
+                        .input-group(ng-repeat='collab in Collab.collaborators | orderBy: "admin"') 
+                            a.list-group-item
+                                p {{collab.name}} - {{collab.username}}
+                            span.input-group-addon.nf-red.btn.nf-button(role='button' ng-click='Collab.removeCollaborator(collab.username)' ng-if='tournamentContext.admin === true')
+                                i.fa.fa-trash  
+                                

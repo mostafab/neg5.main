@@ -21,7 +21,7 @@ export let query = (text, params, queryType = pgp.queryResult.any) => {
             .then(data => resolve(data))
             .catch(error => {
                 console.log(error.toString());
-                reject(error)
+                reject(error);
             });
     });
 }

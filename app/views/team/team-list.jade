@@ -1,46 +1,18 @@
-div(class="table-responsive" id="teamdiv")
-    div(class="row" style="width:95%")
-        div(class="input-group col-lg-4 col-md-4 col-sm-4" style="margin-left:20px;margin-bottom:20px;")
-            span(class='input-group-addon nf-blue nf-button btn' id='refresh-teams' ng-click='Team.getTournamentTeams()')
-                i(class='fa fa-refresh')
-            input(type="text" class="form-control nf-input search btn-shadow" placeholder="Filter by Name or Division" ng-model='Team.teamQuery')
+div(class="row" style="width:95%")
+    div(class="input-group col-lg-4 col-md-4 col-sm-12" style="margin-left:20px;margin-bottom:20px;")
+        span(class='input-group-addon nf-blue nf-button btn' id='refresh-teams' ng-click='Team.getTournamentTeams()')
+            i(class='fa fa-refresh')
+        input(type="text" class="form-control nf-input search btn-shadow" placeholder="Filter by Name or Division" ng-model='Team.teamQuery')
 
-    div(class="panel panel-default")
-        table(class="table table-condensed nf-shadow")
-            thead
-                tr
-                    th(class="table-head" ng-click='Team.teamSortType="team_name" ; Team.teamSortReverse= !Team.teamSortReverse') Team
-                    th(class="table-head" style='text-align:left' ng-click='teamSortType="divisions" ; teamSortReverse= !teamSortReverse') Divisions
-                    th(class="table-head" ng-if='tournamentContext.admin === true')
-            tbody(id="teamtablebody")
-                tr(class='nf-tr' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id')
-                    td {{team.name}}
-                    td Test
-                    td(ng-if='tournamentContext.admin === true') 
-                        button(type="button" class="btn btn-sm nf-red start-delete-team" data-toggle='tooltip' data-placement='right' title='Delete {{team.name}}.' ng-click='Team.removeTeam(team.id)')
-                
-                    
-                //- each val, i in tournament.teams
-                //-     tr(class='team-tr clickable-link team-anchor tournament-panel nf-tr' data-href="/t/" + tournament.shortID + "/teams/" + tournament.teams[i].shortID id='#{tournament.teams[i].shortID}' data-team-id='#{tournament.teams[i]._id}')
-                //-         td(class="teamname team-name-list teamname") #{tournament.teams[i].team_name}
-                //-         td(class="division division-list")
-                //-             for phase, j in tournament.phases
-                //-                 - var phaseID = tournament.phases[j].phase_id
-                //-                 if tournament.teams[i].divisions
-                //-                     li(style='list-style-type:none') #{phase.name} : #{tournament.teams[i].divisions[phaseID]}
-                //-         if admin
-                //-             td
-                //-                 button(type="button" class="btn btn-sm nf-red start-delete-team btn-shadow" data-toggle='tooltip' data-placement='right' title='Delete #{tournament.teams[i].team_name}.')
+div(class="panel-default nf-panel")
+    table(class="table table-condensed nf-shadow")
+        thead
+            tr
+                th(class="table-head nf-white" ng-click='Team.teamSortType="team_name" ; Team.teamSortReverse= !Team.teamSortReverse') Team
+                th(class="table-head nf-white" style='text-align:left' ng-click='teamSortType="divisions" ; teamSortReverse= !teamSortReverse') Divisions
 
-                //-     if admin
-                //-         tr(class='team-tr' style='display:none' data-team-id='#{tournament.teams[i]._id}')
-                //-             td
-                //-             td
-                //-             td
-                //-                 div(class="col-md-3 col-lg-3 col-sm-3")
-                //-                     button(class="btn btn-stats btn-sm btn-block cancel-delete-team btn-shadow") Never Mind
-                //-                 div(class="col-md-3 col-lg-3 col-sm-3")
-                //-                     form()
-                //-                         input(type="hidden" name="teamid_form" value="#{tournament.teams[i].shortID}")
-                //-                         input(type="hidden" name="tournament_idteam" value="#{tournament._id}")
-                //-                         button(type="button" class="btn btn-sm nf-red btn-block deleteteambutton btn-shadow") Confirm
+        tbody(id="teamtablebody")
+            tr(class='nf-list-item nf-dark-blue' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id')
+                td {{team.name}}
+                td Test
+            

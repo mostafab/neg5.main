@@ -55,7 +55,7 @@ block content
                     div(class='col-sm-7 col-lg-12 col-md-12')
                         h2(class="nf-panel-heading nf-dark-blue center") {{tournamentInfo.name}}
                 
-                div(class="panel-body" id='anchor-links')
+                div(class="panel-body")
                     div(class="row")
                         div(class='col-sm-7 col-md-12 col-lg-12')
                             ul(class="nav nav-bar no-border-radius")
@@ -65,7 +65,6 @@ block content
                                     a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
                                 li(class="center")
                                     a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
-                                    
                                 li(class="center")
                                     a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games ({{Tournament.games.length}})
                                 li(class="center")
@@ -97,21 +96,45 @@ block content
                         include ./../config/config-tab.jade
 
                     div(class="tab-pane fade" id="games" ng-controller='GameCtrl as Game')
-                    
-                        include ./../game/add-game.jade
-                                
-                        div(id='game-list-div')
-                            div(id='game-list-template')
-                                include ./../game/game-list.jade
+
+                        .row
+                            .col-lg-1
+                                 ul(class="nav nav-bar no-border-radius")
+                                    li(class="active center")
+                                        a(href="#add-game" data-toggle="tab" class='tournament-tab btn-md') Add Game
+                                    li(class="center")
+                                        a(href="#game-list" data-toggle="tab" class='tournament-tab btn-md') Game List
+                                    br
+                            .col-lg-11
+                                .tab-content
+                                    .tab-pane.fade.active.in#add-game
+                                        include ./../game/add-game.jade
+
+                                    .tab-pane.fade#game-list
+
+                                        div(id='game-list-div')
+                                            div(id='game-list-template')
+                                                include ./../game/game-list.jade
 
                         div(class='row')
                             div(class='col-md-12' id='game-view-div')
 
                     div(class="tab-pane fade" id="teams" ng-controller='TeamCtrl as Team')
                         
-                        include ./../team/add-team.jade
-                        
-                        include ./../team/team-list.jade
+                        .row
+                            .col-lg-1
+                                ul(class="nav nav-bar no-border-radius")
+                                    li(class="active center")
+                                        a(href="#add-team" data-toggle="tab" class='tournament-tab btn-md') Add Team
+                                    li(class="center")
+                                        a(href="#team-list" data-toggle="tab" class='tournament-tab btn-md') Team List
+                                    br
+                            .col-lg-11
+                                .tab-content
+                                    .tab-pane.fade.active.in#add-team           
+                                        include ./../team/add-team.jade
+                                    .tab-pane.fade#team-list
+                                        include ./../team/team-list.jade
 
                         div(class='row' style='margin-left:20px')
                             div(class='col-md-12' id='team-view-div')

@@ -1,3 +1,7 @@
+.nf-background-main {
+    background-color: #455a64;
+}
+
 .nf-button {
     border-radius: 2px;
     margin: 5px;
@@ -33,6 +37,7 @@
 }
 .nf-list-item:hover {
     background: #90a4ae !important;
+    cursor: pointer;
 }
 
 .nf-margin {
@@ -78,7 +83,7 @@
 /** Neg 5 colors */
 
 .nf-white {
-    background-color: #455a64;
+    background-color: #fafafa;
 }
 
 .nf-black {
@@ -122,6 +127,18 @@
 
 .white {
     color: white;
+}
+
+.nav-bar * a {
+    color: white;
+}
+.nav-bar * a:hover {
+    color: black;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+.nav-bar * a:focus {
+    color: black;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* End Neg 5 colors */
@@ -172,6 +189,10 @@ Redefine Boostrap definitions
 
 .panel>.table:first-child>thead:first-child>tr:first-child td:first-child, .panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child td:first-child, .panel>.table:first-child>tbody:first-child>tr:first-child td:first-child, .panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child td:first-child, .panel>.table:first-child>thead:first-child>tr:first-child th:first-child, .panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child th:first-child, .panel>.table:first-child>tbody:first-child>tr:first-child th:first-child, .panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child th:first-child {
     border-top-left-radius: 0px;
+}
+
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    border: 0px;
 }
 
 
