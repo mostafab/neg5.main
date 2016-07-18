@@ -10,62 +10,63 @@ block content
 
     +navbar
     +navbar-bottom
-    div(class="content-wrapper box" style='padding:150px;padding-top:120px;')
+    div(class="content-wrapper box" style='padding:100px;padding-top:50px;')
         div(class="row")
             div(class="col-md-12")
                 div(class="col-md-12")
                     div(style="margin:20px; margin-bottom:50px")
-                    h2(class="nf-panel-heading nf-dark-blue" style="width:50%") Create a Tournament. You only need to provide a name.
-                    br
-                    br
-                    div(class="panel panel-default")
-                        div(class="panel-heading collapsable nf-panel-heading nf-dark-blue" style='font-size:20px') Information
-                        div(class="panel-body btn-shadow")
-                            div(class="row")
-                                div(class='col-md-8')
-                                   form(name="createTournament" method="post" action="/create/submit")
-                                        label(class="label nf-dark-blue nf-label col-xs-4") Name
-                                        div(class="form-group col-xs-8")
-                                           input(
-                                               type="text",
-                                               name="t_name",
-                                               placeholder="Tournament Name",
-                                               class="form-control nf-input input-lg center-text no-border-radius btn-shadow",
-                                               required
-                                           )
-                                        label(class="label nf-dark-blue nf-label col-xs-4") Question Set
-                                        div(class="form-group col-xs-8")
-                                           input(
-                                               type="text",
-                                               name="t_qset",
-                                               placeholder="Question Set",
-                                               class="form-control nf-input input-lg center-text no-border-radius btn-shadow"
-                                           )
-                                        label(class="label nf-dark-blue nf-label col-xs-4") Location
-                                        div(class="form-group col-xs-8")
-                                           input(
-                                               type="text",
-                                               name="t_location",
-                                               placeholder="Location",
-                                               class="form-control nf-input input-lg center-text no-border-radius btn-shadow"
-                                           )
-                                        label(class="label nf-dark-blue nf-label col-xs-4") Date
-                                        div(class="form-group col-xs-8")
-                                           input(
-                                               type="date",
-                                               name="t_date",
-                                               placeholder="Tournament Date",
-                                               id="date-box",
-                                               class="form-control nf-input input-lg center-text no-border-radius btn-shadow"
-                                           )
-                                        label(class='label nf-dark-blue nf-label col-xs-4') Description
-                                        div(class="form-group col-xs-8")
-                                           textarea(
-                                               name="t_description",
-                                               placeholder="Enter any other important information about the tournament here.",
-                                               class="form-control nf-input input-lg no-border-radius btn-shadow",
-                                               style="min-height:300px;"
-                                           )
-                                         
-                                         button(type="reset" class="btn btn-lg nf-blue nf-button") Clear Fields
-                                         button(type="submit" class="btn btn-lg nf-green nf-button") Confirm
+                    
+                    div(class="nf-panel panel-default")
+                        div(class="collapsable nf-panel-heading nf-dark-blue" style='font-size:20px') Create a Tournament.
+                        div(class="nf-panel-body panel-body btn-shadow")
+                            form(name="createTournament" method="post" action="/api/t")
+                                div(class="row")                                   
+                                    div(class='col-md-8 col-lg-6')
+                                        label(class="label nf-dark-blue nf-label col-xs-4 col-lg-3") Name
+                                        div(class="form-group col-xs-8 col-lg-9")
+                                            input(
+                                                type="text",
+                                                name="name",
+                                                placeholder="Tournament Name",
+                                                class="form-control nf-input input-md center-text"
+                                            )
+                                        label(class="label nf-dark-blue nf-label col-xs-4 col-lg-3") Question Set
+                                        div(class="form-group col-xs-8 col-lg-9")
+                                            input(
+                                                type="text",
+                                                name="questionSet",
+                                                placeholder="Question Set",
+                                                class="form-control nf-input input-md center-text"
+                                            )
+                                        label(class="label nf-dark-blue nf-label col-xs-4 col-lg-3") Location
+                                        div(class="form-group col-xs-8 col-lg-9")
+                                            input(
+                                                type="text",
+                                                name="location",
+                                                placeholder="Location",
+                                                class="form-control nf-input input-md center-text"
+                                            )
+                                        label(class="label nf-dark-blue nf-label col-xs-4 col-lg-3") Date
+                                        div(class="form-group col-xs-8 col-lg-9")
+                                            input(
+                                                type="date",
+                                                name="datess",
+                                                placeholder="Tournament Date",
+                                                id="date-box",
+                                                class="form-control nf-input input-md center-text"
+                                            )
+                                        label(class='label nf-dark-blue nf-label col-xs-4 col-lg-3') Description
+                                        div(class="form-group col-xs-8 col-lg-9")
+                                            textarea(
+                                                name="comments",
+                                                placeholder="Enter any other important information about the tournament here.",
+                                                class="form-control nf-input input-md",
+                                                style="min-height:300px;"
+                                            )
+                                    div(class='col-md-8 col-lg-6')
+                                        label(class="label nf-dark-blue nf-label col-xs-4 col-lg-3") Point Scheme
+                                        div(class="form-group col-xs-8 col-lg-9")
+                                                  
+                                .row
+                                    button(type="reset" class="btn btn-lg nf-blue nf-button") Clear Fields
+                                    button(type="submit" class="btn btn-lg nf-green nf-button") Confirm

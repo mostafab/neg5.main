@@ -19,7 +19,7 @@ div(id='add-game-div')
                     div(class="row")
                                                
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            div(class='panel panel-default nf-panel')
+                            div(class='panel-default nf-panel nf-shadow')
                                 table(class='table')                                   
                                     thead
                                         tr(class='nf-dark-blue')
@@ -27,7 +27,7 @@ div(id='add-game-div')
                                             th(class='center no-border' ng-repeat='point in Game.pointScheme | orderBy: "value" ') {{point.value}}
                                             th(class='center no-border') Total
                                     tbody
-                                        tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id')
+                                        tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id' class='nf-white')
                                             td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                             td(ng-repeat='point in Game.pointScheme | orderBy: "value" ')
                                                 input(type='number' class='form-control input-sm' ng-model='player.points[$index].number')
@@ -35,7 +35,7 @@ div(id='add-game-div')
                                                 input(readonly class='form-control input-sm' value='{{Game.pointSum(player.points)}}')
                                             
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            div(class='panel panel-default nf-panel')
+                            div(class='panel-default nf-panel nf-shadow')
                                 table(class='table')                                   
                                     thead
                                         tr(class='nf-dark-blue')
@@ -43,7 +43,7 @@ div(id='add-game-div')
                                             th(class='center' ng-repeat='point in Game.pointScheme | orderBy: "value" ') {{point.value}}
                                             th(class='center') Total
                                     tbody
-                                        tr(ng-repeat='player in Game.currentGame.teams[1].players | orderBy: "name" track by player.id')
+                                        tr(ng-repeat='player in Game.currentGame.teams[1].players | orderBy: "name" track by player.id' class='nf-white')
                                             td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                             td(ng-repeat='point in Game.pointScheme | orderBy: "value" ')
                                                 input(type='number' class='form-control input-sm' ng-model='player.points[$index].number')
@@ -136,7 +136,7 @@ div(id='add-game-div')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases
                                 div(class="col-md-6 col-sm-6")
-                                    select(multiple class="form-control nf-input" ng-attr-size='{{Game.phases.length}}' ng-options='phase.name for phase in Game.phases | orderBy:"name" track by phase.id' ng-model='Game.currentGame.phases')
+                                    select(multiple class="form-control nf-input no-overflow" ng-attr-size='{{Game.phases.length}}' ng-options='phase.name for phase in Game.phases | orderBy:"name" track by phase.id' ng-model='Game.currentGame.phases')
                                         
                     br
                     

@@ -38,7 +38,7 @@ exports.default = {
 
             var tournamentId = _shortid2.default.generate();
 
-            var tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mbadmin'];
+            var tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mostafab'];
 
             var _buildTournamentPoint = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
 
@@ -48,6 +48,7 @@ exports.default = {
 
 
             tournamentParams.push(tournamentIds, values, types);
+            console.log(tournamentParams);
 
             (0, _db.query)(tournament.add, tournamentParams, _db.queryTypeMap.many).then(function (result) {
                 return resolve(result);

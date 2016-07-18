@@ -63,7 +63,7 @@ div(class="panel nf-panel panel-default")
                 form(target="_blank" method="get" action='{{"/t/" + tournamentId + "/stats/filter/teams"}}')
                     .row
                         .col-lg-4.col-md-4.col-sm-6
-                            select(class='form-control nf-input' ng-attr-size='{{Statistics.teams.length}}' ng-model='Statistics.selectedTeams' ng-options='team.name for team in Statistics.teams | orderBy:"name" track by team.id' multiple)
+                            select(class='form-control nf-input no-overflow' ng-attr-size='{{Statistics.teams.length}}' ng-model='Statistics.selectedTeams' ng-options='team.name for team in Statistics.teams | orderBy:"name" track by team.id' multiple)
                         .col-lg-4.col-md-4.col-sm-6
                             .row
                                 input(class="form-control nf-input " type="number" name="minround" placeholder="Min Round")

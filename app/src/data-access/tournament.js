@@ -11,15 +11,17 @@ export default {
         return new Promise((resolve, reject) => {
             
             const {name, date = new Date(), questionSet = '', comments = '', location = '', tossupScheme = []} = tournamentInfo;
-        
+
             const tournamentId = shortid.generate();
             
-            let tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mbadmin'];        
+            let tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mostafab'];        
+            
 
             let {tournamentIds, values, types} = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
             
             tournamentParams.push(tournamentIds, values, types);
-
+            console.log(tournamentParams);
+            
             query(tournament.add, tournamentParams, qm.many)
                 .then(result => resolve(result))
                 .catch(error => reject(error));

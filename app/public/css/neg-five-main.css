@@ -161,13 +161,16 @@
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
-
 .center {
     text-align: center;
 }
 
 .vertical-center {
     vertical-align: middle;
+}
+
+.no-overflow {
+    overflow: hidden;
 }
 
 input[type=number]::-webkit-inner-spin-button, 
