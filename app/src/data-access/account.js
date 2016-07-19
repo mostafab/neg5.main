@@ -8,12 +8,12 @@ const account = sql.account;
 
 export default {
     
-    saveAccount: ({username, password}) => {
+    saveAccount: ({username, password, email = null, name =  null}) => {
         return new Promise((resolve, reject) => {
             hashExpression(password)
                 .then(hash => {
 
-                    let params = [username, hash];
+                    let params = [username, hash, email, name];
                     return query(account.add, params, qm.one);
                 })
                 .then(user => {

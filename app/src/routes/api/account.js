@@ -5,6 +5,7 @@ export default (app) => {
     app.route('/api/account')
         .post((req, res) => {
             const accountCredentials = req.body;
+            console.log(accountCredentials);
             Account.create(accountCredentials)
                 .then(user => {
                     return res.json({user: user, success: true});
@@ -14,7 +15,7 @@ export default (app) => {
             });
         })
         
-    app.route('/api/authenticate')
+    app.route('/api/account/authenticate')
         .post((req, res) => {
             const accountCredentials = req.body;
             Account.findOne(accountCredentials)

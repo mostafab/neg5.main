@@ -15,11 +15,17 @@ exports.default = {
     create: function create(_ref) {
         var username = _ref.username;
         var password = _ref.password;
+        var _ref$email = _ref.email;
+        var email = _ref$email === undefined ? null : _ref$email;
+        var _ref$name = _ref.name;
+        var name = _ref$name === undefined ? null : _ref$name;
 
         return new Promise(function (resolve, reject) {
             var newAccount = {
                 username: username,
-                password: password
+                password: password,
+                email: email,
+                name: name
             };
             _account2.default.saveAccount(newAccount).then(function (user) {
                 return resolve(user);

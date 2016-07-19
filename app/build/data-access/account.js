@@ -23,11 +23,15 @@ exports.default = {
     saveAccount: function saveAccount(_ref) {
         var username = _ref.username;
         var password = _ref.password;
+        var _ref$email = _ref.email;
+        var email = _ref$email === undefined ? null : _ref$email;
+        var _ref$name = _ref.name;
+        var name = _ref$name === undefined ? null : _ref$name;
 
         return new Promise(function (resolve, reject) {
             (0, _crypto.hashExpression)(password).then(function (hash) {
 
-                var params = [username, hash];
+                var params = [username, hash, email, name];
                 return (0, _db.query)(account.add, params, _db.queryTypeMap.one);
             }).then(function (user) {
                 resolve(user.username);

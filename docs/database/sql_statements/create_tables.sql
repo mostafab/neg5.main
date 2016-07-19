@@ -1,6 +1,8 @@
 CREATE TABLE account (
     username varchar(20) NOT NULL,
     hash varchar(255) NOT NULL,
+    name varchar(50),
+    email varchar(50) 
     hidden boolean DEFAULT false,
     PRIMARY KEY (username) 
 );

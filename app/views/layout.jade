@@ -11,7 +11,8 @@ html
     link(rel="stylesheet" href="/css/reset.css")
     link(rel="stylesheet" href="/css/style.css")
     link(rel="stylesheet" href="/css/neg-five-main.css")
-    
+    link(rel='stylesheet' href='/css/index.css')
+
     block extrastylesheets
 
     block extrascripts
@@ -95,9 +96,10 @@ html
 
   body(class="body nf-background-main")
     block content
-
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js")
     script(src="/js/jquery-2.1.4.js")
     script(src="/js/modernizr.js")
     script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js")
+    
 
     block scripts

@@ -9,7 +9,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mongoose = require("mongoose");
 
 module.exports = function () {
-    var db = mongoose.connect(_configuration2.default.databaseConnections.mongo.production);
+    var env = _configuration2.default.env;
+    var db = mongoose.connect(_configuration2.default.databaseConnections.mongo[env]);
     var conn = mongoose.connection;
     conn.on('error', console.error.bind(console, "Connection Error: "));
     conn.once('open', function () {

@@ -2,11 +2,13 @@ import db from '../../data-access/account';
 
 export default {
     
-    create: ({username, password}) => {
+    create: ({username, password, email =  null, name =  null}) => {
         return new Promise((resolve, reject) => {
             let newAccount = {
-                username: username,
-                password: password
+                username,
+                password,
+                email,
+                name
             };
             db.saveAccount(newAccount)
                 .then(user => resolve(user))

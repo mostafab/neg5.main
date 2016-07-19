@@ -1,1 +1,1 @@
-INSERT INTO account (username, hash) VALUES ($1, $2) RETURNING username;
+INSERT INTO account (username, hash, email, name) VALUES ($1, $2, $3, $4) RETURNING username;

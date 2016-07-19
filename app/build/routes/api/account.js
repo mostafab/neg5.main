@@ -14,6 +14,7 @@ exports.default = function (app) {
 
     app.route('/api/account').post(function (req, res) {
         var accountCredentials = req.body;
+        console.log(accountCredentials);
         _account2.default.create(accountCredentials).then(function (user) {
             return res.json({ user: user, success: true });
         }).catch(function (error) {
@@ -21,7 +22,7 @@ exports.default = function (app) {
         });
     });
 
-    app.route('/api/authenticate').post(function (req, res) {
+    app.route('/api/account/authenticate').post(function (req, res) {
         var accountCredentials = req.body;
         _account2.default.findOne(accountCredentials).then(function (token) {
             res.json({ success: true, token: token });

@@ -161,6 +161,7 @@
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
+
 .center {
     text-align: center;
 }
@@ -177,6 +178,14 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+}
+
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
 }
 
 /**
