@@ -53,9 +53,10 @@ html
                                     
                         ul(class="nav navbar-nav navbar-right")
                             li(class="list-element")
-                                a(href="/account" style='color:white;') #{tournamentd.name}
+                                a(href="/account" style='color:white;') #{tournamentd}
                             li(class="list-element")
                                 a(href="/logout" style='color:white;') Logout
+
 
                 if !tournamentd
                     div(class="collapse navbar-collapse navbar-right")
@@ -97,6 +98,7 @@ html
   body(class="body nf-background-main")
     block content
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js")
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-cookies.js')
     script(src="/js/jquery-2.1.4.js")
     script(src="/js/modernizr.js")
     script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js")

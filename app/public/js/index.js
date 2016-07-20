@@ -2,9 +2,9 @@
 
 (function () {
 
-    angular.module('IndexApp', []);
+    angular.module('IndexApp', ['ngCookies']);
 
-    angular.module('IndexApp').controller('IndexController', ['$scope', '$http', function ($scope, $http) {
+    angular.module('IndexApp').controller('IndexController', ['$cookies', '$scope', '$http', function ($cookies, $scope, $http) {
 
         var vm = this;
 
@@ -24,12 +24,14 @@
         };
 
         vm.login = function () {
-            // vm.loggingIn = true;
             if ($scope.loginForm.$valid) {
                 $http.post('/api/account/authenticate', vm.user).then(function (_ref) {
                     var data = _ref.data;
 
                     console.log(data);
+                    var token = data.token;
+                    $cookies.put('nfToken', token);
+                    window.location = '/tournaments';
                 }).catch(function (error) {
                     return console.log(error);
                 });

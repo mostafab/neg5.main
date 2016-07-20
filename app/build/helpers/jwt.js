@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.encode = undefined;
+exports.decode = exports.encode = undefined;
 
 var _jwtSimple = require('jwt-simple');
 
@@ -19,4 +19,8 @@ var secret = _configuration2.default.jwt.secret;
 
 var encode = exports.encode = function encode(payload) {
     return _jwtSimple2.default.encode(payload, secret);
+};
+
+var decode = exports.decode = function decode(token) {
+    return _jwtSimple2.default.decode(token, secret);
 };

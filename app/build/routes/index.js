@@ -1,5 +1,13 @@
 'use strict';
 
+var _token = require('./../auth/middleware/token');
+
+var _tournament = require('./../models/sql-models/tournament');
+
+var _tournament2 = _interopRequireDefault(_tournament);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 module.exports = function (app) {
 
     var index = require('../controllers/index-controller');
@@ -10,6 +18,11 @@ module.exports = function (app) {
         } else {
             index.render(req, res);
         }
+    });
+
+    app.get("/tournaments", _token.hasToken, function (req, res, next) {
+        var currentUser = req.currentUser;
+        res.render('tournament/alltournaments', { tournamentd: currentUser });
     });
 
     app.get("/about", function (req, res) {

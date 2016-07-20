@@ -14,22 +14,6 @@ module.exports = app => {
         res.redirect("/tournaments");
     });
 
-    app.get("/tournaments", (req, res, next) => {
-        if (!req.session.director) {
-            req.session.lastURL = req.url;
-            res.redirect("/");
-        } else {
-            tournamentController.findTournamentsByDirector(req.session.director._id, (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send({err : err});
-                } else {
-                    res.render("tournament/alltournaments", {tournaments : result, tournamentd : req.session.director});
-                }
-            });
-        }
-    });
-
     app.post("/tournaments/edit", (req, res, next) => {
         if (!req.session.director) {
             res.status(401).end();

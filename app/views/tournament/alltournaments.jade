@@ -9,44 +9,17 @@ block content
     +navbar
     +navbar-bottom
 
-    div(class="content-wrapper" style='padding:25px;padding-top:100px')
+    div(class="content-wrapper" style='padding:25px;padding-top:100px' ng-app='HomeApp')
+        div(ng-controller='HomeController as Home')
+            .row                
+                .col-lg-4              
+                    .col-md-6.col-sm-6.col-lg-12
+                        .list-group.nf-shadow
+                            a(class='list-group-item active') Tournaments
+                            a.nf-dark-blue.list-group-item.nf-list-item(ng-repeat='tournament in Home.tournaments | orderBy:"name"' href='{{"/t/" + tournament.id}}')
+                                p(style='display:inline') {{tournament.name}}
+                                p(style='display:inline;float:right') {{tournament.question_set || 'Question Set: None'}}
 
-        div(class="row")
-            div(class='col-md-6 col-sm-8 col-lg-6')
-                h2(class="btn btn-md btn-block nf-button nf-dark-blue") Tournaments
-            div(class='col-md-6 col-sm-4 col-lg-6')
-                a(class='btn btn-md nf-blue btn-shadow btn-block nf-button' href='/create') New Tournament                   
-                    
-         div(class='row')           
-            div(class="col-md-12 col-sm-12")
-                div(style="margin:20px; margin-bottom:50px")
-                
-                br
-                div(class="panel panel-default table-grey")
-                    table(class="table table-condensed btn-shadow")
-                        thead
-                            tr()
-                                th(class="table-head" style='text-align:center') Name
-                                th(class="table-head" style='text-align:center') Location
-                                th(class="table-head" style='text-align:center') Date
-                                th(class="table-head" style='text-align:center') Question set
-                                th(class="table-head" style='text-align:center') Teams Added
-                        tbody(id="tournaments-body")
-                            each val, i in tournaments
-                                tr(class='tournament-anchor nf-tr' data-href='/t/' + tournaments[i].shortID)
-                                    td #{tournaments[i].tournament_name}
-                                    td #{tournaments[i].location}
-                                    if tournaments[i].date
-                                        - var month = tournaments[i].date.getMonth() + 1;
-                                        - var day = tournaments[i].date.getDate();
-                                        - var year = tournaments[i].date.getFullYear();
-                                        - var date = month + "/" + day + "/" + year;
-                                        td #{date}
-                                    else
-                                        td #{tournaments[i].date}
-                                    td #{tournaments[i].questionSet}
-                                    td #{tournaments[i].teamsAdded}
-                
 block scripts
     
-    script(src="/js/all-tournaments.js")
+    script(src="/js/home.js")

@@ -38,7 +38,7 @@ exports.default = {
 
             var tournamentId = _shortid2.default.generate();
 
-            var tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mostafab'];
+            var tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mbhuiyan'];
 
             var _buildTournamentPoint = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
 
@@ -64,7 +64,7 @@ exports.default = {
 
             var params = [username];
 
-            (0, _db.query)(tournament.findByUser, params, _db.queryTypeMap.many).then(function (tournaments) {
+            (0, _db.query)(tournament.findByUser, params, _db.queryTypeMap.any).then(function (tournaments) {
                 return resolve(tournaments);
             }).catch(function (error) {
                 console.log(error);

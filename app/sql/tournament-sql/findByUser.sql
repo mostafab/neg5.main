@@ -1,4 +1,4 @@
-SELECT  T.id, T.name, T.director_id, U.is_admin, 
+SELECT  T.id, T.name, T.location, T.question_set, T.tournament_date, T.director_id, U.is_admin, 
         CASE WHEN T.director_id = $1 THEN true ELSE false END AS is_owner 
 
 FROM 

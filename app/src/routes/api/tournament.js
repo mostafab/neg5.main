@@ -6,8 +6,8 @@ export default (app) => {
     
     
     app.route('/api/t')
-        .get((req, res) => {
-            Tournament.findByUser(req.query.token)
+        .get(hasToken, (req, res) => {
+            Tournament.findByUser(req.currentUser)
                 .then(data => res.json(data))
                 .catch(error => res.status(500).send(error));    
         })

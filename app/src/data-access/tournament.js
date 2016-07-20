@@ -14,8 +14,7 @@ export default {
 
             const tournamentId = shortid.generate();
             
-            let tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mostafab'];        
-            
+            let tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mbhuiyan'];        
 
             let {tournamentIds, values, types} = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
             
@@ -36,7 +35,7 @@ export default {
 
             let params = [username];
 
-            query(tournament.findByUser, params, qm.many)
+            query(tournament.findByUser, params, qm.any)
                 .then(tournaments => resolve(tournaments))
                 .catch(error => {
                     console.log(error);

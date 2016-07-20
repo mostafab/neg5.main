@@ -2,10 +2,10 @@
 
 (() => {
 
-    angular.module('IndexApp', []);
+    angular.module('IndexApp', ['ngCookies']);
 
     angular.module('IndexApp')
-        .controller('IndexController', ['$scope', '$http', function($scope, $http) {
+        .controller('IndexController', ['$cookies', '$scope', '$http', function($cookies, $scope, $http) {
 
             const vm = this;
 
@@ -25,11 +25,13 @@
             }
 
             vm.login = () => {
-                // vm.loggingIn = true;
                 if ($scope.loginForm.$valid) {
                     $http.post('/api/account/authenticate', vm.user)
                         .then(({data}) => {
                             console.log(data);
+                            let token = data.token;
+                            $cookies.put('nfToken', token);
+                            window.location = '/tournaments';
                         })
                         .catch(error => console.log(error));
                 }

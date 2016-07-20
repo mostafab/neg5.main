@@ -1,5 +1,8 @@
 'use strict';
 
+import {hasToken} from './../auth/middleware/token';
+import Tournament from './../models/sql-models/tournament';
+
 module.exports = app => {
 
     const index = require('../controllers/index-controller');
@@ -10,6 +13,11 @@ module.exports = app => {
         } else {
             index.render(req, res);
         }
+    });
+
+    app.get("/tournaments", hasToken, (req, res, next) => {
+        let currentUser = req.currentUser;
+        res.render('tournament/alltournaments', {tournamentd: currentUser});
     });
 
     app.get("/about", (req, res) => {
