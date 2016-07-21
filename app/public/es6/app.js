@@ -1,0 +1,11 @@
+(() => {
+    
+  angular.module('tournamentApp', []);
+    
+})();
+
+
+
+
+
+

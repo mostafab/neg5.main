@@ -1,0 +1,155 @@
+div(id='add-game-div')
+    div(class="panel panel-default")
+
+        div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Add a Game
+            i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+        div(class="panel-body  tournament-panel" id="addgamepanel")
+
+                form(name="new-game-form")
+                    div(class="row")
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            select(class='form-control nf-input' ng-model='Game.currentGame.teams[0].teamInfo' ng-change='Game.addTeam(0)' ng-options='team.name for team in Game.teams')
+                                option(disabled value='' selected) Choose a Team
+
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            select(class='form-control nf-input' ng-model='Game.currentGame.teams[1].teamInfo' ng-change='Game.addTeam(1)' ng-options='team.name for team in Game.teams')
+                                option(disabled value='' selected) Choose a Team
+                                
+                                
+                    br
+                    div(class="row")
+                                               
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class='panel panel-default')
+                                table(class='table')                                   
+                                    thead
+                                        tr(class='nf-dark-blue')
+                                            th 
+                                            th(class='center' ng-repeat='point in Game.pointScheme | orderBy: "value" ') {{point.value}}
+                                            th(class='center') Total
+                                    tbody
+                                        tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id')
+                                            td(class='vertical-center' title='{{player.name}}') {{player.name}}
+                                            td(ng-repeat='point in Game.pointScheme | orderBy: "value" ')
+                                                input(type='number' class='form-control nf-input input-sm' ng-model='player.points[$index].number')
+                                            td 
+                                                input(readonly class='form-control nf-input input-sm' value='{{Game.pointSum(player.points)}}')
+                                            
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class='panel panel-default')
+                                table(class='table')                                   
+                                    thead
+                                        tr(class='nf-dark-blue')
+                                            th 
+                                            th(class='center' ng-repeat='point in Game.pointScheme | orderBy: "value" ') {{point.value}}
+                                            th(class='center') Total
+                                    tbody
+                                        tr(ng-repeat='player in Game.currentGame.teams[1].players | orderBy: "name" track by player.id')
+                                            td(class='vertical-center' title='{{player.name}}') {{player.name}}
+                                            td(ng-repeat='point in Game.pointScheme | orderBy: "value" ')
+                                                input(type='number' class='form-control nf-input input-sm' ng-model='player.points[$index].number')
+                                            td 
+                                                input(readonly class='form-control nf-input input-sm' value='{{Game.pointSum(player.points)}}')
+                                    
+                    div(class="row")
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class="row")
+                                div(class="col-sm-6 col-md-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Team 1 Score *
+                                div(class="col-md-6 col-sm-6 col-md-6")
+                                    input(type="number" class="form-control nf-input scorebox " name="leftteamscore" placeholder="Team 1 Score" ng-model='Game.currentGame.teams[0].score')
+                            div(class='row')
+                                div(class="col-md-6 col-sm-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
+                                div(class="col-md-6 col-sm-6")
+                                    input(type="number" class="form-control nf-input " name="leftbounceback" placeholder="Bounceback Points" ng-model='Game.currentGame.teams[0].bouncebacks')
+                            br
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class="row")
+                                div(class="col-md-6 col-sm-6")
+                                    input(type="number" class="form-control nf-input scorebox " name="rightteamscore" placeholder="Team 2 Score" ng-model='Game.currentGame.teams[1].score') 
+                                div(class="col-md-6 col-sm-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Team 2 Score *
+                            div(class="row")
+                                div(class="col-md-6 col-sm-6")
+                                    input(type="number" class="form-control nf-input " name="rightbounceback" placeholder="Bounceback Points" ng-model='Game.currentGame.teams[1].bouncebacks')
+                                div(class="col-md-6 col-sm-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
+                            br
+
+                    div(class="row")
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class="row")
+                                div(class="col-md-6 col-sm-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 1
+                                div(class="col-md-6 col-sm-6")
+                                    input(type="number" class="form-control nf-input " name="overtimetu1" placeholder="# Overtime TU Team 1" ng-model='Game.currentGame.teams[0].overtime')
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class="row")
+                                div(class="col-md-6 col-sm-6")
+                                    input(type="number" class="form-control nf-input " name="overtimetu2" placeholder="# Overtime TU Team 2" ng-model='Game.currentGame.teams[1].overtime')
+                                div(class="col-md-6 col-sm-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 2
+                    hr
+                                   
+                    div(class="row")
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class="row")
+                                div(class="col-md-6 col-sm-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Round
+                                div(class="col-md-6 col-sm-6")
+                                    input(type="number" class="form-control nf-input " name="round" placeholder="Round" ng-model='Game.currentGame.round')
+                    div(class="row")
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class="row")
+                                div(class="col-md-6 col-sm-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Total TUH
+                                div(class="col-md-6 col-sm-6")
+                                    input(type="number" class="form-control nf-input " name="tossupsheard" placeholder="Tossups Heard" ng-model='Game.currentGame.tuh')
+                    
+                    br
+                    div(class="row")
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class="row")
+                                div(class="col-md-6 col-sm-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Room
+                                div(class="col-md-6 col-sm-6")
+                                    input(type="text" class="form-control nf-input " name="room" placeholder="Room" ng-model='Game.currentGame.room')
+                    div(class="row")
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class="row")
+                                div(class="col-md-6 col-sm-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Moderator
+                                div(class="col-md-6 col-sm-6")
+                                    input(type="text" class="form-control nf-input " name="moderator" placeholder="Moderator" ng-model='Game.currentGame.moderator')
+                    div(class="row")
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class="row")
+                                div(class="col-md-6 col-sm-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Packet
+                                div(class="col-md-6 col-sm-6")
+                                    input(type="text" class="form-control nf-input " name="packet" placeholder="Packet" ng-model='Game.currentGame.packet')
+                            br
+                    div(class="row")
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class="row")
+                                div(class="col-md-6 col-sm-6")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases
+                                div(class="col-md-6 col-sm-6")
+                                    select(multiple class="form-control nf-input" ng-attr-size='{{Game.phases.length}}' ng-options='phase.name for phase in Game.phases | orderBy:"name" track by phase.id' ng-model='Game.currentGame.phases')
+                                        
+                    br
+                    
+                    div(class='row')
+                        div(class="col-lg-6 col-md-6 col-sm-6")
+                            div(class="row")
+                                div(class="col-md-4 col-sm-4")
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right;') Notes
+                                div(class="col-md-8 col-sm-8")
+                                    textarea(class="form-control nf-input " name="notes" placeholder="Notes" style='min-height:200px' ng-model='Game.currentGame.notes')
+                    
+                    hr
+                    
+                    button(type="submit" class="btn btn-md nf-blue nf-button" ng-click='Game.addGame()' ng-disabled='Game.currentGame.teams[0].teamInfo === null || Game.currentGame.teams[1].teamInfo === null') Add Game Information
+
+                    div(id="add-game-message")

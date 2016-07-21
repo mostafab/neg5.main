@@ -1,0 +1,39 @@
+extends ../simple-layout
+
+block titleContent
+    title Player Standings | #{tournament.tournament_name} | Neg 5
+
+block content
+
+    main()
+        +statlinks
+
+        h2 #{tournament.tournament_name} #{tournament.phaseInfo.name} - Player Standings
+
+        if playersInfo.length != 0
+            - var statHeaders = Object.keys(playersInfo[0].stats)
+            - var points = Object.keys(tournament.pointScheme).sort((first, second) => {return parseFloat(second) - parseFloat(first);});
+
+            table
+                tr
+                    td(class="header") Rank
+                    each name, i in statHeaders
+                        if statHeaders[i] == "pointTotals"
+                            each val, j in points
+                                td(class="header") #{points[j]}
+                        else
+                            td(class="header") #{statHeaders[i]}
+
+                tbody()
+                    each player, i in playersInfo
+                        tr
+                            td() #{i + 1}
+                            each name, j in statHeaders
+                                if statHeaders[j] == "pointTotals"
+                                    each val, k in points
+                                        td() #{playersInfo[i].stats.pointTotals[val]}
+                                else if statHeaders[j] == "Player"
+                                    td()
+                                        a(href="./" + "#{linkName}" + "_playerdetail.html#" + playersInfo[i].id) #{playersInfo[i].stats[name]}
+                                else
+                                    td() #{playersInfo[i].stats[name]}

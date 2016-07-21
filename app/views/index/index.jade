@@ -1,0 +1,149 @@
+extends ../layout
+
+block titleContent
+    title Neg 5 | Quizbowl for the Cloud
+
+block extrastylesheets
+    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+
+block content
+
+    +navbar
+    +navbar-bottom
+
+    div(class="jumbotron" style='background-color:transparent;overflow:hidden;padding-top:120px;')
+        div(class='row')
+            div(class="col-md-12")
+                div(class="row" style='text-align:center')
+                    div(class='col-md-4')
+                    div(class='col-md-4')
+                        h2(class='title-header') Neg 5 : Quizbowl for the Cloud.
+                        h2 Now on Version 2.0!
+
+        div(style="margin:20px;margin-top:12%")
+            div(class="row")
+                div(class="col-xs-12 col-lg-12 col-sm-12")
+                    div(class="row")
+                        div(class="col-md-1")
+                        div(class="col-md-4")
+                            div(class='col-md-3 col-sm-2')
+                            div(class="col-md-7")
+                                div(class="row")
+                                    img(src="/img/logo_edited.png" class="img-responsive" title='Logo courtesy of u/HyperCamel of r/freedesign')
+
+                        div(class="col-md-7")
+                            div(class="col-md-12" id="loginpanel")
+                                div(class="row")
+                                    form(name="logins" id="loginfo" method="post" action="/auth/local")
+                                        div(class="row")
+                                            div(class="col-md-2")
+                                            div(class="form-group col-lg-4 col-md-8 col-sm-12")
+                                                input(
+                                                    type="text",
+                                                    name="username",
+                                                    placeholder="Username"
+                                                    class="form-control nf-input input-lg center",
+                                                    )
+                                        div(class="row")
+                                            div(class="col-md-2")
+                                            div(class="form-group col-lg-4 col-md-8 col-sm-12")
+                                                input(
+                                                    type="password",
+                                                    name="password"
+                                                    placeholder="Password",
+                                                    class="form-control nf-input input-lg center",
+                                                    id="passwordinput"
+                                                    )
+
+                                div(class="row")
+                                    div(class="row")
+                                        div(class='col-md-1')
+                                        div(class="form-group col-lg-3 col-md-5 col-sm-6")
+                                            button(class="btn btn-sm btn-block nf-button nf-blue",
+                                                type="button",
+                                                id="gotoregister",
+                                                )
+                                                | Register
+                                        div(class="form-group col-lg-3 col-md-5 col-sm-6")
+                                            button(class="btn btn-sm btn-block nf-button nf-green",
+                                                type="button",
+                                                id="login")
+                                                | Login
+
+                                div(class="row")
+                                    div(class='col-md-8 col-lg-8 col-sm-12')
+                                        div(style='text-align:center')
+                                            label(id="errorlabel" style='color:black') #{errormsg}
+                                        
+
+                            div(id="registerpanel" style="display:none")
+
+                                div(class="row")
+
+                                    div(class="col-xs-12 col-sm-12 col-md-10 col-lg-6")
+                                        div(class="panel-body")
+                                            div(class="row")
+                                                form(name="signup" id="signupform")
+
+                                                    div(class="row")
+                                                        div(class="col-md-2")
+                                                        div(class="form-group col-md-12")
+                                                            input(
+                                                                type="text",
+                                                                name="username"
+                                                                placeholder="Username (between 5 and 20 characters)",
+                                                                class="form-control nf-input input-lg btn-shadow center",
+                                                                )
+
+                                                    div(class="row")
+                                                        div(class="col-md-2")
+                                                        div(class="form-group col-md-12")
+                                                            input(
+                                                                type="password",
+                                                                name="password"
+                                                                placeholder="Password (at least 5 characters long)",
+                                                                class="form-control nf-input input-lg center-text no-border-radius tournament-info-field btn-shadow center",
+                                                                )
+
+                                                    div(class="row")
+                                                        div(class="col-md-2")
+                                                        div(class="form-group col-md-12")
+                                                            input(
+                                                                type="password",
+                                                                name="password-confirm"
+                                                                placeholder="Confirm Password (must match)",
+                                                                class="form-control nf-input input-lg center-text no-border-radius tournament-info-field btn-shadow center",
+                                                                )
+
+                                                    div(class="row")
+                                                        div(class="form-group text-center")
+                                                            div(class='col-md-6 col-sm-6')
+                                                                button(type="button" id="closereg" class="btn btn-md btn-block nf-button nf-red") Cancel
+                                                            div(class='col-md-6 col-sm-6')
+                                                                button(type="button" id="regbutton" class="btn btn-md btn-block nf-button nf-green") Confirm
+
+
+                                            div(class="row")
+                                                div(class="col-md-2")
+                                                div(class="form-group col-md-8 input-lg no-border-radius" style="text-align:center;" id="registererror")
+
+        div(class='row')
+            div(class="col-md-12")
+                div(class="row" style='text-align:center')
+                    h3 Neg 5 is a collaborative quizbowl tournament management system.
+                    h3 Easily manage all aspects of your event from the cloud on tournament day!
+        br
+        br
+        br
+
+        div(class='row')
+            div(class='col-md-4')
+            div(class='col-md-4')
+                script(async='', src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')
+                // Ad 1
+                ins.adsbygoogle(style='display:block', data-ad-client='ca-pub-7416199853732232', data-ad-slot='9649668904', data-ad-format='auto')
+                script.
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+
+block scripts
+    script(src="/js/welcome-screen.js")

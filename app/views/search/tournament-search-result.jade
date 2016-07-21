@@ -1,0 +1,51 @@
+- var TOURNAMENTS_PER_PAGE = 15
+
+if tournaments.length === 0
+    div(class='row')
+        div(class='col-md-3')
+        div(class='col-md-6')
+            h2(class='title btn-shadow' style='text-align:center;') No tournaments found
+else
+    div(class='row')
+        div(class='col-md-1' style='position:fixed;')
+            div(class='panel-body')
+                div(class='row')
+                    - var numPages = Math.floor(tournaments.length / TOURNAMENTS_PER_PAGE) + 1
+                    - var count = 0
+                    ul(class='nav nav-bar no-border-radius')
+                        while count < numPages
+                            li(class="#{count === 0 ? 'active' : ''}")
+                                a(href='##{count}' data-toggle='tab' class='btn-sm') #{count + 1}
+                            - count = count + 1
+        div(class='col-md-1')
+        div(class='col-md-10 col-lg-offset-1')
+            div(class='tab-content')
+                - var count = 0
+                - for (var i = 0; i < tournaments.length; i++) {
+                -   var tournamentSubArray = tournaments.slice(i, i + TOURNAMENTS_PER_PAGE)
+                -   var classes = count === 0 ? 'tab-pane fade active in' : 'tab-pane fade'
+                    div(class='col-md-12 #{classes}' id='#{count}')
+                        table(class="table table-condensed btn-shadow")
+                            thead
+                                tr
+                                    th(class="table-head" style='text-align:center') Name
+                                    th(class="table-head" style='text-align:center') Question set
+                                    th(class="table-head" style='text-align:center') Link to Stats
+                                    th(class="table-head" style='text-align:center') Download QBJ
+                            tbody
+                                each val, j in tournamentSubArray
+                                    tr
+                                        td(style='text-align:center') #{tournamentSubArray[j].tournament_name}
+                                        td(style='text-align:center') #{tournamentSubArray[j].questionSet}
+                                        td(style='text-align:center')
+                                            a(href="/t/" + "#{tournamentSubArray[j].shortID}" + "/stats" target='_blank') All
+                                            br
+                                            if tournamentSubArray[j].phases
+                                                each phase in tournamentSubArray[j].phases
+                                                    a(href='/t/' + '#{tournamentSubArray[j].shortID}' + '/stats/team?phase=' + phase.phase_id target='_blank') #{phase.name} 
+                                                    br
+                                        td(style='text-align:center')
+                                            a(href='/t/' + '#{tournamentSubArray[j].shortID}' + "/export/qbj" class='download-json' data-extension='.qbj' data-link='#{tournamentSubArray[j].tournament_name.toLowerCase().replace(/\s/g, "_")}') QBJ
+                -   count++
+                -   i += TOURNAMENTS_PER_PAGE
+                - }

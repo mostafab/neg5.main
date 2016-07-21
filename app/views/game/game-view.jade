@@ -1,0 +1,192 @@
+div(class='row')
+    div(class='col-sm-2')
+        button(class="btn btn-md nf-blue nf-button btn-block" data-href="/t/" + tournament.shortID + "/games" id='back-to-games')
+            i(class='fa fa-arrow-left')
+    div(class='col-sm-5')
+        h2(class="nf-dark-blue nf-panel-heading nf-margin") Round #{game.round} : #{game.team1.team_name} vs. #{game.team2.team_name}
+
+
+br
+br
+
+div(class="panel panel-default")
+        div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Game Details
+        div(class="panel-body tournament-panel")
+
+            div(class="panel-body" id="updategamepanel")
+
+                    form(name="gameinfoform" id="changegameform-edit")
+                        input(type="hidden" value="#{game.shortID}" name="oldgameid" id="oldgameid_input")
+                        input(type="hidden" value="#{JSON.stringify(tournament.pointScheme)}" name="pointValueForm")
+                        div(class="row")
+                            input(type="hidden" value="#{tournament._id}" id="tournament_id_change" name="tournament_id_form")
+                            div(class="col-lg-6 col-md-6 col-sm-6")
+                                    select(id="leftchoice-edit" class="form-control nf-input teamselect-edit btn-shadow" name="leftteamselect")
+                                        each team in tournament.teams
+                                            if team._id == game.team1.team_id
+                                                option(selected value="#{team._id}") #{team.team_name}
+                                            else
+                                                option(value="#{team._id}") #{team.team_name}
+                            div(class="col-lg-6 col-md-6 col-sm-6")
+                                    select(id="rightchoice-edit" class="form-control nf-input teamselect-edit btn-shadow" name="rightteamselect")
+                                        each team in tournament.teams
+                                            if team._id == game.team2.team_id
+                                                option(selected value="#{team._id}") #{team.team_name}
+                                            else
+                                                option(value="#{team._id}") #{team.team_name}
+                        br
+                        div(class="row")
+                            div(id="left-text-edit" class="col-lg-6 col-md-6 col-sm-6")
+                                table(class='table table-condensed')
+                                    - var points = Object.keys(tournament.pointScheme).sort(function(first, second) {return parseFloat(second) - parseFloat(first)})
+                                    thead
+                                        tr
+                                            td(class="table-head") Name
+                                            td(class="table-head") GP
+                                            each val, i in points
+                                                td(class="table-head") #{points[i]}
+                                    tbody
+                                        - var playerNum = 1
+                                        each val, i in team1Players
+                                            - var current = team1Players[i]
+                                            - var inputName = "player" + playerNum + "_leftid"
+                                            input(type="hidden" value="#{current._id}" name="#{inputName}")
+                                            if game.team1.playerStats[current._id]
+                                                tr
+                                                    td #{current.player_name}
+                                                    td
+                                                        - var inputGP = "player" + playerNum + "_leftgp"
+                                                        input(type="number" name="#{inputGP}" class="form-control nf-input gp-box-edit btn-shadow" value="#{game.team1.playerStats[current._id]['gp']}")
+                                                    each score, j in points
+                                                        td
+                                                            - var inputPoints = "player" + playerNum + "_left_" + points[j] + "val"
+                                                            input(type="number" name="#{inputPoints}" class="form-control nf-input point-box-edit btn-shadow" value="#{game.team1.playerStats[current._id]['' + points[j]]}")
+                                            - playerNum++
+                            div(id="right-text-edit" class="col-lg-6 col-md-6 col-sm-6")
+                                table(class='table table-condensed')
+                                    - var points = Object.keys(tournament.pointScheme)
+                                    thead
+                                        tr
+                                            td(class="table-head") Name
+                                            td(class="table-head") GP
+                                            each val, i in points
+                                                td(class="table-head") #{points[i]}
+                                    tbody
+                                        - var playerNum = 1
+                                        each val, i in team2Players
+                                            - var current = team2Players[i]
+                                            - var inputName = "player" + playerNum + "_rightid"
+                                            input(type="hidden" value="#{current._id}" name="#{inputName}")
+                                            if game.team2.playerStats[current._id]
+                                                tr
+                                                    td #{current.player_name}
+                                                    td
+                                                        - var inputGP = "player" + playerNum + "_rightgp"
+                                                        input(type="number" name="#{inputGP}" class="form-control nf-input gp-box-edit btn-shadow" value="#{game.team2.playerStats[current._id]['gp']}")
+                                                    each score, j in points
+                                                        td
+                                                            - var inputPoints = "player" + playerNum + "_right_" + points[j] + "val"
+                                                            input(type="number" name="#{inputPoints}" class="form-control nf-input point-box-edit btn-shadow" value="#{game.team2.playerStats[current._id]['' + points[j]]}")
+
+                                            - playerNum++
+                        div(class="row")
+                            div(class="col-lg-6 col-md-6 col-sm-6")
+                                div(class="row")
+                                    div(class='col-md-6 col-sm-6')
+                                        label(class="label btn-block nf-label nf-dark-blue" style='float:right') Team 1 Score
+                                    div(class='col-md-6 col-sm-6')
+                                        input(type="number" class="form-control nf-input scorebox-edit btn-shadow" name="leftteamscore" placeholder="Team 1 Score" pattern="[0-9]" value="#{game.team1.score}")
+                                div(class="row")
+                                    div(class="col-md-6 col-sm-6")
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
+                                    div(class="col-md-6 col-sm-6")
+                                        input(type="number" class="form-control nf-input btn-shadow" name="leftbounceback" placeholder="Bounceback Points" value="#{game.team1.bouncebacks}")
+                                br
+                            div(class="col-lg-6 col-md-6 col-sm-6")
+                                div(class="row")
+                                    div(class="col-md-6 col-sm-6")
+                                        input(type="number" class="form-control nf-input scorebox-edit btn-shadow" name="rightteamscore" placeholder="Team 2 Score" pattern="[0-9]" value="#{game.team2.score}")
+                                    div(class="col-md-6 col-sm-6")
+                                        label(class="label label-warning btn-block nf-label nf-dark-blue" style='float:right') Team 2 Score
+                                div(class="row")
+                                    div(class="col-md-6 col-sm-6")
+                                        input(type="number" class="form-control nf-input btn-shadow" name="rightbounceback" placeholder="Bounceback Points" value="#{game.team2.bouncebacks}")
+                                    div(class="col-md-6 col-sm-6")
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
+                                br
+                        div(class="row")
+                            div(class="col-lg-6 col-md-6 col-sm-6")
+                                div(class="row")
+                                    div(class="col-md-6 col-sm-6")
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Round
+                                    div(class="col-md-6 col-sm-6")
+                                        input(type="number" class="form-control nf-input btn-shadow" name="round" placeholder="Round" value="#{game.round}")
+                        div(class="row")
+                            div(class="col-lg-6 col-md-6 col-sm-6")
+                                div(class="row")
+                                    div(class="col-md-6 col-sm-6")
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Total TUH
+                                    div(class="col-md-6 col-sm-6")
+                                        input(type="number" class="form-control nf-input btn-shadow" name="tossupsheard" placeholder="Tossups Heard" value="#{game.tossupsheard}")
+                        br
+                        div(class="row")
+                            div(class="col-lg-6 col-md-6 col-sm-6")
+                                div(class="row")
+                                    div(class="col-md-6 col-sm-6")
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 1
+                                    div(class="col-md-6 col-sm-6")
+                                        input(type="number" class="form-control nf-input btn-shadow" name="overtimetu1" placeholder="# Overtime TU Team 1" value='#{game.team1.overtimeTossupsGotten}')
+                            div(class="col-lg-6 col-md-6 col-sm-6")
+                                div(class="row")
+                                    div(class="col-md-6 col-sm-6")
+                                        input(type="number" class="form-control nf-input btn-shadow" name="overtimetu2" placeholder="# Overtime TU Team 2" value='#{game.team2.overtimeTossupsGotten}')
+                                    div(class="col-md-6 col-sm-6")
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 2
+                        br
+                        div(class="row")
+                            div(class="col-lg-6 col-md-6 col-sm-6")
+                                div(class="row")
+                                    div(class="col-md-6 col-sm-6")
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Room
+                                    div(class="col-md-6 col-sm-6")
+                                        input(type="text" class="form-control nf-input btn-shadow" name="room" placeholder="Room Number" value="#{!game.room ? '' : game.room}")
+                                div(class="row")
+                                    div(class="col-md-6 col-sm-6")
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Moderator
+                                    div(class="col-md-6 col-sm-6")
+                                        input(type="text" class="form-control nf-input btn-shadow" name="moderator" placeholder="Moderator" value="#{!game.moderator ? '' : game.moderator}")
+                                div(class="row")
+                                    div(class="col-md-6 col-sm-6")
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Packet
+                                    div(class="col-md-6 col-sm-6")
+                                        input(type="text" class="form-control nf-input btn-shadow" name="packet" placeholder="Packet" value="#{!game.packet ? '' : game.packet}")
+                                br
+
+                        div(class="row")
+                            div(class="col-lg-6 col-md-6 col-sm-6")
+                                div(class="row")
+                                    div(class="col-md-6 col-sm-6")
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Phases
+                                    div(class="col-md-6 col-sm-6")
+                                        select(multiple class="form-control nf-input phase-selection btn-shadow" name='phase_id' id='game-phases-edit' size='#{tournament.phases.length}')
+                                            each phase in tournament.phases
+                                                if game.phase_id.indexOf(phase.phase_id)
+                                                    option(selected value='#{phase.phase_id}') #{phase.name}
+                                                else
+                                                    option(value='#{phase.phase_id}') #{phase.name}
+                        br
+
+                        div(class='row')
+                            div(class="col-lg-6 col-md-6 col-sm-6")
+                                div(class="row")
+                                    div(class="col-md-4 col-sm-4")
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right') Notes
+                                    div(class="col-md-8 col-sm-8")
+                                        textarea(class="form-control nf-input btn-shadow" name="notes" placeholder="Notes" style='min-height:200px') #{game.notes}
+                        
+                        hr
+                        
+                        div(class='row')
+                            button(type="button" class="btn btn-md nf-blue" id="entergamebutton-edit") Save Changes
+                        
+                        div(class="col-md-6 input-lg center-text no-border-radius tournament-info-field" id="updategamediv" style="text-align:center")

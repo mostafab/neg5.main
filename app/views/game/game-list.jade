@@ -1,0 +1,27 @@
+div(class="table-responsive" id="gamediv")
+    div(class="row" style="width:95%")
+        div(class="input-group col-lg-4 col-md-4 col-sm-4" style="margin-left:20px;margin-bottom:20px;")
+            span(class='input-group-addon btn nf-blue')
+                i(class='fa fa-refresh')
+            input(type="text" class="form-control nf-input" placeholder="Filter By Round or Team" ng-model='Game.gameQuery')
+
+    div(class="panel panel-default")
+        table(class="table table-condensed btn-shadow")
+            thead
+                tr
+                    th(class="table-head" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse') Round
+                    th(class="table-head") Phase(s)
+                    th(class="table-head") Team 1
+                    th(class="table-head") Team 2
+                    th(class="table-head") Tossups Heard
+                    th(class="table-head" ng-if='tournamentContext.admin === true')
+                    
+            tbody(id="gametablebody")
+                tr(class='nf-tr' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | filter:Game.gameQuery track by game.id')
+                    td {{game.round}}
+                    td
+                    td {{game.team1.team_name + ' (' + game.team1.score + ')'}}
+                    td {{game.team2.team_name + ' (' + game.team2.score + ')'}}
+                    td {{game.tossupsheard}}
+                    td(ng-if='tournamentContext.admin === true')
+                        button(class='btn btn-sm nf-red' ng-click='Game.removeGame(game.id)')

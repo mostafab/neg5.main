@@ -1,0 +1,115 @@
+.nf-button {
+    border-radius: 2px;
+    margin: 5px;
+}
+
+.active-phase {
+    background-color: #B2DFDB;
+}
+
+.nf-card {
+    box-shadow: 0 2px 3px rgba(0,0,0,.05);
+    padding: 20px;
+    font-size: 18px;
+    border-radius: 2px;
+}
+
+.nf-input {
+    border-radius: 2px;
+}
+
+.nf-label {
+    padding: 10px;
+    font-size: .9em;
+}
+
+.nf-margin {
+    margin: 5px;
+}
+
+.nf-panel-heading {
+    padding: 20px;
+    font-size: 1.5em;
+}
+
+.nf-select {
+    border-radius: 2px;
+}
+
+.nf-th {
+    text-align: center;
+}
+
+.nf-th-short {
+    width: 100px;
+}
+
+.nf-tr:hover {
+    cursor: pointer;
+    background-color: #E8F5E9;
+}
+
+/** Neg 5 colors */
+
+.nf-white {
+    background-color: #F5F5F5;
+}
+
+.nf-black {
+    background-color: #212121;
+    color: white;
+}
+
+.nf-blue {
+    background-color: #01579B;
+    color: white;
+}
+
+.nf-dark-blue {
+    background-color: #37474F !important;
+    color: white !important;
+}
+
+.nf-gray {
+   background-color: #ECEFF1;
+}
+
+.nf-green {
+    background-color: #00695C;
+    color: white;
+}
+
+.nf-red {
+    background-color: #B71C1C;
+    color: white;
+}
+
+.nf-orange {
+    background-color: #FFA000;
+    color: white;
+}
+
+/* End Neg 5 colors */
+
+@media (min-width: 1200px) {
+    .tournament-navigation-panel {
+        position: fixed;
+    }
+}
+
+
+.center {
+    text-align: center;
+}
+
+.vertical-center {
+    vertical-align: middle;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+

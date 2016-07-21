@@ -1,0 +1,73 @@
+div(class="panel panel-default")
+    div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Generate Complete Statistics
+        i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+    div(class="panel-body  tournament-panel")
+        - var phaseID = 1
+        div(class="col-md-12")
+            div(class="row")
+                div(class='col-md-8 col-lg-3 col-sm-12')
+                    select(class="form-control nf-input" ng-options='phase.name for phase in Statistics.phases | orderBy:"name" track by phase.id' ng-model='Statistics.activePhase')
+                        option(value='1') All
+            
+            hr
+            
+            div(class="row")
+                div(class='col-md-6 col-sm-6')
+                    div(class='list-group')
+                        a(class='list-group-item active') Statistics
+                        a(target="_blank" href="/t/" + tournament.shortID + "/stats/team?phase=#{phaseID}" class="stat-link list-group-item" data-tid='#{tournament.shortID}' data-stats-type='team') Team Stats
+
+                        a(target="_blank" href="/t/" + tournament.shortID + "/stats/player?phase=#{phaseID}" class="stat-link list-group-item" data-tid='#{tournament.shortID}' data-stats-type='player') Player Stats
+
+                        a(target="_blank" href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{phaseID}" class="stat-link list-group-item" data-tid='#{tournament.shortID}' data-stats-type='teamfull') Full Report
+
+                        a(target="_blank" href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{phaseID}" class="stat-link list-group-item" data-tid='#{tournament.shortID}' data-stats-type='roundreport') Round Report                                                
+                div(class='col-md-6 col-sm-6')
+                    - var activePhase = 'all'
+                    each phase in tournament.phases
+                        if phase.active
+                            - activePhase = phase.name.replace(/\s/g, "_").toLowerCase()
+                            
+                    div(class='list-group')  
+                        a(class='list-group-item active') Download      
+                        a(href="/t/" + tournament.shortID + "/stats/team/dl?phase=#{phaseID}" class="download list-group-item" data-tid='#{tournament.shortID}' data-stats-type='team' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_standings.html')           Team Stats
+                        a(href="/t/" + tournament.shortID + "/stats/player/dl?phase=#{phaseID}" class="download list-group-item" data-tid='#{tournament.shortID}' data-stats-type='player' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_individuals.html')     Player Stats
+                        a(href="/t/" + tournament.shortID + "/stats/teamfull/dl?phase=#{phaseID}" class="download list-group-item" data-tid='#{tournament.shortID}' data-stats-type='teamfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_teamdetail.html') 
+                            Team Full Report
+                        a(href="/t/" + tournament.shortID + "/stats/playerfull/dl?phase=#{phaseID}" class="download list-group-item" data-tid='#{tournament.shortID}' data-stats-type='playerfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_playerdetail.html') 
+                            Players Full Report
+                        a(href="/t/" + tournament.shortID + "/stats/roundreport/dl?phase=#{phaseID}" class="download list-group-item" data-tid='#{tournament.shortID}' data-stats-type='roundreport' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_rounds.html') 
+                            Round Report
+
+        div(class="col-md-6 col-sm-12")
+            div(class='col-sm-6')
+                a(href="/t/" + tournament.shortID + "/export/qbj" class="btn btn-md nf-orange nf-button btn-block" data-link="#{linkName}_qbj.qbj" id="download-json") QBJ Format
+            div(class='col-sm-6')
+                a(href="/t/" + tournament.shortID + "/export/scoresheets" class="btn btn-md nf-orange nf-button btn-block" data-link="#{linkName}_scoresheets.zip" id='download-scoresheets') Scoresheets
+
+    
+    
+div(class="panel panel-default")
+    div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Custom Team Statistics
+        i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
+
+    div(class="panel-body  tournament-panel")
+            div(class="col-md-12")
+                form(target="_blank" method="get" action='{{"/t/" + tournamentId + "/stats/filter/teams"}}' id="filterstatsform")
+                    div(class="form-group")
+                        label Teams
+                        br
+                        br
+                        select(name='teams[]' class='form-control nf-input' ng-attr-size='{{Statistics.teams.length}}' ng-model='Statistics.selectedTeams' ng-options='team.name for team in Statistics.teams | orderBy:"name" track by team.id' multiple)
+                            
+                            
+                    div(class="form-group")
+                        input(class="form-control nf-input " type="number" name="minround" placeholder="Min Round" style="width:40%")
+                    div(class="form-group")
+                        input(class="form-control nf-input " type="number" name="maxround" placeholder="Max Round" style="width:40%")
+                    div(class="form-group")
+                        ul(class="nav nav-pills no-border-radius")
+                            li
+                                button(type="button" class="btn btn-lg nf-button nf-blue custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/teams") Team Stats
+                            li
+                                button(type="button" class="btn btn-lg nf-button nf-blue custombutton" data-post-url="/t/" + tournament.shortID + "/stats/filter/players") Player Stats

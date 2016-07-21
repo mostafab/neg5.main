@@ -1,0 +1,11 @@
+* {
+    font-family: 'Lato', sans-serif;
+}
+
+.list-element {
+    -webkit-transition: background-color .5s;
+    -moz-transition: background-color .5s;
+    -o-transition: background-color .5s;
+    -ms-transition: background-color .5s;
+    transition: background-color .5s;
+}
