@@ -61,5 +61,9 @@
         };
 
         vm.getTournamentTeams();
+
+        setTimeout(function () {
+            console.log(vm.teams);
+        }, 2000);
     }
 })();
