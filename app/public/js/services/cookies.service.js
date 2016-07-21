@@ -2,12 +2,23 @@
 
 (function () {
 
-    angular.module('tournamentApp').factory('Collaborator', ['$http', '$q', function ($http, $q) {
+    angular.module('tournamentApp').factory('Cookies', ['$cookies', function ($cookies) {
 
         var service = this;
 
-        service.factory = {};
+        service.cookieFactory = {
+            get: get,
+            set: set
+        };
 
-        return service.factory;
+        function get(key) {
+            return $cookies.get(key);
+        }
+
+        function set(key, value) {
+            $cookies.put(key, value);
+        }
+
+        return service.cookieFactory;
     }]);
 })();

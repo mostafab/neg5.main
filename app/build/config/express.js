@@ -36,6 +36,14 @@ var _tournament = require('../routes/api/tournament');
 
 var _tournament2 = _interopRequireDefault(_tournament);
 
+var _match = require('../routes/api/match');
+
+var _match2 = _interopRequireDefault(_match);
+
+var _team = require('../routes/api/team');
+
+var _team2 = _interopRequireDefault(_team);
+
 var _configuration = require('./configuration');
 
 var _configuration2 = _interopRequireDefault(_configuration);
@@ -79,6 +87,8 @@ exports.default = function () {
 
     (0, _account2.default)(app);
     (0, _tournament2.default)(app);
+    (0, _match2.default)(app);
+    (0, _team2.default)(app);
 
     return app;
 };

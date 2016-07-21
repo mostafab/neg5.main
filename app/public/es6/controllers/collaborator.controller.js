@@ -38,7 +38,7 @@
         
         vm.removeCollaborator = (username) => Collaborator.deleteCollaborator($scope.tournamentId, username);
         
-        vm.getCollaborators();
+        // vm.getCollaborators();
         
     }
     

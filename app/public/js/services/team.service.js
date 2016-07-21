@@ -34,7 +34,7 @@
         }
 
         function getTeams(tournamentId) {
-            $http.get('/t/' + tournamentId + '/teams').then(function (_ref2) {
+            $http.get('/api/t/' + tournamentId + '/teams').then(function (_ref2) {
                 var data = _ref2.data;
 
                 var formattedTeams = data.teams.map(function (_ref3) {

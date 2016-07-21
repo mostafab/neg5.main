@@ -27,7 +27,7 @@
             }
             
             function getTeams(tournamentId) {
-                $http.get('/t/' + tournamentId + '/teams')
+                $http.get('/api/t/' + tournamentId + '/teams')
                     .then(({data}) => {
                         let formattedTeams = data.teams.map(({shortID: id, team_name: name, divisions = []}) => {
                             return {

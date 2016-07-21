@@ -37,7 +37,7 @@ block content
                             a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
 
                         li(class="center")
-                            a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games ({{Tournament.games.length}})
+                            a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Matches ({{Tournament.games.length}})
                         li(class="center")
                             a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
                         li(class="center")
@@ -66,7 +66,7 @@ block content
                                 li(class="center")
                                     a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
                                 li(class="center")
-                                    a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Games ({{Tournament.games.length}})
+                                    a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Matches ({{Tournament.games.length}})
                                 li(class="center")
                                     a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
                                 li(class="center")
@@ -101,9 +101,9 @@ block content
                             .col-lg-1
                                  ul(class="nav nav-bar no-border-radius")
                                     li(class="active center")
-                                        a(href="#add-game" data-toggle="tab" class='tournament-tab btn-md') Add Game
+                                        a(href="#add-game" data-toggle="tab" class='tournament-tab btn-md') Add Match
                                     li(class="center")
-                                        a(href="#game-list" data-toggle="tab" class='tournament-tab btn-md') Game List
+                                        a(href="#game-list" data-toggle="tab" class='tournament-tab btn-md') Match List
                                     br
                             .col-lg-11
                                 .tab-content
@@ -172,13 +172,14 @@ block content
 block scripts
     
     script(src='/js/app.js')
+    script(src='/js/services/cookies.service.js')
     script(src='/js/services/phase.service.js')
     script(src='/js/services/tournament.service.js')
     script(src='/js/services/team.service.js')
-    script(src='/js/services/game.service.js')
+    script(src='/js/services/match.service.js')
     script(src='/js/services/collaborator.service.js')
     script(src='/js/controllers/team.controller.js')
-    script(src='/js/controllers/game.controller.js')
+    script(src='/js/controllers/match.controller.js')
     script(src='/js/controllers/tournament.controller.js')
     script(src='/js/controllers/statistics.controller.js')
     script(src='/js/controllers/phase.controller.js')

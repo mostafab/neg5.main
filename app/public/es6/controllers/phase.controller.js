@@ -26,7 +26,7 @@
         
         vm.activePhase = vm.phases.find(phase => phase.active);
         
-        vm.getPhases();
+        // vm.getPhases();
         
     }
     

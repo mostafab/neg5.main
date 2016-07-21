@@ -1,7 +1,7 @@
 (() => {
    
    angular.module('tournamentApp')
-        .factory('Game', ['$http', '$q', function($http, $q) {
+        .factory('Game', ['$http', '$q', 'Cookies', function($http, $q, Cookies) {
             
             let service = this;
             
@@ -20,9 +20,10 @@
             }
             
             function getGames(tournamentId) {
-                $http.get('/t/' + tournamentId + '/games')
+                let token = Cookies.get('nfToken');
+                $http.get('/api/t/' + tournamentId + '/matches?token=' + token)
                     .then(({data}) => {
-                        let formattedGames = data.games.map(({shortID: id, team1, team2, tossupsheard: tuh, round}) => {
+                        let formattedGames = data.matches.map(({shortID: id, team1, team2, tossupsheard: tuh, round}) => {
                             return {
                                 id,
                                 team1,

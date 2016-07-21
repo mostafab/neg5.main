@@ -7,6 +7,8 @@ import helmet from 'helmet';
 
 import accountApi from '../routes/api/account';
 import tournamentApi from '../routes/api/tournament';
+import matchApi from '../routes/api/match';
+import teamApi from '../routes/api/team';
 
 import configuration from './configuration';
 
@@ -44,6 +46,8 @@ export default () => {
     
     accountApi(app);
     tournamentApi(app);
+    matchApi(app);
+    teamApi(app);
 
     return app;
 };

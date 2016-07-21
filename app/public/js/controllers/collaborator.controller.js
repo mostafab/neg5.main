@@ -48,6 +48,6 @@
             return Collaborator.deleteCollaborator($scope.tournamentId, username);
         };
 
-        vm.getCollaborators();
+        // vm.getCollaborators();
     }
 })();

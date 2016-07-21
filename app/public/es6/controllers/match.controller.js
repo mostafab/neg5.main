@@ -6,7 +6,7 @@
     function GameCtrl($scope, Team, Game, Phase) {
         
         let vm = this;
-        
+
         vm.teams = Team.teams;
         vm.games = Game.games;
         vm.phases = Phase.phases;
@@ -14,7 +14,7 @@
         vm.sortType = 'round';
         vm.sortReverse = false;
         vm.gameQuery = '';
-        
+
         vm.pointScheme = [
             {value: -5},
             {value: 10},

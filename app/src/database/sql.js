@@ -15,5 +15,11 @@ export default {
     account: {
         add: getSQL('account-sql/createAccount.sql'),
         findOne: getSQL('account-sql/findAccount.sql')
+    },
+    match: {
+        findByTournament: getSQL('match-sql/findMatchesByTournament.sql')
+    },
+    team: {
+        findByTournament: getSQL('team-sql/findTeamsByTournament.sql')
     }
 }

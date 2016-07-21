@@ -35,6 +35,6 @@
             return phase.active;
         });
 
-        vm.getPhases();
+        // vm.getPhases();
     }
 })();

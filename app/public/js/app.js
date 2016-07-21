@@ -2,5 +2,5 @@
 
 (function () {
 
-    angular.module('tournamentApp', []);
+    angular.module('tournamentApp', ['ngCookies']);
 })();
