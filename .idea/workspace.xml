@@ -2,207 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c8038c7f-fdf5-43e1-a6e4-f36cc71fd5e8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/background.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/backgrounds/brushed.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/backgrounds/brushed_alu_dark.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/backgrounds/geometry2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/backgrounds/gplaypattern.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/backgrounds/tweed.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/color_background.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/icon.ico" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/logo.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/logo_2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/logo_edited.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/docs/database/Relational Schema Diagram.pdf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.babelrc" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/auth/account-auth.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/auth/middleware/token.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/auth/middleware/tournament-access.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/config/configuration.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/config/express.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/config/mongoose.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/config/sql.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/controllers/index-controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/controllers/registration-controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/controllers/stats-controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/controllers/tournament-controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/controllers/user-controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/data-access/account.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/data-access/tournament.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/database/db.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/database/sql.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/helpers/crypto.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/helpers/jwt.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/libs/string-functions.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/models/mongo_schemas/game.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/models/mongo_schemas/player.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/models/mongo_schemas/registration.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/models/mongo_schemas/team.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/models/mongo_schemas/tournament-director.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/models/mongo_schemas/tournament.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/models/mongo_schemas/user.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/models/sql-models/account.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/models/sql-models/tournament.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/routes/api/account.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/routes/api/game.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/routes/api/pointscheme.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/routes/api/team.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/routes/api/tournament.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/routes/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/routes/signup-route.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/routes/stats-route.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/routes/tournaments-route.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/routes/user-route.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build/server.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/css/chat.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/css/home.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/css/index.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/css/neg-five-main.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/css/reset.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/css/scoresheet.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/css/style.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/css/tournamentstyle.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/account.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/all-tournaments.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/app.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/controllers/collaborator.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/controllers/game.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/controllers/phase.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/controllers/statistics.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/controllers/team.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/controllers/tournament.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/game-configuration.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/scoresheet-es5.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/scoresheet.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/search.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/services/collaborator.service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/services/game.service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/services/phase.service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/services/team.service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/services/tournament.service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/tournament.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/es6/welcome-screen.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/cd-arrow.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/cd-logo.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/cd-nav-icons.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/img/cd-search.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/account.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/all-tournaments.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/app.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/controllers/collaborator.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/controllers/game.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/controllers/phase.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/controllers/statistics.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/controllers/team.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/controllers/tournament.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/game-configuration.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/jquery-2.1.4.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/jquery.menu-aim.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/jszip/dist/FileSaver.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/jszip/dist/jszip.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/jszip/dist/jszip.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/listjs/list.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/modernizr.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/scoresheet-es5.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/scoresheet-es6.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/scoresheet.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/search.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/services/collaborator.service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/services/game.service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/services/phase.service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/services/team.service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/services/tournament.service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/team-ng.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/tournament-ng.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/tournament.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/js/welcome-screen.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/partials/_layout.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/partials/_mixins.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/partials/_variables.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/public/scss/style.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/sql/account-sql/createAccount.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/sql/account-sql/findAccount.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/sql/match-sql/findMatchesByTournament.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/sql/tournament-sql/createTournament.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/sql/tournament-sql/findByUser.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/sql/tournament-sql/tournamentPermission.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/auth/middleware/token.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/auth/middleware/tournament-access.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/config/configuration.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/config/express.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/config/mongoose.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/controllers/index-controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/controllers/registration-controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/controllers/stats-controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/controllers/tournament-controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/controllers/user-controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/data-access/account.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/data-access/tournament.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/database/db.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/database/sql.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/helpers/crypto.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/helpers/jwt.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/libs/string-functions.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/models/mongo_schemas/game.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/models/mongo_schemas/player.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/models/mongo_schemas/registration.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/models/mongo_schemas/team.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/models/mongo_schemas/tournament-director.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/models/mongo_schemas/tournament.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/models/mongo_schemas/user.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/models/sql-models/account.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/models/sql-models/tournament.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/routes/api/account.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/routes/api/game.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/routes/api/pointscheme.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/routes/api/team.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/routes/api/tournament.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/routes/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/routes/signup-route.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/routes/stats-route.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/routes/tournaments-route.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/routes/user-route.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/server.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/collaborator/collaborator-tab.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/config/config-tab.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/game/add-game.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/game/game-list.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/game/game-view.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/game/scoresheet.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/index/about.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/index/account.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/index/home.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/index/index.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/index/not-found.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/phase/phase-tab.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/registration/registrations.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/registration/signup.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/search/search.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/search/tournament-search-result.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/stats/full-player.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/stats/full-players-simple.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/stats/full-team-simple.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/stats/full-teams.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/stats/quick-players-simple.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/stats/quick-players.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/stats/quick-teams-simple.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/stats/quick-teams.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/stats/round-report-simple.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/stats/round-report.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/stats/tab/stats-tab.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/team/add-team.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/team/team-list.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/team/team-view.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/tournament/alltournaments.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/tournament/create.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/tournament/tournament-tab.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/tournament/tournament-view.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/docs/database/sql_statements/create_indexes.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/docs/database/sql_statements/create_tables.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gulpfile.babel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/layout.jade" afterPath="$PROJECT_DIR$/app/views/layout.jade" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="neg5.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -223,11 +23,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="570">
               <caret line="38" column="1" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="layout.jade" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/views/layout.jade">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -253,6 +63,7 @@
       <list>
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/app/views/layout.jade" />
       </list>
     </option>
   </component>
@@ -319,6 +130,38 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neg5" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neg5" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neg5" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neg5" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -336,19 +179,19 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1469137614057</updated>
-      <workItem from="1469137615610" duration="84000" />
+      <workItem from="1469137615610" duration="140000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="84000" />
+    <option name="totallyTimeSpent" value="140000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="719" y="147" width="1073" height="819" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -387,6 +230,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="570">
           <caret line="38" column="1" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/layout.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
           <folding />
         </state>
       </provider>
