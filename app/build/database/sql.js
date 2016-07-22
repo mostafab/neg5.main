@@ -20,7 +20,8 @@ var getSQL = function getSQL(file) {
 exports.default = {
     tournament: {
         add: getSQL('tournament-sql/createTournament.sql'),
-        findByUser: getSQL('tournament-sql/findByUser.sql')
+        findByUser: getSQL('tournament-sql/findByUser.sql'),
+        findById: getSQL('tournament-sql/findById.sql')
     },
     account: {
         add: getSQL('account-sql/createAccount.sql'),

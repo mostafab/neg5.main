@@ -1,60 +1,72 @@
 div(class="panel panel-default nf-panel")
-    div(class="collapsable nf-dark-blue nf-panel-heading") Tournament Overview
-        span.btn.btn-sm.nf-button.nf-blue.btn-md(style='float:right')
-            i.fa.fa-pencil 
+    div(class="collapsable nf-dark-blue nf-panel-heading") 
+        h2 Overview
+            span.btn.btn-sm.nf-button.nf-blue.btn-md(style='float:right' title='Edit' ng-click='Tournament.editing = true' ng-show='Tournament.editing === false')
+                i.fa.fa-pencil 
+            span.btn.btn-sm.nf-button.nf-red.btn-md(style='float:right;' title='Cancel' ng-click='Tournament.editing = false; Tournament.resetOverview()' ng-show='Tournament.editing === true')
+                i.fa.fa-times 
 
     div(class="panel-body tournament-panel nf-panel-body")
         form(id="tournament-overview-form")
             div(class="row")
                 div(class="col-md-12 col-lg-10")
-                        label(class="label nf-dark-blue nf-label col-xs-4 col-sm-4") Name 
-                        div(class="form-group col-xs-8 col-sm-8")
+                    .row.nf-margin
+                        label(class="label nf-dark-blue nf-label col-xs-4 col-sm-4 col-lg-3") Name 
+                        div(class="col-xs-8 col-sm-8 col-lg-8" ng-class='{"form-group" : Tournament.editing === true}')
                             input(
                                 type="text",
                                 name="tournament_name",
-                                value="",
                                 class="form-control nf-input input-medium center-text no-border-radius",
-                                ng-model="tournamentInfo.name"
+                                ng-model="Tournament.tournamentInfoCopy.name",
+                                ng-show='Tournament.editing === true'
                             )
-                        label(class="label nf-dark-blue nf-label col-xs-4") Location
-                        div(class="form-group col-xs-8")
+                            label(class='white nf-label' ng-show='Tournament.editing === false') {{tournamentInfo.name}}
+                    .row.nf-margin
+                        label(class="label nf-dark-blue nf-label col-xs-4 col-lg-3") Location
+                        div(class="col-xs-8 col-sm-8 col-lg-8" ng-class='{"form-group" : Tournament.editing === true}')
                             input(
                                 type="text",
                                 name="tournament_location",
-                                value="",
-                                class="form-control nf-input input-medium center-text no-border-radius",
-                                ng-model='tournamentInfo.location'
+                                class="form-control nf-input input-md center-text no-border-radius",
+                                ng-model='Tournament.tournamentInfoCopy.location',
+                                ng-show='Tournament.editing === true'
                             )
-                        label(class="label nf-dark-blue nf-label col-xs-4") Question Set
-                        div(class="form-group col-xs-8")
+                            label(class='white nf-label' ng-show='Tournament.editing === false') {{tournamentInfo.location}}
+                    .row.nf-margin
+                        label(class="label nf-dark-blue nf-label col-xs-4 col-lg-3") Question Set
+                        div(class="col-xs-8 col-sm-8 col-lg-8" ng-class='{"form-group" : Tournament.editing === true}')
                             input(
                                 type="text",
                                 name="tournament_qset",
-                                value="",
                                 class="form-control nf-input input-medium center-text no-border-radius",
-                                ng-model='tournamentInfo.questionSet'
+                                ng-model='Tournament.tournamentInfoCopy.questionSet',
+                                ng-show='Tournament.editing === true'
                             )
-                        label(class="label nf-dark-blue nf-label col-xs-4") Date
-                        div(class="form-group col-xs-8")
+                            label(class='white nf-label' ng-show='Tournament.editing === false') {{tournamentInfo.questionSet}}
+                    .row.nf-margin
+                        label(class="label nf-dark-blue nf-label col-xs-4 col-lg-3") Date
+                        div(class="col-xs-8 col-sm-8 col-lg-8" ng-class='{"form-group" : Tournament.editing === true}')
                             input(
                                     type="date",
                                     name="tournament_date",
-                                    value="",
                                     class="form-control nf-input input-medium center-text no-border-radius",
-                                    ng-model='tournamentInfo.date'
+                                    ng-model='Tournament.tournamentInfoCopy.date',
+                                    ng-show='Tournament.editing === true'
                                 )
-                        label(class='label nf-dark-blue nf-label col-xs-4') Hidden
-                        div(class='form-group col-xs-8')
-                            input(type='checkbox' class='form-control nf-input input-sm' ng-model='tournamentInfo.hidden')
-                                
+                            label(class='white nf-label' ng-show='Tournament.editing === false') {{tournamentInfo.date | date : 'shortDate'}}
 
-            div(class="row")
-                div(class="col-md-12 col-lg-10")
-                    label(class="label nf-dark-blue nf-label col-xs-2 col-sm-4") Description
-                    div(class="form-group col-xs-8")
-                        textarea(name="tournament_description" class="form-control nf-input" rows="10" ng-model='tournamentInfo.description')
+                    .row.nf-margin
+                        label(class='label nf-dark-blue nf-label col-xs-4 col-lg-3') Hidden
+                        div(class="col-xs-8 col-sm-8 col-lg-8" ng-class='{"form-group" : Tournament.editing === true}')
+                            input(type='checkbox' class='form-control nf-input input-sm' ng-model='Tournament.tournamentInfoCopy.hidden' ng-show='Tournament.editing === true')
+                            label(class='white nf-label' ng-show='Tournament.editing === false') {{tournamentInfo.hidden === true ? 'Yes' : 'No'}}
 
-                    div(class="col-md-6")
-                        button(type="button" class="btn btn-lg nf-green nf-button") Save Changes
-                        div(id="tournament-update-msgdiv")
-                            p(style="margin:10px; font-size:18px")
+                .row.nf-margin
+                    div(class="col-md-12 col-lg-10")
+                        label(class="label nf-dark-blue nf-label col-xs-2 col-sm-4 col-lg-3") Comments
+                        div(class="col-xs-8 col-sm-8 col-lg-9" ng-class='{"form-group" : Tournament.editing === true}')
+                            textarea(name="tournament_description" class="form-control nf-input" rows="20" ng-model='Tournament.tournamentInfoCopy.comments' ng-show='Tournament.editing === true')
+                            label(class='white nf-label preserve-white-space' ng-show='Tournament.editing === false') {{tournamentInfo.comments}}
+
+                div(class="col-md-6" ng-show='Tournament.editing === true')
+                    button(type="button" class="btn btn-lg nf-green nf-button" ng-click='Tournament.editTournament()') Save Changes

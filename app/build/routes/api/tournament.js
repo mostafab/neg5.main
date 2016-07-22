@@ -16,9 +16,9 @@ exports.default = function (app) {
 
     app.route('/api/t').get(_token.hasToken, function (req, res) {
         _tournament2.default.findByUser(req.currentUser).then(function (data) {
-            return res.json(data);
+            return res.json({ data: data, success: true });
         }).catch(function (error) {
-            return res.status(500).send(error);
+            return res.status(500).send({ error: error, success: false });
         });
     }).post(function (req, res) {
         _tournament2.default.create(req.body).then(function (data) {
@@ -28,9 +28,15 @@ exports.default = function (app) {
         });
     });
 
-    app.route('/api/t/:tid').get(function (req, res) {
-        res.json({ name: 'Test' });
-    }).put(function (req, res) {}).delete(function (req, res) {});
+    app.route('/api/t/:tid').get(_token.hasToken, function (req, res) {
+        _tournament2.default.findById(req.params.tid).then(function (data) {
+            return res.json({ data: data, success: true });
+        }).catch(function (error) {
+            return res.send({ error: error, success: false });
+        });
+    }).put(_token.hasToken, function (req, res) {
+        return res.json({ success: true });
+    }).delete(function (req, res) {});
 
     app.route('/api/t/:tid/pointscheme').get(function (req, res) {}).post(function (req, res) {});
 

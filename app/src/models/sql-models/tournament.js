@@ -16,6 +16,14 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
+    },
+
+    findById: (tournamentId) => {
+        return new Promise((resolve, reject) => {
+            db.findTournamentById(tournamentId)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
     
 }

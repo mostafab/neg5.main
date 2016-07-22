@@ -71,6 +71,20 @@ exports.default = {
                 reject(error);
             });
         });
+    },
+
+    findTournamentById: function findTournamentById(id) {
+
+        return new Promise(function (resolve, reject) {
+            var params = [id];
+
+            (0, _db.query)(tournament.findById, params, _db.queryTypeMap.one).then(function (tournament) {
+                return resolve(tournament);
+            }).catch(function (error) {
+                console.log(error);
+                reject(error);
+            });
+        });
     }
 
 };

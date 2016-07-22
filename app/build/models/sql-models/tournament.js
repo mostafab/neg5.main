@@ -30,6 +30,16 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    findById: function findById(tournamentId) {
+        return new Promise(function (resolve, reject) {
+            _tournament2.default.findTournamentById(tournamentId).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

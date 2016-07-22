@@ -18,8 +18,29 @@
 
         var vm = this;
 
+        vm.tournamentInfoCopy = {};
         vm.teams = Team.teams;
         vm.games = Game.games;
+
+        vm.editing = false;
+
+        vm.resetOverview = function () {
+            angular.copy($scope.tournamentInfo, vm.tournamentInfoCopy);
+        };
+
+        vm.editTournament = function () {
+            Tournament.edit($scope.tournamentId, vm.tournamentInfoCopy).then(function (data) {
+                copyToOriginalTournamentObject(data);
+                vm.resetOverview();
+                vm.editing = false;
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        };
+
+        var copyToOriginalTournamentObject = function copyToOriginalTournamentObject(data) {
+            angular.copy(data, $scope.tournamentInfo);
+        };
 
         var getTournamentContext = function getTournamentContext() {
             Tournament.getTournamentContext($scope.tournamentId).then(function (_ref) {
@@ -27,21 +48,8 @@
                 var tournamentContext = _ref.tournamentContext;
 
                 $scope.tournamentInfo = tournamentInfo;
+                angular.copy($scope.tournamentInfo, vm.tournamentInfoCopy);
                 $scope.tournamentContext = tournamentContext;
-            });
-            $http.get('/api/t/' + $scope.tournamentId).then(function (_ref2) {
-                var data = _ref2.data;
-
-                $scope.tournamentInfo = {
-                    name: data.name,
-                    location: data.location,
-                    questionSet: data.questionSet,
-                    description: data.description,
-                    hidden: data.hidden || true,
-                    pointScheme: data.pointScheme || []
-                };
-                $scope.tournamentContext.admin = true;
-                $scope.tournamentContext.owner = true;
             }).catch(function (error) {
                 console.log(error);
             });

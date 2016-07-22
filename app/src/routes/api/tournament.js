@@ -8,8 +8,8 @@ export default (app) => {
     app.route('/api/t')
         .get(hasToken, (req, res) => {
             Tournament.findByUser(req.currentUser)
-                .then(data => res.json(data))
-                .catch(error => res.status(500).send(error));    
+                .then(data => res.json({data, success: true}))
+                .catch(error => res.status(500).send({error, success: false}));    
         })
         .post((req, res) => {
             Tournament.create(req.body)
@@ -18,11 +18,13 @@ export default (app) => {
         })
         
     app.route('/api/t/:tid')
-        .get((req, res) => {
-            res.json({name: 'Test'})
+        .get(hasToken, (req, res) => {
+            Tournament.findById(req.params.tid)
+                .then(data => res.json({data, success: true}))
+                .catch(error => res.send({error, success: false}));
         })
-        .put((req, res) => {
-            
+        .put(hasToken, (req, res) => {
+            return res.json({success: true});
         })
         .delete((req, res) => {
             

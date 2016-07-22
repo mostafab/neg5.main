@@ -15,7 +15,7 @@
                 const jwt = $cookies.get('nfToken');
                 $http.get('/api/t?token=' + jwt)
                     .then(({data}) => {
-                        vm.tournaments = data;
+                        vm.tournaments = data.data;
                     })
                     .catch(error => console.log(error));
             }

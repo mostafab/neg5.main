@@ -1,7 +1,7 @@
 (() => {
    
    angular.module('tournamentApp')
-        .factory('Tournament', ['$http', '$q', function($http, $q) {
+        .factory('Tournament', ['$http', '$q', 'Cookies', function($http, $q, Cookies) {
             
             let service = this;
             
@@ -9,19 +9,23 @@
             
             service.tournamentFactory = {
                 pointScheme,
-                getTournamentContext
+                getTournamentContext,
+                edit
             }
             
             function getTournamentContext(tournamentId) {
                 return $q((resolve, reject) => {
-                    $http.get('/api/t/' + tournamentId)
+                    const token = Cookies.get('nfToken');
+                    $http.get('/api/t/' + tournamentId + '?token=' + token)
                         .then(({data}) => {
+                            const info = data.data;
                             resolve({
                                 tournamentInfo: {
-                                    name: data.name,
-                                    location: data.location,
-                                    questionSet: data.questionSet,
-                                    description: data.description,
+                                    name: info.name,
+                                    location: info.location,
+                                    date: new Date(info.tournament_date),
+                                    questionSet: info.question_set,
+                                    comments: info.comments,
                                     hidden: data.hidden || true,
                                     pointScheme: data.pointScheme || []
                                 },
@@ -36,6 +40,18 @@
                         })
                 })
                 
+            }
+
+            function edit(tournamentId, newTournamentInfo) {
+                return $q((resolve, reject) => {
+                    const token = Cookies.get('nfToken');
+                    $http.put('/api/t/' + tournamentId + '?token=' + token)
+                        .then(({data}) => {
+                            console.log('Done');
+                            resolve(newTournamentInfo);
+                        })
+                        .catch(error => reject(error));
+                })
             }
             
             return service.tournamentFactory;

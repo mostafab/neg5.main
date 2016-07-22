@@ -29,7 +29,9 @@
 
 .nf-label {
     padding: 10px;
-    font-size: .9em;
+    font-size: 1.2em;
+    line-height: 140%;
+    font-weight: 400;
 }
 
 .nf-list-item {
@@ -129,6 +131,10 @@
     color: white;
 }
 
+.preserve-white-space {
+    white-space: pre-wrap;
+}
+
 .nav-bar * a {
     color: white;
 }
@@ -205,6 +211,45 @@ Redefine Boostrap definitions
 
 .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
     border: 0px;
+}
+
+.nf-toast {
+    position: fixed;
+    z-index: 10000;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.nf-toast-content {
+    min-width: 300px; /* IE8 Fallback */
+    padding: 12px 24px; /* IE8 Fallback */
+    font-size: 16px; /* IE8 Fallback */
+    display: inline-block;
+    min-width: 30rem;
+    padding: 1.2rem 2.4rem;
+    border-radius: 1px;
+    text-align: left;
+    color: #fff;
+    background-color: #5078a5;
+    font-size: 1.6rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.nf-toast i {
+    margin-right: 10px;
+}
+
+/* States */
+
+.nf-toast--success .nf-toast-content {
+    background-color: #20B51C;
+}
+
+.nf-toast--error .nf-toast-content {
+    background-color: #b41212;
 }
 
 

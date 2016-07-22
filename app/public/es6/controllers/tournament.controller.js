@@ -18,27 +18,36 @@
             
             let vm = this;
             
+            vm.tournamentInfoCopy = {};
             vm.teams = Team.teams;
             vm.games = Game.games;
-            
+
+            vm.editing = false;
+
+            vm.resetOverview = () => {
+                angular.copy($scope.tournamentInfo, vm.tournamentInfoCopy);
+            }
+
+            vm.editTournament = () => {
+                Tournament.edit($scope.tournamentId, vm.tournamentInfoCopy)
+                    .then(data => {
+                        copyToOriginalTournamentObject(data);
+                        vm.resetOverview();
+                        vm.editing = false;
+                    })
+                    .catch(error => console.log(error));
+            }
+
+            let copyToOriginalTournamentObject = (data) => {
+                angular.copy(data, $scope.tournamentInfo);
+            }
+
             let getTournamentContext = () => {
                 Tournament.getTournamentContext($scope.tournamentId)
                     .then(({tournamentInfo, tournamentContext}) => {
                         $scope.tournamentInfo = tournamentInfo;
+                        angular.copy($scope.tournamentInfo, vm.tournamentInfoCopy)
                         $scope.tournamentContext = tournamentContext;
-                    })
-                $http.get('/api/t/' + $scope.tournamentId)
-                    .then(({data}) => {
-                        $scope.tournamentInfo = {
-                            name: data.name,
-                            location: data.location,
-                            questionSet: data.questionSet,
-                            description: data.description,
-                            hidden: data.hidden || true,
-                            pointScheme: data.pointScheme || []
-                        }
-                        $scope.tournamentContext.admin = true;
-                        $scope.tournamentContext.owner = true;
                     })
                     .catch(error => {
                         console.log(error);

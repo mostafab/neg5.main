@@ -43,6 +43,21 @@ export default {
                 });
                 
         })
+    },
+
+    findTournamentById: (id) => {
+        
+        return new Promise((resolve, reject) => {
+            let params = [id];
+
+            query(tournament.findById, params, qm.one)
+                .then(tournament => resolve(tournament))
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+
+        })
     }
     
 }

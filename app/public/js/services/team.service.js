@@ -2,7 +2,7 @@
 
 (function () {
 
-    angular.module('tournamentApp').factory('Team', ['$http', '$q', function ($http, $q) {
+    angular.module('tournamentApp').factory('Team', ['$http', '$q', 'Cookies', function ($http, $q, Cookies) {
 
         var service = this;
 
@@ -34,7 +34,8 @@
         }
 
         function getTeams(tournamentId) {
-            $http.get('/api/t/' + tournamentId + '/teams').then(function (_ref2) {
+            var token = Cookies.get('nfToken');
+            $http.get('/api/t/' + tournamentId + '/teams?token=' + token).then(function (_ref2) {
                 var data = _ref2.data;
 
                 var formattedTeams = data.teams.map(function (_ref3) {

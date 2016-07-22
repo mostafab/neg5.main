@@ -15,7 +15,7 @@
             $http.get('/api/t?token=' + jwt).then(function (_ref) {
                 var data = _ref.data;
 
-                vm.tournaments = data;
+                vm.tournaments = data.data;
             }).catch(function (error) {
                 return console.log(error);
             });
