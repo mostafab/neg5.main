@@ -85,6 +85,31 @@ exports.default = {
                 reject(error);
             });
         });
+    },
+
+    updateTournament: function updateTournament(id, newInfo) {
+        return new Promise(function (resolve, reject) {
+            var name = newInfo.name;
+            var _newInfo$location = newInfo.location;
+            var location = _newInfo$location === undefined ? null : _newInfo$location;
+            var _newInfo$date = newInfo.date;
+            var date = _newInfo$date === undefined ? null : _newInfo$date;
+            var _newInfo$questionSet = newInfo.questionSet;
+            var questionSet = _newInfo$questionSet === undefined ? null : _newInfo$questionSet;
+            var _newInfo$comments = newInfo.comments;
+            var comments = _newInfo$comments === undefined ? null : _newInfo$comments;
+            var _newInfo$hidden = newInfo.hidden;
+            var hidden = _newInfo$hidden === undefined ? false : _newInfo$hidden;
+
+            var params = [id, name, location, date, questionSet, comments, hidden];
+
+            (0, _db.query)(tournament.update, params, _db.queryTypeMap.one).then(function (updatedInfo) {
+                return resolve(updatedInfo);
+            }).catch(function (error) {
+                console.log(error);
+                reject(error);
+            });
+        });
     }
 
 };

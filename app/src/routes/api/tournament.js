@@ -24,7 +24,9 @@ export default (app) => {
                 .catch(error => res.send({error, success: false}));
         })
         .put(hasToken, (req, res) => {
-            return res.json({success: true});
+            Tournament.update(req.params.tid, req.body)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}))
         })
         .delete((req, res) => {
             

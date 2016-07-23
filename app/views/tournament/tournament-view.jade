@@ -92,7 +92,7 @@ block content
                     div(class='tab-pane fade' id='collaborators' ng-controller='CollabCtrl as Collab')
                         include ./../collaborator/collaborator-tab.jade                        
 
-                    div(class="tab-pane fade" id="divisions" ng-if='tournamentContext.owner === true')
+                    div(class="tab-pane fade" id="divisions" ng-if='tournamentContext.owner === true' ng-controller='ConfigCtrl as Config')
                         include ./../config/config-tab.jade
 
                     div(class="tab-pane fade" id="games" ng-controller='GameCtrl as Game')
@@ -168,10 +168,10 @@ block content
                                     div(class="col-md-6")
                                         button(type="button" class="btn btn-md nf-blue btn-block " id="yes-delete") Yes
                     
-                    .nf-toast(style='position:fixed')
-                        .nf-toast-content(style='float:left')
-                            i.fa.fa-check
-                            | Your selection has been saved
+                    .nf-toast(style='position:fixed' class='angular-animate' ng-show='toastMessage !== null')
+                        .nf-toast-content(style='float:left' ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
+                            i.fa(ng-class="{'fa-check': toastMessage.success === true, 'fa-times': toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : toastMessage.success !== true && toastMessage.success !== false}")
+                            | {{toastMessage.message}}
 
 block scripts
     
@@ -188,5 +188,6 @@ block scripts
     script(src='/js/controllers/statistics.controller.js')
     script(src='/js/controllers/phase.controller.js')
     script(src='/js/controllers/collaborator.controller.js')
+    script(src='/js/controllers/config.controller.js')
     script(src="/js/jszip/dist/jszip.min.js")
     script(src='/js/jszip/dist/FileSaver.min.js')

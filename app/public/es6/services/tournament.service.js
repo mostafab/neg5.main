@@ -19,6 +19,7 @@
                     $http.get('/api/t/' + tournamentId + '?token=' + token)
                         .then(({data}) => {
                             const info = data.data;
+                            angular.copy(info.tossup_point_scheme, service.tournamentFactory.pointScheme);
                             resolve({
                                 tournamentInfo: {
                                     name: info.name,
@@ -26,8 +27,8 @@
                                     date: new Date(info.tournament_date),
                                     questionSet: info.question_set,
                                     comments: info.comments,
-                                    hidden: data.hidden || true,
-                                    pointScheme: data.pointScheme || []
+                                    hidden: info.hidden,
+                                    pointScheme: info.tossup_point_scheme || []
                                 },
                                 tournamentContext: {
                                     admin: true,
@@ -45,10 +46,27 @@
             function edit(tournamentId, newTournamentInfo) {
                 return $q((resolve, reject) => {
                     const token = Cookies.get('nfToken');
-                    $http.put('/api/t/' + tournamentId + '?token=' + token)
+                    let body = {
+                        token,
+                        location: newTournamentInfo.location,
+                        name: newTournamentInfo.name,
+                        date: newTournamentInfo.date,
+                        questionSet: newTournamentInfo.questionSet,
+                        comments: newTournamentInfo.comments,
+                        hidden: newTournamentInfo.hidden
+                    }
+                    $http.put('/api/t/' + tournamentId, body)
                         .then(({data}) => {
-                            console.log('Done');
-                            resolve(newTournamentInfo);
+                            let {name, location, hidden, comments, question_set, tournament_date} = data.result;
+                            let result = {
+                                name,
+                                location,
+                                hidden,
+                                comments,
+                                questionSet: question_set,
+                                date: new Date(tournament_date)
+                            }
+                            resolve(result);
                         })
                         .catch(error => reject(error));
                 })

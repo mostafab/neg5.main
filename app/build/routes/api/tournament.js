@@ -35,7 +35,11 @@ exports.default = function (app) {
             return res.send({ error: error, success: false });
         });
     }).put(_token.hasToken, function (req, res) {
-        return res.json({ success: true });
+        _tournament2.default.update(req.params.tid, req.body).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
     }).delete(function (req, res) {});
 
     app.route('/api/t/:tid/pointscheme').get(function (req, res) {}).post(function (req, res) {});

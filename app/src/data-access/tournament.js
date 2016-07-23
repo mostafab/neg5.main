@@ -58,6 +58,20 @@ export default {
                 });
 
         })
+    },
+
+    updateTournament: (id, newInfo) => {
+        return new Promise((resolve, reject) => {    
+            const {name, location = null, date = null, questionSet = null, comments = null, hidden = false} = newInfo;
+            let params = [id, name, location, date, questionSet, comments, hidden];
+
+            query(tournament.update, params, qm.one)
+                .then(updatedInfo => resolve(updatedInfo))
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                })
+        })
     }
     
 }

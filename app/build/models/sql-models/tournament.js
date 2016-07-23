@@ -40,6 +40,16 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    update: function update(tournamentId, newTournamentInfo) {
+        return new Promise(function (resolve, reject) {
+            _tournament2.default.updateTournament(tournamentId, newTournamentInfo).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

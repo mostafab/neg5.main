@@ -24,6 +24,14 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
+    },
+
+    update: (tournamentId, newTournamentInfo) => {
+        return new Promise((resolve, reject) => {
+            db.updateTournament(tournamentId, newTournamentInfo)
+                .then(result => resolve(result))
+                .catch(error => reject(error))
+        })
     }
     
 }

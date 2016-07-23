@@ -7,9 +7,9 @@ div(class="panel panel-default nf-panel")
                 i.fa.fa-times 
 
     div(class="panel-body tournament-panel nf-panel-body")
-        form(id="tournament-overview-form")
+        form(name='Tournament.editTournamentForm' ng-submit='Tournament.editTournament()' novalidate)
             div(class="row")
-                div(class="col-md-12 col-lg-10")
+                div(class="col-md-12 col-lg-12")
                     .row.nf-margin
                         label(class="label nf-dark-blue nf-label col-xs-4 col-sm-4 col-lg-3") Name 
                         div(class="col-xs-8 col-sm-8 col-lg-8" ng-class='{"form-group" : Tournament.editing === true}')
@@ -18,7 +18,8 @@ div(class="panel panel-default nf-panel")
                                 name="tournament_name",
                                 class="form-control nf-input input-medium center-text no-border-radius",
                                 ng-model="Tournament.tournamentInfoCopy.name",
-                                ng-show='Tournament.editing === true'
+                                ng-show='Tournament.editing === true',
+                                required
                             )
                             label(class='white nf-label' ng-show='Tournament.editing === false') {{tournamentInfo.name}}
                     .row.nf-margin
@@ -62,11 +63,11 @@ div(class="panel panel-default nf-panel")
                             label(class='white nf-label' ng-show='Tournament.editing === false') {{tournamentInfo.hidden === true ? 'Yes' : 'No'}}
 
                 .row.nf-margin
-                    div(class="col-md-12 col-lg-10")
+                    div(class="col-md-12 col-lg-12")
                         label(class="label nf-dark-blue nf-label col-xs-2 col-sm-4 col-lg-3") Comments
                         div(class="col-xs-8 col-sm-8 col-lg-9" ng-class='{"form-group" : Tournament.editing === true}')
                             textarea(name="tournament_description" class="form-control nf-input" rows="20" ng-model='Tournament.tournamentInfoCopy.comments' ng-show='Tournament.editing === true')
                             label(class='white nf-label preserve-white-space' ng-show='Tournament.editing === false') {{tournamentInfo.comments}}
 
                 div(class="col-md-6" ng-show='Tournament.editing === true')
-                    button(type="button" class="btn btn-lg nf-green nf-button" ng-click='Tournament.editTournament()') Save Changes
+                    button(type="submit" class="btn btn-lg nf-green nf-button") Save Changes

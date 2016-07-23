@@ -12,6 +12,11 @@
     background-color: #B2DFDB;
 }
 
+.nf-dropdown {
+    left: 50%;
+    border-radius: 2px;
+}
+
 .nf-card {
     box-shadow: 0 2px 3px rgba(0,0,0,.05);
     padding: 20px;
@@ -22,6 +27,7 @@
 .nf-input {
     border-radius: 2px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    font-size: 1.2em;
 }
 .nf-input:focus {
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
@@ -221,6 +227,14 @@ Redefine Boostrap definitions
     width: 100%;
     padding: 0 20px;
     text-align: center;
+    -webkit-transition: all ease-in .2s;
+    -moz-transition: all ease-in .2s;
+    transition: all ease-in .2s;
+}
+
+.nf-toast.ng-hide {
+    transform: translate(0, 3em);
+    opacity: 0;
 }
 
 .nf-toast-content {
@@ -229,27 +243,16 @@ Redefine Boostrap definitions
     font-size: 16px; /* IE8 Fallback */
     display: inline-block;
     min-width: 30rem;
-    padding: 1.2rem 2.4rem;
+    padding: 2.2rem 3.4rem;
     border-radius: 1px;
     text-align: left;
     color: #fff;
-    background-color: #5078a5;
     font-size: 1.6rem;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .nf-toast i {
     margin-right: 10px;
-}
-
-/* States */
-
-.nf-toast--success .nf-toast-content {
-    background-color: #20B51C;
-}
-
-.nf-toast--error .nf-toast-content {
-    background-color: #b41212;
 }
 
 
