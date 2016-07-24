@@ -198,15 +198,21 @@
     overflow: hidden;
 }
 
-span > i {
+.point-label > i {
     margin-left: 10px;
 }
 
 input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
+input[type=number]::-webkit-outer-spin-button,
+{ 
   -webkit-appearance: none; 
   margin: 0; 
 }
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
 
 .vertical-center {
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
