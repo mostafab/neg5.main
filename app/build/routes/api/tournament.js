@@ -20,8 +20,8 @@ exports.default = function (app) {
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
         });
-    }).post(function (req, res) {
-        _tournament2.default.create(req.body).then(function (data) {
+    }).post(_token.hasToken, function (req, res) {
+        _tournament2.default.create(req.body, req.currentUser).then(function (data) {
             return res.json(data);
         }).catch(function (error) {
             return res.status(500).send({ error: error });
@@ -42,7 +42,19 @@ exports.default = function (app) {
         });
     }).delete(function (req, res) {});
 
-    app.route('/api/t/:tid/pointscheme').get(function (req, res) {}).post(function (req, res) {});
+    app.route('/api/t/:tid/pointscheme').post(_token.hasToken, function (req, res) {
+        _tournament2.default.addTossupPointValue(req.params.tid, req.body).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    }).put(_token.hasToken, function (req, res) {
+        _tournament2.default.updateTossupPointValues(req.params.tid, req.body.pointValues).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error });
+        });
+    });
 
     app.route('/api/t/:tid/divisions').get(function (req, res) {}).post(function (req, res) {});
 };

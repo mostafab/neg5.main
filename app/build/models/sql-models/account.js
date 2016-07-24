@@ -22,10 +22,10 @@ exports.default = {
 
         return new Promise(function (resolve, reject) {
             var newAccount = {
-                username: username,
-                password: password,
-                email: email,
-                name: name
+                username: username.trim().toLowerCase(),
+                password: password.trim(),
+                email: email === null ? null : email.trim().toLowerCase(),
+                name: name === null ? null : name.trim().toLowerCase()
             };
             _account2.default.saveAccount(newAccount).then(function (user) {
                 return resolve(user);
@@ -41,8 +41,8 @@ exports.default = {
 
         return new Promise(function (resolve, reject) {
             var accountToRetrieve = {
-                user: username,
-                password: password
+                user: username.trim().toLowerCase(),
+                password: password.trim()
             };
             _account2.default.authenticateAccount(accountToRetrieve).then(function (jwt) {
                 return resolve(jwt);

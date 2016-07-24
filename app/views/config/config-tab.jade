@@ -2,74 +2,75 @@ div(class="panel panel-default nf-panel")
     div(class="collapsable nf-panel-heading nf-dark-blue") Divisions and Point Scheme
     div(class="panel-body tournament-panel nf-panel-body")
         .row
-            div(class="col-md-6 col-sm-12 col-lg-6")
-                .row.nf-margin
-                    div(class='col-sm-6 col-lg-6')
-                        .col-lg-9
-                            label(class="label nf-dark-blue nf-label btn-block" style='float:right') Point Scheme
-                        .col-lg-3(ng-show='Config.editingPointScheme === false')
-                            span.nf-button.btn-sm.btn.nf-blue(style='float:right' ng-show='Config.editingPointScheme === false' ng-click='Config.editingPointScheme = true')
+            div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
+                form(name='Config.editPointSchemeForm' ng-submit='Config.editPointScheme()' novalidate)
+                    .row.nf-margin
+                        .col-lg-3.col-sm-9.col-md-6
+                            label(class="label nf-dark-blue nf-label btn-block" style='float:right') Point Scheme Values ({{Config.pointScheme.length}})
+                        .col-lg-3.col-sm-3.col-md-3(ng-show='Config.editingPointScheme === false && Config.pointScheme.length > 0')
+                            span.nf-button.btn-md.btn.nf-blue(style='float:left' title='Edit' ng-if='Config.games.length === 0' ng-show='Config.editingPointScheme === false' ng-click='Config.editingPointScheme = true')
                                 i.fa.fa-pencil
-                        .col-lg-3(ng-show='Config.editingPointScheme === true')
-                            span.nf-button.btn-sm.btn.nf-green(style='float:right' ng-click='Config.editingPointScheme = false')
-                                i.fa.fa-check
-                            span.nf-button.btn-sm.btn.nf-red(style='float:right' ng-click='Config.editingPointScheme = false')
+                        .col-lg-3.col-sm-3.col-md-3(ng-show='Config.editingPointScheme === true')
+                            span.nf-button.btn-md.btn.nf-red(style='float:left' ng-show='Config.editingPointScheme === true' title='Cancel' ng-click='Config.resetPointSchemeCopyToOriginal(); Config.editingPointScheme = false')
                                 i.fa.fa-times
-                                  
-                .row.nf-margin
-                    div(class="col-md-12 col-sm-6 col-lg-12")
-                        form(name='Config.editPointSchemeForm' ng-show='Config.editingPointScheme === true')
-                            .row.nf-margin(ng-repeat='ps in Config.pointSchemeCopy')
-                                .col-lg-6
-                                    .input-group
-                                        span.input-group-addon.nf-button.no-border(
-                                            ng-class="{'nf-green': ps.type === 'Power', 'nf-blue' : ps.type === 'Base', 'nf-red' : ps.type === 'Neg'}"
-                                        ) {{ps.type[0]}}
-                                        input.form-control.nf-input(type='number' ng-model='ps.value')                                            
-                                        span.input-group-addon.nf-button.dropdown-toggle(data-toggle='dropdown')
-                                            i.fa.fa-caret-down
-                                        
-                                        ul.dropdown-menu.nf-dropdown(aria-role='menu' title='Switch tossup answer type')
-                                            li
-                                                a(title='Set as Power' ng-click='ps.type = "Power"') Power
-                                                a(title='Set as Base' ng-click='ps.type = "Base"') Base
-                                                a(title='Set as Neg' ng-click='ps.type = "Neg"') Neg
-                                .col-lg-1
-                                    .input-group
-                                        span.input-group-addon.nf-button.nf-red.btn.btn-sm
-                                            i.fa.fa-trash
-
-                        div(ng-show='Config.editingPointScheme === false')                        
-                            .row.nf-margin(ng-repeat='ps in Config.pointScheme')
-                                .col-lg-6
-                                    .input-group
-                                        span.input-group-addon.nf-button.no-border(
-                                            ng-class="{'nf-green': ps.type === 'Power', 'nf-blue' : ps.type === 'Base', 'nf-red' : ps.type === 'Neg'}"
-                                        ) {{ps.type[0]}}
-                                        div.form-control.nf-input.nf-gray {{ps.value}}                                            
-                        
-                        br
-                        br
-                        br
-
-                        .row.nf-margin
-                            .col-lg-6
+                            button.nf-button.btn-md.btn.nf-green(type='submit' ng-show='Config.editingPointScheme === true' title='Save')
+                                i.fa.fa-check
+                                
+                                    
+                    .row.nf-margin(ng-show='Config.editingPointScheme === true' )
+                        .row.nf-margin(ng-repeat='ps in Config.pointSchemeCopy track by ps.value' ng-show='Config.editingPointScheme === true' )
+                            .col-lg-4.col-sm-9
                                 .input-group
-                                    span.input-group-addon.nf-button.no-border(
-                                        ng-class="{'nf-green': newPointValue.type === 'Power', 'nf-blue' : newPointValue.type === 'Base', 'nf-red' : newPointValue.type === 'Neg'}"
-                                    ) {{newPointValue.type[0]}}
-                                    input.form-control.nf-input(type='number' ng-model='newPointValue.value' placeholder='Add a new point value')                                            
-                                    span.input-group-addon.nf-button.dropdown-toggle(data-toggle='dropdown')
+                                    span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle(
+                                        ng-class="{'nf-green': ps.type === 'Power', 'nf-blue' : ps.type === 'Base', 'nf-red' : ps.type === 'Neg'}",
+                                        data-toggle='dropdown'
+                                    ) {{ps.type}}
                                         i.fa.fa-caret-down
+                                    input.form-control.nf-input(type='number' ng-model='ps.value')                                            
+                                    
+                                    ul.dropdown-menu.nf-dropdown(aria-role='menu' title='Switch tossup answer type')
+                                        li
+                                            a(title='Set as Power' ng-click='ps.type = "Power"') Power
+                                            a(title='Set as Base' ng-click='ps.type = "Base"') Base
+                                            a(title='Set as Neg' ng-click='ps.type = "Neg"') Neg
+                            .col-lg-1.col-sm-2
+                                .input-group
+                                    span.nf-button.nf-red.btn.btn-md(ng-click='Config.removeFromPointSchemeCopy(ps)')
+                                        i.fa.fa-trash
+
+                    .row.nf-margin(ng-show='Config.editingPointScheme === false' ng-if='Config.games.length === 0')                        
+                        .row.nf-margin(ng-repeat='ps in Config.pointScheme | orderBy:"value" track by ps.value')
+                            .col-lg-4.col-sm-9
+                                .input-group
+                                    span.input-group-addon.nf-button.no-border.point-label(
+                                        ng-class="{'nf-green': ps.type === 'Power', 'nf-blue' : ps.type === 'Base', 'nf-red' : ps.type === 'Neg'}"
+                                    ) {{ps.type}}
+                                    div.form-control.nf-input.nf-gray {{ps.value}}                                            
+                        
+                br
+                br
+                br
+
+                form(name='Config.newPointValueForm' novalidate ng-submit='Config.addNewPointValue()' ng-show='Config.editingPointScheme === false')
+                    .row.nf-margin
+                        .row.nf-margin
+                            .col-lg-4.col-md-10.col-sm-9
+                                .input-group
+                                    span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle(
+                                        ng-class="{'nf-green': Config.newPointValue.type === 'Power', 'nf-blue' : Config.newPointValue.type === 'Base', 'nf-red' : Config.newPointValue.type === 'Neg'}",
+                                        data-toggle='dropdown'
+                                    ) {{Config.newPointValue.type || 'Type'}}
+                                        i.fa.fa-caret-down
+                                    input.form-control.nf-input(type='number' ng-model='Config.newPointValue.value' placeholder='New point value' required)                                            
                                     ul.dropdown-menu.nf-dropdown(aria-role='menu')
                                         li
-                                            a(title='Set as Power' ng-click='newPointValue.type = "Power"') Power
-                                            a(title='Set as Base' ng-click='newPointValue.type = "Base"') Base
-                                            a(title='Set as Neg' ng-click='newPointValue.type = "Neg"') Neg
-                            .col-lg-1
-                                .input-group
-                                    span.input-group-addon.nf-button.nf-green.btn.btn-sm
-                                        i.fa.fa-check
+                                            a(title='Reset' ng-click='Config.newPointValue.type = null' ng-show='Config.newPointValue.type !== null') Reset
+                                            a(title='Set as Power' ng-click='Config.newPointValue.type = "Power"') Power
+                                            a(title='Set as Base' ng-click='Config.newPointValue.type = "Base"') Base
+                                            a(title='Set as Neg' ng-click='Config.newPointValue.type = "Neg"') Neg
+                            .col-lg-1.col-md-2
+                                button.nf-button.nf-green.btn(type='submit')
+                                    i.fa.fa-check
 
         div(class='row')
             div(class="col-md-6")
@@ -91,5 +92,5 @@ div(class="panel panel-default nf-panel")
                     //-         br
 
 
-                div(class="btn-group" style="margin-top:15px")
-                    button(type="button" class="btn btn-md nf-green nf-button" data-toggle="tooltip" title='Empty boxes are ignored.') Save All Divisions
+                //- div(class="btn-group" style="margin-top:15px")
+                //-     button(type="button" class="btn btn-md nf-green nf-button" data-toggle="tooltip" title='Empty boxes are ignored.') Save All Divisions

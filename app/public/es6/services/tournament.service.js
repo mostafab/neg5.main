@@ -10,7 +10,9 @@
             service.tournamentFactory = {
                 pointScheme,
                 getTournamentContext,
-                edit
+                edit,
+                addPointValue,
+                postPointValues
             }
             
             function getTournamentContext(tournamentId) {
@@ -67,6 +69,49 @@
                                 date: new Date(tournament_date)
                             }
                             resolve(result);
+                        })
+                        .catch(error => reject(error));
+                })
+            }
+
+            function addPointValue(tournamentId, {type, value}) {
+                return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
+                    let body = {
+                        type,
+                        value   
+                    }
+                    $http.post('/api/t/' + tournamentId + '/pointscheme', body)
+                        .then(({data}) => {
+                            service.tournamentFactory.pointScheme.push({
+                                type: data.result.tossup_answer_type,
+                                value: data.result.tossup_value
+                            });
+                            resolve({type, value});
+                        })  
+                        .catch(error => reject(error));
+                })
+            }
+
+            function postPointValues(tournamentId, newPointValues) {
+                return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
+                    let body = {
+                        token,
+                        pointValues: newPointValues
+                    }
+                    $http.put('/api/t/' + tournamentId + '/pointscheme', body)
+                        .then(({data}) => {
+                            let sortedValues = data.result.map(({tossup_value: value, tossup_answer_type: type}) => {
+                                return {
+                                    value,
+                                    type
+                                }
+                            })
+                            .sort((first, second) => first.value - second.value);
+                            
+                            angular.copy(sortedValues, service.tournamentFactory.pointScheme);
+                            resolve(sortedValues);
                         })
                         .catch(error => reject(error));
                 })

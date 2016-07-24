@@ -1,9 +1,9 @@
 (() => {
     
     angular.module('tournamentApp')
-        .controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', GameCtrl]);
+        .controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', 'Tournament', GameCtrl]);
     
-    function GameCtrl($scope, Team, Game, Phase) {
+    function GameCtrl($scope, Team, Game, Phase, Tournament) {
         
         let vm = this;
 
@@ -15,11 +15,7 @@
         vm.sortReverse = false;
         vm.gameQuery = '';
 
-        vm.pointScheme = [
-            {value: -5},
-            {value: 10},
-            {value: 20}
-        ]
+        vm.pointScheme = Tournament.pointScheme;
         
         vm.pointSum = function(points) {
             return points.map(({number, value}) => (number * value) || 0)
@@ -63,7 +59,6 @@
                             })
                         }
                     });
-                    console.log(vm.currentGame.teams[index].players);
                 })
                 .catch(error => {
                     console.log(error);
@@ -79,8 +74,6 @@
         vm.removeGame = (id) => console.log(id);
         
         vm.getGames();
-        
-        console.log(vm.currentGame);
         
     }
     

@@ -6,6 +6,7 @@
     border-radius: 2px;
     margin: 5px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    font-size: 1.3em;
 }
 
 .active-phase {
@@ -13,8 +14,12 @@
 }
 
 .nf-dropdown {
-    left: 50%;
-    border-radius: 2px;
+    border-radius: 1px;
+    width: 50%;
+}
+.nf-dropdown > li > a {
+    font-size: 1.1em;
+    padding: 10px;
 }
 
 .nf-card {
@@ -35,7 +40,7 @@
 
 .nf-label {
     padding: 10px;
-    font-size: 1.2em;
+    font-size: 1.3em;
     line-height: 140%;
     font-weight: 400;
 }
@@ -161,6 +166,13 @@
     }
 }
 
+.point-label {
+    min-width: 110px;
+}
+.point-label.dropdown-toggle:hover {
+    cursor: pointer;
+}
+
 .tournament-navigation-panel * a {
     color: white;
 }
@@ -184,6 +196,10 @@
 
 .no-overflow {
     overflow: hidden;
+}
+
+span > i {
+    margin-left: 10px;
 }
 
 input[type=number]::-webkit-inner-spin-button, 

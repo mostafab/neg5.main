@@ -2,9 +2,9 @@
 
 (function () {
 
-    angular.module('tournamentApp').controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', GameCtrl]);
+    angular.module('tournamentApp').controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', 'Tournament', GameCtrl]);
 
-    function GameCtrl($scope, Team, Game, Phase) {
+    function GameCtrl($scope, Team, Game, Phase, Tournament) {
 
         var vm = this;
 
@@ -16,7 +16,7 @@
         vm.sortReverse = false;
         vm.gameQuery = '';
 
-        vm.pointScheme = [{ value: -5 }, { value: 10 }, { value: 20 }];
+        vm.pointScheme = Tournament.pointScheme;
 
         vm.pointSum = function (points) {
             return points.map(function (_ref) {
@@ -64,7 +64,6 @@
                         })
                     };
                 });
-                console.log(vm.currentGame.teams[index].players);
             }).catch(function (error) {
                 console.log(error);
             });
@@ -87,7 +86,5 @@
         };
 
         vm.getGames();
-
-        console.log(vm.currentGame);
     }
 })();

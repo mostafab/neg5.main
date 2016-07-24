@@ -45,7 +45,7 @@ block content
                         li(class="center" ng-if='tournamentContext.admin === true')
                             a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
                         li
-                            a(target='_blank' href="{{'/t/' + tournamentId + '/scoresheet'}}") Scoresheet
+                            a(href='#scoresheet') Scoresheet
                         li(style='float:right' ng-if='tournamentContext.owner === true')
                             a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
                                 i(class='fa fa-trash')
@@ -77,7 +77,7 @@ block content
                         div(class='col-sm-5 col-md-12 col-lg-12')
                             ul(class="nav nav-bar no-border-radius")
                                 li
-                                    a(target='_blank' href="{{'/t/' + tournamentId + '/scoresheet'}}" class='btn-md nf-button nf-orange') Go To Scoresheet
+                                    a(href='#scoresheet' class='btn-md nf-button nf-orange') Scoresheet
                                     div(style='margin-top:10px')
                                 li(ng-if='tournamentContext.owner === true')
                                     a(href="#delete" class="nf-red btn-md tournament-tab nf-button" data-toggle="tab" style='color:white')
@@ -169,7 +169,7 @@ block content
                                         button(type="button" class="btn btn-md nf-blue btn-block " id="yes-delete") Yes
                     
                     .nf-toast(style='position:fixed' class='angular-animate' ng-show='toastMessage !== null')
-                        .nf-toast-content(style='float:left' ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
+                        .nf-toast-content.nf-button.btn(style='float:left' ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
                             i.fa(ng-class="{'fa-check': toastMessage.success === true, 'fa-times': toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : toastMessage.success !== true && toastMessage.success !== false}")
                             | {{toastMessage.message}}
 

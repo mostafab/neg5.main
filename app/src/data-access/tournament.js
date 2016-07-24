@@ -1,4 +1,3 @@
-import shortid from 'shortid';
 import {query, queryTypeMap as qm} from '../database/db';
 import sql from '../database/sql';
 
@@ -10,21 +9,18 @@ export default {
 
         return new Promise((resolve, reject) => {
             
-            const {name, date = new Date(), questionSet = '', comments = '', location = '', tossupScheme = []} = tournamentInfo;
-
-            const tournamentId = shortid.generate();
+            const {id, name, date, questionSet, comments, location, tossupScheme, username} = tournamentInfo;
             
-            let tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mbhuiyan'];        
+            let tournamentParams = [id, name, date, questionSet, comments, location, username];        
 
-            let {tournamentIds, values, types} = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
+            let {tournamentIds, values, types} = buildTournamentPointSchemeInsertQuery(tossupScheme, id);
             
             tournamentParams.push(tournamentIds, values, types);
-            console.log(tournamentParams);
             
             query(tournament.add, tournamentParams, qm.many)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
-            
+
         });
         
     },
@@ -51,7 +47,14 @@ export default {
             let params = [id];
 
             query(tournament.findById, params, qm.one)
-                .then(tournament => resolve(tournament))
+                .then(tournament => {
+                    tournament.tossup_point_scheme = tournament.tossup_point_scheme.filter(tv => {
+                        return tv.type !== null;
+                    }).sort((first, second) => {
+                        return first.value - second.value;
+                    });
+                    resolve(tournament)
+                })
                 .catch(error => {
                     console.log(error);
                     reject(error);
@@ -71,6 +74,35 @@ export default {
                     console.log(error);
                     reject(error);
                 })
+        })
+    },
+
+    addTossupPointValue: (id, {type, value}) => {
+        return new Promise((resolve, reject) => {
+            let params = [id, type, value];
+
+            query(tournament.addPointValue, params, qm.one)
+                .then(newTossupValue => resolve(newTossupValue))
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                })
+        })
+    },
+
+    updateTossupPointValues: (id, tossupPointValues) => {
+        return new Promise((resolve, reject) => {
+            let params = [id];
+            let {tournamentIds, values, types} = buildTournamentPointSchemeInsertQuery(tossupPointValues, id);
+
+            params.push(tournamentIds, values, types);
+
+            query(tournament.updatePointValues, params, qm.any)
+                .then(newTossupValues => resolve(newTossupValues))
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
         })
     }
     

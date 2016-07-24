@@ -4,10 +4,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _shortid = require('shortid');
-
-var _shortid2 = _interopRequireDefault(_shortid);
-
 var _db = require('../database/db');
 
 var _sql = require('../database/sql');
@@ -23,24 +19,19 @@ exports.default = {
     saveTournament: function saveTournament(tournamentInfo) {
 
         return new Promise(function (resolve, reject) {
+            var id = tournamentInfo.id;
             var name = tournamentInfo.name;
-            var _tournamentInfo$date = tournamentInfo.date;
-            var date = _tournamentInfo$date === undefined ? new Date() : _tournamentInfo$date;
-            var _tournamentInfo$quest = tournamentInfo.questionSet;
-            var questionSet = _tournamentInfo$quest === undefined ? '' : _tournamentInfo$quest;
-            var _tournamentInfo$comme = tournamentInfo.comments;
-            var comments = _tournamentInfo$comme === undefined ? '' : _tournamentInfo$comme;
-            var _tournamentInfo$locat = tournamentInfo.location;
-            var location = _tournamentInfo$locat === undefined ? '' : _tournamentInfo$locat;
-            var _tournamentInfo$tossu = tournamentInfo.tossupScheme;
-            var tossupScheme = _tournamentInfo$tossu === undefined ? [] : _tournamentInfo$tossu;
+            var date = tournamentInfo.date;
+            var questionSet = tournamentInfo.questionSet;
+            var comments = tournamentInfo.comments;
+            var location = tournamentInfo.location;
+            var tossupScheme = tournamentInfo.tossupScheme;
+            var username = tournamentInfo.username;
 
 
-            var tournamentId = _shortid2.default.generate();
+            var tournamentParams = [id, name, date, questionSet, comments, location, username];
 
-            var tournamentParams = [tournamentId, name, date, questionSet, comments, location, 'mbhuiyan'];
-
-            var _buildTournamentPoint = buildTournamentPointSchemeInsertQuery(tossupScheme, tournamentId);
+            var _buildTournamentPoint = buildTournamentPointSchemeInsertQuery(tossupScheme, id);
 
             var tournamentIds = _buildTournamentPoint.tournamentIds;
             var values = _buildTournamentPoint.values;
@@ -48,7 +39,6 @@ exports.default = {
 
 
             tournamentParams.push(tournamentIds, values, types);
-            console.log(tournamentParams);
 
             (0, _db.query)(tournament.add, tournamentParams, _db.queryTypeMap.many).then(function (result) {
                 return resolve(result);
@@ -79,7 +69,12 @@ exports.default = {
             var params = [id];
 
             (0, _db.query)(tournament.findById, params, _db.queryTypeMap.one).then(function (tournament) {
-                return resolve(tournament);
+                tournament.tossup_point_scheme = tournament.tossup_point_scheme.filter(function (tv) {
+                    return tv.type !== null;
+                }).sort(function (first, second) {
+                    return first.value - second.value;
+                });
+                resolve(tournament);
             }).catch(function (error) {
                 console.log(error);
                 reject(error);
@@ -105,6 +100,44 @@ exports.default = {
 
             (0, _db.query)(tournament.update, params, _db.queryTypeMap.one).then(function (updatedInfo) {
                 return resolve(updatedInfo);
+            }).catch(function (error) {
+                console.log(error);
+                reject(error);
+            });
+        });
+    },
+
+    addTossupPointValue: function addTossupPointValue(id, _ref) {
+        var type = _ref.type;
+        var value = _ref.value;
+
+        return new Promise(function (resolve, reject) {
+            var params = [id, type, value];
+
+            (0, _db.query)(tournament.addPointValue, params, _db.queryTypeMap.one).then(function (newTossupValue) {
+                return resolve(newTossupValue);
+            }).catch(function (error) {
+                console.log(error);
+                reject(error);
+            });
+        });
+    },
+
+    updateTossupPointValues: function updateTossupPointValues(id, tossupPointValues) {
+        return new Promise(function (resolve, reject) {
+            var params = [id];
+
+            var _buildTournamentPoint2 = buildTournamentPointSchemeInsertQuery(tossupPointValues, id);
+
+            var tournamentIds = _buildTournamentPoint2.tournamentIds;
+            var values = _buildTournamentPoint2.values;
+            var types = _buildTournamentPoint2.types;
+
+
+            params.push(tournamentIds, values, types);
+
+            (0, _db.query)(tournament.updatePointValues, params, _db.queryTypeMap.any).then(function (newTossupValues) {
+                return resolve(newTossupValues);
             }).catch(function (error) {
                 console.log(error);
                 reject(error);

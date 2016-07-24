@@ -1,10 +1,13 @@
 div(class="panel panel-default nf-panel")
     div(class="collapsable nf-dark-blue nf-panel-heading") 
-        h2 Overview
-            span.btn.btn-sm.nf-button.nf-blue.btn-md(style='float:right' title='Edit' ng-click='Tournament.editing = true' ng-show='Tournament.editing === false')
-                i.fa.fa-pencil 
-            span.btn.btn-sm.nf-button.nf-red.btn-md(style='float:right;' title='Cancel' ng-click='Tournament.editing = false; Tournament.resetOverview()' ng-show='Tournament.editing === true')
-                i.fa.fa-times 
+        .row
+            .col-lg-11.col-sm-11.col-md-11
+                label.nf-label Overview
+            .col-lg-1.col-sm-1.col-md-1
+                span.btn.nf-button.nf-blue.btn-md(style='float:right' title='Edit' ng-click='Tournament.editing = true' ng-show='Tournament.editing === false')
+                    i.fa.fa-pencil 
+                span.btn.nf-button.nf-red.btn-md(style='float:right;' title='Cancel' ng-click='Tournament.editing = false; Tournament.resetOverview()' ng-show='Tournament.editing === true')
+                    i.fa.fa-times 
 
     div(class="panel-body tournament-panel nf-panel-body")
         form(name='Tournament.editTournamentForm' ng-submit='Tournament.editTournament()' novalidate)
@@ -58,7 +61,7 @@ div(class="panel panel-default nf-panel")
 
                     .row.nf-margin
                         label(class='label nf-dark-blue nf-label col-xs-4 col-lg-3') Hidden
-                        div(class="col-xs-8 col-sm-8 col-lg-8" ng-class='{"form-group" : Tournament.editing === true}')
+                        div(class="col-xs-8 col-sm-8 col-lg-3" ng-class='{"form-group" : Tournament.editing === true}')
                             input(type='checkbox' class='form-control nf-input input-sm' ng-model='Tournament.tournamentInfoCopy.hidden' ng-show='Tournament.editing === true')
                             label(class='white nf-label' ng-show='Tournament.editing === false') {{tournamentInfo.hidden === true ? 'Yes' : 'No'}}
 
@@ -66,7 +69,7 @@ div(class="panel panel-default nf-panel")
                     div(class="col-md-12 col-lg-12")
                         label(class="label nf-dark-blue nf-label col-xs-2 col-sm-4 col-lg-3") Comments
                         div(class="col-xs-8 col-sm-8 col-lg-9" ng-class='{"form-group" : Tournament.editing === true}')
-                            textarea(name="tournament_description" class="form-control nf-input" rows="20" ng-model='Tournament.tournamentInfoCopy.comments' ng-show='Tournament.editing === true')
+                            textarea(name="tournament_description" class="form-control nf-input" rows="30" ng-model='Tournament.tournamentInfoCopy.comments' ng-show='Tournament.editing === true')
                             label(class='white nf-label preserve-white-space' ng-show='Tournament.editing === false') {{tournamentInfo.comments}}
 
                 div(class="col-md-6" ng-show='Tournament.editing === true')

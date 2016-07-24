@@ -22,7 +22,9 @@ exports.default = {
         add: getSQL('tournament-sql/createTournament.sql'),
         findByUser: getSQL('tournament-sql/findByUser.sql'),
         findById: getSQL('tournament-sql/findById.sql'),
-        update: getSQL('tournament-sql/updateTournament.sql')
+        update: getSQL('tournament-sql/updateTournament.sql'),
+        addPointValue: getSQL('tournament-sql/addTossupPointValue.sql'),
+        updatePointValues: getSQL('tournament-sql/updateTossupPointValues.sql')
     },
     account: {
         add: getSQL('account-sql/createAccount.sql'),

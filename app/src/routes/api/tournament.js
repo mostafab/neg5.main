@@ -11,8 +11,8 @@ export default (app) => {
                 .then(data => res.json({data, success: true}))
                 .catch(error => res.status(500).send({error, success: false}));    
         })
-        .post((req, res) => {
-            Tournament.create(req.body)
+        .post(hasToken, (req, res) => {
+            Tournament.create(req.body, req.currentUser)
                 .then(data => res.json(data))
                 .catch(error => res.status(500).send({error}));
         })
@@ -33,11 +33,15 @@ export default (app) => {
         })
         
     app.route('/api/t/:tid/pointscheme')
-        .get((req, res) => {
-            
+        .post(hasToken, (req, res) => {
+            Tournament.addTossupPointValue(req.params.tid, req.body)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}));
         })
-        .post((req, res) => {
-            
+        .put(hasToken, (req, res) => {
+            Tournament.updateTossupPointValues(req.params.tid, req.body.pointValues)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error}))
         })
         
     app.route('/api/t/:tid/divisions')
