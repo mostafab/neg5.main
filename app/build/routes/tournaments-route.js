@@ -188,17 +188,6 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/api/users', function (req, res) {
-        console.log(req.query.searchQuery);
-        tournamentController.findDirectors(req.query.searchQuery, function (err, directors) {
-            if (err) {
-                res.status(500).send({ err: err });
-            } else {
-                res.status(200).send({ directors: directors });
-            }
-        });
-    });
-
     app.route('/api/t/:tid/collaborators').get(function (req, res) {
         tournamentController.findCollaborators(req.params.tid, function (err, collaborators) {
             if (err) {

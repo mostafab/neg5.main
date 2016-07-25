@@ -2,7 +2,7 @@ CREATE TABLE account (
     username varchar(20) NOT NULL,
     hash varchar(255) NOT NULL,
     name varchar(50),
-    email varchar(50) 
+    email varchar(50), 
     hidden boolean DEFAULT false,
     PRIMARY KEY (username) 
 );
@@ -16,6 +16,8 @@ CREATE TABLE tournament (
     comments text,
     hidden boolean,
     director_id varchar(20) NOT NULL,
+    bonus_point_value integer NOT NULL DEFAULT 10 CHECK (bonus_point_value > 0),
+    parts_per_bonus integer NOT NULL DEFAULT 3 CHECK (parts_per_bonus > 0), 
     PRIMARY KEY (id),
     FOREIGN KEY (director_id) REFERENCES account(username) ON DELETE SET NULL
 );

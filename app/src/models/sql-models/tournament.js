@@ -2,7 +2,7 @@ import shortid from 'shortid';
 import db from '../../data-access/tournament';
 
 export default {
-    
+
     create: ({name, date = null, questionSet = null, comments = null, location = null, tossupScheme = []}, username) => {
         return new Promise((resolve, reject) => {
            const id = shortid.generate(); 
@@ -33,7 +33,14 @@ export default {
     findById: (tournamentId) => {
         return new Promise((resolve, reject) => {
             db.findTournamentById(tournamentId)
-                .then(result => resolve(result))
+                .then(tournament => {
+                    tournament.tossup_point_scheme = tournament.tossup_point_scheme.filter(tv => {
+                        return tv.type !== null;
+                    }).sort((first, second) => {
+                        return first.value - second.value;
+                    });
+                    resolve(tournament);
+                })
                 .catch(error => reject(error));
         })
     },
@@ -44,6 +51,7 @@ export default {
                 location: location === null ? null : location.trim(),
                 name: name.trim(),
                 questionSet: questionSet === null ? null : questionSet.trim(),
+                date,
                 comments: comments === null ? null : comments.trim(),
                 hidden
             }
@@ -66,9 +74,9 @@ export default {
 
     updateTossupPointValues: (tournamentId, newPointValues) => {
         return new Promise((resolve, reject) => {
-            let validPoints = newPointValues.every(pv => pv.type && pv.value);
+            let validPoints = newPointValues.tossupValues.every(pv => pv.type && pv.value);
             if (validPoints) {
-                db.updateTossupPointValues(tournamentId, newPointValues)
+                db.updateTossupPointValues(tournamentId, newPointValues.tossupValues, newPointValues.bonusPointValue, newPointValues.partsPerBonus)
                     .then(result => resolve(result))
                     .catch(error => reject(error))
             }

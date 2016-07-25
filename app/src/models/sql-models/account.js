@@ -26,6 +26,17 @@ export default {
                 .then(jwt => resolve(jwt))
                 .catch(error => reject(error)); 
         });
+    },
+
+    findByQuery: (query) => {
+        return new Promise((resolve, reject) => {
+            if (!query) return reject(new Error('No query provided'));
+
+            let searchQuery = query.trim().toLowerCase();
+            db.findByQuery(searchQuery)
+                .then(users => resolve(users))
+                .catch(error => reject(error));
+        })
     }
     
 }

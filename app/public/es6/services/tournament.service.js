@@ -5,7 +5,9 @@
             
             let service = this;
             
-            let pointScheme = [];
+            let pointScheme = {
+                tossupValues: []
+            };
             
             service.tournamentFactory = {
                 pointScheme,
@@ -21,7 +23,12 @@
                     $http.get('/api/t/' + tournamentId + '?token=' + token)
                         .then(({data}) => {
                             const info = data.data;
-                            angular.copy(info.tossup_point_scheme, service.tournamentFactory.pointScheme);
+                            let formattedPointScheme = {
+                                tossupValues: info.tossup_point_scheme,
+                                partsPerBonus: info.parts_per_bonus,
+                                bonusPointValue: info.bonus_point_value 
+                            }
+                            angular.copy(formattedPointScheme, service.tournamentFactory.pointScheme);
                             resolve({
                                 tournamentInfo: {
                                     name: info.name,
@@ -29,8 +36,7 @@
                                     date: new Date(info.tournament_date),
                                     questionSet: info.question_set,
                                     comments: info.comments,
-                                    hidden: info.hidden,
-                                    pointScheme: info.tossup_point_scheme || []
+                                    hidden: info.hidden
                                 },
                                 tournamentContext: {
                                     admin: true,
@@ -83,7 +89,7 @@
                     }
                     $http.post('/api/t/' + tournamentId + '/pointscheme', body)
                         .then(({data}) => {
-                            service.tournamentFactory.pointScheme.push({
+                            service.tournamentFactory.pointScheme.tossupValues.push({
                                 type: data.result.tossup_answer_type,
                                 value: data.result.tossup_value
                             });
@@ -102,19 +108,23 @@
                     }
                     $http.put('/api/t/' + tournamentId + '/pointscheme', body)
                         .then(({data}) => {
-                            let sortedValues = data.result.map(({tossup_value: value, tossup_answer_type: type}) => {
+                            let sortedTossupValues = data.result.tossupValues.map(({tossup_value: value, tossup_answer_type: type}) => {
                                 return {
                                     value,
                                     type
                                 }
                             })
                             .sort((first, second) => first.value - second.value);
-                            
-                            angular.copy(sortedValues, service.tournamentFactory.pointScheme);
-                            resolve(sortedValues);
+                            let pointScheme = {
+                                tossupValues: sortedTossupValues,
+                                partsPerBonus: data.result.partsPerBonus,
+                                bonusPointValue: data.result.bonusPointValue
+                            }
+                            angular.copy(pointScheme, service.tournamentFactory.pointScheme);
+                            resolve();
                         })
                         .catch(error => reject(error));
-                })
+                });
             }
             
             return service.tournamentFactory;

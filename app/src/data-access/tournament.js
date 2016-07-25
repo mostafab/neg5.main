@@ -5,6 +5,7 @@ const tournament = sql.tournament;
 
 export default {
     
+    
     saveTournament: (tournamentInfo) => {
 
         return new Promise((resolve, reject) => {
@@ -34,7 +35,6 @@ export default {
             query(tournament.findByUser, params, qm.any)
                 .then(tournaments => resolve(tournaments))
                 .catch(error => {
-                    console.log(error);
                     reject(error);
                 });
                 
@@ -48,15 +48,9 @@ export default {
 
             query(tournament.findById, params, qm.one)
                 .then(tournament => {
-                    tournament.tossup_point_scheme = tournament.tossup_point_scheme.filter(tv => {
-                        return tv.type !== null;
-                    }).sort((first, second) => {
-                        return first.value - second.value;
-                    });
-                    resolve(tournament)
+                    resolve(tournament);
                 })
                 .catch(error => {
-                    console.log(error);
                     reject(error);
                 });
 
@@ -71,7 +65,6 @@ export default {
             query(tournament.update, params, qm.one)
                 .then(updatedInfo => resolve(updatedInfo))
                 .catch(error => {
-                    console.log(error);
                     reject(error);
                 })
         })
@@ -84,23 +77,28 @@ export default {
             query(tournament.addPointValue, params, qm.one)
                 .then(newTossupValue => resolve(newTossupValue))
                 .catch(error => {
-                    console.log(error);
                     reject(error);
                 })
         })
     },
 
-    updateTossupPointValues: (id, tossupPointValues) => {
+    updateTossupPointValues: (id, tossupPointValues, bonusPointValue, partsPerBonus) => {
         return new Promise((resolve, reject) => {
             let params = [id];
             let {tournamentIds, values, types} = buildTournamentPointSchemeInsertQuery(tossupPointValues, id);
 
-            params.push(tournamentIds, values, types);
+            params.push(tournamentIds, values, types, bonusPointValue, partsPerBonus);
 
             query(tournament.updatePointValues, params, qm.any)
-                .then(newTossupValues => resolve(newTossupValues))
+                .then(newValues => {
+                    let result = {
+                        bonusPointValue: newValues[0].bonus_point_value,
+                        partsPerBonus: newValues[0].parts_per_bonus,
+                        tossupValues: newValues.splice(1)
+                    }
+                    resolve(result)
+                })
                 .catch(error => {
-                    console.log(error);
                     reject(error);
                 });
         })

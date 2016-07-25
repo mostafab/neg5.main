@@ -10,24 +10,26 @@
         vm.editingPointScheme = false;
         vm.pointScheme = Tournament.pointScheme;
 
-        vm.pointSchemeCopy = [];
+        vm.pointSchemeCopy = {
+            tossupValues: []
+        };
         vm.newPointValue = {type: null};
 
         vm.games = Game.games;
 
         vm.resetPointSchemeCopyToOriginal = () => {
             angular.copy(vm.pointScheme, vm.pointSchemeCopy);
-            vm.pointSchemeCopy.sort((first, second) => first.value - second.value);
+            vm.pointSchemeCopy.tossupValues.sort((first, second) => first.value - second.value);
         }
 
         vm.editPointScheme = () => {
-            if (!duplicatePointValues()) {
+            if (!duplicatePointValues() && vm.editPointSchemeForm.$valid) {
                 let toastConfig = {
                     message: 'Saving point values'
                 }
                 $scope.toast(toastConfig);
                 Tournament.postPointValues($scope.tournamentId, vm.pointSchemeCopy)
-                    .then((newPointValue) => {
+                    .then(() => {
                         vm.resetPointSchemeCopyToOriginal();
                         vm.editingPointScheme = false;
 
@@ -70,16 +72,16 @@
         }
 
         vm.removeFromPointSchemeCopy = (point) => {
-            vm.pointSchemeCopy = vm.pointSchemeCopy.filter(ps => ps.value !== point.value && ps.type !== point.type);
+            vm.pointSchemeCopy.tossupValues = vm.pointSchemeCopy.tossupValues.filter(ps => ps.value !== point.value && ps.type !== point.type);
         }
 
         let duplicatePointValues = () => {
             let checked = {};
-            for (let i = 0; i < vm.pointSchemeCopy.length; i++) {
-                if (checked[vm.pointSchemeCopy[i].value]) {
+            for (let i = 0; i < vm.pointSchemeCopy.tossupValues.length; i++) {
+                if (checked[vm.pointSchemeCopy.tossupValues[i].value]) {
                     return true;
                 }
-                checked[vm.pointSchemeCopy[i].value] = true;
+                checked[vm.pointSchemeCopy.tossupValues[i].value] = true;
             }
             return false;
         }

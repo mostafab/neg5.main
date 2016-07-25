@@ -31,5 +31,11 @@ export default (app) => {
                     }                  
                 });
         });
+
+    app.get('/api/users', (req, res) => {
+        Account.findByQuery(req.query.search)
+            .then(users => res.json({users, success: true}))
+            .catch(error => res.send({error, success: false}))
+    })
     
 }

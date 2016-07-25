@@ -8,6 +8,16 @@ const account = sql.account;
 
 export default {
     
+    getUserPermissions: (username, tournamentId) => {
+        return new Promise((resolve, reject) => {
+            let params = [tournamentId, username];
+
+            query(account.permissions, params, qm.any)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
     saveAccount: ({username, password, email = null, name =  null}) => {
         return new Promise((resolve, reject) => {
             hashExpression(password)
@@ -42,6 +52,21 @@ export default {
 
                 })
                 .catch(error => reject(error)); 
+        })
+    },
+
+    findByQuery: (searchQuery) => {
+        return new Promise((resolve, reject) => {
+            let expression = searchQuery + '%';
+            let params = [expression];
+            query(account.findUsers, params, qm.any)
+                .then(users => {
+                    resolve(users)
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error)
+                });
         })
     }
     

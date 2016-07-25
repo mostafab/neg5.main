@@ -20,6 +20,18 @@ var account = _sql2.default.account;
 
 exports.default = {
 
+    getUserPermissions: function getUserPermissions(username, tournamentId) {
+        return new Promise(function (resolve, reject) {
+            var params = [tournamentId, username];
+
+            (0, _db.query)(account.permissions, params, _db.queryTypeMap.any).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
     saveAccount: function saveAccount(_ref) {
         var username = _ref.username;
         var password = _ref.password;
@@ -64,6 +76,19 @@ exports.default = {
                 });
             }).catch(function (error) {
                 return reject(error);
+            });
+        });
+    },
+
+    findByQuery: function findByQuery(searchQuery) {
+        return new Promise(function (resolve, reject) {
+            var expression = searchQuery + '%';
+            var params = [expression];
+            (0, _db.query)(account.findUsers, params, _db.queryTypeMap.any).then(function (users) {
+                resolve(users);
+            }).catch(function (error) {
+                console.log(error);
+                reject(error);
             });
         });
     }

@@ -61,8 +61,13 @@ exports.default = {
 
     findById: function findById(tournamentId) {
         return new Promise(function (resolve, reject) {
-            _tournament2.default.findTournamentById(tournamentId).then(function (result) {
-                return resolve(result);
+            _tournament2.default.findTournamentById(tournamentId).then(function (tournament) {
+                tournament.tossup_point_scheme = tournament.tossup_point_scheme.filter(function (tv) {
+                    return tv.type !== null;
+                }).sort(function (first, second) {
+                    return first.value - second.value;
+                });
+                resolve(tournament);
             }).catch(function (error) {
                 return reject(error);
             });
@@ -87,6 +92,7 @@ exports.default = {
                 location: location === null ? null : location.trim(),
                 name: name.trim(),
                 questionSet: questionSet === null ? null : questionSet.trim(),
+                date: date,
                 comments: comments === null ? null : comments.trim(),
                 hidden: hidden
             };
@@ -116,11 +122,11 @@ exports.default = {
 
     updateTossupPointValues: function updateTossupPointValues(tournamentId, newPointValues) {
         return new Promise(function (resolve, reject) {
-            var validPoints = newPointValues.every(function (pv) {
+            var validPoints = newPointValues.tossupValues.every(function (pv) {
                 return pv.type && pv.value;
             });
             if (validPoints) {
-                _tournament2.default.updateTossupPointValues(tournamentId, newPointValues).then(function (result) {
+                _tournament2.default.updateTossupPointValues(tournamentId, newPointValues.tossupValues, newPointValues.bonusPointValue, newPointValues.partsPerBonus).then(function (result) {
                     return resolve(result);
                 }).catch(function (error) {
                     return reject(error);

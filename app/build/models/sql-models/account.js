@@ -50,6 +50,19 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    findByQuery: function findByQuery(query) {
+        return new Promise(function (resolve, reject) {
+            if (!query) return reject(new Error('No query provided'));
+
+            var searchQuery = query.trim().toLowerCase();
+            _account2.default.findByQuery(searchQuery).then(function (users) {
+                return resolve(users);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

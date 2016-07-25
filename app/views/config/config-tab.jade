@@ -1,13 +1,14 @@
 div(class="panel panel-default nf-panel")
-    div(class="collapsable nf-panel-heading nf-dark-blue") Divisions and Point Scheme
+    div(class="collapsable nf-panel-heading nf-dark-blue") General
+
+div(class="panel panel-default nf-panel")
+    div(class="collapsable nf-panel-heading nf-dark-blue") Point Scheme
     div(class="panel-body tournament-panel nf-panel-body")
         .row
             div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
                 form(name='Config.editPointSchemeForm' ng-submit='Config.editPointScheme()' novalidate)
                     .row.nf-margin
-                        .col-lg-3.col-sm-9.col-md-6
-                            label(class="label nf-dark-blue nf-label btn-block" style='float:right') Point Scheme Values ({{Config.pointScheme.length}})
-                        .col-lg-3.col-sm-3.col-md-3(ng-show='Config.editingPointScheme === false && Config.pointScheme.length > 0')
+                        .col-lg-3.col-sm-3.col-md-3(ng-show='Config.editingPointScheme === false')
                             span.nf-button.btn-md.btn.nf-blue(style='float:left' title='Edit' ng-if='Config.games.length === 0' ng-show='Config.editingPointScheme === false' ng-click='Config.editingPointScheme = true')
                                 i.fa.fa-pencil
                         .col-lg-3.col-sm-3.col-md-3(ng-show='Config.editingPointScheme === true')
@@ -15,10 +16,9 @@ div(class="panel panel-default nf-panel")
                                 i.fa.fa-times
                             button.nf-button.btn-md.btn.nf-green(type='submit' ng-show='Config.editingPointScheme === true' title='Save')
                                 i.fa.fa-check
-                                
-                                    
+                                  
                     .row.nf-margin(ng-show='Config.editingPointScheme === true' )
-                        .row.nf-margin(ng-repeat='ps in Config.pointSchemeCopy track by ps.value' ng-show='Config.editingPointScheme === true' )
+                        .row.nf-margin(ng-repeat='ps in Config.pointSchemeCopy.tossupValues track by ps.value' ng-show='Config.editingPointScheme === true' )
                             .col-lg-4.col-sm-9
                                 .input-group
                                     span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle(
@@ -37,16 +37,30 @@ div(class="panel panel-default nf-panel")
                                 .input-group
                                     span.nf-button.nf-red.btn.btn-md(ng-click='Config.removeFromPointSchemeCopy(ps)')
                                         i.fa.fa-trash
-
+                                        
                     .row.nf-margin(ng-show='Config.editingPointScheme === false' ng-if='Config.games.length === 0')                        
-                        .row.nf-margin(ng-repeat='ps in Config.pointScheme | orderBy:"value" track by ps.value')
+                        .row.nf-margin(ng-repeat='ps in Config.pointScheme.tossupValues | orderBy:"value" track by ps.value')
                             .col-lg-4.col-sm-9
                                 .input-group
                                     span.input-group-addon.nf-button.no-border.point-label(
                                         ng-class="{'nf-green': ps.type === 'Power', 'nf-blue' : ps.type === 'Base', 'nf-red' : ps.type === 'Neg'}"
                                     ) {{ps.type}}
                                     div.form-control.nf-input.nf-gray {{ps.value}}                                            
-                        
+                    .row.nf-margin
+                        .row.nf-margin
+                            .col-lg-4.col-sm-9
+                                .input-group
+                                    span.input-group-addon.nf-button.no-border.point-label Bonus Point Value
+                                    div.form-control.nf-input.nf-gray(ng-show='Config.editingPointScheme === false') {{Config.pointScheme.bonusPointValue}}  
+                                    input.form-control.nf-input(required type='number' min='1' name='bonusPointValue' ng-model='Config.pointSchemeCopy.bonusPointValue' ng-show='Config.editingPointScheme === true') 
+                    .row.nf-margin
+                        .row.nf-margin
+                            .col-lg-4.col-sm-9
+                                .input-group
+                                    span.input-group-addon.nf-button.no-border.point-label Parts Per Bonus
+                                    div.form-control.nf-input.nf-gray(ng-show='Config.editingPointScheme === false') {{Config.pointScheme.partsPerBonus}}  
+                                    input.form-control.nf-input(required type='number' min='1' name='partsPerBonus' ng-model='Config.pointSchemeCopy.partsPerBonus' ng-show='Config.editingPointScheme === true')
+
                 br
                 br
                 br
@@ -61,7 +75,7 @@ div(class="panel panel-default nf-panel")
                                         data-toggle='dropdown'
                                     ) {{Config.newPointValue.type || 'Type'}}
                                         i.fa.fa-caret-down
-                                    input.form-control.nf-input(type='number' ng-model='Config.newPointValue.value' placeholder='New point value' required)                                            
+                                    input.form-control.nf-input(type='number' ng-model='Config.newPointValue.value' placeholder='New tossup point value' required)                                            
                                     ul.dropdown-menu.nf-dropdown(aria-role='menu')
                                         li
                                             a(title='Reset' ng-click='Config.newPointValue.type = null' ng-show='Config.newPointValue.type !== null') Reset
@@ -72,25 +86,3 @@ div(class="panel panel-default nf-panel")
                                 button.nf-button.nf-green.btn(type='submit')
                                     i.fa.fa-check
 
-        div(class='row')
-            div(class="col-md-6")
-                label(class="label nf-dark-blue nf-label col-xs-4") Divisions
-                div(class="col-md-1")
-                div(class="form-group col-xs-7")
-                    //- form(id="divisions-form")
-                    //-     //- each phase in tournament.phases
-                    //-     //-     div(class="row")
-                    //-     //-         label(class="label nf-dark-blue nf-label col-xs-3 col-md-3 col-sm-3 phase-name" data-phase-id='#{phase.phase_id}') #{phase.name}
-                    //-     //-         button(type='button' data-toggle='tooltip' class="btn btn-sm nf-blue add-division " data-phase-id="#{phase.phase_id}" title='Add Division to #{phase.name}.')
-                    //-     //-             i(class="fa fa-plus")
-                    //-     //-         div(class="col-md-7 division-box" data-phase-id='#{phase.phase_id}')
-                    //-     //-             each division, i in tournament.divisions
-                    //-     //-                 if (division.phase_id == phase.phase_id)
-                    //-     //-                     input(readonly type='text' data-last-name='#{tournament.divisions[i].name}' style="width:100%" value="#{tournament.divisions[i].name}" class=' form-control nf-input input-medium no-border-radius division-name saved' data-phase-id='#{phase.phase_id}' data-division-id='#{tournament.divisions[i].division_id}')
-
-                    //-         br
-                    //-         br
-
-
-                //- div(class="btn-group" style="margin-top:15px")
-                //-     button(type="button" class="btn btn-md nf-green nf-button" data-toggle="tooltip" title='Empty boxes are ignored.') Save All Divisions

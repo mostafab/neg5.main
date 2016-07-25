@@ -35,4 +35,12 @@ exports.default = function (app) {
             }
         });
     });
+
+    app.get('/api/users', function (req, res) {
+        _account2.default.findByQuery(req.query.search).then(function (users) {
+            return res.json({ users: users, success: true });
+        }).catch(function (error) {
+            return res.send({ error: error, success: false });
+        });
+    });
 };

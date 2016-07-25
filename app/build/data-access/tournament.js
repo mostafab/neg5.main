@@ -57,7 +57,6 @@ exports.default = {
             (0, _db.query)(tournament.findByUser, params, _db.queryTypeMap.any).then(function (tournaments) {
                 return resolve(tournaments);
             }).catch(function (error) {
-                console.log(error);
                 reject(error);
             });
         });
@@ -69,14 +68,8 @@ exports.default = {
             var params = [id];
 
             (0, _db.query)(tournament.findById, params, _db.queryTypeMap.one).then(function (tournament) {
-                tournament.tossup_point_scheme = tournament.tossup_point_scheme.filter(function (tv) {
-                    return tv.type !== null;
-                }).sort(function (first, second) {
-                    return first.value - second.value;
-                });
                 resolve(tournament);
             }).catch(function (error) {
-                console.log(error);
                 reject(error);
             });
         });
@@ -101,7 +94,6 @@ exports.default = {
             (0, _db.query)(tournament.update, params, _db.queryTypeMap.one).then(function (updatedInfo) {
                 return resolve(updatedInfo);
             }).catch(function (error) {
-                console.log(error);
                 reject(error);
             });
         });
@@ -117,13 +109,12 @@ exports.default = {
             (0, _db.query)(tournament.addPointValue, params, _db.queryTypeMap.one).then(function (newTossupValue) {
                 return resolve(newTossupValue);
             }).catch(function (error) {
-                console.log(error);
                 reject(error);
             });
         });
     },
 
-    updateTossupPointValues: function updateTossupPointValues(id, tossupPointValues) {
+    updateTossupPointValues: function updateTossupPointValues(id, tossupPointValues, bonusPointValue, partsPerBonus) {
         return new Promise(function (resolve, reject) {
             var params = [id];
 
@@ -134,12 +125,16 @@ exports.default = {
             var types = _buildTournamentPoint2.types;
 
 
-            params.push(tournamentIds, values, types);
+            params.push(tournamentIds, values, types, bonusPointValue, partsPerBonus);
 
-            (0, _db.query)(tournament.updatePointValues, params, _db.queryTypeMap.any).then(function (newTossupValues) {
-                return resolve(newTossupValues);
+            (0, _db.query)(tournament.updatePointValues, params, _db.queryTypeMap.any).then(function (newValues) {
+                var result = {
+                    bonusPointValue: newValues[0].bonus_point_value,
+                    partsPerBonus: newValues[0].parts_per_bonus,
+                    tossupValues: newValues.splice(1)
+                };
+                resolve(result);
             }).catch(function (error) {
-                console.log(error);
                 reject(error);
             });
         });
