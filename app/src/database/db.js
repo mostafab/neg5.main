@@ -15,6 +15,13 @@ export let queryTypeMap = {
     any: pgp.queryResult.any
 }
 
+export let txMap = {
+    one: 'one',
+    many: 'many',
+    none: 'none',
+    any: 'any'
+}
+
 export let query = (text, params, queryType = pgp.queryResult.any) => {
     return new Promise((resolve, reject) => {
         db.query(text, params, queryType)
@@ -23,6 +30,26 @@ export let query = (text, params, queryType = pgp.queryResult.any) => {
                 console.log(error);
                 reject(error);            
             });
+    });
+}
+
+export let transaction = (queries) => {
+    return new Promise((resolve, reject) => {
+        db.tx(t => {
+            let formattedQueries = [];
+            queries.forEach(({text, params, queryType}) => {
+                // console.log(queryType);
+                formattedQueries.push(
+                    t[queryType](text, params)
+                )
+            });
+            return t.batch(formattedQueries);
+        })
+        .then(data => resolve(data))
+        .catch(error => {
+            console.log('ERROR: ', error.message || error);
+            reject(error);
+        });
     });
 }
 

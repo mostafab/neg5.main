@@ -6,27 +6,27 @@
             
                 .row
                         div(class="col-md-12 col-sm-12 col-lg-12")
-                            .input-group
-                                input(type="text" ng-model='Collab.searchQuery' class="form-control nf-input" ng-keypress='Collab.getKeyPress($event)' placeholder="Search for other users. Enter at least 5 characters")
-                                span(role='button' class="input-group-addon btn btn-md nf-green nf-button" ng-click='Collab.findUsers()')
-                                    i.fa.fa-search
+                            input(type="text" ng-model='Collab.searchQuery' class="form-control nf-input" ng-keyup='Collab.getKeyPress($event)' placeholder="Search for other users. Enter at least 5 characters")
                 .row
                     div(class="col-md-12 col-sm-12 col-lg-12")
 
                         br
+                        .row
+                            .col-lg-11
+                                .list-group.nf-shadow
+                                    div(style='overflow:auto;max-height:800px')
+                                        .input-group(ng-repeat='result in Collab.searchResults | orderBy: "username" track by $index')
+                                            a.list-group-item.nf-list-item.nf-dark-blue.no-border
+                                                p(style='display:inline')
+                                                    b(style='display:inline') {{result.username}} 
+                                                    p(style='display:inline') - {{result.name}}
+                                            span(role='button' title='{{"Add " + result.username + " as an admin."}}' class="input-group-addon btn btn-sm nf-green nf-button" ng-click='Collab.addCollaborator(result.username, true)') Admin
+                                            span(role='button' title='{{"Add " + result.username + "."}}' class="input-group-addon btn btn-sm nf-blue nf-button" ng-click='Collab.addCollaborator(result.username, false)')
+                                                i.fa.fa-user-plus
+                            .col-lg-1
+                                span.btn.nf-red.nf-button.nf-margin.btn-md(ng-if='Collab.searchResults.length > 0' ng-click='Collab.searchResults = []')
+                                    i.fa.fa-times
 
-                        .list-group.nf-shadow
-                            a.list-group-item.active Results
-                            div(style='overflow:auto;max-height:800px')
-                                .input-group(ng-repeat='result in Collab.searchResults | orderBy: "username" track by $index')
-                                    a.list-group-item.nf-list-item.nf-dark-blue(href='')
-                                        p(style='display:inline')
-                                            b(style='display:inline') {{result.name}}
-                                            p(style='display:inline') - {{result.username}} 
-                                    span(role='button' title='{{"Add " + result.username + " as an admin."}}' class="input-group-addon btn btn-sm nf-green nf-button" ng-click='Collab.addCollaborator(result.username, true)') Add as Admin
-                                    span(role='button' title='{{"Add " + result.username + "."}}' class="input-group-addon btn btn-sm nf-blue nf-button" ng-click='Collab.addCollaborator(result.username, false)')
-                                        i.fa.fa-user-plus
-        
     .col-lg-8.col-sm-12.col-md-6
         div(class="panel panel-default nf-panel")
             div(class="collapsable nf-panel-heading nf-dark-blue") Collaborators

@@ -2,7 +2,7 @@
 
 (function () {
 
-    angular.module('tournamentApp').factory('Collaborator', ['$http', '$q', function ($http, $q) {
+    angular.module('tournamentApp').factory('Collaborator', ['$http', '$q', 'Cookies', function ($http, $q, Cookies) {
 
         var service = this;
 
@@ -38,26 +38,19 @@
             });
         }
 
-        function findUsers(searchQuery) {
+        function findUsers(search) {
             return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
                 $http({
-                    url: '/api/users',
-                    method: 'GET',
-                    params: {
-                        searchQuery: searchQuery
-                    }
+                    url: '/api/users?token=' + token + '&search=' + search,
+                    method: 'GET'
                 }).then(function (_ref3) {
                     var data = _ref3.data;
 
-                    var formattedResults = data.directors.map(function (_ref4) {
-                        var username = _ref4.email;
-                        var name = _ref4.name;
-
-                        return {
-                            username: username,
-                            name: name
-                        };
+                    var formattedResults = data.users.filter(function (user) {
+                        return user.username !== data.currentUser;
                     });
+                    console.log(formattedResults);
                     resolve({ users: formattedResults });
                 }).catch(function (error) {
                     return reject(error);

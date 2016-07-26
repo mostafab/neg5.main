@@ -74,11 +74,13 @@ export default {
 
     updateTossupPointValues: (tournamentId, newPointValues) => {
         return new Promise((resolve, reject) => {
-            let validPoints = newPointValues.tossupValues.every(pv => pv.type && pv.value);
+            let validPoints = newPointValues.tossupValues.every(pv => pv.type && typeof(pv.value) === 'number');
             if (validPoints) {
                 db.updateTossupPointValues(tournamentId, newPointValues.tossupValues, newPointValues.bonusPointValue, newPointValues.partsPerBonus)
                     .then(result => resolve(result))
                     .catch(error => reject(error))
+            } else {
+                reject(new Error('Invalid point values given'));
             }
         })
     }

@@ -8,6 +8,8 @@ var _account = require('../../models/sql-models/account');
 
 var _account2 = _interopRequireDefault(_account);
 
+var _token = require('../../auth/middleware/token');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (app) {
@@ -36,9 +38,9 @@ exports.default = function (app) {
         });
     });
 
-    app.get('/api/users', function (req, res) {
+    app.get('/api/users', _token.hasToken, function (req, res) {
         _account2.default.findByQuery(req.query.search).then(function (users) {
-            return res.json({ users: users, success: true });
+            return res.json({ users: users, currentUser: req.currentUser, success: true });
         }).catch(function (error) {
             return res.send({ error: error, success: false });
         });

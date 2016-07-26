@@ -1,4 +1,4 @@
-import {query, queryTypeMap as qm} from '../database/db';
+import {query, transaction, queryTypeMap as qm, txMap as tm} from '../database/db';
 import sql from '../database/sql';
 
 const tournament = sql.tournament;
@@ -84,23 +84,41 @@ export default {
 
     updateTossupPointValues: (id, tossupPointValues, bonusPointValue, partsPerBonus) => {
         return new Promise((resolve, reject) => {
-            let params = [id];
+            let editQueries = tournament.editPointScheme.edit;
+
+            let queriesArray = [];
+
+            queriesArray.push({
+                text: editQueries.deleteTossupValues,
+                params: [id],
+                queryType: tm.none
+            });
+            queriesArray.push({
+                text: editQueries.updateBonusValues,
+                params: [id, bonusPointValue, partsPerBonus],
+                queryType: tm.one
+            });
+
             let {tournamentIds, values, types} = buildTournamentPointSchemeInsertQuery(tossupPointValues, id);
+            queriesArray.push({
+                text: editQueries.updateTossupPointValues,
+                params: [id, tournamentIds, values, types],
+                queryType: tm.any
+            });
 
-            params.push(tournamentIds, values, types, bonusPointValue, partsPerBonus);
-
-            query(tournament.updatePointValues, params, qm.any)
-                .then(newValues => {
-                    let result = {
-                        bonusPointValue: newValues[0].bonus_point_value,
-                        partsPerBonus: newValues[0].parts_per_bonus,
-                        tossupValues: newValues.splice(1)
+            transaction(queriesArray)
+                .then(result => {
+                    let data = {
+                        partsPerBonus: result[1].parts_per_bonus,
+                        bonusPointValue: result[1].bonus_point_value,
+                        tossupValues: result[2]
                     }
-                    resolve(result)
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
-                });
+                })
+
         })
     }
     

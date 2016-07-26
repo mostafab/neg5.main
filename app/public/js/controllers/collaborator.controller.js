@@ -2,14 +2,16 @@
 
 (function () {
 
-    angular.module('tournamentApp').controller('CollabCtrl', ['$scope', 'Collaborator', CollabCtrl]);
+    angular.module('tournamentApp').controller('CollabCtrl', ['$scope', '$timeout', 'Collaborator', CollabCtrl]);
 
-    function CollabCtrl($scope, Collaborator) {
+    function CollabCtrl($scope, $timeout, Collaborator) {
 
         var vm = this;
 
         vm.searchQuery = '';
         vm.searchResults = [];
+
+        vm.timeoutRequest = null;
 
         vm.collaborators = Collaborator.collaborators;
 
@@ -18,8 +20,14 @@
         };
 
         vm.getKeyPress = function (event) {
-            if (event.which === 13) {
-                vm.findUsers();
+            if (vm.searchQuery.trim().length >= 2) {
+                if (vm.timeoutRequest) {
+                    $timeout.cancel(vm.timeoutRequest);
+                }
+                vm.timeoutRequest = $timeout(function () {
+                    vm.findUsers();
+                    vm.timeoutRequest = null;
+                }, 333);
             }
         };
 

@@ -1,22 +1,30 @@
 (() => {
     
     angular.module('tournamentApp')
-        .controller('CollabCtrl', ['$scope', 'Collaborator', CollabCtrl]);
+        .controller('CollabCtrl', ['$scope', '$timeout', 'Collaborator', CollabCtrl]);
     
-    function CollabCtrl($scope, Collaborator) {
+    function CollabCtrl($scope, $timeout, Collaborator) {
         
         let vm = this;
         
         vm.searchQuery = '';
         vm.searchResults = [];
         
+        vm.timeoutRequest = null;
+
         vm.collaborators = Collaborator.collaborators;
         
         vm.getCollaborators = () => Collaborator.getCollaborators($scope.tournamentId);
         
         vm.getKeyPress = (event) => {
-            if (event.which === 13) {
-                vm.findUsers();
+            if (vm.searchQuery.trim().length >= 2) {
+                if (vm.timeoutRequest) {
+                    $timeout.cancel(vm.timeoutRequest);
+                }
+                vm.timeoutRequest = $timeout(() => {
+                    vm.findUsers();
+                    vm.timeoutRequest= null;
+                }, 333);
             }
         }
         

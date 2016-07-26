@@ -1,4 +1,5 @@
 import Account from '../../models/sql-models/account';
+import {hasToken} from '../../auth/middleware/token';
 
 export default (app) => {
     
@@ -32,9 +33,9 @@ export default (app) => {
                 });
         });
 
-    app.get('/api/users', (req, res) => {
+    app.get('/api/users', hasToken, (req, res) => {
         Account.findByQuery(req.query.search)
-            .then(users => res.json({users, success: true}))
+            .then(users => res.json({users, currentUser: req.currentUser, success: true}))
             .catch(error => res.send({error, success: false}))
     })
     

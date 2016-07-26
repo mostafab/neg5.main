@@ -1,7 +1,7 @@
 (() => {
    
    angular.module('tournamentApp')
-        .factory('Collaborator', ['$http', '$q', function($http, $q) {
+        .factory('Collaborator', ['$http', '$q', 'Cookies', function($http, $q, Cookies) {
             
             let service = this;
             
@@ -33,22 +33,16 @@
                     .catch(error => console.log(error));
             }
             
-            function findUsers(searchQuery) {
+            function findUsers(search) {
                 return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
                     $http({
-                        url: '/api/users',
-                        method: 'GET',
-                        params: {
-                            searchQuery
-                        }
+                        url: '/api/users?token=' + token + '&search=' + search,
+                        method: 'GET'
                     })
                     .then(({data}) => {
-                        let formattedResults = data.directors.map(({email: username, name}) => {
-                            return {
-                                username,
-                                name
-                            }
-                        });
+                        let formattedResults = data.users.filter(user => user.username !== data.currentUser);
+                        console.log(formattedResults);
                         resolve({users: formattedResults});
                     })
                     .catch(error => reject(error));

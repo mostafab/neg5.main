@@ -116,7 +116,20 @@ exports.default = {
 
     updateTossupPointValues: function updateTossupPointValues(id, tossupPointValues, bonusPointValue, partsPerBonus) {
         return new Promise(function (resolve, reject) {
-            var params = [id];
+            var editQueries = tournament.editPointScheme.edit;
+
+            var queriesArray = [];
+
+            queriesArray.push({
+                text: editQueries.deleteTossupValues,
+                params: [id],
+                queryType: _db.txMap.none
+            });
+            queriesArray.push({
+                text: editQueries.updateBonusValues,
+                params: [id, bonusPointValue, partsPerBonus],
+                queryType: _db.txMap.one
+            });
 
             var _buildTournamentPoint2 = buildTournamentPointSchemeInsertQuery(tossupPointValues, id);
 
@@ -124,16 +137,19 @@ exports.default = {
             var values = _buildTournamentPoint2.values;
             var types = _buildTournamentPoint2.types;
 
+            queriesArray.push({
+                text: editQueries.updateTossupPointValues,
+                params: [id, tournamentIds, values, types],
+                queryType: _db.txMap.any
+            });
 
-            params.push(tournamentIds, values, types, bonusPointValue, partsPerBonus);
-
-            (0, _db.query)(tournament.updatePointValues, params, _db.queryTypeMap.any).then(function (newValues) {
-                var result = {
-                    bonusPointValue: newValues[0].bonus_point_value,
-                    partsPerBonus: newValues[0].parts_per_bonus,
-                    tossupValues: newValues.splice(1)
+            (0, _db.transaction)(queriesArray).then(function (result) {
+                var data = {
+                    partsPerBonus: result[1].parts_per_bonus,
+                    bonusPointValue: result[1].bonus_point_value,
+                    tossupValues: result[2]
                 };
-                resolve(result);
+                resolve(data);
             }).catch(function (error) {
                 reject(error);
             });

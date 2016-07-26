@@ -13,8 +13,14 @@ export default {
         findByUser: getSQL('tournament-sql/findByUser.sql'),
         findById: getSQL('tournament-sql/findById.sql'),
         update: getSQL('tournament-sql/updateTournament.sql'),
-        addPointValue: getSQL('tournament-sql/addTossupPointValue.sql'),
-        updatePointValues: getSQL('tournament-sql/updateTossupPointValues.sql')
+        editPointScheme: {
+            addPointValue: getSQL('tournament-sql/addTossupPointValue.sql'),
+            edit: {
+                deleteTossupValues: getSQL('tournament-sql/transactions/editPointScheme/deleteTossupValues.sql'),
+                updateBonusValues: getSQL('tournament-sql/transactions/editPointScheme/updateBonusValues.sql'),
+                updateTossupPointValues: getSQL('tournament-sql/transactions/editPointScheme/updateTossupPointValues.sql')
+            }
+        }
     },
     account: {
         add: getSQL('account-sql/createAccount.sql'),

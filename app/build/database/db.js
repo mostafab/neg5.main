@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.query = exports.queryTypeMap = undefined;
+exports.transaction = exports.query = exports.txMap = exports.queryTypeMap = undefined;
 
 var _pgPromise = require('pg-promise');
 
@@ -31,6 +31,13 @@ var queryTypeMap = exports.queryTypeMap = {
     any: _pgPromise2.default.queryResult.any
 };
 
+var txMap = exports.txMap = {
+    one: 'one',
+    many: 'many',
+    none: 'none',
+    any: 'any'
+};
+
 var query = exports.query = function query(text, params) {
     var queryType = arguments.length <= 2 || arguments[2] === undefined ? _pgPromise2.default.queryResult.any : arguments[2];
 
@@ -39,6 +46,28 @@ var query = exports.query = function query(text, params) {
             return resolve(data);
         }).catch(function (error) {
             console.log(error);
+            reject(error);
+        });
+    });
+};
+
+var transaction = exports.transaction = function transaction(queries) {
+    return new Promise(function (resolve, reject) {
+        db.tx(function (t) {
+            var formattedQueries = [];
+            queries.forEach(function (_ref) {
+                var text = _ref.text;
+                var params = _ref.params;
+                var queryType = _ref.queryType;
+
+                // console.log(queryType);
+                formattedQueries.push(t[queryType](text, params));
+            });
+            return t.batch(formattedQueries);
+        }).then(function (data) {
+            return resolve(data);
+        }).catch(function (error) {
+            console.log('ERROR: ', error.message || error);
             reject(error);
         });
     });

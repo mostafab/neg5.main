@@ -123,7 +123,7 @@ exports.default = {
     updateTossupPointValues: function updateTossupPointValues(tournamentId, newPointValues) {
         return new Promise(function (resolve, reject) {
             var validPoints = newPointValues.tossupValues.every(function (pv) {
-                return pv.type && pv.value;
+                return pv.type && typeof pv.value === 'number';
             });
             if (validPoints) {
                 _tournament2.default.updateTossupPointValues(tournamentId, newPointValues.tossupValues, newPointValues.bonusPointValue, newPointValues.partsPerBonus).then(function (result) {
@@ -131,6 +131,8 @@ exports.default = {
                 }).catch(function (error) {
                     return reject(error);
                 });
+            } else {
+                reject(new Error('Invalid point values given'));
             }
         });
     }
