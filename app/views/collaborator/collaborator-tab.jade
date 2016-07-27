@@ -12,20 +12,11 @@
 
                         br
                         .row
-                            .col-lg-11
-                                .list-group.nf-shadow
-                                    div(style='overflow:auto;max-height:800px')
-                                        .input-group(ng-repeat='result in Collab.searchResults | orderBy: "username" track by $index')
-                                            a.list-group-item.nf-list-item.nf-dark-blue.no-border
-                                                p(style='display:inline')
-                                                    b(style='display:inline') {{result.username}} 
-                                                    p(style='display:inline') - {{result.name}}
-                                            span(role='button' title='{{"Add " + result.username + " as an admin."}}' class="input-group-addon btn btn-sm nf-green nf-button" ng-click='Collab.addCollaborator(result.username, true)') Admin
-                                            span(role='button' title='{{"Add " + result.username + "."}}' class="input-group-addon btn btn-sm nf-blue nf-button" ng-click='Collab.addCollaborator(result.username, false)')
-                                                i.fa.fa-user-plus
-                            .col-lg-1
-                                span.btn.nf-red.nf-button.nf-margin.btn-md(ng-if='Collab.searchResults.length > 0' ng-click='Collab.searchResults = []')
-                                    i.fa.fa-times
+                            .col-lg-12
+                                .input-group(ng-repeat='result in Collab.searchResults | orderBy: "username" track by $index')
+                                    div.form-control.nf-input.nf-dark-blue.no-border {{result.username}}
+                                    span.input-group-addon.no-border.nf-button.nf-green(ng-click='Collab.addCollaborator(result.username, true)') Add as Admin
+                                    span.input-group-addon.no-border.nf-button.nf-blue(ng-click='Collab.addCollaborator(result.username, false)') Add
 
     .col-lg-8.col-sm-12.col-md-6
         div(class="panel panel-default nf-panel")
@@ -33,10 +24,10 @@
             div(class="panel-body tournament-panel nf-panel-body")        
                     
                 .row
-                    .col-md-12.col-sm-12.col-lg-6
-                        .input-group(ng-repeat='collab in Collab.collaborators | orderBy: "admin"') 
-                            a.list-group-item
-                                p {{collab.name}} - {{collab.username}}
+                    .col-md-12.col-sm-12.col-lg-12
+                        .input-group.nf-margin(ng-repeat='collab in Collab.collaborators | orderBy: ["username"]') 
+                            span.input-group-addon.btn.nf-button(ng-click='Collab.toggleAdmin(collab)' ng-class="{'nf-green' : collab.admin, 'nf-blue' : !collab.admin}" title='Toggle Admin priviledges') {{collab.admin ? 'Admin' : ''}}
+                            div.form-control.nf-input.nf-gray.no-border.nf-dark-blue.nf-list-item(title='View {{collab.username + "\'s"}} activity') {{collab.username}} | {{collab.name}} 
                             span.input-group-addon.nf-red.btn.nf-button(role='button' ng-click='Collab.removeCollaborator(collab.username)' ng-if='tournamentContext.admin === true')
                                 i.fa.fa-trash  
                                 

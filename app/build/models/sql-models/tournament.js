@@ -135,6 +135,41 @@ exports.default = {
                 reject(new Error('Invalid point values given'));
             }
         });
+    },
+
+    addCollaborator: function addCollaborator(tournamentId, currentUser, username) {
+        var isAdmin = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+
+        return new Promise(function (resolve, reject) {
+            if (currentUser === username) return reject(new Error('Cannot add yourself as a collaborator'));
+            _tournament2.default.addCollaborator(tournamentId, username, isAdmin).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    findCollaborators: function findCollaborators(tournamentId) {
+        return new Promise(function (resolve, reject) {
+            _tournament2.default.findTournamentCollaborators(tournamentId).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    updateCollaborator: function updateCollaborator(tournamentId, username) {
+        var isAdmin = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
+        return new Promise(function (resolve, reject) {
+            _tournament2.default.updateCollaborator(tournamentId, username.toLowerCase(), isAdmin).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

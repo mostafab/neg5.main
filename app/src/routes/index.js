@@ -20,6 +20,10 @@ module.exports = app => {
         res.render('tournament/alltournaments', {tournamentd: currentUser});
     });
 
+    app.get("/t/:tid", hasToken, (req, res, next) => {
+        res.render("tournament/tournament-view", {tournamentd : req.currentUser});
+    });
+
     app.get("/about", (req, res) => {
         res.render("index/about", {tournamentd : req.session.director});
     });

@@ -2,6 +2,7 @@ import {query, transaction, queryTypeMap as qm, txMap as tm} from '../database/d
 import sql from '../database/sql';
 
 const tournament = sql.tournament;
+const collaborator = sql.collaborator;
 
 export default {
     
@@ -120,6 +121,33 @@ export default {
                 })
 
         })
+    },
+
+    addCollaborator: (id, username, isAdmin) => {
+        return new Promise((resolve, reject) => {
+            let params = [id, username, isAdmin];
+            query(collaborator.add, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
+    findTournamentCollaborators: (id) => {
+        return new Promise((resolve, reject) => {
+            let params = [id];
+            query(collaborator.findByTournament, params, qm.any)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        });
+    },
+
+    updateCollaborator: (id, username, isAdmin) => {
+        return new Promise((resolve, reject) => {
+            let params = [id, username, isAdmin];
+            query(collaborator.edit, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        });
     }
     
 }

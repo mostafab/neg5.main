@@ -45,6 +45,34 @@
         vm.addCollaborator = function (username) {
             var admin = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
+            var toastConfig = {
+                message: 'Adding ' + username
+            };
+            $scope.toast(toastConfig);
+            Collaborator.postCollaborator($scope.tournamentId, username, admin).then(function () {
+                removeFromSearchResults(username);
+                toastConfig.message = 'Added ' + username;
+                toastConfig.success = true;
+            }).catch(function (error) {
+                toastConfig.message = 'Could not add ' + username;
+                toastConfig.success = false;
+            }).finally(function () {
+                toastConfig.hideAfter = true;
+                $scope.toast(toastConfig);
+            });
+        };
+
+        vm.toggleAdmin = function (collaborator) {
+            Collaborator.updateCollaborator($scope.tournamentId, collaborator.username, !collaborator.admin).catch(function (error) {
+                $scope.toast({
+                    message: 'Could not change permissions',
+                    success: false,
+                    hideAfter: true
+                });
+            });
+        };
+
+        var removeFromSearchResults = function removeFromSearchResults(username) {
             var index = 0;
             while (vm.searchResults[index] && vm.searchResults[index].username !== username) {
                 index++;
@@ -56,6 +84,6 @@
             return Collaborator.deleteCollaborator($scope.tournamentId, username);
         };
 
-        // vm.getCollaborators();
+        vm.getCollaborators();
     }
 })();

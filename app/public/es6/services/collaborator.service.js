@@ -11,17 +11,40 @@
                 collaborators,
                 getCollaborators,
                 deleteCollaborator,
+                postCollaborator,
+                updateCollaborator,
                 findUsers
             }
             
-            function postCollaborator(tournamentId) {
-                
+            function postCollaborator(tournamentId, username, isAdmin) {
+                return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
+                    let body = {
+                        username,
+                        token,
+                        admin: isAdmin
+                    }
+                    $http.post('/api/t/' + tournamentId + '/collaborators', body)
+                        .then(({data}) => {
+                            let formattedResult = {
+                                name: data.result.name,
+                                username: data.result.username,
+                                admin: data.result.is_admin
+                            };
+                            service.collaboratorFactory.collaborators.push(formattedResult);
+                            resolve();
+                        })
+                        .catch(error => {
+                            reject(error);
+                        })
+                })
             }
             
             function getCollaborators(tournamentId) {
-                $http.get('/api/t/' + tournamentId + '/collaborators')
+                let token = Cookies.get('nfToken');
+                $http.get('/api/t/' + tournamentId + '/collaborators?token=' + token)
                     .then(({data}) => {
-                        let formattedCollaborators = data.collaborators.map(({name, email: username, admin}) => {
+                        let formattedCollaborators = data.result.map(({name, username, is_admin: admin}) => {
                             return {
                                 name,
                                 username,
@@ -33,6 +56,25 @@
                     .catch(error => console.log(error));
             }
             
+            function updateCollaborator(tournamentId, username, admin) {
+                return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
+                    let body = {
+                        admin,
+                        token
+                    }
+                    $http.put('/api/t/' + tournamentId + '/collaborators/' + username, body)
+                        .then(({data}) => {
+                            service.collaboratorFactory.collaborators.find(collab => collab.username === data.result.username).admin = data.result.is_admin;
+                            resolve();
+                        })
+                        .catch(error => {
+                            reject(error);
+                        })
+                })
+                
+            }
+
             function findUsers(search) {
                 return $q((resolve, reject) => {
                     let token = Cookies.get('nfToken');
@@ -42,7 +84,6 @@
                     })
                     .then(({data}) => {
                         let formattedResults = data.users.filter(user => user.username !== data.currentUser);
-                        console.log(formattedResults);
                         resolve({users: formattedResults});
                     })
                     .catch(error => reject(error));

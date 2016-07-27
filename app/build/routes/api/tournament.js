@@ -44,7 +44,27 @@ exports.default = function (app) {
         });
     }).delete(function (req, res) {});
 
-    app.route('/api/t/:tid/collaborator').post(_token.hasToken, function (req, res) {}).put(_token.hasToken, function (req, res) {});
+    app.route('/api/t/:tid/collaborators').get(_token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
+        _tournament2.default.findCollaborators(req.params.tid).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    }).post(_token.hasToken, _tournamentAccess.adminAccessToTournament, function (req, res) {
+        _tournament2.default.addCollaborator(req.params.tid, req.currentUser, req.body.username, req.body.admin).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    });
+
+    app.route('/api/t/:tid/collaborators/:username').get(_token.hasToken, function (req, res) {}).put(_token.hasToken, _tournamentAccess.directorAccessToTournament, function (req, res) {
+        _tournament2.default.updateCollaborator(req.params.tid, req.params.username, req.body.admin).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    });
 
     app.route('/api/t/:tid/pointscheme').post(_token.hasToken, function (req, res) {
         _tournament2.default.addTossupPointValue(req.params.tid, req.body).then(function (result) {

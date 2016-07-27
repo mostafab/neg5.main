@@ -33,12 +33,26 @@ export default (app) => {
             
         })
     
-    app.route('/api/t/:tid/collaborator')
-        .post(hasToken, (req, res) => {
+    app.route('/api/t/:tid/collaborators')
+        .get(hasToken, accessToTournament, (req, res) => {
+            Tournament.findCollaborators(req.params.tid)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}))
+        })
+        .post(hasToken, adminAccessToTournament, (req, res) => {
+            Tournament.addCollaborator(req.params.tid, req.currentUser, req.body.username, req.body.admin)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}))
+        })
+
+    app.route('/api/t/:tid/collaborators/:username')
+        .get(hasToken, (req, res) => {
             
         })
-        .put(hasToken, (req, res) => {
-
+        .put(hasToken, directorAccessToTournament, (req, res) => {
+            Tournament.updateCollaborator(req.params.tid, req.params.username, req.body.admin)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}));
         })
 
     app.route('/api/t/:tid/pointscheme')

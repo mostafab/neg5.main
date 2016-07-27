@@ -13,6 +13,7 @@ var _sql2 = _interopRequireDefault(_sql);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var tournament = _sql2.default.tournament;
+var collaborator = _sql2.default.collaborator;
 
 exports.default = {
 
@@ -152,6 +153,39 @@ exports.default = {
                 resolve(data);
             }).catch(function (error) {
                 reject(error);
+            });
+        });
+    },
+
+    addCollaborator: function addCollaborator(id, username, isAdmin) {
+        return new Promise(function (resolve, reject) {
+            var params = [id, username, isAdmin];
+            (0, _db.query)(collaborator.add, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    findTournamentCollaborators: function findTournamentCollaborators(id) {
+        return new Promise(function (resolve, reject) {
+            var params = [id];
+            (0, _db.query)(collaborator.findByTournament, params, _db.queryTypeMap.any).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    updateCollaborator: function updateCollaborator(id, username, isAdmin) {
+        return new Promise(function (resolve, reject) {
+            var params = [id, username, isAdmin];
+            (0, _db.query)(collaborator.edit, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
             });
         });
     }

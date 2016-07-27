@@ -83,6 +83,31 @@ export default {
                 reject(new Error('Invalid point values given'));
             }
         })
+    },
+
+    addCollaborator: (tournamentId, currentUser, username, isAdmin = false) => {
+        return new Promise((resolve, reject) => {
+            if (currentUser === username) return reject(new Error('Cannot add yourself as a collaborator'));
+            db.addCollaborator(tournamentId, username, isAdmin)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
+    findCollaborators: (tournamentId) => {
+        return new Promise((resolve, reject) => {
+            db.findTournamentCollaborators(tournamentId)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
+    updateCollaborator: (tournamentId, username, isAdmin = false) => {
+        return new Promise((resolve, reject) => {
+            db.updateCollaborator(tournamentId, username.toLowerCase(), isAdmin)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
     
 }

@@ -41,7 +41,7 @@ export default () => {
     
     require('../routes/index.js')(app);
     require("../routes/user-route.js")(app);
-    require("../routes/tournaments-route.js")(app);
+    // require("../routes/tournaments-route.js")(app);
     require("../routes/stats-route.js")(app);
     
     accountApi(app);

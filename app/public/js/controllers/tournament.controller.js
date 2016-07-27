@@ -5,7 +5,7 @@
 
     function TournamentCtrl($scope, $http, $window, $timeout, Team, Game, Tournament) {
 
-        $scope.tournamentId = $window.location.href.split('/')[4];
+        $scope.tournamentId = $window.location.pathname.split('/')[2];
 
         $scope.tournamentContext = {
             admin: false,
@@ -38,6 +38,9 @@
         };
 
         var vm = this;
+
+        vm.setTab = Tournament.setTab;
+        vm.getCurrentTab = Tournament.getCurrentTab;
 
         vm.tournamentInfoCopy = {};
         vm.teams = Team.teams;

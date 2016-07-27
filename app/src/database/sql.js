@@ -33,5 +33,10 @@ export default {
     },
     team: {
         findByTournament: getSQL('team-sql/findTeamsByTournament.sql')
+    },
+    collaborator: {
+        add: getSQL('collaborator-sql/addCollaborator.sql'),
+        findByTournament: getSQL('collaborator-sql/findCollaboratorsByTournament.sql'),
+        edit: getSQL('collaborator-sql/updateCollaboratorPermissions.sql')
     }
 }
