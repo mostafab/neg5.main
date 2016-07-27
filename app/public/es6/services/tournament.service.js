@@ -14,14 +14,8 @@
                 getTournamentContext,
                 edit,
                 addPointValue,
-                postPointValues,
-
-                setTab,
-                getCurrentTab
+                postPointValues
             }
-
-            function setTab(tab) {Cookies.set('nfCurrentTab', tab)}; 
-            function getCurrentTab() {Cookies.get('nfCurrentTab')};
             
             function getTournamentContext(tournamentId) {
                 return $q((resolve, reject) => {

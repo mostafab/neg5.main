@@ -39,8 +39,9 @@
 
         var vm = this;
 
-        vm.setTab = Tournament.setTab;
-        vm.getCurrentTab = Tournament.getCurrentTab;
+        vm.tab = 'overview';
+        vm.matchTab = 'add';
+        vm.teamTab = 'add';
 
         vm.tournamentInfoCopy = {};
         vm.teams = Team.teams;

@@ -29,25 +29,24 @@ block content
                     h2(class="nf-label nf-dark-blue center") {{tournamentInfo.name}}
                 div(class='col-sm-10 col-xs-10')
                     ul(class="breadcrumb")
-                        li(class="active center")
-                            a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
-                        li(class="center" ng-if='tournamentContext.owner === true')
-                            a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
-                        li(class="center")
-                            a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
-
-                        li(class="center")
-                            a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Matches ({{Tournament.games.length}})
-                        li(class="center")
-                            a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
-                        li(class="center")
-                            a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
-                        li(class="center" ng-if='tournamentContext.admin === true')
-                            a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
+                        li(class="center" ng-click='Tournament.tab = "overview"')
+                            a(data-toggle="tab" class='tournament-tab btn-md') Overview
+                        li(class="center" ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "config"')
+                            a(data-toggle="tab" class='tournament-tab btn-md') Configuration
+                        li(class="center" ng-click='Tournament.tab = "collaborator"')
+                            a(data-toggle='tab' class='tournament-tab btn-md') Collaborators
+                        li(class="center" ng-click='Tournament.tab = "match"')
+                            a(data-toggle="tab" class='tournament-tab btn-md') Matches ({{Tournament.games.length}})
+                        li(class="center" ng-click='Tournament.tab = "team"')
+                            a(data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
+                        li(class="center" ng-click='Tournament.tab = "statistics"')
+                            a(data-toggle="tab" class='tournament-tab btn-md') Statistics
+                        li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"')
+                            a(data-toggle="tab" class='tournament-tab btn-md') Phases
                         li
-                            a(href='#scoresheet') Scoresheet
-                        li(style='float:right' ng-if='tournamentContext.owner === true')
-                            a(href="#delete" class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
+                            a() Scoresheet
+                        li(style='float:right' ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "delete"')
+                            a(class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
                                 i(class='fa fa-trash')
                                     
             div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
@@ -59,58 +58,58 @@ block content
                     div(class="row")
                         div(class='col-sm-7 col-md-12 col-lg-12')
                             ul(class="nav nav-bar no-border-radius")
-                                li(class="active center")
-                                    a(href="#overview" data-toggle="tab" class='tournament-tab btn-md') Overview
-                                li(class="center" ng-if='tournamentContext.owner === true')
-                                    a(href="#divisions" data-toggle="tab" class='tournament-tab btn-md') Configuration
-                                li(class="center")
-                                    a(href='#collaborators' data-toggle='tab' class='tournament-tab btn-md') Collaborators
-                                li(class="center")
-                                    a(href="#games" data-toggle="tab" class='tournament-tab btn-md') Matches ({{Tournament.games.length}})
-                                li(class="center")
-                                    a(href="#teams" data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
-                                li(class="center")
-                                    a(href="#stats" data-toggle="tab" class='tournament-tab btn-md') Statistics
-                                li(class="center" ng-if='tournamentContext.admin === true')
-                                    a(href="#phase" data-toggle="tab" class='tournament-tab btn-md') Phases
+                                li(class="center" ng-click='Tournament.tab = "overview"')
+                                    a(data-toggle="tab" class='tournament-tab btn-md') Overview
+                                li(class="center" ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "config"')
+                                    a(data-toggle="tab" class='tournament-tab btn-md') Configuration
+                                li(class="center" ng-click='Tournament.tab = "collaborator"')
+                                    a(data-toggle='tab' class='tournament-tab btn-md') Collaborators
+                                li(class="center" ng-click='Tournament.tab = "match"')
+                                    a(data-toggle="tab" class='tournament-tab btn-md') Matches ({{Tournament.games.length}})
+                                li(class="center" ng-click='Tournament.tab = "team"')
+                                    a(data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
+                                li(class="center" ng-click='Tournament.tab = "statistics"')
+                                    a(data-toggle="tab" class='tournament-tab btn-md') Statistics
+                                li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"')
+                                    a(data-toggle="tab" class='tournament-tab btn-md') Phases
                         
                         div(class='col-sm-5 col-md-12 col-lg-12')
                             ul(class="nav nav-bar no-border-radius")
                                 li
                                     a(href='#scoresheet' class='btn-md nf-button nf-orange') Scoresheet
                                     div(style='margin-top:10px')
-                                li(ng-if='tournamentContext.owner === true')
-                                    a(href="#delete" class="nf-red btn-md tournament-tab nf-button" data-toggle="tab" style='color:white')
+                                li(ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "delete"')
+                                    a(class="nf-red btn-md tournament-tab nf-button" data-toggle="tab" style='color:white')
                                         i(class='fa fa-trash')
 
 
             div(class='col-sm-12 col-md-10 col-lg-10 col-lg-offset-2')
                 div(class="tab-content")
-                    div(class="tab-pane fade active in" id="overview")
+                    div(class="tab-pane fade angular-animate" id="overview" ng-class="{'active in' : Tournament.tab ==='overview', 'fade': Tournament.tab !=='overview'}")
                         include ./tournament-tab.jade
 
-                    div(class='tab-pane fade' id='collaborators' ng-controller='CollabCtrl as Collab')
+                    div(class='tab-pane fade angular-animate' id='collaborators' ng-controller='CollabCtrl as Collab' ng-class="{'active in' : Tournament.tab ==='collaborator'}")
                         include ./../collaborator/collaborator-tab.jade                        
 
-                    div(class="tab-pane fade" id="divisions" ng-if='tournamentContext.owner === true' ng-controller='ConfigCtrl as Config')
+                    div(class="tab-pane fade angular-animate" id="divisions" ng-if='tournamentContext.owner === true' ng-controller='ConfigCtrl as Config' ng-class="{'active in' : Tournament.tab ==='config'}")
                         include ./../config/config-tab.jade
 
-                    div(class="tab-pane fade" id="games" ng-controller='GameCtrl as Game')
+                    div(class="tab-pane fade angular-animate" id="games" ng-controller='GameCtrl as Game' ng-class="{'active in' : Tournament.tab ==='match'}")
 
                         .row
                             .col-lg-1
                                  ul(class="nav nav-bar no-border-radius")
-                                    li(class="active center")
-                                        a(href="#add-game" data-toggle="tab" class='tournament-tab btn-md') Add Match
-                                    li(class="center")
-                                        a(href="#game-list" data-toggle="tab" class='tournament-tab btn-md') Match List
+                                    li(class="center" ng-click='Tournament.matchTab = "add"')
+                                        a(data-toggle="tab" class='tournament-tab btn-md') Add Match
+                                    li(class="center" ng-click='Tournament.matchTab = "list"')
+                                        a(data-toggle="tab" class='tournament-tab btn-md') Match List
                                     br
                             .col-lg-11
                                 .tab-content
-                                    .tab-pane.fade.active.in#add-game
+                                    .tab-pane.fade#add-game(ng-class='{"active in" : Tournament.matchTab === "add"}') 
                                         include ./../game/add-game.jade
 
-                                    .tab-pane.fade#game-list
+                                    .tab-pane.fade#game-list(ng-class='{"active in" : Tournament.matchTab === "list"}') 
 
                                         div(id='game-list-div')
                                             div(id='game-list-template')
@@ -119,34 +118,34 @@ block content
                         div(class='row')
                             div(class='col-md-12' id='game-view-div')
 
-                    div(class="tab-pane fade" id="teams" ng-controller='TeamCtrl as Team')
+                    div(class="tab-pane fade angular-animate" id="teams" ng-controller='TeamCtrl as Team' ng-class="{'active in' : Tournament.tab ==='team'}")
                         
                         .row
                             .col-lg-1
                                 ul(class="nav nav-bar no-border-radius")
-                                    li(class="active center")
-                                        a(href="#add-team" data-toggle="tab" class='tournament-tab btn-md') Add Team
-                                    li(class="center")
-                                        a(href="#team-list" data-toggle="tab" class='tournament-tab btn-md') Team List
+                                    li(class="active center" ng-click='Tournament.teamTab = "add"')
+                                        a(data-toggle="tab" class='tournament-tab btn-md') Add Team
+                                    li(class="center" ng-click='Tournament.teamTab = "list"')
+                                        a(data-toggle="tab" class='tournament-tab btn-md') Team List
                                     br
                             .col-lg-11
                                 .tab-content
-                                    .tab-pane.fade.active.in#add-team           
+                                    .tab-pane.fade#add-team(ng-class='{"active in" : Tournament.teamTab === "add"}')            
                                         include ./../team/add-team.jade
-                                    .tab-pane.fade#team-list
+                                    .tab-pane.fade#team-list(ng-class='{"active in" : Tournament.teamTab === "list"}') 
                                         include ./../team/team-list.jade
 
                         div(class='row' style='margin-left:20px')
                             div(class='col-md-12' id='team-view-div')
 
-                    div(class="tab-pane fade" id="stats" ng-controller='StatisticsCtrl as Statistics')
+                    div(class="tab-pane fade angular-animate" id="stats" ng-controller='StatisticsCtrl as Statistics' ng-class="{'active in' : Tournament.tab ==='statistics'}")
                         
                         include ./../stats/tab/stats-tab.jade
                     
-                    div(class="tab-pane fade" id="phase" ng-controller='PhaseCtrl as Phase' ng-if='tournamentContext.admin === true')
+                    div(class="tab-pane fade angular-animate" id="phase" ng-controller='PhaseCtrl as Phase' ng-if='tournamentContext.admin === true' ng-class="{'active in' : Tournament.tab ==='phase'}")
                         include ./../phase/phase-tab.jade
                         
-                    div(ng-if='tournamentContext.owner === true' class="tab-pane fade" id="delete")
+                    div(ng-if='tournamentContext.owner === true' class="tab-pane fade" id="delete" ng-class="{'active in' : Tournament.tab ==='delete'}")
 
                         div(class="panel panel-default")
                             div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Delete {{tournamentInfo.name}}

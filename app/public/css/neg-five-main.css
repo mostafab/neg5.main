@@ -146,6 +146,10 @@
     white-space: pre-wrap;
 }
 
+.nav-bar > li:hover {
+    cursor: pointer;
+}
+
 .nav-bar * a {
     color: white;
 }

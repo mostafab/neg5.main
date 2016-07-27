@@ -15,17 +15,7 @@
             getTournamentContext: getTournamentContext,
             edit: edit,
             addPointValue: addPointValue,
-            postPointValues: postPointValues,
-
-            setTab: setTab,
-            getCurrentTab: getCurrentTab
-        };
-
-        function setTab(tab) {
-            Cookies.set('nfCurrentTab', tab);
-        };
-        function getCurrentTab() {
-            Cookies.get('nfCurrentTab');
+            postPointValues: postPointValues
         };
 
         function getTournamentContext(tournamentId) {
