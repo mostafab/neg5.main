@@ -170,6 +170,16 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    removeCollaborator: function removeCollaborator(tournamentId, username) {
+        return new Promise(function (resolve, reject) {
+            _tournament2.default.deleteCollaborator(tournamentId, username.toLowerCase()).then(function (deletedCollab) {
+                return resolve(deletedCollab);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

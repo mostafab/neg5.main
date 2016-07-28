@@ -108,6 +108,14 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
+    },
+
+    removeCollaborator: (tournamentId, username) => {
+        return new Promise((resolve, reject) => {
+            db.deleteCollaborator(tournamentId, username.toLowerCase())
+                .then(deletedCollab => resolve(deletedCollab))
+                .catch(error => reject(error));
+        })
     }
     
 }

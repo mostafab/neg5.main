@@ -91,10 +91,19 @@
             }
             
             function deleteCollaborator(tournamentId, username) {
-                let index = 0;
-                while (service.collaboratorFactory.collaborators[index] && service.collaboratorFactory.collaborators[index].username !== username) {
-                    index++;
-                }
+                return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
+                    $http.delete('/api/t/' + tournamentId + '/collaborators/' + username + '?token=' + token)
+                        .then(({data}) => {
+                            removeFromCollaboratorArray(data.result.username);
+                            resolve();
+                        })
+                        .catch(error => reject(error));
+                })
+            }
+
+            function removeFromCollaboratorArray(username) {
+                let index = service.collaboratorFactory.collaborators.findIndex((collab) => collab.username === username);
                 service.collaboratorFactory.collaborators.splice(index, 1);
             }
             

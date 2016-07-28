@@ -54,6 +54,11 @@ export default (app) => {
                 .then(result => res.json({result, success: true}))
                 .catch(error => res.status(500).send({error, success: false}));
         })
+        .delete(hasToken, directorAccessToTournament, (req, res) => {
+            Tournament.removeCollaborator(req.params.tid, req.params.username)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.json({error, success: false}))
+        })
 
     app.route('/api/t/:tid/pointscheme')
         .post(hasToken, (req, res) => {

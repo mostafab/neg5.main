@@ -188,6 +188,17 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    deleteCollaborator: function deleteCollaborator(id, username) {
+        return new Promise(function (resolve, reject) {
+            var params = [id, username];
+            (0, _db.query)(collaborator.remove, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

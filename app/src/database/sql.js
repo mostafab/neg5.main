@@ -37,6 +37,7 @@ export default {
     collaborator: {
         add: getSQL('collaborator-sql/addCollaborator.sql'),
         findByTournament: getSQL('collaborator-sql/findCollaboratorsByTournament.sql'),
-        edit: getSQL('collaborator-sql/updateCollaboratorPermissions.sql')
+        edit: getSQL('collaborator-sql/updateCollaboratorPermissions.sql'),
+        remove: getSQL('collaborator-sql/deleteCollaborator.sql')
     }
 }

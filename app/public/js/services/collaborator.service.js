@@ -103,10 +103,23 @@
         }
 
         function deleteCollaborator(tournamentId, username) {
-            var index = 0;
-            while (service.collaboratorFactory.collaborators[index] && service.collaboratorFactory.collaborators[index].username !== username) {
-                index++;
-            }
+            return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
+                $http.delete('/api/t/' + tournamentId + '/collaborators/' + username + '?token=' + token).then(function (_ref6) {
+                    var data = _ref6.data;
+
+                    removeFromCollaboratorArray(data.result.username);
+                    resolve();
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
+
+        function removeFromCollaboratorArray(username) {
+            var index = service.collaboratorFactory.collaborators.findIndex(function (collab) {
+                return collab.username === username;
+            });
             service.collaboratorFactory.collaborators.splice(index, 1);
         }
 

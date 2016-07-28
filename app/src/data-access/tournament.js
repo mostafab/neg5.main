@@ -148,6 +148,15 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         });
+    },
+
+    deleteCollaborator: (id, username) => {
+        return new Promise((resolve, reject) => {
+            let params = [id, username];
+            query(collaborator.remove, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        });
     }
     
 }

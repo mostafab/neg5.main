@@ -64,6 +64,12 @@ exports.default = function (app) {
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
         });
+    }).delete(_token.hasToken, _tournamentAccess.directorAccessToTournament, function (req, res) {
+        _tournament2.default.removeCollaborator(req.params.tid, req.params.username).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.json({ error: error, success: false });
+        });
     });
 
     app.route('/api/t/:tid/pointscheme').post(_token.hasToken, function (req, res) {

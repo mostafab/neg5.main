@@ -19,7 +19,7 @@ block content
                             a.nf-dark-blue.list-group-item.nf-list-item(ng-repeat='tournament in Home.tournaments | orderBy:"name"' href='{{"/t/" + tournament.id}}')
                                 p(style='display:inline') {{tournament.name}}
                                 p(style='display:inline;float:right') {{tournament.question_set || 'Question Set: None'}}
-
+                                
 block scripts
     
     script(src="/js/home.js")
