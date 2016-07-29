@@ -9,8 +9,12 @@
         var vm = this;
 
         vm.editingPointScheme = false;
-        vm.pointScheme = Tournament.pointScheme;
+        vm.editingRules = false;
 
+        vm.pointScheme = Tournament.pointScheme;
+        vm.rules = Tournament.rules;
+
+        vm.rulesCopy = {};
         vm.pointSchemeCopy = {
             tossupValues: []
         };
@@ -90,5 +94,6 @@
         };
 
         angular.copy(vm.pointScheme, vm.pointSchemeCopy);
+        angular.copy(vm.rules, vm.rulesCopy);
     }
 })();

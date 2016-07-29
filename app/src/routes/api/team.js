@@ -10,8 +10,10 @@ export default (app) => {
                 .then(teams => res.json({teams}))
                 .catch(error => res.status(500).send(error));
         })
-        .post((req, res) => {
-            
+        .post(hasToken, (req, res) => {
+            Team.addToTournament(req.params.tid, req.body, req.currentUser)
+                .then(team => res.json({team, success: true}))
+                .catch(error => res.status(500).send({error}));
         })
         
     app.route('/t/:tid/teams/:teamId')

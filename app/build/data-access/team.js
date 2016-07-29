@@ -23,10 +23,87 @@ exports.default = {
             (0, _db.query)(team.findByTournament, params, _db.queryTypeMap.any).then(function (teams) {
                 return resolve(teams);
             }).catch(function (error) {
-                console.log(error);
                 reject(error);
+            });
+        });
+    },
+
+    addTeamToTournament: function addTeamToTournament(tournamentId, teamId, teamName, players, divisionIds, currentUser) {
+        return new Promise(function (resolve, reject) {
+            var addTeamQueries = team.add;
+
+            var queriesArray = [];
+
+            var _buildTeamPlayersArra = buildTeamPlayersArray(tournamentId, players, currentUser);
+
+            var playerIds = _buildTeamPlayersArra.playerIds;
+            var playerNames = _buildTeamPlayersArra.playerNames;
+            var teamIds = _buildTeamPlayersArra.teamIds;
+            var tournamentIds = _buildTeamPlayersArra.tournamentIds;
+            var addedBy = _buildTeamPlayersArra.addedBy;
+
+            var _buildTeamDivisionsAr = buildTeamDivisionsArray(tournamentId, teamId, divisionIds);
+
+            var divisionTeamIds = _buildTeamDivisionsAr.divisionTeamIds;
+            var divisionTournamentIds = _buildTeamDivisionsAr.divisionTournamentIds;
+
+            queriesArray.push({
+                text: addTeamQueries.addTeam,
+                params: [teamId, teamName, tournamentId, currentUser],
+                queryType: _db.txMap.one
+            }, {
+                text: addTeamQueries.addPlayers,
+                params: [playerIds, playerNames, teamIds, tournamentIds, addedBy],
+                queryType: _db.txMap.any
+            }, {
+                text: addTeamQueries.addDivisions,
+                params: [divisionTeamIds, divisionIds, divisionTournamentIds],
+                queryType: _db.txMap.any
+            });
+
+            (0, _db.transaction)(queriesArray).then(function (result) {
+                var formattedResult = {
+                    team: result[0],
+                    players: result[1],
+                    divisions: result[2]
+                };
+                resolve(formattedResult);
+            }).catch(function (error) {
+                return reject(error);
             });
         });
     }
 
 };
+
+
+function buildTeamPlayersArray(tournamentId, players, currentUser) {
+    return {
+        tournamentIds: players.map(function (player) {
+            return tournamentId;
+        }),
+        playerIds: players.map(function (player) {
+            return player.id;
+        }),
+        playerNames: players.map(function (player) {
+            return player.name;
+        }),
+        teamIds: players.map(function (player) {
+            return player.teamId;
+        }),
+        addedBy: players.map(function (player) {
+            return currentUser;
+        })
+    };
+}
+
+function buildTeamDivisionsArray(tournamentId, teamId, divisions) {
+    return {
+        divisionTeamIds: divisions.map(function (division) {
+            return teamId;
+        }),
+        divisionTournamentIds: divisions.map(function (division) {
+            return tournamentId;
+        })
+    };
+}

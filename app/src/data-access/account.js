@@ -57,7 +57,7 @@ export default {
 
     findByQuery: (searchQuery) => {
         return new Promise((resolve, reject) => {
-            let expression = searchQuery + '%';
+            let expression = '%' + searchQuery + '%';
             let params = [expression];
             query(account.findUsers, params, qm.any)
                 .then(users => {

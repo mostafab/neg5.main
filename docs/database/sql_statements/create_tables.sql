@@ -16,6 +16,8 @@ CREATE TABLE tournament (
     comments text,
     hidden boolean,
     director_id varchar(20) NOT NULL,
+    bouncebacks boolean DEFAULT false,
+    max_active_players_per_team integer DEFAULT 4,
     bonus_point_value integer NOT NULL DEFAULT 10 CHECK (bonus_point_value > 0),
     parts_per_bonus integer NOT NULL DEFAULT 3 CHECK (parts_per_bonus > 0), 
     PRIMARY KEY (id),

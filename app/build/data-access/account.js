@@ -82,7 +82,7 @@ exports.default = {
 
     findByQuery: function findByQuery(searchQuery) {
         return new Promise(function (resolve, reject) {
-            var expression = searchQuery + '%';
+            var expression = '%' + searchQuery + '%';
             var params = [expression];
             (0, _db.query)(account.findUsers, params, _db.queryTypeMap.any).then(function (users) {
                 resolve(users);

@@ -20,7 +20,13 @@ exports.default = function (app) {
         }).catch(function (error) {
             return res.status(500).send(error);
         });
-    }).post(function (req, res) {});
+    }).post(_token.hasToken, function (req, res) {
+        _team2.default.addToTournament(req.params.tid, req.body, req.currentUser).then(function (team) {
+            return res.json({ team: team, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error });
+        });
+    });
 
     app.route('/t/:tid/teams/:teamId').get(function (req, res) {}).put(function (req, res) {}).delete(function (req, res) {});
 };

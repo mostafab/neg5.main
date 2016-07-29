@@ -68,7 +68,7 @@ exports.default = function (app) {
         _tournament2.default.removeCollaborator(req.params.tid, req.params.username).then(function (result) {
             return res.json({ result: result, success: true });
         }).catch(function (error) {
-            return res.json({ error: error, success: false });
+            return res.status(500).json({ error: error, success: false });
         });
     });
 

@@ -2,6 +2,33 @@
     .col-lg-6
         div(class="panel panel-default nf-panel")
             div(class="collapsable nf-panel-heading nf-dark-blue") General
+            div(class="panel-body tournament-panel nf-panel-body")
+                .row
+                    div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
+                        form(name='Config.editConfigurationRules' novalidate)
+                            .row.nf-margin
+                                .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingRules === false')
+                                    span.nf-button.btn-md.btn.nf-blue(style='float:left' title='Edit' ng-show='Config.editingRules === false' ng-click='Config.editingRules = true')
+                                        i.fa.fa-pencil
+                                .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingRules === true')
+                                    span.nf-button.btn-md.btn.nf-red(style='float:left' ng-show='Config.editingRules === true' title='Cancel' ng-click='Config.editingRules = false')
+                                        i.fa.fa-times
+                                    button.nf-button.btn-md.btn.nf-green(type='submit' ng-show='Config.editingRules === true' title='Save')
+                                        i.fa.fa-check
+                                        
+                            .row.nf-margin
+                                .row.nf-margin
+                                    .col-lg-8.col-sm-9.col-md-6
+                                        .input-group
+                                            span.input-group-addon.nf-button.no-border.point-label Max Active Players Per Team
+                                            div.form-control.nf-input.nf-gray(ng-show='Config.editingRules === false') {{Config.rules.maxActive}}  
+                                            input.form-control.nf-input(required type='number' min='0' name='maxPlayersPerTeam' ng-model='Config.rulesCopy.maxActive' ng-show='Config.editingRules === true') 
+                                .row.nf-margin
+                                    .col-lg-8.col-sm-9.col-md-6
+                                        .input-group
+                                            span.input-group-addon.nf-button.no-border.point-label Bouncebacks?
+                                            div.form-control.nf-input.nf-gray(ng-show='Config.editingRules === false') {{Config.rules.bouncebacks ? 'Yes' : 'No'}}  
+                                            input.form-control(type='checkbox' name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks' ng-show='Config.editingRules === true')
     .col-lg-6    
     
         div(class="panel panel-default nf-panel")

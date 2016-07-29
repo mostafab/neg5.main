@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
-    angular.module('tournamentApp').controller('TournamentCtrl', ['$scope', '$http', '$window', '$timeout', 'Team', 'Game', 'Tournament', TournamentCtrl]);
+    angular.module('tournamentApp').controller('TournamentCtrl', ['$scope', '$http', '$window', '$timeout', 'Team', 'Game', 'Tournament', 'Cookies', TournamentCtrl]);
 
-    function TournamentCtrl($scope, $http, $window, $timeout, Team, Game, Tournament) {
+    function TournamentCtrl($scope, $http, $window, $timeout, Team, Game, Tournament, Cookies) {
 
         $scope.tournamentId = $window.location.pathname.split('/')[2];
 
@@ -39,9 +39,9 @@
 
         var vm = this;
 
-        vm.tab = 'overview';
-        vm.matchTab = 'add';
-        vm.teamTab = 'add';
+        vm.tab = Cookies.get('nfTab') || 'overview';
+        vm.matchTab = Cookies.get('nfMatchTab') || 'add';
+        vm.teamTab = Cookies.get('nfTeamTab') || 'add';
 
         vm.tournamentInfoCopy = {};
         vm.teams = Team.teams;
@@ -96,6 +96,25 @@
             });
         };
 
+        var setTabWatchers = function setTabWatchers() {
+            $scope.$watch(angular.bind(vm, function () {
+                return vm.tab;
+            }), function (newVal) {
+                Cookies.set('nfTab', newVal);
+            });
+            $scope.$watch(angular.bind(vm, function () {
+                return vm.matchTab;
+            }), function (newVal) {
+                Cookies.set('nfMatchTab', newVal);
+            });
+            $scope.$watch(angular.bind(vm, function () {
+                return vm.teamTab;
+            }), function (newVal) {
+                Cookies.set('nfTeamTab', newVal);
+            });
+        };
+
+        setTabWatchers();
         getTournamentContext();
     }
 })();

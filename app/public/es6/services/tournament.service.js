@@ -8,8 +8,14 @@
             let pointScheme = {
                 tossupValues: []
             };
+
+            let rules = {
+                bouncebacks: false,
+                maxActive: 4
+            }
             
             service.tournamentFactory = {
+                rules,
                 pointScheme,
                 getTournamentContext,
                 edit,
@@ -28,6 +34,11 @@
                                 partsPerBonus: info.parts_per_bonus,
                                 bonusPointValue: info.bonus_point_value 
                             }
+                            let formattedRules = {
+                                bouncebacks: info.bouncebacks,
+                                maxActive: info.max_active_players_per_team
+                            }
+                            angular.copy(formattedRules, service.tournamentFactory.rules);
                             angular.copy(formattedPointScheme, service.tournamentFactory.pointScheme);
                             resolve({
                                 tournamentInfo: {

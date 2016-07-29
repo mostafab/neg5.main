@@ -1,9 +1,9 @@
 (() => {
     angular.module('tournamentApp')
-        .controller('TournamentCtrl', ['$scope', '$http', '$window', '$timeout', 'Team', 'Game', 'Tournament', TournamentCtrl]);
+        .controller('TournamentCtrl', ['$scope', '$http', '$window', '$timeout', 'Team', 'Game', 'Tournament', 'Cookies', TournamentCtrl]);
         
     
-    function TournamentCtrl($scope, $http, $window, $timeout, Team, Game, Tournament) {
+    function TournamentCtrl($scope, $http, $window, $timeout, Team, Game, Tournament, Cookies) {
 
             $scope.tournamentId = $window.location.pathname.split('/')[2];
 
@@ -33,9 +33,9 @@
 
             let vm = this;
 
-            vm.tab = 'overview';
-            vm.matchTab = 'add';
-            vm.teamTab = 'add';
+            vm.tab = Cookies.get('nfTab') || 'overview';
+            vm.matchTab = Cookies.get('nfMatchTab') || 'add';
+            vm.teamTab = Cookies.get('nfTeamTab') || 'add';
 
             vm.tournamentInfoCopy = {};
             vm.teams = Team.teams;
@@ -91,6 +91,25 @@
                     })
             }
             
+            let setTabWatchers = () => {
+                $scope.$watch(angular.bind(vm, () => {
+                    return vm.tab;
+                }), (newVal) => {
+                    Cookies.set('nfTab', newVal);
+                });
+                $scope.$watch(angular.bind(vm, () => {
+                    return vm.matchTab;
+                }), (newVal) => {
+                    Cookies.set('nfMatchTab', newVal);
+                });
+                $scope.$watch(angular.bind(vm, () => {
+                    return vm.teamTab;
+                }), (newVal) => {
+                    Cookies.set('nfTeamTab', newVal);
+                });
+            }
+
+            setTabWatchers();
             getTournamentContext();
 
     }
