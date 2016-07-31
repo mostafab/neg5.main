@@ -92,7 +92,13 @@ exports.default = function (app) {
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
         });
-    }).post(function (req, res) {});
+    }).post(function (req, res) {
+        _tournament2.default.addDivision(req.params.tid, req.body.name, req.body.phaseId).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return reject(error);
+        });
+    });
 
     app.route('/api/t/:tid/divisions/:divisionId').put(_token.hasToken, _tournamentAccess.adminAccessToTournament, function (req, res) {
         _tournament2.default.editDivision(req.params.tid, req.params.divisionId, req.body.newName).then(function (result) {

@@ -10,6 +10,7 @@
             service.factory = {
                 getDivisions,
                 editDivision,
+                addDivision,
 
                 divisions
             }
@@ -53,10 +54,34 @@
                 })
             }
 
+            function addDivision(tournamentId, name, phaseId) {
+                return $q((resolve, reject) => {
+                    let body = {
+                        token: Cookies.get('nfToken'),
+                        name,
+                        phaseId
+                    }
+                    $http.post('/api/t/' + tournamentId + '/divisions', body)
+                        .then(({data}) => {
+                            addDivisionToArray(data.result);
+                            resolve();
+                        })
+                        .catch(error => reject(error));
+                })
+            }
+
             function updateDivisionInArray(newDivisionInfo) {
                 let index = service.factory.divisions.findIndex(division => division.id === newDivisionInfo.id);
                 service.factory.divisions[index].name = newDivisionInfo.name;
                 service.factory.divisions[index].newName = newDivisionInfo.name;
+            }
+
+            function addDivisionToArray({name, id, phase_id: phaseId}) {
+                service.factory.divisions.push({
+                    name,
+                    id,
+                    phaseId
+                });
             }
             
             return service.factory;

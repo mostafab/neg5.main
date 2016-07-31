@@ -203,6 +203,18 @@ exports.default = {
         });
     },
 
+    addDivision: function addDivision(tournamentId, divisionName, phaseId) {
+        return new Promise(function (resolve, reject) {
+            if (!divisionName || !divisionName.trim()) return reject(new Error('Invalid division name: ' + divisionName));
+            var divisionId = _shortid2.default.generate();
+            _tournament2.default.addTournamentDivision(tournamentId, divisionName.trim(), divisionId, phaseId).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
     getPhases: function getPhases(tournamentId) {
         return new Promise(function (resolve, reject) {
             _tournament2.default.getTournamentPhases(tournamentId).then(function (phases) {

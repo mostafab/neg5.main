@@ -116,6 +116,19 @@
                 }
                 $scope.toast(toastConfig);
                 Division.addDivision($scope.tournamentId, newDivisionName, vm.newDivision.phaseId)
+                    .then(() => {
+                        toastConfig.message = 'Added division.';
+                        toastConfig.success = true;
+                        vm.newDivision = {name: ''};
+                    })
+                    .catch(error => {
+                        toastConfig.message = 'Could not add division';
+                        toastConfig.success = false;
+                    })
+                    .finally(() => {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    });
             }
         }
 

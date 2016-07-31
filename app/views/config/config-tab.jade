@@ -43,7 +43,7 @@
                                 .input-group
                                     span.form-control.nf-input.nf-gray(ng-show='!division.editing') {{division.name}}
                                     input.form-control.nf-input(type='text' ng-model='division.newName' ng-show='division.editing')
-                                    span.btn.input-group-addon.nf-button.no-border.nf-blue(ng-show='!division.editing' ng-click='division.editing = true')
+                                    span.btn.input-group-addon.nf-button.no-border.nf-blue(ng-show='!division.editing && tournamentContext.admin === true' ng-click='division.editing = true')
                                         i.fa.fa-pencil
                                     span.btn.input-group-addon.nf-button.no-border.nf-red(ng-show='division.editing' ng-click='division.newName = division.name; division.editing = false')
                                         i.fa.fa-times
@@ -59,7 +59,7 @@
                                     span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle(data-toggle='dropdown'
                                             ) {{Config.newDivision.phaseName || 'Phase'}}
                                                 i.fa.fa-caret-down
-                                    input.form-control.nf-input(type='text' placeholder='New division' ng-model='Config.newDivision.name')                                            
+                                    input.form-control.nf-input(type='text' placeholder='New division' ng-model='Config.newDivision.name' ng-keyup='!($event.which === 13) || Config.addNewDivision()')                                            
                                     ul.dropdown-menu.nf-dropdown(aria-role='menu' title='Pick division name.')
                                         li
                                             a(ng-repeat='phase in Config.phases' title='{{phase.name}}' ng-click='Config.newDivision.phaseName = phase.name; Config.newDivision.phaseId = phase.id') {{phase.name}}

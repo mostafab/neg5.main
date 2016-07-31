@@ -112,11 +112,23 @@
         vm.addNewDivision = function () {
             var newDivisionName = vm.newDivision.name.trim();
             if (newDivisionName.length > 0 && vm.newDivision.phaseId) {
-                var toastConfig = {
-                    message: 'Adding division'
-                };
-                $scope.toast(toastConfig);
-                Division.addDivision($scope.tournamentId, newDivisionName, vm.newDivision.phaseId);
+                (function () {
+                    var toastConfig = {
+                        message: 'Adding division'
+                    };
+                    $scope.toast(toastConfig);
+                    Division.addDivision($scope.tournamentId, newDivisionName, vm.newDivision.phaseId).then(function () {
+                        toastConfig.message = 'Added division.';
+                        toastConfig.success = true;
+                        vm.newDivision = { name: '' };
+                    }).catch(function (error) {
+                        toastConfig.message = 'Could not add division';
+                        toastConfig.success = false;
+                    }).finally(function () {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    });
+                })();
             }
         };
 

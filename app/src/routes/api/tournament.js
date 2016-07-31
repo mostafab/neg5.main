@@ -79,7 +79,9 @@ export default (app) => {
                 .catch(error => res.status(500).send({error, success: false}));
         })
         .post((req, res) => {
-            
+            Tournament.addDivision(req.params.tid, req.body.name, req.body.phaseId)
+                .then(result => res.json({result, success: true}))
+                .catch(error => reject(error));
         })
 
     app.route('/api/t/:tid/divisions/:divisionId')

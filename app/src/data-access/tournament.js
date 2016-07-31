@@ -179,6 +179,15 @@ export default {
         });
     },
 
+    addTournamentDivision: (tournamentId, divisionName, divisionId, phaseId) => {
+        return new Promise((resolve, reject) => {
+            let params = [tournamentId, divisionId, divisionName, phaseId];
+            query(division.add, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
     getTournamentPhases: (id) => {
         return new Promise((resolve, reject) => {
             let params = [id];

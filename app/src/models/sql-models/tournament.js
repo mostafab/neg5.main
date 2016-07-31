@@ -135,6 +135,16 @@ export default {
         })
     },
 
+    addDivision: (tournamentId, divisionName, phaseId) => {
+        return new Promise((resolve, reject) => {
+            if (!divisionName || !divisionName.trim()) return reject(new Error('Invalid division name: ' + divisionName));
+            let divisionId = shortid.generate();
+            db.addTournamentDivision(tournamentId, divisionName.trim(), divisionId, phaseId)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
     getPhases: (tournamentId) => {
         return new Promise((resolve, reject) => {
             db.getTournamentPhases(tournamentId)

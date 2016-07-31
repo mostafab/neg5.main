@@ -47,7 +47,8 @@ export default {
     },
     division: {
         findByTournament: getSQL('division-sql/getTournamentDivisions.sql'),
-        edit: getSQL('division-sql/editTournamentDivision.sql')
+        edit: getSQL('division-sql/editTournamentDivision.sql'),
+        add: getSQL('division-sql/addDivisionToTournament.sql')
     },
     phase: {
         findByTournament: getSQL('phase-sql/getTournamentPhases.sql')

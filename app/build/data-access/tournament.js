@@ -225,6 +225,17 @@ exports.default = {
         });
     },
 
+    addTournamentDivision: function addTournamentDivision(tournamentId, divisionName, divisionId, phaseId) {
+        return new Promise(function (resolve, reject) {
+            var params = [tournamentId, divisionId, divisionName, phaseId];
+            (0, _db.query)(division.add, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
     getTournamentPhases: function getTournamentPhases(id) {
         return new Promise(function (resolve, reject) {
             var params = [id];
