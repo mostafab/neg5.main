@@ -11,6 +11,15 @@ export default {
         })
     },
 
+    findById: (tournamentId, teamId) => {
+        return new Promise((resolve, reject) => {
+            db.findById(tournamentId, teamId)
+                .then(team => resolve(team))
+                .catch(error => reject(error));
+        })
+        
+    },
+
     addToTournament: (tournamentId, {name, players = [], divisions = []}, user) => {
         return new Promise((resolve, reject) => {
             const teamId = shortid.generate();

@@ -28,6 +28,17 @@ exports.default = {
         });
     },
 
+    findById: function findById(tournamentId, teamId) {
+        return new Promise(function (resolve, reject) {
+            var params = [tournamentId, teamId];
+            (0, _db.query)(team.findById, params, _db.queryTypeMap.one).then(function (team) {
+                return resolve(team);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
     addTeamToTournament: function addTeamToTournament(tournamentId, teamId, teamName, players, divisionIds, currentUser) {
         return new Promise(function (resolve, reject) {
             var addTeamQueries = team.add;

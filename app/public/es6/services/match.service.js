@@ -14,7 +14,7 @@
                 deleteGame,
                 getTeamPlayers
             }
-            
+
             function postGame() {
                 
             }
@@ -40,7 +40,7 @@
                 return $q((resolve, reject) => {
                    $http.get('/api/t/' + tournamentId + '/teams/' + teamId)
                         .then(({data}) => {
-                            let formattedPlayers = data.players.map(({player_name: name, shortID: id}) => {
+                            let formattedPlayers = data.result.players.map(({player_name: name, player_id: id}) => {
                                 return {
                                     id,
                                     name

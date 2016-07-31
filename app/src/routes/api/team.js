@@ -17,9 +17,11 @@ export default (app) => {
                 .catch(error => res.status(500).send({error}));
         })
         
-    app.route('/t/:tid/teams/:teamId')
+    app.route('/api/t/:tid/teams/:teamId')
         .get(hasToken, accessToTournament, (req, res) => {
-            
+            Team.findById(req.params.tid, req.params.teamId)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}))
         })
         .put((req, res) => {
             

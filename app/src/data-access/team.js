@@ -17,6 +17,15 @@ export default {
         })
     },
 
+    findById: (tournamentId, teamId) => {
+        return new Promise((resolve, reject) => {
+            let params = [tournamentId, teamId];
+            query(team.findById, params, qm.one)
+                .then(team => resolve(team))
+                .catch(error => reject(error));
+        })
+    },
+
     addTeamToTournament: (tournamentId, teamId, teamName, players, divisionIds, currentUser) => {
         return new Promise((resolve, reject) => {
             let addTeamQueries = team.add;

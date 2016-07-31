@@ -26,6 +26,16 @@ exports.default = {
         });
     },
 
+    findById: function findById(tournamentId, teamId) {
+        return new Promise(function (resolve, reject) {
+            _team2.default.findById(tournamentId, teamId).then(function (team) {
+                return resolve(team);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
     addToTournament: function addToTournament(tournamentId, _ref, user) {
         var name = _ref.name;
         var _ref$players = _ref.players;

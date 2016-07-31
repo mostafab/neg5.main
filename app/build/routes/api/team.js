@@ -30,5 +30,11 @@ exports.default = function (app) {
         });
     });
 
-    app.route('/t/:tid/teams/:teamId').get(_token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {}).put(function (req, res) {}).delete(function (req, res) {});
+    app.route('/api/t/:tid/teams/:teamId').get(_token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
+        _team2.default.findById(req.params.tid, req.params.teamId).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    }).put(function (req, res) {}).delete(function (req, res) {});
 };

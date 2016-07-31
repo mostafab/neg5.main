@@ -34,6 +34,7 @@ export default {
     },
     team: {
         findByTournament: getSQL('team-sql/findTeamsByTournament.sql'),
+        findById: getSQL('team-sql/findTeamById.sql'),
         add: {
             addTeam: getSQL('team-sql/transactions/addTeam/addTeamToTournament.sql'),
             addPlayers: getSQL('team-sql/transactions/addTeam/addTeamPlayers.sql'),

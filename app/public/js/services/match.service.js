@@ -47,9 +47,9 @@
                 $http.get('/api/t/' + tournamentId + '/teams/' + teamId).then(function (_ref3) {
                     var data = _ref3.data;
 
-                    var formattedPlayers = data.players.map(function (_ref4) {
+                    var formattedPlayers = data.result.players.map(function (_ref4) {
                         var name = _ref4.player_name;
-                        var id = _ref4.shortID;
+                        var id = _ref4.player_id;
 
                         return {
                             id: id,
