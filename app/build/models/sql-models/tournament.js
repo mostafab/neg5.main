@@ -104,6 +104,22 @@ exports.default = {
         });
     },
 
+    updateRules: function updateRules(tournamentId, newRules) {
+        return new Promise(function (resolve, reject) {
+            var bouncebacks = newRules.bouncebacks;
+            var maxActive = newRules.maxActive;
+
+            if (maxActive < 0) {
+                reject(new Error('Invalid data - bouncebacks: ' + bouncebacks + ', maxActive: ' + maxActive));
+            }
+            _tournament2.default.updateRules(tournamentId, { bouncebacks: bouncebacks, maxActive: maxActive }).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
     addTossupPointValue: function addTossupPointValue(tournamentId, _ref3) {
         var type = _ref3.type;
         var value = _ref3.value;

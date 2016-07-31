@@ -101,9 +101,23 @@ exports.default = {
         });
     },
 
-    addTossupPointValue: function addTossupPointValue(id, _ref) {
-        var type = _ref.type;
-        var value = _ref.value;
+    updateRules: function updateRules(id, _ref) {
+        var bouncebacks = _ref.bouncebacks;
+        var maxActive = _ref.maxActive;
+
+        return new Promise(function (resolve, reject) {
+            var params = [id, maxActive, bouncebacks];
+            (0, _db.query)(tournament.updateRules, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    addTossupPointValue: function addTossupPointValue(id, _ref2) {
+        var type = _ref2.type;
+        var value = _ref2.value;
 
         return new Promise(function (resolve, reject) {
             var params = [id, type, value];

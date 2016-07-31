@@ -29,6 +29,34 @@
             vm.pointSchemeCopy.tossupValues.sort((first, second) => first.value - second.value);
         }
 
+        vm.resetRules = () => {
+            angular.copy(vm.rules, vm.rulesCopy);
+        }
+
+        vm.saveRules = () => {
+            let sameData = angular.equals(vm.rulesCopy, vm.rules);
+            if (!sameData && vm.editConfigurationRules.$valid) {
+                let toastConfig = {message: 'Updating rules.'}
+                Tournament.updateRules($scope.tournamentId, vm.rulesCopy)
+                    .then(() => {
+                        vm.resetRules();
+                        toastConfig.message = 'Updated rules';
+                        toastConfig.success = true;
+                        vm.editingRules = false;
+                    })
+                    .catch(() => {
+                        toastConfig.message = 'Could not update rules';
+                        toastConfig.success = false;
+                    })
+                    .finally(() => {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    })
+            } else if (sameData && vm.editConfigurationRules.$valid) {
+                vm.editingRules = false;
+            }
+        }
+
         vm.editPointScheme = () => {
             if (!duplicatePointValues() && vm.editPointSchemeForm.$valid) {
                 let toastConfig = {

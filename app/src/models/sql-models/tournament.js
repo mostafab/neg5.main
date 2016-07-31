@@ -61,6 +61,18 @@ export default {
         })
     },
 
+    updateRules: (tournamentId, newRules) => {
+        return new Promise((resolve, reject) => {
+            let {bouncebacks, maxActive} = newRules;
+            if (maxActive < 0) {
+                reject(new Error(`Invalid data - bouncebacks: ${bouncebacks}, maxActive: ${maxActive}`))
+            }
+            db.updateRules(tournamentId, {bouncebacks, maxActive})
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
     addTossupPointValue: (tournamentId, {type, value}) => {
         return new Promise((resolve, reject) => {
             if (!type || !value) {

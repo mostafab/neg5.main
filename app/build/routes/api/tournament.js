@@ -44,6 +44,14 @@ exports.default = function (app) {
         });
     }).delete(function (req, res) {});
 
+    app.route('/api/t/:tid/rules').put(_token.hasToken, _tournamentAccess.directorAccessToTournament, function (req, res) {
+        _tournament2.default.updateRules(req.params.tid, req.body.rules).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    });
+
     app.route('/api/t/:tid/collaborators').get(_token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
         _tournament2.default.findCollaborators(req.params.tid).then(function (result) {
             return res.json({ result: result, success: true });

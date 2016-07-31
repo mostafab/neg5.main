@@ -20,7 +20,9 @@
                 getTournamentContext,
                 edit,
                 addPointValue,
-                postPointValues
+                postPointValues,
+
+                updateRules
             }
             
             function getTournamentContext(tournamentId) {
@@ -86,6 +88,29 @@
                                 date: new Date(tournament_date)
                             }
                             resolve(result);
+                        })
+                        .catch(error => reject(error));
+                })
+            }
+
+            function updateRules(tournamentId, {bouncebacks, maxActive}) {
+                return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
+                    let body = {
+                        token,
+                        rules: {
+                            bouncebacks,
+                            maxActive
+                        }
+                    }
+                    $http.put('/api/t/' + tournamentId + '/rules', body)
+                        .then(({data}) => {
+                            let formattedRules = {
+                                bouncebacks: data.result.bouncebacks,
+                                maxActive: data.result.max_active_players_per_team
+                            }
+                            angular.copy(formattedRules, service.tournamentFactory.rules);
+                            resolve(service.tournamentFactory.rules);
                         })
                         .catch(error => reject(error));
                 })

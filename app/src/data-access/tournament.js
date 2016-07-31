@@ -70,6 +70,15 @@ export default {
         })
     },
 
+    updateRules: (id, {bouncebacks, maxActive}) => {
+        return new Promise((resolve, reject) => {
+            let params = [id, maxActive, bouncebacks];
+            query(tournament.updateRules, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
     addTossupPointValue: (id, {type, value}) => {
         return new Promise((resolve, reject) => {
             let params = [id, type, value];

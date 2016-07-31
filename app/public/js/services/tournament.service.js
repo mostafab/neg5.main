@@ -21,7 +21,9 @@
             getTournamentContext: getTournamentContext,
             edit: edit,
             addPointValue: addPointValue,
-            postPointValues: postPointValues
+            postPointValues: postPointValues,
+
+            updateRules: updateRules
         };
 
         function getTournamentContext(tournamentId) {
@@ -99,9 +101,37 @@
             });
         }
 
-        function addPointValue(tournamentId, _ref3) {
-            var type = _ref3.type;
-            var value = _ref3.value;
+        function updateRules(tournamentId, _ref3) {
+            var bouncebacks = _ref3.bouncebacks;
+            var maxActive = _ref3.maxActive;
+
+            return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
+                var body = {
+                    token: token,
+                    rules: {
+                        bouncebacks: bouncebacks,
+                        maxActive: maxActive
+                    }
+                };
+                $http.put('/api/t/' + tournamentId + '/rules', body).then(function (_ref4) {
+                    var data = _ref4.data;
+
+                    var formattedRules = {
+                        bouncebacks: data.result.bouncebacks,
+                        maxActive: data.result.max_active_players_per_team
+                    };
+                    angular.copy(formattedRules, service.tournamentFactory.rules);
+                    resolve(service.tournamentFactory.rules);
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
+
+        function addPointValue(tournamentId, _ref5) {
+            var type = _ref5.type;
+            var value = _ref5.value;
 
             return $q(function (resolve, reject) {
                 var token = Cookies.get('nfToken');
@@ -109,8 +139,8 @@
                     type: type,
                     value: value
                 };
-                $http.post('/api/t/' + tournamentId + '/pointscheme', body).then(function (_ref4) {
-                    var data = _ref4.data;
+                $http.post('/api/t/' + tournamentId + '/pointscheme', body).then(function (_ref6) {
+                    var data = _ref6.data;
 
                     service.tournamentFactory.pointScheme.tossupValues.push({
                         type: data.result.tossup_answer_type,
@@ -130,12 +160,12 @@
                     token: token,
                     pointValues: newPointValues
                 };
-                $http.put('/api/t/' + tournamentId + '/pointscheme', body).then(function (_ref5) {
-                    var data = _ref5.data;
+                $http.put('/api/t/' + tournamentId + '/pointscheme', body).then(function (_ref7) {
+                    var data = _ref7.data;
 
-                    var sortedTossupValues = data.result.tossupValues.map(function (_ref6) {
-                        var value = _ref6.tossup_value;
-                        var type = _ref6.tossup_answer_type;
+                    var sortedTossupValues = data.result.tossupValues.map(function (_ref8) {
+                        var value = _ref8.tossup_value;
+                        var type = _ref8.tossup_answer_type;
 
                         return {
                             value: value,

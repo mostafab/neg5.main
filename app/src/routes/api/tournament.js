@@ -33,6 +33,13 @@ export default (app) => {
             
         })
     
+    app.route('/api/t/:tid/rules')
+        .put(hasToken, directorAccessToTournament, (req, res) => {
+            Tournament.updateRules(req.params.tid, req.body.rules)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}));
+        })
+    
     app.route('/api/t/:tid/collaborators')
         .get(hasToken, accessToTournament, (req, res) => {
             Tournament.findCollaborators(req.params.tid)

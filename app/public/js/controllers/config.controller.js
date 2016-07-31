@@ -32,6 +32,33 @@
             });
         };
 
+        vm.resetRules = function () {
+            angular.copy(vm.rules, vm.rulesCopy);
+        };
+
+        vm.saveRules = function () {
+            var sameData = angular.equals(vm.rulesCopy, vm.rules);
+            if (!sameData && vm.editConfigurationRules.$valid) {
+                (function () {
+                    var toastConfig = { message: 'Updating rules.' };
+                    Tournament.updateRules($scope.tournamentId, vm.rulesCopy).then(function () {
+                        vm.resetRules();
+                        toastConfig.message = 'Updated rules';
+                        toastConfig.success = true;
+                        vm.editingRules = false;
+                    }).catch(function () {
+                        toastConfig.message = 'Could not update rules';
+                        toastConfig.success = false;
+                    }).finally(function () {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    });
+                })();
+            } else if (sameData && vm.editConfigurationRules.$valid) {
+                vm.editingRules = false;
+            }
+        };
+
         vm.editPointScheme = function () {
             if (!duplicatePointValues() && vm.editPointSchemeForm.$valid) {
                 (function () {

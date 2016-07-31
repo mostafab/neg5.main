@@ -13,6 +13,7 @@ export default {
         findByUser: getSQL('tournament-sql/findByUser.sql'),
         findById: getSQL('tournament-sql/findById.sql'),
         update: getSQL('tournament-sql/updateTournament.sql'),
+        updateRules: getSQL('tournament-sql/updateRules.sql'),
         editPointScheme: {
             add: getSQL('tournament-sql/addTossupPointValue.sql'),
             edit: {
