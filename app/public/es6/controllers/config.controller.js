@@ -1,9 +1,9 @@
 (() => {
     
     angular.module('tournamentApp')
-        .controller('ConfigCtrl', ['$scope', 'Tournament', 'Game', ConfigCtrl]);
+        .controller('ConfigCtrl', ['$scope', 'Tournament', 'Game', 'Division', 'Phase', ConfigCtrl]);
     
-    function ConfigCtrl($scope, Tournament, Game) {
+    function ConfigCtrl($scope, Tournament, Game, Division, Phase) {
         
         let vm = this;
 
@@ -18,8 +18,11 @@
             tossupValues: []
         };
         vm.newPointValue = {type: null};
+        vm.newDivision = {name: ''};
 
         vm.games = Game.games;
+        vm.divisions = Division.divisions;
+        vm.phases = Phase.phases;
 
         vm.resetPointSchemeCopyToOriginal = () => {
             angular.copy(vm.pointScheme, vm.pointSchemeCopy);
@@ -79,6 +82,43 @@
             vm.pointSchemeCopy.tossupValues = vm.pointSchemeCopy.tossupValues.filter(ps => ps.value !== point.value && ps.type !== point.type);
         }
 
+        vm.saveDivision = (division) => {
+            let newName = division.newName.trim();
+            if (division.name.trim() !== newName && newName.length !== 0) {
+                let toastConfig = {
+                    message: 'Saving division.'
+                }
+                $scope.toast(toastConfig);
+                Division.editDivision($scope.tournamentId, division)
+                    .then(() => {
+                        toastConfig.success = true;
+                        toastConfig.message = 'Updated division.'
+                    })
+                    .catch(error => {
+                        toastConfig.success = false,
+                        toastConfig.message = 'Could not update division.'
+                    })
+                    .finally(() => {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                        division.editing = false;
+                    })
+            } else {
+                division.editing = false;
+            }
+        }
+
+        vm.addNewDivision = () => {
+            let newDivisionName = vm.newDivision.name.trim();
+            if (newDivisionName.length > 0 && vm.newDivision.phaseId) {
+                let toastConfig = {
+                    message: 'Adding division'
+                }
+                $scope.toast(toastConfig);
+                Division.addDivision($scope.tournamentId, newDivisionName, vm.newDivision.phaseId)
+            }
+        }
+
         let duplicatePointValues = () => {
             let checked = {};
             for (let i = 0; i < vm.pointSchemeCopy.tossupValues.length; i++) {
@@ -92,6 +132,8 @@
 
         angular.copy(vm.pointScheme, vm.pointSchemeCopy);
         angular.copy(vm.rules, vm.rulesCopy);
+
+        Division.getDivisions($scope.tournamentId);
 
     }
     

@@ -14,7 +14,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var tournament = _sql2.default.tournament;
 var collaborator = _sql2.default.collaborator;
-
+var division = _sql2.default.division;
+var phase = _sql2.default.phase;
 exports.default = {
 
     saveTournament: function saveTournament(tournamentInfo) {
@@ -194,6 +195,40 @@ exports.default = {
         return new Promise(function (resolve, reject) {
             var params = [id, username];
             (0, _db.query)(collaborator.remove, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    getTournamentDivisions: function getTournamentDivisions(id) {
+        return new Promise(function (resolve, reject) {
+            var params = [id];
+            (0, _db.query)(division.findByTournament, params, _db.queryTypeMap.any).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                console.log(error);
+                reject(error);
+            });
+        });
+    },
+
+    editTournamentDivision: function editTournamentDivision(tournamentId, divisionId, newDivisionName) {
+        return new Promise(function (resolve, reject) {
+            var params = [tournamentId, divisionId, newDivisionName];
+            (0, _db.query)(division.edit, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    getTournamentPhases: function getTournamentPhases(id) {
+        return new Promise(function (resolve, reject) {
+            var params = [id];
+            (0, _db.query)(phase.findByTournament, params, _db.queryTypeMap.any).then(function (result) {
                 return resolve(result);
             }).catch(function (error) {
                 return reject(error);

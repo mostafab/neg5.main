@@ -2,7 +2,7 @@
 
 (function () {
 
-    angular.module('tournamentApp').factory('Phase', ['$http', '$q', function ($http, $q) {
+    angular.module('tournamentApp').factory('Phase', ['$http', '$q', 'Cookies', function ($http, $q, Cookies) {
 
         var service = this;
 
@@ -18,22 +18,25 @@
         function postPhase() {}
 
         function getPhases(tournamentId) {
-            $http.get('/t/' + tournamentId + '/phases').then(function (_ref) {
-                var data = _ref.data;
+            return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
+                $http.get('/api/t/' + tournamentId + '/phases?token=' + token).then(function (_ref) {
+                    var data = _ref.data;
 
-                var formattedPhases = data.phases.map(function (_ref2) {
-                    var _ref2$active = _ref2.active;
-                    var active = _ref2$active === undefined ? false : _ref2$active;
-                    var name = _ref2.name;
-                    var id = _ref2.phase_id;
+                    var formattedPhases = data.result.map(function (_ref2) {
+                        var name = _ref2.name;
+                        var id = _ref2.id;
 
-                    return {
-                        active: active,
-                        name: name,
-                        id: id
-                    };
+                        return {
+                            name: name,
+                            id: id
+                        };
+                    });
+                    angular.copy(formattedPhases, service.phaseFactory.phases);
+                    resolve(formattedPhases);
+                }).catch(function (error) {
+                    return reject(error);
                 });
-                angular.copy(formattedPhases, service.phaseFactory.phases);
             });
         }
 

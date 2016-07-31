@@ -5,14 +5,20 @@ div(class="row")
         input(type="text" class="form-control nf-input search btn-shadow" placeholder="Filter by Name or Division" ng-model='Team.teamQuery')
 
 div(class="panel-default nf-panel")
-    table(class="table table-condensed nf-shadow")
-        thead
-            tr
-                th(class="table-head nf-white" ng-click='Team.teamSortType="team_name" ; Team.teamSortReverse= !Team.teamSortReverse') Team
-                th(class="table-head nf-white" style='text-align:left' ng-click='teamSortType="divisions" ; teamSortReverse= !teamSortReverse') Divisions
+    .list-group.nf-shadow       
+        a(class='list-group-item active') 
+            .row
+                .col-lg-6
+                    h5(style='display:inline') Teams
+                .col-lg-6
+                    h5(style='display:inline') Divisions
 
-        tbody(id="teamtablebody")
-            tr(class='nf-list-item nf-dark-blue' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id')
-                td {{team.name}}
-                td Test
-            
+        a(class='list-group-item nf-dark-blue nf-list-item' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id')
+            .row
+                .col-lg-6
+                    h5 {{team.name}}
+                .col-lg-6
+                    .row
+                        .col-lg-4(ng-repeat='division in team.divisions')  
+                            h5 {{division.phaseName}} : {{division.name || 'None'}}
+        

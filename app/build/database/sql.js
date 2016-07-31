@@ -54,5 +54,12 @@ exports.default = {
         findByTournament: getSQL('collaborator-sql/findCollaboratorsByTournament.sql'),
         edit: getSQL('collaborator-sql/updateCollaboratorPermissions.sql'),
         remove: getSQL('collaborator-sql/deleteCollaborator.sql')
+    },
+    division: {
+        findByTournament: getSQL('division-sql/getTournamentDivisions.sql'),
+        edit: getSQL('division-sql/editTournamentDivision.sql')
+    },
+    phase: {
+        findByTournament: getSQL('phase-sql/getTournamentPhases.sql')
     }
 };

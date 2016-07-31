@@ -2,9 +2,9 @@
 
 (function () {
 
-    angular.module('tournamentApp').controller('ConfigCtrl', ['$scope', 'Tournament', 'Game', ConfigCtrl]);
+    angular.module('tournamentApp').controller('ConfigCtrl', ['$scope', 'Tournament', 'Game', 'Division', 'Phase', ConfigCtrl]);
 
-    function ConfigCtrl($scope, Tournament, Game) {
+    function ConfigCtrl($scope, Tournament, Game, Division, Phase) {
 
         var vm = this;
 
@@ -19,8 +19,11 @@
             tossupValues: []
         };
         vm.newPointValue = { type: null };
+        vm.newDivision = { name: '' };
 
         vm.games = Game.games;
+        vm.divisions = Division.divisions;
+        vm.phases = Phase.phases;
 
         vm.resetPointSchemeCopyToOriginal = function () {
             angular.copy(vm.pointScheme, vm.pointSchemeCopy);
@@ -82,6 +85,41 @@
             });
         };
 
+        vm.saveDivision = function (division) {
+            var newName = division.newName.trim();
+            if (division.name.trim() !== newName && newName.length !== 0) {
+                (function () {
+                    var toastConfig = {
+                        message: 'Saving division.'
+                    };
+                    $scope.toast(toastConfig);
+                    Division.editDivision($scope.tournamentId, division).then(function () {
+                        toastConfig.success = true;
+                        toastConfig.message = 'Updated division.';
+                    }).catch(function (error) {
+                        toastConfig.success = false, toastConfig.message = 'Could not update division.';
+                    }).finally(function () {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                        division.editing = false;
+                    });
+                })();
+            } else {
+                division.editing = false;
+            }
+        };
+
+        vm.addNewDivision = function () {
+            var newDivisionName = vm.newDivision.name.trim();
+            if (newDivisionName.length > 0 && vm.newDivision.phaseId) {
+                var toastConfig = {
+                    message: 'Adding division'
+                };
+                $scope.toast(toastConfig);
+                Division.addDivision($scope.tournamentId, newDivisionName, vm.newDivision.phaseId);
+            }
+        };
+
         var duplicatePointValues = function duplicatePointValues() {
             var checked = {};
             for (var i = 0; i < vm.pointSchemeCopy.tossupValues.length; i++) {
@@ -95,5 +133,7 @@
 
         angular.copy(vm.pointScheme, vm.pointSchemeCopy);
         angular.copy(vm.rules, vm.rulesCopy);
+
+        Division.getDivisions($scope.tournamentId);
     }
 })();

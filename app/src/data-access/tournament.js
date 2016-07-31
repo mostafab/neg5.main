@@ -1,8 +1,7 @@
 import {query, transaction, queryTypeMap as qm, txMap as tm} from '../database/db';
 import sql from '../database/sql';
 
-const tournament = sql.tournament;
-const collaborator = sql.collaborator;
+const {tournament, collaborator, division, phase} = sql;
 
 export default {
     
@@ -157,6 +156,36 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         });
+    },
+
+    getTournamentDivisions: (id) => {
+        return new Promise((resolve, reject) => {
+            let params = [id];
+            query(division.findByTournament, params, qm.any)
+                .then(result => resolve(result))
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        })
+    },
+
+    editTournamentDivision: (tournamentId, divisionId, newDivisionName) => {
+        return new Promise((resolve, reject) => {
+            let params = [tournamentId, divisionId, newDivisionName];
+            query(division.edit, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        });
+    },
+
+    getTournamentPhases: (id) => {
+        return new Promise((resolve, reject) => {
+            let params = [id];
+            query(phase.findByTournament, params, qm.any)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
     
 }

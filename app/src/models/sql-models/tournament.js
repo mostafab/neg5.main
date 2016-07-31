@@ -116,6 +116,31 @@ export default {
                 .then(deletedCollab => resolve(deletedCollab))
                 .catch(error => reject(error));
         })
+    },
+
+    getDivisions: (tournamentId) => {
+        return new Promise((resolve, reject) => {
+            db.getTournamentDivisions(tournamentId)
+                .then(divisions => resolve(divisions))
+                .catch(error => reject(error));
+        })
+    },
+
+    editDivision: (tournamentId, divisionId, newDivisionName) => {
+        return new Promise((resolve, reject) => {
+            if (!newDivisionName) return reject(new Error('Invalid division name: ' + newDivisionName));
+            db.editTournamentDivision(tournamentId, divisionId, newDivisionName.trim())
+                .then(division => resolve(division))
+                .catch(error => reject(error));
+        })
+    },
+
+    getPhases: (tournamentId) => {
+        return new Promise((resolve, reject) => {
+            db.getTournamentPhases(tournamentId)
+                .then(phases => resolve(phases))
+                .catch(error => reject(error));
+        })
     }
     
 }

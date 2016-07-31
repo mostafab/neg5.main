@@ -39,15 +39,22 @@
                 var data = _ref2.data;
 
                 var formattedTeams = data.teams.map(function (_ref3) {
-                    var id = _ref3.id;
+                    var id = _ref3.team_id;
                     var name = _ref3.name;
-                    var _ref3$divisions = _ref3.divisions;
-                    var divisions = _ref3$divisions === undefined ? [] : _ref3$divisions;
+                    var _ref3$team_divisions = _ref3.team_divisions;
+                    var team_divisions = _ref3$team_divisions === undefined ? [] : _ref3$team_divisions;
 
                     return {
                         id: id,
                         name: name,
-                        divisions: divisions
+                        divisions: team_divisions === null ? [] : team_divisions.map(function (d) {
+                            return {
+                                name: d.division_name,
+                                id: d.division_id,
+                                phaseName: d.phase_name,
+                                phaseId: d.phase_id
+                            };
+                        })
                     };
                 });
                 angular.copy(formattedTeams, service.teamFactory.teams);

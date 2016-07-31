@@ -61,23 +61,39 @@ export default (app) => {
         })
 
     app.route('/api/t/:tid/pointscheme')
-        .post(hasToken, (req, res) => {
+        .post(hasToken, directorAccessToTournament, (req, res) => {
             Tournament.addTossupPointValue(req.params.tid, req.body)
                 .then(result => res.json({result, success: true}))
                 .catch(error => res.status(500).send({error, success: false}));
         })
-        .put(hasToken, (req, res) => {
+        .put(hasToken, directorAccessToTournament, (req, res) => {
             Tournament.updateTossupPointValues(req.params.tid, req.body.pointValues)
                 .then(result => res.json({result, success: true}))
                 .catch(error => res.status(500).send({error}))
         })
         
     app.route('/api/t/:tid/divisions')
-        .get((req, res) => {
-            
+        .get(hasToken, accessToTournament, (req, res) => {
+            Tournament.getDivisions(req.params.tid)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}));
         })
         .post((req, res) => {
             
+        })
+
+    app.route('/api/t/:tid/divisions/:divisionId')
+        .put(hasToken, adminAccessToTournament, (req, res) => {
+            Tournament.editDivision(req.params.tid, req.params.divisionId, req.body.newName)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}));
+        })
+
+    app.route('/api/t/:tid/phases')
+        .get(hasToken, accessToTournament, (req, res) => {
+            Tournament.getPhases(req.params.tid)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}));
         })
     
 }
