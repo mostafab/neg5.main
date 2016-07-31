@@ -9,7 +9,8 @@ const PORT_NUM = config.port;
 const db = mongoose();
 const app = express();
 
-const server = http.createServer(app);
-server.listen(PORT_NUM);
+const server = http.createServer(app).listen(PORT_NUM);
 
 console.log('Express server running on port ' + PORT_NUM);
+
+module.exports = server;

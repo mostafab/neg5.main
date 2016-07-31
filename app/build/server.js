@@ -21,7 +21,8 @@ var PORT_NUM = _configuration2.default.port;
 var db = mongoose();
 var app = (0, _express2.default)();
 
-var server = _http2.default.createServer(app);
-server.listen(PORT_NUM);
+var server = _http2.default.createServer(app).listen(PORT_NUM);
 
 console.log('Express server running on port ' + PORT_NUM);
+
+module.exports = server;
