@@ -14,15 +14,19 @@
                 deleteTeam
             }
             
-            function postTeam({name, divisions = [], players = []}) {
+            function postTeam(tournamentId, team) {
                 return $q((resolve, reject) => {
-                    service.teamFactory.teams.push({
-                        name,
-                        players,
-                        divisions 
-                    });
-                    let id = Math.random();
-                    resolve({id}); 
+                    let formattedTeam = formatNewTeam(team);
+                    let body = {
+                        team: formattedTeam,
+                        token: Cookies.get('nfToken')
+                    }
+                    $http.post('/api/t/' + tournamentId + '/teams', body)
+                        .then(({data}) => {
+                            getTeams(tournamentId);
+                            resolve();
+                        })
+                        .catch(error => reject(error));
                 })
             }
             
@@ -34,14 +38,10 @@
                             return {
                                 id,
                                 name,
-                                divisions: team_divisions === null ? [] : team_divisions.map(d => {
-                                    return {
-                                        name: d.division_name,
-                                        id: d.division_id,
-                                        phaseName: d.phase_name,
-                                        phaseId: d.phase_id
-                                    }
-                                })
+                                divisions: team_divisions === null ? {} : team_divisions.reduce((phaseMap, current) => {
+                                    phaseMap[current.phase_id] = current.division_id;
+                                    return phaseMap;
+                                }, {})
                             }
                         })
                         angular.copy(formattedTeams, service.teamFactory.teams);
@@ -54,6 +54,15 @@
                 service.teamFactory.teams.splice(index, 1);
             }
             
+            function formatNewTeam(team) {
+                let formattedTeam = {};
+                formattedTeam.players = team.players.filter(player => player.name.trim().length > 0);
+                formattedTeam.name = team.name.trim();
+                formattedTeam.divisions = Object.keys(team.divisions).map(phase => team.divisions[phase].id);
+
+                return formattedTeam;
+            }
+
             return service.teamFactory;
             
         }]); 

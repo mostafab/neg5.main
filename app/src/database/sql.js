@@ -14,7 +14,7 @@ export default {
         findById: getSQL('tournament-sql/findById.sql'),
         update: getSQL('tournament-sql/updateTournament.sql'),
         editPointScheme: {
-            addPointValue: getSQL('tournament-sql/addTossupPointValue.sql'),
+            add: getSQL('tournament-sql/addTossupPointValue.sql'),
             edit: {
                 deleteTossupValues: getSQL('tournament-sql/transactions/editPointScheme/deleteTossupValues.sql'),
                 updateBonusValues: getSQL('tournament-sql/transactions/editPointScheme/updateBonusValues.sql'),
@@ -48,7 +48,8 @@ export default {
     division: {
         findByTournament: getSQL('division-sql/getTournamentDivisions.sql'),
         edit: getSQL('division-sql/editTournamentDivision.sql'),
-        add: getSQL('division-sql/addDivisionToTournament.sql')
+        add: getSQL('division-sql/addDivisionToTournament.sql'),
+        remove: getSQL('division-sql/removeDivisionFromTournament.sql')
     },
     phase: {
         findByTournament: getSQL('phase-sql/getTournamentPhases.sql')

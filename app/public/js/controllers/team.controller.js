@@ -2,18 +2,20 @@
 
 (function () {
 
-    angular.module('tournamentApp').controller('TeamCtrl', ['$scope', '$http', 'Team', TeamCtrl]);
+    angular.module('tournamentApp').controller('TeamCtrl', ['$scope', '$http', 'Team', 'Phase', 'Division', TeamCtrl]);
 
-    function TeamCtrl($scope, $http, Team) {
+    function TeamCtrl($scope, $http, Team, Phase, Division) {
 
         var vm = this;
 
         vm.teams = Team.teams;
+        vm.phases = Phase.phases;
+        vm.divisions = Division.divisions;
 
         vm.newTeam = {
             name: '',
             players: [{ name: '' }, { name: '' }, { name: '' }, { name: '' }],
-            divisions: []
+            divisions: {}
         };
 
         vm.teamSortType = 'name';
@@ -36,29 +38,47 @@
         };
 
         vm.addTeam = function () {
-            var _vm$newTeam = vm.newTeam;
-            var name = _vm$newTeam.name;
-            var players = _vm$newTeam.players;
-
-            var filteredPlayers = players.filter(function (player) {
-                return player.name.length > 0;
-            });
-            var formattedTeam = {
-                name: name,
-                players: filteredPlayers
-            };
-            Team.postTeam(formattedTeam).then(function (id) {
-                vm.newTeam = {
-                    name: '',
-                    players: [{ name: '' }, { name: '' }, { name: '' }, { name: '' }],
-                    divisions: []
-                };
-            });
+            if (vm.newTeamForm.$valid) {
+                (function () {
+                    var toastConfig = {
+                        message: 'Adding team.'
+                    };
+                    $scope.toast(toastConfig);
+                    Team.postTeam($scope.tournamentId, vm.newTeam).then(function () {
+                        resetNewTeam();
+                        toastConfig.message = 'Added team';
+                        toastConfig.success = true;
+                    }).catch(function () {
+                        toastConfig.message = 'Could not add team.';
+                        toastConfig.success = false;
+                    }).finally(function () {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    });
+                })();
+            }
         };
 
         vm.removeTeam = function (id) {
             return Team.deleteTeam(id);
         };
+
+        vm.getDivisionNameInPhase = function (divisionId) {
+            if (!divisionId) return '';
+            var division = vm.divisions.find(function (division) {
+                return division.id === divisionId;
+            });
+            if (!division) return ''; // To catch error where teams are loaded before divisions b/c of asynchronicity
+            return division.name;
+        };
+
+        function resetNewTeam() {
+            vm.newTeam = {
+                name: '',
+                players: [{ name: '' }, { name: '' }, { name: '' }, { name: '' }],
+                divisions: {}
+            };
+        }
 
         vm.getTournamentTeams();
     }

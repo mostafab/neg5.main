@@ -74,7 +74,7 @@ export default {
         return new Promise((resolve, reject) => {
             let params = [id, type, value];
 
-            query(tournament.addPointValue, params, qm.one)
+            query(tournament.editPointScheme.add, params, qm.one)
                 .then(newTossupValue => resolve(newTossupValue))
                 .catch(error => {
                     reject(error);
@@ -183,6 +183,15 @@ export default {
         return new Promise((resolve, reject) => {
             let params = [tournamentId, divisionId, divisionName, phaseId];
             query(division.add, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
+    removeDivisionFromTournament: (tournamentId, divisionId) => {
+        return new Promise((resolve, reject) => {
+            let params = [tournamentId, divisionId];
+            query(division.remove, params, qm.one)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })

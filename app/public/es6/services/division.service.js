@@ -11,6 +11,7 @@
                 getDivisions,
                 editDivision,
                 addDivision,
+                removeDivision,
 
                 divisions
             }
@@ -70,6 +71,20 @@
                 })
             }
 
+            function removeDivision(tournamentId, {id}) {
+                return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
+                    $http.delete('/api/t/' + tournamentId + '/divisions/' + id + '?token=' + token)
+                        .then(({data}) => {
+                            removeDivisionFromArray(data.result.id);
+                            resolve();
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                })
+            }
+
             function updateDivisionInArray(newDivisionInfo) {
                 let index = service.factory.divisions.findIndex(division => division.id === newDivisionInfo.id);
                 service.factory.divisions[index].name = newDivisionInfo.name;
@@ -79,9 +94,17 @@
             function addDivisionToArray({name, id, phase_id: phaseId}) {
                 service.factory.divisions.push({
                     name,
+                    newName: name,
                     id,
                     phaseId
                 });
+            }
+
+            function removeDivisionFromArray(divisionId) {
+                let index = service.factory.divisions.findIndex(division => division.id === divisionId);
+                if (index !== -1) {
+                    service.factory.divisions.splice(index, 1);
+                }
             }
             
             return service.factory;

@@ -215,6 +215,16 @@ exports.default = {
         });
     },
 
+    removeDivision: function removeDivision(tournamentId, divisionId) {
+        return new Promise(function (resolve, reject) {
+            _tournament2.default.removeDivisionFromTournament(tournamentId, divisionId).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
     getPhases: function getPhases(tournamentId) {
         return new Promise(function (resolve, reject) {
             _tournament2.default.getTournamentPhases(tournamentId).then(function (phases) {

@@ -132,6 +132,23 @@
             }
         };
 
+        vm.removeDivision = function (division) {
+            var toastConfig = {
+                message: 'Removing division.'
+            };
+            $scope.toast(toastConfig);
+            Division.removeDivision($scope.tournamentId, division).then(function () {
+                toastConfig.message = 'Removed division.';
+                toastConfig.success = true;
+            }).catch(function () {
+                toastConfig.message = 'Could not remove division';
+                toastConfig.success = false;
+            }).finally(function () {
+                toastConfig.hideAfter = true;
+                $scope.toast(toastConfig);
+            });
+        };
+
         var duplicatePointValues = function duplicatePointValues() {
             var checked = {};
             for (var i = 0; i < vm.pointSchemeCopy.tossupValues.length; i++) {

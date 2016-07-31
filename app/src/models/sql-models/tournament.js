@@ -145,6 +145,14 @@ export default {
         })
     },
 
+    removeDivision: (tournamentId, divisionId) => {
+        return new Promise((resolve, reject) => {
+            db.removeDivisionFromTournament(tournamentId, divisionId)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
     getPhases: (tournamentId) => {
         return new Promise((resolve, reject) => {
             db.getTournamentPhases(tournamentId)

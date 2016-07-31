@@ -40,7 +40,7 @@ exports.default = {
                 return {
                     teamId: teamId,
                     id: _shortid2.default.generate(),
-                    playerName: player.name.trim()
+                    name: player.name.trim()
                 };
             });
             _team2.default.addTeamToTournament(tournamentId, teamId, formattedTeamName, formattedPlayers, divisions, user).then(function (team) {

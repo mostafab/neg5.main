@@ -15,21 +15,21 @@
             deleteTeam: deleteTeam
         };
 
-        function postTeam(_ref) {
-            var name = _ref.name;
-            var _ref$divisions = _ref.divisions;
-            var divisions = _ref$divisions === undefined ? [] : _ref$divisions;
-            var _ref$players = _ref.players;
-            var players = _ref$players === undefined ? [] : _ref$players;
-
+        function postTeam(tournamentId, team) {
             return $q(function (resolve, reject) {
-                service.teamFactory.teams.push({
-                    name: name,
-                    players: players,
-                    divisions: divisions
+                var formattedTeam = formatNewTeam(team);
+                var body = {
+                    team: formattedTeam,
+                    token: Cookies.get('nfToken')
+                };
+                $http.post('/api/t/' + tournamentId + '/teams', body).then(function (_ref) {
+                    var data = _ref.data;
+
+                    getTeams(tournamentId);
+                    resolve();
+                }).catch(function (error) {
+                    return reject(error);
                 });
-                var id = Math.random();
-                resolve({ id: id });
             });
         }
 
@@ -47,14 +47,10 @@
                     return {
                         id: id,
                         name: name,
-                        divisions: team_divisions === null ? [] : team_divisions.map(function (d) {
-                            return {
-                                name: d.division_name,
-                                id: d.division_id,
-                                phaseName: d.phase_name,
-                                phaseId: d.phase_id
-                            };
-                        })
+                        divisions: team_divisions === null ? {} : team_divisions.reduce(function (phaseMap, current) {
+                            phaseMap[current.phase_id] = current.division_id;
+                            return phaseMap;
+                        }, {})
                     };
                 });
                 angular.copy(formattedTeams, service.teamFactory.teams);
@@ -67,6 +63,19 @@
             }).indexOf(id);
             console.log(index);
             service.teamFactory.teams.splice(index, 1);
+        }
+
+        function formatNewTeam(team) {
+            var formattedTeam = {};
+            formattedTeam.players = team.players.filter(function (player) {
+                return player.name.trim().length > 0;
+            });
+            formattedTeam.name = team.name.trim();
+            formattedTeam.divisions = Object.keys(team.divisions).map(function (phase) {
+                return team.divisions[phase].id;
+            });
+
+            return formattedTeam;
         }
 
         return service.teamFactory;

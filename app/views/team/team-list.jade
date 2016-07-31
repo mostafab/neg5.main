@@ -13,12 +13,14 @@ div(class="panel-default nf-panel")
                 .col-lg-6
                     h5(style='display:inline') Divisions
 
+
         a(class='list-group-item nf-dark-blue nf-list-item' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id')
             .row
                 .col-lg-6
                     h5 {{team.name}}
                 .col-lg-6
                     .row
-                        .col-lg-4(ng-repeat='division in team.divisions')  
-                            h5 {{division.phaseName}} : {{division.name || 'None'}}
+                        .col-lg-4(ng-repeat='phase in Team.phases')
+                            h5 {{phase.name + ' : ' + Team.getDivisionNameInPhase(team.divisions[phase.id])}}
+
         

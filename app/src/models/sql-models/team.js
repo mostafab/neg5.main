@@ -19,7 +19,7 @@ export default {
                 return {
                     teamId,
                     id: shortid.generate(),
-                    playerName: player.name.trim()
+                    name: player.name.trim()
                 }
             });
             db.addTeamToTournament(tournamentId, teamId, formattedTeamName, formattedPlayers, divisions, user)

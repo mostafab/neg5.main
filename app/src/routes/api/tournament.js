@@ -78,7 +78,7 @@ export default (app) => {
                 .then(result => res.json({result, success: true}))
                 .catch(error => res.status(500).send({error, success: false}));
         })
-        .post((req, res) => {
+        .post(hasToken, adminAccessToTournament, (req, res) => {
             Tournament.addDivision(req.params.tid, req.body.name, req.body.phaseId)
                 .then(result => res.json({result, success: true}))
                 .catch(error => reject(error));
@@ -87,6 +87,11 @@ export default (app) => {
     app.route('/api/t/:tid/divisions/:divisionId')
         .put(hasToken, adminAccessToTournament, (req, res) => {
             Tournament.editDivision(req.params.tid, req.params.divisionId, req.body.newName)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}));
+        })
+        .delete(hasToken, adminAccessToTournament, (req, res) => {
+            Tournament.removeDivision(req.params.tid, req.params.divisionId)
                 .then(result => res.json({result, success: true}))
                 .catch(error => res.status(500).send({error, success: false}));
         })

@@ -108,7 +108,7 @@ exports.default = {
         return new Promise(function (resolve, reject) {
             var params = [id, type, value];
 
-            (0, _db.query)(tournament.addPointValue, params, _db.queryTypeMap.one).then(function (newTossupValue) {
+            (0, _db.query)(tournament.editPointScheme.add, params, _db.queryTypeMap.one).then(function (newTossupValue) {
                 return resolve(newTossupValue);
             }).catch(function (error) {
                 reject(error);
@@ -229,6 +229,17 @@ exports.default = {
         return new Promise(function (resolve, reject) {
             var params = [tournamentId, divisionId, divisionName, phaseId];
             (0, _db.query)(division.add, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    removeDivisionFromTournament: function removeDivisionFromTournament(tournamentId, divisionId) {
+        return new Promise(function (resolve, reject) {
+            var params = [tournamentId, divisionId];
+            (0, _db.query)(division.remove, params, _db.queryTypeMap.one).then(function (result) {
                 return resolve(result);
             }).catch(function (error) {
                 return reject(error);

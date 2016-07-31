@@ -12,6 +12,7 @@
             getDivisions: getDivisions,
             editDivision: editDivision,
             addDivision: addDivision,
+            removeDivision: removeDivision,
 
             divisions: divisions
         };
@@ -73,6 +74,22 @@
             });
         }
 
+        function removeDivision(tournamentId, _ref4) {
+            var id = _ref4.id;
+
+            return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
+                $http.delete('/api/t/' + tournamentId + '/divisions/' + id + '?token=' + token).then(function (_ref5) {
+                    var data = _ref5.data;
+
+                    removeDivisionFromArray(data.result.id);
+                    resolve();
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+
         function updateDivisionInArray(newDivisionInfo) {
             var index = service.factory.divisions.findIndex(function (division) {
                 return division.id === newDivisionInfo.id;
@@ -81,16 +98,26 @@
             service.factory.divisions[index].newName = newDivisionInfo.name;
         }
 
-        function addDivisionToArray(_ref4) {
-            var name = _ref4.name;
-            var id = _ref4.id;
-            var phaseId = _ref4.phase_id;
+        function addDivisionToArray(_ref6) {
+            var name = _ref6.name;
+            var id = _ref6.id;
+            var phaseId = _ref6.phase_id;
 
             service.factory.divisions.push({
                 name: name,
+                newName: name,
                 id: id,
                 phaseId: phaseId
             });
+        }
+
+        function removeDivisionFromArray(divisionId) {
+            var index = service.factory.divisions.findIndex(function (division) {
+                return division.id === divisionId;
+            });
+            if (index !== -1) {
+                service.factory.divisions.splice(index, 1);
+            }
         }
 
         return service.factory;

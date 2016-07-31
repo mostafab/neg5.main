@@ -146,6 +146,10 @@
     white-space: pre-wrap;
 }
 
+/*li.active {
+    border-left: 10px solid #FFA000;
+}*/
+
 .nav-bar > li:hover {
     cursor: pointer;
 }
@@ -171,7 +175,7 @@
 }
 
 .point-label {
-    min-width: 110px;
+    min-width: 130px;
 }
 .point-label.dropdown-toggle:hover {
     cursor: pointer;

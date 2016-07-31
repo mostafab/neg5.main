@@ -132,6 +132,27 @@
             }
         }
 
+        vm.removeDivision = (division) => {
+            let toastConfig = {
+                message: 'Removing division.'
+            }
+            $scope.toast(toastConfig);
+            Division.removeDivision($scope.tournamentId, division)
+                .then(() => {
+                    toastConfig.message = 'Removed division.'
+                    toastConfig.success = true;
+                })
+                .catch(() => {
+                    toastConfig.message = 'Could not remove division';
+                    toastConfig.success = false;
+                })
+                .finally(() => {
+                    toastConfig.hideAfter = true;
+                    $scope.toast(toastConfig);
+                });
+
+        }
+
         let duplicatePointValues = () => {
             let checked = {};
             for (let i = 0; i < vm.pointSchemeCopy.tossupValues.length; i++) {
