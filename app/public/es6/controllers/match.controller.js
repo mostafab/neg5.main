@@ -2,7 +2,7 @@
     
     angular.module('tournamentApp')
         .filter('preventSameMatchTeams', () => {
-            return function(items, otherTeamId) {
+            return (items, otherTeamId) => {
                 return items.filter(item => item.id !== otherTeamId)
             }
         });
