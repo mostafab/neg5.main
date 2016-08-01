@@ -1,6 +1,13 @@
 (() => {
     
     angular.module('tournamentApp')
+        .filter('preventSameMatchTeams', () => {
+            return function(items, otherTeamId) {
+                return items.filter(item => item.id !== otherTeamId)
+            }
+        });
+
+    angular.module('tournamentApp')
         .controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', 'Tournament', GameCtrl]);
     
     function GameCtrl($scope, Team, Game, Phase, Tournament) {
@@ -20,7 +27,7 @@
         vm.pointSum = function(points) {
             let values = Object.keys(points);
             return values.reduce((sum, current) => {
-                let product = (points[current] * current) || 0;
+                let product = (points[current + ''] * current) || 0;
                 return sum + product;
             }, 0)
         }
@@ -73,6 +80,10 @@
         vm.addGame = () => console.log(vm.currentGame);
         
         vm.removeGame = (id) => console.log(id);
+
+        vm.displayTeamInOptions = (id, otherSelectedTeam) => {
+            console.log(id);
+        }
         
         vm.getGames();
         

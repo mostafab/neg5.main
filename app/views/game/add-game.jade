@@ -4,14 +4,16 @@ div(id='add-game-div')
         div(class="collapsable nf-panel-heading nf-dark-blue") Add a Game
         div(class="nf-panel-body panel-body tournament-panel" id="addgamepanel")
 
-                form(name="Game.newGameForm")
+                form(name="Game.newGameForm" novalidate)
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            select(class='form-control nf-input' ng-model='Game.currentGame.teams[0].teamInfo' ng-change='Game.addTeam(Game.currentGame.teams[0])' ng-options='team.name for team in Game.teams')
+                            select(required class='form-control nf-input' ng-model='Game.currentGame.teams[0].teamInfo' ng-change='Game.addTeam(Game.currentGame.teams[0])',
+                                ng-options='team.name for team in Game.teams | orderBy:"name" | preventSameMatchTeams:Game.currentGame.teams[1].teamInfo.id')
                                 option(disabled value='' selected) Choose a Team
 
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            select(class='form-control nf-input' ng-model='Game.currentGame.teams[1].teamInfo' ng-change='Game.addTeam(Game.currentGame.teams[1])' ng-options='team.name for team in Game.teams')
+                            select(required class='form-control nf-input' ng-model='Game.currentGame.teams[1].teamInfo' ng-change='Game.addTeam(Game.currentGame.teams[1])', 
+                                ng-options='team.name for team in Game.teams | orderBy:"name" | preventSameMatchTeams:Game.currentGame.teams[0].teamInfo.id')
                                 option(disabled value='' selected) Choose a Team
                                 
                                 
@@ -56,22 +58,22 @@ div(id='add-game-div')
                                 div(class="col-sm-6 col-md-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Team 1 Score *
                                 div(class="col-md-6 col-sm-6 col-md-6")
-                                    input(type="number" class="form-control nf-input scorebox " name="leftteamscore" placeholder="Team 1 Score" ng-model='Game.currentGame.teams[0].score')
+                                    input(required type="number" class="form-control nf-input scorebox " name="leftteamscore" placeholder="Team 1 Score" ng-model='Game.currentGame.teams[0].score')
                             div(class='row')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="leftbounceback" placeholder="Bounceback Points" ng-model='Game.currentGame.teams[0].bouncebacks')
+                                    input(type="number" min='0' class="form-control nf-input " name="leftbounceback" placeholder="Bounceback Points" ng-model='Game.currentGame.teams[0].bouncebacks')
                             br
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input scorebox " name="rightteamscore" placeholder="Team 2 Score" ng-model='Game.currentGame.teams[1].score') 
+                                    input(required type="number" class="form-control nf-input scorebox " name="rightteamscore" placeholder="Team 2 Score" ng-model='Game.currentGame.teams[1].score') 
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Team 2 Score *
                             div(class="row")
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="rightbounceback" placeholder="Bounceback Points" ng-model='Game.currentGame.teams[1].bouncebacks')
+                                    input(type="number" min='0' class="form-control nf-input " name="rightbounceback" placeholder="Bounceback Points" ng-model='Game.currentGame.teams[1].bouncebacks')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
                             br
@@ -82,11 +84,11 @@ div(id='add-game-div')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 1
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="overtimetu1" placeholder="# Overtime TU Team 1" ng-model='Game.currentGame.teams[0].overtime')
+                                    input(type="number" min='0' class="form-control nf-input " name="overtimetu1" placeholder="# Overtime TU Team 1" ng-model='Game.currentGame.teams[0].overtime')
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="overtimetu2" placeholder="# Overtime TU Team 2" ng-model='Game.currentGame.teams[1].overtime')
+                                    input(type="number" min='0' class="form-control nf-input " name="overtimetu2" placeholder="# Overtime TU Team 2" ng-model='Game.currentGame.teams[1].overtime')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 2
 
@@ -98,14 +100,14 @@ div(id='add-game-div')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Round
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="round" placeholder="Round" ng-model='Game.currentGame.round')
+                                    input(type="number" min='0' class="form-control nf-input " name="round" placeholder="Round" ng-model='Game.currentGame.round')
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Total TUH
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" class="form-control nf-input " name="tossupsheard" placeholder="Tossups Heard" ng-model='Game.currentGame.tuh')
+                                    input(type="number" min='0' class="form-control nf-input " name="tossupsheard" placeholder="Tossups Heard" ng-model='Game.currentGame.tuh')
                     
                     br
                     div(class="row")
@@ -136,7 +138,7 @@ div(id='add-game-div')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases
                                 div(class="col-md-6 col-sm-6")
-                                    select(multiple class="form-control nf-input no-overflow" ng-attr-size='{{Game.phases.length}}' ng-options='phase.name for phase in Game.phases | orderBy:"name" track by phase.id' ng-model='Game.currentGame.phases')
+                                    select(required multiple class="form-control nf-input no-overflow" ng-attr-size='{{Game.phases.length}}' ng-options='phase.name for phase in Game.phases | orderBy:"name" track by phase.id' ng-model='Game.currentGame.phases')
                                         
                     br
                     

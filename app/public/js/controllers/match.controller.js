@@ -2,6 +2,14 @@
 
 (function () {
 
+    angular.module('tournamentApp').filter('preventSameMatchTeams', function () {
+        return function (items, otherTeamId) {
+            return items.filter(function (item) {
+                return item.id !== otherTeamId;
+            });
+        };
+    });
+
     angular.module('tournamentApp').controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', 'Tournament', GameCtrl]);
 
     function GameCtrl($scope, Team, Game, Phase, Tournament) {
@@ -21,7 +29,7 @@
         vm.pointSum = function (points) {
             var values = Object.keys(points);
             return values.reduce(function (sum, current) {
-                var product = points[current] * current || 0;
+                var product = points[current + ''] * current || 0;
                 return sum + product;
             }, 0);
         };
@@ -77,6 +85,10 @@
 
         vm.removeGame = function (id) {
             return console.log(id);
+        };
+
+        vm.displayTeamInOptions = function (id, otherSelectedTeam) {
+            console.log(id);
         };
 
         vm.getGames();
