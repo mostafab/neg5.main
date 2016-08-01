@@ -18,8 +18,11 @@
         vm.pointScheme = Tournament.pointScheme;
         
         vm.pointSum = function(points) {
-            return points.map(({number, value}) => (number * value) || 0)
-                .reduce((sum, product) => sum + product, 0);
+            let values = Object.keys(points);
+            return values.reduce((sum, current) => {
+                let product = (points[current] * current) || 0;
+                return sum + product;
+            }, 0)
         }
         
         vm.currentGame = {
@@ -44,19 +47,17 @@
             notes: ''
         }
         
-        vm.addTeam = (index) => {
-            Game.getTeamPlayers($scope.tournamentId, vm.currentGame.teams[index].teamInfo.id)
+        vm.addTeam = (team) => {
+            Game.getTeamPlayers($scope.tournamentId, team.teamInfo.id)
                 .then(players => {
-                    vm.currentGame.teams[index].players = players.map(({name, id}) => {
+                    team.players = players.map(({name, id}) => {
                         return {
                             id,
                             name,
-                            points: vm.pointScheme.slice().map(({value}) => {
-                                return {
-                                    value,
-                                    number: 0
-                                }
-                            })
+                            points: vm.pointScheme.tossupValues.reduce((obj, current) => {
+                                obj[current.value] = 0;
+                                return obj;
+                            }, {})
                         }
                     });
                 })

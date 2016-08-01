@@ -46,7 +46,6 @@
                                     name
                                 }
                             })
-                            console.log(formattedPlayers);
                             resolve(formattedPlayers);
                         })
                         .catch(error => {

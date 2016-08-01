@@ -4,14 +4,14 @@ div(id='add-game-div')
         div(class="collapsable nf-panel-heading nf-dark-blue") Add a Game
         div(class="nf-panel-body panel-body tournament-panel" id="addgamepanel")
 
-                form(name="new-game-form")
+                form(name="Game.newGameForm")
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            select(class='form-control nf-input' ng-model='Game.currentGame.teams[0].teamInfo' ng-change='Game.addTeam(0)' ng-options='team.name for team in Game.teams')
+                            select(class='form-control nf-input' ng-model='Game.currentGame.teams[0].teamInfo' ng-change='Game.addTeam(Game.currentGame.teams[0])' ng-options='team.name for team in Game.teams')
                                 option(disabled value='' selected) Choose a Team
 
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            select(class='form-control nf-input' ng-model='Game.currentGame.teams[1].teamInfo' ng-change='Game.addTeam(1)' ng-options='team.name for team in Game.teams')
+                            select(class='form-control nf-input' ng-model='Game.currentGame.teams[1].teamInfo' ng-change='Game.addTeam(Game.currentGame.teams[1])' ng-options='team.name for team in Game.teams')
                                 option(disabled value='' selected) Choose a Team
                                 
                                 
@@ -23,14 +23,14 @@ div(id='add-game-div')
                                 table(class='table')                                   
                                     thead
                                         tr(class='nf-dark-blue')
-                                            th(class='no-border') 
-                                            th(class='center no-border' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ') {{point.value}}
-                                            th(class='center no-border') Total
+                                            th(class='no-border nf-label') {{Game.currentGame.teams[0].players.length}} Players
+                                            th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ') {{point.value}}
+                                            th(class='center no-border nf-label') Total
                                     tbody
                                         tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id' class='nf-white')
                                             td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                             td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ')
-                                                input(type='number' class='form-control input-sm' ng-model='player.points[$index].number')
+                                                input(type='number' min='0' class='form-control input-sm' ng-model='player.points[point.value]')
                                             td 
                                                 input(readonly class='form-control input-sm' value='{{Game.pointSum(player.points)}}')
                                             
@@ -39,14 +39,14 @@ div(id='add-game-div')
                                 table(class='table')                                   
                                     thead
                                         tr(class='nf-dark-blue')
-                                            th 
-                                            th(class='center' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ') {{point.value}}
-                                            th(class='center') Total
+                                            th.nf-label {{Game.currentGame.teams[1].players.length}} Players
+                                            th(class='center nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ') {{point.value}}
+                                            th(class='center nf-label') Total
                                     tbody
                                         tr(ng-repeat='player in Game.currentGame.teams[1].players | orderBy: "name" track by player.id' class='nf-white')
                                             td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                             td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ')
-                                                input(type='number' class='form-control input-sm' ng-model='player.points[$index].number')
+                                                input(type='number' class='form-control input-sm' ng-model='point.number')
                                             td 
                                                 input(readonly class='form-control input-sm' value='{{Game.pointSum(player.points)}}')
                                     

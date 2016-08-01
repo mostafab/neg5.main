@@ -19,11 +19,9 @@
         vm.pointScheme = Tournament.pointScheme;
 
         vm.pointSum = function (points) {
-            return points.map(function (_ref) {
-                var number = _ref.number;
-                var value = _ref.value;
-                return number * value || 0;
-            }).reduce(function (sum, product) {
+            var values = Object.keys(points);
+            return values.reduce(function (sum, current) {
+                var product = points[current] * current || 0;
                 return sum + product;
             }, 0);
         };
@@ -45,23 +43,19 @@
             notes: ''
         };
 
-        vm.addTeam = function (index) {
-            Game.getTeamPlayers($scope.tournamentId, vm.currentGame.teams[index].teamInfo.id).then(function (players) {
-                vm.currentGame.teams[index].players = players.map(function (_ref2) {
-                    var name = _ref2.name;
-                    var id = _ref2.id;
+        vm.addTeam = function (team) {
+            Game.getTeamPlayers($scope.tournamentId, team.teamInfo.id).then(function (players) {
+                team.players = players.map(function (_ref) {
+                    var name = _ref.name;
+                    var id = _ref.id;
 
                     return {
                         id: id,
                         name: name,
-                        points: vm.pointScheme.slice().map(function (_ref3) {
-                            var value = _ref3.value;
-
-                            return {
-                                value: value,
-                                number: 0
-                            };
-                        })
+                        points: vm.pointScheme.tossupValues.reduce(function (obj, current) {
+                            obj[current.value] = 0;
+                            return obj;
+                        }, {})
                     };
                 });
             }).catch(function (error) {

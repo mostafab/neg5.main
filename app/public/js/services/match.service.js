@@ -56,7 +56,6 @@
                             name: name
                         };
                     });
-                    console.log(formattedPlayers);
                     resolve(formattedPlayers);
                 }).catch(function (error) {
                     reject(error);
