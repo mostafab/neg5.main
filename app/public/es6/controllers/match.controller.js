@@ -43,9 +43,7 @@
                   players: []
                } 
             ],
-            phases: [
-                
-            ],
+            phases: [],
             round: 1,
             tuh: 20,
             room: null,

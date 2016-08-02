@@ -95,6 +95,7 @@ CREATE TABLE team_plays_in_tournament_match (
     tournament_id varchar(20) NOT NULL,
     score integer NOT NULL,
     bounceback_points integer DEFAULT 0 CHECK (bounceback_points >= 0),
+    overtime_tossups_gotten integer DEFAULT 0 CHECK (overtime_tossups_gotten >= 0),
     PRIMARY KEY (team_id, match_id, tournament_id),
     FOREIGN KEY (team_id, tournament_id) REFERENCES tournament_team(id, tournament_id) ON DELETE CASCADE,
     FOREIGN KEY (match_id, tournament_id) REFERENCES tournament_match(id, tournament_id) ON DELETE CASCADE  
