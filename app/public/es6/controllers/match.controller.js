@@ -55,6 +55,8 @@
         }
         
         vm.addTeam = (team) => {
+            let toastConfig = {message: 'Loading ' + team.teamInfo.name + ' players.'};
+            $scope.toast(toastConfig);
             Game.getTeamPlayers($scope.tournamentId, team.teamInfo.id)
                 .then(players => {
                     team.players = players.map(({name, id}) => {
@@ -64,12 +66,20 @@
                             points: vm.pointScheme.tossupValues.reduce((obj, current) => {
                                 obj[current.value] = 0;
                                 return obj;
-                            }, {})
+                            }, {}),
+                            tuh: 0
                         }
                     });
+                    toastConfig.success = true;
+                    toastConfig.message = 'Loaded ' + team.teamInfo.name + ' players (' + team.players.length + ')';
                 })
                 .catch(error => {
-                    console.log(error);
+                    toastConfig.success = false;
+                    toastConfig.message = 'Could not load team.';
+                })
+                .finally(() => {
+                    toastConfig.hideAfter = true;
+                    $scope.toast(toastConfig);
                 })
         }
         

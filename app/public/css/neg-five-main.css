@@ -29,6 +29,10 @@
     border-radius: 2px;
 }
 
+.nf-error {
+    border: 3px solid red;
+}
+
 .nf-input {
     border-radius: 2px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
@@ -105,7 +109,7 @@
 }
 
 .nf-blue {
-    background-color: #01579B;
+    background-color: #2B3E50;
     color: white;
 }
 

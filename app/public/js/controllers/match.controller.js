@@ -52,6 +52,8 @@
         };
 
         vm.addTeam = function (team) {
+            var toastConfig = { message: 'Loading ' + team.teamInfo.name + ' players.' };
+            $scope.toast(toastConfig);
             Game.getTeamPlayers($scope.tournamentId, team.teamInfo.id).then(function (players) {
                 team.players = players.map(function (_ref) {
                     var name = _ref.name;
@@ -63,11 +65,18 @@
                         points: vm.pointScheme.tossupValues.reduce(function (obj, current) {
                             obj[current.value] = 0;
                             return obj;
-                        }, {})
+                        }, {}),
+                        tuh: 0
                     };
                 });
+                toastConfig.success = true;
+                toastConfig.message = 'Loaded ' + team.teamInfo.name + ' players (' + team.players.length + ')';
             }).catch(function (error) {
-                console.log(error);
+                toastConfig.success = false;
+                toastConfig.message = 'Could not load team.';
+            }).finally(function () {
+                toastConfig.hideAfter = true;
+                $scope.toast(toastConfig);
             });
         };
 
