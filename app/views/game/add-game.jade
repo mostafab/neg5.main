@@ -38,7 +38,7 @@ div(id='add-game-div')
                                             td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value"')
                                                 input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.newGameForm[player.id + point.value].$invalid}")
                                             td 
-                                                div(tabindex="-1" class='form-control input-sm') {{Game.pointSum(player.points)}}
+                                                div(tabindex="-1" class='form-control readonly input-sm') {{Game.pointSum(player.points)}}
                                             
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class='panel-default nf-panel nf-shadow')
@@ -57,7 +57,7 @@ div(id='add-game-div')
                                             td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ')
                                                 input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.newGameForm[player.id + point.value].$invalid}")
                                             td 
-                                                div(tabindex="-1" class='form-control input-sm') {{Game.pointSum(player.points)}}
+                                                div(tabindex="-1" class='form-control readonly input-sm') {{Game.pointSum(player.points)}}
                                     
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")

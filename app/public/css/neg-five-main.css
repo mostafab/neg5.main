@@ -225,6 +225,10 @@ input[type=number] {
     -moz-appearance:textfield;
 }
 
+div.readonly {
+    background-color: #f8f5f0;
+}
+
 /**
 Redefine Boostrap definitions
 */

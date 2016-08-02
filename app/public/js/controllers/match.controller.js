@@ -45,10 +45,10 @@
             phases: [],
             round: 1,
             tuh: 20,
-            room: '',
-            moderator: '',
-            packet: '',
-            notes: ''
+            room: null,
+            moderator: null,
+            packet: null,
+            notes: null
         };
 
         vm.addTeam = function (team) {
@@ -66,7 +66,7 @@
                             obj[current.value] = 0;
                             return obj;
                         }, {}),
-                        tuh: 0
+                        tuh: vm.currentGame.tuh
                     };
                 });
                 toastConfig.success = true;
