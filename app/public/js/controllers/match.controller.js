@@ -88,9 +88,7 @@
             return Game.getGames($scope.tournamentId);
         };
 
-        vm.addGame = function () {
-            return console.log(vm.currentGame);
-        };
+        vm.addGame = function () {};
 
         vm.removeGame = function (id) {
             return console.log(id);

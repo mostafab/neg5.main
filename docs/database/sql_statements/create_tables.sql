@@ -110,7 +110,8 @@ CREATE TABLE player_match_tossup (
     PRIMARY KEY (player_id, match_id, tournament_id, tossup_value),
     FOREIGN KEY (player_id, tournament_id) REFERENCES tournament_player(id, tournament_id) ON DELETE CASCADE,
     FOREIGN KEY (match_id, tournament_id) REFERENCES tournament_match(id, tournament_id) ON DELETE CASCADE,
-    FOREIGN KEY (tournament_id, tossup_value) REFERENCES tournament_tossup_values(tournament_id, tossup_value)
+    FOREIGN KEY (tournament_id, tossup_value) REFERENCES tournament_tossup_values(tournament_id, tossup_value),
+    FOREIGN KEY (player_id, match_id, tournament_id) REFERENCES player_plays_in_tournament_match(player_id, match_id, tournament_id) ON DELETE CASCADE
 );
 
 CREATE TABLE tournament_phase (

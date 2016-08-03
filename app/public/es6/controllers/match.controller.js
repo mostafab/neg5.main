@@ -85,7 +85,9 @@
         
         vm.getGames = () => Game.getGames($scope.tournamentId);
         
-        vm.addGame = () => console.log(vm.currentGame);
+        vm.addGame = () => {
+            
+        };
         
         vm.removeGame = (id) => console.log(id);
 

@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _shortid = require('shortid');
+
+var _shortid2 = _interopRequireDefault(_shortid);
+
 var _match = require('./../../data-access/match');
 
 var _match2 = _interopRequireDefault(_match);
@@ -19,6 +23,12 @@ exports.default = {
             }).catch(function (error) {
                 return reject(error);
             });
+        });
+    },
+
+    addToTournament: function addToTournament(tournamentId, gameInfo) {
+        return new Promise(function (resolve, reject) {
+            resolve(gameInfo);
         });
     }
 
