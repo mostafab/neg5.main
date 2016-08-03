@@ -4,7 +4,7 @@ div(id='add-game-div')
         div(class="collapsable nf-panel-heading nf-dark-blue") Add a Game
         div(class="nf-panel-body panel-body tournament-panel" id="addgamepanel")
 
-                form(name="Game.newGameForm" novalidate)
+                form(name="Game.newGameForm" novalidate ng-submit='Game.addGame()')
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             select(required class='form-control nf-input' ng-model='Game.currentGame.teams[0].teamInfo' ng-change='Game.addTeam(Game.currentGame.teams[0])',
@@ -101,6 +101,22 @@ div(id='add-game-div')
 
                     br
 
+                    .row
+                        .col-lg-6.col-md-6.col-sm-6
+                            .row
+                                .col-md-6.col-sm-6
+                                    label.label.nf-dark-blue.nf-label.btn-block(style='float:right') {{Game.currentGame.teams[0].teamInfo.name || ''}} PPB 
+                                .col-md-6.col-sm-6
+                                    .form-control.readonly.nf-input {{Game.teamBonusPoints(Game.currentGame.teams[0].teamInfo)}}
+
+                        .col-lg-6.col-md-6.col-sm-6
+                            .row
+                                .col-md-6.col-sm-6
+                                    label.label.nf-dark-blue.nf-label.btn-block(style='float:right') {{Game.currentGame.teams[1].teamInfo.name || ''}} PPB 
+                                .col-md-6.col-sm-6
+                                    .form-control.readonly.nf-input {{Game.teamBonusPoints(Game.currentGame.teams[1].teamInfo)}}
+                    br
+
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")
@@ -163,4 +179,4 @@ div(id='add-game-div')
                     
                     hr
                     
-                    button(type="submit" class="btn btn-md nf-blue nf-button" ng-click='Game.addGame()' ng-disabled='!Game.newGameForm.$valid') Add Game Information
+                    button(type="submit" class="btn btn-md nf-blue nf-button" ng-disabled='Game.newGameForm.$invalid') Add Game Information

@@ -3,7 +3,7 @@ div(class="panel panel-default nf-panel")
     div(class="panel-body  nf-panel-body tournament-panel")
 
         div(class="col-md-12 col-sm-12")
-            form(novalidate name='Team.newTeamForm')
+            form(novalidate name='Team.newTeamForm' ng-submit='Team.addTeam()')
                 .row
                     .col-lg-4.col-md-4.col-sm-4
                         label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Name
@@ -49,4 +49,4 @@ div(class="panel panel-default nf-panel")
                                     i(class='fa fa-times')                    
 
                 br
-                button(type="button" class="btn btn-lg nf-green nf-button" ng-click='Team.addTeam()') Add Team To Tournament
+                button(type="submit" class="btn btn-lg nf-green nf-button" ng-disabled='Team.newTeamForm.$invalid') Add Team To Tournament

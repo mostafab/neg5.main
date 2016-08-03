@@ -34,6 +34,10 @@
             }, 0);
         };
 
+        vm.teamBonusPoints = function (teamId) {
+            return 10;
+        };
+
         vm.currentGame = {
             teams: [{
                 teamInfo: null,
@@ -80,22 +84,14 @@
             });
         };
 
-        vm.test = function () {
-            return console.log(vm.currentGame.phases);
-        };
-
         vm.getGames = function () {
             return Game.getGames($scope.tournamentId);
         };
 
-        vm.addGame = function () {};
-
-        vm.removeGame = function (id) {
-            return console.log(id);
-        };
-
-        vm.displayTeamInOptions = function (id, otherSelectedTeam) {
-            console.log(id);
+        vm.addGame = function () {
+            if (vm.newGameForm.$valid) {
+                Game.postGame($scope.tournamentId, vm.currentGame);
+            }
         };
 
         vm.getGames();

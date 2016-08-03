@@ -31,6 +31,10 @@
                 return sum + product;
             }, 0)
         }
+
+        vm.teamBonusPoints = (teamId) => {
+            return 10;
+        } 
         
         vm.currentGame = {
             teams: [
@@ -81,19 +85,13 @@
                 })
         }
         
-        vm.test = () => console.log(vm.currentGame.phases);
-        
         vm.getGames = () => Game.getGames($scope.tournamentId);
         
         vm.addGame = () => {
-            
+            if (vm.newGameForm.$valid) {
+                Game.postGame($scope.tournamentId, vm.currentGame);
+            }
         };
-        
-        vm.removeGame = (id) => console.log(id);
-
-        vm.displayTeamInOptions = (id, otherSelectedTeam) => {
-            console.log(id);
-        }
         
         vm.getGames();
         

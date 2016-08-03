@@ -15,8 +15,19 @@
                 getTeamPlayers
             }
 
-            function postGame() {
-                
+            function postGame(tournamentId, game) {
+                let formattedGame = formatGame(game);
+                return $q((resolve, reject) => {
+                    let body = {
+                        token: Cookies.get('nfToken'),
+                        game: formattedGame
+                    }
+                    $http.post('/api/t/' + tournamentId + '/matches', body)
+                        .then(({data}) => {
+                            resolve(data.result);
+                        })
+                        .catch(error => reject(error));
+                })
             }
             
             function getGames(tournamentId) {
@@ -58,6 +69,13 @@
             function deleteGame(id) {
                 let index = service.gameFactory.games.map(team => team.id).indexOf(id);
                 service.teamFactory.teams.splice(index, 1);
+            }
+
+            function formatGame(game) {
+                let gameCopy = {};
+                angular.copy(game, gameCopy);
+                gameCopy.phases = gameCopy.phases.map(phase => phase.id);
+                return gameCopy;
             }
             
             return service.gameFactory;
