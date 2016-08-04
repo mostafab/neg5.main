@@ -69,29 +69,33 @@ describe('Controller: Match', () => {
     })
 
     describe('A team\'s bonus points should be calculated correctly', () => {
-        let team = {
-            players: [
-                {
-                    points: {
-                        10: 2,
-                        15: 4
-                    }
-                },
-                {
-                    points: {
-                        10: 0,
-                        15: 1
-                    }
-                }
-            ],
-            score: 400,
-            bouncebacks: 0
-        }
+        let team;
 
-        it('should correctly calculate bonus points when a team has no bounceback points', () => {
+        beforeEach(() => {
+            team = {
+                players: [
+                    {
+                        points: {
+                            10: 2,
+                            15: 4
+                        }
+                    },
+                    {
+                        points: {
+                            10: 0,
+                            15: 1
+                        }
+                    }
+                ],
+                score: 400,
+                bouncebacks: 0
+            }
+        })
+
+        it('and should correctly calculate bonus points when a team has no bounceback points', () => {
             expect(MatchController.teamBonusPoints(team)).toEqual(305);
         })
-        
+
     })
     
 })

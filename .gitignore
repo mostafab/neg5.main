@@ -32,3 +32,6 @@ data/
 
 #Other
 .DS_Store
+
+#Karma output
+karma_html/
