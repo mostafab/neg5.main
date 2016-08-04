@@ -27,6 +27,9 @@
         vm.pointScheme = Tournament.pointScheme;
 
         vm.pointSum = function (points) {
+            if (!points) {
+                return 0;
+            }
             var values = Object.keys(points);
             return values.reduce(function (sum, current) {
                 var product = points[current + ''] * current || 0;
@@ -34,9 +37,37 @@
             }, 0);
         };
 
-        vm.teamBonusPoints = function (teamId) {
-            return 10;
+        vm.teamBonusPoints = function (team) {
+            var tossupSum = team.players.map(function (player) {
+                return vm.pointSum(player.points);
+            }).reduce(function (sum, current) {
+                return sum + current;
+            }, 0);
+            return (team.score || 0) - tossupSum - (team.bouncebacks || 0);
         };
+
+        vm.teamPPB = function (team) {
+            if (team.players.length === 0) return 0;
+
+            var totalTossupsWithoutOT = totalTeamTossupGets(team) - (team.overtime || 0);
+            var totalBonusPoints = vm.teamBonusPoints(team);
+            return (totalBonusPoints / totalTossupsWithoutOT || 0).toFixed(2);
+        };
+
+        function totalTeamTossupGets(team) {
+            var totalTossups = team.players.map(function (player) {
+                var sum = 0;
+                for (var pv in player.points) {
+                    if (player.points.hasOwnProperty(pv) && pv > 0) {
+                        sum += player.points[pv];
+                    }
+                }
+                return sum;
+            }).reduce(function (sum, current) {
+                return sum + current;
+            }, 0);
+            return totalTossups;
+        }
 
         vm.currentGame = {
             teams: [{
