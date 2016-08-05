@@ -40,7 +40,14 @@ exports.default = {
         findUsers: getSQL('account-sql/findUsers.sql')
     },
     match: {
-        findByTournament: getSQL('match-sql/findMatchesByTournament.sql')
+        findByTournament: getSQL('match-sql/findMatchesByTournament.sql'),
+        add: {
+            addMatch: getSQL('match-sql/transactions/addMatch/addMatchInfoToTournament.sql'),
+            addMatchPhases: getSQL('match-sql/transactions/addMatch/addMatchPhases'),
+            addMatchPlayers: getSQL('match-sql/transactions/addMatch/addMatchPlayers.sql'),
+            addMatchTeams: getSQL('match-sql/transactions/addMatch/addMatchTeams.sql'),
+            addPlayerTossups: getSQL('match-sql/transactions/addMatch/addPlayerMatchTossups.sql')
+        }
     },
     team: {
         findByTournament: getSQL('team-sql/findTeamsByTournament.sql'),

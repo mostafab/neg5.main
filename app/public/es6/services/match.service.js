@@ -75,6 +75,24 @@
                 let gameCopy = {};
                 angular.copy(game, gameCopy);
                 gameCopy.phases = gameCopy.phases.map(phase => phase.id);
+                gameCopy.teams = gameCopy.teams.map(team => {
+                    return {
+                        id: team.teamInfo.id,
+                        players: team.players.map(player => {
+                            return {
+                                id: player.id,
+                                points: Object.keys(player.points)
+                                    .map(Number).map(pv => {
+                                        return {
+                                            value: pv,
+                                            number: player.points[pv]
+                                        }
+                                    })
+                            }
+                        })
+                    }
+                })
+                
                 return gameCopy;
             }
             

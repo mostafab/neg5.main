@@ -26,9 +26,43 @@ exports.default = {
         });
     },
 
-    addToTournament: function addToTournament(tournamentId, gameInfo) {
+    addToTournament: function addToTournament(tournamentId, gameInfo, user) {
         return new Promise(function (resolve, reject) {
-            resolve(gameInfo);
+            var _gameInfo$moderator = gameInfo.moderator;
+            var moderator = _gameInfo$moderator === undefined ? null : _gameInfo$moderator;
+            var _gameInfo$notes = gameInfo.notes;
+            var notes = _gameInfo$notes === undefined ? null : _gameInfo$notes;
+            var _gameInfo$packet = gameInfo.packet;
+            var packet = _gameInfo$packet === undefined ? null : _gameInfo$packet;
+            var phases = gameInfo.phases;
+            var _gameInfo$room = gameInfo.room;
+            var room = _gameInfo$room === undefined ? null : _gameInfo$room;
+            var _gameInfo$round = gameInfo.round;
+            var round = _gameInfo$round === undefined ? 0 : _gameInfo$round;
+            var teams = gameInfo.teams;
+            var _gameInfo$tuh = gameInfo.tuh;
+            var tuh = _gameInfo$tuh === undefined ? 20 : _gameInfo$tuh;
+
+
+            if (!phases || !teams) return reject(new Error('Phases and teams are both required'));
+
+            var formattedMatchInfo = {
+                id: _shortid2.default.generate(),
+                moderator: moderator === null ? null : moderator.trim(),
+                notes: notes === null ? null : notes.trim(),
+                packet: packet === null ? null : packet.trim(),
+                phases: phases,
+                room: room === null ? null : room.trim(),
+                round: round,
+                teams: teams,
+                tuh: tuh
+            };
+
+            _match2.default.addToTournament(tournamentId, formattedMatchInfo, user).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
         });
     }
 

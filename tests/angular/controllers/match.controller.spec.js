@@ -94,7 +94,66 @@ describe('Controller: Match', () => {
 
         it('and should correctly calculate bonus points when a team has no bounceback points', () => {
             expect(MatchController.teamBonusPoints(team)).toEqual(305);
+            team.bouncebacks = null;
+            expect(MatchController.teamBonusPoints(team)).toEqual(305);
         })
+
+        it('and should correctly calculate bonus points when a team has bouncebacks', () => {
+            team.bouncebacks = 50;
+            expect(MatchController.teamBonusPoints(team)).toEqual(255);
+        })
+    })
+
+    describe('A team\'s PPB should be calculated correctly', () => {
+        let team;
+
+        beforeEach(() => {
+            team = {
+                players: [
+                    {
+                        points: {
+                            10: 2,
+                            15: 4
+                        }
+                    },
+                    {
+                        points: {
+                            10: 0,
+                            15: 1
+                        }
+                    }
+                ],
+                score: 400,
+                bouncebacks: 0
+            }
+        })
+
+        it('and should return 0 PPB when a team has no players', () => {
+            team.players = [];
+            expect(MatchController.teamPPB(team)).toEqual(0);
+        });
+
+        it(' and it should return Infinity if a team has no non-overtime tossups', () => {
+            team.players = [{points: {}}]
+            expect(MatchController.teamPPB(team)).toEqual(Infinity);
+        });
+
+        it('and should correctly calculate PPB when a team has no bounceback points', () => {
+            expect(MatchController.teamPPB(team).toFixed(2)).toEqual('43.57');
+        });
+
+        it('and should correctly calculate PPB when a team has bounceback points', () => {
+            team.bouncebacks = 50;
+            expect(MatchController.teamPPB(team).toFixed(2)).toEqual('36.43');
+        });
+
+        it('and should not include overtime tossups when calculating PPB', () => {
+            team.overtime = 1;
+            expect(MatchController.teamPPB(team).toFixed(2)).toEqual('50.83');
+
+            team.overtime = null;
+            expect(MatchController.teamPPB(team).toFixed(2)).toEqual('43.57');
+        });
 
     })
     

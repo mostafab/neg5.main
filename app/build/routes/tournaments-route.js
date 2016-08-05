@@ -157,7 +157,7 @@
 //         });
 //     });
 
-//     app.post("/tournaments/addCollaborator", (req, res, next) => {       
+//     app.post("/tournaments/addCollaborator", (req, res, next) => {        
 //         const collaborator = JSON.parse(req.body.collaborators);
 //         collaborator.admin = !req.body.admin ? false : true;
 //         tournamentController.addCollaborator(req.body.tournamentid, collaborator, (err, duplicate) => {
@@ -211,7 +211,7 @@
 //            tournamentController.removeCollaborator(req.params.tid, req.params.collaboratorId, (err) => {
 //             if (err) return res.status(500).send({err: err});
 //             return res.status(200).send({success: true, id: req.params.collaboratorId});
-//         });
+//         }); 
 //     })
 
 //     app.post("/tournaments/editPointSchema", (req, res, next) => {

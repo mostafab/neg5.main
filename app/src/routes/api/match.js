@@ -12,7 +12,7 @@ export default (app) => {
                 .catch(error => res.status(500).send(error));
         })
         .post(hasToken, accessToTournament, (req, res) => {
-            Match.addToTournament(req.params.tid, req.body.game)
+            Match.addToTournament(req.params.tid, req.body.game, req.currentUser)
                 .then(result => res.json({result, success: true}))
                 .catch(error => res.status(500).send({error, success: false}));  
         })

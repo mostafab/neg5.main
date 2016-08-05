@@ -91,6 +91,23 @@
             gameCopy.phases = gameCopy.phases.map(function (phase) {
                 return phase.id;
             });
+            gameCopy.teams = gameCopy.teams.map(function (team) {
+                return {
+                    id: team.teamInfo.id,
+                    players: team.players.map(function (player) {
+                        return {
+                            id: player.id,
+                            points: Object.keys(player.points).map(Number).map(function (pv) {
+                                return {
+                                    value: pv,
+                                    number: player.points[pv]
+                                };
+                            })
+                        };
+                    })
+                };
+            });
+
             return gameCopy;
         }
 

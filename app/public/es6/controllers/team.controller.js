@@ -26,8 +26,6 @@
         vm.teamSortReverse = false;
         vm.teamQuery = '';
         
-        vm.testClick = (index) => console.log(index);
-        
         vm.getTournamentTeams = () => {
             Team.getTeams($scope.tournamentId);
         }

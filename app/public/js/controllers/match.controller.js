@@ -51,7 +51,7 @@
 
             var totalTossupsWithoutOT = totalTeamTossupGets(team) - (team.overtime || 0);
             var totalBonusPoints = vm.teamBonusPoints(team);
-            return (totalBonusPoints / totalTossupsWithoutOT || 0).toFixed(2);
+            return totalBonusPoints / totalTossupsWithoutOT || 0;
         };
 
         function totalTeamTossupGets(team) {

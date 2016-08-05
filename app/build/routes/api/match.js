@@ -23,7 +23,7 @@ exports.default = function (app) {
             return res.status(500).send(error);
         });
     }).post(_token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
-        _match2.default.addToTournament(req.params.tid, req.body.game).then(function (result) {
+        _match2.default.addToTournament(req.params.tid, req.body.game, req.currentUser).then(function (result) {
             return res.json({ result: result, success: true });
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
