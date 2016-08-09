@@ -24,7 +24,7 @@ FROM
 
                 -- Below SQL in parens joins the team_plays_in_tournament_match table with itself to get the two teams in a match and joins with the tournament_team table to get the team names
                     (
-                        SELECT  team_1_info.match_id AS match_id, team_1_info.tournament_id AS tournament_id, team_1_info.id AS team_1_id, team_1_info.name AS team_1_name, team_1_info.score AS team_1_score, 
+                        SELECT  DISTINCT ON (team_1_info.tournament_id, team_1_info.match_id) team_1_info.match_id AS match_id, team_1_info.tournament_id AS tournament_id, team_1_info.id AS team_1_id, team_1_info.name AS team_1_name, team_1_info.score AS team_1_score, 
                                 team_2_info.id AS team_2_id, team_2_info.name AS team_2_name, team_2_info.score AS team_2_score
 
                         FROM 
@@ -68,11 +68,11 @@ FROM
     -- Get all matches and phases that they are a part of
     (
         SELECT M.tournament_id as tid, M.id AS match_id, M.round, M.room, M.moderator, M.packet, M.tossups_heard, M.added_by, 
-                array_agg(array[P.id::varchar, P.name::varchar]) AS phases
+                array_agg(json_build_object('phase_id', P.id, 'phase_name', P.name)) AS phases
                 
         FROM  
         match_is_part_of_phase MP, tournament_phase P, tournament_match M
-        WHERE MP.phase_id = P.id AND MP.tournament_id = P.tournament_id AND MP.tournament_id = '1'
+        WHERE MP.phase_id = P.id AND MP.tournament_id = P.tournament_id AND MP.tournament_id = $1
                 AND M.tournament_id = MP.tournament_id AND M.id = MP.match_id
                 AND M.tournament_id = $1
                 

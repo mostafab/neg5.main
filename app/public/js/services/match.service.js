@@ -39,18 +39,33 @@
                 var data = _ref2.data;
 
                 var formattedGames = data.matches.map(function (_ref3) {
-                    var id = _ref3.shortID;
-                    var team1 = _ref3.team1;
-                    var team2 = _ref3.team2;
-                    var tuh = _ref3.tossupsheard;
+                    var id = _ref3.match_id;
+                    var tuh = _ref3.tossups_heard;
                     var round = _ref3.round;
+                    var team_1_id = _ref3.team_1_id;
+                    var team_1_score = _ref3.team_1_score;
+                    var team_2_id = _ref3.team_2_id;
+                    var team_2_score = _ref3.team_2_score;
+                    var phases = _ref3.phases;
 
                     return {
                         id: id,
-                        team1: team1,
-                        team2: team2,
                         tuh: tuh,
-                        round: round
+                        round: round,
+                        teams: {
+                            one: {
+                                score: team_1_score,
+                                id: team_1_id
+                            },
+                            two: {
+                                score: team_2_score,
+                                id: team_2_id
+                            }
+                        },
+                        phases: phases.reduce(function (obj, current) {
+                            obj[current.phase_id] = true;
+                            return obj;
+                        }, {})
                     };
                 });
                 angular.copy(formattedGames, service.gameFactory.games);
@@ -94,9 +109,13 @@
             gameCopy.teams = gameCopy.teams.map(function (team) {
                 return {
                     id: team.teamInfo.id,
+                    score: team.score,
+                    bouncebacks: team.bouncebacks,
+                    overtime: team.overtime,
                     players: team.players.map(function (player) {
                         return {
                             id: player.id,
+                            tuh: player.tuh,
                             points: Object.keys(player.points).map(Number).map(function (pv) {
                                 return {
                                     value: pv,

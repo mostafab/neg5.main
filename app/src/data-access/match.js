@@ -1,4 +1,5 @@
 import {query, transaction, queryTypeMap as qm, txMap as tm} from '../database/db';
+import {buildMatchPhasesObject, buildMatchPlayers, buildMatchTeams, buildPlayerMatchPoints} from './../helpers/array_builders/match.builder.js';
 import sql from '../database/sql';
 
 const match = sql.match;
@@ -20,16 +21,18 @@ export default {
 
     addToTournament: (tournamentId, matchInformation, user) => {
         return new Promise((resolve, reject) => {
-            console.log(matchInformation);
             let {id: matchId, moderator, notes, packet, phases, room, round, teams, tuh} = matchInformation;
             
             let queriesArray = [];
-            let matchPhases = buildMatchPhasesObject(tournamentId, id, phases);
+            let matchPhases = buildMatchPhasesObject(tournamentId, matchId, phases);
+            let matchTeams = buildMatchTeams(tournamentId, matchId, teams);
+            let matchPlayers = buildMatchPlayers(tournamentId, matchId, teams);
+            let matchPlayerPoints = buildPlayerMatchPoints(tournamentId, matchId, matchPlayers.players)
 
             queriesArray.push(
                 {
                     text: match.add.addMatch,
-                    params: [id, tournamentId, round, room, moderator, packet, tuh, user],
+                    params: [matchId, tournamentId, round, room, moderator, packet, tuh, notes, user],
                     queryType: tm.one
                 },
                 {
@@ -39,20 +42,26 @@ export default {
                 },
                 {
                     text: match.add.addMatchTeams,
-                    params: [],
+                    params: [matchTeams.teamIds, matchTeams.matchId, matchTeams.tournamentId, matchTeams.score, matchTeams.bouncebacks, matchTeams.overtime],
                     queryType: tm.many
+                },
+                {
+                    text: match.add.addMatchPlayers,
+                    params: [matchPlayers.playerIds, matchPlayers.matchIds, matchPlayers.tournamentIds, matchPlayers.tossups],
+                    queryType: tm.any
+                },
+                {
+                    text: match.add.addPlayerTossups,
+                    params: [matchPlayerPoints.playerIds, matchPlayerPoints.matchIds, matchPlayerPoints.tournamentIds, matchPlayerPoints.values, matchPlayerPoints.numbers],
+                    queryType: tm.any
                 }
             )
-            resolve(matchInformation);
+
+            transaction(queriesArray)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+                
         })
     }
 
-}
-
-function buildMatchPhasesObject(tournamentId, matchId, phases) {
-    return {
-        phaseTournamentId: phases.map(phase => tournamentId),
-        phaseMatchId: phases.map(phase => matchId),
-        phaseId: phases
-    }
 }

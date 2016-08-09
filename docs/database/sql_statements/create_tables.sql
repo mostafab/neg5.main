@@ -43,6 +43,7 @@ CREATE TABLE tournament_match (
     moderator VARCHAR(20),
     packet VARCHAR(20),
     tossups_heard integer DEFAULT 0 CHECK (tossups_heard >= 0),
+    notes varchar(1000),
     added_by varchar(20) NOT NULL,
     PRIMARY KEY (id, tournament_id),
     FOREIGN KEY (tournament_id) REFERENCES tournament(id) ON DELETE CASCADE,

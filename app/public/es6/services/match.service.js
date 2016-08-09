@@ -34,13 +34,25 @@
                 let token = Cookies.get('nfToken');
                 $http.get('/api/t/' + tournamentId + '/matches?token=' + token)
                     .then(({data}) => {
-                        let formattedGames = data.matches.map(({shortID: id, team1, team2, tossupsheard: tuh, round}) => {
+                        let formattedGames = data.matches.map(({match_id: id, tossups_heard: tuh, round, team_1_id, team_1_score, team_2_id, team_2_score, phases}) => {
                             return {
                                 id,
-                                team1,
-                                team2,
                                 tuh,
-                                round
+                                round,
+                                teams: {
+                                    one: {
+                                        score: team_1_score,
+                                        id: team_1_id
+                                    },
+                                    two: {
+                                        score: team_2_score,
+                                        id: team_2_id
+                                    }
+                                },
+                                phases: phases.reduce((obj, current) => {
+                                    obj[current.phase_id] = true;
+                                    return obj;
+                                }, {})
                             }
                         });
                         angular.copy(formattedGames, service.gameFactory.games);
@@ -78,9 +90,13 @@
                 gameCopy.teams = gameCopy.teams.map(team => {
                     return {
                         id: team.teamInfo.id,
+                        score: team.score,
+                        bouncebacks: team.bouncebacks,
+                        overtime: team.overtime,
                         players: team.players.map(player => {
                             return {
                                 id: player.id,
+                                tuh: player.tuh,
                                 points: Object.keys(player.points)
                                     .map(Number).map(pv => {
                                         return {

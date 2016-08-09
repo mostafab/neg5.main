@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _db = require('../database/db');
 
+var _matchBuilder = require('./../helpers/array_builders/match.builder.js');
+
 var _sql = require('../database/sql');
 
 var _sql2 = _interopRequireDefault(_sql);
@@ -31,7 +33,6 @@ exports.default = {
 
     addToTournament: function addToTournament(tournamentId, matchInformation, user) {
         return new Promise(function (resolve, reject) {
-            console.log(matchInformation);
             var matchId = matchInformation.id;
             var moderator = matchInformation.moderator;
             var notes = matchInformation.notes;
@@ -44,11 +45,14 @@ exports.default = {
 
 
             var queriesArray = [];
-            var matchPhases = buildMatchPhasesObject(tournamentId, id, phases);
+            var matchPhases = (0, _matchBuilder.buildMatchPhasesObject)(tournamentId, matchId, phases);
+            var matchTeams = (0, _matchBuilder.buildMatchTeams)(tournamentId, matchId, teams);
+            var matchPlayers = (0, _matchBuilder.buildMatchPlayers)(tournamentId, matchId, teams);
+            var matchPlayerPoints = (0, _matchBuilder.buildPlayerMatchPoints)(tournamentId, matchId, matchPlayers.players);
 
             queriesArray.push({
                 text: match.add.addMatch,
-                params: [id, tournamentId, round, room, moderator, packet, tuh, user],
+                params: [matchId, tournamentId, round, room, moderator, packet, tuh, notes, user],
                 queryType: _db.txMap.one
             }, {
                 text: match.add.addMatchPhases,
@@ -56,24 +60,24 @@ exports.default = {
                 queryType: _db.txMap.any
             }, {
                 text: match.add.addMatchTeams,
-                params: [],
+                params: [matchTeams.teamIds, matchTeams.matchId, matchTeams.tournamentId, matchTeams.score, matchTeams.bouncebacks, matchTeams.overtime],
                 queryType: _db.txMap.many
+            }, {
+                text: match.add.addMatchPlayers,
+                params: [matchPlayers.playerIds, matchPlayers.matchIds, matchPlayers.tournamentIds, matchPlayers.tossups],
+                queryType: _db.txMap.any
+            }, {
+                text: match.add.addPlayerTossups,
+                params: [matchPlayerPoints.playerIds, matchPlayerPoints.matchIds, matchPlayerPoints.tournamentIds, matchPlayerPoints.values, matchPlayerPoints.numbers],
+                queryType: _db.txMap.any
             });
-            resolve(matchInformation);
+
+            (0, _db.transaction)(queriesArray).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
         });
     }
 
 };
-
-
-function buildMatchPhasesObject(tournamentId, matchId, phases) {
-    return {
-        phaseTournamentId: phases.map(function (phase) {
-            return tournamentId;
-        }),
-        phaseMatchId: phases.map(function (phase) {
-            return matchId;
-        }),
-        phaseId: phases
-    };
-}

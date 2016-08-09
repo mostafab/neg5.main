@@ -113,9 +113,47 @@
         
         vm.addGame = () => {
             if (vm.newGameForm.$valid) {
-                Game.postGame($scope.tournamentId, vm.currentGame);
+                let toastConfig = {message: 'Adding match.'};
+                $scope.toast(toastConfig);
+                Game.postGame($scope.tournamentId, vm.currentGame)
+                    .then(() => {
+                        vm.resetCurrentGame();
+                        vm.getGames();
+                        toastConfig.success = true;
+                        toastConfig.message = 'Added match';
+                    })
+                    .catch(error => {
+                        toastConfig.success = false;
+                        toastConfig.message = 'Could not add match';
+                    })
+                    .finally(() => {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    })
             }
         };
+
+        vm.resetCurrentGame = () => {
+            vm.currentGame = {
+                teams: [
+                {
+                    teamInfo: null,
+                    players: []
+                },
+                {
+                    teamInfo: null,
+                    players: []
+                } 
+                ],
+                phases: [],
+                round: 1,
+                tuh: 20,
+                room: null,
+                moderator: null,
+                packet: null,
+                notes: null
+            }
+        }
         
         vm.getGames();
         
