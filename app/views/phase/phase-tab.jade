@@ -19,13 +19,18 @@ div(class='col-md-12 col-sm-12')
         div(class="collapsable nf-panel-heading nf-dark-blue") Current Phases
         div(class="nf-panel-body panel-body  tournament-panel")
             .row
-                div(class="col-md-12 col-sm-12 col-lg-6")
-                    div(class='input-group' ng-repeat='phase in Phase.phases | orderBy: "name" track by phase.id')
-                        input(type='text' class='form-control nf-input input-md' ng-model='phase.name')
-                        span(role='button' class='btn nf-button input-group-addon nf-red')
-                            i(class='fa fa-trash')
-                        
-                        
-            .row
-                div(class="col-md-3 col-sm-6 col-lg-3")
-                    button(class="btn nf-green btn-md nf-button btn-block" ng-show='Phase.phases.length !== 0' ng-click='Phase.savePhases()') Save Phases
+                div(class="col-md-11 col-sm-11 col-lg-6")
+                    .row.nf-margin(ng-repeat='phase in Phase.phases | orderBy: "name" track by phase.id')
+                        .col-lg-11
+                            .input-group
+                                input(type='text' class='form-control nf-input' ng-model='phase.newName' ng-show='phase.editing')
+                                span.form-control.nf-input.nf-gray(ng-show='!phase.editing') {{phase.name}}
+                                span.btn.input-group-addon.nf-button.nf-blue.no-border(ng-click='phase.editing = true' ng-show='!phase.editing' title='Edit')
+                                    i.fa.fa-pencil
+                                span.btn.input-group-addon.nf-button.nf-red.no-border(ng-click='phase.newName = phase.name; phase.editing = false' ng-show='phase.editing' title='Cancel')
+                                    i.fa.fa-times   
+                                span.btn.input-group-addon.nf-button.nf-green.no-border(ng-click='Phase.editPhase(phase)' ng-show='phase.editing' title='Save')
+                                    i.fa.fa-check  
+                        .col-lg-1
+                            span.btn.input-group-addon.nf-button.nf-red.no-border(ng-show='phase.editing' title='Delete Phase')
+                                i.fa.fa-trash  

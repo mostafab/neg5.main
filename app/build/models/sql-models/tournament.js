@@ -249,6 +249,17 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    updatePhase: function updatePhase(tournamentId, phaseId, newPhaseName) {
+        return new Promise(function (resolve, reject) {
+            newPhaseName = newPhaseName.trim();
+            _tournament2.default.updateTournamentPhase(tournamentId, phaseId, newPhaseName).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

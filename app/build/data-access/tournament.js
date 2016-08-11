@@ -270,6 +270,17 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    updateTournamentPhase: function updateTournamentPhase(id, phaseId, newName) {
+        return new Promise(function (resolve, reject) {
+            var params = [id, phaseId, newName];
+            (0, _db.query)(phase.update, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

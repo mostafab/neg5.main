@@ -71,6 +71,7 @@ exports.default = {
         remove: getSQL('division-sql/removeDivisionFromTournament.sql')
     },
     phase: {
-        findByTournament: getSQL('phase-sql/getTournamentPhases.sql')
+        findByTournament: getSQL('phase-sql/getTournamentPhases.sql'),
+        update: getSQL('phase-sql/updatePhase.sql')
     }
 };

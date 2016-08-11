@@ -171,6 +171,15 @@ export default {
                 .then(phases => resolve(phases))
                 .catch(error => reject(error));
         })
+    },
+
+    updatePhase: (tournamentId, phaseId, newPhaseName) => {
+        return new Promise((resolve, reject) => {
+            newPhaseName = newPhaseName.trim();
+            db.updateTournamentPhase(tournamentId, phaseId, newPhaseName)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
     
 }

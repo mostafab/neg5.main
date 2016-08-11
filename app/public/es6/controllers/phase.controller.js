@@ -20,8 +20,35 @@
         
         vm.removePhase = (id) => console.log(id);
         
-        vm.savePhases = () => {
-            console.log(vm.phases);
+        vm.editPhase = (phase) => {
+            let formattedNewName = phase.newName.trim();
+            let formattedOldName = phase.name.trim();
+            if (formattedNewName !== formattedOldName && formattedNewName.length > 0) {
+                let toastConfig = {
+                    message: 'Editing phase.'
+                }
+                Phase.editPhase($scope.tournamentId, formattedNewName, phase.id)
+                    .then((newName) => {
+                        
+                        phase.newName = newName;
+                        phase.name = newName;
+                        phase.editing = false;
+
+                        toastConfig.message = 'Saved phase';
+                        toastConfig.success = true;
+
+                    })
+                    .catch(() => {
+                        toastConfig.message = 'Couldn\'t update phase';
+                        toastConfig.success = false;
+                    })
+                    .finally(() => {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    })
+            } else {
+                phase.editing = false;
+            }
         }
         
         vm.activePhase = vm.phases.find(phase => phase.active);

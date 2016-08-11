@@ -213,6 +213,15 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
+    },
+
+    updateTournamentPhase: (id, phaseId, newName) => {
+        return new Promise((resolve, reject) => {
+            let params = [id, phaseId, newName];
+            query(phase.update, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
     
 }
