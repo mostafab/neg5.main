@@ -74,7 +74,19 @@
             });
         }
 
-        function deletePhase(id) {}
+        function deletePhase(tournamentId, id) {
+            return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
+                $http.delete('/api/t/' + tournamentId + '/phases/' + id + '?token=' + token).then(function (_ref5) {
+                    var data = _ref5.data;
+
+                    removePhaseFromArray(data.result.id);
+                    resolve(data.result.name);
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
 
         function updatePhaseInArray(id, newName) {
             var index = service.phaseFactory.phases.findIndex(function (phase) {
@@ -85,15 +97,22 @@
             }
         }
 
-        function addNewPhaseToArray(_ref5) {
-            var name = _ref5.name;
-            var id = _ref5.id;
+        function addNewPhaseToArray(_ref6) {
+            var name = _ref6.name;
+            var id = _ref6.id;
 
             service.phaseFactory.phases.push({
                 name: name,
                 id: id,
                 newName: name
             });
+        }
+
+        function removePhaseFromArray(id) {
+            var index = service.phaseFactory.phases.findIndex(function (phase) {
+                return phase.id === id;
+            });
+            service.phaseFactory.phases.splice(index, 1);
         }
 
         return service.phaseFactory;

@@ -32,5 +32,5 @@ div(class='col-md-12 col-sm-12')
                                 span.btn.input-group-addon.nf-button.nf-green.no-border(ng-click='Phase.editPhase(phase)' ng-show='phase.editing' title='Save')
                                     i.fa.fa-check  
                         .col-lg-1
-                            span.btn.input-group-addon.nf-button.nf-red.no-border(ng-show='phase.editing' title='Delete Phase')
+                            span.btn.input-group-addon.nf-button.nf-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
                                 i.fa.fa-trash  

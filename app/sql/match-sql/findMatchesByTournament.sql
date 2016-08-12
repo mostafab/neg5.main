@@ -71,10 +71,11 @@ FROM
                 array_agg(json_build_object('phase_id', P.id, 'phase_name', P.name)) AS phases
                 
         FROM  
-        match_is_part_of_phase MP, tournament_phase P, tournament_match M
-        WHERE MP.phase_id = P.id AND MP.tournament_id = P.tournament_id AND MP.tournament_id = $1
-                AND M.tournament_id = MP.tournament_id AND M.id = MP.match_id
-                AND M.tournament_id = $1
+        match_is_part_of_phase MP JOIN tournament_phase P 
+        ON MP.phase_id = P.id AND MP.tournament_id = P.tournament_id
+        RIGHT JOIN tournament_match M
+        ON M.tournament_id = MP.tournament_id AND M.id = MP.match_id
+        WHERE M.tournament_id = $1
                 
         GROUP BY M.id, M.tournament_id
 

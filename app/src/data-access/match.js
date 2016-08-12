@@ -11,7 +11,12 @@ export default {
             let params = [tournamentId];
 
             query(match.findByTournament, params, qm.any)
-                .then(matches => resolve(matches))
+                .then(matches => {
+                    matches.forEach(match => {
+                        match.phases = match.phases.filter(phase => phase.phase_id !== null);
+                    })
+                    resolve(matches);
+                })
                 .catch(error => {
                     console.log(error);
                     reject(error);

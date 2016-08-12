@@ -292,6 +292,17 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    deleteTournamentPhase: function deleteTournamentPhase(id, phaseId) {
+        return new Promise(function (resolve, reject) {
+            var params = [id, phaseId];
+            (0, _db.query)(phase.remove, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

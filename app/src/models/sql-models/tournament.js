@@ -190,6 +190,14 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
+    },
+
+    removePhase: (tournamentId, phaseId) => {
+        return new Promise((resolve, reject) => {
+            db.deleteTournamentPhase(tournamentId, phaseId)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
     
 }

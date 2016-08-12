@@ -36,8 +36,19 @@
             }
         };
 
-        vm.removePhase = function (id) {
-            return console.log(id);
+        vm.removePhase = function (phase) {
+            var toastConfig = { message: 'Deleting phase: ' + phase.name };
+            $scope.toast(toastConfig);
+            Phase.deletePhase($scope.tournamentId, phase.id).then(function (phaseName) {
+                toastConfig.success = true;
+                toastConfig.message = 'Deleted phase: ' + phaseName;
+            }).catch(function (error) {
+                toastConfig.success = false;
+                toastConfig.message = 'Couldn\'t delete phase: ' + phase.name;
+            }).finally(function () {
+                toastConfig.hideAfter = true;
+                $scope.toast(toastConfig);
+            });
         };
 
         vm.editPhase = function (phase) {

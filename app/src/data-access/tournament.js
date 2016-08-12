@@ -231,6 +231,15 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
+    },
+
+    deleteTournamentPhase: (id, phaseId) => {
+        return new Promise((resolve, reject) => {
+            let params = [id, phaseId];
+            query(phase.remove, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
     
 }

@@ -23,7 +23,12 @@ exports.default = {
             var params = [tournamentId];
 
             (0, _db.query)(match.findByTournament, params, _db.queryTypeMap.any).then(function (matches) {
-                return resolve(matches);
+                matches.forEach(function (match) {
+                    match.phases = match.phases.filter(function (phase) {
+                        return phase.phase_id !== null;
+                    });
+                });
+                resolve(matches);
             }).catch(function (error) {
                 console.log(error);
                 reject(error);

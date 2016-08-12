@@ -121,5 +121,10 @@ export default (app) => {
                 .then(result => res.json({result, success: true}))
                 .catch(error => res.status(500).send({error, success: false}));
         })
+        .delete(hasToken, directorAccessToTournament, (req, res) => {
+            Tournament.removePhase(req.params.tid, req.params.phaseId)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}));
+        })
     
 }

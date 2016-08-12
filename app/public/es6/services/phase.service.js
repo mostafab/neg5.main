@@ -65,8 +65,16 @@
                 
             }
             
-            function deletePhase(id) {
-
+            function deletePhase(tournamentId, id) {
+                return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
+                    $http.delete('/api/t/' + tournamentId + '/phases/' + id + '?token=' + token)
+                        .then(({data}) => {
+                            removePhaseFromArray(data.result.id);
+                            resolve(data.result.name);
+                        })
+                        .catch(error => reject(error));
+                })
             }
 
             function updatePhaseInArray(id, newName) {
@@ -82,6 +90,11 @@
                     id,
                     newName: name
                 })
+            }
+
+            function removePhaseFromArray(id) {
+                let index = service.phaseFactory.phases.findIndex(phase => phase.id === id);
+                service.phaseFactory.phases.splice(index, 1);
             }
             
             return service.phaseFactory;

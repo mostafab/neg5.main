@@ -73,6 +73,7 @@ exports.default = {
     phase: {
         add: getSQL('phase-sql/addPhase.sql'),
         findByTournament: getSQL('phase-sql/getTournamentPhases.sql'),
-        update: getSQL('phase-sql/updatePhase.sql')
+        update: getSQL('phase-sql/updatePhase.sql'),
+        remove: getSQL('phase-sql/removePhase.sql')
     }
 };

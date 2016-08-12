@@ -142,5 +142,11 @@ exports.default = function (app) {
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
         });
+    }).delete(_token.hasToken, _tournamentAccess.directorAccessToTournament, function (req, res) {
+        _tournament2.default.removePhase(req.params.tid, req.params.phaseId).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
     });
 };

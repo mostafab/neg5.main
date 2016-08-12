@@ -34,7 +34,23 @@
             }
         }
         
-        vm.removePhase = (id) => console.log(id);
+        vm.removePhase = (phase) => {
+            let toastConfig = {message: 'Deleting phase: ' + phase.name};
+            $scope.toast(toastConfig);
+            Phase.deletePhase($scope.tournamentId, phase.id)
+                .then((phaseName) => {
+                    toastConfig.success = true;
+                    toastConfig.message = 'Deleted phase: ' + phaseName;
+                })
+                .catch(error => {
+                    toastConfig.success = false;
+                    toastConfig.message = 'Couldn\'t delete phase: ' + phase.name;
+                })
+                .finally(() => {
+                    toastConfig.hideAfter = true;
+                    $scope.toast(toastConfig);
+                })
+        }
         
         vm.editPhase = (phase) => {
             if (vm.phaseNameWasChanged(phase)) {
