@@ -12,30 +12,46 @@
         
         vm.getPhases = () => Phase.getPhases($scope.tournamentId);
         
-        vm.addPhase = () => vm.phases.push({
-            name: vm.newPhase,
-            id: Math.random(),
-            active: false
-        });
+        vm.addPhase = () => {
+            let phaseName = vm.newPhase.trim();
+            if (vm.isValidNewPhaseName(phaseName)) {
+                let toastConfig = {message: 'Adding phase.'};
+                $scope.toast(toastConfig);
+                Phase.postPhase($scope.tournamentId, phaseName)
+                    .then((phaseName) => {
+                        vm.newPhase = '';
+                        toastConfig.success = true;
+                        toastConfig.message = 'Added phase: ' + phaseName;
+                    })
+                    .catch(error => {
+                        toastConfig.success = false;
+                        toastConfig.message = 'Couldn\'t add phase';
+                    })
+                    .finally(() => {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    })
+            }
+        }
         
         vm.removePhase = (id) => console.log(id);
         
         vm.editPhase = (phase) => {
-            let formattedNewName = phase.newName.trim();
-            let formattedOldName = phase.name.trim();
-            if (formattedNewName !== formattedOldName && formattedNewName.length > 0) {
+            if (vm.phaseNameWasChanged(phase)) {
                 let toastConfig = {
                     message: 'Editing phase.'
                 }
-                Phase.editPhase($scope.tournamentId, formattedNewName, phase.id)
+                let oldName = phase.name;
+                $scope.toast(toastConfig);
+                Phase.editPhase($scope.tournamentId, phase.newName.trim(), phase.id)
                     .then((newName) => {
                         
+                        toastConfig.message = `Updated phase: ${oldName} \u2192 ${newName}`;
+                        toastConfig.success = true;
+
                         phase.newName = newName;
                         phase.name = newName;
-                        phase.editing = false;
-
-                        toastConfig.message = 'Saved phase';
-                        toastConfig.success = true;
+                        phase.editing = false;                        
 
                     })
                     .catch(() => {
@@ -53,6 +69,17 @@
         
         vm.activePhase = vm.phases.find(phase => phase.active);
         
+        vm.phaseNameWasChanged = (phase) => {
+            let formattedNewName = phase.newName.trim();
+            let formattedOldName = phase.name.trim();
+            return formattedNewName !== formattedOldName && formattedNewName.length > 0;
+        }
+
+        vm.isValidNewPhaseName = (phaseName) => {
+            phaseName = phaseName.toLowerCase();
+            return phaseName.length > 0 && !vm.phases.some(phase => phase.name.toLowerCase() === phaseName);
+        }
+
         vm.getPhases();
         
     }

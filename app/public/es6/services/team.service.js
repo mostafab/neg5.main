@@ -24,7 +24,7 @@
                     $http.post('/api/t/' + tournamentId + '/teams', body)
                         .then(({data}) => {
                             getTeams(tournamentId);
-                            resolve();
+                            resolve(data.team.team.name);
                         })
                         .catch(error => reject(error));
                 })

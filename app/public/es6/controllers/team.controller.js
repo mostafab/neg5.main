@@ -41,9 +41,9 @@
                 }
                 $scope.toast(toastConfig);
                 Team.postTeam($scope.tournamentId, vm.newTeam)
-                    .then(() => {
+                    .then((teamName) => {
                         resetNewTeam();
-                        toastConfig.message = 'Added team';
+                        toastConfig.message = 'Added team: ' + teamName;
                         toastConfig.success = true;
                     })
                     .catch(() => {

@@ -87,7 +87,7 @@
                                     button.nf-button.btn-md.btn.nf-green(type='submit' ng-show='Config.editingPointScheme === true' title='Save')
                                         i.fa.fa-check
                                         
-                            .row.nf-margin(ng-show='Config.editingPointScheme === true' )
+                            .row.nf-margin(ng-show='Config.editingPointScheme === true' ng-if='Config.games.length === 0')
                                 .row.nf-margin(ng-repeat='ps in Config.pointSchemeCopy.tossupValues track by ps.value' ng-show='Config.editingPointScheme === true' )
                                     .col-lg-8.col-sm-9.col-md-6
                                         .input-group
@@ -109,7 +109,7 @@
                                             span.nf-button.nf-red.btn.btn-md(ng-click='Config.removeFromPointSchemeCopy(ps)')
                                                 i.fa.fa-trash
                                                 
-                            .row.nf-margin(ng-show='Config.editingPointScheme === false' ng-if='Config.games.length === 0')                        
+                            .row.nf-margin(ng-show='Config.editingPointScheme === false')                        
                                 .row.nf-margin(ng-repeat='ps in Config.pointScheme.tossupValues | orderBy:"value" track by ps.value')
                                     .col-lg-8.col-sm-9.col-md-6
                                         .input-group
@@ -136,7 +136,7 @@
                         br
                         br
 
-                        form(name='Config.newPointValueForm' novalidate ng-submit='Config.addNewPointValue()' ng-show='Config.editingPointScheme === false')
+                        form(name='Config.newPointValueForm' novalidate ng-submit='Config.addNewPointValue()' ng-show='Config.editingPointScheme === false' ng-if='Config.games.length === 0')
                             .row.nf-margin
                                 .row.nf-margin
                                     .col-lg-8.col-md-6.col-sm-9

@@ -49,7 +49,7 @@
                     var data = _ref2.data;
 
                     updateDivisionInArray(data.result);
-                    resolve();
+                    resolve(data.result.name);
                 }).catch(function (error) {
                     reject(error);
                 });
@@ -67,7 +67,7 @@
                     var data = _ref3.data;
 
                     addDivisionToArray(data.result);
-                    resolve();
+                    resolve(data.result.name);
                 }).catch(function (error) {
                     return reject(error);
                 });

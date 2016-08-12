@@ -10,7 +10,12 @@ export default {
             let params = [tournamentId];
 
             query(team.findByTournament, params, qm.any)
-                .then(teams => resolve(teams))
+                .then(teams => {
+                    teams.forEach(team => {
+                        team.team_divisions = team.team_divisions.filter(division => division.phase_id !== null);
+                    })
+                    resolve(teams);
+                })
                 .catch(error => {
                     reject(error);
                 })

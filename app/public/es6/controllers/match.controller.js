@@ -23,6 +23,7 @@
         vm.gameQuery = '';
 
         vm.pointScheme = Tournament.pointScheme;
+        vm.rules = Tournament.rules;
         
         vm.pointSum = function(points) {
             if (!points) {return 0;}

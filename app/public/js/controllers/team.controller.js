@@ -40,9 +40,9 @@
                         message: 'Adding team.'
                     };
                     $scope.toast(toastConfig);
-                    Team.postTeam($scope.tournamentId, vm.newTeam).then(function () {
+                    Team.postTeam($scope.tournamentId, vm.newTeam).then(function (teamName) {
                         resetNewTeam();
-                        toastConfig.message = 'Added team';
+                        toastConfig.message = 'Added team: ' + teamName;
                         toastConfig.success = true;
                     }).catch(function () {
                         toastConfig.message = 'Could not add team.';

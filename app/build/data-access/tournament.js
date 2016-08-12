@@ -281,6 +281,17 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    addTournamentPhase: function addTournamentPhase(id, phaseId, name) {
+        return new Promise(function (resolve, reject) {
+            var params = [id, phaseId, name];
+            (0, _db.query)(phase.add, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

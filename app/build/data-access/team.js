@@ -21,7 +21,12 @@ exports.default = {
             var params = [tournamentId];
 
             (0, _db.query)(team.findByTournament, params, _db.queryTypeMap.any).then(function (teams) {
-                return resolve(teams);
+                teams.forEach(function (team) {
+                    team.team_divisions = team.team_divisions.filter(function (division) {
+                        return division.phase_id !== null;
+                    });
+                });
+                resolve(teams);
             }).catch(function (error) {
                 reject(error);
             });

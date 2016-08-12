@@ -116,11 +116,12 @@
                 let toastConfig = {
                     message: 'Saving division.'
                 }
+                let oldName = division.name;
                 $scope.toast(toastConfig);
                 Division.editDivision($scope.tournamentId, division)
-                    .then(() => {
+                    .then((newName) => {
                         toastConfig.success = true;
-                        toastConfig.message = 'Updated division.'
+                        toastConfig.message = `Changed division: ${oldName} \u2192 ${newName}`;
                     })
                     .catch(error => {
                         toastConfig.success = false,
@@ -144,8 +145,8 @@
                 }
                 $scope.toast(toastConfig);
                 Division.addDivision($scope.tournamentId, newDivisionName, vm.newDivision.phaseId)
-                    .then(() => {
-                        toastConfig.message = 'Added division.';
+                    .then((divisionName) => {
+                        toastConfig.message = 'Added division: ' + divisionName;
                         toastConfig.success = true;
                         vm.newDivision = {name: ''};
                     })

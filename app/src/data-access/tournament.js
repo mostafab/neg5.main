@@ -222,6 +222,15 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
+    },
+
+    addTournamentPhase: (id, phaseId, name) => {
+        return new Promise((resolve, reject) => {
+            let params = [id, phaseId, name];
+            query(phase.add, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
     
 }

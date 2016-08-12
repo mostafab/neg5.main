@@ -15,8 +15,19 @@
                 deletePhase
             }
             
-            function postPhase() {
-                
+            function postPhase(tournamentId, phaseName) {
+                return $q((resolve, reject) => {
+                    let body = {
+                        token: Cookies.get('nfToken'),
+                        name: phaseName
+                    }
+                    $http.post('/api/t/' + tournamentId + '/phases', body)
+                        .then(({data}) => {
+                            addNewPhaseToArray(data.result);
+                            resolve(data.result.name);
+                        })
+                        .catch(error => reject(error));
+                })
             }
 
             function editPhase(tournamentId, newName, phaseId) {
@@ -63,6 +74,14 @@
                 if (index !== -1) {
                     service.phaseFactory.phases[index].name = newName;
                 }
+            }
+
+            function addNewPhaseToArray({name, id}) {
+                service.phaseFactory.phases.push({
+                    name,
+                    id,
+                    newName: name
+                })
             }
             
             return service.phaseFactory;

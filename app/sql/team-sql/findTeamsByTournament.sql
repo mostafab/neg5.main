@@ -6,7 +6,8 @@ FROM
     (
         SELECT T.name AS team_name, T.id AS team_id, T.tournament_id, T.added_by, P.name as phase_name, P.id AS phase_id
         FROM 
-        tournament_team T, tournament_phase P
+        tournament_team T LEFT JOIN tournament_phase P
+        ON 1 = 1
         WHERE T.tournament_id = $1
     ) AS tp_cross
 

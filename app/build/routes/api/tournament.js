@@ -128,6 +128,12 @@ exports.default = function (app) {
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
         });
+    }).post(_token.hasToken, _tournamentAccess.directorAccessToTournament, function (req, res) {
+        _tournament2.default.addPhase(req.params.tid, req.body.name).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
     });
 
     app.route('/api/t/:tid/phases/:phaseId').put(_token.hasToken, _tournamentAccess.directorAccessToTournament, function (req, res) {

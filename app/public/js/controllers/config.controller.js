@@ -119,10 +119,11 @@
                     var toastConfig = {
                         message: 'Saving division.'
                     };
+                    var oldName = division.name;
                     $scope.toast(toastConfig);
-                    Division.editDivision($scope.tournamentId, division).then(function () {
+                    Division.editDivision($scope.tournamentId, division).then(function (newName) {
                         toastConfig.success = true;
-                        toastConfig.message = 'Updated division.';
+                        toastConfig.message = 'Changed division: ' + oldName + ' → ' + newName;
                     }).catch(function (error) {
                         toastConfig.success = false, toastConfig.message = 'Could not update division.';
                     }).finally(function () {
@@ -144,8 +145,8 @@
                         message: 'Adding division'
                     };
                     $scope.toast(toastConfig);
-                    Division.addDivision($scope.tournamentId, newDivisionName, vm.newDivision.phaseId).then(function () {
-                        toastConfig.message = 'Added division.';
+                    Division.addDivision($scope.tournamentId, newDivisionName, vm.newDivision.phaseId).then(function (divisionName) {
+                        toastConfig.message = 'Added division: ' + divisionName;
                         toastConfig.success = true;
                         vm.newDivision = { name: '' };
                     }).catch(function (error) {

@@ -47,7 +47,7 @@
                     $http.put('/api/t/' + tournamentId + '/divisions/' + division.id, body)
                         .then(({data}) => {
                             updateDivisionInArray(data.result);
-                            resolve();
+                            resolve(data.result.name);
                         })
                         .catch(error => {
                             reject(error);
@@ -65,7 +65,7 @@
                     $http.post('/api/t/' + tournamentId + '/divisions', body)
                         .then(({data}) => {
                             addDivisionToArray(data.result);
-                            resolve();
+                            resolve(data.result.name);
                         })
                         .catch(error => reject(error));
                 })

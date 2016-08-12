@@ -26,7 +26,7 @@
                     var data = _ref.data;
 
                     getTeams(tournamentId);
-                    resolve();
+                    resolve(data.team.team.name);
                 }).catch(function (error) {
                     return reject(error);
                 });

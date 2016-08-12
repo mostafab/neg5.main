@@ -260,6 +260,18 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    addPhase: function addPhase(tournamentId, name) {
+        return new Promise(function (resolve, reject) {
+            var phaseName = name.trim();
+            var id = _shortid2.default.generate();
+            _tournament2.default.addTournamentPhase(tournamentId, id, phaseName).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

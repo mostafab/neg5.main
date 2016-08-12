@@ -180,6 +180,16 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
+    },
+
+    addPhase: (tournamentId, name) => {
+        return new Promise((resolve, reject) => {
+            let phaseName = name.trim();
+            let id = shortid.generate();
+            db.addTournamentPhase(tournamentId, id, phaseName)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
     
 }
