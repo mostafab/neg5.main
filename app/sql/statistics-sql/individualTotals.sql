@@ -1,6 +1,12 @@
-SELECT PL.id as player_id, PL.name as player_name, T.name as team_name, player_tuh.total_player_tuh, player_tuh.total_gp as games_played, PMT.tossup_totals, PMT.total_points, 
-    cast(round(PMT.total_points / player_tuh.total_player_tuh::decimal, 2) as double precision) as points_per_tossup, 
-    cast(round(PMT.total_points / player_tuh.total_gp::decimal, 2) as double precision) as points_per_game
+SELECT 
+PL.id as player_id, 
+PL.name as player_name, 
+T.name as team_name, 
+player_tuh.total_player_tuh, 
+player_tuh.total_gp as games_played, 
+PMT.tossup_totals, PMT.total_points, 
+cast(round(PMT.total_points / player_tuh.total_player_tuh::decimal, 2) as double precision) as points_per_tossup, 
+cast(round(PMT.total_points / player_tuh.total_gp::decimal, 2) as double precision) as points_per_game
 
 FROM 
 (
