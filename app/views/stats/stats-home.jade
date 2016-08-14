@@ -1,0 +1,116 @@
+extends ../layout
+
+block content
+
+    div(ng-app='statsApp')
+        div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;' ng-controller='PublicStatsController as PSControl')
+                                    
+            div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
+                div(class='row')
+                    div(class='col-sm-7 col-lg-12 col-md-12')
+                        h2(class="nf-panel-heading nf-dark-blue center") {{PSControl.tournamentName.name}} Stats
+                
+                div(class="panel-body")
+                    div(class="row")
+                        div(class='col-sm-7 col-md-12 col-lg-12')
+                            ul(class="nav nav-bar no-border-radius")
+                                li(class="center")
+                                    .input-group
+                                        select(class='form-control nf-input' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase' ng-change='PSControl.refreshStats()')
+                                            option(value='') All Games
+                                        span(class='input-group-addon nf-blue nf-button btn' title='Refresh teams' ng-click='PSControl.refreshStats()')
+                                            i(class='fa fa-refresh')
+                                hr                               
+
+                                li(class="center" ng-click='PSControl.tab = "team_standings"')
+                                    a(data-toggle="tab" class='tournament-tab btn-md') Team Standings
+                                li(class="center" ng-click='PSControl.tab = "player_standings"')
+                                    a(data-toggle="tab" class='tournament-tab btn-md') Individual Standings
+                                li(class="center" ng-click='PSControl.tab = "team_full"')
+                                    a(data-toggle='tab' class='tournament-tab btn-md') Team Full
+                                li(class="center" ng-click='PSControl.tab = "player_full"')
+                                    a(data-toggle="tab" class='tournament-tab btn-md') Player Full
+                                li(class="center" ng-click='PSControl.tab = "round_report"')
+                                    a(data-toggle="tab" class='tournament-tab btn-md') Round Report                
+
+                                            
+
+            div(class='col-sm-12 col-md-10 col-lg-10 col-lg-offset-2')
+                div(class="tab-content")
+                    div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='team_standings', 'fade': PSControl.tab !=='team_standings'}")
+                        .row
+                            .col-lg-12
+                                div(class="panel panel-default nf-panel")
+                                    div(class="collapsable nf-panel-heading nf-dark-blue") Team Standings - {{PSControl.phase.name || 'All Games'}}
+                                    div(class="panel-body tournament-panel nf-panel-body")                        
+
+                    div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='player_standings'}")
+                        .row
+                            .col-lg-12
+                                div(class="panel panel-default nf-panel")
+                                    div(class="collapsable nf-panel-heading nf-dark-blue") Individual Standings - {{PSControl.phase.name || 'All Games'}}
+                                
+                                .row
+                                    .col-lg-4
+                                        input(type="text" class="form-control nf-input search btn-shadow" placeholder="Search for Players" ng-model='PSControl.playerQuery')
+                                
+                                br
+
+                                table(class="table table-condensed nf-shadow")
+                                    tr
+                                        th(class="table-head nf-white" title='Represents a player\'s place in the standings.') Rank
+                                        th(class="table-head nf-white" title='The player\'s name in the tournament.') Player Name
+                                        th(class="table-head nf-white" title='The team the player is representing.') Team
+                                        th(class='table-head nf-white' title='The number of total games this player played.') GP
+                                        th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this player got for this value') {{pv.value}}
+                                        th(class="table-head nf-white" title='A player\'s total number of tossups heard') TUH  
+                                        th(class="table-head nf-white" title='A player\'s total number of points') Points
+                                        th(class="table-head nf-white" title='A player\'s ratio between total points and tossups heard.') P / TU
+                                        th(class="table-head nf-white" title='A player\'s points per game.') PPG
+
+                                    tr(class='nf-list-item nf-dark-blue' ng-repeat='player in PSControl.playerStats | filter:PSControl.playerQuery track by player.player_id')
+                                        td {{$index + 1}}
+                                        td {{player.player_name}}
+                                        td {{player.team_name}}
+                                        td {{player.games_played}}
+                                        td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{player.pointMap[pv.value]}}
+                                        td {{player.total_player_tuh}}
+                                        td {{player.total_points}}
+                                        td {{player.points_per_tossup}}
+                                        td {{player.points_per_game}}
+
+                    div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='team_full'}")
+                        .row
+                            .col-lg-12
+                                div(class="panel panel-default nf-panel")
+                                    div(class="collapsable nf-panel-heading nf-dark-blue") Team Full - {{PSControl.phase.name || 'All Games'}}
+                                    div(class="panel-body tournament-panel nf-panel-body")
+
+
+                    div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='player_full'}")
+                        .row
+                            .col-lg-12
+                                div(class="panel panel-default nf-panel")
+                                    div(class="collapsable nf-panel-heading nf-dark-blue") Player Full - {{PSControl.phase.name || 'All Games'}}
+                                    div(class="panel-body tournament-panel nf-panel-body")
+
+
+                    div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='round_report'}")
+                        .row
+                            .col-lg-12
+                                div(class="panel panel-default nf-panel")
+                                    div(class="collapsable nf-panel-heading nf-dark-blue") Round Report - {{PSControl.phase.name || 'All Games'}}
+                                    div(class="panel-body tournament-panel nf-panel-body")
+                                
+                .nf-toast(style='position:fixed' class='angular-animate' ng-show='PSControl.toastMessage !== null')
+                    .nf-toast-content.nf-button.btn(style='float:left' ng-class="{'nf-red': PSControl.toastMessage.success === false, 'nf-green': PSControl.toastMessage.success === true, 'nf-orange' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
+                        i.fa(ng-class="{'fa-check': PSControl.toastMessage.success === true, 'fa-times': PSControl.toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
+                        | {{PSControl.toastMessage.message}}
+
+block scripts
+    script(type='text/javascript' src='/js/app.js')
+    script(type='text/javascript' src='/js/services/cookies.service.js')
+    script(type='text/javascript' src='/js/services/phase.service.js')
+    script(type='text/javascript' src='/js/stats.js')
+    script(type='text/javascript' src='/js/services/stats/stats.service.js')
+    

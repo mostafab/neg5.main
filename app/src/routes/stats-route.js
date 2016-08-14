@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const Tournament = mongoose.model("Tournament");
 const statsController = require("../controllers/stats-controller");
 
+import requestWrapper from './../helpers/request-wrapper';
+
 module.exports = app => {
 
     app.get("/search", (req, res) => {
@@ -21,10 +23,9 @@ module.exports = app => {
         });
     });
 
-    app.get("/t/:tid/stats", (req, res, next) => {
-        const tournament = req.params.tid;
-        res.redirect("/t/" + tournament + "/stats/team?phase=1");
-    });
+    app.get('/t/:tid/stats', (req, res) => {
+        res.render('stats/stats-home');
+    })
 
     app.get("/t/:tid/stats/team", (req, res, next) => {
         statsController.getTeamsInfo(req.params.tid, req.query.phase, (err, tournament, teamInfo) => {
@@ -56,17 +57,22 @@ module.exports = app => {
     });
 
     app.get("/t/:tid/stats/player", (req, res, next) => {
-        statsController.getPlayersInfo(req.params.tid, req.query.phase, (err, tournament, playersInfo) => {
-            if (err) {
-                res.status(500).end();
-            } else if (tournament == null) {
-                res.send("Couldn't find that tournament");
-            } else {
-                const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
-                    pointScheme : tournament.pointScheme, phaseInfo : tournament.phaseInfo};
-                res.render("stats/quick-players", {tournament : tournamentData, playersInfo : playersInfo, custom : false});
-            }
-        });
+        let url = 'http://localhost:1337/api/t/' + req.params.tid + '/stats/player' + (req.query.phase ? '?phase=' + req.query.phase : '');
+        requestWrapper(url)
+            .then(body => res.json({body: JSON.parse(body)}))
+            .catch(error => res.status(500).send({error}));
+
+        // statsController.getPlayersInfo(req.params.tid, req.query.phase, (err, tournament, playersInfo) => {
+        //     if (err) {
+        //         res.status(500).end();
+        //     } else if (tournament == null) {
+        //         res.send("Couldn't find that tournament");
+        //     } else {
+        //         const tournamentData = {tournament_name : tournament.tournament_name, shortID : tournament.shortID,
+        //             pointScheme : tournament.pointScheme, phaseInfo : tournament.phaseInfo};
+        //         res.render("stats/quick-players", {tournament : tournamentData, playersInfo : playersInfo, custom : false});
+        //     }
+        // });
     });
 
     app.get("/t/:tid/stats/player/dl", (req, res, next) => {

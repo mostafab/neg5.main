@@ -9,7 +9,8 @@
         
         vm.teams = Team.teams;
         vm.phases = Phase.phases;
-        
+
+        vm.phase = null;
 
     }
     

@@ -8,17 +8,17 @@ div(class="panel-default nf-panel")
     .list-group.nf-shadow       
         a(class='list-group-item active') 
             .row
-                .col-lg-6
+                .col-lg-4
                     h5(style='display:inline') Teams
-                .col-lg-6
+                .col-lg-8
                     h5(style='display:inline') Divisions
 
 
         a(class='list-group-item nf-dark-blue nf-list-item' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id')
             .row
-                .col-lg-6
+                .col-lg-4
                     h5 {{team.name}}
-                .col-lg-6
+                .col-lg-8
                     .row
                         .col-lg-4(ng-repeat='phase in Team.phases')
                             h5 {{phase.name + ' : ' + Team.getDivisionNameInPhase(team.divisions[phase.id])}}

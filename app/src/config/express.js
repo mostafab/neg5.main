@@ -9,6 +9,7 @@ import accountApi from '../routes/api/account';
 import tournamentApi from '../routes/api/tournament';
 import matchApi from '../routes/api/match';
 import teamApi from '../routes/api/team';
+import statsApi from '../routes/api/stats';
 
 import configuration from './configuration';
 
@@ -41,13 +42,13 @@ export default () => {
     
     require('../routes/index.js')(app);
     require("../routes/user-route.js")(app);
-    // require("../routes/tournaments-route.js")(app);
     require("../routes/stats-route.js")(app);
     
     accountApi(app);
     tournamentApi(app);
     matchApi(app);
     teamApi(app);
+    statsApi(app);
 
     return app;
 };

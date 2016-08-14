@@ -7,8 +7,8 @@ div(class="panel panel-default nf-panel")
                 .col-lg-2.col-sm-3.col-md-3
                     label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Phase: 
                 .col-md-8.col-lg-3.col-sm-9
-                    select(class="form-control nf-input" ng-options='phase.name for phase in Statistics.phases | orderBy:"name" track by phase.id' ng-model='Statistics.activePhase')
-                        option(value='1') All
+                    select(class="form-control nf-input" ng-options='phase.name for phase in Statistics.phases | orderBy:"name" track by phase.id' ng-model='Statistics.phase')
+                        option(value='' selected) All
             
             br
             
@@ -16,37 +16,20 @@ div(class="panel panel-default nf-panel")
                 .col-md-6.col-sm-6.col-lg-6
                     .list-group.nf-shadow
                         a(class='list-group-item active') Statistics
-                        a(target="_blank" href="/t/{{tournamentId}}/stats/team?phase=1" class="stat-link nf-dark-blue list-group-item nf-list-item" data-stats-type='team') Team Stats
-
-                        a(target="_blank" href="/t/{{tournamentId}}/stats/player?phase=1" class="stat-link nf-dark-blue list-group-item nf-list-item" data-stats-type='player') Player Stats
-
-                        a(target="_blank" href="/t/{{tournamentId}}/stats/teamfull?phase=1" class="stat-link nf-dark-blue list-group-item nf-list-item" data-stats-type='teamfull') Full Report
-
-                        a(target="_blank" href="/t/{{tournamentId}}/stats/roundreport?phase=1" class="stat-link nf-dark-blue list-group-item nf-list-item" data-stats-type='roundreport') Round Report 
+                        a(target="_blank" href='/t/{{tournamentId}}/stats' class="stat-link nf-dark-blue list-group-item nf-list-item" data-stats-type='team') Go to Stats
 
                 .col-md-6.col-sm-6.col-lg-6
                     .list-group.nf-shadow       
                         a(class='list-group-item active') Download      
-                        a(href="/t/{{tournamentId}}/stats/team/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='team' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_standings.html') Team Stats
-                        a(href="/t/{{tournamentId}}/stats/player/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='player' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_individuals.html') Player Stats
-                        a(href="/t/{{tournamentId}}/stats/teamfull/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='teamfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_teamdetail.html') 
+                        a(href="/t/{{::tournamentId}}/stats/team/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='team' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_standings.html') Team Stats
+                        a(href="/t/{{::tournamentId}}/stats/player/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='player' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_individuals.html') Player Stats
+                        a(href="/t/{{::tournamentId}}/stats/teamfull/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='teamfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_teamdetail.html') 
                             | Team Full Report
-                        a(href="/t/{{tournamentId}}/stats/playerfull/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='playerfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_playerdetail.html') 
+                        a(href="/t/{{::tournamentId}}/stats/playerfull/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='playerfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_playerdetail.html') 
                             | Players Full Report
-                        a(href="/t/{{tournamentId}}/stats/roundreport/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='roundreport' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_rounds.html') 
+                        a(href="/t/{{::tournamentId}}/stats/roundreport/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='roundreport' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_rounds.html') 
                             | Round Report
 
-
-                    //- div(class='list-group')  
-                    //-     a(class='list-group-item active') Download      
-                    //-     a(href="/t/" + tournament.shortID + "/stats/team/dl?phase=#{phaseID}" class="download list-group-item" data-tid='#{tournament.shortID}' data-stats-type='team' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_standings.html')           Team Stats
-                    //-     a(href="/t/" + tournament.shortID + "/stats/player/dl?phase=#{phaseID}" class="download list-group-item" data-tid='#{tournament.shortID}' data-stats-type='player' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_individuals.html')     Player Stats
-                    //-     a(href="/t/" + tournament.shortID + "/stats/teamfull/dl?phase=#{phaseID}" class="download list-group-item" data-tid='#{tournament.shortID}' data-stats-type='teamfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_teamdetail.html') 
-                    //-         Team Full Report
-                    //-     a(href="/t/" + tournament.shortID + "/stats/playerfull/dl?phase=#{phaseID}" class="download list-group-item" data-tid='#{tournament.shortID}' data-stats-type='playerfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_playerdetail.html') 
-                    //-         Players Full Report
-                    //-     a(href="/t/" + tournament.shortID + "/stats/roundreport/dl?phase=#{phaseID}" class="download list-group-item" data-tid='#{tournament.shortID}' data-stats-type='roundreport' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_rounds.html') 
-                    //-         Round Report
 
         div(class="col-md-6 col-sm-12")
             div(class='col-sm-6')
@@ -72,6 +55,6 @@ div(class="panel nf-panel panel-default")
                                 input(class="form-control nf-input" type="number" name="maxround" placeholder="Max Round")
                             br
                             .row
-                                button(type="button" class="btn btn-md btn-block nf-button nf-blue custombutton" data-post-url="/t/{{tournamentId}}/stats/filter/teams") Generate Team Stats
+                                button(type="button" class="btn btn-md btn-block nf-button nf-blue custombutton" data-post-url="/t/{{::tournamentId}}/stats/filter/teams") Generate Team Stats
                             .row
-                                button(type="button" class="btn btn-md nf-button btn-block nf-blue custombutton" data-post-url="/t/{{tournamentId}}/stats/filter/players") Generate Player Stats
+                                button(type="button" class="btn btn-md nf-button btn-block nf-blue custombutton" data-post-url="/t/{{::tournamentId}}/stats/filter/players") Generate Player Stats

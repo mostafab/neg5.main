@@ -122,7 +122,7 @@ exports.default = function (app) {
         });
     });
 
-    app.route('/api/t/:tid/phases').get(_token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
+    app.route('/api/t/:tid/phases').get(function (req, res) {
         _tournament2.default.getPhases(req.params.tid).then(function (result) {
             return res.json({ result: result, success: true });
         }).catch(function (error) {

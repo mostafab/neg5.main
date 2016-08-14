@@ -104,7 +104,7 @@ export default (app) => {
         })
 
     app.route('/api/t/:tid/phases')
-        .get(hasToken, accessToTournament, (req, res) => {
+        .get((req, res) => {
             Tournament.getPhases(req.params.tid)
                 .then(result => res.json({result, success: true}))
                 .catch(error => res.status(500).send({error, success: false}));

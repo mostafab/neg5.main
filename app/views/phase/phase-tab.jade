@@ -6,7 +6,7 @@ div(class='col-md-12 col-sm-12')
             div(class="row")
                 div(class="col-md-12 col-sm-12 col-lg-6")
                     div(class='input-group')
-                        input(type='text' placeholder='Enter New Phase Name Here' class="form-control nf-input" ng-model='Phase.newPhase')
+                        input(type='text' placeholder='Enter New Phase Name Here' class="form-control nf-input" ng-model='Phase.newPhase' ng-keyup='!($event.which === 13) || Phase.addPhase()')
                         span(class='nf-button btn input-group-addon nf-green' ng-click='Phase.addPhase()')
                             i(class='fa fa-plus')
                             
