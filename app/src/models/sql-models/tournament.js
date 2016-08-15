@@ -198,6 +198,14 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
+    },
+
+    setActivePhase: (tournamentId, phaseId = null) => {
+        return new Promise((resolve, reject) => {
+            db.setTournamentActivePhase(tournamentId, phaseId)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
     
 }

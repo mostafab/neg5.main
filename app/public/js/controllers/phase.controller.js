@@ -11,6 +11,8 @@
         vm.phases = Phase.phases;
         vm.newPhase = '';
 
+        vm.activePhase = Phase.activePhase;
+
         vm.getPhases = function () {
             return Phase.getPhases($scope.tournamentId);
         };
@@ -51,6 +53,18 @@
             });
         };
 
+        vm.updateActivePhase = function (phase) {
+            if (vm.activePhase.id !== phase.id) {
+                Phase.updateActivePhase($scope.tournamentId, phase.id).catch(function (error) {
+                    $scope.toast({
+                        message: 'Could not change active phase to: ' + phase.name,
+                        success: false,
+                        hideAfter: true
+                    });
+                });
+            }
+        };
+
         vm.editPhase = function (phase) {
             if (vm.phaseNameWasChanged(phase)) {
                 (function () {
@@ -79,10 +93,6 @@
                 phase.editing = false;
             }
         };
-
-        vm.activePhase = vm.phases.find(function (phase) {
-            return phase.active;
-        });
 
         vm.phaseNameWasChanged = function (phase) {
             var formattedNewName = phase.newName.trim();

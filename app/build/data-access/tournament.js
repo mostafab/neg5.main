@@ -303,6 +303,17 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    setTournamentActivePhase: function setTournamentActivePhase(tournamentId, phaseId) {
+        return new Promise(function (resolve, reject) {
+            var params = [tournamentId, phaseId];
+            (0, _db.query)(phase.setActive, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

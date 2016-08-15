@@ -2,11 +2,12 @@ SELECT
 PL.id as player_id, 
 PL.name as player_name, 
 T.name as team_name, 
-player_tuh.total_player_tuh, 
-player_tuh.total_gp as games_played, 
-PMT.tossup_totals, PMT.total_points, 
-cast(round(PMT.total_points / player_tuh.total_player_tuh::decimal, 2) as double precision) as points_per_tossup, 
-cast(round(PMT.total_points / player_tuh.total_gp::decimal, 2) as double precision) as points_per_game
+COALESCE(player_tuh.total_player_tuh, 0) as total_player_tuh, 
+COALESCE(cast(player_tuh.total_gp as double precision), 0) as games_played, 
+COALESCE(PMT.tossup_totals, '{}') as tossup_totals, 
+COALESCE(PMT.total_points, 0) as total_points, 
+COALESCE(cast(round(PMT.total_points / player_tuh.total_player_tuh::decimal, 2) as double precision), 0) as points_per_tossup, 
+COALESCE(cast(round(PMT.total_points / player_tuh.total_gp::decimal, 2) as double precision), 0) as points_per_game
 
 FROM 
 (
@@ -39,7 +40,7 @@ FROM
 INNER JOIN
 
 (
-    SELECT player_id, tournament_id, SUM(player_tuh)::integer as total_player_tuh, SUM(gp) as total_gp
+    SELECT player_id, tournament_id, SUM(player_tuh)::integer as total_player_tuh, round(cast(SUM(gp) as numeric), 2) as total_gp
     FROM
     (
         SELECT PTM.player_id, PTM.tossups_heard as player_tuh, M.tossups_heard as match_tuh, M.id as match_id, M.tournament_id, PTM.tossups_heard / M.tossups_heard::float as gp
@@ -85,6 +86,6 @@ ON PL.team_id = T.id AND PL.tournament_id = T.tournament_id
 
 WHERE PL.tournament_id = $1 AND T.tournament_id = $1
 
-ORDER BY PMT.total_points desc
+ORDER BY PMT.total_points desc NULLS LAST
 
 

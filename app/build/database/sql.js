@@ -75,9 +75,11 @@ exports.default = {
         findByTournament: getSQL('phase-sql/getTournamentPhases.sql'),
         findById: getSQL('phase-sql/getPhaseById.sql'),
         update: getSQL('phase-sql/updatePhase.sql'),
-        remove: getSQL('phase-sql/removePhase.sql')
+        remove: getSQL('phase-sql/removePhase.sql'),
+        setActive: getSQL('phase-sql/setActivePhase.sql')
     },
     statistics: {
-        individual: getSQL('statistics-sql/individualTotals.sql')
+        individual: getSQL('statistics-sql/individualTotals.sql'),
+        team: getSQL('statistics-sql/teamTotals.sql')
     }
 };

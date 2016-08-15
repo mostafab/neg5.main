@@ -5,9 +5,9 @@
       $animateProvider.classNameFilter(/angular-animate/);
     })
 
-    angular.module('statsApp').controller('PublicStatsController', ['$scope', '$window', '$timeout', 'Phase', 'Stats', 'Cookies', PublicStatsController]);
+    angular.module('statsApp').controller('PublicStatsController', ['$scope', '$window', '$timeout', 'Phase', 'Division', 'Stats', 'Cookies', PublicStatsController]);
 
-    function PublicStatsController($scope, $window, $timeout, Phase, Stats, Cookies) {
+    function PublicStatsController($scope, $window, $timeout, Phase, Division, Stats, Cookies) {
 
         let vm = this;
 
@@ -16,10 +16,14 @@
         vm.toastMessage = null;
 
         vm.phases = Phase.phases;
+        vm.divisions = Division.divisions;
+        vm.activeDivisions = [];
 
         vm.phase = null;
 
         vm.playerStats = Stats.playerStats;
+        vm.teamStats = Stats.teamStats;
+
         vm.pointScheme = Stats.pointScheme;
         vm.tournamentName = Stats.tournamentName;
 
@@ -48,6 +52,7 @@
             vm.toast(toastConfig);
             Stats.refreshStats(tournamentId, vm.phase ? vm.phase.id : null)
                 .then(() => {
+                    vm.filterDivisions();
                     toastConfig.message = 'Loaded all stats.';
                     toastConfig.success = true;
                 })
@@ -61,10 +66,14 @@
                 })
         }
 
+        vm.filterDivisions = () => {
+            vm.activeDivisions = vm.divisions.filter(division => vm.phase && division.phaseId === vm.phase.id);
+            console.log(vm.activeDivisions);
+        }
+
         Phase.getPhases(tournamentId)
-            .finally(() => {
-                vm.refreshStats();             
-            });        
+            .then(() => Division.getDivisions(tournamentId))
+            .then(() => vm.refreshStats());        
 
     }
 

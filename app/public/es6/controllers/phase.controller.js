@@ -9,6 +9,8 @@
         
         vm.phases = Phase.phases;
         vm.newPhase = '';
+
+        vm.activePhase = Phase.activePhase;
         
         vm.getPhases = () => Phase.getPhases($scope.tournamentId);
         
@@ -52,6 +54,20 @@
                 })
         }
         
+        vm.updateActivePhase = (phase) => {
+            if (vm.activePhase.id !== phase.id) {
+                Phase.updateActivePhase($scope.tournamentId, phase.id)
+                    .catch(error => {
+                        $scope.toast({
+                            message: 'Could not change active phase to: ' + phase.name,
+                            success: false,
+                            hideAfter: true
+                        })
+                    })
+            }
+            
+        }
+
         vm.editPhase = (phase) => {
             if (vm.phaseNameWasChanged(phase)) {
                 let toastConfig = {
@@ -82,8 +98,6 @@
                 phase.editing = false;
             }
         }
-        
-        vm.activePhase = vm.phases.find(phase => phase.active);
         
         vm.phaseNameWasChanged = (phase) => {
             let formattedNewName = phase.newName.trim();

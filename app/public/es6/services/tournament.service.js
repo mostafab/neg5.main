@@ -9,6 +9,8 @@
                 tossupValues: []
             };
 
+            let activePhase = {};
+
             let rules = {
                 bouncebacks: false,
                 maxActive: 4
@@ -16,6 +18,9 @@
             
             service.tournamentFactory = {
                 rules,
+
+                activePhase,
+
                 pointScheme,
                 getTournamentContext,
                 edit,
@@ -40,6 +45,11 @@
                                 bouncebacks: info.bouncebacks,
                                 maxActive: info.max_active_players_per_team
                             }
+                            let formattedActivePhase = {
+                                id: info.active_phase_id,
+                                name: info.active_phase_name
+                            }
+                            angular.copy(formattedActivePhase, service.tournamentFactory.activePhase);
                             angular.copy(formattedRules, service.tournamentFactory.rules);
                             angular.copy(formattedPointScheme, service.tournamentFactory.pointScheme);
                             resolve({

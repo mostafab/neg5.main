@@ -37,7 +37,6 @@ export default {
                 .catch(error => {
                     reject(error);
                 });
-                
         })
     },
 
@@ -237,6 +236,15 @@ export default {
         return new Promise((resolve, reject) => {
             let params = [id, phaseId];
             query(phase.remove, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
+    setTournamentActivePhase: (tournamentId, phaseId) => {
+        return new Promise((resolve, reject) => {
+            let params = [tournamentId, phaseId];
+            query(phase.setActive, params, qm.one)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })

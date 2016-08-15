@@ -20,6 +20,7 @@ CREATE TABLE tournament (
     max_active_players_per_team integer DEFAULT 4,
     bonus_point_value integer NOT NULL DEFAULT 10 CHECK (bonus_point_value > 0),
     parts_per_bonus integer NOT NULL DEFAULT 3 CHECK (parts_per_bonus > 0), 
+    active_phase_id varchar(20),
     PRIMARY KEY (id),
     FOREIGN KEY (director_id) REFERENCES account(username) ON DELETE SET NULL
 );
@@ -130,7 +131,7 @@ CREATE TABLE match_is_part_of_phase (
     phase_id varchar(20) NOT NULL,
     PRIMARY KEY (match_id, tournament_id, phase_id),
     FOREIGN KEY (match_id, tournament_id) REFERENCES tournament_match(id, tournament_id) ON DELETE CASCADE,
-    FOREIGN KEY (phase_id, tournament_id) REFERENCES tournament_phase(id, tournament_id)
+    FOREIGN KEY (phase_id, tournament_id) REFERENCES tournament_phase(id, tournament_id) ON DELETE CASCADE
 );
 
 CREATE TABLE tournament_division (

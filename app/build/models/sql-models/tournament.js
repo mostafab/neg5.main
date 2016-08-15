@@ -282,6 +282,18 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    setActivePhase: function setActivePhase(tournamentId) {
+        var phaseId = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+
+        return new Promise(function (resolve, reject) {
+            _tournament2.default.setTournamentActivePhase(tournamentId, phaseId).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

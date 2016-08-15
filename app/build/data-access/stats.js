@@ -39,14 +39,36 @@ exports.default = {
             });
 
             (0, _db.transaction)(queriesArray).then(function (result) {
-                var formattedResult = {
-                    phase: result[0][0] || { name: 'All Phases', id: null },
-                    pointScheme: result[2].tossup_point_scheme.sort(function (first, second) {
-                        return second.value - first.value;
-                    }),
-                    tournamentName: result[2].name,
-                    stats: result[1]
-                };
+                var formattedResult = formatStatisticsResults(result);
+                resolve(formattedResult);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    teamReport: function teamReport(tournamentId) {
+        var phaseId = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+
+        return new Promise(function (resolve, reject) {
+            var queriesArray = [];
+
+            queriesArray.push({
+                text: phase.findById,
+                params: [tournamentId, phaseId],
+                queryType: _db.txMap.any
+            }, {
+                text: statistics.team,
+                params: [tournamentId, phaseId],
+                queryType: _db.txMap.any
+            }, {
+                text: tournament.findById,
+                params: [tournamentId],
+                queryType: _db.txMap.one
+            });
+
+            (0, _db.transaction)(queriesArray).then(function (result) {
+                var formattedResult = formatStatisticsResults(result);
                 resolve(formattedResult);
             }).catch(function (error) {
                 return reject(error);
@@ -54,3 +76,15 @@ exports.default = {
         });
     }
 };
+
+
+function formatStatisticsResults(result) {
+    return {
+        phase: result[0][0] || { name: 'All Phases', id: null },
+        pointScheme: result[2].tossup_point_scheme.sort(function (first, second) {
+            return second.value - first.value;
+        }),
+        tournamentName: result[2].name,
+        stats: result[1]
+    };
+}

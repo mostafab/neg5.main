@@ -13,6 +13,18 @@
     background-color: #B2DFDB;
 }
 
+.inline {
+    display: inline;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
 .nf-dropdown {
     border-radius: 1px;
     width: 50%;

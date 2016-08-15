@@ -94,7 +94,7 @@ exports.default = function (app) {
         });
     });
 
-    app.route('/api/t/:tid/divisions').get(_token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
+    app.route('/api/t/:tid/divisions').get(function (req, res) {
         _tournament2.default.getDivisions(req.params.tid).then(function (result) {
             return res.json({ result: result, success: true });
         }).catch(function (error) {
@@ -144,6 +144,14 @@ exports.default = function (app) {
         });
     }).delete(_token.hasToken, _tournamentAccess.directorAccessToTournament, function (req, res) {
         _tournament2.default.removePhase(req.params.tid, req.params.phaseId).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    });
+
+    app.route('/api/t/:tid/phases/:phaseId/active').put(_token.hasToken, _tournamentAccess.directorAccessToTournament, function (req, res) {
+        _tournament2.default.setActivePhase(req.params.tid, req.params.phaseId).then(function (result) {
             return res.json({ result: result, success: true });
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
