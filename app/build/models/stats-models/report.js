@@ -48,6 +48,19 @@ var StatsReport = exports.StatsReport = function () {
                 });
             });
         }
+    }, {
+        key: 'getTeamFullReport',
+        value: function getTeamFullReport(phaseId) {
+            var _this3 = this;
+
+            return new Promise(function (resolve, reject) {
+                _stats2.default.teamFullReport(_this3.tournamentId, phaseId).then(function (result) {
+                    return resolve(result);
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
     }]);
 
     return StatsReport;

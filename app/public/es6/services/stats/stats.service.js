@@ -10,6 +10,7 @@
 
                 playerStats: [],
                 teamStats: [],
+                teamFullStats: [],
 
                 divisions: [],
 
@@ -68,10 +69,28 @@
                 })
             }
 
+            function getTeamFullStats(tournamentId, phaseId = null) {
+                return $q((resolve, reject) => {
+                    $http.get('/api/t/' + tournamentId + '/stats/teamfull' + (phaseId ? '?phase=' + phaseId : ''))
+                        .then(({data}) => {
+                            data.result.stats.forEach(stat => {
+                                stat.matches.forEach(match => {
+                                    match.pointMap = match.tossup_totals.reduce((aggr, current) => {
+                                        aggr[current.value] = current.total;
+                                        return aggr;
+                                    }, {})
+                                })
+                            })
+                            angular.copy(data.result.stats, service.factory.teamFullStats);
+                            resolve();
+                        })
+                })
+            }
+
             function refreshStats(tournamentId, phaseId) {
                 return $q((resolve, reject) => {
 
-                    $q.all([getPlayerStats(tournamentId, phaseId), getTeamStats(tournamentId, phaseId)])
+                    $q.all([getPlayerStats(tournamentId, phaseId), getTeamStats(tournamentId, phaseId), getTeamFullStats(tournamentId, phaseId)])
                         .then(() => resolve())
                         .catch(error => reject(error));
                         

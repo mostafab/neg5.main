@@ -88,6 +88,32 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    teamFullReport: function teamFullReport(tournamentId) {
+        var phaseId = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+
+        return new Promise(function (resolve, reject) {
+            var queriesArray = [];
+            queriesArray.push({
+                text: phase.findById,
+                params: [tournamentId, phaseId],
+                queryType: _db.txMap.any
+            }, {
+                text: statistics.teamFull,
+                params: [tournamentId, phaseId],
+                queryType: _db.txMap.any
+            }, {
+                text: tournament.findById,
+                params: [tournamentId],
+                queryType: _db.txMap.one
+            });
+            (0, _db.transaction)(queriesArray).then(function (result) {
+                return resolve(formatStatisticsResults(result));
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 };
 

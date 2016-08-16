@@ -24,4 +24,12 @@ export class StatsReport {
         })
     }
 
+    getTeamFullReport(phaseId) {
+        return new Promise((resolve, reject) => {
+            db.teamFullReport(this.tournamentId, phaseId)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    }
+
 }
