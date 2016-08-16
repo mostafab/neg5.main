@@ -80,6 +80,7 @@ exports.default = {
     },
     statistics: {
         individual: getSQL('statistics-sql/individualTotals.sql'),
-        team: getSQL('statistics-sql/teamTotals.sql')
+        teamGivenPhase: getSQL('statistics-sql/teamTotalsWithSpecifiedPhase.sql'),
+        teamDefaultPhase: getSQL('statistics-sql/teamTotalsWithDefaultPhase.sql')
     }
 };

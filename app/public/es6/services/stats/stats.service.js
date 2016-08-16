@@ -11,8 +11,14 @@
                 playerStats: [],
                 teamStats: [],
 
+                divisions: [],
+
+                unassignedTeams: [],
+
                 pointScheme: [],
-                tournamentName: {}
+                tournamentName: {},
+
+                activePhase: {}
             }
             
             function getPlayerStats(tournamentId, phaseId = null) {
@@ -27,11 +33,13 @@
                                 }, {});
                             })
 
+                            angular.copy({id: data.result.activePhaseId}, service.factory.activePhase);
                             angular.copy(data.result.stats, service.factory.playerStats);
                             angular.copy(data.result.pointScheme, service.factory.pointScheme);
                             angular.copy({name: data.result.tournamentName}, service.factory.tournamentName);
 
                             resolve(data.result);
+
                         })
                         .catch(error => reject(error));
                 })
@@ -48,7 +56,10 @@
                                 }, {});
                             })
 
+                            angular.copy(data.result.divisions, service.factory.divisions);
                             angular.copy(data.result.stats, service.factory.teamStats);
+
+                            setUnassignedTeams(data.result.stats, data.result.divisions);
 
                             resolve(data.result);
                             
@@ -65,6 +76,14 @@
                         .catch(error => reject(error));
                         
                 })
+            }
+
+            function setUnassignedTeams(teams, divisions) {
+                let toCopy = [];
+                if (divisions.length > 0) {
+                    toCopy = teams.filter(team => team.division_id === null);
+                }
+                angular.copy(toCopy, service.factory.unassignedTeams);
             }
 
             return service.factory;

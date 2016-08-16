@@ -29,7 +29,7 @@ div(class='col-md-12 col-sm-12')
                     .row.nf-margin(ng-repeat='phase in Phase.phases | orderBy: "name" track by phase.id')
                         .col-lg-11
                             .input-group
-                                span.btn.input-group-addon.nf-button.no-border(ng-class='{"nf-green" : phase.id === Phase.activePhase.id}' ng-click='Phase.updateActivePhase(phase)' title='Set this phase as active') {{phase.id === Phase.activePhase.id ? 'Active' : ''}}
+                                span.btn.input-group-addon.nf-button.no-border(ng-show='!phase.editing' ng-class='{"nf-green" : phase.id === Phase.activePhase.id}' ng-click='Phase.updateActivePhase(phase)' title='Set this phase as active') {{phase.id === Phase.activePhase.id ? 'Active' : ''}}
                                 input(type='text' class='form-control nf-input' ng-model='phase.newName' ng-show='phase.editing')
                                 span.form-control.nf-input.nf-gray(ng-show='!phase.editing') {{phase.name}}
                                 span.btn.input-group-addon.nf-button.nf-blue.no-border(ng-click='phase.editing = true' ng-show='!phase.editing' title='Edit')

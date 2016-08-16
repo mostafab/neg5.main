@@ -6,9 +6,9 @@
         $animateProvider.classNameFilter(/angular-animate/);
     });
 
-    angular.module('statsApp').controller('PublicStatsController', ['$scope', '$window', '$timeout', 'Phase', 'Division', 'Stats', 'Cookies', PublicStatsController]);
+    angular.module('statsApp').controller('PublicStatsController', ['$scope', '$window', '$timeout', 'Phase', 'Stats', 'Cookies', PublicStatsController]);
 
-    function PublicStatsController($scope, $window, $timeout, Phase, Division, Stats, Cookies) {
+    function PublicStatsController($scope, $window, $timeout, Phase, Stats, Cookies) {
 
         var vm = this;
 
@@ -17,8 +17,9 @@
         vm.toastMessage = null;
 
         vm.phases = Phase.phases;
-        vm.divisions = Division.divisions;
-        vm.activeDivisions = [];
+        vm.divisions = Stats.divisions;
+
+        vm.unassignedTeams = Stats.unassignedTeams;
 
         vm.phase = null;
 
@@ -29,6 +30,8 @@
         vm.tournamentName = Stats.tournamentName;
 
         vm.tab = Cookies.get('nfStatsTab') || 'team_standings';
+
+        vm.activePhase = Stats.activePhase;
 
         vm.toast = function (_ref) {
             var message = _ref.message;
@@ -58,7 +61,6 @@
             var toastConfig = { message: 'Refreshing stats.' };
             vm.toast(toastConfig);
             Stats.refreshStats(tournamentId, vm.phase ? vm.phase.id : null).then(function () {
-                vm.filterDivisions();
                 toastConfig.message = 'Loaded all stats.';
                 toastConfig.success = true;
             }).catch(function (error) {
@@ -70,16 +72,7 @@
             });
         };
 
-        vm.filterDivisions = function () {
-            vm.activeDivisions = vm.divisions.filter(function (division) {
-                return vm.phase && division.phaseId === vm.phase.id;
-            });
-            console.log(vm.activeDivisions);
-        };
-
         Phase.getPhases(tournamentId).then(function () {
-            return Division.getDivisions(tournamentId);
-        }).then(function () {
             return vm.refreshStats();
         });
     }

@@ -10,6 +10,7 @@ FROM
     SELECT 
     T.id as team_id,
     T.name as team_name,
+
     COALESCE(cast(team_match_totals.ppg as double precision), 0) as ppg,
     COALESCE(cast(team_match_totals.papg as double precision), 0) as papg,
     COALESCE(cast(team_match_totals.ppg - team_match_totals.papg as double precision), 0) as margin,
@@ -26,7 +27,11 @@ FROM
     COALESCE(cast(team_tossup_totals.total_negs as integer), 0) as total_negs,
     COALESCE(cast(team_tossup_totals.total_powers as integer), 0) as total_powers,
     COALESCE(cast(team_tossup_totals.raw_total_tossup_points as integer), 0) as raw_total_tossup_points,
-    COALESCE(team_tossup_totals.tossup_totals, '{}') as tossup_totals
+    COALESCE(team_tossup_totals.tossup_totals, '{}') as tossup_totals,
+
+    team_division.phase_id,
+    team_division.division_id,
+    team_division.division_name
 
     FROM 
 
@@ -57,18 +62,7 @@ FROM
 
             ON PMT.tournament_id = P.tournament_id AND PMT.player_id = P.id
 
-            WHERE P.tournament_id = $1 AND
-                (
-                    PMT.match_id IN 
-                    (
-                    SELECT M.id 
-                    FROM tournament_match M INNER JOIN match_is_part_of_phase MP
-                    ON M.id = MP.match_id AND M.tournament_id = MP.tournament_id
-                    WHERE MP.phase_id = $2 AND M.tournament_id = $1
-                    ) 
-
-                    OR $2 IS NULL
-                )
+            WHERE P.tournament_id = $1
 
             GROUP BY P.team_id, PMT.tossup_value, TV.tossup_answer_type
 
@@ -133,18 +127,7 @@ FROM
 
                 ON A.match_id = M.id AND M.tournament_id = A.tournament_id
 
-                WHERE M.tournament_id = $1 AND 
-                (
-                    M.id IN 
-                    (
-                    SELECT M.id 
-                    FROM tournament_match M INNER JOIN match_is_part_of_phase MP
-                    ON M.id = MP.match_id AND M.tournament_id = MP.tournament_id
-                    WHERE MP.phase_id = $2 AND M.tournament_id = $1
-                    )
-
-                    OR $2 IS NULL
-                )
+                WHERE M.tournament_id = $1
 
             ) as innerq
 
@@ -167,6 +150,38 @@ FROM
     tournament_team T
 
     ON team_match_totals.team_id = T.id
+
+    LEFT JOIN 
+
+    (
+
+        SELECT 
+        T.active_phase_id AS phase_id,
+        D.id as division_id,
+        D.name AS division_name,
+        TTD.team_id as team_id
+
+        FROM
+
+        tournament T
+
+        LEFT JOIN 
+        
+        tournament_division D
+
+        ON D.tournament_id = T.id AND D.phase_id = T.active_phase_id
+
+        INNER JOIN tournament_team_in_division TTD
+
+        ON D.id = TTD.division_id AND D.tournament_id = TTD.tournament_id
+        
+        WHERE D.tournament_id = $1 AND TTD.tournament_id = $1 AND T.id = $1
+
+    ) as team_division
+
+    ON T.id = team_division.team_id
+
+    WHERE T.tournament_id = $1
 
 ) as formatted_results
 

@@ -48,9 +48,8 @@ block content
 
                                 br
 
-                                table(class="table table-condensed nf-shadow" ng-if='PSControl.activeDivisions.length === 0')
+                                table(class="table table-condensed nf-shadow" ng-if='PSControl.divisions.length === 0')
                                     tr
-                                        //- th(class="table-head nf-white" title='Represents a team\'s place in the standings.') Rank
                                         th(class="table-head nf-white" title='Represents a team\'s name in this tournament.') Team
                                         th(class="table-head nf-white" title='The number of wins this team has.') W
                                         th(class="table-head nf-white" title='The number of losses this team has.') L
@@ -67,7 +66,80 @@ block content
                                         th(class="table-head nf-white" title='A team\'s measure of successfully converting bonuses.') PPB
 
                                     tr(class='nf-list-item nf-dark-blue' ng-repeat='team in PSControl.teamStats | filter:PSControl.teamQuery track by team.team_id')
-                                        //- td {{$index + 1}}
+                                        td {{team.team_name}}
+                                        td {{team.wins}}
+                                        td {{team.losses}}
+                                        td {{team.ties}}
+                                        td {{team.win_percentage}}
+                                        td {{team.ppg}}
+                                        td {{team.papg}}
+                                        td {{team.margin}}
+                                        td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{team.pointMap[pv.value] || 0}}
+                                        td {{team.total_tuh}}
+                                        td {{team.total_points / team.total_tuh || 0}}
+                                        td {{team.total_powers / team.total_negs || 0}}
+                                        td {{team.raw_total_gets / team.total_negs || 0}}
+                                        td {{team.ppb}}
+                                
+                                div(ng-if='PSControl.divisions.length > 0')
+                                    div(ng-repeat='division in PSControl.divisions | orderBy:"division_name"')
+                                        .panel.panel-default.nf-panel
+                                            .nf-panel-heading.nf-dark-blue {{division.division_name}}
+                                            
+                                        table(class="table table-condensed nf-shadow")
+                                            tr
+                                                th(class="table-head nf-white" title='Represents a team\'s name in this tournament.') Team
+                                                th(class="table-head nf-white" title='The number of wins this team has.') W
+                                                th(class="table-head nf-white" title='The number of losses this team has.') L
+                                                th(class="table-head nf-white" title='The number of ties this team has.') T
+                                                th(class="table-head nf-white" title='The % of games this team has won') Win Pct
+                                                th(class="table-head nf-white" title='A team\'s average points per game.') PPG
+                                                th(class="table-head nf-white" title='The average points per game scored against this team.') PAPG
+                                                th(class="table-head nf-white" title='The average margin of victory for a team.') Margin
+                                                th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this player got for this value') {{pv.value}}
+                                                th(class="table-head nf-white" title='The total number of tossups a team heard.') TUH
+                                                th(class="table-head nf-white" title='A team\'s ratio between total points and tossups heard.') PPTH
+                                                th(class="table-head nf-white" title='A team\'s ratio between total powers and negs.') P / N
+                                                th(class="table-head nf-white" title='A team\'s ratio between total gets and negs.') G / N
+                                                th(class="table-head nf-white" title='A team\'s measure of successfully converting bonuses.') PPB
+                                            
+                                            tr(class='nf-list-item nf-dark-blue' ng-repeat='team in PSControl.teamStats | filter:PSControl.teamQuery track by team.team_id' ng-if='team.division_id === division.division_id')
+                                                td {{team.team_name}}
+                                                td {{team.wins}}
+                                                td {{team.losses}}
+                                                td {{team.ties}}
+                                                td {{team.win_percentage}}
+                                                td {{team.ppg}}
+                                                td {{team.papg}}
+                                                td {{team.margin}}
+                                                td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{team.pointMap[pv.value] || 0}}
+                                                td {{team.total_tuh}}
+                                                td {{team.total_points / team.total_tuh || 0}}
+                                                td {{team.total_powers / team.total_negs || 0}}
+                                                td {{team.raw_total_gets / team.total_negs || 0}}
+                                                td {{team.ppb}}
+
+                                .panel.panel-default.nf-panel(ng-if='PSControl.unassignedTeams.length > 0')
+                                    .nf-panel-heading.nf-dark-blue Teams Unassigned
+
+                                table(class="table table-condensed nf-shadow")
+                                    tr
+                                        th(class="table-head nf-white" title='Represents a team\'s name in this tournament.') Team
+                                        th(class="table-head nf-white" title='The number of wins this team has.') W
+                                        th(class="table-head nf-white" title='The number of losses this team has.') L
+                                        th(class="table-head nf-white" title='The number of ties this team has.') T
+                                        th(class="table-head nf-white" title='The % of games this team has won') Win Pct
+                                        th(class="table-head nf-white" title='A team\'s average points per game.') PPG
+                                        th(class="table-head nf-white" title='The average points per game scored against this team.') PAPG
+                                        th(class="table-head nf-white" title='The average margin of victory for a team.') Margin
+                                        th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this player got for this value') {{pv.value}}
+                                        th(class="table-head nf-white" title='The total number of tossups a team heard.') TUH
+                                        th(class="table-head nf-white" title='A team\'s ratio between total points and tossups heard.') PPTH
+                                        th(class="table-head nf-white" title='A team\'s ratio between total powers and negs.') P / N
+                                        th(class="table-head nf-white" title='A team\'s ratio between total gets and negs.') G / N
+                                        th(class="table-head nf-white" title='A team\'s measure of successfully converting bonuses.') PPB
+                                    
+                                    tr(class='nf-list-item nf-dark-blue' ng-repeat='team in PSControl.unassignedTeams | filter:PSControl.teamQuery track by team.team_id')
                                         td {{team.team_name}}
                                         td {{team.wins}}
                                         td {{team.losses}}
@@ -145,10 +217,12 @@ block content
                     .nf-toast-content.nf-button.btn(style='float:left' ng-class="{'nf-red': PSControl.toastMessage.success === false, 'nf-green': PSControl.toastMessage.success === true, 'nf-orange' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
                         i.fa(ng-class="{'fa-check': PSControl.toastMessage.success === true, 'fa-times': PSControl.toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
                         | {{PSControl.toastMessage.message}}
+                        
 
 block scripts
     script(type='text/javascript' src='/js/app.js')
     script(type='text/javascript' src='/js/services/cookies.service.js')
+    script(type='text/javascript' src='/js/services/tournament.service.js')
     script(type='text/javascript' src='/js/services/phase.service.js')
     script(type='text/javascript' src='/js/services/division.service.js')
     script(type='text/javascript' src='/js/stats.js')
