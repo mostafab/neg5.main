@@ -107,7 +107,7 @@
         }
 
         vm.removeFromPointSchemeCopy = (point) => {
-            vm.pointSchemeCopy.tossupValues = vm.pointSchemeCopy.tossupValues.filter(ps => ps.value !== point.value && ps.type !== point.type);
+            vm.pointSchemeCopy.tossupValues = vm.pointSchemeCopy.tossupValues.filter(ps => ps !== point);
         }
 
         vm.saveDivision = (division) => {

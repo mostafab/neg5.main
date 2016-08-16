@@ -19,7 +19,7 @@
                 th(class="table-head nf-white" title='A team\'s average points per game.') PPG
                 th(class="table-head nf-white" title='The average points per game scored against this team.') PAPG
                 th(class="table-head nf-white" title='The average margin of victory for a team.') Margin
-                th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this player got for this value') {{pv.value}}
+                th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value') {{pv.value}}
                 th(class="table-head nf-white" title='The total number of tossups a team heard.') TUH
                 th(class="table-head nf-white" title='A team\'s ratio between total points and tossups heard.') PPTH
                 th(class="table-head nf-white" title='A team\'s ratio between total powers and negs.') P / N
@@ -38,7 +38,7 @@
                 td {{team.margin}}
                 td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{team.pointMap[pv.value] || 0}}
                 td {{team.total_tuh}}
-                td {{team.total_points / team.total_tuh || 0}}
+                td {{team.total_points / team.total_tuh || 0 | number:2}}
                 td {{team.total_powers / team.total_negs || 0}}
                 td {{team.raw_total_gets / team.total_negs || 0}}
                 td {{team.ppb}}
@@ -59,7 +59,7 @@
                         th(class="table-head nf-white" title='A team\'s average points per game.') PPG
                         th(class="table-head nf-white" title='The average points per game scored against this team.') PAPG
                         th(class="table-head nf-white" title='The average margin of victory for a team.') Margin
-                        th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this player got for this value') {{pv.value}}
+                        th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value') {{pv.value}}
                         th(class="table-head nf-white" title='The total number of tossups a team heard.') TUH
                         th(class="table-head nf-white" title='A team\'s ratio between total points and tossups heard.') PPTH
                         th(class="table-head nf-white" title='A team\'s ratio between total powers and negs.') P / N
@@ -78,7 +78,7 @@
                         td {{team.margin}}
                         td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{team.pointMap[pv.value] || 0}}
                         td {{team.total_tuh}}
-                        td {{team.total_points / team.total_tuh || 0}}
+                        td {{team.total_points / team.total_tuh || 0 | number:2}}
                         td {{team.total_powers / team.total_negs || 0}}
                         td {{team.raw_total_gets / team.total_negs || 0}}
                         td {{team.ppb}}
@@ -97,7 +97,7 @@
                 th(class="table-head nf-white" title='A team\'s average points per game.') PPG
                 th(class="table-head nf-white" title='The average points per game scored against this team.') PAPG
                 th(class="table-head nf-white" title='The average margin of victory for a team.') Margin
-                th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this player got for this value') {{pv.value}}
+                th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value') {{pv.value}}
                 th(class="table-head nf-white" title='The total number of tossups a team heard.') TUH
                 th(class="table-head nf-white" title='A team\'s ratio between total points and tossups heard.') PPTH
                 th(class="table-head nf-white" title='A team\'s ratio between total powers and negs.') P / N
@@ -116,7 +116,7 @@
                 td {{team.margin}}
                 td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{team.pointMap[pv.value] || 0}}
                 td {{team.total_tuh}}
-                td {{team.total_points / team.total_tuh || 0}}
+                td {{team.total_points / team.total_tuh || 0 | number:2}}
                 td {{team.total_powers / team.total_negs || 0}}
                 td {{team.raw_total_gets / team.total_negs || 0}}
                 td {{team.ppb}}

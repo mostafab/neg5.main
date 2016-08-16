@@ -108,7 +108,7 @@
 
         vm.removeFromPointSchemeCopy = function (point) {
             vm.pointSchemeCopy.tossupValues = vm.pointSchemeCopy.tossupValues.filter(function (ps) {
-                return ps.value !== point.value && ps.type !== point.type;
+                return ps !== point;
             });
         };
 
