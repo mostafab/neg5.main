@@ -162,9 +162,13 @@
     white-space: pre-wrap;
 }
 
-/*li.active {
-    border-left: 10px solid #FFA000;
-}*/
+li.active {
+    background-color: #eceff1;
+}
+
+li.active > a {
+    color: black;
+}
 
 .nav-bar > li:hover {
     cursor: pointer;
