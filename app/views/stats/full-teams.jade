@@ -1,109 +1,46 @@
-extends ../layout
+.row
+    .col-lg-12
+        div(class="panel panel-default nf-panel")
+            div(class="collapsable nf-panel-heading nf-dark-blue") Team Full Report - {{PSControl.phase.name || 'All Games'}}      
 
-block titleContent
-    title Teams Full | #{tournament.tournament_name} | Neg 5
+        .row
+            .col-lg-4
+                input(type="text" class="form-control nf-input" placeholder="Search for Teams" ng-model='PSControl.fullTeamQuery')
 
-block extrastylesheets
-    link(rel="stylesheet" href="/css/tournamentstyle.css")
+        br               
 
-block content
+        div        
+            div(ng-repeat='team in PSControl.teamFullStats | filter:{team_name: PSControl.fullTeamQuery}')
+                    .panel.panel-default.nf-panel
+                        .nf-panel-heading.nf-dark-blue {{team.team_name}}
+                        
+                    table(class="table table-condensed nf-shadow")
+                        tr
+                            th(class="table-head nf-white" title='Team\'s opponent in the match.') Opponent
+                            th(class="table-head nf-white" title='Whether the team won (W), lost (L), or tied (T)') Result
+                            th(class="table-head nf-white" title='Team\'s score') PF
+                            th(class="table-head nf-white" title='Opponent team\'s score') PA
+                            th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value') {{pv.value}}
+                            th(class="table-head nf-white" title='Tossups heard in the match') TUH
+                            th(class="table-head nf-white" title='Points per tossup heard') PPTH
+                            th(class="table-head nf-white" title='Ratio between powers and negs') P / N
+                            th(class="table-head nf-white" title='Ratio between gets and negs') G / N
+                            th(class="table-head nf-white" title='Number of bonuses heard (does not include overtime)') Bonuses Heard
+                            th(class="table-head nf-white" title='Bonus points gotten (score - tossup points - bounceback_points)') Bonus Points
+                            th(class='table-head nf-white' title='Number of bounceback points') Bounceback Points
+                            th(class="table-head nf-white" title='Team\'s points per bonus') PPB
 
-    main(class="cd-main-content" style='background-color:white;background-image:none')
-        div(class="box" style="padding:100px")
-
-            div(class="row")
-                    div(class="col-md-12")
-                        div(class="panel-body")
-                            div(class="row" style="")
-                                ul(class="nav nav-pills no-border-radius")
-                                    li
-                                        a(href="/t/" + tournament.shortID + "/stats/team?phase=#{tournament.phaseInfo.phase_id}") Team Standings
-                                    li
-                                        a(href="/t/" + tournament.shortID + "/stats/player?phase=#{tournament.phaseInfo.phase_id}") Player Standings
-                                    li
-                                        a(class='stat-title' href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}") Teams Full
-                                    li
-                                        a(href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}") Players Full
-                                    li
-                                        a(href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{tournament.phaseInfo.phase_id}") Round Report
-
-                        h2(class="subtitle btn-shadow" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Full Team Details
-
-                        br
-                        br
-
-                        each teamid in Object.keys(teamsGames)
-
-                            h2(class="title" style="width:20%" id=teamid) #{teamsGames[teamid].team}
-                            - var points = Object.keys(tournament.pointScheme).sort((first, second) => {return parseFloat(second) - parseFloat(first);});
-                            if teamsGames[teamid].games.length != 0
-                                div(class="panel panel-default")
-                                    table(class="table table-condensed btn-shadow")
-                                        - var gameHeaders = Object.keys(teamsGames[teamid].games[0])
-                                        thead
-                                            tr
-                                                each stat,i in gameHeaders
-                                                    if stat == "pointValues"
-                                                        each val in points
-                                                            th(class="table-head") #{val}
-                                                    else
-                                                        th(class="table-head") #{stat}
-                                        tbody
-                                            each game in teamsGames[teamid].games
-                                                tr
-                                                    each stat, i in gameHeaders
-                                                        if stat == "pointValues"
-                                                            each val in points
-                                                                td(class='stat-td') #{game["pointValues"][val]}
-                                                        else
-                                                            td(class='stat-td') #{game[stat]}
-
-                                        tfoot
-
-                                            tr(class="success" style="font-size:16px")
-                                                each stat, i in gameHeaders
-                                                    if i == 0
-                                                        td(class='stat-td')
-                                                            strong
-                                                                | Totals
-                                                    else
-                                                        if teamTotals[teamid].stats
-                                                            if stat == "pointValues"
-                                                                each val in points
-                                                                    td(class='stat-td')
-                                                                        strong
-                                                                            | #{teamTotals[teamid].stats.pointValues[val]}
-                                                            else
-                                                                if teamTotals[teamid].stats[stat]
-                                                                    td(class='stat-td')
-                                                                        strong
-                                                                            | #{teamTotals[teamid].stats[stat]}
-                                                                else
-                                                                    td
-                                                        else
-                                                            td
-
-                            div(class="panel panel-default")
-                                table(class="table table-condensed btn-shadow")
-                                    if playersInfo[teamid].stats.length != 0
-                                        - var playerHeaders = Object.keys(playersInfo[teamid].stats[0].stats)
-                                        thead
-                                            tr
-                                                each stat, i in playerHeaders
-                                                    if stat == "pointTotals"
-                                                        each val in points
-                                                            th(class="table-head") #{val}
-                                                    else
-                                                        th(class="table-head") #{stat}
-                                        tbody
-                                            each player in playersInfo[teamid].stats
-                                                tr
-                                                    each stat, i in playerHeaders
-                                                        if stat == "pointTotals"
-                                                            each val in points
-                                                                td(class='stat-td') #{player.stats["pointTotals"][val]}
-                                                        else if stat == "Player"
-                                                            td(class='stat-td')
-                                                                a(href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}#" + player.id) #{player.stats[stat]}
-                                                        else
-                                                            td(class='stat-td') #{player.stats[stat]}
+                        tr(class='nf-list-item nf-dark-blue' ng-repeat='match in team.matches | orderBy:"round"')
+                            td {{match.opponent_name}}
+                            td {{match.result}}
+                            td {{match.score}}
+                            td {{match.opponent_score}}
+                            td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{match.pointMap[pv.value]}}
+                            td {{match.tossups_heard}}
+                            td {{match.score / match.tossups_heard | number:2}}
+                            td {{match.total_powers / match.total_negs}}
+                            td {{match.total_gets / match.total_negs}}
+                            td {{match.total_gets - match.overtime_tossups}}
+                            td {{match.score - match.tossup_points - match.bounceback_points}}
+                            td {{match.bounceback_points}}
+                            td {{match.ppb}}
