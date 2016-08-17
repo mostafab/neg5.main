@@ -12,6 +12,7 @@
                 teamStats: [],
                 teamFullStats: [],
                 playerFullStats: [],
+                roundReportStats: [],
 
                 divisions: [],
 
@@ -85,6 +86,7 @@
                             angular.copy(data.result.stats, service.factory.teamFullStats);
                             resolve();
                         })
+                        .catch(error => reject(error));
                 })
             }
 
@@ -103,13 +105,25 @@
                             angular.copy(data.result.stats, service.factory.playerFullStats);
                             resolve();
                         })
+                        .catch(error => reject(error));
+                })
+            }
+
+            function getRoundReport(tournamentId, phaseId = null) {
+                return $q((resolve, reject) => {
+                    $http.get('/api/t/' + tournamentId + '/stats/roundreport' + (phaseId ? '?phase=' + phaseId : ''))
+                        .then(({data}) => {
+                            angular.copy(data.result.stats, service.factory.roundReportStats);
+                            resolve();
+                        })
+                        .catch(error => reject(error));
                 })
             }
 
             function refreshStats(tournamentId, phaseId) {
                 return $q((resolve, reject) => {
 
-                    $q.all([getPlayerStats(tournamentId, phaseId), getTeamStats(tournamentId, phaseId), getTeamFullStats(tournamentId, phaseId), getPlayerFullStats(tournamentId, phaseId)])
+                    $q.all([getPlayerStats(tournamentId, phaseId), getTeamStats(tournamentId, phaseId), getTeamFullStats(tournamentId, phaseId), getPlayerFullStats(tournamentId, phaseId), getRoundReport(tournamentId, phaseId)])
                         .then(() => resolve())
                         .catch(error => reject(error));
                         

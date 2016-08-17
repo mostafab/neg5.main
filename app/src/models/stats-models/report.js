@@ -40,4 +40,12 @@ export class StatsReport {
         })
     }
 
+    getRoundReport(phaseId) {
+        return new Promise((resolve, reject) => {
+            db.roundReport(this.tournamentId, phaseId)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    }
+
 }

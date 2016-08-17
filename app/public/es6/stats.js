@@ -26,6 +26,7 @@
         vm.teamStats = Stats.teamStats;
         vm.teamFullStats = Stats.teamFullStats;
         vm.playerFullStats = Stats.playerFullStats;
+        vm.roundReportStats = Stats.roundReportStats;
 
         vm.pointScheme = Stats.pointScheme;
         vm.tournamentName = Stats.tournamentName;

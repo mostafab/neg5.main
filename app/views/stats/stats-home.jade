@@ -50,13 +50,8 @@ block content
                     div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='player_full'}")
                         include ./full-player.jade
 
-
                     div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='round_report'}")
-                        .row
-                            .col-lg-12
-                                div(class="panel panel-default nf-panel")
-                                    div(class="collapsable nf-panel-heading nf-dark-blue") Round Report - {{PSControl.phase.name || 'All Games'}}
-                                    div(class="panel-body tournament-panel nf-panel-body")
+                        include ./round-report.jade
                                 
                 .nf-toast(style='position:fixed' class='angular-animate' ng-show='PSControl.toastMessage !== null')
                     .nf-toast-content.nf-button.btn(style='float:left' ng-class="{'nf-red': PSControl.toastMessage.success === false, 'nf-green': PSControl.toastMessage.success === true, 'nf-orange' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")

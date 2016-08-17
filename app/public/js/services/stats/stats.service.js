@@ -13,6 +13,7 @@
             teamStats: [],
             teamFullStats: [],
             playerFullStats: [],
+            roundReportStats: [],
 
             divisions: [],
 
@@ -94,6 +95,8 @@
                     });
                     angular.copy(data.result.stats, service.factory.teamFullStats);
                     resolve();
+                }).catch(function (error) {
+                    return reject(error);
                 });
             });
         }
@@ -115,6 +118,23 @@
                     });
                     angular.copy(data.result.stats, service.factory.playerFullStats);
                     resolve();
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
+
+        function getRoundReport(tournamentId) {
+            var phaseId = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+
+            return $q(function (resolve, reject) {
+                $http.get('/api/t/' + tournamentId + '/stats/roundreport' + (phaseId ? '?phase=' + phaseId : '')).then(function (_ref5) {
+                    var data = _ref5.data;
+
+                    angular.copy(data.result.stats, service.factory.roundReportStats);
+                    resolve();
+                }).catch(function (error) {
+                    return reject(error);
                 });
             });
         }
@@ -122,7 +142,7 @@
         function refreshStats(tournamentId, phaseId) {
             return $q(function (resolve, reject) {
 
-                $q.all([getPlayerStats(tournamentId, phaseId), getTeamStats(tournamentId, phaseId), getTeamFullStats(tournamentId, phaseId), getPlayerFullStats(tournamentId, phaseId)]).then(function () {
+                $q.all([getPlayerStats(tournamentId, phaseId), getTeamStats(tournamentId, phaseId), getTeamFullStats(tournamentId, phaseId), getPlayerFullStats(tournamentId, phaseId), getRoundReport(tournamentId, phaseId)]).then(function () {
                     return resolve();
                 }).catch(function (error) {
                     return reject(error);

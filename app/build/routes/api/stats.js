@@ -43,4 +43,13 @@ exports.default = function (app) {
             return res.status(500).send({ error: error, success: false });
         });
     });
+
+    app.get('/api/t/:tid/stats/roundreport', function (req, res) {
+        var report = new _report.StatsReport(req.params.tid);
+        report.getRoundReport(req.query.phase || null).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    });
 };
