@@ -48,11 +48,7 @@ block content
 
 
                     div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='player_full'}")
-                        .row
-                            .col-lg-12
-                                div(class="panel panel-default nf-panel")
-                                    div(class="collapsable nf-panel-heading nf-dark-blue") Player Full - {{PSControl.phase.name || 'All Games'}}
-                                    div(class="panel-body tournament-panel nf-panel-body")
+                        include ./full-player.jade
 
 
                     div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='round_report'}")

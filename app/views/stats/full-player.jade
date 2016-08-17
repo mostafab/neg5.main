@@ -1,81 +1,41 @@
-extends ../layout
+.row
+    .col-lg-12
+        div(class="panel panel-default nf-panel")
+            div(class="collapsable nf-panel-heading nf-dark-blue") Player Full - {{PSControl.phase.name || 'All Games'}}
 
-block titleContent
-    title Players Full | #{tournament.tournament_name} | Neg 5
+        .row
+            .col-lg-4
+                input(type="text" class="form-control nf-input" placeholder="Search for Players" ng-model='PSControl.fullPlayerQuery')
 
-block extrastylesheets
-    link(rel="stylesheet" href="/css/tournamentstyle.css")
+        br               
 
-block content
+        div        
+            div(ng-repeat='player in PSControl.playerFullStats | filter:{player_name: PSControl.fullPlayerQuery}')
+                    .row
+                        .col-lg-4.col-sm-12.col-md-5
+                            .panel.panel-default.nf-panel.stat-header
+                            .nf-panel-heading.nf-dark-blue {{player.player_name}} ({{player.team_name}})
+                    .row
+                        .col-lg-12.col-sm-12.col-md-12
+                            table(class="table table-condensed nf-shadow")
+                                tr
+                                    th(class="table-head nf-white" title='Match round') Round
+                                    th(class="table-head nf-white" title='Player\'s opponent in the match.') Opponent
+                                    th(class="table-head nf-white" title='How much of this match the player played.') GP
+                                    th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value') {{pv.value}}
+                                    th(class="table-head nf-white" title='Tossups heard in the match') TUH
+                                    th(class="table-head nf-white" title='Points per tossup heard') P / TU
+                                    th(class="table-head nf-white" title='Ratio between powers and negs') P / N
+                                    th(class="table-head nf-white" title='Ratio between gets and negs') G / N
+                                    th(class="table-head nf-white" title='Total points') Points
 
-    main(class="cd-main-content" style='background-color:white;background-image:none')
-        div(class="box" style="padding:100px;")
-
-            div(class="row")
-                    div(class="col-md-12")
-                        div(class="panel-body")
-                            div(class="row" style="")
-                                ul(class="nav nav-pills no-border-radius")
-                                    li
-                                        a(href="/t/" + tournament.shortID + "/stats/team?phase=#{tournament.phaseInfo.phase_id}") Team Standings
-                                    li
-                                        a(href="/t/" + tournament.shortID + "/stats/player?phase=#{tournament.phaseInfo.phase_id}") Player Standings
-                                    li
-                                        a(href="/t/" + tournament.shortID + "/stats/teamfull?phase=#{tournament.phaseInfo.phase_id}") Teams Full
-                                    li
-                                        a(class='stat-title' href="/t/" + tournament.shortID + "/stats/playerfull?phase=#{tournament.phaseInfo.phase_id}") Players Full
-                                    li
-                                        a(href="/t/" + tournament.shortID + "/stats/roundreport?phase=#{tournament.phaseInfo.phase_id}") Round Report
-
-                        h2(class="subtitle btn-shadow" style="width:50%") #{tournament.tournament_name} #{tournament.phaseInfo.name} - Full Player Details
-
-                        br
-                        br
-
-                        each playerid in Object.keys(playersInfo)
-                            h2(class="title" style="width:20%;margin-top:5px;margin-bottom:5px" id="#{playerid}") #{playersInfo[playerid].name}   (#{playersInfo[playerid].team})
-                            - var points = Object.keys(tournament.pointScheme).sort((first, second) => {return parseFloat(second) - parseFloat(first);});
-                            if playersInfo[playerid].games.length != 0
-                                - var gameHeaders = Object.keys(playersInfo[playerid].games[0])
-                                div(class="panel panel-default")
-                                    table(class="table table-condensed btn-shadow")
-                                        thead
-                                            tr
-                                                each stat, i in gameHeaders
-                                                    if stat == "pointValues"
-                                                        each val in points
-                                                            th(class="table-head") #{val}
-                                                    else
-                                                        th(class="table-head") #{gameHeaders[i]}
-
-                                        tbody
-                                            each game in playersInfo[playerid].games
-                                                tr
-                                                    each stat, i in gameHeaders
-                                                        if stat == "pointValues"
-                                                            each val in points
-                                                                td(class='stat-td') #{game["pointValues"][val]}
-                                                        else
-                                                            td(class='stat-td') #{game[stat]}
-
-                                        tfoot
-
-                                            tr(class="success" style="font-size:16px")
-                                                each stat, i in gameHeaders
-                                                    if i == 0
-                                                        td
-                                                            strong
-                                                                | Totals
-                                                    else
-                                                        if stat == "pointValues"
-                                                            each val in points
-                                                                td(class='stat-td')
-                                                                    strong
-                                                                        | #{playerTotals[playerid].pointTotals[val]}
-                                                        else
-                                                            if playerTotals[playerid][stat]
-                                                                td(class='stat-td')
-                                                                    strong
-                                                                        | #{playerTotals[playerid][stat]}
-                                                            else
-                                                                td
+                                tr(class='nf-list-item nf-dark-blue' ng-repeat='match in player.matches | orderBy:"round"')
+                                    td {{match.round}}
+                                    td {{match.opponent_team_name}}
+                                    td {{match.game_played}}
+                                    td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{match.pointMap[pv.value]}}
+                                    td {{match.tossups_heard}}
+                                    td {{match.total_points / match.tossups_heard | number:2}}
+                                    td {{match.powers / match.negs | number:2}}
+                                    td {{match.gets / match.negs | number:2}}
+                                    td {{match.total_points}}

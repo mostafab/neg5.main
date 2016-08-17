@@ -39,8 +39,8 @@
                 td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{team.pointMap[pv.value] || 0}}
                 td {{team.total_tuh}}
                 td {{team.total_points / team.total_tuh || 0 | number:2}}
-                td {{team.total_powers / team.total_negs || 0}}
-                td {{team.raw_total_gets / team.total_negs || 0}}
+                td {{team.total_powers / team.total_negs || 0 | number:2}}
+                td {{team.raw_total_gets / team.total_negs || 0 | number:2}}
                 td {{team.ppb}}
         
         div(ng-if='PSControl.divisions.length > 0')
@@ -79,8 +79,8 @@
                         td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{team.pointMap[pv.value] || 0}}
                         td {{team.total_tuh}}
                         td {{team.total_points / team.total_tuh || 0 | number:2}}
-                        td {{team.total_powers / team.total_negs || 0}}
-                        td {{team.raw_total_gets / team.total_negs || 0}}
+                        td {{team.total_powers / team.total_negs || 0 | number:2}}
+                        td {{team.raw_total_gets / team.total_negs || 0 | number:2}}
                         td {{team.ppb}}
 
         .panel.panel-default.nf-panel(ng-if='PSControl.unassignedTeams.length > 0')
@@ -117,6 +117,6 @@
                 td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{team.pointMap[pv.value] || 0}}
                 td {{team.total_tuh}}
                 td {{team.total_points / team.total_tuh || 0 | number:2}}
-                td {{team.total_powers / team.total_negs || 0}}
-                td {{team.raw_total_gets / team.total_negs || 0}}
+                td {{team.total_powers / team.total_negs || 0 | number:2}}
+                td {{team.raw_total_gets / team.total_negs || 0 | number:2}}
                 td {{team.ppb}}

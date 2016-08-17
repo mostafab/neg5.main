@@ -12,6 +12,7 @@
             playerStats: [],
             teamStats: [],
             teamFullStats: [],
+            playerFullStats: [],
 
             divisions: [],
 
@@ -97,10 +98,31 @@
             });
         }
 
+        function getPlayerFullStats(tournamentId) {
+            var phaseId = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+
+            return $q(function (resolve, reject) {
+                $http.get('/api/t/' + tournamentId + '/stats/playerfull' + (phaseId ? '?phase=' + phaseId : '')).then(function (_ref4) {
+                    var data = _ref4.data;
+
+                    data.result.stats.forEach(function (stat) {
+                        stat.matches.forEach(function (match) {
+                            match.pointMap = match.tossup_totals.reduce(function (aggr, current) {
+                                aggr[current.value] = current.total;
+                                return aggr;
+                            }, {});
+                        });
+                    });
+                    angular.copy(data.result.stats, service.factory.playerFullStats);
+                    resolve();
+                });
+            });
+        }
+
         function refreshStats(tournamentId, phaseId) {
             return $q(function (resolve, reject) {
 
-                $q.all([getPlayerStats(tournamentId, phaseId), getTeamStats(tournamentId, phaseId), getTeamFullStats(tournamentId, phaseId)]).then(function () {
+                $q.all([getPlayerStats(tournamentId, phaseId), getTeamStats(tournamentId, phaseId), getTeamFullStats(tournamentId, phaseId), getPlayerFullStats(tournamentId, phaseId)]).then(function () {
                     return resolve();
                 }).catch(function (error) {
                     return reject(error);

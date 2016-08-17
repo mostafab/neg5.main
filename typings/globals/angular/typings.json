@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/60e569b7a2efbba308d4b6a0e03d26691936ed70/angularjs/angular.d.ts",
+    "raw": "registry:dt/angular#1.5.0+20160809151918",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/60e569b7a2efbba308d4b6a0e03d26691936ed70/angularjs/angular.d.ts"
+  }
+}

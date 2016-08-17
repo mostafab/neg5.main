@@ -2,6 +2,7 @@ SELECT
 PL.id as player_id, 
 PL.name as player_name, 
 T.name as team_name, 
+T.id as team_id,
 COALESCE(player_tuh.total_player_tuh, 0) as total_player_tuh, 
 COALESCE(cast(player_tuh.total_gp as double precision), 0) as games_played, 
 COALESCE(PMT.tossup_totals, '{}') as tossup_totals, 

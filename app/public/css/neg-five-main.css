@@ -194,6 +194,10 @@ li.active > a {
     }
 }
 
+.panel.stat-header {
+    margin-bottom: 0px;
+}
+
 .point-label {
     min-width: 130px;
 }

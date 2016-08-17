@@ -7,6 +7,7 @@ COALESCE(
     array_agg(
         json_build_object(
             'match_id', PMT.match_id,
+            'round', player_match_general.round,
             'opponent_team_id', player_match_general.opponent_team_id,
             'opponent_team_name', player_match_general.opponent_team_name,
             'tossup_totals', PMT.tossup_totals,
@@ -68,6 +69,7 @@ INNER JOIN
     match_tuh,
     match_id,
     team_match_info.tournament_id,
+    team_match_info.round,
     gp,
     opponent_team_id,
     OPPONENT.name as opponent_team_name
@@ -79,6 +81,7 @@ INNER JOIN
         P.id as player_id, 
         PTM.tossups_heard as player_tuh, 
         M.tossups_heard as match_tuh, 
+        M.round as round,
         M.id as match_id, 
         M.tournament_id, 
         PTM.tossups_heard / M.tossups_heard::float as gp,
