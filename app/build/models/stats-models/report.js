@@ -61,6 +61,19 @@ var StatsReport = exports.StatsReport = function () {
                 });
             });
         }
+    }, {
+        key: 'getPlayerFullReport',
+        value: function getPlayerFullReport(phaseId) {
+            var _this4 = this;
+
+            return new Promise(function (resolve, reject) {
+                _stats2.default.playerFullReport(_this4.tournamentId, phaseId).then(function (result) {
+                    return resolve(result);
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
     }]);
 
     return StatsReport;

@@ -105,6 +105,32 @@ export default {
                 .then(result => resolve(formatStatisticsResults(result)))
                 .catch(error => reject(error));
         })
+    },
+
+    playerFullReport: (tournamentId, phaseId = null) => {
+        return new Promise((resolve, reject) => {
+            let queriesArray = [];
+            queriesArray.push(
+                {
+                    text: phase.findById,
+                    params: [tournamentId, phaseId],
+                    queryType: tx.any
+                },
+                {
+                    text: statistics.playerFull,
+                    params: [tournamentId, phaseId],
+                    queryType: tx.any
+                },
+                {
+                    text: tournament.findById,
+                    params: [tournamentId],
+                    queryType: tx.one
+                }
+            )
+            transaction(queriesArray)
+                .then(result => resolve(formatStatisticsResults(result)))
+                .catch(error => reject(error));
+        })
     }
 }
 

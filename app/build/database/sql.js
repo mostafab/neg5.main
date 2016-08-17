@@ -82,6 +82,7 @@ exports.default = {
         individual: getSQL('statistics-sql/individualTotals.sql'),
         teamGivenPhase: getSQL('statistics-sql/teamTotalsWithSpecifiedPhase.sql'),
         teamDefaultPhase: getSQL('statistics-sql/teamTotalsWithDefaultPhase.sql'),
-        teamFull: getSQL('statistics-sql/teamFullGames.sql')
+        teamFull: getSQL('statistics-sql/teamFullGames.sql'),
+        playerFull: getSQL('statistics-sql/playerFullGames.sql')
     }
 };
