@@ -36,5 +36,11 @@ exports.default = function (app) {
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
         });
-    }).put(function (req, res) {}).delete(function (req, res) {});
+    }).put(_token.hasToken, _tournamentAccess.adminAccessToTournament, function (req, res) {
+        _team2.default.updateName(req.params.tid, req.params.teamId, req.body.name).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    }).delete(_token.hasToken, _tournamentAccess.adminAccessToTournament, function (req, res) {});
 };

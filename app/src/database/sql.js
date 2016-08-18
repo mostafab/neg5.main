@@ -46,7 +46,8 @@ export default {
             addTeam: getSQL('team-sql/transactions/addTeam/addTeamToTournament.sql'),
             addPlayers: getSQL('team-sql/transactions/addTeam/addTeamPlayers.sql'),
             addDivisions: getSQL('team-sql/transactions/addTeam/addTeamDivisions.sql')
-        }
+        },
+        updateName: getSQL('team-sql/updateTeamName.sql')
     },
     collaborator: {
         add: getSQL('collaborator-sql/addCollaborator.sql'),

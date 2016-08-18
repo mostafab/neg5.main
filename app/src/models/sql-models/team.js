@@ -35,6 +35,16 @@ export default {
                 .then(team => resolve(team))
                 .catch(error => reject(error));
         }); 
+    },
+
+    updateName: (tournamentId, teamId, newName) => {
+        return new Promise((resolve, reject) => {
+            if (!newName || newName.trim().length === 0) return reject(new Error('Invalid new name: ' + newName))
+            newName = newName.trim();
+            db.updateTeamName(tournamentId, teamId, newName)
+                .then(team => resolve(team))
+                .catch(error => reject(error));
+        })
     }
 
 }

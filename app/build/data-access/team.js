@@ -88,6 +88,17 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    updateTeamName: function updateTeamName(tournamentId, teamId, name) {
+        return new Promise(function (resolve, reject) {
+            var params = [tournamentId, teamId, name];
+            (0, _db.query)(team.updateName, params, _db.queryTypeMap.one).then(function (team) {
+                return resolve(team);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

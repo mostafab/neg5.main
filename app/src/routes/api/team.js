@@ -23,11 +23,14 @@ export default (app) => {
                 .then(result => res.json({result, success: true}))
                 .catch(error => res.status(500).send({error, success: false}))
         })
-        .put((req, res) => {
-            
+        .put(hasToken, adminAccessToTournament, (req, res) => {
+            Team.updateName(req.params.tid, req.params.teamId, req.body.name)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}))
         })
-        .delete((req, res) => {
+        .delete(hasToken, adminAccessToTournament, (req, res) => {
             
         })
     
+
 }

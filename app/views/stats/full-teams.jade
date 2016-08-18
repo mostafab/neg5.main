@@ -13,13 +13,13 @@
             div(ng-repeat='team in PSControl.teamFullStats | filter:{team_name: PSControl.fullTeamQuery}')
                     .row
                         .col-lg-4.col-sm-8.col-md-5
-                            .panel.panel-default.nf-panel.stat-header
-                                .nf-panel-heading.nf-dark-blue {{team.team_name}}
+                            .nf-panel-heading.stat-header {{team.team_name}}
                     
                     .row
                         .col-lg-12.col-sm-12.col-md-12
                             table(class="table table-condensed nf-shadow")
                                 tr
+                                    th(class="table-head nf-white" title='Match round') Round
                                     th(class="table-head nf-white" title='Team\'s opponent in the match.') Opponent
                                     th(class="table-head nf-white" title='Whether the team won (W), lost (L), or tied (T)') Result
                                     th(class="table-head nf-white" title='Team\'s score') PF
@@ -35,6 +35,7 @@
                                     th(class="table-head nf-white" title='Team\'s points per bonus') PPB
 
                                 tr(class='nf-list-item nf-dark-blue' ng-repeat='match in team.matches | orderBy:"round"')
+                                    td {{match.round}}
                                     td {{match.opponent_name}}
                                     td {{match.result}}
                                     td {{match.score}}

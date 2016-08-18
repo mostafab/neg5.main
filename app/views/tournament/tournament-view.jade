@@ -2,6 +2,7 @@ extends ../layout
 
 block titleContent
     title Compass QB
+    link(rel='stylesheet' href='/css/chat.css')
 
 block content
 
@@ -168,9 +169,18 @@ block content
                                         button(type="button" class="btn btn-md nf-blue btn-block " id="yes-delete") Yes
                     
                     .nf-toast(style='position:fixed' class='angular-animate' ng-show='toastMessage !== null')
-                        .nf-toast-content.nf-button.btn(style='float:left' ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
+                        .nf-toast-content.nf-button.btn(style='float:right' ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
                             i.fa(ng-class="{'fa-check': toastMessage.success === true, 'fa-times': toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : toastMessage.success !== true && toastMessage.success !== false}")
                             | {{toastMessage.message}}
+                            
+
+
+                    //- .nf-toast(style='position:fixed' class='angular-animate')
+                    //-     .panel.no-border(style='width:16.7%')
+                    //-         .panel-heading.nf-panel-heading.nf-orange.nf-shadow Chat
+                    //-             i.fa.right.fa-2x.chat-expand(ng-click='Chat.chatOpen = !Chat.chatOpen' ng-class='{"fa-caret-up" : !Chat.chatOpen, "fa-caret-down" : Chat.chatOpen}')
+                    //-         .panel-body.nf-dark-blue.nf-shadow(ng-class='{"chat-open" : Chat.chatOpen, "chat-closed" : !Chat.chatOpen}')
+                            
 
 block scripts
     

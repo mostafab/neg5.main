@@ -1,44 +1,13 @@
-.chat
-{
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.panel-body.chat-open {
+    height: 400px;
+    overflow: auto;
 }
 
-.chat li
-{
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px dotted #B3A9A9;
+.panel-body.chat-closed {
+    height: auto;
+    max-height: 400px;
 }
 
-.chat li.left .chat-body
-{
-    margin-left: 60px;
-}
-
-.chat li.right .chat-body
-{
-    margin-right: 60px;
-}
-
-.chat li .chat-body p
-{
-    margin: 0;
-    color: #777777;
-}
-
-.chatdiv .panel .slidedown .fa, .chat .fa
-{
-    margin-right: 5px;
-}
-
-.chat-panel
-{
-    overflow-y: scroll;
-    height: 100%;
-}
-
-.chat-img:hover {
+i.chat-expand::hover {
     cursor: pointer;
 }

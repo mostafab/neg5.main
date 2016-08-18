@@ -13,8 +13,7 @@
             div(ng-repeat='player in PSControl.playerFullStats | filter:{player_name: PSControl.fullPlayerQuery}')
                     .row
                         .col-lg-4.col-sm-12.col-md-5
-                            .panel.panel-default.nf-panel.stat-header
-                            .nf-panel-heading.nf-dark-blue {{player.player_name}} ({{player.team_name}})
+                            .nf-panel-heading.stat-header {{player.player_name}} ({{player.team_name}})
                     .row
                         .col-lg-12.col-sm-12.col-md-12
                             table(class="table table-condensed nf-shadow")

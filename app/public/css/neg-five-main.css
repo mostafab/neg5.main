@@ -82,6 +82,8 @@
     padding: 20px;
     font-size: 1.5em;
     border-color: #455a64 !important;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
 }
 
 .nf-panel-body {
@@ -194,8 +196,10 @@ li.active > a {
     }
 }
 
-.panel.stat-header {
+.nf-panel-heading.stat-header {
     margin-bottom: 0px;
+    padding-left: 0px;
+    color: white;
 }
 
 .point-label {

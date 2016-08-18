@@ -126,7 +126,7 @@
                     var toastConfig = { message: 'Adding match.' };
                     $scope.toast(toastConfig);
                     Game.postGame($scope.tournamentId, vm.currentGame).then(function () {
-                        vm.resetCurrentGame();
+                        resetForm();
                         vm.getGames();
                         toastConfig.success = true;
                         toastConfig.message = 'Added match';
@@ -159,6 +159,11 @@
                 notes: null
             };
         };
+
+        function resetForm() {
+            vm.resetCurrentGame();
+            vm.newGameForm.$setUntouched();
+        }
 
         vm.getGames();
     }

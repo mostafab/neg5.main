@@ -213,9 +213,9 @@ FROM
 
     ) as formatted_results
 
+    ORDER BY win_percentage desc, ppg desc, ppb desc
+    
 ) as sorted_results
-
-ORDER BY win_percentage desc, ppg desc, ppb desc
 
 
 

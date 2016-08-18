@@ -59,6 +59,18 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    updateName: function updateName(tournamentId, teamId, newName) {
+        return new Promise(function (resolve, reject) {
+            if (!newName || newName.trim().length === 0) return reject(new Error('Invalid new name: ' + newName));
+            newName = newName.trim();
+            _team2.default.updateTeamName(tournamentId, teamId, newName).then(function (team) {
+                return resolve(team);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

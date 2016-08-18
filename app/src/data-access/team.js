@@ -68,6 +68,15 @@ export default {
                 })
                 .catch(error => reject(error));
         })
+    },
+
+    updateTeamName: (tournamentId, teamId, name) => {
+        return new Promise((resolve, reject) => {
+            let params = [tournamentId, teamId, name];
+            query(team.updateName, params, qm.one)
+                .then(team => resolve(team))
+                .catch(error => reject(error));
+        })
     }
 
 }
