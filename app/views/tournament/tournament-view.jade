@@ -169,7 +169,7 @@ block content
                                         button(type="button" class="btn btn-md nf-blue btn-block " id="yes-delete") Yes
                     
                     .nf-toast(style='position:fixed' class='angular-animate' ng-show='toastMessage !== null')
-                        .nf-toast-content.nf-button.btn(style='float:right' ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
+                        .nf-toast-content.nf-button.btn(ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
                             i.fa(ng-class="{'fa-check': toastMessage.success === true, 'fa-times': toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : toastMessage.success !== true && toastMessage.success !== false}")
                             | {{toastMessage.message}}
                             

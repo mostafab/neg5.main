@@ -21,6 +21,8 @@
             ],
             divisions: {}
         }
+
+        vm.currentTeam = {};
         
         vm.teamSortType = 'name'
         vm.teamSortReverse = false;
@@ -57,6 +59,30 @@
             }
         }
         
+        vm.findTeam = (team) => {
+            if (team.id !== vm.currentTeam.id) {
+                let toastConfig = {
+                    message: 'Loading Team: ' + team.name
+                }
+                $scope.toast(toastConfig);
+                Team.getTeamById($scope.tournamentId, team.id)
+                    .then(gottenTeam => {
+                        angular.copy(gottenTeam, vm.currentTeam);
+                        toastConfig.success = true;
+                        toastConfig.message = 'Loaded team: ' + gottenTeam.name
+                    })
+                    .catch(error => {
+                        toastConfig.success = false;
+                        toastConfig.message = 'Could not load team: ' + team.name
+                    })
+                    .finally(() => {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    })
+            }
+            
+        }
+
         vm.removeTeam = (id) => Team.deleteTeam(id);  
         
         vm.getDivisionNameInPhase = (divisionId) => {

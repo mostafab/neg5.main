@@ -3,6 +3,7 @@ SELECT T.name, T.id, T.tournament_id, CASE WHEN team_players.players IS NULL THE
 FROM tournament_team T
 
 LEFT JOIN 
+
 (
     SELECT P.team_id, array_agg(json_build_object('player_name', P.name, 'player_id', P.id)) AS players        -- Find all players
     FROM tournament_player P
@@ -16,13 +17,15 @@ INNER JOIN
                                                                                                                 -- Find all divisions
 (
 
-    SELECT tp_cross.team_name as name, tp_cross.team_id, tp_cross.tournament_id, tp_cross.added_by, 
-        array_agg(json_build_object('phase_id', tp_cross.phase_id, 'phase_name', tp_cross.phase_name, 'division_id', team_divisions.division_id, 'division_name', team_divisions.division_name)) as team_divisions 
+    SELECT 
+    tp_cross.team_id, 
+    tp_cross.tournament_id,
+    array_agg(json_build_object('phase_id', tp_cross.phase_id, 'phase_name', tp_cross.phase_name, 'division_id', team_divisions.division_id, 'division_name', team_divisions.division_name)) as team_divisions 
 
     FROM 
 
         (
-            SELECT T.name AS team_name, T.id AS team_id, T.tournament_id, T.added_by, P.name as phase_name, P.id AS phase_id
+            SELECT T.id AS team_id, T.tournament_id, T.added_by, P.name as phase_name, P.id AS phase_id
             FROM 
             tournament_team T, tournament_phase P
             WHERE T.tournament_id = $1 AND T.id = $2
@@ -42,7 +45,7 @@ INNER JOIN
 
         ON tp_cross.phase_id = team_divisions.phase_id AND tp_cross.team_id = team_divisions.team_id
 
-    GROUP BY tp_cross.tournament_id, tp_cross.team_id, tp_cross.team_name, tp_cross.added_by
+    GROUP BY tp_cross.tournament_id, tp_cross.team_id
 
 ) AS agg_team_divisions
 

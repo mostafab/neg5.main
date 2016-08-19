@@ -7,11 +7,11 @@ div(class="row")
 div(class="panel-default nf-panel")
     table(class="table table-condensed nf-shadow")
         tr
-            th(class="table-head nf-white" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse') Round
-            th(class="table-head nf-white") Phase(s)
-            th(class="table-head nf-white") Team 1
-            th(class="table-head nf-white") Team 2
-            th(class="table-head nf-white") Tossups Heard
+            th(class="table-head nf-blue" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse') Round
+            th(class="table-head nf-blue") Phase(s)
+            th(class="table-head nf-blue") Team 1
+            th(class="table-head nf-blue") Team 2
+            th(class="table-head nf-blue") Tossups Heard
             
         tr(class='nf-list-item nf-dark-blue' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | filter:Game.gameQuery track by game.id')
             td {{game.round}}

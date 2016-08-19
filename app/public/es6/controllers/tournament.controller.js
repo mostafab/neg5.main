@@ -19,9 +19,13 @@
             
             const timeToastShows = 3000;
 
+            let toastPromise = null;
             $scope.toast = ({message, success = null, hideAfter = false}) => {
                 if (hideAfter) {
-                    $timeout(() => {
+                    if (toastPromise) {
+                        $timeout.cancel(toastPromise);
+                    }
+                    toastPromise = $timeout(() => {
                         $scope.toastMessage = null;
                     }, timeToastShows);
                 }

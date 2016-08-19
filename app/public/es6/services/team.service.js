@@ -11,6 +11,7 @@
                 teams,
                 postTeam,
                 getTeams,
+                getTeamById,
                 deleteTeam
             }
             
@@ -46,6 +47,31 @@
                         })
                         angular.copy(formattedTeams, service.teamFactory.teams);
                     })
+                    .catch(error => reject(error));
+            }
+
+            function getTeamById(tournamentId, teamId) {
+                return $q((resolve, reject) => {
+                    const token = Cookies.get('nfToken');
+                    $http.get('/api/t/' + tournamentId + '/teams/' + teamId + '?token=' + token)
+                        .then(({data}) => {
+                            let {name, id, players, team_divisions: divisions} = data.result;
+                            let formattedTeam = {
+                                name,
+                                id,
+                                players: players.map(({player_name: name, player_id: id}) => {
+                                    return {
+                                        name,
+                                        id
+                                    }
+                                }),
+                                divisions
+                            }
+                            resolve(formattedTeam);
+                        })
+                        .catch(error => reject(error));
+                })
+                
             }
             
             function deleteTeam(id) {

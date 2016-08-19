@@ -18,6 +18,8 @@
             divisions: {}
         };
 
+        vm.currentTeam = {};
+
         vm.teamSortType = 'name';
         vm.teamSortReverse = false;
         vm.teamQuery = '';
@@ -47,6 +49,28 @@
                     }).catch(function () {
                         toastConfig.message = 'Could not add team.';
                         toastConfig.success = false;
+                    }).finally(function () {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    });
+                })();
+            }
+        };
+
+        vm.findTeam = function (team) {
+            if (team.id !== vm.currentTeam.id) {
+                (function () {
+                    var toastConfig = {
+                        message: 'Loading Team: ' + team.name
+                    };
+                    $scope.toast(toastConfig);
+                    Team.getTeamById($scope.tournamentId, team.id).then(function (gottenTeam) {
+                        angular.copy(gottenTeam, vm.currentTeam);
+                        toastConfig.success = true;
+                        toastConfig.message = 'Loaded team: ' + gottenTeam.name;
+                    }).catch(function (error) {
+                        toastConfig.success = false;
+                        toastConfig.message = 'Could not load team: ' + team.name;
                     }).finally(function () {
                         toastConfig.hideAfter = true;
                         $scope.toast(toastConfig);

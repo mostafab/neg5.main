@@ -12,6 +12,7 @@
             teams: teams,
             postTeam: postTeam,
             getTeams: getTeams,
+            getTeamById: getTeamById,
             deleteTeam: deleteTeam
         };
 
@@ -54,6 +55,40 @@
                     };
                 });
                 angular.copy(formattedTeams, service.teamFactory.teams);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        }
+
+        function getTeamById(tournamentId, teamId) {
+            return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
+                $http.get('/api/t/' + tournamentId + '/teams/' + teamId + '?token=' + token).then(function (_ref4) {
+                    var data = _ref4.data;
+                    var _data$result = data.result;
+                    var name = _data$result.name;
+                    var id = _data$result.id;
+                    var players = _data$result.players;
+                    var divisions = _data$result.team_divisions;
+
+                    var formattedTeam = {
+                        name: name,
+                        id: id,
+                        players: players.map(function (_ref5) {
+                            var name = _ref5.player_name;
+                            var id = _ref5.player_id;
+
+                            return {
+                                name: name,
+                                id: id
+                            };
+                        }),
+                        divisions: divisions
+                    };
+                    resolve(formattedTeam);
+                }).catch(function (error) {
+                    return reject(error);
+                });
             });
         }
 

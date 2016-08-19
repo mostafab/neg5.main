@@ -19,6 +19,7 @@
 
         var timeToastShows = 3000;
 
+        var toastPromise = null;
         $scope.toast = function (_ref) {
             var message = _ref.message;
             var _ref$success = _ref.success;
@@ -27,7 +28,10 @@
             var hideAfter = _ref$hideAfter === undefined ? false : _ref$hideAfter;
 
             if (hideAfter) {
-                $timeout(function () {
+                if (toastPromise) {
+                    $timeout.cancel(toastPromise);
+                }
+                toastPromise = $timeout(function () {
                     $scope.toastMessage = null;
                 }, timeToastShows);
             }

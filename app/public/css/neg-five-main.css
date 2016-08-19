@@ -9,6 +9,10 @@
     font-size: 1.3em;
 }
 
+.nf-button.nf-blue:hover {
+    background-color: #384f61;
+}
+
 .active-phase {
     background-color: #B2DFDB;
 }
@@ -61,8 +65,19 @@
     font-weight: 400;
 }
 
+.list-group-item.nf-blue {
+    border: none;
+    color: white;
+}
+.list-group-item.nf-blue:hover {
+    background: #2B3E50;
+    color: white;
+}
+
 .nf-list-item {
     border: 0px solid black;
+    padding: 15px;
+    font-size: 1.3em;
 }
 .nf-list-item:hover {
     background: #90a4ae !important;
@@ -164,14 +179,6 @@
     white-space: pre-wrap;
 }
 
-li.active {
-    background-color: #eceff1;
-}
-
-li.active > a {
-    color: black;
-}
-
 .nav-bar > li:hover {
     cursor: pointer;
 }
@@ -258,6 +265,11 @@ Redefine Boostrap definitions
 */
 .table > thead > tr > th {
     border-bottom: 0px solid black;
+}
+
+tr > .table-head {
+    font-weight: normal;
+    font-size: 1.2em;
 }
 
 .panel>.table:first-child>thead:first-child>tr:first-child td:last-child, .panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child td:last-child, .panel>.table:first-child>tbody:first-child>tr:first-child td:last-child, .panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child td:last-child, .panel>.table:first-child>thead:first-child>tr:first-child th:last-child, .panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child th:last-child, .panel>.table:first-child>tbody:first-child>tr:first-child th:last-child, .panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child th:last-child {
