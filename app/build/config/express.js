@@ -48,6 +48,10 @@ var _stats = require('../routes/api/stats');
 
 var _stats2 = _interopRequireDefault(_stats);
 
+var _player = require('../routes/api/player');
+
+var _player2 = _interopRequireDefault(_player);
+
 var _configuration = require('./configuration');
 
 var _configuration2 = _interopRequireDefault(_configuration);
@@ -93,6 +97,7 @@ exports.default = function () {
     (0, _match2.default)(app);
     (0, _team2.default)(app);
     (0, _stats2.default)(app);
+    (0, _player2.default)(app);
 
     return app;
 };

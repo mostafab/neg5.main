@@ -1,26 +1,16 @@
 div(class="panel panel-default nf-panel")
     div(class="collapsable nf-panel-heading nf-dark-blue") Generate Complete Statistics
     div(class="nf-panel-body panel-body tournament-panel")
-        //- - var phaseID = 1
-        div(class="col-md-12")
-            .row
-                .col-lg-2.col-sm-3.col-md-3
-                    label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Phase: 
-                .col-md-8.col-lg-3.col-sm-9
-                    select(class="form-control nf-input" ng-options='phase.name for phase in Statistics.phases | orderBy:"name" track by phase.id' ng-model='Statistics.phase')
-                        option(value='' selected) All
-            
-            br
-            
+        div(class="col-md-12")                        
             .row
                 .col-md-6.col-sm-6.col-lg-6
                     .list-group.nf-shadow
-                        a(class='list-group-item active') Statistics
+                        a(class='list-group-item nf-blue') Statistics
                         a(target="_blank" href='/t/{{tournamentId}}/stats' class="stat-link nf-dark-blue list-group-item nf-list-item" data-stats-type='team') Go to Stats
 
                 .col-md-6.col-sm-6.col-lg-6
                     .list-group.nf-shadow       
-                        a(class='list-group-item active') Download      
+                        a(class='list-group-item nf-blue') Download      
                         a(href="/t/{{::tournamentId}}/stats/team/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='team' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_standings.html') Team Stats
                         a(href="/t/{{::tournamentId}}/stats/player/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='player' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_individuals.html') Player Stats
                         a(href="/t/{{::tournamentId}}/stats/teamfull/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='teamfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_teamdetail.html') 

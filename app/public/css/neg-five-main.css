@@ -146,6 +146,10 @@
     color: white;
 }
 
+.nf-blue-text {
+    color: blue;
+}
+
 .nf-dark-blue {
     background-color: #37474F !important;
     color: white !important;

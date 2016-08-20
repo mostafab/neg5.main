@@ -1,11 +1,11 @@
-SELECT T.name, T.id, T.tournament_id, CASE WHEN team_players.players IS NULL THEN '{}' ELSE team_players.players END AS players, agg_team_divisions.team_divisions
+SELECT T.name, T.id, T.added_by, T.tournament_id, CASE WHEN team_players.players IS NULL THEN '{}' ELSE team_players.players END AS players, agg_team_divisions.team_divisions
 
 FROM tournament_team T
 
 LEFT JOIN 
 
 (
-    SELECT P.team_id, array_agg(json_build_object('player_name', P.name, 'player_id', P.id)) AS players        -- Find all players
+    SELECT P.team_id, array_agg(json_build_object('player_name', P.name, 'player_id', P.id, 'added_by', P.added_by)) AS players        -- Find all players
     FROM tournament_player P
     WHERE P.tournament_id = $1 AND P.team_id = $2
     GROUP BY tournament_id, team_id

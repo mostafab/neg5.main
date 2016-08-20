@@ -10,6 +10,7 @@ import tournamentApi from '../routes/api/tournament';
 import matchApi from '../routes/api/match';
 import teamApi from '../routes/api/team';
 import statsApi from '../routes/api/stats';
+import playerApi from '../routes/api/player';
 
 import configuration from './configuration';
 
@@ -49,6 +50,7 @@ export default () => {
     matchApi(app);
     teamApi(app);
     statsApi(app);
+    playerApi(app);
 
     return app;
 };

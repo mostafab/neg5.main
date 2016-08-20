@@ -130,6 +130,35 @@
             });
         };
 
+        vm.savePlayerNameOnCurrentTeam = function (player) {
+            var name = player.name;
+            var newName = player.newName;
+            var id = player.id;
+
+            if (name !== newName && newName.length > 0) {
+                if (vm.isUniqueTeamPlayerName(id, newName)) {
+                    (function () {
+                        var toastConfig = { message: 'Editing player: ' + name + ' → ' + newName };
+                        $scope.toast(toastConfig);
+                        Team.editTeamPlayerName($scope.tournamentId, id, newName).then(function (newName) {
+                            resetPlayer(player, newName);
+
+                            toastConfig.success = true;
+                            toastConfig.message = 'Saved player name: ' + name + ' → ' + newName;
+                        }).catch(function (error) {
+                            toastConfig.success = false;
+                            toastConfig.message = 'Could not update player name: ' + name + ' → ' + newName;
+                        }).finally(function () {
+                            toastConfig.hideAfter = true;
+                            $scope.toast(toastConfig);
+                        });
+                    })();
+                }
+            } else {
+                player.editing = false;
+            }
+        };
+
         vm.removeTeam = function (id) {
             return Team.deleteTeam(id);
         };
@@ -150,8 +179,16 @@
         };
 
         vm.isUniqueTeamName = function (id, name) {
+            var formattedName = name.trim().toLowerCase();
             return !vm.teams.some(function (team) {
-                return team.id !== id && team.name.trim().toLowerCase() === name.trim().toLowerCase();
+                return team.id !== id && team.name.trim().toLowerCase() === formattedName;
+            });
+        };
+
+        vm.isUniqueTeamPlayerName = function (playerId, name) {
+            var formattedName = name.trim().toLowerCase();
+            return !vm.currentTeam.players.some(function (player) {
+                return player.id !== playerId && player.name.trim().toLowerCase() === formattedName;
             });
         };
 
@@ -167,6 +204,12 @@
             vm.currentTeam.newName = name;
             vm.currentTeam.name = name;
             vm.currentTeam.editingName = false;
+        }
+
+        function resetPlayer(player, name) {
+            player.name = name;
+            player.newName = name;
+            player.editing = false;
         }
 
         vm.getTournamentTeams();

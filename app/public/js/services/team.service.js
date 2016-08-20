@@ -18,6 +18,7 @@
             getTeamById: getTeamById,
             deleteTeam: deleteTeam,
             editTeamName: editTeamName,
+            editTeamPlayerName: editTeamPlayerName,
             updateTeamDivisions: updateTeamDivisions
         };
 
@@ -75,6 +76,7 @@
                     var id = _data$result.id;
                     var players = _data$result.players;
                     var divisions = _data$result.team_divisions;
+                    var addedBy = _data$result.added_by;
 
                     var formattedTeam = {
                         name: name,
@@ -83,17 +85,20 @@
                         players: players.map(function (_ref5) {
                             var name = _ref5.player_name;
                             var id = _ref5.player_id;
+                            var addedBy = _ref5.added_by;
 
                             return {
                                 name: name,
                                 newName: name,
-                                id: id
+                                id: id,
+                                addedBy: addedBy
                             };
                         }),
                         mappedDivisions: divisions.reduce(function (aggr, current) {
                             aggr[current.phase_id] = current.division_id;
                             return aggr;
-                        }, {})
+                        }, {}),
+                        addedBy: addedBy
                     };
                     resolve(formattedTeam);
                 }).catch(function (error) {
@@ -133,6 +138,22 @@
 
                     updateTeamDivisionsInArray(teamId, phaseDivisionMap);
                     resolve();
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
+
+        function editTeamPlayerName(tournamentId, playerId, name) {
+            return $q(function (resolve, reject) {
+                var body = {
+                    token: Cookies.get('nfToken'),
+                    name: name
+                };
+                $http.put('/api/t/' + tournamentId + '/players/' + playerId, body).then(function (_ref8) {
+                    var data = _ref8.data;
+
+                    resolve(data.result.name);
                 }).catch(function (error) {
                     return reject(error);
                 });

@@ -17,6 +17,7 @@
                 getTeamById,
                 deleteTeam,
                 editTeamName,
+                editTeamPlayerName,
                 updateTeamDivisions
             }
             
@@ -60,22 +61,24 @@
                     const token = Cookies.get('nfToken');
                     $http.get('/api/t/' + tournamentId + '/teams/' + teamId + '?token=' + token)
                         .then(({data}) => {
-                            let {name, id, players, team_divisions: divisions} = data.result;
+                            let {name, id, players, team_divisions: divisions, added_by: addedBy} = data.result;
                             let formattedTeam = {
                                 name,
                                 newName: name,
                                 id,
-                                players: players.map(({player_name: name, player_id: id}) => {
+                                players: players.map(({player_name: name, player_id: id, added_by: addedBy}) => {
                                     return {
                                         name,
                                         newName: name,
-                                        id
+                                        id,
+                                        addedBy
                                     }
                                 }),
                                 mappedDivisions: divisions.reduce((aggr, current) => {                   
                                     aggr[current.phase_id] = current.division_id;
                                     return aggr;
-                                }, {})
+                                }, {}),
+                                addedBy
                             }
                             resolve(formattedTeam);
                         })
@@ -110,6 +113,20 @@
                         .then(({data}) => {
                             updateTeamDivisionsInArray(teamId, phaseDivisionMap);
                             resolve();
+                        })
+                        .catch(error => reject(error));
+                })
+            }
+
+            function editTeamPlayerName(tournamentId, playerId, name) {
+                return $q((resolve, reject) => {
+                    let body = {
+                        token: Cookies.get('nfToken'),
+                        name
+                    }
+                    $http.put('/api/t/' + tournamentId + '/players/' + playerId, body)
+                        .then(({data}) => {
+                            resolve(data.result.name);
                         })
                         .catch(error => reject(error));
                 })

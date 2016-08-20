@@ -133,6 +133,33 @@
                 })
         }
 
+        vm.savePlayerNameOnCurrentTeam = (player) => {
+            let {name, newName, id} = player;
+            if (name !== newName && newName.length > 0) {
+                if (vm.isUniqueTeamPlayerName(id, newName)) {
+                    let toastConfig = {message: `Editing player: ${name} \u2192 ${newName}`}
+                    $scope.toast(toastConfig);
+                    Team.editTeamPlayerName($scope.tournamentId, id, newName)
+                        .then((newName) => {
+                            resetPlayer(player, newName);
+
+                            toastConfig.success = true;
+                            toastConfig.message = `Saved player name: ${name} \u2192 ${newName}`
+                        })
+                        .catch(error => {
+                            toastConfig.success = false;
+                            toastConfig.message = `Could not update player name: ${name} \u2192 ${newName}`
+                        })
+                        .finally(() => {
+                            toastConfig.hideAfter = true;
+                            $scope.toast(toastConfig);
+                        })  
+                }
+            } else {
+                player.editing = false;
+            }
+        }
+
         vm.removeTeam = (id) => Team.deleteTeam(id);  
         
         vm.getDivisionNameInPhase = (divisionId) => {
@@ -147,7 +174,13 @@
         }
 
         vm.isUniqueTeamName = (id, name) => {
-            return !vm.teams.some(team => team.id !== id && team.name.trim().toLowerCase() === name.trim().toLowerCase());
+            let formattedName = name.trim().toLowerCase();
+            return !vm.teams.some(team => team.id !== id && team.name.trim().toLowerCase() === formattedName);
+        }
+
+        vm.isUniqueTeamPlayerName  = (playerId, name) => {
+            let formattedName = name.trim().toLowerCase();
+            return !vm.currentTeam.players.some(player => player.id !== playerId && player.name.trim().toLowerCase() === formattedName);
         }
 
         function resetNewTeam() {
@@ -167,6 +200,12 @@
             vm.currentTeam.newName = name;
             vm.currentTeam.name = name;
             vm.currentTeam.editingName = false;
+        }
+
+        function resetPlayer(player, name) {
+            player.name = name;
+            player.newName = name;
+            player.editing = false;
         }
 
         vm.getTournamentTeams();
