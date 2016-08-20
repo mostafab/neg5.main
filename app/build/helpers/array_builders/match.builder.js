@@ -41,7 +41,7 @@ var buildMatchTeams = exports.buildMatchTeams = function buildMatchTeams(tournam
 var buildMatchPlayers = exports.buildMatchPlayers = function buildMatchPlayers(tournamentId, matchId, teams) {
     var players = [];
     teams.forEach(function (team) {
-        players = players.concat(team.players);
+        players = players.concat(team.players.filter);
     });
     return {
         players: players,

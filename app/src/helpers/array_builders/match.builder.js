@@ -20,7 +20,7 @@ export let buildMatchTeams = (tournamentid, matchId, teams) => {
 export let buildMatchPlayers = (tournamentId, matchId, teams) => {
     let players = [];
     teams.forEach(team => {
-        players = players.concat(team.players);
+        players = players.concat(team.players.filter);
     });
     return {
         players,

@@ -99,6 +99,33 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    updateTeamDivisions: function updateTeamDivisions(tournamentId, teamId, divisions) {
+        return new Promise(function (resolve, reject) {
+            var queriesArray = [];
+
+            var _buildTeamDivisionsAr2 = buildTeamDivisionsArray(tournamentId, teamId, divisions);
+
+            var divisionTeamIds = _buildTeamDivisionsAr2.divisionTeamIds;
+            var divisionTournamentIds = _buildTeamDivisionsAr2.divisionTournamentIds;
+
+
+            queriesArray.push({
+                text: team.removeDivisions,
+                params: [tournamentId, teamId],
+                queryType: _db.txMap.none
+            }, {
+                text: team.add.addDivisions,
+                params: [divisionTeamIds, divisions, divisionTournamentIds],
+                queryType: _db.txMap.any
+            });
+            (0, _db.transaction)(queriesArray).then(function (result) {
+                return resolve({ divisions: result[1] });
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

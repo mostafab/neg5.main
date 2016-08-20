@@ -26,44 +26,77 @@ div(ng-class="{'col-lg-12': !Team.currentTeam.id, 'col-lg-4 col-md-5': Team.curr
 div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id, "col-lg-8 col-md-7": Team.currentTeam.id}')
     div(class="panel nf-panel")
         .nf-panel-heading.nf-blue
-            button.nf-button.nf-red.btn-md.btn(ng-click='Team.currentTeam = {}')
-                i.fa.fa-times
+            .row
+                .col-lg-2
+                    button.nf-button.nf-red.btn-md.btn(ng-click='Team.currentTeam = {}')
+                        i.fa.fa-arrow-left
+                .col-lg-8.center 
+                    h5(style='font-size:1.3em;margin:1.6%') {{Team.currentTeam.name}}
+                .col-lg-2
+                    button.nf-button.nf-red.btn-md.btn.right(ng-if='Team.teamHasPlayedNoGames(Team.currentTeam.id) && tournamentContext.admin')
+                        i.fa.fa-trash
+
         .panel-body.nf-panel-body.nf-dark-blue.nf-shadow(style='padding:0px')
             .col-lg-12(style='padding:20px')
                 form(novalidate name='Team.currentTeamForm')
                     .col-lg-12.nf-margin
                         .row
-                            .col-lg-12
-                                .input-group
+                            .col-lg-3
+                                .input-group.nf-margin
                                     span.input-group-addon.nf-button.no-border.nf-gray Team Name
-                                    span.form-control.nf-input.nf-gray {{Team.currentTeam.name}}
-                                    span.input-group-addon.nf-button.btn.no-border.nf-blue
-                                        i.fa.fa-pencil
+                            .col-lg-9
+                                .col-lg-12
+                                    .input-group.nf-margin
+                                        span.input-group-addon.nf-button.no-border.nf-gray(ng-show='Team.currentTeam.editingName') {{Team.currentTeam.name}}
+                                        span.form-control.nf-input.nf-gray(ng-show='!Team.currentTeam.editingName') {{Team.currentTeam.name}}
+                                        input.form-control.nf-input(ng-show='Team.currentTeam.editingName' ng-model='Team.currentTeam.newName')
+                                        span.input-group-addon.nf-button.btn.no-border.nf-blue(ng-click='Team.currentTeam.editingName = true' ng-show='!Team.currentTeam.editingName')
+                                            i.fa.fa-pencil
+                                        span.input-group-addon.nf-button.btn.no-border.nf-red(ng-click='Team.currentTeam.editingName = false;Team.currentTeam.newName = Team.currentTeam.name' ng-show='Team.currentTeam.editingName')
+                                            i.fa.fa-times
+                                        span.input-group-addon.nf-button.btn.no-border.nf-green(ng-click='Team.saveCurrentTeamName();' ng-show='Team.currentTeam.editingName')
+                                            i.fa.fa-check
                     
                     .col-lg-12.nf-margin
                         .row
-                            .col-lg-5
-                                .input-group
+                            .col-lg-3
+                                .input-group.nf-margin
                                     span.input-group-addon.nf-button.no-border.nf-gray Divisions
-                            .col-lg-7
+                            .col-lg-9
                                 .col-lg-12(ng-repeat='phase in Team.phases')
                                     .input-group.nf-margin
                                         span.input-group-addon.nf-button.no-border.nf-gray {{phase.name}}
-                                        span.form-control.nf-input.nf-gray {{phase.name}}
-                                        //- span.input-group-addon.nf-button.btn.no-border.nf-blue
-                                        //-     i.fa.fa-pencil
+                                        span.form-control.nf-input.nf-gray(ng-if='!tournamentContext.admin') {{Team.getDivisionNameInPhase(Team.currentTeam.mappedDivisions[phase.id]) || 'None'}} 
+                                        select.form-control.nf-input(ng-if='tournamentContext.admin' ng-model='Team.currentTeam.mappedDivisions[phase.id]' ng-change='Team.updateCurrentTeamDivisions()')
+                                            option(value='' selected) None
+                                            option(ng-repeat='division in Team.divisions' value='{{division.id}}' ng-if='division.phaseId === phase.id' ng-selected='Team.currentTeam.mappedDivisions[phase.id] === division.id') {{division.name}}
 
                     .col-lg-12.nf-margin
                         .row
-                            .col-lg-5
-                                .input-group
+                            .col-lg-3
+                                .input-group.nf-margin
                                     span.input-group-addon.nf-button.no-border.nf-gray Players ({{Team.currentTeam.players.length}})
-                            .col-lg-7
+                            .col-lg-9
                                 .col-lg-12(ng-repeat='player in Team.currentTeam.players')
                                     .input-group.nf-margin
-                                        span.form-control.nf-input.nf-gray {{player.name}}
-                                        span.input-group-addon.nf-button.btn.no-border.nf-blue
+                                        span.form-control.nf-input.nf-gray(ng-show='!player.editing') {{player.name}}
+                                        span.input-group-addon.nf-button.no-border.nf-gray(ng-show='player.editing') {{player.name}}
+                                        input.form-control.nf-input(ng-show='player.editing' ng-model='player.newName')
+                                        span.input-group-addon.nf-button.btn.no-border.nf-blue(ng-click='player.editing = true' ng-show='!player.editing')
                                             i.fa.fa-pencil
-
-            //- pre.nf-dark-blue(style='padding:20px')
-            //-     | {{Team.currentTeam | json:4}}
+                                        span.input-group-addon.nf-button.btn.no-border.nf-red(ng-click='player.editing = false;player.newName = player.name' ng-show='player.editing')
+                                            i.fa.fa-times
+                                        span.input-group-addon.nf-button.btn.no-border.nf-green(ng-click='player.editing = false' ng-show='player.editing')
+                                            i.fa.fa-check
+                    
+                    .col-lg-12.nf-margin
+                        .row
+                            .col-lg-3
+                                .input-group.nf-margin
+                                    span.input-group-addon.nf-button.no-border.nf-gray New Player
+                            .col-lg-9
+                                .col-lg-12
+                                    .input-group.nf-margin
+                                        input.form-control.nf-input(placeholder='New player name for {{Team.currentTeam.name}}' ng-model='Team.currentTeam.newPlayer')
+                                        span.input-group-addon.nf-button.btn.no-border.nf-green(ng-click='Team.addPlayerToTeam();')
+                                            i.fa.fa-check

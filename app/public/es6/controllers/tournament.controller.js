@@ -27,6 +27,7 @@
                     }
                     toastPromise = $timeout(() => {
                         $scope.toastMessage = null;
+                        toastPromise = null;
                     }, timeToastShows);
                 }
                 $scope.toastMessage = {
@@ -86,9 +87,7 @@
                     .then(({tournamentInfo, tournamentContext}) => {
                         $scope.tournamentInfo = tournamentInfo;
                         $scope.tournamentContext = tournamentContext;
-                        
                         angular.copy($scope.tournamentInfo, vm.tournamentInfoCopy)
-                        
                     })
                     .catch(error => {
                         console.log(error);

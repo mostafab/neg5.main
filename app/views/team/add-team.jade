@@ -23,7 +23,7 @@ div(class="panel panel-default nf-panel")
                         label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Divisions
                     .col-lg-8.col-md-8.col-sm-4
                         .input-group.nf-margin(ng-repeat='phase in Team.phases')
-                            span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle(data-toggle='dropdown' title='Pick a division for {{phase.name}}') {{phase.name}}
+                            span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle.nf-blue(data-toggle='dropdown' title='Pick a division for {{phase.name}}') {{phase.name}}
                                 i.fa.fa-caret-down
                             div.form-control.nf-gray.nf-input {{Team.newTeam.divisions[phase.id].name || 'None'}}
                             ul.dropdown-menu.nf-dropdown(aria-role='menu')

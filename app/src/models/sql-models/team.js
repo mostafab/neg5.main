@@ -45,6 +45,15 @@ export default {
                 .then(team => resolve(team))
                 .catch(error => reject(error));
         })
+    },
+
+    updateDivisions: (tournamentId, teamId, divisions) => {
+        return new Promise((resolve, reject) => {
+            let filteredDivisions = divisions.filter(division => division);
+            db.updateTeamDivisions(tournamentId, teamId, filteredDivisions)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
 
 }

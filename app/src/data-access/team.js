@@ -77,6 +77,30 @@ export default {
                 .then(team => resolve(team))
                 .catch(error => reject(error));
         })
+    },
+
+    updateTeamDivisions: (tournamentId, teamId, divisions) => {
+        return new Promise((resolve, reject) => {
+            let queriesArray = [];
+
+            let {divisionTeamIds, divisionTournamentIds} = buildTeamDivisionsArray(tournamentId, teamId, divisions);
+
+            queriesArray.push(
+                {
+                    text: team.removeDivisions,
+                    params: [tournamentId, teamId],
+                    queryType: tm.none
+                },
+                {
+                    text: team.add.addDivisions,
+                    params: [divisionTeamIds, divisions, divisionTournamentIds],
+                    queryType: tm.any
+                }
+            )
+            transaction(queriesArray)
+                .then(result => resolve({divisions: result[1]}))
+                .catch(error => reject(error));
+        })
     }
 
 }

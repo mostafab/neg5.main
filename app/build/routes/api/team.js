@@ -43,4 +43,12 @@ exports.default = function (app) {
             return res.status(500).send({ error: error, success: false });
         });
     }).delete(_token.hasToken, _tournamentAccess.adminAccessToTournament, function (req, res) {});
+
+    app.route('/api/t/:tid/teams/:teamId/divisions').put(_token.hasToken, _tournamentAccess.adminAccessToTournament, function (req, res) {
+        _team2.default.updateDivisions(req.params.tid, req.params.teamId, req.body.divisions).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    });
 };

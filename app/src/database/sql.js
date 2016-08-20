@@ -47,6 +47,7 @@ export default {
             addPlayers: getSQL('team-sql/transactions/addTeam/addTeamPlayers.sql'),
             addDivisions: getSQL('team-sql/transactions/addTeam/addTeamDivisions.sql')
         },
+        removeDivisions: getSQL('team-sql/transactions/removeTeamDivisions.sql'),
         updateName: getSQL('team-sql/updateTeamName.sql')
     },
     collaborator: {

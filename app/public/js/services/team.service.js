@@ -2,18 +2,23 @@
 
 (function () {
 
-    angular.module('tournamentApp').factory('Team', ['$http', '$q', 'Cookies', function ($http, $q, Cookies) {
+    angular.module('tournamentApp').factory('Team', ['$http', '$q', 'Cookies', 'Phase', 'Division', function ($http, $q, Cookies, Phase, Division) {
 
         var service = this;
 
         var teams = [];
+
+        var phases = Phase.phases;
+        var divisions = Division.divisions;
 
         service.teamFactory = {
             teams: teams,
             postTeam: postTeam,
             getTeams: getTeams,
             getTeamById: getTeamById,
-            deleteTeam: deleteTeam
+            deleteTeam: deleteTeam,
+            editTeamName: editTeamName,
+            updateTeamDivisions: updateTeamDivisions
         };
 
         function postTeam(tournamentId, team) {
@@ -73,6 +78,7 @@
 
                     var formattedTeam = {
                         name: name,
+                        newName: name,
                         id: id,
                         players: players.map(function (_ref5) {
                             var name = _ref5.player_name;
@@ -80,12 +86,53 @@
 
                             return {
                                 name: name,
+                                newName: name,
                                 id: id
                             };
                         }),
-                        divisions: divisions
+                        mappedDivisions: divisions.reduce(function (aggr, current) {
+                            aggr[current.phase_id] = current.division_id;
+                            return aggr;
+                        }, {})
                     };
                     resolve(formattedTeam);
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
+
+        function editTeamName(tournamentId, teamId, teamName) {
+            return $q(function (resolve, reject) {
+                var body = {
+                    token: Cookies.get('nfToken'),
+                    name: teamName
+                };
+                $http.put('/api/t/' + tournamentId + '/teams/' + teamId, body).then(function (_ref6) {
+                    var data = _ref6.data;
+                    var _data$result2 = data.result;
+                    var id = _data$result2.id;
+                    var name = _data$result2.name;
+
+                    updateTeamNameInArray(id, name);
+                    resolve(name);
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
+
+        function updateTeamDivisions(tournamentId, teamId, phaseDivisionMap, divisions) {
+            return $q(function (resolve, reject) {
+                var body = {
+                    token: Cookies.get('nfToken'),
+                    divisions: divisions
+                };
+                $http.put('/api/t/' + tournamentId + '/teams/' + teamId + '/divisions', body).then(function (_ref7) {
+                    var data = _ref7.data;
+
+                    updateTeamDivisionsInArray(teamId, phaseDivisionMap);
+                    resolve();
                 }).catch(function (error) {
                     return reject(error);
                 });
@@ -111,6 +158,24 @@
             });
 
             return formattedTeam;
+        }
+
+        function updateTeamNameInArray(id, name) {
+            var index = service.teamFactory.teams.findIndex(function (team) {
+                return team.id === id;
+            });
+            if (index !== -1) {
+                service.teamFactory.teams[index].name = name;
+            }
+        }
+
+        function updateTeamDivisionsInArray(id, divisions) {
+            var index = service.teamFactory.teams.findIndex(function (team) {
+                return team.id === id;
+            });
+            if (index !== -1) {
+                service.teamFactory.teams[index].divisions = divisions;
+            }
         }
 
         return service.teamFactory;

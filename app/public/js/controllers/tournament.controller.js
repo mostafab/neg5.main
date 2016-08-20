@@ -33,6 +33,7 @@
                 }
                 toastPromise = $timeout(function () {
                     $scope.toastMessage = null;
+                    toastPromise = null;
                 }, timeToastShows);
             }
             $scope.toastMessage = {
@@ -93,7 +94,6 @@
 
                 $scope.tournamentInfo = tournamentInfo;
                 $scope.tournamentContext = tournamentContext;
-
                 angular.copy($scope.tournamentInfo, vm.tournamentInfoCopy);
             }).catch(function (error) {
                 console.log(error);

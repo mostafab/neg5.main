@@ -1,15 +1,17 @@
 (() => {
         
     angular.module('tournamentApp')
-        .controller('TeamCtrl', ['$scope', '$http', 'Team', 'Phase', 'Division', TeamCtrl]);
+        .controller('TeamCtrl', ['$scope', '$http', 'Team', 'Phase', 'Division', 'Game', TeamCtrl]);
     
-    function TeamCtrl($scope, $http, Team, Phase, Division) {
+    function TeamCtrl($scope, $http, Team, Phase, Division, Game) {
         
         let vm = this;
 
         vm.teams = Team.teams;
         vm.phases = Phase.phases;
         vm.divisions = Division.divisions;
+
+        let games = Game.games;
 
         vm.newTeam = {
             name: '',
@@ -48,7 +50,7 @@
                         toastConfig.message = 'Added team: ' + teamName;
                         toastConfig.success = true;
                     })
-                    .catch(() => {
+                    .catch((error) => {
                         toastConfig.message = 'Could not add team.';
                         toastConfig.success = false;
                     })
@@ -83,6 +85,54 @@
             
         }
 
+        vm.saveCurrentTeamName = () => {
+            let {id, name, newName} = vm.currentTeam;
+            if (name !== newName && newName.length > 0) {
+                if (vm.isUniqueTeamName(id, newName)) {
+                    let toastConfig = {message: `Editing team: ${name} \u2192 ${newName}`}
+                    $scope.toast(toastConfig);
+                    Team.editTeamName($scope.tournamentId, id, newName)
+                        .then((newName) => {
+                            resetCurrentTeam(newName);
+
+                            toastConfig.success = true;
+                            toastConfig.message = `Saved team name: ${name} \u2192 ${newName}`
+                        })
+                        .catch(error => {
+                            toastConfig.success = false;
+                            toastConfig.message = `Could not update team name: ${name} \u2192 ${newName}`
+                        })
+                        .finally(() => {
+                            toastConfig.hideAfter = true;
+                            $scope.toast(toastConfig);
+                        })
+                }
+                
+            } else {
+                vm.currentTeam.editingName = false;
+            }
+        }
+
+        vm.updateCurrentTeamDivisions = () => {
+            let name = vm.currentTeam.name;
+            let toastConfig = {message: 'Updating divisions for: ' + vm.currentTeam.name}
+            $scope.toast(toastConfig);
+            let divisionIds = Object.keys(vm.currentTeam.mappedDivisions).map(phaseId => vm.currentTeam.mappedDivisions[phaseId]);
+            Team.updateTeamDivisions($scope.tournamentId, vm.currentTeam.id, vm.currentTeam.mappedDivisions, divisionIds)
+                .then(() => {
+                    toastConfig.success = true;
+                    toastConfig.message = 'Updated divisions for: ' + name;
+                })
+                .catch(() => {
+                    toastConfig.success = false;
+                    toastConfig.message = 'Could not update divisions for: ' + name;
+                })
+                .finally(() => {
+                    toastConfig.hideAfter = true;
+                    $scope.toast(toastConfig);
+                })
+        }
+
         vm.removeTeam = (id) => Team.deleteTeam(id);  
         
         vm.getDivisionNameInPhase = (divisionId) => {
@@ -90,6 +140,14 @@
             let division = vm.divisions.find(division => division.id === divisionId);
             if (!division) return ''; // To catch error where teams are loaded before divisions b/c of asynchronicity
             return division.name;
+        }
+
+        vm.teamHasPlayedNoGames = (teamId) => {
+            return !games.some(game => game.teams.one.id === teamId || game.teams.two.id === teamId);
+        }
+
+        vm.isUniqueTeamName = (id, name) => {
+            return !vm.teams.some(team => team.id !== id && team.name.trim().toLowerCase() === name.trim().toLowerCase());
         }
 
         function resetNewTeam() {
@@ -103,6 +161,12 @@
                 ],
                 divisions: {}
             }
+        }
+
+        function resetCurrentTeam(name) {
+            vm.currentTeam.newName = name;
+            vm.currentTeam.name = name;
+            vm.currentTeam.editingName = false;
         }
 
         vm.getTournamentTeams();

@@ -71,6 +71,19 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    updateDivisions: function updateDivisions(tournamentId, teamId, divisions) {
+        return new Promise(function (resolve, reject) {
+            var filteredDivisions = divisions.filter(function (division) {
+                return division;
+            });
+            _team2.default.updateTeamDivisions(tournamentId, teamId, filteredDivisions).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

@@ -31,6 +31,13 @@ export default (app) => {
         .delete(hasToken, adminAccessToTournament, (req, res) => {
             
         })
+
+    app.route('/api/t/:tid/teams/:teamId/divisions')
+        .put(hasToken, adminAccessToTournament, (req, res) => {
+            Team.updateDivisions(req.params.tid, req.params.teamId, req.body.divisions)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}))
+        })
     
 
 }
