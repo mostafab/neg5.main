@@ -140,14 +140,14 @@
                     (function () {
                         var toastConfig = { message: 'Editing player: ' + name + ' → ' + newName };
                         $scope.toast(toastConfig);
-                        Team.editTeamPlayerName($scope.tournamentId, id, newName).then(function (newName) {
-                            resetPlayer(player, newName);
+                        Team.editTeamPlayerName($scope.tournamentId, id, newName).then(function (savedName) {
+                            resetPlayer(player, savedName);
 
                             toastConfig.success = true;
-                            toastConfig.message = 'Saved player name: ' + name + ' → ' + newName;
+                            toastConfig.message = 'Saved player name: ' + name + ' → ' + savedName;
                         }).catch(function (error) {
                             toastConfig.success = false;
-                            toastConfig.message = 'Could not update player name: ' + name + ' → ' + newName;
+                            toastConfig.message = 'Could not update player name: ' + name + ' → ' + savedName;
                         }).finally(function () {
                             toastConfig.hideAfter = true;
                             $scope.toast(toastConfig);
@@ -157,6 +157,54 @@
             } else {
                 player.editing = false;
             }
+        };
+
+        vm.addTeamPlayer = function () {
+            var _vm$currentTeam2 = vm.currentTeam;
+            var newPlayer = _vm$currentTeam2.newPlayer;
+            var teamId = _vm$currentTeam2.id;
+            var name = _vm$currentTeam2.name;
+
+            if (newPlayer.length > 0 && vm.isUniqueTeamPlayerName(null, newPlayer)) {
+                (function () {
+                    var toastConfig = { message: 'Adding player: ' + newPlayer + ' to ' + name + '.' };
+                    $scope.toast(toastConfig);
+                    Team.addPlayer($scope.tournamentId, teamId, newPlayer).then(function (player) {
+                        vm.currentTeam.players.push({
+                            id: player.id,
+                            name: player.name,
+                            newName: player.name,
+                            editing: false,
+                            addedBy: player.added_by
+                        });
+                        vm.currentTeam.newPlayer = '';
+                        toastConfig.success = true;
+                        toastConfig.message = 'Added player: ' + player.name + ' to ' + name;
+                    }).catch(function (error) {
+                        toastConfig.success = false;
+                        toastConfig.message = 'Could not add player: ' + player.name + ' to ' + name;
+                    }).finally(function () {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    });
+                })();
+            }
+        };
+
+        vm.removeCurrentTeamPlayer = function (player) {
+            var toastConfig = { message: 'Deleting player: ' + player.name };
+            $scope.toast(toastConfig);
+            Team.deletePlayer($scope.tournamentId, player.id).then(function (playerId) {
+                removePlayerFromCurrentTeam(playerId);
+                toastConfig.success = true;
+                toastConfig.message = 'Deleted player: ' + player.name;
+            }).catch(function (error) {
+                toastConfig.success = false;
+                toastConfig.message = 'Could not delete player: ' + player.name;
+            }).finally(function () {
+                toastConfig.hideAfter = true;
+                $scope.toast(toastConfig);
+            });
         };
 
         vm.removeTeam = function (id) {
@@ -210,6 +258,15 @@
             player.name = name;
             player.newName = name;
             player.editing = false;
+        }
+
+        function removePlayerFromCurrentTeam(id) {
+            var index = vm.currentTeam.players.findIndex(function (player) {
+                return player.id === id;
+            });
+            if (index !== -1) {
+                vm.currentTeam.players.splice(index, 1);
+            }
         }
 
         vm.getTournamentTeams();

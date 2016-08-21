@@ -19,7 +19,9 @@
             deleteTeam: deleteTeam,
             editTeamName: editTeamName,
             editTeamPlayerName: editTeamPlayerName,
-            updateTeamDivisions: updateTeamDivisions
+            updateTeamDivisions: updateTeamDivisions,
+            addPlayer: addPlayer,
+            deletePlayer: deletePlayer
         };
 
         function postTeam(tournamentId, team) {
@@ -154,6 +156,34 @@
                     var data = _ref8.data;
 
                     resolve(data.result.name);
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
+
+        function addPlayer(tournamentId, teamId, newPlayerName) {
+            return $q(function (resolve, reject) {
+                var body = {
+                    token: Cookies.get('nfToken'),
+                    name: newPlayerName,
+                    team: teamId
+                };
+                $http.post('/api/t/' + tournamentId + '/players', body).then(function (_ref9) {
+                    var data = _ref9.data;
+                    return resolve(data.result);
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
+
+        function deletePlayer(tournamentId, playerId) {
+            return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
+                $http.delete('/api/t/' + tournamentId + '/players/' + playerId + '?token=' + token).then(function (_ref10) {
+                    var data = _ref10.data;
+                    return resolve(data.result.id);
                 }).catch(function (error) {
                     return reject(error);
                 });

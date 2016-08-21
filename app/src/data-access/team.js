@@ -105,7 +105,7 @@ export default {
 
 }
 
-function buildTeamPlayersArray(tournamentId, players, currentUser) {
+export function buildTeamPlayersArray(tournamentId, players, currentUser) {
     return {
         tournamentIds: players.map(player => tournamentId),
         playerIds: players.map(player => player.id),
@@ -115,7 +115,7 @@ function buildTeamPlayersArray(tournamentId, players, currentUser) {
     }
 }
 
-function buildTeamDivisionsArray(tournamentId, teamId, divisions) {
+export function buildTeamDivisionsArray(tournamentId, teamId, divisions) {
     return {
         divisionTeamIds: divisions.map(division => teamId),
         divisionTournamentIds: divisions.map(division => tournamentId)

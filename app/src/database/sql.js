@@ -50,6 +50,10 @@ export default {
         removeDivisions: getSQL('team-sql/transactions/removeTeamDivisions.sql'),
         updateName: getSQL('team-sql/updateTeamName.sql')
     },
+    player: {
+        edit: getSQL('player-sql/editPlayerName.sql'),
+        remove: getSQL('player-sql/removeTeamPlayer.sql')
+    },
     collaborator: {
         add: getSQL('collaborator-sql/addCollaborator.sql'),
         findByTournament: getSQL('collaborator-sql/findCollaboratorsByTournament.sql'),

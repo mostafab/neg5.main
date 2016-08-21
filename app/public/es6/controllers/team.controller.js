@@ -140,15 +140,15 @@
                     let toastConfig = {message: `Editing player: ${name} \u2192 ${newName}`}
                     $scope.toast(toastConfig);
                     Team.editTeamPlayerName($scope.tournamentId, id, newName)
-                        .then((newName) => {
-                            resetPlayer(player, newName);
+                        .then((savedName) => {
+                            resetPlayer(player, savedName);
 
                             toastConfig.success = true;
-                            toastConfig.message = `Saved player name: ${name} \u2192 ${newName}`
+                            toastConfig.message = `Saved player name: ${name} \u2192 ${savedName}`
                         })
                         .catch(error => {
                             toastConfig.success = false;
-                            toastConfig.message = `Could not update player name: ${name} \u2192 ${newName}`
+                            toastConfig.message = `Could not update player name: ${name} \u2192 ${savedName}`
                         })
                         .finally(() => {
                             toastConfig.hideAfter = true;
@@ -158,6 +158,54 @@
             } else {
                 player.editing = false;
             }
+        }
+
+        vm.addTeamPlayer = () => {
+            let {newPlayer, id: teamId, name} = vm.currentTeam;
+            if (newPlayer.length > 0 && vm.isUniqueTeamPlayerName(null, newPlayer)) {
+                let toastConfig = {message: `Adding player: ${newPlayer} to ${name}.`}
+                $scope.toast(toastConfig);
+                Team.addPlayer($scope.tournamentId, teamId, newPlayer)
+                    .then((player) => {
+                        vm.currentTeam.players.push({
+                            id: player.id,
+                            name: player.name,
+                            newName: player.name,
+                            editing: false,
+                            addedBy: player.added_by
+                        })
+                        vm.currentTeam.newPlayer = '';
+                        toastConfig.success = true;
+                        toastConfig.message = `Added player: ${player.name} to ${name}`;
+                    })
+                    .catch(error => {
+                        toastConfig.success = false;
+                        toastConfig.message = `Could not add player: ${player.name} to ${name}`
+                    })
+                    .finally(() => {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    })  
+            }
+        }
+
+        vm.removeCurrentTeamPlayer = (player) => {
+            let toastConfig = {message: 'Deleting player: ' + player.name};
+            $scope.toast(toastConfig);
+            Team.deletePlayer($scope.tournamentId, player.id)
+                .then((playerId) => {
+                    removePlayerFromCurrentTeam(playerId);
+                    toastConfig.success = true;
+                    toastConfig.message = `Deleted player: ${player.name}`;
+                })
+                .catch(error => {
+                    toastConfig.success = false;
+                    toastConfig.message = `Could not delete player: ${player.name}`
+                })
+                .finally(() => {
+                    toastConfig.hideAfter = true;
+                    $scope.toast(toastConfig);
+                })  
         }
 
         vm.removeTeam = (id) => Team.deleteTeam(id);  
@@ -206,6 +254,13 @@
             player.name = name;
             player.newName = name;
             player.editing = false;
+        }
+
+        function removePlayerFromCurrentTeam(id) {
+            let index =  vm.currentTeam.players.findIndex(player => player.id === id);
+            if (index !== -1) {
+                vm.currentTeam.players.splice(index, 1);
+            }
         }
 
         vm.getTournamentTeams();

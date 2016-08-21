@@ -3,6 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.buildTeamPlayersArray = buildTeamPlayersArray;
+exports.buildTeamDivisionsArray = buildTeamDivisionsArray;
 
 var _db = require('../database/db');
 
@@ -129,8 +131,6 @@ exports.default = {
     }
 
 };
-
-
 function buildTeamPlayersArray(tournamentId, players, currentUser) {
     return {
         tournamentIds: players.map(function (player) {

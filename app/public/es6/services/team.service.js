@@ -18,7 +18,9 @@
                 deleteTeam,
                 editTeamName,
                 editTeamPlayerName,
-                updateTeamDivisions
+                updateTeamDivisions,
+                addPlayer,
+                deletePlayer
             }
             
             function postTeam(tournamentId, team) {
@@ -128,6 +130,28 @@
                         .then(({data}) => {
                             resolve(data.result.name);
                         })
+                        .catch(error => reject(error));
+                })
+            }
+
+            function addPlayer(tournamentId, teamId, newPlayerName) {
+                return $q((resolve, reject) => {
+                    let body = {
+                        token: Cookies.get('nfToken'),
+                        name: newPlayerName,
+                        team: teamId
+                    }
+                    $http.post('/api/t/' + tournamentId + '/players', body)
+                        .then(({data}) => resolve(data.result))
+                        .catch(error => reject(error));
+                })
+            }
+
+            function deletePlayer(tournamentId, playerId) {
+                return $q((resolve, reject) => {
+                    const token = Cookies.get('nfToken');
+                    $http.delete('/api/t/' + tournamentId + '/players/' + playerId + '?token=' + token)
+                        .then(({data}) => resolve(data.result.id))
                         .catch(error => reject(error));
                 })
             }
