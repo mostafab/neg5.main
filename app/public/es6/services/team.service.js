@@ -68,12 +68,13 @@
                                 name,
                                 newName: name,
                                 id,
-                                players: players.map(({player_name: name, player_id: id, added_by: addedBy}) => {
+                                players: players.map(({player_name: name, player_id: id, added_by: addedBy, games}) => {
                                     return {
                                         name,
                                         newName: name,
                                         id,
-                                        addedBy
+                                        addedBy,
+                                        games
                                     }
                                 }),
                                 mappedDivisions: divisions.reduce((aggr, current) => {                   

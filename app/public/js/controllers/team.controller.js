@@ -175,7 +175,8 @@
                             name: player.name,
                             newName: player.name,
                             editing: false,
-                            addedBy: player.added_by
+                            addedBy: player.added_by,
+                            games: 0
                         });
                         vm.currentTeam.newPlayer = '';
                         toastConfig.success = true;
@@ -200,7 +201,7 @@
                 toastConfig.message = 'Deleted player: ' + player.name;
             }).catch(function (error) {
                 toastConfig.success = false;
-                toastConfig.message = 'Could not delete player: ' + player.name;
+                toastConfig.message = 'Could not delete ' + player.name + ' because this player has games played';
             }).finally(function () {
                 toastConfig.hideAfter = true;
                 $scope.toast(toastConfig);

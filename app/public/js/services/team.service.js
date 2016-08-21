@@ -88,12 +88,14 @@
                             var name = _ref5.player_name;
                             var id = _ref5.player_id;
                             var addedBy = _ref5.added_by;
+                            var games = _ref5.games;
 
                             return {
                                 name: name,
                                 newName: name,
                                 id: id,
-                                addedBy: addedBy
+                                addedBy: addedBy,
+                                games: games
                             };
                         }),
                         mappedDivisions: divisions.reduce(function (aggr, current) {

@@ -87,7 +87,7 @@ CREATE TABLE player_plays_in_tournament_match (
     tournament_id varchar(20) NOT NULL,
     tossups_heard integer DEFAULT 0 CHECK (tossups_heard >= 0),
     PRIMARY KEY (player_id, match_id, tournament_id),
-    FOREIGN KEY (player_id, tournament_id) REFERENCES tournament_player(id, tournament_id) ON DELETE CASCADE,
+    FOREIGN KEY (player_id, tournament_id) REFERENCES tournament_player(id, tournament_id),
     FOREIGN KEY (match_id, tournament_id) REFERENCES tournament_match(id, tournament_id) ON DELETE CASCADE   
 );
 
@@ -99,7 +99,7 @@ CREATE TABLE team_plays_in_tournament_match (
     bounceback_points integer DEFAULT 0 CHECK (bounceback_points >= 0),
     overtime_tossups_gotten integer DEFAULT 0 CHECK (overtime_tossups_gotten >= 0),
     PRIMARY KEY (team_id, match_id, tournament_id),
-    FOREIGN KEY (team_id, tournament_id) REFERENCES tournament_team(id, tournament_id) ON DELETE CASCADE,
+    FOREIGN KEY (team_id, tournament_id) REFERENCES tournament_team(id, tournament_id),
     FOREIGN KEY (match_id, tournament_id) REFERENCES tournament_match(id, tournament_id) ON DELETE CASCADE  
 );
 
@@ -110,7 +110,7 @@ CREATE TABLE player_match_tossup (
     tossup_value integer NOT NULL,
     number_gotten integer DEFAULT 0 NOT NULL CHECK (number_gotten >= 0),
     PRIMARY KEY (player_id, match_id, tournament_id, tossup_value),
-    FOREIGN KEY (player_id, tournament_id) REFERENCES tournament_player(id, tournament_id) ON DELETE CASCADE,
+    FOREIGN KEY (player_id, tournament_id) REFERENCES tournament_player(id, tournament_id),
     FOREIGN KEY (match_id, tournament_id) REFERENCES tournament_match(id, tournament_id) ON DELETE CASCADE,
     FOREIGN KEY (tournament_id, tossup_value) REFERENCES tournament_tossup_values(tournament_id, tossup_value),
     FOREIGN KEY (player_id, match_id, tournament_id) REFERENCES player_plays_in_tournament_match(player_id, match_id, tournament_id) ON DELETE CASCADE

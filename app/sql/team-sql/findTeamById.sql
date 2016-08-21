@@ -5,10 +5,35 @@ FROM tournament_team T
 LEFT JOIN 
 
 (
-    SELECT P.team_id, array_agg(json_build_object('player_name', P.name, 'player_id', P.id, 'added_by', P.added_by)) AS players        -- Find all players
-    FROM tournament_player P
+    -- SELECT P.team_id, array_agg(json_build_object('player_name', P.name, 'player_id', P.id, 'added_by', P.added_by)) AS players        -- Find all players
+    -- FROM tournament_player P
+    -- WHERE P.tournament_id = $1 AND P.team_id = $2
+    -- GROUP BY tournament_id, team_id
+    SELECT 
+    P.team_id, 
+    array_agg(json_build_object('player_name', P.name, 'player_id', P.id, 'added_by', P.added_by, 'games', COALESCE(player_games.games_counted, 0))) as players
+
+    FROM
+
+    tournament_player P
+
+    LEFT JOIN 
+
+    (
+        SELECT 
+        PPM.player_id, 
+        COUNT(*) as games_counted
+        FROM player_plays_in_tournament_match PPM
+        WHERE PPM.tournament_id = $1
+        GROUP BY PPM.player_id
+    ) as player_games
+
+    ON P.id = player_games.player_id
+
     WHERE P.tournament_id = $1 AND P.team_id = $2
-    GROUP BY tournament_id, team_id
+
+    GROUP BY P.team_id    
+
 ) AS team_players
 
 ON T.id = team_players.team_id
