@@ -4,7 +4,7 @@ div(class="row")
             i(class='fa fa-refresh')
         input(type="text" class="form-control nf-input search btn-shadow" placeholder="Filter by Name or Division" ng-model='Team.teamQuery')
     
-div(ng-class="{'col-lg-12': !Team.currentTeam.id, 'col-lg-4 col-md-5': Team.currentTeam.id}")
+div(ng-class="{'col-lg-12': !Team.currentTeam.id, 'col-lg-4 col-md-12 col-sm-12': Team.currentTeam.id}")
     .list-group.nf-shadow       
         a(class='list-group-item nf-blue') 
             .row
@@ -23,17 +23,17 @@ div(ng-class="{'col-lg-12': !Team.currentTeam.id, 'col-lg-4 col-md-5': Team.curr
                             .col-lg-4(ng-repeat='phase in Team.phases')
                                 h5 {{phase.name + ' : ' + Team.getDivisionNameInPhase(team.divisions[phase.id])}}
 
-div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id, "col-lg-8 col-md-7": Team.currentTeam.id}')
+div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id, "col-lg-8 col-md-12 col-sm-12": Team.currentTeam.id}')
     div(class="panel nf-panel")
         .nf-panel-heading.nf-blue
             .row
-                .col-lg-2
+                .col-lg-2.col-md-2
                     button.nf-button.nf-red.btn-md.btn(ng-click='Team.currentTeam = {}')
                         i.fa.fa-arrow-left
-                .col-lg-8.center 
+                .col-lg-8.col-md-8.center 
                     h5(style='font-size:1.3em;margin:1.6%') {{Team.currentTeam.name}}
                     h6 Added by: {{Team.currentTeam.addedBy}}
-                .col-lg-2
+                .col-lg-2.col-md-2
                     button.nf-button.nf-red.btn-md.btn.right(ng-if='Team.teamHasPlayedNoGames(Team.currentTeam.id) && tournamentContext.admin')
                         i.fa.fa-trash
 
@@ -42,10 +42,10 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                 form(novalidate name='Team.currentTeamForm')
                     .col-lg-12.nf-margin
                         .row
-                            .col-lg-3
+                            .col-lg-3.col-md-4
                                 .input-group.nf-margin
                                     span.input-group-addon.nf-button.no-border.nf-gray Team Name
-                            .col-lg-9
+                            .col-lg-9.col-md-8
                                 .col-lg-12
                                     .input-group.nf-margin
                                         span.input-group-addon.nf-button.no-border.nf-gray(ng-show='Team.currentTeam.editingName') {{Team.currentTeam.name}}
@@ -60,10 +60,10 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                     
                     .col-lg-12.nf-margin
                         .row
-                            .col-lg-3
+                            .col-lg-3.col-md-4
                                 .input-group.nf-margin
                                     span.input-group-addon.nf-button.no-border.nf-gray Divisions
-                            .col-lg-9
+                            .col-lg-9.col-md-8
                                 .col-lg-12(ng-repeat='phase in Team.phases')
                                     .input-group.nf-margin
                                         span.input-group-addon.nf-button.no-border.nf-gray {{phase.name}}
@@ -74,16 +74,16 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
 
                     .col-lg-12.nf-margin
                         .row
-                            .col-lg-3
+                            .col-lg-3.col-md-4
                                 .input-group.nf-margin
                                     span.input-group-addon.nf-button.no-border.nf-gray Players ({{Team.currentTeam.players.length}})
-                            .col-lg-9
+                            .col-lg-9.col-md-8
                                 .col-lg-12(ng-repeat='player in Team.currentTeam.players')
                                     .row
-                                        .col-lg-10
+                                        .col-lg-10.col-md-10
                                             .input-group.nf-margin
                                                 span.form-control.nf-input.nf-gray(ng-show='!player.editing') 
-                                                    p.inline.nf-blue-text {{player.name}} 
+                                                    p.inline {{player.name}} 
                                                 span.input-group-addon.nf-button.no-border.nf-gray.nf-blue-text(ng-show='player.editing') {{player.name}}
                                                 input.form-control.nf-input(ng-if='tournamentContext.admin' ng-show='player.editing' ng-model='player.newName' ng-keyup='!($event.which === 13) || Team.savePlayerNameOnCurrentTeam(player)')
                                                 span.input-group-addon.nf-button.btn.no-border.nf-blue(ng-if='tournamentContext.admin' ng-click='player.editing = true' ng-show='!player.editing')
@@ -92,17 +92,17 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                                                     i.fa.fa-times
                                                 span.input-group-addon.nf-button.btn.no-border.nf-green(ng-if='tournamentContext.admin' ng-click='Team.savePlayerNameOnCurrentTeam(player)' ng-show='player.editing')
                                                     i.fa.fa-check
-                                        .col-lg-2(ng-if='player.games === 0')
+                                        .col-lg-2.col-md-2(ng-if='player.games === 0')
                                             .input-group.nf-margin
                                                 span.input-group-addon.nf-button.btn.no-border.nf-red(ng-click='Team.removeCurrentTeamPlayer(player)' ng-if='tournamentContext.admin' ng-show='!player.editing' title='Remove {{player.name}}. Will fail if this player has participated in a match.')
                                                     i.fa.fa-trash
 
                     .col-lg-12.nf-margin
                         .row
-                            .col-lg-3
+                            .col-lg-3.col-md-4
                                 .input-group.nf-margin
                                     span.input-group-addon.nf-button.no-border.nf-gray New Player
-                            .col-lg-9
+                            .col-lg-9.col-md-8
                                 .col-lg-12
                                     .input-group.nf-margin
                                         input.form-control.nf-input(placeholder='New player for {{Team.currentTeam.name}}' ng-model='Team.currentTeam.newPlayer' ng-keyup='!($event.which === 13) || Team.addTeamPlayer()')
