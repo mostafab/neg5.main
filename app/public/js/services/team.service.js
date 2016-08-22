@@ -79,6 +79,7 @@
                     var players = _data$result.players;
                     var divisions = _data$result.team_divisions;
                     var addedBy = _data$result.added_by;
+                    var games = _data$result.games_count;
 
                     var formattedTeam = {
                         name: name,
@@ -102,7 +103,8 @@
                             aggr[current.phase_id] = current.division_id;
                             return aggr;
                         }, {}),
-                        addedBy: addedBy
+                        addedBy: addedBy,
+                        games: games
                     };
                     resolve(formattedTeam);
                 }).catch(function (error) {
@@ -192,12 +194,18 @@
             });
         }
 
-        function deleteTeam(id) {
-            var index = service.teamFactory.teams.map(function (team) {
-                return team.id;
-            }).indexOf(id);
-            console.log(index);
-            service.teamFactory.teams.splice(index, 1);
+        function deleteTeam(tournamentId, teamId) {
+            return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
+                $http.delete('/api/t/' + tournamentId + '/teams/' + teamId + '?token=' + token).then(function (_ref11) {
+                    var data = _ref11.data;
+
+                    deleteTeamFromArray(data.result.id);
+                    resolve();
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
         }
 
         function formatNewTeam(team) {
@@ -229,6 +237,13 @@
             if (index !== -1) {
                 service.teamFactory.teams[index].divisions = divisions;
             }
+        }
+
+        function deleteTeamFromArray(teamId) {
+            var index = service.teamFactory.teams.findIndex(function (team) {
+                return team.id === teamId;
+            });
+            service.teamFactory.teams.splice(index, 1);
         }
 
         return service.teamFactory;

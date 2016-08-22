@@ -63,7 +63,7 @@
                     const token = Cookies.get('nfToken');
                     $http.get('/api/t/' + tournamentId + '/teams/' + teamId + '?token=' + token)
                         .then(({data}) => {
-                            let {name, id, players, team_divisions: divisions, added_by: addedBy} = data.result;
+                            let {name, id, players, team_divisions: divisions, added_by: addedBy, games_count: games} = data.result;
                             let formattedTeam = {
                                 name,
                                 newName: name,
@@ -81,7 +81,8 @@
                                     aggr[current.phase_id] = current.division_id;
                                     return aggr;
                                 }, {}),
-                                addedBy
+                                addedBy,
+                                games
                             }
                             resolve(formattedTeam);
                         })
@@ -157,10 +158,16 @@
                 })
             }
             
-            function deleteTeam(id) {
-                let index = service.teamFactory.teams.map(team => team.id).indexOf(id);
-                console.log(index);
-                service.teamFactory.teams.splice(index, 1);
+            function deleteTeam(tournamentId, teamId) {
+                return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
+                    $http.delete('/api/t/' + tournamentId + '/teams/' + teamId + '?token=' + token)
+                        .then(({data}) => {
+                            deleteTeamFromArray(data.result.id);
+                            resolve();
+                        })
+                        .catch(error => reject(error));
+                })
             }
             
             function formatNewTeam(team) {
@@ -184,6 +191,11 @@
                 if (index !== -1) {
                     service.teamFactory.teams[index].divisions = divisions;
                 }
+            }
+
+            function deleteTeamFromArray(teamId) {
+                let index = service.teamFactory.teams.findIndex(team => team.id === teamId);
+                service.teamFactory.teams.splice(index, 1);
             }
 
             return service.teamFactory;

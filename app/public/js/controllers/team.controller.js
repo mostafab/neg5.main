@@ -208,8 +208,24 @@
             });
         };
 
-        vm.removeTeam = function (id) {
-            return Team.deleteTeam(id);
+        vm.removeCurrentTeam = function () {
+            var _vm$currentTeam3 = vm.currentTeam;
+            var id = _vm$currentTeam3.id;
+            var name = _vm$currentTeam3.name;
+
+            var toastConfig = { message: 'Deleting team: ' + name };
+            $scope.toast(toastConfig);
+            Team.deleteTeam($scope.tournamentId, id).then(function () {
+                toastConfig.success = true;
+                toastConfig.message = 'Deleted team: ' + name;
+                vm.currentTeam = {};
+            }).catch(function (error) {
+                toastConfig.success = false;
+                toastConfig.message = 'Could not delete ' + name + ' because this team has games played.';
+            }).finally(function () {
+                toastConfig.hideAfter = true;
+                $scope.toast(toastConfig);
+            });
         };
 
         vm.getDivisionNameInPhase = function (divisionId) {

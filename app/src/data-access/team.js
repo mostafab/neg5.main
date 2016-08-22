@@ -101,6 +101,15 @@ export default {
                 .then(result => resolve({divisions: result[1]}))
                 .catch(error => reject(error));
         })
+    },
+
+    deleteTeam: (tournamentId, teamId) => {
+        return new Promise((resolve, reject) => {
+            let params = [tournamentId, teamId];
+            query(team.remove, params, qm.one)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
 
 }

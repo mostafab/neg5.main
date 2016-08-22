@@ -84,6 +84,16 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    deleteTeam: function deleteTeam(tournamentId, teamId) {
+        return new Promise(function (resolve, reject) {
+            _team2.default.deleteTeam(tournamentId, teamId).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

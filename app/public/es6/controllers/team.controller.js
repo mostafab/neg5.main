@@ -209,7 +209,25 @@
                 })  
         }
 
-        vm.removeTeam = (id) => Team.deleteTeam(id);  
+        vm.removeCurrentTeam = () => {
+            let {id, name} = vm.currentTeam;
+            let toastConfig = {message: 'Deleting team: ' + name};
+            $scope.toast(toastConfig);
+            Team.deleteTeam($scope.tournamentId, id)
+                .then(() => {
+                    toastConfig.success = true;
+                    toastConfig.message = `Deleted team: ${name}`;
+                    vm.currentTeam = {};
+                })
+                .catch(error => {
+                    toastConfig.success = false;
+                    toastConfig.message = `Could not delete ${name} because this team has games played.`;
+                })
+                .finally(() => {
+                    toastConfig.hideAfter = true;
+                    $scope.toast(toastConfig);
+                })    
+        }
         
         vm.getDivisionNameInPhase = (divisionId) => {
             if (!divisionId) return '';

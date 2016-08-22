@@ -128,6 +128,17 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    deleteTeam: function deleteTeam(tournamentId, teamId) {
+        return new Promise(function (resolve, reject) {
+            var params = [tournamentId, teamId];
+            (0, _db.query)(team.remove, params, _db.queryTypeMap.one).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

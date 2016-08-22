@@ -29,7 +29,9 @@ export default (app) => {
                 .catch(error => res.status(500).send({error, success: false}))
         })
         .delete(hasToken, adminAccessToTournament, (req, res) => {
-            
+            Team.deleteTeam(req.params.tid, req.params.teamId)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}))
         })
 
     app.route('/api/t/:tid/teams/:teamId/divisions')

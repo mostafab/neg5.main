@@ -48,7 +48,8 @@ export default {
             addDivisions: getSQL('team-sql/transactions/addTeam/addTeamDivisions.sql')
         },
         removeDivisions: getSQL('team-sql/transactions/removeTeamDivisions.sql'),
-        updateName: getSQL('team-sql/updateTeamName.sql')
+        updateName: getSQL('team-sql/updateTeamName.sql'),
+        remove: getSQL('team-sql/deleteTeam.sql')
     },
     player: {
         edit: getSQL('player-sql/editPlayerName.sql'),

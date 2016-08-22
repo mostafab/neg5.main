@@ -54,6 +54,14 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
+    },
+
+    deleteTeam: (tournamentId, teamId) => {
+        return new Promise((resolve, reject) => {
+            db.deleteTeam(tournamentId, teamId)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
     }
 
 }
