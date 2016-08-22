@@ -61,7 +61,8 @@
             
             function getTeamPlayers(tournamentId, teamId) {
                 return $q((resolve, reject) => {
-                   $http.get('/api/t/' + tournamentId + '/teams/' + teamId)
+                    let token = Cookies.get('nfToken');
+                   $http.get('/api/t/' + tournamentId + '/teams/' + teamId + '?token=' + token)
                         .then(({data}) => {
                             let formattedPlayers = data.result.players.map(({player_name: name, player_id: id}) => {
                                 return {

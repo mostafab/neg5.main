@@ -27,12 +27,11 @@ export default {
     addToTournament: (tournamentId, matchInformation, user) => {
         return new Promise((resolve, reject) => {
             let {id: matchId, moderator, notes, packet, phases, room, round, teams, tuh} = matchInformation;
-            
             let queriesArray = [];
             let matchPhases = buildMatchPhasesObject(tournamentId, matchId, phases);
             let matchTeams = buildMatchTeams(tournamentId, matchId, teams);
             let matchPlayers = buildMatchPlayers(tournamentId, matchId, teams);
-            let matchPlayerPoints = buildPlayerMatchPoints(tournamentId, matchId, matchPlayers.players)
+            let matchPlayerPoints = buildPlayerMatchPoints(tournamentId, matchId, matchPlayers.players);
 
             queriesArray.push(
                 {

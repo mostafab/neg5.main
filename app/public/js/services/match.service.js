@@ -74,7 +74,8 @@
 
         function getTeamPlayers(tournamentId, teamId) {
             return $q(function (resolve, reject) {
-                $http.get('/api/t/' + tournamentId + '/teams/' + teamId).then(function (_ref4) {
+                var token = Cookies.get('nfToken');
+                $http.get('/api/t/' + tournamentId + '/teams/' + teamId + '?token=' + token).then(function (_ref4) {
                     var data = _ref4.data;
 
                     var formattedPlayers = data.result.players.map(function (_ref5) {

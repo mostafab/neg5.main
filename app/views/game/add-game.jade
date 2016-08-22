@@ -19,7 +19,7 @@ div(id='add-game-div')
                                 
                     br
                     div(class="row")
-                                               
+                        
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class='panel-default nf-panel nf-shadow')
                                 table(class='table')                                   
@@ -30,7 +30,7 @@ div(id='add-game-div')
                                             th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ') {{point.value}}
                                             th(class='center no-border nf-label') Total
                                     tbody
-                                        tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id' class='nf-white')
+                                        tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id' class='nf-gray')
                                             td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                             td
                                                 input(type='number' min='0' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
@@ -50,7 +50,7 @@ div(id='add-game-div')
                                             th(class='center nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ') {{point.value}}
                                             th(class='center nf-label') Total
                                     tbody
-                                        tr(ng-repeat='player in Game.currentGame.teams[1].players track by player.id' class='nf-white')
+                                        tr(ng-repeat='player in Game.currentGame.teams[1].players track by player.id' class='nf-gray')
                                             td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                             td
                                                 input(type='number' min='0' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)' name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.newGameForm[player.id + '_tuh'].$invalid}") 

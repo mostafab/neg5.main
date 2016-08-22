@@ -48,7 +48,6 @@ exports.default = {
             var teams = matchInformation.teams;
             var tuh = matchInformation.tuh;
 
-
             var queriesArray = [];
             var matchPhases = (0, _matchBuilder.buildMatchPhasesObject)(tournamentId, matchId, phases);
             var matchTeams = (0, _matchBuilder.buildMatchTeams)(tournamentId, matchId, teams);
