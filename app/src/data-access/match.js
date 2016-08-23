@@ -27,7 +27,7 @@ export default {
     findById: (tournamentId, matchId) => {
         return new Promise((resolve, reject) => {
             let params = [tournamentId, matchId];
-            query(match.findById, params, qm.any)
+            query(match.findById, params, qm.one)
                 .then(match => {
                     resolve(match);
                 })

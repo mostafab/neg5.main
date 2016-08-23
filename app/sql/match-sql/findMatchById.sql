@@ -46,16 +46,16 @@ FROM
                 json_build_object(
                     'player_id', P.id,
                     'player_name', P.name,
-                    'tossups_heard', PPM.tossups_heard,
+                    'tossups_heard', COALESCE(PPM.tossups_heard, 0),
                     'tossup_values', COALESCE(player_match_values.tossup_values, '{}')
                 )
             ) as player_match_totals
 
             FROM
-
+            
             team_plays_in_tournament_match TTM
 
-            RIGHT JOIN
+            INNER JOIN
 
             tournament_player P
 
@@ -67,7 +67,7 @@ FROM
 
             ON P.id = PPM.player_id AND P.tournament_id = PPM.tournament_id
 
-            INNER JOIN
+            LEFT JOIN
 
             (
                 SELECT 

@@ -87,6 +87,8 @@
             notes: null
         };
 
+        vm.loadedGame = {};
+
         vm.addTeam = function (team) {
             var toastConfig = { message: 'Loading ' + team.teamInfo.name + ' players.' };
             $scope.toast(toastConfig);
@@ -139,6 +141,22 @@
                     });
                 })();
             }
+        };
+
+        vm.loadGame = function (gameId) {
+            var toastConfig = { message: 'Loading game.' };
+            $scope.toast(toastConfig);
+            Game.getGameById($scope.tournamentId, gameId).then(function (game) {
+                angular.copy(game, vm.loadedGame);
+                toastConfig.message = 'Loaded game';
+                toastConfig.success = true;
+            }).catch(function (error) {
+                toastConfig.message = 'Could not load game';
+                toastConfig.success = false;
+            }).finally(function () {
+                toastConfig.hideAfter = true;
+                $scope.toast(toastConfig);
+            });
         };
 
         vm.resetCurrentGame = function () {

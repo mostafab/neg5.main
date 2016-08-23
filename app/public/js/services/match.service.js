@@ -13,7 +13,8 @@
             postGame: postGame,
             getGames: getGames,
             deleteGame: deleteGame,
-            getTeamPlayers: getTeamPlayers
+            getTeamPlayers: getTeamPlayers,
+            getGameById: getGameById
         };
 
         function postGame(tournamentId, game) {
@@ -90,6 +91,19 @@
                     resolve(formattedPlayers);
                 }).catch(function (error) {
                     reject(error);
+                });
+            });
+        }
+
+        function getGameById(tournamentId, gameId) {
+            return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
+                $http.get('/api/t/' + tournamentId + '/matches/' + gameId + '?token=' + token).then(function (_ref6) {
+                    var data = _ref6.data;
+
+                    resolve(data.result);
+                }).catch(function (error) {
+                    return reject(error);
                 });
             });
         }

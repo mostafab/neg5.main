@@ -80,7 +80,9 @@
             packet: null,
             notes: null
         }
-        
+
+        vm.loadedGame = {};
+
         vm.addTeam = (team) => {
             let toastConfig = {message: 'Loading ' + team.teamInfo.name + ' players.'};
             $scope.toast(toastConfig);
@@ -133,6 +135,25 @@
                     })
             }
         };
+
+        vm.loadGame = (gameId) => {
+            let toastConfig = {message: 'Loading game.'};
+            $scope.toast(toastConfig);
+            Game.getGameById($scope.tournamentId, gameId)
+                .then(game => {
+                    angular.copy(game, vm.loadedGame);
+                    toastConfig.message = 'Loaded game';
+                    toastConfig.success = true;
+                })
+                .catch(error => {
+                    toastConfig.message = 'Could not load game';
+                    toastConfig.success = false;
+                })
+                .finally(() => {
+                    toastConfig.hideAfter = true;
+                    $scope.toast(toastConfig);
+                })
+        }
 
         vm.resetCurrentGame = () => {
             vm.currentGame = {

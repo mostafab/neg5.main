@@ -12,7 +12,8 @@
                 postGame,
                 getGames,
                 deleteGame,
-                getTeamPlayers
+                getTeamPlayers,
+                getGameById
             }
 
             function postGame(tournamentId, game) {
@@ -79,6 +80,17 @@
                 
             }
             
+            function getGameById(tournamentId, gameId) {
+                return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
+                    $http.get('/api/t/' + tournamentId + '/matches/' + gameId + '?token=' + token)
+                        .then(({data}) => {
+                            resolve(data.result);
+                        })
+                        .catch(error => reject(error));
+                })
+            }
+
             function deleteGame(id) {
                 let index = service.gameFactory.games.map(team => team.id).indexOf(id);
                 service.teamFactory.teams.splice(index, 1);

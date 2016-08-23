@@ -39,7 +39,7 @@ exports.default = {
     findById: function findById(tournamentId, matchId) {
         return new Promise(function (resolve, reject) {
             var params = [tournamentId, matchId];
-            (0, _db.query)(match.findById, params, _db.queryTypeMap.any).then(function (match) {
+            (0, _db.query)(match.findById, params, _db.queryTypeMap.one).then(function (match) {
                 resolve(match);
             }).catch(function (error) {
                 return reject(error);
