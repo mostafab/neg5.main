@@ -41,6 +41,7 @@ exports.default = {
     },
     match: {
         findByTournament: getSQL('match-sql/findMatchesByTournament.sql'),
+        findById: getSQL('match-sql/findMatchById.sql'),
         add: {
             addMatch: getSQL('match-sql/transactions/addMatch/addMatchInfoToTournament.sql'),
             addMatchPhases: getSQL('match-sql/transactions/addMatch/addMatchPhases.sql'),

@@ -29,4 +29,12 @@ exports.default = function (app) {
             return res.status(500).send({ error: error, success: false });
         });
     });
+
+    app.route('/api/t/:tid/matches/:matchId').get(_token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
+        _match2.default.findById(req.params.tid, req.params.matchId).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    });
 };

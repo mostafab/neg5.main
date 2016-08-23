@@ -26,6 +26,16 @@ exports.default = {
         });
     },
 
+    findById: function findById(tournamentId, matchId) {
+        return new Promise(function (resolve, reject) {
+            _match2.default.findById(tournamentId, matchId).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
     addToTournament: function addToTournament(tournamentId, gameInfo, user) {
         return new Promise(function (resolve, reject) {
             var _gameInfo$moderator = gameInfo.moderator;

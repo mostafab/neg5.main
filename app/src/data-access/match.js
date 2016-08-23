@@ -24,6 +24,17 @@ export default {
         })
     },
 
+    findById: (tournamentId, matchId) => {
+        return new Promise((resolve, reject) => {
+            let params = [tournamentId, matchId];
+            query(match.findById, params, qm.any)
+                .then(match => {
+                    resolve(match);
+                })
+                .catch(error => reject(error));
+        })
+    },
+
     addToTournament: (tournamentId, matchInformation, user) => {
         return new Promise((resolve, reject) => {
             let {id: matchId, moderator, notes, packet, phases, room, round, teams, tuh} = matchInformation;

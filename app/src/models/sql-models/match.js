@@ -11,6 +11,14 @@ export default {
         })
     },
 
+    findById: (tournamentId, matchId) => {
+        return new Promise((resolve, reject) => {
+            db.findById(tournamentId, matchId)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        })
+    },
+
     addToTournament: (tournamentId, gameInfo, user) => {
         return new Promise((resolve, reject) => {
             let {
