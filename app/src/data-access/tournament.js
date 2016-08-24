@@ -16,12 +16,28 @@ export default {
 
             let {tournamentIds, values, types} = buildTournamentPointSchemeInsertQuery(tossupScheme, id);
             
-            tournamentParams.push(tournamentIds, values, types);
-            
-            query(tournament.add, tournamentParams, qm.many)
-                .then(result => resolve(result))
-                .catch(error => reject(error));
-
+            let queriesArray = [];
+            queriesArray.push(
+                {
+                    text: tournament.add,
+                    params: tournamentParams,
+                    queryType: tm.one
+                },
+                {
+                    text: tournament.addTossupScheme,
+                    params: [id, tournamentIds, values, types],
+                    queryType: tm.any
+                }
+            )
+            transaction(queriesArray)
+                .then(result => {
+                    let formatted = {
+                        tournament: result[0],
+                        pointScheme: result[1]
+                    }
+                    resolve(formatted)
+                })
+                .catch(error => reject(error))
         });
         
     },

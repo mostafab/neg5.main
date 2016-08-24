@@ -14,7 +14,7 @@ export default (app) => {
         })
         .post(hasToken, (req, res) => {
             Tournament.create(req.body, req.currentUser)
-                .then(data => res.json(data))
+                .then(result => res.json({result, success: true}))
                 .catch(error => res.status(500).send({error}));
         })
         

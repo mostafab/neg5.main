@@ -40,10 +40,22 @@ exports.default = {
             var types = _buildTournamentPoint.types;
 
 
-            tournamentParams.push(tournamentIds, values, types);
-
-            (0, _db.query)(tournament.add, tournamentParams, _db.queryTypeMap.many).then(function (result) {
-                return resolve(result);
+            var queriesArray = [];
+            queriesArray.push({
+                text: tournament.add,
+                params: tournamentParams,
+                queryType: _db.txMap.one
+            }, {
+                text: tournament.addTossupScheme,
+                params: [id, tournamentIds, values, types],
+                queryType: _db.txMap.any
+            });
+            (0, _db.transaction)(queriesArray).then(function (result) {
+                var formatted = {
+                    tournament: result[0],
+                    pointScheme: result[1]
+                };
+                resolve(formatted);
             }).catch(function (error) {
                 return reject(error);
             });

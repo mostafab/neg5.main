@@ -6,7 +6,7 @@ WHERE NOT EXISTS
 (
     SELECT id
     FROM tournament_phase P
-    WHERE lower(P.name) = lower($3)
+    WHERE lower(P.name) = lower($3) AND P.tournament_id = $1
 )
 
 RETURNING *;

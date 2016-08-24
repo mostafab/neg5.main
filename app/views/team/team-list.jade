@@ -14,7 +14,7 @@ div(ng-class="{'col-lg-12': !Team.currentTeam.id, 'col-lg-4 col-md-12 col-sm-12'
                     h5(style='display:inline') Divisions
 
         div(style='max-height:500px;overflow:auto')
-            a(class='list-group-item nf-list-item' ng-click='Team.findTeam(team)' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id')
+            a(class='list-group-item nf-list-item nf-dark-blue' ng-click='Team.findTeam(team)' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id')
                 .row
                     .col-lg-5
                         h5 {{team.name}}

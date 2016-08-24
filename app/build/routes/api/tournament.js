@@ -23,8 +23,8 @@ exports.default = function (app) {
             return res.status(500).send({ error: error, success: false });
         });
     }).post(_token.hasToken, function (req, res) {
-        _tournament2.default.create(req.body, req.currentUser).then(function (data) {
-            return res.json(data);
+        _tournament2.default.create(req.body, req.currentUser).then(function (result) {
+            return res.json({ result: result, success: true });
         }).catch(function (error) {
             return res.status(500).send({ error: error });
         });

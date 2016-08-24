@@ -31,7 +31,8 @@ exports.default = {
                 updateBonusValues: getSQL('tournament-sql/transactions/editPointScheme/updateBonusValues.sql'),
                 updateTossupPointValues: getSQL('tournament-sql/transactions/editPointScheme/updateTossupPointValues.sql')
             }
-        }
+        },
+        addTossupScheme: getSQL('tournament-sql/addTossupValues.sql')
     },
     account: {
         add: getSQL('account-sql/createAccount.sql'),

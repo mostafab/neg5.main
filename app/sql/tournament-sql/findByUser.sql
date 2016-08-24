@@ -1,6 +1,16 @@
-SELECT  tournament.id, tournament.name, tournament.location, tournament.question_set, tournament.tournament_date, tournament.director_id, union_result.is_admin,
-        CASE WHEN tournament.director_id = $1 THEN true ELSE false END AS is_owner
+SELECT  
+
+tournament.id, 
+tournament.name, 
+tournament.location, 
+tournament.question_set, 
+tournament.tournament_date, 
+tournament.director_id, 
+union_result.is_admin,
+CASE WHEN tournament.director_id = $1 THEN true ELSE false END AS is_owner
+
 FROM
+
 (
         SELECT T.id, T.director_id AS username, TRUE as is_admin
         FROM tournament T

@@ -3,7 +3,7 @@ import db from '../../data-access/tournament';
 
 export default {
 
-    create: ({name, date = null, questionSet = null, comments = null, location = null, tossupScheme = []}, username) => {
+    create: ({name, date = null, questionSet = null, comments = null, location = null, tossupScheme = defaultPointScheme()}, username) => {
         return new Promise((resolve, reject) => {
            const id = shortid.generate(); 
            let tournament = {
@@ -208,4 +208,21 @@ export default {
         })
     }
     
+}
+
+function defaultPointScheme() {
+    return [
+        {
+            value: 10,
+            type: 'Base'
+        },
+        {
+            value: 15,
+            type: 'Power'
+        },
+        {
+            value: -5,
+            type: 'Neg'
+        }
+    ]
 }

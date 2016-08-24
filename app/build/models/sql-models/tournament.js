@@ -27,7 +27,7 @@ exports.default = {
         var _ref$location = _ref.location;
         var location = _ref$location === undefined ? null : _ref$location;
         var _ref$tossupScheme = _ref.tossupScheme;
-        var tossupScheme = _ref$tossupScheme === undefined ? [] : _ref$tossupScheme;
+        var tossupScheme = _ref$tossupScheme === undefined ? defaultPointScheme() : _ref$tossupScheme;
 
         return new Promise(function (resolve, reject) {
             var id = _shortid2.default.generate();
@@ -297,3 +297,17 @@ exports.default = {
     }
 
 };
+
+
+function defaultPointScheme() {
+    return [{
+        value: 10,
+        type: 'Base'
+    }, {
+        value: 15,
+        type: 'Power'
+    }, {
+        value: -5,
+        type: 'Neg'
+    }];
+}
