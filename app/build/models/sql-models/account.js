@@ -25,7 +25,7 @@ exports.default = {
                 username: username.trim().toLowerCase(),
                 password: password.trim(),
                 email: email === null ? null : email.trim().toLowerCase(),
-                name: name === null ? null : name.trim().toLowerCase()
+                name: name === null ? null : name.trim()
             };
             _account2.default.saveAccount(newAccount).then(function (user) {
                 return resolve(user);

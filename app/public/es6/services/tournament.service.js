@@ -35,7 +35,9 @@
                     const token = Cookies.get('nfToken');
                     $http.get('/api/t/' + tournamentId + '?token=' + token)
                         .then(({data}) => {
-                            const info = data.data;
+                            const info = data.data.tournament;
+                            const permissions = data.data.permissions;
+
                             let formattedPointScheme = {
                                 tossupValues: info.tossup_point_scheme,
                                 partsPerBonus: info.parts_per_bonus,
@@ -49,9 +51,11 @@
                                 id: info.active_phase_id,
                                 name: info.active_phase_name
                             }
+
                             angular.copy(formattedActivePhase, service.tournamentFactory.activePhase);
                             angular.copy(formattedRules, service.tournamentFactory.rules);
                             angular.copy(formattedPointScheme, service.tournamentFactory.pointScheme);
+
                             resolve({
                                 tournamentInfo: {
                                     name: info.name,
@@ -62,8 +66,8 @@
                                     hidden: info.hidden
                                 },
                                 tournamentContext: {
-                                    admin: true,
-                                    owner: true
+                                    admin: permissions.is_owner || permissions.is_admin,
+                                    owner: permissions.is_owner || false
                                 }
                             });
                         })

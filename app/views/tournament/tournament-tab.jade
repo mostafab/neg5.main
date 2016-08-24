@@ -3,7 +3,7 @@ div(class="panel nf-panel")
         .row
             .col-lg-11.col-sm-11.col-md-11
                 label.nf-label Overview
-            .col-lg-1.col-sm-1.col-md-1
+            .col-lg-1.col-sm-1.col-md-1(ng-if='tournamentContext.owner')
                 span.btn.nf-button.nf-blue.btn-md(style='float:right' title='Edit' ng-click='Tournament.editing = true' ng-show='Tournament.editing === false')
                     i.fa.fa-pencil 
                 span.btn.nf-button.nf-red.btn-md(style='float:right;' title='Cancel' ng-click='Tournament.editing = false; Tournament.resetOverview()' ng-show='Tournament.editing === true')

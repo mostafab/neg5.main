@@ -20,7 +20,7 @@ export default (app) => {
         
     app.route('/api/t/:tid')
         .get(hasToken, accessToTournament, (req, res) => {
-            Tournament.findById(req.params.tid)
+            Tournament.findById(req.params.tid, req.currentUser)
                 .then(data => res.json({data, success: true}))
                 .catch(error => res.send({error, success: false}));
         })

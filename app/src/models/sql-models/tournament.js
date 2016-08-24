@@ -30,16 +30,16 @@ export default {
         })
     },
 
-    findById: (tournamentId) => {
+    findById: (tournamentId, currentUser) => {
         return new Promise((resolve, reject) => {
-            db.findTournamentById(tournamentId)
-                .then(tournament => {
-                    tournament.tossup_point_scheme = tournament.tossup_point_scheme.filter(tv => {
+            db.findTournamentById(tournamentId, currentUser)
+                .then(result => {
+                    result.tournament.tossup_point_scheme = result.tournament.tossup_point_scheme.filter(tv => {
                         return tv.type !== null;
                     }).sort((first, second) => {
                         return first.value - second.value;
                     });
-                    resolve(tournament);
+                    resolve(result);
                 })
                 .catch(error => reject(error));
         })

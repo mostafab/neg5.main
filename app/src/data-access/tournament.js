@@ -1,7 +1,7 @@
 import {query, transaction, queryTypeMap as qm, txMap as tm} from '../database/db';
 import sql from '../database/sql';
 
-const {tournament, collaborator, division, phase} = sql;
+const {tournament, collaborator, division, phase, account} = sql;
 
 export default {
     
@@ -56,18 +56,39 @@ export default {
         })
     },
 
-    findTournamentById: (id) => {
+    findTournamentById: (id, currentUser) => {
         
         return new Promise((resolve, reject) => {
             let params = [id];
+            
+            let queriesArray = [
+                {
+                    text: tournament.findById,
+                    params: [id],
+                    queryType: tm.one
+                },
+                {
+                    text: account.permissions,
+                    params: [id, currentUser],
+                    queryType: tm.one
+                }
+            ]
 
-            query(tournament.findById, params, qm.one)
-                .then(tournament => {
-                    resolve(tournament);
+            transaction(queriesArray)
+                .then(result => {
+                    resolve({
+                       tournament: result[0],
+                       permissions: result[1] 
+                    })
                 })
-                .catch(error => {
-                    reject(error);
-                });
+                .catch(error => reject(error));
+            // query(tournament.findById, params, qm.one)
+            //     .then(tournament => {
+            //         resolve(tournament);
+            //     })
+            //     .catch(error => {
+            //         reject(error);
+            //     });
 
         })
     },

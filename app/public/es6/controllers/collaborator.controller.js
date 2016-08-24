@@ -44,6 +44,7 @@
             Collaborator.postCollaborator($scope.tournamentId, username, admin)
                 .then(() => {
                     removeFromSearchResults(username);
+                    vm.getCollaborators();
                     toastConfig.message = 'Added ' + username;
                     toastConfig.success = true;
                 })

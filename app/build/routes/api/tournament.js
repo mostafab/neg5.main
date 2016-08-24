@@ -31,7 +31,7 @@ exports.default = function (app) {
     });
 
     app.route('/api/t/:tid').get(_token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
-        _tournament2.default.findById(req.params.tid).then(function (data) {
+        _tournament2.default.findById(req.params.tid, req.currentUser).then(function (data) {
             return res.json({ data: data, success: true });
         }).catch(function (error) {
             return res.send({ error: error, success: false });

@@ -59,15 +59,15 @@ exports.default = {
         });
     },
 
-    findById: function findById(tournamentId) {
+    findById: function findById(tournamentId, currentUser) {
         return new Promise(function (resolve, reject) {
-            _tournament2.default.findTournamentById(tournamentId).then(function (tournament) {
-                tournament.tossup_point_scheme = tournament.tossup_point_scheme.filter(function (tv) {
+            _tournament2.default.findTournamentById(tournamentId, currentUser).then(function (result) {
+                result.tournament.tossup_point_scheme = result.tournament.tossup_point_scheme.filter(function (tv) {
                     return tv.type !== null;
                 }).sort(function (first, second) {
                     return first.value - second.value;
                 });
-                resolve(tournament);
+                resolve(result);
             }).catch(function (error) {
                 return reject(error);
             });

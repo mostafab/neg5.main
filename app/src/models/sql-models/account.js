@@ -8,7 +8,7 @@ export default {
                 username: username.trim().toLowerCase(),
                 password: password.trim(),
                 email: email === null ? null : email.trim().toLowerCase(),
-                name: name === null ? null : name.trim().toLowerCase()
+                name: name === null ? null : name.trim()
             };
             db.saveAccount(newAccount)
                 .then(user => resolve(user))

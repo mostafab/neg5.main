@@ -16,6 +16,7 @@ var tournament = _sql2.default.tournament;
 var collaborator = _sql2.default.collaborator;
 var division = _sql2.default.division;
 var phase = _sql2.default.phase;
+var account = _sql2.default.account;
 exports.default = {
 
     saveTournament: function saveTournament(tournamentInfo) {
@@ -76,16 +77,36 @@ exports.default = {
         });
     },
 
-    findTournamentById: function findTournamentById(id) {
+    findTournamentById: function findTournamentById(id, currentUser) {
 
         return new Promise(function (resolve, reject) {
             var params = [id];
 
-            (0, _db.query)(tournament.findById, params, _db.queryTypeMap.one).then(function (tournament) {
-                resolve(tournament);
+            var queriesArray = [{
+                text: tournament.findById,
+                params: [id],
+                queryType: _db.txMap.one
+            }, {
+                text: account.permissions,
+                params: [id, currentUser],
+                queryType: _db.txMap.one
+            }];
+
+            (0, _db.transaction)(queriesArray).then(function (result) {
+                resolve({
+                    tournament: result[0],
+                    permissions: result[1]
+                });
             }).catch(function (error) {
-                reject(error);
+                return reject(error);
             });
+            // query(tournament.findById, params, qm.one)
+            //     .then(tournament => {
+            //         resolve(tournament);
+            //     })
+            //     .catch(error => {
+            //         reject(error);
+            //     });
         });
     },
 
