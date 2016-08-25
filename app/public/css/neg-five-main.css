@@ -109,6 +109,10 @@
     background-color: #455a64; 
 }
 
+.nf-panel-footer {
+    border:none;
+}
+
 .nf-select {
     border-radius: 2px;
 }

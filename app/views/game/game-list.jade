@@ -21,5 +21,22 @@ div(class="panel-default nf-panel")
             td(ng-repeat='team in Game.teams track by team.id' ng-if='team.id === game.teams.two.id') {{team.name}} ({{game.teams.two.score}})
             td {{game.tuh}}
 
-pre.nf-dark-blue(style='padding:20px')
-    | {{Game.loadedGame | json:4}}
+//- pre.nf-dark-blue(style='padding:20px')
+//-     | {{Game.loadedGame | json:4}}
+
+div(class="panel nf-panel")
+        .nf-panel-heading.nf-blue
+            .row
+                .col-lg-2.col-md-2
+                    button.nf-button.nf-red.btn-md.btn(ng-click='Game.loadedGame = {}')
+                        i.fa.fa-arrow-left
+                .col-lg-8.col-md-8.center 
+                    h5(style='font-size:1.3em;margin:1.6%') {{Game.loadedGame.teams[0].team_name}} vs {{Game.loadedGame.teams[1].team_name}}
+                .col-lg-2.col-md-2
+                    button.nf-button.nf-red.btn-md.btn.right(title='Delete Game.' ng-if='tournamentContext.admin')
+                        i.fa.fa-trash
+
+        .nf-panel-body.panel-body.nf-dark-blue
+
+        .nf-panel-footer.panel-footer.nf-blue.no-border
+            h5 Added by: {{Game.loadedGame.added_by}}
