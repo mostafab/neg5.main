@@ -101,7 +101,37 @@
                 $http.get('/api/t/' + tournamentId + '/matches/' + gameId + '?token=' + token).then(function (_ref6) {
                     var data = _ref6.data;
 
-                    resolve(data.result);
+                    var game = data.result;
+                    var formattedGame = {
+                        addedBy: game.added_by,
+                        id: game.match_id,
+                        moderator: game.moderator,
+                        notes: game.notes,
+                        packet: game.packet,
+                        room: game.room,
+                        round: game.round,
+                        teams: game.teams.map(function (team) {
+                            return {
+                                id: team.team_id,
+                                name: team.team_name,
+                                overtime: team.overtime_tossups,
+                                bouncebacks: team.bounceback_points,
+                                score: team.score,
+                                players: team.players.map(function (player) {
+                                    return {
+                                        id: player.player_id,
+                                        name: player.player_name,
+                                        tuh: player.tossups_heard,
+                                        points: player.tossup_values.reduce(function (aggr, current) {
+                                            aggr[current.value] = current.number;
+                                            return aggr;
+                                        }, {})
+                                    };
+                                })
+                            };
+                        })
+                    };
+                    resolve(formattedGame);
                 }).catch(function (error) {
                     return reject(error);
                 });
