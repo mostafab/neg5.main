@@ -35,11 +35,14 @@
         }
 
         vm.teamBonusPoints = (team) => {
+            if (!team) return 0;
             let tossupSum = team.players.map(player => vm.pointSum(player.points)).reduce((sum, current) => sum + current, 0);
             return (team.score || 0) - tossupSum - (team.bouncebacks || 0);
         }
 
         vm.teamPPB = (team) => {
+            if (!team) return 0;
+
             if (team.players.length === 0) return 0;
 
             let totalTossupsWithoutOT = totalTeamTossupGets(team) - (team.overtime || 0);
@@ -48,6 +51,8 @@
         } 
 
         function totalTeamTossupGets(team) {
+            if (!team) return 0;
+
              let totalTossups = team.players.map(player => {
                 let sum = 0;
                 for (let pv in player.points) {
