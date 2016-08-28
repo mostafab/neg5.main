@@ -71,7 +71,7 @@ exports.default = {
                 queriesArray.push({
                     text: match.remove,
                     params: [tournamentId, matchId],
-                    queryType: _db.txMap.none
+                    queryType: _db.txMap.one
                 });
             }
 
@@ -98,6 +98,18 @@ exports.default = {
             });
 
             (0, _db.transaction)(queriesArray).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    deleteTournamentMatch: function deleteTournamentMatch(tournamentId, matchId) {
+        return new Promise(function (resolve, reject) {
+            var params = [tournamentId, matchId];
+
+            (0, _db.query)(match.remove, params, _db.queryTypeMap.one).then(function (result) {
                 return resolve(result);
             }).catch(function (error) {
                 return reject(error);

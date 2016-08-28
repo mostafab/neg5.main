@@ -1,27 +1,26 @@
-div(class="row")
-    div(class="input-group col-lg-4 col-md-4 col-sm-12" style="margin-left:20px;margin-bottom:20px;")
-        span(class='input-group-addon btn nf-button nf-blue' title='Reload games' ng-click='Game.getGames()')
-            i(class='fa fa-refresh')
-        input(type="text" class="form-control nf-input" placeholder="Filter By Round or Team" ng-model='Game.gameQuery')
+div(ng-show='!Game.loadedGame.id')
 
-div(class="panel-default nf-panel")
-    table(class="table table-condensed nf-shadow")
-        tr
-            th(class="table-head nf-blue" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse') Round
-            th(class="table-head nf-blue") Phase(s)
-            th(class="table-head nf-blue") Team 1
-            th(class="table-head nf-blue") Team 2
-            // th(class="table-head nf-blue") Tossups Heard
-            
-        tr(class='nf-list-item nf-dark-blue' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | filter:Game.gameQuery track by game.id' ng-click='Game.loadGame(game.id)')
-            td {{game.round}}
-            td
-                p(ng-repeat='phase in Game.phases track by phase.id' ng-if='game.phases[phase.id] === true') {{phase.name}}
-            td(ng-repeat='team in Game.teams track by team.id' ng-if='team.id === game.teams.one.id') {{team.name}} ({{game.teams.one.score}})
-            td(ng-repeat='team in Game.teams track by team.id' ng-if='team.id === game.teams.two.id') {{team.name}} ({{game.teams.two.score}})
-            // td {{game.tuh}}
-            
+    div(class="row")
+        div(class="input-group col-lg-4 col-md-4 col-sm-12" style="margin-left:20px;margin-bottom:20px;")
+            span(class='input-group-addon btn nf-button nf-blue' title='Reload games' ng-click='Game.getGames()')
+                i(class='fa fa-refresh')
+            input(type="text" class="form-control nf-input" placeholder="Filter By Round or Team" ng-model='Game.gameQuery')
 
-//- pre.nf-dark-blue(style='padding:20px')
-//-     | {{Game.loadedGame | json:4}}
+    div(class="panel-default nf-panel")
+        table(class="table table-condensed nf-shadow")
+            tr
+                th(class="table-head nf-blue" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse') Round
+                th(class="table-head nf-blue") Phase(s)
+                th(class="table-head nf-blue") Team 1
+                th(class="table-head nf-blue") Team 2
+                // th(class="table-head nf-blue") Tossups Heard
+                
+            tr(class='nf-list-item nf-dark-blue' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | filter:Game.gameQuery track by game.id' ng-click='Game.loadGame(game.id)')
+                td {{game.round}}
+                td
+                    p(ng-repeat='phase in Game.phases track by phase.id' ng-if='game.phases[phase.id] === true') {{phase.name}}
+                td(ng-repeat='team in Game.teams track by team.id' ng-if='team.id === game.teams.one.id') {{team.name}} ({{game.teams.one.score}})
+                td(ng-repeat='team in Game.teams track by team.id' ng-if='team.id === game.teams.two.id') {{team.name}} ({{game.teams.two.score}})
+                // td {{game.tuh}}
+            
 

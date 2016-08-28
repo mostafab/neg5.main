@@ -42,5 +42,11 @@ exports.default = function (app) {
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
         });
+    }).delete(_token.hasToken, _tournamentAccess.adminAccessToTournament, function (req, res) {
+        _match2.default.deleteMatch(req.params.tid, req.params.matchId).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
     });
 };

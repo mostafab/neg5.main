@@ -163,11 +163,20 @@
             });
         }
 
-        function deleteGame(id) {
-            var index = service.gameFactory.games.map(function (team) {
-                return team.id;
-            }).indexOf(id);
-            service.teamFactory.teams.splice(index, 1);
+        function deleteGame(tournamentId, matchId) {
+            return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
+                $http.delete('/api/t/' + tournamentId + '/matches/' + matchId + '?token=' + token).then(function (_ref8) {
+                    var data = _ref8.data;
+
+                    var matchId = data.result.id;
+                    removeMatchFromArray(matchId);
+
+                    resolve();
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
         }
 
         function formatGame(game) {
@@ -198,6 +207,15 @@
             });
 
             return gameCopy;
+        }
+
+        function removeMatchFromArray(matchId) {
+            var index = service.gameFactory.games.findIndex(function (game) {
+                return game.id === matchId;
+            });
+            if (index !== -1) {
+                service.gameFactory.games.splice(index, 1);
+            }
         }
 
         return service.gameFactory;

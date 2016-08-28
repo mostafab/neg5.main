@@ -190,6 +190,29 @@
                     })
             }
         }
+        
+        vm.deleteGame = (gameId) => {
+            if (gameId) {
+                let toastConfig = {message: 'Deleting match.'};
+                $scope.toast(toastConfig);
+                Game.deleteGame($scope.tournamentId, gameId)
+                    .then(() => {
+                        
+                        vm.loadedGame = {};
+                        
+                        toastConfig.message = 'Deleted match.';
+                        toastConfig.success = true;
+                    })
+                    .catch(error => {
+                        toastConfig.message = 'Could not delete match.'
+                        toastConfig.success = false;
+                    })
+                    .finally(() => {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    })
+            }
+        }
 
         vm.resetCurrentGame = () => {
             vm.currentGame = {

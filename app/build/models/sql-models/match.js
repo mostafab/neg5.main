@@ -76,6 +76,16 @@ exports.default = {
                 return reject(error);
             });
         });
+    },
+
+    deleteMatch: function deleteMatch(tournamentId, gameId) {
+        return new Promise(function (resolve, reject) {
+            _match2.default.deleteTournamentMatch(tournamentId, gameId).then(function (result) {
+                return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
     }
 
 };

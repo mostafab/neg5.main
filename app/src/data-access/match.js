@@ -48,7 +48,7 @@ export default {
                 queriesArray.push({
                     text: match.remove,
                     params: [tournamentId, matchId],
-                    queryType: tm.none
+                    queryType: tm.one
                 })
             }
             
@@ -81,6 +81,17 @@ export default {
             )
 
             transaction(queriesArray)
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+                
+        })
+    },
+    
+    deleteTournamentMatch: (tournamentId, matchId) => {
+        return new Promise((resolve, reject) => {
+            let params = [tournamentId, matchId];
+            
+            query(match.remove, params, qm.one)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
                 

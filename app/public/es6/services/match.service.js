@@ -144,9 +144,19 @@
                 })
             }
 
-            function deleteGame(id) {
-                let index = service.gameFactory.games.map(team => team.id).indexOf(id);
-                service.teamFactory.teams.splice(index, 1);
+            function deleteGame(tournamentId, matchId) {
+                return $q((resolve, reject) => {
+                    let token = Cookies.get('nfToken');
+                    $http.delete('/api/t/' + tournamentId + '/matches/' + matchId + '?token=' + token)
+                        .then(({data}) => {
+                            let matchId = data.result.id;
+                            removeMatchFromArray(matchId);
+                            
+                            resolve();
+                            
+                        })
+                        .catch(error => reject(error));
+                })
             }
 
             function formatGame(game) {
@@ -176,6 +186,13 @@
                 })
                 
                 return gameCopy;
+            }
+            
+            function removeMatchFromArray(matchId) {
+                let index = service.gameFactory.games.findIndex(game => game.id === matchId);
+                if (index !== -1) {
+                    service.gameFactory.games.splice(index, 1);      
+                }
             }
             
             return service.gameFactory;

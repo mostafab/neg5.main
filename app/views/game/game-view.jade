@@ -10,9 +10,9 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                     i.fa.fa-times
                 
             .col-lg-8.col-md-8.center 
-                h5(style='font-size:1.3em;margin:1.6%') {{Game.loadedGame.teams[0].teamInfo.name}} vs {{Game.loadedGame.teams[1].teamInfo.name}}
+                // h5(style='font-size:1.3em;margin:1.6%') {{Game.loadedGame.teams[0].teamInfo.name}} vs {{Game.loadedGame.teams[1].teamInfo.name}}
             .col-lg-2.col-md-2
-                button.nf-button.nf-red.btn-md.btn.right(title='Delete Game.' ng-if='tournamentContext.admin')
+                button.nf-button.nf-red.btn-md.btn.right(title='Delete Game.' ng-if='tournamentContext.admin' ng-click='Game.deleteGame(Game.loadedGame.id)')
                     i.fa.fa-trash
 
     .nf-panel-body.panel-body

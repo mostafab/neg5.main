@@ -19,7 +19,7 @@ nf-image {
     background-color: #384f61;
 }
 
-form.readonly-form * input, form.readonly-form * select {
+form.readonly-form * input, form.readonly-form * select, form.readonly-form * textarea {
     pointer-events: none;
     background: #f8f5f0;
 }

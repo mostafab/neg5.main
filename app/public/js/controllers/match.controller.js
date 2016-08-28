@@ -196,6 +196,28 @@
             }
         };
 
+        vm.deleteGame = function (gameId) {
+            if (gameId) {
+                (function () {
+                    var toastConfig = { message: 'Deleting match.' };
+                    $scope.toast(toastConfig);
+                    Game.deleteGame($scope.tournamentId, gameId).then(function () {
+
+                        vm.loadedGame = {};
+
+                        toastConfig.message = 'Deleted match.';
+                        toastConfig.success = true;
+                    }).catch(function (error) {
+                        toastConfig.message = 'Could not delete match.';
+                        toastConfig.success = false;
+                    }).finally(function () {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    });
+                })();
+            }
+        };
+
         vm.resetCurrentGame = function () {
             vm.currentGame = {
                 teams: [{
