@@ -13,7 +13,8 @@
                 getGames,
                 deleteGame,
                 getTeamPlayers,
-                getGameById
+                getGameById,
+                editGame
             }
 
             function postGame(tournamentId, game) {
@@ -89,6 +90,7 @@
                             let formattedGame = {
                                 addedBy: game.added_by,
                                 id: game.match_id,
+                                tuh: game.tossups_heard,
                                 moderator: game.moderator,
                                 notes: game.notes,
                                 packet: game.packet,
@@ -113,9 +115,30 @@
                                             }
                                         })
                                     }
+                                }),
+                                phases: game.phases.map(phase => {
+                                    return {
+                                        id: phase.phase_id,
+                                        name: phase.phase_name
+                                    }
                                 })
                             }
                             resolve(formattedGame);
+                        })
+                        .catch(error => reject(error));
+                })
+            }
+            
+            function editGame(tournamentId, gameId, gameInformation) {
+                return $q((resolve, reject) => {
+                    let body = {
+                        token: Cookies.get('nfToken'),
+                        game: formatGame(gameInformation)
+                    }
+                    $http.put('/api/t/' + tournamentId + '/matches/' + gameId, body)
+                        .then(({data}) => {
+                            let game = data.result;
+                            resolve(game);
                         })
                         .catch(error => reject(error));
                 })
@@ -139,12 +162,12 @@
                         players: team.players.map(player => {
                             return {
                                 id: player.id,
-                                tuh: player.tuh,
+                                tuh: player.tuh || 0,
                                 points: Object.keys(player.points)
                                     .map(Number).map(pv => {
                                         return {
                                             value: pv,
-                                            number: player.points[pv]
+                                            number: player.points[pv] || 0
                                         }
                                     })
                             }

@@ -67,7 +67,7 @@ FROM
 
             ON P.id = PPM.player_id AND P.tournament_id = PPM.tournament_id
 
-            LEFT JOIN
+            INNER JOIN
 
             (
                 SELECT 
@@ -86,7 +86,7 @@ FROM
 
             ON PPM.player_id = player_match_values.player_id
 
-            WHERE TTM.tournament_id = $1 and TTM.match_id = $2
+            WHERE TTM.tournament_id = $1 and TTM.match_id = $2 AND PPM.match_id = $2 AND PPM.tournament_id = $1
 
             GROUP BY TTM.team_id, TTM.match_id, TTM.score, TTM.bounceback_points, TTM.overtime_tossups_gotten
 
@@ -110,11 +110,11 @@ FROM
 
     ON M.id = match_teams.match_id
 
-    WHERE M.tournament_id = $1
+    WHERE M.tournament_id = $1 AND M.id = $2
 
 ) as match_information
 
-LEFT JOIN 
+INNER JOIN 
 
 (
     SELECT

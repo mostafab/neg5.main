@@ -40,7 +40,7 @@
                                 div.nf-dark-blue.nf-panel-heading {{phase.name}} 
                         .col-lg-7
                             .row.nf-margin(ng-repeat='division in Config.divisions' ng-if='division.phaseId === phase.id')
-                                .col-lg-11
+                                .col-lg-10
                                     .input-group
                                         span.form-control.nf-input.nf-gray(ng-show='!division.editing') {{division.name}}
                                         input.form-control.nf-input(type='text' ng-model='division.newName' ng-show='division.editing')
@@ -50,8 +50,8 @@
                                             i.fa.fa-times
                                         span.btn.input-group-addon.nf-button.no-border.nf-green(ng-show='division.editing' ng-click='Config.saveDivision(division)' title='Save')
                                             i.fa.fa-check
-                                .col-lg-1
-                                    span.btn.input-group-addon.nf-button.no-border.nf-red(ng-show='division.editing && tournamentContext.admin === true' title='Remove {{division.name}}' ng-click='Config.removeDivision(division)')
+                                .col-lg-2(ng-show='division.editing' ng-if='tournamentContext.admin === true')
+                                    span.btn.input-group-addon.nf-button.no-border.nf-red(title='Remove {{division.name}}' ng-click='Config.removeDivision(division)')
                                         i.fa.fa-trash
 
                     .nf-margin

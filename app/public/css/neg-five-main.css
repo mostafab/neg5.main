@@ -19,6 +19,15 @@ nf-image {
     background-color: #384f61;
 }
 
+form.readonly-form * input, form.readonly-form * select {
+    pointer-events: none;
+    background: #f8f5f0;
+}
+
+li.active > a {
+    color: lightgreen;
+}
+
 .active-phase {
     background-color: #B2DFDB;
 }
@@ -190,6 +199,7 @@ nf-image {
     display: flex;
     align-items: center;
 }
+
 .green-text {
     color: lightgreen !important;
 }

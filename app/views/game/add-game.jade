@@ -1,7 +1,9 @@
 div(id='add-game-div')
     div(class="panel panel-default nf-panel")
 
-        div(class="collapsable nf-panel-heading nf-dark-blue") Add a Game
+        div(class="collapsable nf-panel-heading nf-dark-blue") 
+            p.inline Add a Game
+            
         div(class="nf-panel-body panel-body tournament-panel" id="addgamepanel")
 
                 form(name="Game.newGameForm" novalidate ng-submit='Game.addGame()')

@@ -39,7 +39,8 @@ export default {
             addMatchPlayers: getSQL('match-sql/transactions/addMatch/addMatchPlayers.sql'),
             addMatchTeams: getSQL('match-sql/transactions/addMatch/addMatchTeams.sql'),
             addPlayerTossups: getSQL('match-sql/transactions/addMatch/addPlayerMatchTossups.sql')
-        }
+        },
+        remove: getSQL('match-sql/transactions/deleteMatch.sql')
     },
     team: {
         findByTournament: getSQL('team-sql/findTeamsByTournament.sql'),

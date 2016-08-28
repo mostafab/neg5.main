@@ -19,7 +19,7 @@ div(class="panel nf-panel")
                             input(
                                 type="text",
                                 name="tournament_name",
-                                class="form-control nf-input input-medium center-text no-border-radius",
+                                class="form-control nf-input input-medium center-text no-border-radius nf-gray",
                                 ng-model="Tournament.tournamentInfoCopy.name",
                                 ng-show='Tournament.editing === true',
                                 required
@@ -31,7 +31,7 @@ div(class="panel nf-panel")
                             input(
                                 type="text",
                                 name="tournament_location",
-                                class="form-control nf-input input-md center-text no-border-radius",
+                                class="form-control nf-input input-md center-text no-border-radius nf-gray",
                                 ng-model='Tournament.tournamentInfoCopy.location',
                                 ng-show='Tournament.editing === true'
                             )
@@ -42,7 +42,7 @@ div(class="panel nf-panel")
                             input(
                                 type="text",
                                 name="tournament_qset",
-                                class="form-control nf-input input-medium center-text no-border-radius",
+                                class="form-control nf-input input-medium center-text no-border-radius nf-gray",
                                 ng-model='Tournament.tournamentInfoCopy.questionSet',
                                 ng-show='Tournament.editing === true'
                             )
@@ -53,7 +53,7 @@ div(class="panel nf-panel")
                             input(
                                     type="date",
                                     name="tournament_date",
-                                    class="form-control nf-input input-medium center-text no-border-radius",
+                                    class="form-control nf-input input-medium center-text no-border-radius nf-gray",
                                     ng-model='Tournament.tournamentInfoCopy.date',
                                     ng-show='Tournament.editing === true'
                                 )
@@ -62,14 +62,14 @@ div(class="panel nf-panel")
                     .row.nf-margin
                         label(class='label nf-dark-blue nf-label col-xs-4 col-lg-3') Hidden
                         div(class="col-xs-8 col-sm-8 col-lg-3" ng-class='{"form-group" : Tournament.editing === true}')
-                            input(type='checkbox' class='form-control nf-input input-sm' ng-model='Tournament.tournamentInfoCopy.hidden' ng-show='Tournament.editing === true')
+                            input(type='checkbox' class='form-control nf-input input-sm nf-gray' ng-model='Tournament.tournamentInfoCopy.hidden' ng-show='Tournament.editing === true')
                             label(class='white nf-label' ng-show='Tournament.editing === false') {{tournamentInfo.hidden === true ? 'Yes' : 'No'}}
 
                 .row.nf-margin
                     div(class="col-md-12 col-lg-12")
                         label(class="label nf-dark-blue nf-label col-xs-2 col-sm-4 col-lg-3") Comments
                         div(class="col-xs-8 col-sm-8 col-lg-9" ng-class='{"form-group" : Tournament.editing === true}')
-                            textarea(name="tournament_description" class="form-control nf-input" rows="30" ng-model='Tournament.tournamentInfoCopy.comments' ng-show='Tournament.editing === true')
+                            textarea(name="tournament_description" class="form-control nf-input nf-gray" rows="30" ng-model='Tournament.tournamentInfoCopy.comments' ng-show='Tournament.editing === true')
                             label(class='white nf-label preserve-white-space' ng-show='Tournament.editing === false') {{tournamentInfo.comments}}
 
                 div(class="col-md-6" ng-show='Tournament.editing === true')

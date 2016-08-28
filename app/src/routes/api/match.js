@@ -22,7 +22,11 @@ export default (app) => {
             Match.findById(req.params.tid, req.params.matchId)
                 .then(result => res.json({result, success: true}))
                 .catch(error => res.status(500).send({error, success: false}));
-                
+        })
+        .put(hasToken, adminAccessToTournament, (req, res) => {
+            Match.addToTournament(req.params.tid, req.body.game, req.currentUser, req.params.matchId)
+                .then(result => res.json({result, success: true}))
+                .catch(error => res.status(500).send({error, success: false}));  
         })
     
 }

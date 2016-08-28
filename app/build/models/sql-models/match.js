@@ -37,6 +37,8 @@ exports.default = {
     },
 
     addToTournament: function addToTournament(tournamentId, gameInfo, user) {
+        var matchId = arguments.length <= 3 || arguments[3] === undefined ? undefined : arguments[3];
+
         return new Promise(function (resolve, reject) {
             var _gameInfo$moderator = gameInfo.moderator;
             var moderator = _gameInfo$moderator === undefined ? null : _gameInfo$moderator;
@@ -54,21 +56,21 @@ exports.default = {
             var tuh = _gameInfo$tuh === undefined ? 20 : _gameInfo$tuh;
 
 
-            if (!phases || !teams) return reject(new Error('Phases and teams are both required'));
+            if (!phases || !teams || phases.length === 0) return reject(new Error('Phases and teams are both required'));
 
-            var formattedMatchInfo = {
-                id: _shortid2.default.generate(),
-                moderator: moderator === null ? null : moderator.trim(),
-                notes: notes === null ? null : notes.trim(),
-                packet: packet === null ? null : packet.trim(),
+            var matchInfo = match({
+                id: matchId,
+                moderator: moderator,
+                notes: notes,
+                packet: packet,
                 phases: phases,
-                room: room === null ? null : room.trim(),
+                room: room,
                 round: round,
                 teams: teams,
                 tuh: tuh
-            };
+            });
 
-            _match2.default.addToTournament(tournamentId, formattedMatchInfo, user).then(function (result) {
+            _match2.default.addToTournament(tournamentId, matchInfo, user, matchId ? true : false).then(function (result) {
                 return resolve(result);
             }).catch(function (error) {
                 return reject(error);
@@ -77,3 +79,29 @@ exports.default = {
     }
 
 };
+
+
+function match(_ref) {
+    var _ref$id = _ref.id;
+    var id = _ref$id === undefined ? _shortid2.default.generate() : _ref$id;
+    var moderator = _ref.moderator;
+    var notes = _ref.notes;
+    var packet = _ref.packet;
+    var phases = _ref.phases;
+    var room = _ref.room;
+    var round = _ref.round;
+    var teams = _ref.teams;
+    var tuh = _ref.tuh;
+
+    return {
+        id: id,
+        moderator: moderator === null ? null : moderator.trim(),
+        notes: notes === null ? null : notes.trim(),
+        packet: packet === null ? null : packet.trim(),
+        phases: phases,
+        room: room === null ? null : room.trim(),
+        round: round,
+        teams: teams,
+        tuh: tuh
+    };
+}

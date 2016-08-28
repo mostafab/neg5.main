@@ -93,6 +93,7 @@
         };
 
         vm.loadedGame = {};
+        vm.loadedGameOriginal = {};
 
         vm.addTeam = function (team) {
             var toastConfig = { message: 'Loading ' + team.teamInfo.name + ' players.' };
@@ -152,7 +153,12 @@
             var toastConfig = { message: 'Loading game.' };
             $scope.toast(toastConfig);
             Game.getGameById($scope.tournamentId, gameId).then(function (game) {
+                game.phases = setLoadedGamePhases(game, vm.phases);
+                setLoadedGameTeams(game, vm.teams);
+
                 angular.copy(game, vm.loadedGame);
+                angular.copy(vm.loadedGame, vm.loadedGameOriginal);
+
                 toastConfig.message = 'Loaded game';
                 toastConfig.success = true;
             }).catch(function (error) {
@@ -162,6 +168,32 @@
                 toastConfig.hideAfter = true;
                 $scope.toast(toastConfig);
             });
+        };
+
+        vm.resetLoadedGame = function () {
+            return angular.copy(vm.loadedGameOriginal, vm.loadedGame);
+        };
+
+        vm.editLoadedGame = function () {
+            if (vm.editGameForm.$valid) {
+                (function () {
+                    var toastConfig = { message: 'Editing match.' };
+                    $scope.toast(toastConfig);
+                    Game.editGame($scope.tournamentId, vm.loadedGame.id, vm.loadedGame).then(function () {
+                        vm.loadedGame.editing = false;
+                        vm.getGames();
+
+                        toastConfig.message = 'Edited match.';
+                        toastConfig.success = true;
+                    }).catch(function (error) {
+                        toastConfig.message = 'Could not edit match';
+                        toastConfig.success = false;
+                    }).finally(function () {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    });
+                })();
+            }
         };
 
         vm.resetCurrentGame = function () {
@@ -186,6 +218,34 @@
         function resetForm() {
             vm.resetCurrentGame();
             vm.newGameForm.$setUntouched();
+        }
+
+        function setLoadedGamePhases(loadedGame, tournamentPhases) {
+            var loadedGamePhaseMap = loadedGame.phases.reduce(function (aggr, current) {
+                aggr[current.id] = true;
+                return aggr;
+            }, {});
+            return tournamentPhases.filter(function (phase) {
+                return loadedGamePhaseMap[phase.id] === true;
+            });
+        }
+
+        function setLoadedGameTeams(loadedGame, teams) {
+            loadedGame.teams.forEach(function (matchTeam) {
+                var index = teams.findIndex(function (team) {
+                    return team.id === matchTeam.id;
+                });
+                if (index !== -1) {
+                    matchTeam.teamInfo = teams[index];
+                }
+            });
+        }
+
+        function buildTeamMap(teams) {
+            return teams.reduce(function (aggr, current) {
+                aggr[current.id] = current;
+                return aggr;
+            }, {});
         }
 
         vm.getGames();

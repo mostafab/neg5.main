@@ -87,6 +87,7 @@
         }
 
         vm.loadedGame = {};
+        vm.loadedGameOriginal = {};
 
         vm.addTeam = (team) => {
             let toastConfig = {message: 'Loading ' + team.teamInfo.name + ' players.'};
@@ -146,7 +147,12 @@
             $scope.toast(toastConfig);
             Game.getGameById($scope.tournamentId, gameId)
                 .then(game => {
+                    game.phases = setLoadedGamePhases(game, vm.phases);
+                    setLoadedGameTeams(game, vm.teams);
+                    
                     angular.copy(game, vm.loadedGame);
+                    angular.copy(vm.loadedGame, vm.loadedGameOriginal);
+                    
                     toastConfig.message = 'Loaded game';
                     toastConfig.success = true;
                 })
@@ -158,6 +164,31 @@
                     toastConfig.hideAfter = true;
                     $scope.toast(toastConfig);
                 })
+        }
+        
+        vm.resetLoadedGame = () => angular.copy(vm.loadedGameOriginal, vm.loadedGame);
+        
+        vm.editLoadedGame = () => {
+            if (vm.editGameForm.$valid) {
+                let toastConfig = {message: 'Editing match.'};
+                $scope.toast(toastConfig);
+                Game.editGame($scope.tournamentId, vm.loadedGame.id, vm.loadedGame)
+                    .then(() => {
+                        vm.loadedGame.editing = false;
+                        vm.getGames();
+                        
+                        toastConfig.message = 'Edited match.';
+                        toastConfig.success = true;
+                    })
+                    .catch(error => {
+                        toastConfig.message = 'Could not edit match';
+                        toastConfig.success = false;
+                    })
+                    .finally(() => {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    })
+            }
         }
 
         vm.resetCurrentGame = () => {
@@ -185,6 +216,30 @@
         function resetForm() {
             vm.resetCurrentGame();
             vm.newGameForm.$setUntouched();
+        }
+        
+        function setLoadedGamePhases(loadedGame, tournamentPhases) {
+            let loadedGamePhaseMap = loadedGame.phases.reduce((aggr, current) => {
+                aggr[current.id] = true;
+                return aggr;
+            }, {})
+            return tournamentPhases.filter(phase => loadedGamePhaseMap[phase.id] === true);
+        }
+        
+        function setLoadedGameTeams(loadedGame, teams) {
+            loadedGame.teams.forEach(matchTeam => {
+                let index = teams.findIndex(team => team.id === matchTeam.id);
+                if (index !== -1) {
+                    matchTeam.teamInfo = teams[index]; 
+                }
+            });
+        }
+        
+        function buildTeamMap(teams) {
+            return teams.reduce((aggr, current) => {
+                aggr[current.id] = current;
+                return aggr;
+            }, {});
         }
 
         vm.getGames();

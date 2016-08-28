@@ -19,7 +19,7 @@ export default {
         })
     },
 
-    addToTournament: (tournamentId, gameInfo, user) => {
+    addToTournament: (tournamentId, gameInfo, user, matchId = undefined) => {
         return new Promise((resolve, reject) => {
             let {
                 moderator = null, 
@@ -31,25 +31,39 @@ export default {
                 teams, 
                 tuh = 20} = gameInfo;
 
-            if (!phases || !teams) return reject(new Error('Phases and teams are both required'));
-
-            let formattedMatchInfo = {
-                id: shortid.generate(),
-                moderator: moderator === null ? null : moderator.trim(),
-                notes: notes === null ? null : notes.trim(),
-                packet: packet === null ? null : packet.trim(),
+            if (!phases || !teams || phases.length === 0) return reject(new Error('Phases and teams are both required'));
+            
+            let matchInfo = match({
+                id: matchId,
+                moderator,
+                notes,
+                packet,
                 phases,
-                room: room === null ? null : room.trim(),
+                room,
                 round,
                 teams,
                 tuh
-            }
-
-            db.addToTournament(tournamentId, formattedMatchInfo, user)
+            })
+            
+            db.addToTournament(tournamentId, matchInfo, user, matchId ? true : false)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
 
         });
     }
 
+}
+
+function match({id = shortid.generate(), moderator, notes, packet, phases, room, round, teams, tuh}) {
+    return {
+        id,
+        moderator: moderator === null ? null : moderator.trim(),
+        notes: notes === null ? null : notes.trim(),
+        packet: packet === null ? null : packet.trim(),
+        phases,
+        room: room === null ? null : room.trim(),
+        round,
+        teams,
+        tuh
+    }
 }

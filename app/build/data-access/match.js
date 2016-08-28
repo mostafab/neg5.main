@@ -48,6 +48,8 @@ exports.default = {
     },
 
     addToTournament: function addToTournament(tournamentId, matchInformation, user) {
+        var replacing = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+
         return new Promise(function (resolve, reject) {
             var matchId = matchInformation.id;
             var moderator = matchInformation.moderator;
@@ -64,6 +66,14 @@ exports.default = {
             var matchTeams = (0, _matchBuilder.buildMatchTeams)(tournamentId, matchId, teams);
             var matchPlayers = (0, _matchBuilder.buildMatchPlayers)(tournamentId, matchId, teams);
             var matchPlayerPoints = (0, _matchBuilder.buildPlayerMatchPoints)(tournamentId, matchId, matchPlayers.players);
+
+            if (replacing) {
+                queriesArray.push({
+                    text: match.remove,
+                    params: [tournamentId, matchId],
+                    queryType: _db.txMap.none
+                });
+            }
 
             queriesArray.push({
                 text: match.add.addMatch,

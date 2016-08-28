@@ -14,7 +14,8 @@
             getGames: getGames,
             deleteGame: deleteGame,
             getTeamPlayers: getTeamPlayers,
-            getGameById: getGameById
+            getGameById: getGameById,
+            editGame: editGame
         };
 
         function postGame(tournamentId, game) {
@@ -105,6 +106,7 @@
                     var formattedGame = {
                         addedBy: game.added_by,
                         id: game.match_id,
+                        tuh: game.tossups_heard,
                         moderator: game.moderator,
                         notes: game.notes,
                         packet: game.packet,
@@ -129,9 +131,32 @@
                                     };
                                 })
                             };
+                        }),
+                        phases: game.phases.map(function (phase) {
+                            return {
+                                id: phase.phase_id,
+                                name: phase.phase_name
+                            };
                         })
                     };
                     resolve(formattedGame);
+                }).catch(function (error) {
+                    return reject(error);
+                });
+            });
+        }
+
+        function editGame(tournamentId, gameId, gameInformation) {
+            return $q(function (resolve, reject) {
+                var body = {
+                    token: Cookies.get('nfToken'),
+                    game: formatGame(gameInformation)
+                };
+                $http.put('/api/t/' + tournamentId + '/matches/' + gameId, body).then(function (_ref7) {
+                    var data = _ref7.data;
+
+                    var game = data.result;
+                    resolve(game);
                 }).catch(function (error) {
                     return reject(error);
                 });
@@ -160,11 +185,11 @@
                     players: team.players.map(function (player) {
                         return {
                             id: player.id,
-                            tuh: player.tuh,
+                            tuh: player.tuh || 0,
                             points: Object.keys(player.points).map(Number).map(function (pv) {
                                 return {
                                     value: pv,
-                                    number: player.points[pv]
+                                    number: player.points[pv] || 0
                                 };
                             })
                         };

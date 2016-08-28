@@ -35,7 +35,7 @@ export default {
         })
     },
 
-    addToTournament: (tournamentId, matchInformation, user) => {
+    addToTournament: (tournamentId, matchInformation, user, replacing = false) => {
         return new Promise((resolve, reject) => {
             let {id: matchId, moderator, notes, packet, phases, room, round, teams, tuh} = matchInformation;
             let queriesArray = [];
@@ -43,7 +43,15 @@ export default {
             let matchTeams = buildMatchTeams(tournamentId, matchId, teams);
             let matchPlayers = buildMatchPlayers(tournamentId, matchId, teams);
             let matchPlayerPoints = buildPlayerMatchPoints(tournamentId, matchId, matchPlayers.players);
-
+            
+            if (replacing) {
+                queriesArray.push({
+                    text: match.remove,
+                    params: [tournamentId, matchId],
+                    queryType: tm.none
+                })
+            }
+            
             queriesArray.push(
                 {
                     text: match.add.addMatch,

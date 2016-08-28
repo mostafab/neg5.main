@@ -36,5 +36,11 @@ exports.default = function (app) {
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
         });
+    }).put(_token.hasToken, _tournamentAccess.adminAccessToTournament, function (req, res) {
+        _match2.default.addToTournament(req.params.tid, req.body.game, req.currentUser, req.params.matchId).then(function (result) {
+            return res.json({ result: result, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
     });
 };
