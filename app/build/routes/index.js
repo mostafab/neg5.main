@@ -2,6 +2,8 @@
 
 var _token = require('./../auth/middleware/token');
 
+var _tournamentAccess = require('./../auth/middleware/tournament-access');
+
 var _tournament = require('./../models/sql-models/tournament');
 
 var _tournament2 = _interopRequireDefault(_tournament);
@@ -25,7 +27,7 @@ module.exports = function (app) {
         res.render('tournament/alltournaments', { tournamentd: currentUser });
     });
 
-    app.get("/t/:tid", _token.hasToken, function (req, res, next) {
+    app.get("/t/:tid", _token.hasToken, _tournamentAccess.accessToTournament, function (req, res, next) {
         res.render("tournament/tournament-view", { tournamentd: req.currentUser });
     });
 

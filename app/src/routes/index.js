@@ -1,6 +1,7 @@
 'use strict';
 
 import {hasToken} from './../auth/middleware/token';
+import {accessToTournament} from './../auth/middleware/tournament-access';
 import Tournament from './../models/sql-models/tournament';
 
 module.exports = app => {
@@ -20,7 +21,7 @@ module.exports = app => {
         res.render('tournament/alltournaments', {tournamentd: currentUser});
     });
 
-    app.get("/t/:tid", hasToken, (req, res, next) => {
+    app.get("/t/:tid", hasToken, accessToTournament, (req, res, next) => {
         res.render("tournament/tournament-view", {tournamentd : req.currentUser});
     });
 
