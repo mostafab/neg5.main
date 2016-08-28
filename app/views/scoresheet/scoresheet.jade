@@ -1,0 +1,21 @@
+.row
+    .col-lg-5
+        .row
+            .col-lg-6
+                select.form-control.nf-input.nf-gray(ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id' ng-model='Scoresheet.game.teams[0].teamInfo')
+                    option(disabled value='') Choose a Team
+                br
+                
+                .panel.nf-panel
+                    .nf-panel-heading.nf-blue
+                    .panel-body.nf-panel-body.nf-dark-blue
+                    
+            .col-lg-6
+                select.form-control.nf-input.nf-gray(ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id' ng-model='Scoresheet.game.teams[1].teamInfo')
+                    option(disabled value='') Choose a Team
+                br
+                .panel.nf-panel
+                    .nf-panel-heading.nf-blue
+                    .panel-body.nf-panel-body.nf-dark-blue
+                
+    .col-lg-6

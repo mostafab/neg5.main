@@ -44,8 +44,8 @@ block content
                             a(data-toggle="tab" class='tournament-tab btn-md') Statistics
                         li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"')
                             a(data-toggle="tab" class='tournament-tab btn-md') Phases
-                        li
-                            a() Scoresheet
+                        li(ng-click='Tournament.tab = "scoresheet"')
+                            a(data-toggle='tab') Scoresheet
                         li(style='float:right' ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "delete"')
                             a(class="nf-red btn-md tournament-tab" data-toggle="tab" style='color:white')
                                 i(class='fa fa-trash')
@@ -55,12 +55,10 @@ block content
                     div(class='col-sm-7 col-lg-12 col-md-12')
                         div(class="nf-panel-heading nf-dark-blue center") 
                             h4.inline {{tournamentInfo.name}}
-                            // span.btn.btn-sm.nf-button.no-border.right.inline.nf-blue
-                            //     i.fa.fa-arrow-left
                     
                 div(class="panel-body")
                     div(class="row")
-                        div(class='col-sm-7 col-md-12 col-lg-12')
+                        div.nf-blue(class='col-sm-7 col-md-12 col-lg-12' style='padding:0')
                             ul(class="nav nav-bar no-border-radius")
                                 li(class="center" ng-click='Tournament.tab = "overview"' ng-class="{'active': Tournament.tab === 'overview'}")
                                     a(data-toggle="tab" class='tournament-tab btn-md') Overview
@@ -77,14 +75,13 @@ block content
                                 li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"' ng-class="{'active': Tournament.tab === 'phase'}")
                                     a(data-toggle="tab" class='tournament-tab btn-md') Phases
                         
-                        div(class='col-sm-5 col-md-12 col-lg-12')
-                            ul(class="nav nav-bar no-border-radius")
-                                li
-                                    a(href='#scoresheet' class='btn-md nf-button nf-orange') Scoresheet
-                                    div(style='margin-top:10px')
-                                li(ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "delete"' ng-class="{'active': Tournament.tab === 'delete'}")
-                                    a(class="nf-red btn-md tournament-tab nf-button" data-toggle="tab" style='color:white')
-                                        i(class='fa fa-trash')
+                                li.center(ng-click='Tournament.tab = "scoresheet"' ng-class='{"active": Tournament.tab === "scoresheet"}')
+                                    a(class='btn-md' ng-click='Tournament.tab = "scoresheet"') Scoresheet
+                                        
+                                // li.center(ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "delete"' ng-class="{'active': Tournament.tab === 'delete'}")
+                                //     a(class="btn-md tournament-tab" data-toggle="tab" style='color:white')
+                                //         i(class='fa fa-trash')
+                                
                                             
 
             div(class='col-sm-12 col-md-10 col-lg-10 col-lg-offset-2')
@@ -152,6 +149,9 @@ block content
                     div(class="tab-pane fade angular-animate" id="phase" ng-controller='PhaseCtrl as Phase' ng-class="{'active in' : Tournament.tab ==='phase'}")
                         div(ng-if='tournamentContext.admin === true')
                             include ./../phase/phase-tab.jade
+                    
+                    div(class='tab-pane fade angular-animate' id='scoresheet' ng-controller='ScoresheetCtrl as Scoresheet' ng-class="{'active in' : Tournament.tab === 'scoresheet'}")
+                        include ./../scoresheet/scoresheet.jade
                         
                     div(ng-if='tournamentContext.owner === true' class="tab-pane fade" id="delete" ng-class="{'active in' : Tournament.tab ==='delete'}")
 
@@ -206,5 +206,6 @@ block scripts
     script(src='/js/controllers/phase.controller.js')
     script(src='/js/controllers/collaborator.controller.js')
     script(src='/js/controllers/config.controller.js')
+    script(src='/js/controllers/scoresheet.controller.js')
     script(src="/js/jszip/dist/jszip.min.js")
     script(src='/js/jszip/dist/FileSaver.min.js')
