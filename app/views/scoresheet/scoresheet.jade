@@ -1,21 +1,57 @@
 .row
-    .col-lg-5
+    .col-lg-6.col-md-12
         .row
-            .col-lg-6
-                select.form-control.nf-input.nf-gray(ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id' ng-model='Scoresheet.game.teams[0].teamInfo')
+            .col-lg-6.col-md-6
+                select.form-control.nf-input.nf-gray(ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id', 
+                    ng-model='Scoresheet.game.teams[0].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[0])')
                     option(disabled value='') Choose a Team
                 br
                 
                 .panel.nf-panel
-                    .nf-panel-heading.nf-blue
+                    .nf-panel-heading.nf-blue.center {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}}
                     .panel-body.nf-panel-body.nf-dark-blue
-                    
-            .col-lg-6
-                select.form-control.nf-input.nf-gray(ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id' ng-model='Scoresheet.game.teams[1].teamInfo')
+                        .input-group.nf-margin(ng-repeat='player in Scoresheet.game.teams[0].players')
+                            div.form-control.nf-input.nf-gray {{player.name}}
+                            span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"', 
+                                ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
+                                ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, tv)') {{tv.value}}
+                            
+
+            .col-lg-6.col-md-6
+                select.form-control.nf-input.nf-gray(ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id', 
+                    ng-model='Scoresheet.game.teams[1].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[1])')
                     option(disabled value='') Choose a Team
                 br
                 .panel.nf-panel
-                    .nf-panel-heading.nf-blue
+                    .nf-panel-heading.nf-blue.center {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}}
                     .panel-body.nf-panel-body.nf-dark-blue
-                
-    .col-lg-6
+                        .input-group.nf-margin(ng-repeat='player in Scoresheet.game.teams[1].players')
+                            div.form-control.nf-input.nf-gray {{player.name}}
+                            span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"', 
+                                ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
+                                ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, tv)') {{tv.value}}
+
+    .col-lg-6(ng-show='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id')
+        .row
+            .panel.nf-panel
+                table.table.table-condensed(style='font-size:1.2em')
+                    thead
+                        tr.no-border
+                            th.center.table-head.nf-blue(ng-repeat='player in Scoresheet.game.teams[0].players' title='{{player.name}}') {{player.name | limitTo:2}}
+                            th.center.table-head.nf-gray Bonus
+                            th.center.table-head.nf-gray Total
+                            th.center.table-head.nf-gray TU # 
+                            th.center.table-head.nf-gray Total
+                            th.center.table-head.nf-gray Bonus
+                            th.center.table-head.nf-blue(ng-repeat='player in Scoresheet.game.teams[1].players' title='{{player.name}}') {{player.name | limitTo:2}}
+
+                    tbody
+                        tr(ng-repeat='cycle in Scoresheet.game.cycles track by cycle.number', 
+                            ng-class="{'nf-dark-blue': cycle.number !== Scoresheet.game.currentCycle.number, 'nf-green': cycle.number === Scoresheet.game.currentCycle.number}")
+                            td.center(ng-repeat='player in Scoresheet.game.teams[0].players') {{Scoresheet.getPlayerAnswerForCycle(player, cycle).value || '-'}}
+                            td.center
+                            td.center
+                            td.center {{cycle.number}}
+                            td.center
+                            td.center
+                            td.center(ng-repeat='player in Scoresheet.game.teams[1].players') {{Scoresheet.getPlayerAnswerForCycle(player, cycle).value || '-'}}
