@@ -54,18 +54,63 @@
                 })
         }
 
-        vm.getPlayerAnswerForCycle = (player, cycle) => {
-            let currentCycleNumber = vm.game.currentCycle.number;
-            if (cycle.number === currentCycleNumber) {
-                return vm.game.currentCycle.answers.find(a => a.playerId === player.id);
-            } else {
-                return cycle.answers.find(a => a.playerId === player.id);
+        vm.swapPlayers = (players, initialIndex, toIndex) => { // Swap works like this to get around angular dupes
+            if (toIndex < 0) {
+                toIndex = players.length - 1;
+            } else if (toIndex === players.length) {
+                toIndex = 0;
+            }
+
+            let tempArray = [];
+            angular.copy(players, tempArray);
+
+            let temp = players[initialIndex];
+            tempArray[initialIndex] = tempArray[toIndex];
+            tempArray[toIndex] = temp;
+
+            angular.copy(tempArray, players);
+
+        }
+
+        vm.nextCycle = () => {
+            let nextCycleNumber = vm.game.currentCycle.number + 1;
+            let indexToAddCurrentCycleTo = vm.game.currentCycle.number - 1;
+
+            angular.copy(vm.game.currentCycle.answers, vm.game.cycles[indexToAddCurrentCycleTo].answers)
+
+            vm.game.currentCycle = {
+                number: nextCycleNumber,
+                answers: []
+            }
+
+        }
+
+        vm.lastCycle = () => {
+            if (vm.game.currentCycle.number > 1) {
+                let indexToReset = vm.game.currentCycle.number - 1;
+                vm.game.cycles[indexToReset].answers = [];
+                vm.game.currentCycle = {
+                    answers: [],
+                    number: vm.game.currentCycle.number - 1
+                }
             }
         }
 
-        vm.addPlayerAnswerToCurrentCycle = (player, answer) => {
+        vm.getPlayerAnswerForCycle = (player, cycle) => {
+            // let currentCycleNumber = vm.game.currentCycle.number;
+            // if (cycle.number === currentCycleNumber) {
+            //     return vm.game.currentCycle.answers.find(a => a.playerId === player.id);
+            // } else {
+            //     return cycle.answers.find(a => a.playerId === player.id);
+            // }
+
+            return cycle.answers.find(a => a.playerId === player.id);
+        }
+
+        vm.addPlayerAnswerToCurrentCycle = (player, team, answer) => {
             vm.game.currentCycle.answers.push({
                 playerId: player.id,
+                teamId: team.id,
                 value: answer.value
             })
         }
@@ -74,13 +119,12 @@
             let arr = [];
             for (let i = 0; i < 20; i++) {
                 arr.push({
-                    answers: [],
-                    number: i + 1
+                    answers: []
                 })
             }
             return arr;
         }
-
+        
     }
     
 })();

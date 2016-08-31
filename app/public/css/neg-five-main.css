@@ -207,6 +207,18 @@ li.active > a {
     border-radius: 0px;
 }
 
+.player-arrows {
+    opacity: 0;
+    z-index: 20;
+}
+
+.player-arrows:hover {
+    z-index: 20;
+    opacity: 1;
+    display: block;
+    pointer-events: initial;
+}
+
 .white {
     color: white;
 }

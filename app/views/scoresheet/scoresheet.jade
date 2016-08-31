@@ -14,7 +14,7 @@
                             div.form-control.nf-input.nf-gray {{player.name}}
                             span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"', 
                                 ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
-                                ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, tv)') {{tv.value}}
+                                ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[0].teamInfo, tv)') {{tv.value}}
                             
 
             .col-lg-6.col-md-6
@@ -26,10 +26,22 @@
                     .nf-panel-heading.nf-blue.center {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}}
                     .panel-body.nf-panel-body.nf-dark-blue
                         .input-group.nf-margin(ng-repeat='player in Scoresheet.game.teams[1].players')
+                            div.player-arrows(style='position:absolute;z-index:10')
+                                span.input-group-addon.btn.nf-button.nf-blue(style='position:absolute;margin:0' ng-click='Scoresheet.swapPlayers(Scoresheet.game.teams[1].players, $index, $index - 1)') 
+                                    i.fa.fa-arrow-up(style='position:absolute;top:20%;font-size:0.8em;right:25%')
+                                span.input-group-addon.btn.nf-button.nf-orange(style='position:absolute;margin:0;top:22px' ng-click='Scoresheet.swapPlayers(Scoresheet.game.teams[1].players, $index, $index + 1)') 
+                                    i.fa.fa-arrow-down(style='position:absolute;top:20%;font-size:0.8em;right:25%')
                             div.form-control.nf-input.nf-gray {{player.name}}
                             span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"', 
                                 ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
-                                ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, tv)') {{tv.value}}
+                                ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[1].teamInfo, tv)') {{tv.value}}
+
+            .col-lg-12
+                .row
+                    .col-lg-6
+                        button.nf-button.btn.nf-orange.btn-block(ng-click='Scoresheet.lastCycle()') Back One Cycle
+                    .col-lg-6
+                        button.nf-button.btn.nf-red.btn-block(ng-click='Scoresheet.nextCycle()') Dead Tossup
 
     .col-lg-6(ng-show='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id')
         .row
@@ -46,12 +58,13 @@
                             th.center.table-head.nf-blue(ng-repeat='player in Scoresheet.game.teams[1].players' title='{{player.name}}') {{player.name | limitTo:2}}
 
                     tbody
-                        tr(ng-repeat='cycle in Scoresheet.game.cycles track by cycle.number', 
-                            ng-class="{'nf-dark-blue': cycle.number !== Scoresheet.game.currentCycle.number, 'nf-green': cycle.number === Scoresheet.game.currentCycle.number}")
-                            td.center(ng-repeat='player in Scoresheet.game.teams[0].players') {{Scoresheet.getPlayerAnswerForCycle(player, cycle).value || '-'}}
+                        tr(ng-repeat='cycle in Scoresheet.game.cycles track by $index', 
+                            ng-class="{'nf-dark-blue': $index + 1 !== Scoresheet.game.currentCycle.number, 'nf-green': $index + 1 === Scoresheet.game.currentCycle.number}")
+                            td.center(ng-repeat='player in Scoresheet.game.teams[0].players') {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
                             td.center
                             td.center
-                            td.center {{cycle.number}}
+                            td.center {{$index + 1}}
                             td.center
                             td.center
-                            td.center(ng-repeat='player in Scoresheet.game.teams[1].players') {{Scoresheet.getPlayerAnswerForCycle(player, cycle).value || '-'}}
+                            td.center(ng-repeat='player in Scoresheet.game.teams[1].players') {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
+        
