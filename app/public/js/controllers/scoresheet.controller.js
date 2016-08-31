@@ -75,6 +75,11 @@
         vm.nextCycle = function () {
             var nextCycleNumber = vm.game.currentCycle.number + 1;
             var indexToAddCurrentCycleTo = vm.game.currentCycle.number - 1;
+            if (indexToAddCurrentCycleTo >= vm.game.cycles.length - 1) {
+                vm.game.cycles.push({
+                    answers: []
+                });
+            }
 
             angular.copy(vm.game.currentCycle.answers, vm.game.cycles[indexToAddCurrentCycleTo].answers);
 
