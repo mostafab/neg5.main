@@ -26,12 +26,16 @@
                     .nf-panel-heading.nf-blue.center {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}}
                     .panel-body.nf-panel-body.nf-dark-blue
                         .input-group.nf-margin(ng-repeat='player in Scoresheet.game.teams[1].players')
-                            div.player-arrows(style='position:absolute;z-index:10')
-                                span.input-group-addon.btn.nf-button.nf-blue(style='position:absolute;margin:0' ng-click='Scoresheet.swapPlayers(Scoresheet.game.teams[1].players, $index, $index - 1)') 
-                                    i.fa.fa-arrow-up(style='position:absolute;top:20%;font-size:0.8em;right:25%')
-                                span.input-group-addon.btn.nf-button.nf-orange(style='position:absolute;margin:0;top:22px' ng-click='Scoresheet.swapPlayers(Scoresheet.game.teams[1].players, $index, $index + 1)') 
-                                    i.fa.fa-arrow-down(style='position:absolute;top:20%;font-size:0.8em;right:25%')
-                            div.form-control.nf-input.nf-gray {{player.name}}
+                            div.player-name
+                                div.player-arrows(style='position:absolute;z-index:10' ng-if='Scoresheet.game.teams[1].players.length > 1')
+                                    span.input-group-addon.btn.nf-button.nf-blue.no-border(style='position:absolute;margin:0', 
+                                        ng-click='Scoresheet.swapPlayers(Scoresheet.game.teams[1].players, $index, $index - 1)',
+                                        title='Switch {{player.name}} and {{$first ? Scoresheet.game.teams[1].players[Scoresheet.game.teams[1].players.length - 1].name : Scoresheet.game.teams[1].players[$index - 1].name}}'
+                                    ) 
+                                        i.fa.fa-arrow-up(style='position:absolute;top:20%;font-size:0.8em;right:25%')
+                                    span.input-group-addon.btn.nf-button.nf-orange.no-border(style='position:absolute;margin:0;top:22px' ng-click='Scoresheet.swapPlayers(Scoresheet.game.teams[1].players, $index, $index + 1)') 
+                                        i.fa.fa-arrow-down(style='position:absolute;top:20%;font-size:0.8em;right:25%')
+                                div.form-control.nf-input.nf-gray {{player.name}}
                             span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"', 
                                 ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
                                 ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[1].teamInfo, tv)') {{tv.value}}

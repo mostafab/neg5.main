@@ -207,14 +207,15 @@ li.active > a {
     border-radius: 0px;
 }
 
-.player-arrows {
+.player-name > .player-arrows {
     opacity: 0;
     z-index: 20;
+    /*transition: .3s all;*/
 }
 
-.player-arrows:hover {
+.player-name:hover > .player-arrows {
     z-index: 20;
-    opacity: 1;
+    opacity: .95;
     display: block;
     pointer-events: initial;
 }
