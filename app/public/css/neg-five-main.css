@@ -198,6 +198,10 @@ li.active > a {
     align-items: center;
 }
 
+.no-margin {
+    margin: 0px;
+}
+
 .green-text {
     color: lightgreen !important;
 }
@@ -309,6 +313,10 @@ div.readonly {
     background-color: #f8f5f0;
 }
 
+/*td.pad, tr.pad {
+    padding: 10px;
+}*/
+
 /**
 Redefine Boostrap definitions
 */
@@ -339,6 +347,7 @@ tr > .table-head {
 
 .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
     border: 0px;
+    padding: 10px;
 }
 
 .nf-toast {
