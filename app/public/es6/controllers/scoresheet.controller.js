@@ -40,6 +40,10 @@
             Team.getTeamById($scope.tournamentId, id)
                 .then(({players}) => {
                     team.players = players;
+                    team.players.forEach(player => {
+                        player.active = true
+                        player.tuh = 0;
+                    });
 
                     toastConfig.message = 'Loaded ' + name + ' players.';
                     toastConfig.success = true;
@@ -88,6 +92,8 @@
                 answers: []
             }
 
+            incrementActivePlayersTUH(1);
+
         }
 
         vm.lastCycle = () => {
@@ -99,6 +105,9 @@
                     number: vm.game.currentCycle.number - 1
                 }
             }
+
+            incrementActivePlayersTUH(-1);
+            
         }
 
         vm.getPlayerAnswerForCycle = (player, cycle) => {
@@ -117,6 +126,16 @@
                 playerId: player.id,
                 teamId: team.id,
                 value: answer.value
+            })
+        }
+
+        function incrementActivePlayersTUH(num) {
+            vm.game.teams.forEach(team => {
+                team.players.forEach(player => {
+                    if (player.active && player.tuh + num >= 0) {
+                        player.tuh += num;
+                    }
+                })
             })
         }
 

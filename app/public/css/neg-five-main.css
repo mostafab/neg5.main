@@ -46,7 +46,7 @@ li.active > a {
     width: 50%;
 }
 .nf-dropdown > li > a {
-    font-size: 1.1em;
+    font-size: 1.3em;
     padding: 10px;
 }
 
@@ -68,7 +68,7 @@ li.active > a {
 .nf-input {
     border-radius: 2px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
-    font-size: 1.2em;
+    font-size: 1.3em;
 }
 .nf-input:focus {
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
@@ -202,6 +202,10 @@ li.active > a {
     margin: 0px;
 }
 
+.not-visible {
+    visibility: hidden;
+}
+
 .green-text {
     color: lightgreen !important;
 }
@@ -253,6 +257,30 @@ li.active > a {
 @media (min-width: 1200px) {
     .tournament-navigation-panel {
         position: fixed;
+    }
+}
+
+@media (min-width: 1921px) {
+    .responsive-font {
+        font-size: 1.3em;
+    }
+}
+
+@media (min-width: 1600px) and (max-width: 1920px) {
+    .responsive-font {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 1599px) and (min-width: 1200px) {
+    .responsive-font {
+        font-size: .9em;
+    }
+}
+
+@media (max-width: 1350px) {
+    .responsive-font {
+        font-size: .8em;
     }
 }
 
@@ -326,7 +354,7 @@ Redefine Boostrap definitions
 
 tr > .table-head {
     font-weight: normal;
-    font-size: 1.2em;
+    font-size: 1.3em;
 }
 
 .panel>.table:first-child>thead:first-child>tr:first-child td:last-child, .panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child td:last-child, .panel>.table:first-child>tbody:first-child>tr:first-child td:last-child, .panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child td:last-child, .panel>.table:first-child>thead:first-child>tr:first-child th:last-child, .panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child th:last-child, .panel>.table:first-child>tbody:first-child>tr:first-child th:last-child, .panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child th:last-child {

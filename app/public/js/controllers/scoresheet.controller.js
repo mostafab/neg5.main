@@ -42,6 +42,10 @@
                 var players = _ref.players;
 
                 team.players = players;
+                team.players.forEach(function (player) {
+                    player.active = true;
+                    player.tuh = 0;
+                });
 
                 toastConfig.message = 'Loaded ' + name + ' players.';
                 toastConfig.success = true;
@@ -87,6 +91,8 @@
                 number: nextCycleNumber,
                 answers: []
             };
+
+            incrementActivePlayersTUH(1);
         };
 
         vm.lastCycle = function () {
@@ -98,6 +104,8 @@
                     number: vm.game.currentCycle.number - 1
                 };
             }
+
+            incrementActivePlayersTUH(-1);
         };
 
         vm.getPlayerAnswerForCycle = function (player, cycle) {
@@ -120,6 +128,16 @@
                 value: answer.value
             });
         };
+
+        function incrementActivePlayersTUH(num) {
+            vm.game.teams.forEach(function (team) {
+                team.players.forEach(function (player) {
+                    if (player.active && player.tuh + num >= 0) {
+                        player.tuh += num;
+                    }
+                });
+            });
+        }
 
         function initializeCyclesArray() {
             var arr = [];
