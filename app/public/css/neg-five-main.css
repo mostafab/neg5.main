@@ -15,6 +15,13 @@ nf-image {
     font-size: 1.3em;
 }
 
+.nf-button.transition {
+    transition: .1s all;
+}
+.nf-button.transition:hover {
+    cursor: pointer;
+}
+
 .neg-box {
     display: block;
     position: absolute;
@@ -271,6 +278,12 @@ li.active > a {
 
 /* End Neg 5 colors */
 
+@media (max-width: 1919px) {
+    .responsive-font.input-group {
+        display: block;
+    }
+}
+
 @media (min-width: 1200px) {
     .tournament-navigation-panel {
         position: fixed;
@@ -356,6 +369,10 @@ input[type=number] {
 
 div.readonly {
     background-color: #f8f5f0;
+}
+
+select.readonly {
+    pointer-events: none;
 }
 
 /*td.pad, tr.pad {

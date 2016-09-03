@@ -15,11 +15,13 @@
             teams: [
                 {
                     teamInfo: null,
-                    players: []
+                    players: [],
+                    newPlayer: ''
                 },
                 {
                     teamInfo: null,
-                    players: []
+                    players: [],
+                    newPlayer: ''
                 }
             ],
             cycles: initializeCyclesArray(),
@@ -60,6 +62,37 @@
                     $scope.toast(toastConfig);
                 })
         }
+        
+        vm.addPlayer = (team) => {
+            if (team.newPlayer.length > 0) {
+                let toastConfig = {
+                    message: 'Adding ' + team.newPlayer + ' to ' + team.teamInfo.name
+                }
+                $scope.toast(toastConfig);
+                Team.addPlayer($scope.tournamentId, team.teamInfo.id, team.newPlayer)
+                    .then(player => {
+                        team.players.push({
+                            name: player.name,
+                            id: player.id,
+                            tuh: 0,
+                            active: true
+                        })
+                        team.newPlayer = '';
+                        
+                        toastConfig.message = 'Added ' + player.name + ' to ' + team.teamInfo.name;
+                        toastConfig.success = true;
+                    })
+                    .catch(error => {
+                        toastConfig.message = 'Could not add ' + team.newPlayer + ' to ' + team.teamInfo.name;
+                        toastConfig.success = false; 
+                    })
+                    .finally(() => {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    })
+            }
+            
+        }
 
         vm.range = (num) => {
             return new Array(num);
@@ -92,8 +125,32 @@
             return index === -1 ? null : cycle.answers[index].teamId
         }
 
-        vm.getTeamBonusPointsForCycle = (teamId, cycle) => {
-            return cycle.bonuses.filter(b => b === teamId).length * vm.pointScheme.bonusPointValue;
+        vm.getTeamBonusPointsForCycle = (teamId, cycleIndex) => {
+            let cycle = cycleIndex + 1 === vm.game.currentCycle.number ? vm.game.currentCycle : vm.game.cycles[cycleIndex];
+            return cycle.bonuses.filter(b => b === teamId).length * vm.pointScheme.bonusPointValue;   
+        }
+        
+        vm.getTeamScoreUpToCycle = (teamId, cycleIndex) => {
+            let score = 0;
+            for (let i = 0; i <= cycleIndex; i++) {
+                let cycle = vm.game.cycles[i];
+                cycle.answers.forEach(a => {
+                    if (a.teamId === teamId) {
+                        score += a.value;
+                    }
+                })
+                score += cycle.bonuses.filter(b => b === teamId).length * vm.pointScheme.bonusPointValue;
+            }
+            if (cycleIndex + 1 === vm.game.currentCycle.number) {
+                vm.game.currentCycle.answers.forEach(a => {
+                    if (a.teamId === teamId) {
+                        score += a.value;
+                    }
+                })
+                score += vm.game.currentCycle.bonuses.filter(b => b === teamId).length * vm.pointScheme.bonusPointValue;
+            }
+            
+            return score;
         }
 
         vm.nextCycle = () => {
@@ -152,7 +209,6 @@
                     value: answer.value,
                     type: answer.type
                 })
-                console.log(vm.game.currentCycle.answers);
             }            
         }
         
