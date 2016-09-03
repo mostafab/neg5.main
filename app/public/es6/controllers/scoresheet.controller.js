@@ -145,17 +145,18 @@
         }
 
         vm.addPlayerAnswerToCurrentCycle = (player, team, answer) => {
-            if (vm.game.currentCycle.answers.findIndex(answer => answer.teamId === team.id) === -1) {
+            if (teamDidNotAnswerInCycle(team, vm.game.currentCycle)) {
                 vm.game.currentCycle.answers.push({
                     playerId: player.id,
                     teamId: team.id,
-                    value: answer.value
+                    value: answer.value,
+                    type: answer.type
                 })
             }            
         }
 
-        vm.switchToBonusIfTossupGotten = (answer) => {
-            if (answer.type !== 'Neg') {
+        vm.switchToBonusIfTossupGotten = (answer, teamId) => {
+            if (answer.type !== 'Neg' && vm.teamDidNotNegInCycle(teamId, vm.game.currentCycle)) {
                 vm.switchCurrentCycleContext(true);
             }
         }
@@ -168,6 +169,14 @@
 
         vm.switchCurrentCycleContext = (toBonus) => {
             vm.game.onTossup = !toBonus;
+        }
+        
+        vm.teamDidNotNegInCycle = (teamId, cycle) => {
+            return cycle.answers.findIndex(answer => answer.type === 'Neg' && answer.teamId === teamId) === -1;
+        }
+        
+        function teamDidNotAnswerInCycle(team, cycle) {
+            return cycle.answers.findIndex(answer => answer.teamId === team.id) === -1;
         }
 
         function incrementActivePlayersTUH(num) {

@@ -10,7 +10,7 @@
                     
                     .panel.nf-panel
                         .nf-panel-heading.nf-blue.center {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}}
-                        .panel-body.nf-panel-body.nf-dark-blue
+                        .panel-body.nf-panel-body.nf-dark-blue.relative(style='position:relative')
                             .input-group.nf-margin(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'not-visible' : !player.active}")
                                 div.player-name
                                     div.player-arrows(style='position:absolute;z-index:10' ng-if='Scoresheet.game.teams[0].players.length > 1')
@@ -24,7 +24,10 @@
                                     div.form-control.nf-input.nf-gray {{player.name}}
                                 span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"', 
                                     ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
-                                    ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[0].teamInfo, tv); Scoresheet.switchToBonusIfTossupGotten(tv)') {{tv.value}}
+                                    ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[0].teamInfo, tv); Scoresheet.switchToBonusIfTossupGotten(tv, Scoresheet.game.teams[0].teamInfo.id)') {{tv.value}}
+
+                            div.neg-box(ng-show='!Scoresheet.teamDidNotNegInCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle)')
+                                button.nf-red.nf-button.btn.btn-block Undo Neg
 
                 .col-lg-6.col-md-6.col-sm-6
                     select.form-control.nf-input.nf-gray(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id', 
@@ -33,7 +36,7 @@
                     br
                     .panel.nf-panel
                         .nf-panel-heading.nf-blue.center {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}}
-                        .panel-body.nf-panel-body.nf-dark-blue
+                        .panel-body.nf-panel-body.nf-dark-blue.relative
                             .input-group.nf-margin(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'not-visible' : !player.active}")
                                 div.player-name
                                     div.player-arrows(style='position:absolute;z-index:10' ng-if='Scoresheet.game.teams[1].players.length > 1')
@@ -47,7 +50,10 @@
                                     div.form-control.nf-input.nf-gray {{player.name}}
                                 span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"', 
                                     ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
-                                    ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[1].teamInfo, tv); Scoresheet.switchToBonusIfTossupGotten(tv)') {{tv.value}}
+                                    ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[1].teamInfo, tv); Scoresheet.switchToBonusIfTossupGotten(tv, Scoresheet.game.teams[1].teamInfo.id)') {{tv.value}}
+            
+                            div.neg-box(ng-show='!Scoresheet.teamDidNotNegInCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle)')
+                                button.nf-red.nf-button.btn.btn-block Undo Neg
             
             .row(ng-show='!Scoresheet.game.onTossup')
                 .col-lg-12.col-md-12.col-sm-12
@@ -56,15 +62,17 @@
                             | Bonus {{Scoresheet.game.currentCycle.number}} for {{Scoresheet.getTeam(Scoresheet.game.currentCycle.answers[Scoresheet.game.currentCycle.answers.length - 1].teamId).teamInfo.name }}
                         .panel-body.nf-panel-body.nf-dark-blue
                             .input-group.nf-margin(ng-repeat='part in Scoresheet.range(3) track by $index')
-                                span.input-group-addon.btn.nf-button.nf-gray.no-border(ng-click='Scoresheet.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[0].teamInfo)', 
+                                span.input-group-addon.nf-button.nf-gray.no-border(ng-click='Scoresheet.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[0].teamInfo)', 
                                     ng-class="{'nf-green' : Scoresheet.game.currentCycle.bonuses[$index] === Scoresheet.game.teams[0].teamInfo.id}", 
                                     ng-show='Scoresheet.rules.bouncebacks || Scoresheet.getTeamThatGotTossup(Scoresheet.game.currentCycle) === Scoresheet.game.teams[0].teamInfo.id')  
                                     | + {{Scoresheet.pointScheme.bonusPointValue}} for {{Scoresheet.game.teams[0].teamInfo.name}}
-                                div.form-control.nf-input.nf-gray.center Part {{$index + 1}}
-                                span.input-group-addon.btn.nf-button.nf-gray.no-border(ng-click='Scoresheet.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[1].teamInfo)', 
+                                div.form-control.nf-input.nf-blue.no-border.center Part {{$index + 1}}
+                                span.input-group-addon.nf-button.nf-gray.no-border(ng-click='Scoresheet.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[1].teamInfo)', 
                                     ng-class="{'nf-green' : Scoresheet.game.currentCycle.bonuses[$index] === Scoresheet.game.teams[1].teamInfo.id}",
                                     ng-show='Scoresheet.rules.bouncebacks || Scoresheet.getTeamThatGotTossup(Scoresheet.game.currentCycle) === Scoresheet.game.teams[1].teamInfo.id')  
                                     | + {{Scoresheet.pointScheme.bonusPointValue}} for {{Scoresheet.game.teams[1].teamInfo.name}}
+                            
+                            br
                             
                             .row
                                 .col-lg-6

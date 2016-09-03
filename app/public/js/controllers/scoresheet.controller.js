@@ -149,19 +149,18 @@
         };
 
         vm.addPlayerAnswerToCurrentCycle = function (player, team, answer) {
-            if (vm.game.currentCycle.answers.findIndex(function (answer) {
-                return answer.teamId === team.id;
-            }) === -1) {
+            if (teamDidNotAnswerInCycle(team, vm.game.currentCycle)) {
                 vm.game.currentCycle.answers.push({
                     playerId: player.id,
                     teamId: team.id,
-                    value: answer.value
+                    value: answer.value,
+                    type: answer.type
                 });
             }
         };
 
-        vm.switchToBonusIfTossupGotten = function (answer) {
-            if (answer.type !== 'Neg') {
+        vm.switchToBonusIfTossupGotten = function (answer, teamId) {
+            if (answer.type !== 'Neg' && vm.teamDidNotNegInCycle(teamId, vm.game.currentCycle)) {
                 vm.switchCurrentCycleContext(true);
             }
         };
@@ -177,6 +176,18 @@
         vm.switchCurrentCycleContext = function (toBonus) {
             vm.game.onTossup = !toBonus;
         };
+
+        vm.teamDidNotNegInCycle = function (teamId, cycle) {
+            return cycle.answers.findIndex(function (answer) {
+                return answer.type === 'Neg' && answer.teamId === teamId;
+            }) === -1;
+        };
+
+        function teamDidNotAnswerInCycle(team, cycle) {
+            return cycle.answers.findIndex(function (answer) {
+                return answer.teamId === team.id;
+            }) === -1;
+        }
 
         function incrementActivePlayersTUH(num) {
             vm.game.teams.forEach(function (team) {

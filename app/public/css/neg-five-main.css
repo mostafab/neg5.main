@@ -15,6 +15,23 @@ nf-image {
     font-size: 1.3em;
 }
 
+.neg-box {
+    display: block;
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    z-index: 50;
+    padding: 45px;
+    background: rgba(200, 200, 200, .9);
+    text-align: center;
+}
+
+
+.relative {
+    position: relative;
+}
 
 form.readonly-form * input, form.readonly-form * select, form.readonly-form * textarea {
     pointer-events: none;
