@@ -19,15 +19,17 @@
                                             title='Switch {{player.name}} and {{$first ? Scoresheet.game.teams[0].players[Scoresheet.game.teams[0].players.length - 1].name : Scoresheet.game.teams[0].players[$index - 1].name}}'
                                         ) 
                                             i.fa.fa-arrow-up(style='position:absolute;top:20%;font-size:0.8em;right:25%')
-                                        span.input-group-addon.btn.nf-button.nf-orange.no-border(style='position:absolute;margin:0;top:22px' ng-click='Scoresheet.swapPlayers(Scoresheet.game.teams[0].players, $index, $index + 1)') 
+                                        span.input-group-addon.btn.nf-button.nf-orange.no-border(style='position:absolute;margin:0;top:22px', 
+                                            ng-click='Scoresheet.swapPlayers(Scoresheet.game.teams[0].players, $index, $index + 1)'
+                                        ) 
                                             i.fa.fa-arrow-down(style='position:absolute;top:20%;font-size:0.8em;right:25%')
                                     div.form-control.nf-input.nf-gray {{player.name}}
-                                span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"', 
+                                span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true', 
                                     ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
                                     ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[0].teamInfo, tv); Scoresheet.switchToBonusIfTossupGotten(tv, Scoresheet.game.teams[0].teamInfo.id)') {{tv.value}}
 
                             div.neg-box(ng-show='!Scoresheet.teamDidNotNegInCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle)')
-                                button.nf-red.nf-button.btn.btn-block Undo Neg
+                                button.nf-red.nf-button.btn.btn-block(ng-click='Scoresheet.removeTeamNegsFromCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle)') Undo Neg
 
                 .col-lg-6.col-md-6.col-sm-6
                     select.form-control.nf-input.nf-gray(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id', 
@@ -48,12 +50,12 @@
                                         span.input-group-addon.btn.nf-button.nf-orange.no-border(style='position:absolute;margin:0;top:22px' ng-click='Scoresheet.swapPlayers(Scoresheet.game.teams[1].players, $index, $index + 1)') 
                                             i.fa.fa-arrow-down(style='position:absolute;top:20%;font-size:0.8em;right:25%')
                                     div.form-control.nf-input.nf-gray {{player.name}}
-                                span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"', 
+                                span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true', 
                                     ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
                                     ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[1].teamInfo, tv); Scoresheet.switchToBonusIfTossupGotten(tv, Scoresheet.game.teams[1].teamInfo.id)') {{tv.value}}
             
                             div.neg-box(ng-show='!Scoresheet.teamDidNotNegInCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle)')
-                                button.nf-red.nf-button.btn.btn-block Undo Neg
+                                button.nf-red.nf-button.btn.btn-block(ng-click='Scoresheet.removeTeamNegsFromCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle)') Undo Neg
             
             .row(ng-show='!Scoresheet.game.onTossup')
                 .col-lg-12.col-md-12.col-sm-12
@@ -76,13 +78,13 @@
                             
                             .row
                                 .col-lg-6
-                                    button.nf-button.btn.nf-orange.btn-block Remove
+                                    button.nf-button.btn.nf-orange.btn-block(ng-click='Scoresheet.removeLastAnswerFromCycle(Scoresheet.game.currentCycle); Scoresheet.switchCurrentCycleContext(false)') Back
                                 .col-lg-6
                                     button.nf-button.btn.nf-green.btn-block(ng-click='Scoresheet.switchCurrentCycleContext(false); Scoresheet.nextCycle()') Next
 
-            .row
+            .row(ng-show='Scoresheet.game.onTossup && Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
                 .col-lg-6.col-md-6.col-sm-6
-                    button.nf-button.btn.nf-orange.btn-block.no-margin(type='button' ng-click='Scoresheet.lastCycle()') Back One Cycle
+                    button.nf-button.btn.nf-orange.btn-block.no-margin(type='button' ng-click='Scoresheet.lastCycle()' ng-show='Scoresheet.game.currentCycle.number > 1') Back One Cycle
                 .col-lg-6.col-md-6.col-sm-6
                     button.nf-button.btn.nf-red.btn-block.no-margin(type='button' ng-click='Scoresheet.nextCycle()') Dead Tossup
 
@@ -94,14 +96,14 @@
                         table.table.table-condensed.responsive-font
                             thead
                                 th.table-head
-                                th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"') {{tv.value}}
+                                th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{tv.value}}
                                 th.table-head.center Pts
                                 th.table-head.center TUH
                             tbody
                                 tr.nf-dark-blue(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'green-text': player.active}")
                                     td.pad(ng-click='player.active = !player.active') {{player.name}}
-                                    td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"') 
-                                    td.pad.center 
+                                    td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)}}
+                                    td.pad.center {{Scoresheet.getPlayerTotalPoints(player)}}
                                     td.pad.center
                                        input.center.input-sm.nf-input.form-control(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' ng-model='player.tuh')
 
@@ -110,14 +112,14 @@
                         table.table.table-condensed.responsive-font
                             thead
                                 th.table-head
-                                th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"') {{tv.value}}
+                                th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{tv.value}}
                                 th.table-head.center Pts
                                 th.table-head.center TUH
                             tbody
                                 tr.nf-dark-blue(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'green-text': player.active}")
                                     td.pad(ng-click='player.active = !player.active' ) {{player.name}}
-                                    td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value"') 
-                                    td.pad.center 
+                                    td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)}}
+                                    td.pad.center {{Scoresheet.getPlayerTotalPoints(player)}}
                                     td.pad.center
                                         input.center.input-sm.nf-input.form-control(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' ng-model='player.tuh')
 

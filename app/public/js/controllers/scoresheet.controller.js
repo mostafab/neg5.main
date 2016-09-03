@@ -156,13 +156,46 @@
                     value: answer.value,
                     type: answer.type
                 });
+                console.log(vm.game.currentCycle.answers);
             }
+        };
+
+        vm.getNumberOfTossupTypeForPlayer = function (player, tossupValue) {
+            var cycleTotal = vm.game.cycles.reduce(function (total, cycle) {
+
+                var numberInCycle = cycle.answers.filter(function (a) {
+                    return a.playerId === player.id && a.value === tossupValue.value;
+                }).length;
+
+                return total + numberInCycle;
+            }, 0);
+
+            var numberInCurrentCycle = vm.game.currentCycle.answers.filter(function (a) {
+                return a.playerId === player.id && a.type === tossupValue.type;
+            }).length;
+
+            return cycleTotal + numberInCurrentCycle;
+        };
+
+        vm.getPlayerTotalPoints = function (player) {
+            var total = 0;
+            vm.pointScheme.tossupValues.forEach(function (tv) {
+                var numberForCurrentTV = vm.getNumberOfTossupTypeForPlayer(player, tv);
+
+                total += numberForCurrentTV * tv.value;
+            });
+            return total;
         };
 
         vm.switchToBonusIfTossupGotten = function (answer, teamId) {
             if (answer.type !== 'Neg' && vm.teamDidNotNegInCycle(teamId, vm.game.currentCycle)) {
                 vm.switchCurrentCycleContext(true);
             }
+        };
+
+        vm.removeLastAnswerFromCycle = function (cycle) {
+            cycle.answers.pop();
+            cycle.bonuses = [];
         };
 
         vm.getTeam = function (teamId) {
@@ -181,6 +214,12 @@
             return cycle.answers.findIndex(function (answer) {
                 return answer.type === 'Neg' && answer.teamId === teamId;
             }) === -1;
+        };
+
+        vm.removeTeamNegsFromCycle = function (teamId, cycle) {
+            cycle.answers = cycle.answers.filter(function (a) {
+                return !(a.type === 'Neg' && a.teamId === teamId);
+            });
         };
 
         function teamDidNotAnswerInCycle(team, cycle) {

@@ -29,7 +29,7 @@ div(id='add-game-div')
                                         tr(class='nf-dark-blue')
                                             th(class='no-border nf-label')
                                             th(class='center no-border nf-label') TUH
-                                            th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ') {{point.value}}
+                                            th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ') {{point.value}}
                                             th(class='center no-border nf-label') Total
                                     tbody
                                         tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id' class='nf-gray')
@@ -37,7 +37,7 @@ div(id='add-game-div')
                                             td
                                                 input(type='number' min='0' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
                                                 name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.newGameForm[player.id + '_tuh'].$invalid}") 
-                                            td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value"')
+                                            td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true')
                                                 input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.newGameForm[player.id + point.value].$invalid}")
                                             td 
                                                 div(tabindex="-1" class='form-control readonly input-sm') {{Game.pointSum(player.points)}}
@@ -49,14 +49,14 @@ div(id='add-game-div')
                                         tr(class='nf-dark-blue')
                                             th.nf-label 
                                             th(class='center no-border nf-label') TUH
-                                            th(class='center nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ') {{point.value}}
+                                            th(class='center nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ') {{point.value}}
                                             th(class='center nf-label') Total
                                     tbody
                                         tr(ng-repeat='player in Game.currentGame.teams[1].players track by player.id' class='nf-gray')
                                             td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                             td
                                                 input(type='number' min='0' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)' name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.newGameForm[player.id + '_tuh'].$invalid}") 
-                                            td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ')
+                                            td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ')
                                                 input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.newGameForm[player.id + point.value].$invalid}")
                                             td 
                                                 div(tabindex="-1" class='form-control readonly input-sm') {{Game.pointSum(player.points)}}

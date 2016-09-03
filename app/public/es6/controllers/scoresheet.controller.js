@@ -152,13 +152,44 @@
                     value: answer.value,
                     type: answer.type
                 })
+                console.log(vm.game.currentCycle.answers);
             }            
+        }
+        
+        vm.getNumberOfTossupTypeForPlayer = (player, tossupValue) => {
+            let cycleTotal = vm.game.cycles.reduce((total, cycle) => {
+                
+                let numberInCycle = cycle.answers.filter(a => a.playerId === player.id && a.value === tossupValue.value).length;
+                
+                return total + numberInCycle;
+                
+            }, 0);
+            
+            let numberInCurrentCycle = vm.game.currentCycle.answers.filter(a => a.playerId === player.id && a.type === tossupValue.type).length; 
+            
+            return cycleTotal + numberInCurrentCycle;
+        }
+        
+        vm.getPlayerTotalPoints = (player) => {
+            let total = 0;
+            vm.pointScheme.tossupValues.forEach(tv => {
+                let numberForCurrentTV = vm.getNumberOfTossupTypeForPlayer(player, tv);
+                
+                total += (numberForCurrentTV * tv.value);
+            })            
+            return total;
+
         }
 
         vm.switchToBonusIfTossupGotten = (answer, teamId) => {
             if (answer.type !== 'Neg' && vm.teamDidNotNegInCycle(teamId, vm.game.currentCycle)) {
                 vm.switchCurrentCycleContext(true);
             }
+        }
+        
+        vm.removeLastAnswerFromCycle = (cycle) => {
+            cycle.answers.pop();
+            cycle.bonuses = [];
         }
 
         vm.getTeam = (teamId) => {
@@ -173,6 +204,10 @@
         
         vm.teamDidNotNegInCycle = (teamId, cycle) => {
             return cycle.answers.findIndex(answer => answer.type === 'Neg' && answer.teamId === teamId) === -1;
+        }
+        
+        vm.removeTeamNegsFromCycle = (teamId, cycle) => {
+            cycle.answers = cycle.answers.filter(a => !(a.type === 'Neg' && a.teamId === teamId));
         }
         
         function teamDidNotAnswerInCycle(team, cycle) {

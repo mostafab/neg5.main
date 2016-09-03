@@ -289,9 +289,9 @@ li.active > a {
     }
 }
 
-@media (max-width: 1599px) and (min-width: 1200px) {
+@media (max-width: 1599px) and (min-width: 1351px) {
     .responsive-font {
-        font-size: .9em;
+        font-size: .85em;
     }
 }
 
