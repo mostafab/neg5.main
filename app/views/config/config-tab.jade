@@ -77,18 +77,18 @@
                 .row
                     div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
                         form(name='Config.editPointSchemeForm' ng-submit='Config.editPointScheme()' novalidate)
-                            .row.nf-margin
+                            .row.nf-margin(ng-if='Config.games.length === 0')
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingPointScheme === false')
-                                    span.nf-button.btn-md.btn.nf-blue(style='float:left' title='Edit' ng-if='Config.games.length === 0' ng-show='Config.editingPointScheme === false' ng-click='Config.editingPointScheme = true')
+                                    span.nf-button.btn-md.btn.nf-blue(style='float:left' title='Edit' ng-if='Config.games.length === 0' ng-click='Config.editingPointScheme = true')
                                         i.fa.fa-pencil
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingPointScheme === true')
-                                    span.nf-button.btn-md.btn.nf-red(style='float:left' ng-show='Config.editingPointScheme === true' title='Cancel' ng-click='Config.resetPointSchemeCopyToOriginal(); Config.editingPointScheme = false')
+                                    span.nf-button.btn-md.btn.nf-red(style='float:left' title='Cancel' ng-click='Config.resetPointSchemeCopyToOriginal(); Config.editingPointScheme = false')
                                         i.fa.fa-times
-                                    button.nf-button.btn-md.btn.nf-green(type='submit' ng-show='Config.editingPointScheme === true' title='Save')
+                                    button.nf-button.btn-md.btn.nf-green(type='submit' title='Save')
                                         i.fa.fa-check
                                         
-                            .row.nf-margin(ng-show='Config.editingPointScheme === true' ng-if='Config.games.length === 0')
-                                .row.nf-margin(ng-repeat='ps in Config.pointSchemeCopy.tossupValues track by ps.value' ng-show='Config.editingPointScheme === true' )
+                            .row.nf-margin(ng-show='Config.editingPointScheme' ng-if='Config.games.length === 0')
+                                .row.nf-margin(ng-repeat='ps in Config.pointSchemeCopy.tossupValues track by ps.value')
                                     .col-lg-8.col-sm-9.col-md-6
                                         .input-group
                                             span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle(
@@ -116,7 +116,8 @@
                                             span.input-group-addon.nf-button.no-border.point-label(
                                                 ng-class="{'nf-green': ps.type === 'Power', 'nf-blue' : ps.type === 'Base', 'nf-red' : ps.type === 'Neg'}"
                                             ) {{ps.type}}
-                                            div.form-control.nf-input.nf-gray {{ps.value}}                                            
+                                            div.form-control.nf-input.nf-gray {{ps.value}}   
+                                                                                     
                             .row.nf-margin
                                 .row.nf-margin
                                     .col-lg-8.col-sm-9.col-md-6

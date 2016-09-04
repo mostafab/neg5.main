@@ -45,8 +45,8 @@
             Team.getTeamById($scope.tournamentId, id)
                 .then(({players}) => {
                     team.players = players;
-                    team.players.forEach(player => {
-                        player.active = true
+                    team.players.forEach((player, index) => {
+                        player.active = index < vm.rules.maxActive;
                         player.tuh = 0;
                     });
 
@@ -70,12 +70,12 @@
                 }
                 $scope.toast(toastConfig);
                 Team.addPlayer($scope.tournamentId, team.teamInfo.id, team.newPlayer)
-                    .then(player => {
+                    .then((player, index) => {
                         team.players.push({
                             name: player.name,
                             id: player.id,
                             tuh: 0,
-                            active: true
+                            active: index < vm.rules.maxActive
                         })
                         team.newPlayer = '';
                         

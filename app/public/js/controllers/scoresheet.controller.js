@@ -47,8 +47,8 @@
                 var players = _ref.players;
 
                 team.players = players;
-                team.players.forEach(function (player) {
-                    player.active = true;
+                team.players.forEach(function (player, index) {
+                    player.active = index < vm.rules.maxActive;
                     player.tuh = 0;
                 });
 
@@ -70,12 +70,12 @@
                         message: 'Adding ' + team.newPlayer + ' to ' + team.teamInfo.name
                     };
                     $scope.toast(toastConfig);
-                    Team.addPlayer($scope.tournamentId, team.teamInfo.id, team.newPlayer).then(function (player) {
+                    Team.addPlayer($scope.tournamentId, team.teamInfo.id, team.newPlayer).then(function (player, index) {
                         team.players.push({
                             name: player.name,
                             id: player.id,
                             tuh: 0,
-                            active: true
+                            active: index < vm.rules.maxActive
                         });
                         team.newPlayer = '';
 

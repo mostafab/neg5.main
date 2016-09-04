@@ -1,9 +1,9 @@
 (() => {
     
     angular.module('tournamentApp')
-        .controller('ConfigCtrl', ['$scope', 'Tournament', 'Game', 'Division', 'Phase', ConfigCtrl]);
+        .controller('ConfigCtrl', ['$scope', '$timeout', 'Tournament', 'Game', 'Division', 'Phase', ConfigCtrl]);
     
-    function ConfigCtrl($scope, Tournament, Game, Division, Phase) {
+    function ConfigCtrl($scope, $timeout, Tournament, Game, Division, Phase) {
         
         let vm = this;
 
@@ -192,9 +192,11 @@
             }
             return false;
         }
-
-        angular.copy(vm.pointScheme, vm.pointSchemeCopy);
-        angular.copy(vm.rules, vm.rulesCopy);
+        
+        $timeout(() => {
+            vm.resetPointSchemeCopyToOriginal();
+            vm.resetRules();
+        }, 500);
 
         Division.getDivisions($scope.tournamentId);
 
