@@ -69,6 +69,13 @@
 
         vm.submitScoresheet = function () {};
 
+        vm.displayPlayerAnswerForCycle = function (event, player, cycle) {
+            if (!cycle.editing) {
+                cycle.editing = {};
+            }
+            cycle.editing[player.id] = !cycle.editing[player.id];
+        };
+
         vm.addPlayer = function (team) {
             if (team.newPlayer.length > 0) {
                 (function () {

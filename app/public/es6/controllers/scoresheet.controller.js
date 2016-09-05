@@ -71,6 +71,13 @@
             
         }
         
+        vm.displayPlayerAnswerForCycle = (event, player, cycle) => {
+            if (!cycle.editing) {
+                cycle.editing = {};
+            }
+            cycle.editing[player.id] = !cycle.editing[player.id];
+        }
+        
         vm.addPlayer = (team) => {
             if (team.newPlayer.length > 0) {
                 let toastConfig = {

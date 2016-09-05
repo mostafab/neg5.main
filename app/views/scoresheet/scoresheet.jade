@@ -153,22 +153,31 @@
                 
         .col-lg-6.col-md-12.col-sm-12(ng-show='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
             .row
-                .panel.nf-panel
+                .panel.nf-panel.relative
                     table.table.table-condensed.responsive-font.table-bordered
                         thead
                             tr.no-border
-                                th.center.table-head.nf-blue(ng-repeat='player in Scoresheet.game.teams[0].players' title='{{player.name}}') {{player.name | limitTo:2}}
+                                th.center.table-head.nf-blue(ng-repeat='player in Scoresheet.game.teams[0].players' title='{{player.name}}' ng-show='player.active') {{player.name | limitTo:2}}
                                 th.center.table-head.nf-gray Bonus
                                 th.center.table-head.nf-gray Total
                                 th.center.table-head.nf-gray TU # 
                                 th.center.table-head.nf-gray Total
                                 th.center.table-head.nf-gray Bonus
-                                th.center.table-head.nf-blue(ng-repeat='player in Scoresheet.game.teams[1].players' title='{{player.name}}') {{player.name | limitTo:2}}
+                                th.center.table-head.nf-blue(ng-repeat='player in Scoresheet.game.teams[1].players' title='{{player.name}}' ng-show='player.active') {{player.name | limitTo:2}}
 
                         tbody
                             tr(ng-repeat='cycle in Scoresheet.game.cycles track by $index', 
                                 ng-class="{'nf-dark-blue': $index + 1 !== Scoresheet.game.currentCycle.number, 'nf-green': $index + 1 === Scoresheet.game.currentCycle.number}")
-                                td.center(ng-repeat='player in Scoresheet.game.teams[0].players') {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
+                                td.center(ng-repeat='player in Scoresheet.game.teams[0].players' ng-if='player.active') 
+                                    p(ng-click='Scoresheet.displayPlayerAnswerForCycle($event, player, cycle)' ng-if='!cycle.editing[player.id]') {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
+                                    div(ng-if='cycle.editing[player.id]')
+                                        select.input-xs.nf-input.form-control.inline(ng-options='pv as pv.value for pv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-model='cycle.newAnswer[player.id]')
+                                            option(value='') -
+                                        button.btn-sm.btn.nf-button.nf-red.inline.left.nf-margin(ng-click='cycle.editing[player.id] = false')
+                                            i.fa.fa-times
+                                        button.btn-sm.btn.nf-button.nf-green.inline.right.nf-margin(ng-click='Scoresheet.editPlayerAnswer(player, Scoresheet.game.teams[0].teamInfo.id)')
+                                            i.fa.fa-check
+                                    
                                 td.center 
                                     | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamBonusPointsForCycle(Scoresheet.game.teams[0].teamInfo.id, $index) : '-'}}
                                 td.center 
@@ -177,9 +186,22 @@
                                 td.center
                                     | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[1].teamInfo.id, $index) : '-'}}
                                 td.center
-                                 | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamBonusPointsForCycle(Scoresheet.game.teams[1].teamInfo.id, $index) : '-'}}
-                                td.center(ng-repeat='player in Scoresheet.game.teams[1].players') {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
-            
+                                    | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamBonusPointsForCycle(Scoresheet.game.teams[1].teamInfo.id, $index) : '-'}}
+                                td.center(ng-repeat='player in Scoresheet.game.teams[1].players' ng-if='player.active') 
+                                    p(ng-click='Scoresheet.displayPlayerAnswerForCycle($event, player, cycle)' ng-if='!cycle.editing[player.id]') {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
+                                     div(ng-if='cycle.editing[player.id]')
+                                        select.input-xs.nf-input.form-control.inline(ng-options='pv as pv.value for pv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-model='cycle.newAnswer[player.id]')
+                                            option(value='') -
+                                        button.btn-sm.btn.nf-button.nf-red.inline.left.nf-margin(ng-click='cycle.editing[player.id] = false; cycle.newAnswer[player.id] = null')
+                                            i.fa.fa-times
+                                        button.btn-sm.btn.nf-button.nf-green.inline.right.nf-margin(ng-click='Scoresheet.editPlayerAnswer(player, Scoresheet.game.teams[1].teamInfo.id)')
+                                            i.fa.fa-check
+                                
+                        // .panel.nf-panel.nf-shadow.no-border(style='position:absolute;z-index:20' ng-style='Scoresheet.cycleView') 
+                        //     .panel-heading.nf-blue Cycle {{vm.viewingCycle.}}
+                        //     .panel-body.nf-panel-body.nf-dark-blue
+                        //         button.nf-button.btn.nf-orange.btn-sm
+                        
             .row
                 .panel.nf-panel
                     .nf-panel-heading.nf-blue.center Match Information
@@ -282,3 +304,6 @@
                     .nf-panel-footer.panel-footer.nf-blue
                         button.nf-button.btn.nf-green(type='submit' ng-disabled='Scoresheet.game.currentCycle.number === 1')
                             | Submit Match
+                            
+        
+        
