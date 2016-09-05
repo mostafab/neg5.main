@@ -10,7 +10,8 @@
             get: get,
             set: set,
             getObject: getObject,
-            setObject: setObject
+            setObject: setObject,
+            localStorage: localStorageWrapper()
         };
 
         function get(key) {
@@ -27,6 +28,17 @@
 
         function setObject(key, value) {
             $cookies.putObject(key, value);
+        }
+
+        function localStorageWrapper() {
+            return {
+                set: function set(key, value) {
+                    localStorage.setItem(key, value);
+                },
+                get: function get(key) {
+                    return localStorage.getItem(key);
+                }
+            };
         }
 
         return service.cookieFactory;

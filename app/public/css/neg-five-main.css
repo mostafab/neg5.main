@@ -10,7 +10,6 @@ nf-image {
 
 .nf-button {
     border-radius: 2px;
-    margin: 5px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     font-size: 1.3em;
 }
@@ -33,6 +32,10 @@ nf-image {
     padding: 45px;
     background: rgba(200, 200, 200, .9);
     text-align: center;
+}
+
+table.player-table * td:first-child:hover {
+    cursor: pointer;
 }
 
 
@@ -212,6 +215,11 @@ li.active > a {
 
 .nf-orange {
     background-color: #FFA000;
+    color: white;
+}
+
+.nf-black {
+    background-color: #212121;
     color: white;
 }
 
@@ -447,5 +455,10 @@ tr > .table-head {
 .nf-toast i {
     margin-right: 10px;
 }
+
+.underline {
+    text-decoration: underline;
+}
+
 
 

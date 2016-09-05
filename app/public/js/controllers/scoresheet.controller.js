@@ -2,25 +2,28 @@
 
 (function () {
 
-    angular.module('tournamentApp').controller('ScoresheetCtrl', ['$scope', 'Tournament', 'Team', ScoresheetCtrl]);
+    angular.module('tournamentApp').controller('ScoresheetCtrl', ['$scope', 'Tournament', 'Team', 'Phase', 'Cookies', ScoresheetCtrl]);
 
-    function ScoresheetCtrl($scope, Tournament, Team) {
+    function ScoresheetCtrl($scope, Tournament, Team, Phase, Cookies) {
 
         var vm = this;
 
         vm.teams = Team.teams;
         vm.pointScheme = Tournament.pointScheme;
         vm.rules = Tournament.rules;
+        vm.phases = Phase.phases;
 
         vm.game = {
             teams: [{
                 teamInfo: null,
                 players: [],
-                newPlayer: ''
+                newPlayer: '',
+                overtime: 0
             }, {
                 teamInfo: null,
                 players: [],
-                newPlayer: ''
+                newPlayer: '',
+                overtime: 0
             }],
             cycles: initializeCyclesArray(),
             currentCycle: {
@@ -32,6 +35,7 @@
             round: 0,
             packet: null,
             notes: null,
+            phases: [],
             room: null
         };
 
@@ -63,6 +67,8 @@
             });
         };
 
+        vm.submitScoresheet = function () {};
+
         vm.addPlayer = function (team) {
             if (team.newPlayer.length > 0) {
                 (function () {
@@ -70,12 +76,12 @@
                         message: 'Adding ' + team.newPlayer + ' to ' + team.teamInfo.name
                     };
                     $scope.toast(toastConfig);
-                    Team.addPlayer($scope.tournamentId, team.teamInfo.id, team.newPlayer).then(function (player, index) {
+                    Team.addPlayer($scope.tournamentId, team.teamInfo.id, team.newPlayer).then(function (player) {
                         team.players.push({
                             name: player.name,
                             id: player.id,
                             tuh: 0,
-                            active: index < vm.rules.maxActive
+                            active: team.players.length + 1 <= vm.rules.maxActive
                         });
                         team.newPlayer = '';
 
@@ -90,6 +96,26 @@
                     });
                 })();
             }
+        };
+
+        vm.getTeamBouncebacks = function (teamId) {
+            var sum = 0;
+            vm.game.cycles.forEach(function (cycle) {
+                if (!teamAnsweredTossupCorrectly(teamId, cycle) && cycleHasCorrectAnswer(cycle)) {
+                    var numPartsBouncedBack = cycle.bonuses.filter(function (b) {
+                        return b === teamId;
+                    }).length;
+                    sum += numPartsBouncedBack * vm.pointScheme.bonusPointValue;
+                }
+            });
+            if (!teamAnsweredTossupCorrectly(teamId, vm.game.currentCycle) && cycleHasCorrectAnswer(vm.game.currentCycle)) {
+                var numPartsBouncedBack = vm.game.currentCycle.bonuses.filter(function (b) {
+                    return b === teamId;
+                }).length;
+                sum += numPartsBouncedBack * vm.pointScheme.bonusPointValue;
+            }
+
+            return sum;
         };
 
         vm.range = function (num) {
@@ -179,6 +205,8 @@
             };
 
             incrementActivePlayersTUH(1);
+
+            saveScoresheet();
         };
 
         vm.lastCycle = function () {
@@ -199,6 +227,8 @@
             }
 
             incrementActivePlayersTUH(-1);
+
+            saveScoresheet();
         };
 
         vm.getPlayerAnswerForCycle = function (player, cycle) {
@@ -280,10 +310,40 @@
             });
         };
 
+        vm.loadLastSavedScoresheet = function () {
+            var lastScoresheet = Cookies.localStorage.get('scoresheet');
+            if (!lastScoresheet) {
+                $scope.toast({
+                    message: 'No prior saved scoresheet',
+                    success: false,
+                    hideAfter: true
+                });
+            } else {
+                vm.game = JSON.parse(lastScoresheet);
+                $scope.toast({
+                    message: 'Loaded scoresheet',
+                    success: true,
+                    hideAfter: true
+                });
+            }
+        };
+
         function teamDidNotAnswerInCycle(team, cycle) {
             return cycle.answers.findIndex(function (answer) {
                 return answer.teamId === team.id;
             }) === -1;
+        }
+
+        function cycleHasCorrectAnswer(cycle) {
+            return cycle.answers.some(function (a) {
+                return a.type !== 'Neg';
+            });
+        }
+
+        function teamAnsweredTossupCorrectly(teamId, cycle) {
+            return cycle.answers.some(function (a) {
+                return a.teamId === teamId && a.type !== 'Neg';
+            });
         }
 
         function incrementActivePlayersTUH(num) {
@@ -305,6 +365,10 @@
                 });
             }
             return arr;
+        }
+
+        function saveScoresheet() {
+            Cookies.localStorage.set('scoresheet', JSON.stringify(vm.game));
         }
     }
 })();
