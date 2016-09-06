@@ -1,6 +1,8 @@
-* {
+/** {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+}*/
+
+
 
 .list-element {
     -webkit-transition: background-color .5s;

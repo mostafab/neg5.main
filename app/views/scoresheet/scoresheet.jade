@@ -13,7 +13,7 @@
                     .panel.nf-panel
                         .nf-panel-heading.nf-blue.center {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}}
                         .panel-body.nf-panel-body.nf-dark-blue.relative(style='position:relative')
-                            .input-group.nf-margin.responsive-font(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'not-visible' : !player.active}")
+                            .input-group.nf-margin.responsive(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'not-visible' : !player.active}")
                                 div.player-name
                                     div.player-arrows(style='position:absolute;z-index:10' ng-if='Scoresheet.game.teams[0].players.length > 1')
                                         span.input-group-addon.btn.nf-button.nf-blue.no-border(style='position:absolute;margin:0', 
@@ -52,7 +52,7 @@
                     .panel.nf-panel
                         .nf-panel-heading.nf-blue.center {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}}
                         .panel-body.nf-panel-body.nf-dark-blue.relative
-                            .input-group.nf-margin.responsive-font(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'not-visible' : !player.active}")
+                            .input-group.nf-margin.responsive(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'not-visible' : !player.active}")
                                 div.player-name
                                     div.player-arrows(style='position:absolute;z-index:10' ng-if='Scoresheet.game.teams[1].players.length > 1')
                                         span.input-group-addon.btn.nf-button.nf-blue.no-border(style='position:absolute;margin:0', 
@@ -167,9 +167,11 @@
 
                         tbody
                             tr(ng-repeat='cycle in Scoresheet.game.cycles track by $index', 
-                                ng-class="{'nf-dark-blue': $index + 1 !== Scoresheet.game.currentCycle.number, 'nf-green': $index + 1 === Scoresheet.game.currentCycle.number}")
+                                ng-class="{'nf-dark-blue': $index + 1 !== Scoresheet.game.currentCycle.number, 'nf-green': $index + 1 === Scoresheet.game.currentCycle.number}",
+                                ng-click='Scoresheet.displayCycle()')
                                 td.center(ng-repeat='player in Scoresheet.game.teams[0].players') 
-                                    | {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
+                                    p 
+                                        | {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
                                 td.center 
                                     | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamBonusPointsForCycle(Scoresheet.game.teams[0].teamInfo.id, $index) : '-'}}
                                 td.center 
@@ -182,11 +184,17 @@
                                 td.center(ng-repeat='player in Scoresheet.game.teams[1].players') 
                                     | {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
 
-                        // .panel.nf-panel.nf-shadow.no-border(style='position:absolute;z-index:20' ng-style='Scoresheet.cycleView') 
-                        //     .panel-heading.nf-blue Cycle {{vm.viewingCycle.}}
-                        //     .panel-body.nf-panel-body.nf-dark-blue
-                        //         button.nf-button.btn.nf-orange.btn-sm
-                        
+
+                         .panel.nf-panel.nf-shadow.no-border(style='position:absolute;z-index:20;top:35%;left:40%' ng-style='Scoresheet.cycleView') 
+                            .nf-panel-heading.nf-blue Cycle {{Scoresheet.game.currentCycle.number}}
+                            .panel-body.nf-panel-body.nf-gray
+                                 p Answers
+                                 p Bonuses
+                            .panel-footer.nf-panel-footer.nf-blue
+                                button.nf-button.btn.nf-red.btn-sm
+                                    i.fa.fa-times
+                                button.nf-button.btn.nf-green.btn-sm
+                                    i.fa.fa-check
             .row
                 .panel.nf-panel
                     .nf-panel-heading.nf-blue.center Match Information
