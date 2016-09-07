@@ -39,7 +39,7 @@
                                 
                         .panel-footer.nf-panel-footer.nf-blue
                             .input-group.nf-margin(ng-show='Scoresheet.game.teams[0].teamInfo')
-                                input.form-control.nf-input(ng-model='Scoresheet.game.teams[0].newPlayer' placeholder='New Player for {{Scoresheet.game.teams[0].teamInfo.name}}' type='text')
+                                input.form-control.nf-input(ng-model='Scoresheet.game.teams[0].newPlayer' placeholder='New Player for {{Scoresheet.game.teams[0].teamInfo.name}}' type='text' autocomplete='off')
                                 span.input-group-addon.nf-button.btn.nf-green(ng-click='Scoresheet.addPlayer(Scoresheet.game.teams[0])')
                                     i.fa.fa-check
                                     
@@ -79,7 +79,7 @@
             
                         .panel-footer.nf-panel-footer.nf-blue
                             .input-group.nf-margin(ng-show='Scoresheet.game.teams[1].teamInfo')
-                                input.form-control.nf-input(ng-model='Scoresheet.game.teams[1].newPlayer' placeholder='New Player for {{Scoresheet.game.teams[1].teamInfo.name}}' type='text')
+                                input.form-control.nf-input(ng-model='Scoresheet.game.teams[1].newPlayer' placeholder='New Player for {{Scoresheet.game.teams[1].teamInfo.name}}' type='text' autocomplete='off')
                                 span.input-group-addon.nf-button.btn.nf-green(ng-click='Scoresheet.addPlayer(Scoresheet.game.teams[1])')
                                     i.fa.fa-check
                                     
@@ -130,7 +130,7 @@
                                     td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)}}
                                     td.pad.center {{Scoresheet.getPlayerTotalPoints(player)}}
                                     td.pad.center
-                                       input.center.input-sm.nf-input.form-control(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' ng-model='player.tuh')
+                                       input.center.input-sm.nf-input.form-control(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' ng-model='player.tuh' autocomplete='off')
 
                 .col-lg-12.col-md-12.col-sm-12
                     .panel.nf-panel.nf-blue 
@@ -146,7 +146,7 @@
                                     td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)}}
                                     td.pad.center {{Scoresheet.getPlayerTotalPoints(player)}}
                                     td.pad.center
-                                        input.center.input-sm.nf-input.form-control(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' ng-model='player.tuh')
+                                        input.center.input-sm.nf-input.form-control(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' ng-model='player.tuh' autocomplete='off')
             
             .row(ng-if='!Scoresheet.game.teams[0].teamInfo && !Scoresheet.game.teams[1].teamInfo')
                 .col-lg-6.col-md-6.col-sm-6
@@ -245,7 +245,7 @@
                                     .col-md-6.col-sm-6
                                         label.label.nf-label.btn-block Overtime TUs:
                                     .col-md-6.col-sm-6
-                                        input.form-control.nf-input(type='number' min='0' placeholder='# of OT tossups' ng-model='Scoresheet.game.teams[0].overtime')
+                                        input.form-control.nf-input(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' placeholder='# of OT tossups' ng-model='Scoresheet.game.teams[0].overtime')
                                     
                             .col-lg-6.col-md-6.col-sm-6(style='text-align:right')
                                 .row.nf-margin
@@ -260,9 +260,9 @@
                                         p.inline {{Scoresheet.getTeamBouncebacks(Scoresheet.game.teams[1].teamInfo.id)}}
                                 .row
                                     .col-md-6.col-sm-6
-                                        input.form-control.nf-input(type='number' placeholder='# of OT tossups' min='0' ng-model='Scoresheet.game.teams[1].overtime')
+                                        input.form-control.nf-input(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' placeholder='# of OT tossups' ng-model='Scoresheet.game.teams[1].overtime')
                                     .col-md-6.col-sm-6
-                                        label.label.nf-label.btn-block Overtime TUs:                            
+                                        label.label.nf-label.btn-block Overtime TUs                            
                         br
                         br
                         
@@ -311,7 +311,7 @@
                             div(class="col-lg-12 col-md-12 col-sm-12")
                                 div(class="row")
                                     div(class="col-md-6 col-sm-6")
-                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases ({{Scoresheet.game.phases.length}})
+                                        label(class="label nf-dark-blue nf-label btn-block" style='float:right' title='Select all phases that you want this game to count for.') Phases ({{Scoresheet.game.phases.length}})
                                     div(class="col-md-6 col-sm-6")
                                         select(multiple required class="form-control nf-input no-overflow" name='phases' ng-attr-size='{{Scoresheet.phases.length}}' ng-options='phase.name for phase in Scoresheet.phases | orderBy:"name" track by phase.id' ng-model='Scoresheet.game.phases')
                                             
