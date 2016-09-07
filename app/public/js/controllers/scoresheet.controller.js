@@ -138,8 +138,9 @@
             angular.copy(tempArray, players);
         };
 
-        vm.setTeamThatGotBonusPartCurrentCycle = function (index, team) {
-            vm.game.currentCycle.bonuses[index] = vm.game.currentCycle.bonuses[index] === team.id ? null : team.id;
+        vm.setTeamThatGotBonusPartCurrentCycle = function (index, team, bonusesArray) {
+            // vm.game.currentCycle.bonuses[index] = vm.game.currentCycle.bonuses[index] === team.id ? null : team.id;
+            bonusesArray[index] = bonusesArray[index] === team.id ? null : team.id;
         };
 
         vm.getTeamThatGotTossup = function (cycle) {
@@ -309,7 +310,7 @@
         };
 
         vm.loadLastSavedScoresheet = function () {
-            var lastScoresheet = Cookies.localStorage.get('scoresheet');
+            var lastScoresheet = Cookies.localStorage.get('scoresheet_' + $scope.tournamentId);
             if (!lastScoresheet) {
                 $scope.toast({
                     message: 'No prior saved scoresheet',
@@ -323,6 +324,83 @@
                     success: true,
                     hideAfter: true
                 });
+            }
+        };
+
+        vm.displayPlayerAnswerForCycle = function (player, cycleIndex) {
+            var cycle = vm.game.cycles[cycleIndex];
+            if (cycleIndex < vm.game.currentCycle.number - 1) {
+                (function () {
+                    if (!cycle.editing) {
+                        cycle.editing = {};
+                    }
+                    if (!cycle.newAnswer) {
+                        cycle.newAnswer = {};
+                    }
+                    var playerAnswer = vm.getPlayerAnswerForCycle(player, cycle);
+                    if (!playerAnswer) {
+                        cycle.newAnswer[player.id] = null;
+                    } else {
+                        cycle.newAnswer[player.id] = vm.pointScheme.tossupValues.find(function (tv) {
+                            return tv.value === playerAnswer.value;
+                        });
+                    }
+
+                    cycle.editing[player.id] = true;
+                })();
+            }
+        };
+
+        vm.displayCycleBonuses = function (teamId, cycleIndex) {
+            var cycle = vm.game.cycles[cycleIndex];
+            if (cycleIndex < vm.game.currentCycle.number - 1 && cycleHasCorrectAnswer(cycle)) {
+                cycle.bonusesCopy = [];
+                angular.copy(cycle.bonuses, cycle.bonusesCopy);
+
+                cycle.editingBonus = true;
+            }
+        };
+
+        vm.editPlayerAnswerForCycle = function (playerId, teamId, newTossupValue, cycle) {
+
+            var filterFunction = void 0;
+
+            if (newTossupValue && newTossupValue.type !== 'Neg') {
+                filterFunction = function filterFunction(a) {
+                    return a.teamId !== teamId && a.type === 'Neg';
+                };
+            } else {
+                filterFunction = function filterFunction(a) {
+                    return a.teamId !== teamId && a.type !== 'Neg';
+                };
+            }
+
+            var filteredAnswers = cycle.answers.filter(filterFunction);
+
+            if (newTossupValue) {
+                filteredAnswers.push({
+                    playerId: playerId,
+                    teamId: teamId,
+                    value: newTossupValue.value,
+                    type: newTossupValue.type
+                });
+            }
+            cycle.answers = filteredAnswers;
+
+            if (!cycleHasCorrectAnswer(cycle)) {
+                cycle.bonuses = [];
+            }
+
+            if (!cycle.editing) {
+                cycle.editing = {};
+            }
+            cycle.editing[playerId] = false;
+        };
+
+        vm.editCycleBonuses = function (cycle) {
+            if (cycle.bonusesCopy) {
+                angular.copy(cycle.bonusesCopy, cycle.bonuses);
+                cycle.editingBonus = false;
             }
         };
 
@@ -366,7 +444,7 @@
         }
 
         function saveScoresheet() {
-            Cookies.localStorage.set('scoresheet', JSON.stringify(vm.game));
+            Cookies.localStorage.set('scoresheet_' + $scope.tournamentId, JSON.stringify(vm.game));
         }
     }
 })();

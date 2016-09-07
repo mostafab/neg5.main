@@ -14,10 +14,10 @@ nf-image {
     font-size: 1.3em;
 }
 
-.nf-button.transition {
+.nf-button.transition, .input-group.transition {
     transition: .1s all;
 }
-.nf-button.transition:hover {
+.nf-button.transition:hover, .input-group.transition {
     cursor: pointer;
 }
 
