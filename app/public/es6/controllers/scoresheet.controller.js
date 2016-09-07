@@ -27,7 +27,7 @@
                     overtime: 0
                 }
             ],
-            cycles: initializeCyclesArray(),
+            cycles: initializeCyclesArray(20),
             currentCycle: {
                 number: 1,
                 answers: [],
@@ -399,9 +399,9 @@
             })
         }
 
-        function initializeCyclesArray() {
+        function initializeCyclesArray(n) {
             let arr = [];
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < n; i++) {
                 arr.push({
                     answers: [],
                     bonuses: []

@@ -235,7 +235,7 @@ li.active > a {
 }
 
 .not-visible {
-    visibility: hidden;
+    display: none !important;
 }
 
 .green-text {

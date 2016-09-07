@@ -25,7 +25,7 @@
                 newPlayer: '',
                 overtime: 0
             }],
-            cycles: initializeCyclesArray(),
+            cycles: initializeCyclesArray(20),
             currentCycle: {
                 number: 1,
                 answers: [],
@@ -432,9 +432,9 @@
             });
         }
 
-        function initializeCyclesArray() {
+        function initializeCyclesArray(n) {
             var arr = [];
-            for (var i = 0; i < 20; i++) {
+            for (var i = 0; i < n; i++) {
                 arr.push({
                     answers: [],
                     bonuses: []
