@@ -35,6 +35,7 @@
             round: 0,
             packet: null,
             notes: null,
+            moderator: null,
             phases: [],
             room: null
         };
@@ -404,6 +405,76 @@
             }
         };
 
+        vm.submitScoresheet = function () {
+            if (vm.scoresheetForm.$valid) {
+                var parsedScoresheet = vm.parseScoresheet(vm.game);
+                console.log(parsedScoresheet);
+            } else {
+                $scope.toast({
+                    message: 'Please fix the errors on the scoresheet.',
+                    success: false,
+                    hideAfter: true
+                });
+            }
+        };
+
+        vm.parseScoresheet = function (scoresheet) {
+            var game = {
+                moderator: scoresheet.moderator,
+                notes: scoresheet.notes,
+                packet: scoresheet.packet,
+                phases: scoresheet.phases.map(function (phase) {
+                    return phase.id;
+                }),
+                room: scoresheet.room,
+                round: scoresheet.round,
+                tuh: scoresheet.currentCycle.number - 1,
+                teams: scoresheet.teams.map(function (team) {
+                    return {
+                        id: team.teamInfo.id,
+                        players: team.players.map(function (player) {
+                            return {
+                                id: player.id,
+                                tuh: player.tuh,
+                                points: vm.pointScheme.tossupValues.map(function (tv) {
+                                    return {
+                                        value: tv.value,
+                                        number: vm.getNumberOfTossupTypeForPlayer(player, tv)
+                                    };
+                                })
+                            };
+                        }),
+                        bouncebacks: vm.getTeamBouncebacks(team.teamInfo.id),
+                        overtime: team.overtime || 0
+                    };
+                }),
+                scoresheet: scoresheet.cycles.filter(function (c, index) {
+                    return index < scoresheet.currentCycle.number - 1;
+                }).map(function (c, index) {
+                    return {
+                        number: index + 1,
+                        answers: c.answers,
+                        bonuses: makeArray(vm.pointScheme.partsPerBonus).map(function (elem, index) {
+                            return {
+                                part: index + 1,
+                                teamThatGotBonus: c.bonuses[index] || null
+                            };
+                        })
+                    };
+                })
+            };
+
+            return game;
+        };
+
+        function makeArray(length) {
+            var arr = [];
+            for (var i = 0; i < length; i++) {
+                arr[i] = undefined;
+            }
+            return arr;
+        }
+
         function teamDidNotAnswerInCycle(team, cycle) {
             return cycle.answers.findIndex(function (answer) {
                 return answer.teamId === team.id;
@@ -444,6 +515,7 @@
         }
 
         function saveScoresheet() {
+            vm.game.lastSavedAt = new Date();
             Cookies.localStorage.set('scoresheet_' + $scope.tournamentId, JSON.stringify(vm.game));
         }
     }

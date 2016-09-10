@@ -37,6 +37,7 @@
             round: 0,
             packet: null,
             notes: null,
+            moderator: null,
             phases: [],
             room: null
         };
@@ -377,6 +378,72 @@
             }
         }
         
+        vm.submitScoresheet = () => {
+            if (vm.scoresheetForm.$valid) {
+                let parsedScoresheet = vm.parseScoresheet(vm.game);    
+                console.log(parsedScoresheet);
+            } else {
+                $scope.toast({
+                    message: 'Please fix the errors on the scoresheet.',
+                    success: false,
+                    hideAfter: true
+                })
+            }
+        }
+        
+        vm.parseScoresheet = (scoresheet) => {
+            let game = {
+                moderator: scoresheet.moderator,
+                notes: scoresheet.notes,
+                packet: scoresheet.packet,
+                phases: scoresheet.phases.map(phase => phase.id),
+                room: scoresheet.room,
+                round: scoresheet.round,
+                tuh: scoresheet.currentCycle.number - 1,
+                teams: scoresheet.teams.map(team => {
+                    return {
+                        id: team.teamInfo.id,
+                        players: team.players.map(player => {
+                            return {
+                                id: player.id,
+                                tuh: player.tuh,
+                                points: vm.pointScheme.tossupValues.map(tv => {
+                                    return {
+                                        value: tv.value,
+                                        number: vm.getNumberOfTossupTypeForPlayer(player, tv)
+                                    }
+                                })
+                            }
+                        }),
+                        bouncebacks: vm.getTeamBouncebacks(team.teamInfo.id),
+                        overtime: team.overtime || 0
+                    }
+                }),
+                scoresheet: scoresheet.cycles.filter((c, index) => index < scoresheet.currentCycle.number - 1).map((c, index) => {
+                    return {
+                        number: index + 1,
+                        answers: c.answers,
+                        bonuses: makeArray(vm.pointScheme.partsPerBonus).map((elem, index) => {
+                            return {
+                                part: index + 1,
+                                teamThatGotBonus: c.bonuses[index] || null
+                            }
+                        })       
+                    }
+                }) 
+            }
+            
+            return game;
+        }
+        
+        function makeArray(length) {
+            let arr = [];
+            for (let i = 0; i < length; i++) {
+                arr[i] = undefined;
+            }
+            return arr;
+        }
+        
         function teamDidNotAnswerInCycle(team, cycle) {
             return cycle.answers.findIndex(answer => answer.teamId === team.id) === -1;
         }
@@ -411,6 +478,7 @@
         }
         
         function saveScoresheet() {
+            vm.game.lastSavedAt = new Date();
             Cookies.localStorage.set('scoresheet_' + $scope.tournamentId, JSON.stringify(vm.game));
         }
         

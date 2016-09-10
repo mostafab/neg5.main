@@ -35,7 +35,7 @@
                                 br                               
                             
                             div.neg-box(ng-show='!Scoresheet.teamDidNotNegInCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle)')
-                                button.nf-red.nf-button.btn.btn-block(ng-click='Scoresheet.removeTeamNegsFromCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle)') Undo Neg
+                                button.nf-red.nf-button.btn.btn-block(type='button' ng-click='Scoresheet.removeTeamNegsFromCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle)') Undo Neg
                                 
                         .panel-footer.nf-panel-footer.nf-blue
                             .input-group.nf-margin(ng-show='Scoresheet.game.teams[0].teamInfo')
@@ -75,7 +75,7 @@
                                 br
                                 
                             div.neg-box(ng-show='!Scoresheet.teamDidNotNegInCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle)')
-                                button.nf-red.nf-button.btn.btn-block(ng-click='Scoresheet.removeTeamNegsFromCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle)') Undo Neg
+                                button.nf-red.nf-button.btn.btn-block(type='button' ng-click='Scoresheet.removeTeamNegsFromCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle)') Undo Neg
             
                         .panel-footer.nf-panel-footer.nf-blue
                             .input-group.nf-margin(ng-show='Scoresheet.game.teams[1].teamInfo')
@@ -104,16 +104,16 @@
                             
                             .row
                                 .col-lg-6.col-md-6.col-sm-6
-                                    button.nf-button.btn.nf-orange.btn-block(ng-click='Scoresheet.removeLastAnswerFromCycle(Scoresheet.game.currentCycle); Scoresheet.switchCurrentCycleContext(false)') Back
+                                    button.nf-button.btn.nf-orange.btn-block(type='button' ng-click='Scoresheet.removeLastAnswerFromCycle(Scoresheet.game.currentCycle); Scoresheet.switchCurrentCycleContext(false)') Back
                                 .col-lg-6.col-md-6.col-sm-6
-                                    button.nf-button.btn.nf-green.btn-block(ng-click='Scoresheet.switchCurrentCycleContext(false); Scoresheet.nextCycle()') Next
+                                    button.nf-button.btn.nf-green.btn-block(type='button' ng-click='Scoresheet.switchCurrentCycleContext(false); Scoresheet.nextCycle()') Next
 
             .row(ng-show='Scoresheet.game.onTossup && Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
                 .col-lg-6.col-md-6.col-sm-6
                     button.nf-button.btn.nf-orange.btn-block.no-margin(type='button' ng-click='Scoresheet.lastCycle()' ng-disabled='Scoresheet.game.currentCycle.number <= 1') Back One Cycle
                 .col-lg-6.col-md-6.col-sm-6
                     button.nf-button.btn.nf-black.btn-block.no-margin(type='button' ng-click='Scoresheet.nextCycle()') Dead Tossup
-            br
+            br            
 
             .row
                 .col-lg-12.col-md-12.col-sm-12
@@ -155,6 +155,12 @@
                 
         .col-lg-6.col-md-12.col-sm-12(ng-show='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
             .row
+                p.nf-panel-heading.nf-blue(style='padding:20px') 
+                    | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'mediumTime'}}
+            
+            br
+            
+            .row
                 .panel.nf-panel.relative
                     table.table.table-condensed.responsive-font.table-bordered
                         thead
@@ -169,7 +175,7 @@
 
                         tbody
                             tr(ng-repeat='cycle in Scoresheet.game.cycles track by $index', 
-                                ng-class="{'nf-dark-blue': $index + 1 !== Scoresheet.game.currentCycle.number, 'nf-green': $index + 1 === Scoresheet.game.currentCycle.number}",
+                                ng-class="{'nf-dark-blue': $index + 1 !== Scoresheet.game.currentCycle.number, 'nf-green green-text': $index + 1 === Scoresheet.game.currentCycle.number}",
                                 ng-click='Scoresheet.displayCycle()')
                                 td.center(ng-repeat='player in Scoresheet.game.teams[0].players' ng-show='player.active') 
                                     p(ng-show='!cycle.editing[player.id]' ng-click='Scoresheet.displayPlayerAnswerForCycle(player, $parent.$index)') 
