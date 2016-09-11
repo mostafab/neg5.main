@@ -60,6 +60,7 @@ exports.default = {
             var round = matchInformation.round;
             var teams = matchInformation.teams;
             var tuh = matchInformation.tuh;
+            var scoresheet = matchInformation.scoresheet;
 
             var queriesArray = [];
             var matchPhases = (0, _matchBuilder.buildMatchPhasesObject)(tournamentId, matchId, phases);
@@ -77,7 +78,7 @@ exports.default = {
 
             queriesArray.push({
                 text: match.add.addMatch,
-                params: [matchId, tournamentId, round, room, moderator, packet, tuh, notes, user],
+                params: [matchId, tournamentId, round, room, moderator, packet, tuh, notes, scoresheet, user],
                 queryType: _db.txMap.one
             }, {
                 text: match.add.addMatchPhases,

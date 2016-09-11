@@ -2,9 +2,9 @@
 
 (function () {
 
-    angular.module('tournamentApp').controller('ScoresheetCtrl', ['$scope', 'Tournament', 'Team', 'Phase', 'Cookies', ScoresheetCtrl]);
+    angular.module('tournamentApp').controller('ScoresheetCtrl', ['$scope', 'Tournament', 'Team', 'Phase', 'Game', 'Cookies', ScoresheetCtrl]);
 
-    function ScoresheetCtrl($scope, Tournament, Team, Phase, Cookies) {
+    function ScoresheetCtrl($scope, Tournament, Team, Phase, Game, Cookies) {
 
         var vm = this;
 
@@ -406,15 +406,42 @@
         };
 
         vm.submitScoresheet = function () {
-            if (vm.scoresheetForm.$valid) {
-                var parsedScoresheet = vm.parseScoresheet(vm.game);
-                console.log(parsedScoresheet);
-            } else {
+            if (!vm.scoresheetForm.$valid) {
                 $scope.toast({
                     message: 'Please fix the errors on the scoresheet.',
                     success: false,
                     hideAfter: true
                 });
+            } else if (vm.game.submitted) {
+                $scope.toast({
+                    message: 'This match has already been submitted.',
+                    success: false,
+                    hideAfter: true
+                });
+            } else {
+                (function () {
+                    var parsedScoresheet = vm.parseScoresheet(vm.game);
+                    var toastConfig = {
+                        message: 'Adding match.'
+                    };
+                    $scope.toast(toastConfig);
+                    Game.postGame($scope.tournamentId, parsedScoresheet).then(function (match) {
+                        vm.game.id = match[0].id;
+                        vm.game.submitted = true;
+
+                        saveScoresheet();
+
+                        toastConfig.success = true;
+                        toastConfig.message = 'Added match';
+                        Game.getGames($scope.tournamentId);
+                    }).catch(function (error) {
+                        toastConfig.success = false;
+                        toastConfig.message = 'Failed to add match.';
+                    }).finally(function () {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    });
+                })();
             }
         };
 
@@ -423,27 +450,24 @@
                 moderator: scoresheet.moderator,
                 notes: scoresheet.notes,
                 packet: scoresheet.packet,
-                phases: scoresheet.phases.map(function (phase) {
-                    return phase.id;
-                }),
+                phases: scoresheet.phases,
                 room: scoresheet.room,
                 round: scoresheet.round,
                 tuh: scoresheet.currentCycle.number - 1,
                 teams: scoresheet.teams.map(function (team) {
                     return {
-                        id: team.teamInfo.id,
+                        teamInfo: team.teamInfo,
                         players: team.players.map(function (player) {
                             return {
                                 id: player.id,
                                 tuh: player.tuh,
-                                points: vm.pointScheme.tossupValues.map(function (tv) {
-                                    return {
-                                        value: tv.value,
-                                        number: vm.getNumberOfTossupTypeForPlayer(player, tv)
-                                    };
-                                })
+                                points: vm.pointScheme.tossupValues.reduce(function (aggr, tv) {
+                                    aggr[tv.value] = vm.getNumberOfTossupTypeForPlayer(player, tv);
+                                    return aggr;
+                                }, {})
                             };
                         }),
+                        score: vm.getTeamScoreUpToCycle(team.teamInfo.id, scoresheet.currentCycle.number - 1),
                         bouncebacks: vm.getTeamBouncebacks(team.teamInfo.id),
                         overtime: team.overtime || 0
                     };
@@ -465,6 +489,31 @@
             };
 
             return game;
+        };
+
+        vm.revertScoresheetSubmission = function () {
+            var matchId = vm.game.id;
+            if (matchId) {
+                (function () {
+                    var toastConfig = {
+                        message: 'Reverting submission.'
+                    };
+                    $scope.toast(toastConfig);
+                    Game.deleteGame($scope.tournamentId, matchId).then(function () {
+                        vm.game.id = null;
+                        vm.game.submitted = false;
+
+                        toastConfig.message = 'Reverted submission';
+                        toastConfig.success = true;
+                    }).catch(function (error) {
+                        toastConfig.message = 'Could not revert submission';
+                        toastConfig.success = false;
+                    }).finally(function () {
+                        toastConfig.hideAfter = true;
+                        $scope.toast(toastConfig);
+                    });
+                })();
+            }
         };
 
         function makeArray(length) {

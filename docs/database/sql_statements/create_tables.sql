@@ -45,6 +45,7 @@ CREATE TABLE tournament_match (
     packet VARCHAR(20),
     tossups_heard integer DEFAULT 0 CHECK (tossups_heard >= 0),
     notes varchar(1000),
+    scoresheet json[],
     added_by varchar(20) NOT NULL,
     PRIMARY KEY (id, tournament_id),
     FOREIGN KEY (tournament_id) REFERENCES tournament(id) ON DELETE CASCADE,

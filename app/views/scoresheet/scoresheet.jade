@@ -332,8 +332,10 @@
                                         textarea(class="form-control nf-input " name="notes" placeholder="Notes" style='min-height:200px' ng-model='Scoresheet.game.notes')                                                            
                                 
                     .nf-panel-footer.panel-footer.nf-blue
-                        button.nf-button.btn.nf-green(type='submit' ng-disabled='Scoresheet.game.currentCycle.number === 1')
+                        button.nf-button.btn.nf-green(type='submit' ng-disabled='Scoresheet.game.currentCycle.number === 1' ng-show='!Scoresheet.game.submitted')
                             | Submit Match
+                        button.nf-button.btn.nf-red(type='button' ng-show='Scoresheet.game.submitted' ng-click='Scoresheet.revertScoresheetSubmission()')
+                            | Revert Submission
                             
         
         

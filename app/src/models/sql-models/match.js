@@ -22,6 +22,7 @@ export default {
     addToTournament: (tournamentId, gameInfo, user, matchId = undefined) => {
         return new Promise((resolve, reject) => {
             let {
+                scoresheet = null,
                 moderator = null, 
                 notes = null, 
                 packet = null, 
@@ -42,7 +43,8 @@ export default {
                 room,
                 round,
                 teams,
-                tuh
+                tuh,
+                scoresheet
             })
             
             db.addToTournament(tournamentId, matchInfo, user, matchId ? true : false)
@@ -62,7 +64,7 @@ export default {
 
 }
 
-function match({id = shortid.generate(), moderator, notes, packet, phases, room, round, teams, tuh}) {
+function match({id = shortid.generate(), moderator, notes, packet, phases, room, round, teams, tuh, scoresheet}) {
     return {
         id,
         moderator: moderator === null ? null : moderator.trim(),
@@ -72,6 +74,7 @@ function match({id = shortid.generate(), moderator, notes, packet, phases, room,
         room: room === null ? null : room.trim(),
         round,
         teams,
-        tuh
+        tuh,
+        scoresheet
     }
 }

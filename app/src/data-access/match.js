@@ -37,7 +37,7 @@ export default {
 
     addToTournament: (tournamentId, matchInformation, user, replacing = false) => {
         return new Promise((resolve, reject) => {
-            let {id: matchId, moderator, notes, packet, phases, room, round, teams, tuh} = matchInformation;
+            let {id: matchId, moderator, notes, packet, phases, room, round, teams, tuh, scoresheet} = matchInformation;
             let queriesArray = [];
             let matchPhases = buildMatchPhasesObject(tournamentId, matchId, phases);
             let matchTeams = buildMatchTeams(tournamentId, matchId, teams);
@@ -55,7 +55,7 @@ export default {
             queriesArray.push(
                 {
                     text: match.add.addMatch,
-                    params: [matchId, tournamentId, round, room, moderator, packet, tuh, notes, user],
+                    params: [matchId, tournamentId, round, room, moderator, packet, tuh, notes, scoresheet, user],
                     queryType: tm.one
                 },
                 {

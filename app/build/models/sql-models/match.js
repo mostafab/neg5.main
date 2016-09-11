@@ -40,6 +40,8 @@ exports.default = {
         var matchId = arguments.length <= 3 || arguments[3] === undefined ? undefined : arguments[3];
 
         return new Promise(function (resolve, reject) {
+            var _gameInfo$scoresheet = gameInfo.scoresheet;
+            var scoresheet = _gameInfo$scoresheet === undefined ? null : _gameInfo$scoresheet;
             var _gameInfo$moderator = gameInfo.moderator;
             var moderator = _gameInfo$moderator === undefined ? null : _gameInfo$moderator;
             var _gameInfo$notes = gameInfo.notes;
@@ -67,7 +69,8 @@ exports.default = {
                 room: room,
                 round: round,
                 teams: teams,
-                tuh: tuh
+                tuh: tuh,
+                scoresheet: scoresheet
             });
 
             _match2.default.addToTournament(tournamentId, matchInfo, user, matchId ? true : false).then(function (result) {
@@ -102,6 +105,7 @@ function match(_ref) {
     var round = _ref.round;
     var teams = _ref.teams;
     var tuh = _ref.tuh;
+    var scoresheet = _ref.scoresheet;
 
     return {
         id: id,
@@ -112,6 +116,7 @@ function match(_ref) {
         room: room === null ? null : room.trim(),
         round: round,
         teams: teams,
-        tuh: tuh
+        tuh: tuh,
+        scoresheet: scoresheet
     };
 }
