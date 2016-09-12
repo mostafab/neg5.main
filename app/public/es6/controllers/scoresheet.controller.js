@@ -431,7 +431,7 @@
                 teams: scoresheet.teams.map(team => {
                     return {
                         teamInfo: team.teamInfo,
-                        players: team.players.map(player => {
+                        players: team.players.filter(p => p.tuh > 0).map(player => {
                             return {
                                 id: player.id,
                                 tuh: player.tuh,

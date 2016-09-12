@@ -457,7 +457,9 @@
                 teams: scoresheet.teams.map(function (team) {
                     return {
                         teamInfo: team.teamInfo,
-                        players: team.players.map(function (player) {
+                        players: team.players.filter(function (p) {
+                            return p.tuh > 0;
+                        }).map(function (player) {
                             return {
                                 id: player.id,
                                 tuh: player.tuh,

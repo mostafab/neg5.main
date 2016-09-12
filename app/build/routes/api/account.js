@@ -16,7 +16,6 @@ exports.default = function (app) {
 
     app.route('/api/account').post(function (req, res) {
         var accountCredentials = req.body;
-        console.log(accountCredentials);
         _account2.default.create(accountCredentials).then(function (user) {
             return res.json({ user: user, success: true });
         }).catch(function (error) {

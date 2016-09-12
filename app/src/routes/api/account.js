@@ -6,7 +6,6 @@ export default (app) => {
     app.route('/api/account')
         .post((req, res) => {
             const accountCredentials = req.body;
-            console.log(accountCredentials);
             Account.create(accountCredentials)
                 .then(user => {
                     return res.json({user: user, success: true});
