@@ -112,6 +112,11 @@
                 });
             }
 
+            $scope.logout = () => {
+                Cookies.remove('nfToken');
+                $window.location = '/';
+            }
+
             setTabWatchers();
             getTournamentContext();
 

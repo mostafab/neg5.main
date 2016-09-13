@@ -9,6 +9,7 @@
         service.cookieFactory = {
             get: get,
             set: set,
+            remove: remove,
             getObject: getObject,
             setObject: setObject,
             localStorage: localStorageWrapper()
@@ -24,6 +25,10 @@
 
         function set(key, value) {
             $cookies.put(key, value);
+        }
+
+        function remove(key) {
+            $cookies.remove(key);
         }
 
         function setObject(key, value) {

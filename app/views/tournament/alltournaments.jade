@@ -9,58 +9,71 @@ block titleContent
 
 block content
     
-    +navbar
-    +navbar-bottom
+    div(ng-app='HomeApp')
 
-    div(class="content-wrapper" style='padding:25px;padding-top:100px' ng-app='HomeApp')
         div(ng-controller='HomeController as Home')
-            .row
-                .col-lg-2.hidden-md
-                .col-lg-8.col-md-12      
-                    .row      
-                        .col-lg-12.col-mg-12(style='margin-bottom:10px')
-                            a(class='list-group-item nf-blue') Tournaments ({{Home.tournaments.length}})
+            nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-dark-blue.nf-shadow(role='navigation')
+                .navbar-header
+                    a.navbar-brand(href='/t/{{tournamentId}}') Tournaments
+                div(class="collapse navbar-collapse")
+                    ul(class="nav navbar-nav")
+                        li
+                            a(href="/tournaments" style="color:white;") Home
+                        //- li(class="list-element")
+                        //-     a(href="/account" style='color:white;') Account
+                    ul(class="nav navbar-nav navbar-right" style='margin:0')
+                        li(class="list-element")
+                            a(style='color:white;' href='#' ng-click='logout()') Logout
+
+            div(class="content-wrapper" style='padding:25px;padding-top:100px')
+                div
                     .row
-                        .col-lg-12.col-md-12
+                        .col-lg-2.hidden-md
+                        .col-lg-8.col-md-12      
+                            .row      
+                                .col-lg-12.col-mg-12(style='margin-bottom:10px')
+                                    a(class='list-group-item nf-blue') Tournaments ({{Home.tournaments.length}})
                             .row
-                                .col-lg-7.col-md-6
-                                    div
-                                        .nf-panel(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | orderBy:"name"')
-                                            a(href='/t/{{tournament.id}}')
-                                                div.list-group-item.nf-blue
-                                                    p.inline {{tournament.name}}
-                                                    p.inline.right {{tournament.director_id}}
-                                                .panel-body.nf-panel-body.nf-dark-blue.nf-shadow.tournament-card
-                                                    .col-lg-12.nf-margin
-                                                            p.inline.left Location
-                                                            p.inline.right {{tournament.location || 'None'}}
-                                                    .col-lg-12.nf-margin
-                                                            p.inline.left Question Set
-                                                            p.inline.right {{tournament.question_set || 'None'}}
-                                                    .col-lg-12.nf-margin
-                                                            p.inline.left Date
-                                                            p.inline.right {{tournament.tournament_date || 'None' | date}} 
+                                .col-lg-12.col-md-12
+                                    .row
+                                        .col-lg-7.col-md-6
+                                            div
+                                                .nf-panel(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | orderBy:"name"')
+                                                    a(href='/t/{{tournament.id}}')
+                                                        div.list-group-item.nf-blue
+                                                            p.inline {{tournament.name}}
+                                                            p.inline.right {{tournament.director_id}}
+                                                        .panel-body.nf-panel-body.nf-dark-blue.nf-shadow.tournament-card
+                                                            .col-lg-12.nf-margin
+                                                                    p.inline.left Location
+                                                                    p.inline.right {{tournament.location || 'None'}}
+                                                            .col-lg-12.nf-margin
+                                                                    p.inline.left Question Set
+                                                                    p.inline.right {{tournament.question_set || 'None'}}
+                                                            .col-lg-12.nf-margin
+                                                                    p.inline.left Date
+                                                                    p.inline.right {{tournament.tournament_date || 'None' | date}} 
 
-                                .col-lg-5.col-md-6
-                                    .nf-panel
-                                        div.list-group-item.nf-green(style='border:none')
-                                            p.inline New Tournament
-                                        .panel-body.nf-panel-body.nf-dark-blue.nf-shadow
-                                            form(novalidate name='Home.newTournamentForm' ng-submit='Home.createNewTournament()')
-                                                .row.nf-margin
-                                                    p.nf-label.label.nf-blue.col-lg-4.col-md-4 Name
-                                                    .col-lg-8.col-md-8
-                                                        input.form-control.nf-input(type='text' required placeholder='Name' ng-model='Home.newTournament.name' maxlength='20')
+                                        .col-lg-5.col-md-6
+                                            .nf-panel
+                                                div.list-group-item.nf-green(style='border:none')
+                                                    p.inline New Tournament
+                                                .panel-body.nf-panel-body.nf-dark-blue.nf-shadow
+                                                    form(novalidate name='Home.newTournamentForm' ng-submit='Home.createNewTournament()')
+                                                        .row.nf-margin
+                                                            p.nf-label.label.nf-blue.col-lg-4.col-md-4 Name
+                                                            .col-lg-8.col-md-8
+                                                                input.form-control.nf-input(type='text' required placeholder='Name' ng-model='Home.newTournament.name' maxlength='20')
 
-                                                .row-nf-margin
-                                                    .col-lg-12.col-md-12
-                                                        button.nf-button.btn.nf-green.no-border.right(type='submit' ng-disabled='Home.submittingForm')
-                                                            i.fa.fa-check
-                                                            
-                    .nf-toast(style='position:fixed' class='angular-animate' ng-show='toastMessage !== null')
-                        .nf-toast-content.nf-button.btn(ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
-                            i.fa(ng-class="{'fa-check': toastMessage.success === true, 'fa-times': toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : toastMessage.success !== true && toastMessage.success !== false}")
-                            | {{toastMessage.message}}
+                                                        .row-nf-margin
+                                                            .col-lg-12.col-md-12
+                                                                button.nf-button.btn.nf-green.no-border.right(type='submit' ng-disabled='Home.submittingForm')
+                                                                    i.fa.fa-check
+                                                                    
+                            .nf-toast(style='position:fixed' class='angular-animate' ng-show='toastMessage !== null')
+                                .nf-toast-content.nf-button.btn(ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
+                                    i.fa(ng-class="{'fa-check': toastMessage.success === true, 'fa-times': toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : toastMessage.success !== true && toastMessage.success !== false}")
+                                    | {{toastMessage.message}}
                                                 
 block scripts
     

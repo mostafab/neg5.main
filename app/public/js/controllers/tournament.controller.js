@@ -118,6 +118,11 @@
             });
         };
 
+        $scope.logout = function () {
+            Cookies.remove('nfToken');
+            $window.location = '/';
+        };
+
         setTabWatchers();
         getTournamentContext();
     }

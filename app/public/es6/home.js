@@ -8,7 +8,7 @@
         })
 
     angular.module('HomeApp')
-        .controller('HomeController', ['$cookies', '$scope', '$http', '$timeout', function($cookies, $scope, $http, $timeout) {
+        .controller('HomeController', ['$cookies', '$scope', '$http', '$timeout', '$window', function($cookies, $scope, $http, $timeout, $window) {
             
             let vm = this;
 
@@ -77,7 +77,10 @@
 
             vm.newTournament = {};
 
-            
+            $scope.logout = () => {
+                $cookies.remove('nfToken');
+                $window.location = '/';
+            }
 
             vm.getTournaments();
 

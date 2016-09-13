@@ -4,34 +4,22 @@ block titleContent
     title Quizbowl.io
     link(rel='stylesheet' href='/css/chat.css')
 
-block content
-    
-    style.
-        .navbar-brand {
-            position: absolute;
-            width: 100%;
-            left: 0;
-            text-align: center;
-            margin:0 auto;
-        }
-        .navbar-toggle {
-            z-index:3;
-        }
+block content        
     
     div(ng-app='tournamentApp')
         div(ng-controller='TournamentCtrl as Tournament')
             nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-dark-blue.nf-shadow(role='navigation')
                 .navbar-header
-                    a.navbar-brand(href='/t/{{tournamentId}}') {{tournamentInfo.name}}
+                    p.navbar-brand {{tournamentInfo.name}}
                 div(class="collapse navbar-collapse")
                     ul(class="nav navbar-nav")
                         li
                             a(href="/tournaments" style="color:white;") Home
-                        li(class="list-element")
-                            a(href="/account" style='color:white;') Account
+                        //- li(class="list-element")
+                        //-     a(href="/account" style='color:white;') Account
                     ul(class="nav navbar-nav navbar-right" style='margin:0')
                         li(class="list-element")
-                            a(style='color:white;') Logout
+                            a(style='color:white;' href='#' ng-click='logout()') Logout
                                         
             div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;')
                 div(class='hidden-md hidden-lg')

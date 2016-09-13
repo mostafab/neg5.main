@@ -8,17 +8,17 @@ div(class="panel panel-default nf-panel")
                         a(class='list-group-item nf-blue') Statistics
                         a(target="_blank" href='/t/{{tournamentId}}/stats' class="stat-link nf-dark-blue list-group-item nf-list-item" data-stats-type='team') Go to Stats
 
-                .col-md-6.col-sm-6.col-lg-6
-                    .list-group.nf-shadow       
-                        a(class='list-group-item nf-blue') Download      
-                        a(href="/t/{{::tournamentId}}/stats/team/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='team' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_standings.html') Team Stats
-                        a(href="/t/{{::tournamentId}}/stats/player/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='player' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_individuals.html') Player Stats
-                        a(href="/t/{{::tournamentId}}/stats/teamfull/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='teamfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_teamdetail.html') 
-                            | Team Full Report
-                        a(href="/t/{{::tournamentId}}/stats/playerfull/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='playerfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_playerdetail.html') 
-                            | Players Full Report
-                        a(href="/t/{{::tournamentId}}/stats/roundreport/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='roundreport' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_rounds.html') 
-                            | Round Report
+                //- .col-md-6.col-sm-6.col-lg-6
+                //-     .list-group.nf-shadow       
+                //-         a(class='list-group-item nf-blue') Download      
+                //-         a(href="/t/{{::tournamentId}}/stats/team/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='team' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_standings.html') Team Stats
+                //-         a(href="/t/{{::tournamentId}}/stats/player/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='player' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_individuals.html') Player Stats
+                //-         a(href="/t/{{::tournamentId}}/stats/teamfull/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='teamfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_teamdetail.html') 
+                //-             | Team Full Report
+                //-         a(href="/t/{{::tournamentId}}/stats/playerfull/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='playerfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_playerdetail.html') 
+                //-             | Players Full Report
+                //-         a(href="/t/{{::tournamentId}}/stats/roundreport/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='roundreport' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_rounds.html') 
+                //-             | Round Report
 
 
         div(class="col-md-6 col-sm-12")
@@ -29,22 +29,22 @@ div(class="panel panel-default nf-panel")
 
     
     
-div(class="panel nf-panel panel-default")
-    div(class="collapsable nf-panel-heading nf-dark-blue") Custom Team Statistics
-    div(class="panel-body nf-panel-body tournament-panel")
-            div(class="col-md-12")
-                form(target="_blank" method="get" action='{{"/t/" + tournamentId + "/stats/filter/teams"}}')
-                    .row
-                        .col-lg-4.col-md-4.col-sm-6
-                            select(class='form-control nf-input no-overflow' ng-attr-size='{{Statistics.teams.length}}' ng-model='Statistics.selectedTeams' ng-options='team.name for team in Statistics.teams | orderBy:"name" track by team.id' multiple)
-                        .col-lg-4.col-md-4.col-sm-6
-                            .row
-                                input(class="form-control nf-input " type="number" name="minround" placeholder="Min Round")
-                            br
-                            .row
-                                input(class="form-control nf-input" type="number" name="maxround" placeholder="Max Round")
-                            br
-                            .row
-                                button(type="button" class="btn btn-md btn-block nf-button nf-blue custombutton" data-post-url="/t/{{::tournamentId}}/stats/filter/teams") Generate Team Stats
-                            .row
-                                button(type="button" class="btn btn-md nf-button btn-block nf-blue custombutton" data-post-url="/t/{{::tournamentId}}/stats/filter/players") Generate Player Stats
+//- div(class="panel nf-panel panel-default")
+//-     div(class="collapsable nf-panel-heading nf-dark-blue") Custom Team Statistics
+//-     div(class="panel-body nf-panel-body tournament-panel")
+//-             div(class="col-md-12")
+//-                 form(target="_blank" method="get" action='{{"/t/" + tournamentId + "/stats/filter/teams"}}')
+//-                     .row
+//-                         .col-lg-4.col-md-4.col-sm-6
+//-                             select(class='form-control nf-input no-overflow' ng-attr-size='{{Statistics.teams.length}}' ng-model='Statistics.selectedTeams' ng-options='team.name for team in Statistics.teams | orderBy:"name" track by team.id' multiple)
+//-                         .col-lg-4.col-md-4.col-sm-6
+//-                             .row
+//-                                 input(class="form-control nf-input " type="number" name="minround" placeholder="Min Round")
+//-                             br
+//-                             .row
+//-                                 input(class="form-control nf-input" type="number" name="maxround" placeholder="Max Round")
+//-                             br
+//-                             .row
+//-                                 button(type="button" class="btn btn-md btn-block nf-button nf-blue custombutton" data-post-url="/t/{{::tournamentId}}/stats/filter/teams") Generate Team Stats
+//-                             .row
+//-                                 button(type="button" class="btn btn-md nf-button btn-block nf-blue custombutton" data-post-url="/t/{{::tournamentId}}/stats/filter/players") Generate Player Stats

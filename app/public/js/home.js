@@ -6,7 +6,7 @@
         $animateProvider.classNameFilter(/angular-animate/);
     });
 
-    angular.module('HomeApp').controller('HomeController', ['$cookies', '$scope', '$http', '$timeout', function ($cookies, $scope, $http, $timeout) {
+    angular.module('HomeApp').controller('HomeController', ['$cookies', '$scope', '$http', '$timeout', '$window', function ($cookies, $scope, $http, $timeout, $window) {
 
         var vm = this;
 
@@ -83,6 +83,11 @@
         };
 
         vm.newTournament = {};
+
+        $scope.logout = function () {
+            $cookies.remove('nfToken');
+            $window.location = '/';
+        };
 
         vm.getTournaments();
     }]);

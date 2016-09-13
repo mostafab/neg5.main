@@ -223,6 +223,18 @@ li.active > a {
     color: white;
 }
 
+.navbar-brand {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    margin:0 auto;
+}
+
+.navbar-toggle {
+    z-index:3;
+}
+
 .vertical-center-container {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
     min-height: 100vh; /* These two lines are counted as one :-)       */
