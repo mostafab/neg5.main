@@ -102,7 +102,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                     div(class="col-lg-6 col-md-6 col-sm-6")
                         div(class="row")
                             div(class="col-md-6 col-sm-6")
-                                label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 1
+                                label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU
                             div(class="col-md-6 col-sm-6")
                                 input(type="number" min='0' class="form-control nf-input " name="overtimetu1" placeholder="# Overtime TU Team 1" ng-model='Game.loadedGame.teams[0].overtime' ng-class="{'nf-error' : Game.editGameForm.overtimetu1.$invalid}")
                     div(class="col-lg-6 col-md-6 col-sm-6")
@@ -110,7 +110,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                             div(class="col-md-6 col-sm-6")
                                 input(type="number" min='0' class="form-control nf-input " name="overtimetu2" placeholder="# Overtime TU Team 2" ng-model='Game.loadedGame.teams[1].overtime' ng-class="{'nf-error' : Game.editGameForm.overtimetu2.$invalid}")
                             div(class="col-md-6 col-sm-6")
-                                label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU Team 2
+                                label(class="label nf-dark-blue nf-label btn-block" style='float:right') Overtime TU
 
                 br
 
@@ -118,14 +118,14 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                     .col-lg-6.col-md-6.col-sm-6
                         .row
                             .col-md-6.col-sm-6
-                                label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Bonus Points / PPB 
+                                label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Bonuses / PPB 
                             .col-md-6.col-sm-6
                                 .form-control.readonly.nf-input {{Game.teamBonusPoints(Game.loadedGame.teams[0])}} / {{Game.teamPPB(Game.loadedGame.teams[0]) | number:2}} PPB
 
                     .col-lg-6.col-md-6.col-sm-6
                         .row
                             .col-md-6.col-sm-6
-                                label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Bonus Points / PPB 
+                                label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Bonuses / PPB 
                             .col-md-6.col-sm-6
                                 .form-control.readonly.nf-input {{Game.teamBonusPoints(Game.loadedGame.teams[1])}} / {{Game.teamPPB(Game.loadedGame.teams[1]) | number:2}} PPB
                 br

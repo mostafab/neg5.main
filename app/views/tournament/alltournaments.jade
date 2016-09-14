@@ -14,13 +14,11 @@ block content
         div(ng-controller='HomeController as Home')
             nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-dark-blue.nf-shadow(role='navigation')
                 .navbar-header
-                    a.navbar-brand(href='/t/{{tournamentId}}') Tournaments
+                    a.navbar-brand(href='#') Tournaments
                 div(class="collapse navbar-collapse")
                     ul(class="nav navbar-nav")
                         li
                             a(href="/tournaments" style="color:white;") Home
-                        //- li(class="list-element")
-                        //-     a(href="/account" style='color:white;') Account
                     ul(class="nav navbar-nav navbar-right" style='margin:0')
                         li(class="list-element")
                             a(style='color:white;' href='#' ng-click='logout()') Logout
@@ -30,9 +28,6 @@ block content
                     .row
                         .col-lg-2.hidden-md
                         .col-lg-8.col-md-12      
-                            .row      
-                                .col-lg-12.col-mg-12(style='margin-bottom:10px')
-                                    a(class='list-group-item nf-blue') Tournaments ({{Home.tournaments.length}})
                             .row
                                 .col-lg-12.col-md-12
                                     .row

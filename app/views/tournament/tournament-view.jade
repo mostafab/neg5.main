@@ -1,13 +1,15 @@
 extends ../layout
 
 block titleContent
-    title Quizbowl.io
+    
     link(rel='stylesheet' href='/css/chat.css')
 
 block content        
     
     div(ng-app='tournamentApp')
         div(ng-controller='TournamentCtrl as Tournament')
+            title Quizbowl.io | {{tournamentInfo.name}}
+            
             nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-dark-blue.nf-shadow(role='navigation')
                 .navbar-header
                     p.navbar-brand {{tournamentInfo.name}}

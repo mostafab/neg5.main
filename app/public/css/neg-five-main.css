@@ -296,6 +296,10 @@ li.active > a {
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
+.breadcrumb * a {
+    color: white;
+}
+
 /* End Neg 5 colors */
 
 @media (max-width: 1919px) {

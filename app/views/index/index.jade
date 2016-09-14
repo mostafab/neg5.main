@@ -10,7 +10,17 @@ block extrastylesheets
 
 block content
 
-    +navbar
+    nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-dark-blue.nf-shadow(role='navigation')
+        .navbar-header
+            p.navbar-brand Quizbowl.io
+        div(class="collapse navbar-collapse")
+            ul(class="nav navbar-nav")
+                li
+                    a(href="/about" style="color:white;") About
+                li(class="list-element")
+                    a(style='color:white;' href='#')
+                        i.fa.fa-github
+                
     +navbar-bottom
 
     div(class="jumbotron vertical-center-container" style='background-color:transparent;overflow:hidden;' ng-app='IndexApp')
