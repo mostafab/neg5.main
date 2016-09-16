@@ -16,12 +16,14 @@ block content
                 div(class="collapse navbar-collapse")
                     ul(class="nav navbar-nav")
                         li
-                            a(href="/tournaments" style="color:white;") Home
+                            a(href="/tournaments" style="color:white;")
+                                i.fa.fa-home.fa-2x
                         //- li(class="list-element")
                         //-     a(href="/account" style='color:white;') Account
                     ul(class="nav navbar-nav navbar-right" style='margin:0')
                         li(class="list-element")
-                            a(style='color:white;' href='#' ng-click='logout()') Logout
+                            a(style='color:white;' href='#' ng-click='logout()')
+                                i.fa.fa-sign-out.fa-2x
                                         
             div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;')
                 div(class='hidden-md hidden-lg')
@@ -44,7 +46,7 @@ block content
                             li(ng-click='Tournament.tab = "scoresheet"')
                                 a(data-toggle='tab') Scoresheet
                             li(style='float:right' ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "delete"')
-                                a.btn-md Delete
+                                a Delete
                                         
                 div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")                        
                     div(class="panel-body")

@@ -18,10 +18,14 @@ block content
                 div(class="collapse navbar-collapse")
                     ul(class="nav navbar-nav")
                         li
-                            a(href="/tournaments" style="color:white;") Home
+                            a(href="/tournaments" style="color:white;")
+                                i.fa.fa-home.fa-2x
+                        //- li(class="list-element")
+                        //-     a(href="/account" style='color:white;') Account
                     ul(class="nav navbar-nav navbar-right" style='margin:0')
                         li(class="list-element")
-                            a(style='color:white;' href='#' ng-click='logout()') Logout
+                            a(style='color:white;' href='#' ng-click='logout()')
+                                i.fa.fa-sign-out.fa-2x
 
             div(class="content-wrapper" style='padding:25px;padding-top:100px')
                 div
