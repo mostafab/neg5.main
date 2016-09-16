@@ -80,7 +80,7 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                                 .col-lg-12(ng-repeat='player in Team.currentTeam.players')
                                     .row
                                         .col-lg-10.col-md-10
-                                            .input-group.nf-margin
+                                            .nf-margin(ng-class='::{"input-group" : tournamentContext.admin}')
                                                 span.form-control.nf-input.nf-gray(ng-show='!player.editing') 
                                                     p.inline {{player.name}} 
                                                 span.input-group-addon.nf-button.no-border.nf-gray.nf-blue-text(ng-show='player.editing') {{player.name}}
