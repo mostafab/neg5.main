@@ -70,6 +70,8 @@
                         return vm.toast(toastConfig);
                     });
                 })();
+            } else {
+                console.log(2);
             }
         };
 
@@ -89,6 +91,9 @@
                         };
                         toastConfig.message = 'Logging you in.';
                         toastConfig.success = true;
+                        vm.toast(toastConfig);
+
+                        $scope.loginForm.$valid = true;
 
                         vm.login();
                     }).catch(function (error) {
@@ -96,8 +101,8 @@
                         toastConfig.success = false;
 
                         toastConfig.hideAfter = true;
-                    }).finally(function () {
-                        return vm.toast(toastConfig);
+
+                        vm.toast(toastConfig);
                     });
                 })();
             }

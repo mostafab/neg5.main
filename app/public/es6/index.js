@@ -54,7 +54,7 @@
                             
                             toastConfig.success = true;
                             toastConfig.message = 'Taking you to home page.'
-                            
+
                             window.location = '/tournaments';
                         })
                         .catch(error => {                            
@@ -63,6 +63,8 @@
                             toastConfig.hideAfter = true;
                         })
                         .finally(() => vm.toast(toastConfig));
+                } else {
+                    console.log(2);
                 }
             }
 
@@ -81,16 +83,21 @@
                                 }
                                 toastConfig.message = 'Logging you in.';
                                 toastConfig.success = true;
+                                vm.toast(toastConfig);
+                                
+                                $scope.loginForm.$valid = true;
                                 
                                 vm.login();
+                                
                             })
                             .catch(error => {
                                 toastConfig.message = 'Could not register. This username might be taken.';
                                 toastConfig.success = false;
                                 
                                 toastConfig.hideAfter = true;
+                                
+                                vm.toast(toastConfig);
                             })
-                            .finally(() => vm.toast(toastConfig));
                     
                 }
             }
