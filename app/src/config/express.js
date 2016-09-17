@@ -42,8 +42,8 @@ export default () => {
     app.use(express.static(path.join(__dirname, '../../public')));
     
     require('../routes/index.js')(app);
-    require("../routes/user-route.js")(app);
-    require("../routes/stats-route.js")(app);
+    // require("../routes/user-route.js")(app);
+    // require("../routes/stats-route.js")(app);
     
     accountApi(app);
     tournamentApi(app);

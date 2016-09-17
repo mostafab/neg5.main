@@ -33,7 +33,7 @@
                Collaborator.findUsers(vm.searchQuery)
                     .then(({users}) => vm.searchResults = users)
                     .catch(error => console.log(error)); 
-            }            
+            }           
         }
         
         vm.addCollaborator = (username, admin = false) => {

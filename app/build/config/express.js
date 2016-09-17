@@ -89,8 +89,8 @@ exports.default = function () {
     app.use(_express2.default.static(_path2.default.join(__dirname, '../../public')));
 
     require('../routes/index.js')(app);
-    require("../routes/user-route.js")(app);
-    require("../routes/stats-route.js")(app);
+    // require("../routes/user-route.js")(app);
+    // require("../routes/stats-route.js")(app);
 
     (0, _account2.default)(app);
     (0, _tournament2.default)(app);
