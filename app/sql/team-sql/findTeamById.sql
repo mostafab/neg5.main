@@ -48,8 +48,9 @@ INNER JOIN
         (
             SELECT T.id AS team_id, T.tournament_id, T.added_by, P.name as phase_name, P.id AS phase_id
             FROM 
-            tournament_team T, tournament_phase P
-            WHERE T.tournament_id = $1 AND T.id = $2
+            tournament_team T LEFT JOIN tournament_phase P
+            ON T.tournament_id = P.tournament_id
+            WHERE T.tournament_id = $1 AND T.id = $2 AND (P.tournament_id = $1 OR P.tournament_id IS NULL)
         ) AS tp_cross
 
         LEFT JOIN 
