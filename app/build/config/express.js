@@ -74,14 +74,14 @@ exports.default = function () {
     app.use((0, _helmet2.default)());
     app.use((0, _cookieParser2.default)());
     app.use(_bodyParser2.default.json());
-    app.use((0, _clientSessions2.default)({
-        cookieName: cookieName,
-        secret: secret,
-        duration: duration,
-        activeDuration: duration,
-        httpOnly: true,
-        secure: true
-    }));
+    // app.use(clientsession({
+    //     cookieName : cookieName,
+    //     secret : secret,
+    //     duration : duration,
+    //     activeDuration : duration,
+    //     httpOnly : true,
+    //     secure : true
+    // }));
 
     app.set("views", _path2.default.join(__dirname, '../../views'));
     app.set("view engine", "jade");
@@ -89,8 +89,6 @@ exports.default = function () {
     app.use(_express2.default.static(_path2.default.join(__dirname, '../../public')));
 
     require('../routes/index.js')(app);
-    // require("../routes/user-route.js")(app);
-    // require("../routes/stats-route.js")(app);
 
     (0, _account2.default)(app);
     (0, _tournament2.default)(app);

@@ -27,14 +27,14 @@ export default () => {
     app.use(helmet());
     app.use(cookieParser());
     app.use(bodyParser.json());
-    app.use(clientsession({
-        cookieName : cookieName,
-        secret : secret,
-        duration : duration,
-        activeDuration : duration,
-        httpOnly : true,
-        secure : true
-    }));
+    // app.use(clientsession({
+    //     cookieName : cookieName,
+    //     secret : secret,
+    //     duration : duration,
+    //     activeDuration : duration,
+    //     httpOnly : true,
+    //     secure : true
+    // }));
     
     app.set("views", path.join(__dirname, '../../views'));
     app.set("view engine", "jade");
@@ -42,8 +42,6 @@ export default () => {
     app.use(express.static(path.join(__dirname, '../../public')));
     
     require('../routes/index.js')(app);
-    // require("../routes/user-route.js")(app);
-    // require("../routes/stats-route.js")(app);
     
     accountApi(app);
     tournamentApi(app);

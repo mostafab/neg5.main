@@ -9,8 +9,8 @@ module.exports = app => {
     const index = require('../controllers/index-controller');
 
     app.get('/', (req, res) => {
-        if (req.session.director) {
-            res.redirect("/home");
+        if (req.cookies.nfToken) {
+            res.redirect('/tournaments');
         } else {
             index.render(req, res);
         }

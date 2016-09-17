@@ -15,8 +15,8 @@ module.exports = function (app) {
     var index = require('../controllers/index-controller');
 
     app.get('/', function (req, res) {
-        if (req.session.director) {
-            res.redirect("/home");
+        if (req.cookies.nfToken) {
+            res.redirect('/tournaments');
         } else {
             index.render(req, res);
         }
