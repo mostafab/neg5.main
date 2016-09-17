@@ -16,10 +16,6 @@ var _bodyParser = require('body-parser');
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _clientSessions = require('client-sessions');
-
-var _clientSessions2 = _interopRequireDefault(_clientSessions);
-
 var _cookieParser = require('cookie-parser');
 
 var _cookieParser2 = _interopRequireDefault(_cookieParser);
@@ -74,14 +70,6 @@ exports.default = function () {
     app.use((0, _helmet2.default)());
     app.use((0, _cookieParser2.default)());
     app.use(_bodyParser2.default.json());
-    // app.use(clientsession({
-    //     cookieName : cookieName,
-    //     secret : secret,
-    //     duration : duration,
-    //     activeDuration : duration,
-    //     httpOnly : true,
-    //     secure : true
-    // }));
 
     app.set("views", _path2.default.join(__dirname, '../../views'));
     app.set("view engine", "jade");
