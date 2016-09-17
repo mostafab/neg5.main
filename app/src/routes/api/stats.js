@@ -1,7 +1,11 @@
 import {StatsReport} from './../../models/stats-models/report';
 
 export default (app) => {
-
+    
+    app.get('/t/:tid/stats', (req, res) => {
+        res.render('stats/stats-home');
+    })
+    
     app.get('/api/t/:tid/stats/player', (req, res) => {
         let report = new StatsReport(req.params.tid)
         report.getIndividualReport(req.query.phase || null)
