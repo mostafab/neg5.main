@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
-    angular.module('tournamentApp').controller('TournamentCtrl', ['$scope', '$http', '$window', '$timeout', 'Team', 'Game', 'Tournament', 'Cookies', TournamentCtrl]);
+    angular.module('tournamentApp').controller('TournamentCtrl', ['$scope', '$http', '$window', '$timeout', '$cookies', 'Team', 'Game', 'Tournament', 'Cookies', TournamentCtrl]);
 
-    function TournamentCtrl($scope, $http, $window, $timeout, Team, Game, Tournament, Cookies) {
+    function TournamentCtrl($scope, $http, $window, $timeout, $cookies, Team, Game, Tournament, Cookies) {
 
         $scope.tournamentId = $window.location.pathname.split('/')[2];
 
@@ -119,7 +119,7 @@
         };
 
         $scope.logout = function () {
-            Cookies.remove('nfToken');
+            $cookies.remove('nfToken', { path: '/' });
             $window.location = '/';
         };
 

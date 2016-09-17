@@ -22,9 +22,12 @@ module.exports = function (app) {
         }
     });
 
-    app.get("/tournaments", _token.hasToken, function (req, res, next) {
-        var currentUser = req.currentUser;
-        res.render('tournament/alltournaments', { tournamentd: currentUser });
+    app.get("/tournaments", function (req, res, next) {
+        if (!req.cookies.nfToken) {
+            res.redirect('/');
+        } else {
+            res.render('tournament/alltournaments');
+        }
     });
 
     app.get("/t/:tid", _token.hasToken, _tournamentAccess.accessToTournament, function (req, res, next) {

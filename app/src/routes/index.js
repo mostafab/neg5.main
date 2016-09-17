@@ -16,9 +16,12 @@ module.exports = app => {
         }
     });
 
-    app.get("/tournaments", hasToken, (req, res, next) => {
-        let currentUser = req.currentUser;
-        res.render('tournament/alltournaments', {tournamentd: currentUser});
+    app.get("/tournaments", (req, res, next) => {
+        if (!req.cookies.nfToken) {
+            res.redirect('/');
+        } else {
+            res.render('tournament/alltournaments');
+        }        
     });
 
     app.get("/t/:tid", hasToken, accessToTournament, (req, res, next) => {

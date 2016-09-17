@@ -27,7 +27,9 @@
             }
 
             function remove(key) {
+                console.log($cookies.get(key));
                 $cookies.remove(key);
+                console.log($cookies.get(key));
             }
 
             function setObject(key, value) {

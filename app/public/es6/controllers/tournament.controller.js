@@ -1,9 +1,9 @@
 (() => {
     angular.module('tournamentApp')
-        .controller('TournamentCtrl', ['$scope', '$http', '$window', '$timeout', 'Team', 'Game', 'Tournament', 'Cookies', TournamentCtrl]);
+        .controller('TournamentCtrl', ['$scope', '$http', '$window', '$timeout', '$cookies', 'Team', 'Game', 'Tournament', 'Cookies', TournamentCtrl]);
         
     
-    function TournamentCtrl($scope, $http, $window, $timeout, Team, Game, Tournament, Cookies) {
+    function TournamentCtrl($scope, $http, $window, $timeout, $cookies, Team, Game, Tournament, Cookies) {
 
             $scope.tournamentId = $window.location.pathname.split('/')[2];
 
@@ -111,9 +111,9 @@
                     Cookies.set('nfTeamTab', newVal);
                 });
             }
-
+            
             $scope.logout = () => {
-                Cookies.remove('nfToken');
+                $cookies.remove('nfToken', {path: '/'});
                 $window.location = '/';
             }
 
