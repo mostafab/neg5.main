@@ -34,6 +34,10 @@ gulp.task('babel-client', () => {
     .pipe(gulp.dest('app/public/js'));
 })
 
+gulp.task('minify', () => {
+    
+})
+
 gulp.task('watch', () => {
    gulp.watch(['app/src/**/*.js'], ['babel-server']);
    gulp.watch(['app/public/es6/**/*.js'], ['babel-client']);

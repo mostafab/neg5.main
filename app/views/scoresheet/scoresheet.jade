@@ -2,7 +2,7 @@
     form(novalidate name='Scoresheet.scoresheetForm' ng-submit='Scoresheet.submitScoresheet()' ng-class="{'readonly-form' : Scoresheet.game.submitted}")
         .col-lg-6.col-md-12.col-sm-12
             .row(ng-show='Scoresheet.game.onTossup')
-                .col-lg-6.col-md-6.col-sm-6
+                .col-lg-6.col-md-6.col-sm-6.col-xs-6
                     select.form-control.nf-input.nf-gray(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id', 
                         ng-model='Scoresheet.game.teams[0].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[0])',
                         ng-class="{'readonly': Scoresheet.game.currentCycle.number > 1}"    
@@ -43,7 +43,7 @@
                                 span.input-group-addon.nf-button.btn.nf-green(ng-click='Scoresheet.addPlayer(Scoresheet.game.teams[0])')
                                     i.fa.fa-check
                                     
-                .col-lg-6.col-md-6.col-sm-6
+                .col-lg-6.col-md-6.col-sm-6.col-xs-6
                     select.form-control.nf-input.nf-gray(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id', 
                         ng-model='Scoresheet.game.teams[1].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[1])', 
                         ng-class="{'readonly' : Scoresheet.game.currentCycle.number > 1}"    
@@ -103,15 +103,15 @@
                             br
                             
                             .row
-                                .col-lg-6.col-md-6.col-sm-6
+                                .col-lg-6.col-md-6.col-sm-6.col-xs-6
                                     button.nf-button.btn.nf-orange.btn-block(type='button' ng-click='Scoresheet.removeLastAnswerFromCycle(Scoresheet.game.currentCycle); Scoresheet.switchCurrentCycleContext(false)') Back
-                                .col-lg-6.col-md-6.col-sm-6
+                                .col-lg-6.col-md-6.col-sm-6.col-xs-6
                                     button.nf-button.btn.nf-green.btn-block(type='button' ng-click='Scoresheet.switchCurrentCycleContext(false); Scoresheet.nextCycle()') Next
 
             .row(ng-show='Scoresheet.game.onTossup && Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
-                .col-lg-6.col-md-6.col-sm-6
+                .col-lg-6.col-md-6.col-sm-6.col-xs-6
                     button.nf-button.btn.nf-orange.btn-block.no-margin(type='button' ng-click='Scoresheet.lastCycle()' ng-disabled='Scoresheet.game.currentCycle.number <= 1') Back One Cycle
-                .col-lg-6.col-md-6.col-sm-6
+                .col-lg-6.col-md-6.col-sm-6.col-xs-6
                     button.nf-button.btn.nf-black.btn-block.no-margin(type='button' ng-click='Scoresheet.nextCycle()') Dead Tossup
             br            
 

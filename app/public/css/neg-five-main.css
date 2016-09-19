@@ -48,8 +48,17 @@ form.readonly-form * input, form.readonly-form * select, form.readonly-form * te
     background: #f8f5f0;
 }
 
+.navbar-collapse * li > a {
+    color: white !important;
+}
+
 li.active > a {
-    color: lightgreen;
+    color: lightgreen !important;
+    background-color: transparent !important;
+}
+
+li > a:hover {
+    cursor: pointer;
 }
 
 .active-phase {

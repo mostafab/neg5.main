@@ -67,7 +67,7 @@ div(class="panel nf-panel")
 
                 .row.nf-margin
                     div(class="col-md-12 col-lg-12")
-                        label(class="label nf-dark-blue nf-label col-xs-2 col-sm-4 col-lg-3") Comments
+                        label(class="label nf-dark-blue nf-label col-xs-4 col-sm-4 col-lg-3") Comments
                         div(class="col-xs-8 col-sm-8 col-lg-9" ng-class='{"form-group" : Tournament.editing === true}')
                             textarea(name="tournament_description" class="form-control nf-input nf-gray" rows="30" ng-model='Tournament.tournamentInfoCopy.comments' ng-show='Tournament.editing === true')
                             label(class='white nf-label preserve-white-space' ng-show='Tournament.editing === false') {{tournamentInfo.comments}}
