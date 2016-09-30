@@ -35,7 +35,18 @@ block content
                             .row
                                 .col-lg-12.col-md-12
                                     .row
-                                        .col-lg-7.col-md-6
+                                        .col-lg-4.col-md-5
+                                            .nf-panel
+                                                div.list-group-item.nf-green(style='border:none')
+                                                    p.inline New Tournament
+                                                .panel-body.nf-panel-body.nf-dark-blue.nf-shadow
+                                                    form(novalidate name='Home.newTournamentForm' ng-submit='Home.createNewTournament()')
+                                                        input.form-control.nf-input(type='text' required placeholder='Name' ng-model='Home.newTournament.name' maxlength='20')
+                                                        br
+                                                        button.nf-button.btn.nf-green.no-border(type='submit' ng-disabled='Home.submittingForm')
+                                                            i.fa.fa-check
+
+                                        .col-lg-8.col-md-7
                                             div
                                                 .nf-panel(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | orderBy:"name"')
                                                     a(href='/t/{{tournament.id}}')
@@ -53,21 +64,7 @@ block content
                                                                     p.inline.left Date
                                                                     p.inline.right {{tournament.tournament_date || 'None' | date}} 
 
-                                        .col-lg-5.col-md-6
-                                            .nf-panel
-                                                div.list-group-item.nf-green(style='border:none')
-                                                    p.inline New Tournament
-                                                .panel-body.nf-panel-body.nf-dark-blue.nf-shadow
-                                                    form(novalidate name='Home.newTournamentForm' ng-submit='Home.createNewTournament()')
-                                                        .row.nf-margin
-                                                            p.nf-label.label.nf-blue.col-lg-4.col-md-4 Name
-                                                            .col-lg-8.col-md-8
-                                                                input.form-control.nf-input(type='text' required placeholder='Name' ng-model='Home.newTournament.name' maxlength='20')
-
-                                                        .row-nf-margin
-                                                            .col-lg-12.col-md-12
-                                                                button.nf-button.btn.nf-green.no-border.right(type='submit' ng-disabled='Home.submittingForm')
-                                                                    i.fa.fa-check
+                                        
                                                                     
                             .nf-toast(style='position:fixed' class='angular-animate' ng-show='toastMessage !== null')
                                 .nf-toast-content.nf-button.btn(ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")

@@ -1,6 +1,6 @@
 .row
     form(novalidate name='Scoresheet.scoresheetForm' ng-submit='Scoresheet.submitScoresheet()' ng-class="{'readonly-form' : Scoresheet.game.submitted}")
-        .col-lg-6.col-md-12.col-sm-12
+        .col-lg-6.col-md-6.col-sm-12
             .row(ng-show='Scoresheet.game.onTossup')
                 .col-lg-6.col-md-6.col-sm-6.col-xs-6
                     select.form-control.nf-input.nf-gray(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id', 
@@ -153,7 +153,7 @@
                     button.nf-button.button.btn.btn-block.nf-orange(type='button' ng-click='Scoresheet.loadLastSavedScoresheet()') Load Last Scoresheet
             
                 
-        .col-lg-6.col-md-12.col-sm-12(ng-show='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
+        .col-lg-6.col-md-6.col-sm-12(ng-show='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
             .row
                 p.nf-panel-heading.nf-blue(style='padding:20px') 
                     | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'mediumTime'}}

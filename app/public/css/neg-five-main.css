@@ -2,7 +2,7 @@
     background-color: #455a64;
 }
 
-nf-image {
+.nf-image {
     background-image: url('./Background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
