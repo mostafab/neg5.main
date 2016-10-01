@@ -10,7 +10,7 @@ div(class="panel panel-default nf-panel")
                     .col-lg-8.col-md-8.col-sm-8
                         input(
                             type="text",
-                            placeholder="Team Name",
+                            placeholder="Team name",
                             class="form-control nf-input input-md center-text no-border-radius",
                             ng-model='Team.newTeam.name',
                             required
@@ -21,7 +21,7 @@ div(class="panel panel-default nf-panel")
                 .row
                     .col-lg-4.col-md-4.col-sm-4
                         label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Divisions
-                    .col-lg-8.col-md-8.col-sm-4
+                    .col-lg-8.col-md-8.col-sm-8
                         .input-group.nf-margin(ng-repeat='phase in Team.phases')
                             span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle.nf-blue(data-toggle='dropdown' title='Pick a division for {{phase.name}}') {{phase.name}}
                                 i.fa.fa-caret-down

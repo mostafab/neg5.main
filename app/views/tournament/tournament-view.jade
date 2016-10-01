@@ -24,6 +24,8 @@ block content
                             a(data-toggle="tab" class='tournament-tab btn-md') Overview
                         li(class="center" ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "config"' ng-class="{'active': Tournament.tab === 'config'}")
                             a(data-toggle="tab" class='tournament-tab btn-md') Configuration
+                        li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"' ng-class="{'active': Tournament.tab === 'phase'}")
+                            a(data-toggle="tab" class='tournament-tab btn-md') Phases
                         li(class="center" ng-click='Tournament.tab = "collaborator"' ng-class="{'active': Tournament.tab === 'collaborator'}")
                             a(data-toggle='tab' class='tournament-tab btn-md') Collaborators
                         li(class="center" ng-click='Tournament.tab = "match"' ng-class="{'active': Tournament.tab === 'match'}")
@@ -32,16 +34,12 @@ block content
                             a(data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
                         li(class="center" ng-click='Tournament.tab = "statistics"' ng-class="{'active': Tournament.tab === 'statistics'}")
                             a(data-toggle="tab" class='tournament-tab btn-md') Stats
-                        // li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"' ng-class="{'active': Tournament.tab === 'phase'}")
-                        //     a(data-toggle="tab" class='tournament-tab btn-md') Phases
+                        
                 
                         li.center(ng-click='Tournament.tab = "scoresheet"' ng-class='{"active": Tournament.tab === "scoresheet"}')
                             a(class='btn-md' ng-click='Tournament.tab = "scoresheet"') Scoresheet
 
-                    ul.nav.navbar-nav.navbar-right(style='margin:0')
-                        li
-                            a(style="color:white;") {{tournamentInfo.name}}
-                                
+                    ul.nav.navbar-nav.navbar-right(style='margin:0')                                
                         li
                             a(href="/tournaments" style="color:white;")
                                 i.fa.fa-home.fa-2x
@@ -175,9 +173,9 @@ block content
                             
                             include ./../stats/tab/stats-tab.jade
                         
-                        // div(class="tab-pane fade angular-animate" id="phase" ng-class="{'active in' : Tournament.tab ==='phase'}")
-                        //     div(ng-if='tournamentContext.admin === true')
-                        //         include ./../phase/phase-tab.jade
+                        div(class="tab-pane fade angular-animate" id="phase" ng-controller='PhaseCtrl as Phase' ng-class="{'active in' : Tournament.tab ==='phase'}")
+                            div(ng-if='tournamentContext.admin === true')
+                                include ./../phase/phase-tab.jade
                         
                         div(class='tab-pane fade angular-animate' id='scoresheet' ng-controller='ScoresheetCtrl as Scoresheet' ng-class="{'active in' : Tournament.tab === 'scoresheet'}")
                             include ./../scoresheet/scoresheet.jade
