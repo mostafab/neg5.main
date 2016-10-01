@@ -35,7 +35,7 @@ block content
                             .row
                                 .col-lg-12.col-md-12
                                     .row
-                                        .col-lg-4.col-md-5
+                                        .col-lg-4.col-md-5.col-sm-5
                                             .nf-panel
                                                 div.list-group-item.nf-green(style='border:none')
                                                     p.inline New Tournament
@@ -45,24 +45,29 @@ block content
                                                         br
                                                         button.nf-button.btn.nf-green.no-border(type='submit' ng-disabled='Home.submittingForm')
                                                             i.fa.fa-check
-
-                                        .col-lg-8.col-md-7
+                                        
+                                        
+                                        .col-lg-8.col-md-7.col-sm-7
                                             div
                                                 .nf-panel(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | orderBy:"name"')
                                                     a(href='/t/{{tournament.id}}')
                                                         div.list-group-item.nf-blue
                                                             p.inline {{tournament.name}}
-                                                            p.inline.right {{tournament.director_id}}
-                                                        .panel-body.nf-panel-body.nf-dark-blue.nf-shadow.tournament-card
-                                                            .col-lg-12.nf-margin
-                                                                    p.inline.left Location
-                                                                    p.inline.right {{tournament.location || 'None'}}
-                                                            .col-lg-12.nf-margin
-                                                                    p.inline.left Question Set
-                                                                    p.inline.right {{tournament.question_set || 'None'}}
-                                                            .col-lg-12.nf-margin
-                                                                    p.inline.left Date
-                                                                    p.inline.right {{tournament.tournament_date || 'None' | date}} 
+                                                            // p.inline.right {{tournament.director_id}}
+                                                        .panel-body.nf-panel-body.nf-dark-blue.nf-shadow.tournament-card.responsive-font
+                                                            p.nf-margin Location : {{tournament.location || 'None'}}
+                                                            p.nf-margin Question Set : {{tournament.question_set || 'None'}}
+                                                            p.nf-margin Date : {{tournament.tournament_date || 'None' | date}}
+                                                            
+                                                            // .col-lg-12.nf-margin
+                                                            //         p.inline.left Location
+                                                            //         p.inline.right {{tournament.location || 'None'}}
+                                                            // .col-lg-12.nf-margin
+                                                            //         p.inline.left Question Set
+                                                            //         p.inline.right {{tournament.question_set || 'None'}}
+                                                            // .col-lg-12.nf-margin
+                                                            //         p.inline.left Date
+                                                            //         p.inline.right {{tournament.tournament_date || 'None' | date}} 
 
                                         
                                                                     

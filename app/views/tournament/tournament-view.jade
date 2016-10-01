@@ -31,9 +31,9 @@ block content
                         li(class="center" ng-click='Tournament.tab = "team"' ng-class="{'active': Tournament.tab === 'team'}")
                             a(data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
                         li(class="center" ng-click='Tournament.tab = "statistics"' ng-class="{'active': Tournament.tab === 'statistics'}")
-                            a(data-toggle="tab" class='tournament-tab btn-md') Statistics
-                        li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"' ng-class="{'active': Tournament.tab === 'phase'}")
-                            a(data-toggle="tab" class='tournament-tab btn-md') Phases
+                            a(data-toggle="tab" class='tournament-tab btn-md') Stats
+                        // li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"' ng-class="{'active': Tournament.tab === 'phase'}")
+                        //     a(data-toggle="tab" class='tournament-tab btn-md') Phases
                 
                         li.center(ng-click='Tournament.tab = "scoresheet"' ng-class='{"active": Tournament.tab === "scoresheet"}')
                             a(class='btn-md' ng-click='Tournament.tab = "scoresheet"') Scoresheet
@@ -175,9 +175,9 @@ block content
                             
                             include ./../stats/tab/stats-tab.jade
                         
-                        div(class="tab-pane fade angular-animate" id="phase" ng-controller='PhaseCtrl as Phase' ng-class="{'active in' : Tournament.tab ==='phase'}")
-                            div(ng-if='tournamentContext.admin === true')
-                                include ./../phase/phase-tab.jade
+                        // div(class="tab-pane fade angular-animate" id="phase" ng-class="{'active in' : Tournament.tab ==='phase'}")
+                        //     div(ng-if='tournamentContext.admin === true')
+                        //         include ./../phase/phase-tab.jade
                         
                         div(class='tab-pane fade angular-animate' id='scoresheet' ng-controller='ScoresheetCtrl as Scoresheet' ng-class="{'active in' : Tournament.tab === 'scoresheet'}")
                             include ./../scoresheet/scoresheet.jade
