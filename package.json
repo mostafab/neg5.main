@@ -33,6 +33,7 @@
     "babel-register": "^6.9.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
+    "gulp-ngmin": "^0.3.0",
     "jasmine-core": "^2.4.1",
     "karma": "^1.1.2",
     "karma-chrome-launcher": "^1.0.1",
