@@ -256,7 +256,9 @@ li > a:hover {
 }
 
 .not-visible {
-    display: none !important;
+    /*display: none !important;*/
+    opacity: .15;
+    pointer-events: none;
 }
 
 .green-text {
