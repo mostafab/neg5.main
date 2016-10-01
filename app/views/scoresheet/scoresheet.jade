@@ -125,7 +125,7 @@
                                 th.table-head.center Pts
                                 th.table-head.center TUH
                             tbody
-                                tr.nf-dark-blue(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'green-text': player.active}")
+                                tr.nf-dark-blue(ng-repeat='player in Scoresheet.game.teams[0].players' title='Toggle active/inactive state' ng-class="{'green-text': player.active}")
                                     td.pad(ng-click='player.active = !player.active') {{player.name}}
                                     td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)}}
                                     td.pad.center {{Scoresheet.getPlayerTotalPoints(player)}}
@@ -141,17 +141,21 @@
                                 th.table-head.center Pts
                                 th.table-head.center TUH
                             tbody
-                                tr.nf-dark-blue(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'green-text': player.active}")
+                                tr.nf-dark-blue(ng-repeat='player in Scoresheet.game.teams[1].players' title='Toggle active/inactive state' ng-class="{'green-text': player.active}")
                                     td.pad(ng-click='player.active = !player.active' ) {{player.name}}
                                     td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)}}
                                     td.pad.center {{Scoresheet.getPlayerTotalPoints(player)}}
                                     td.pad.center
                                         input.center.input-sm.nf-input.form-control(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' ng-model='player.tuh' autocomplete='off')
             
+            
+            
             .row(ng-if='!Scoresheet.game.teams[0].teamInfo && !Scoresheet.game.teams[1].teamInfo')
                 .col-lg-6.col-md-6.col-sm-6
                     button.nf-button.button.btn.btn-block.nf-orange(type='button' ng-click='Scoresheet.loadLastSavedScoresheet()') Load Last Scoresheet
-            
+            .row(ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
+                .col-lg-6.col-md-6.col-sm-6
+                    button.nf-button.button.btn.btn-block.nf-orange(type='button' title='Load a new scoresheet' ng-click='Scoresheet.game = Scoresheet.newScoresheet()') New Scoresheet
                 
         .col-lg-6.col-md-6.col-sm-12(ng-show='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
             .row
@@ -230,7 +234,9 @@
                                             i.fa.fa-times
                                         span.input-group-addon.nf-button.btn.nf-green.btn-sm(ng-click='Scoresheet.editPlayerAnswerForCycle(player.id, Scoresheet.game.teams[1].teamInfo.id, cycle.newAnswer[player.id], cycle)')
                                             i.fa.fa-check
-
+            
+            
+            
             .row
                 .panel.nf-panel
                     .nf-panel-heading.nf-blue.center Match Information
@@ -336,6 +342,6 @@
                             | Submit Match
                         button.nf-button.btn.nf-red(type='button' ng-show='Scoresheet.game.submitted' ng-click='Scoresheet.revertScoresheetSubmission()')
                             | Revert Submission
-                            
-        
+                        
+            
         

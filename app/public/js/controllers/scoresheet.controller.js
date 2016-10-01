@@ -13,32 +13,37 @@
         vm.rules = Tournament.rules;
         vm.phases = Phase.phases;
 
-        vm.game = {
-            teams: [{
-                teamInfo: null,
-                players: [],
-                newPlayer: '',
-                overtime: 0
-            }, {
-                teamInfo: null,
-                players: [],
-                newPlayer: '',
-                overtime: 0
-            }],
-            cycles: initializeCyclesArray(20),
-            currentCycle: {
-                number: 1,
-                answers: [],
-                bonuses: []
-            },
-            onTossup: true,
-            round: 0,
-            packet: null,
-            notes: null,
-            moderator: null,
-            phases: [],
-            room: null
-        };
+        vm.game = newScoresheet();
+        vm.newScoresheet = newScoresheet;
+
+        function newScoresheet() {
+            return {
+                teams: [{
+                    teamInfo: null,
+                    players: [],
+                    newPlayer: '',
+                    overtime: 0
+                }, {
+                    teamInfo: null,
+                    players: [],
+                    newPlayer: '',
+                    overtime: 0
+                }],
+                cycles: initializeCyclesArray(20),
+                currentCycle: {
+                    number: 1,
+                    answers: [],
+                    bonuses: []
+                },
+                onTossup: true,
+                round: 0,
+                packet: null,
+                notes: null,
+                moderator: null,
+                phases: [],
+                room: null
+            };
+        }
 
         vm.loadTeamPlayers = function (team) {
             var _team$teamInfo = team.teamInfo;

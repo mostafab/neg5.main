@@ -46,70 +46,8 @@ block content
                         li(class="list-element")
                              a(style='color:white;' href='#' ng-click='logout()')
                                  i.fa.fa-sign-out.fa-2x
-
-                //- div(class="collapse navbar-collapse")
-                //-     ul(class="nav navbar-nav")
-                //-         li
-                //-             a(href="/tournaments" style="color:white;")
-                //-                 i.fa.fa-home.fa-2x
-                //-         //- li(class="list-element")
-                //-         //-     a(href="/account" style='color:white;') Account
-                //-     ul(class="nav navbar-nav navbar-right" style='margin:0')
-                //-         li(class="list-element")
-                //-             a(style='color:white;' ng-click='logout()')
-                //-                 i.fa.fa-sign-out.fa-2x
                                         
-            div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;')
-                //- div(class='hidden-md hidden-lg')
-                //-     div(class='col-sm-12 col-xs-12')
-                //-         ul(class="breadcrumb no-border nf-dark-blue")
-                //-             li(class="center" ng-click='Tournament.tab = "overview"')
-                //-                 a(data-toggle="tab" class='tournament-tab btn-md') Overview
-                //-             li(class="center" ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "config"')
-                //-                 a(data-toggle="tab" class='tournament-tab btn-md') Configuration
-                //-             li(class="center" ng-click='Tournament.tab = "collaborator"')
-                //-                 a(data-toggle='tab' class='tournament-tab btn-md') Collaborators
-                //-             li(class="center" ng-click='Tournament.tab = "match"')
-                //-                 a(data-toggle="tab" class='tournament-tab btn-md') Matches ({{Tournament.games.length}})
-                //-             li(class="center" ng-click='Tournament.tab = "team"')
-                //-                 a(data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
-                //-             li(class="center" ng-click='Tournament.tab = "statistics"')
-                //-                 a(data-toggle="tab" class='tournament-tab btn-md') Statistics
-                //-             li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"')
-                //-                 a(data-toggle="tab" class='tournament-tab btn-md') Phases
-                //-             li(ng-click='Tournament.tab = "scoresheet"')
-                //-                 a(data-toggle='tab') Scoresheet
-                //-             li(style='float:right' ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "delete"')
-                //-                 a Delete
-                                        
-                //- div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")                        
-                //-     div(class="panel-body")
-                //-         div(class="row")
-                //-             div.nf-blue(class='col-sm-7 col-md-12 col-lg-12' style='padding:0')
-                //-                 ul(class="nav nav-bar no-border-radius")
-                //-                     li(class="center" ng-click='Tournament.tab = "overview"' ng-class="{'active': Tournament.tab === 'overview'}")
-                //-                         a(data-toggle="tab" class='tournament-tab btn-md') Overview
-                //-                     li(class="center" ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "config"' ng-class="{'active': Tournament.tab === 'config'}")
-                //-                         a(data-toggle="tab" class='tournament-tab btn-md') Configuration
-                //-                     li(class="center" ng-click='Tournament.tab = "collaborator"' ng-class="{'active': Tournament.tab === 'collaborator'}")
-                //-                         a(data-toggle='tab' class='tournament-tab btn-md') Collaborators
-                //-                     li(class="center" ng-click='Tournament.tab = "match"' ng-class="{'active': Tournament.tab === 'match'}")
-                //-                         a(data-toggle="tab" class='tournament-tab btn-md') Matches ({{Tournament.games.length}})
-                //-                     li(class="center" ng-click='Tournament.tab = "team"' ng-class="{'active': Tournament.tab === 'team'}")
-                //-                         a(data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
-                //-                     li(class="center" ng-click='Tournament.tab = "statistics"' ng-class="{'active': Tournament.tab === 'statistics'}")
-                //-                         a(data-toggle="tab" class='tournament-tab btn-md') Statistics
-                //-                     li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"' ng-class="{'active': Tournament.tab === 'phase'}")
-                //-                         a(data-toggle="tab" class='tournament-tab btn-md') Phases
-                            
-                //-                     li.center(ng-click='Tournament.tab = "scoresheet"' ng-class='{"active": Tournament.tab === "scoresheet"}')
-                //-                         a(class='btn-md' ng-click='Tournament.tab = "scoresheet"') Scoresheet
-                                            
-                //-                     // li.center(ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "delete"' ng-class="{'active': Tournament.tab === 'delete'}")
-                //-                     //     a(class="btn-md tournament-tab" data-toggle="tab" style='color:white')
-                //-                     //         i(class='fa fa-trash')
-                                    
-                                                
+            div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;')                                                                                   
 
                 div(class='col-sm-12 col-md-12 col-lg-12')
                     div(class="tab-content")
