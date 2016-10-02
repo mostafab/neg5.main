@@ -58,7 +58,7 @@
             vm.toast(toastConfig);
             Stats.refreshStats(tournamentId, vm.phase ? vm.phase.id : null)
                 .then(() => {
-                    toastConfig.message = 'Loaded all stats.';
+                    toastConfig.message = 'Loaded stats for ' + (vm.phase ? vm.phase.name + '.' : 'all games.');
                     toastConfig.success = true;
                 })
                 .catch(error => {

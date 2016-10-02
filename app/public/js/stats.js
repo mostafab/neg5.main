@@ -64,7 +64,7 @@
             var toastConfig = { message: 'Refreshing stats.' };
             vm.toast(toastConfig);
             Stats.refreshStats(tournamentId, vm.phase ? vm.phase.id : null).then(function () {
-                toastConfig.message = 'Loaded all stats.';
+                toastConfig.message = 'Loaded stats for ' + (vm.phase ? vm.phase.name + '.' : 'all games.');
                 toastConfig.success = true;
             }).catch(function (error) {
                 toastConfig.message = 'Could not reload stats.';
