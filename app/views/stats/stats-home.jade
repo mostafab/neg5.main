@@ -1,9 +1,13 @@
 extends ../layout
 
 block content
-
+    
+    
     div(ng-app='statsApp')
         div(ng-controller='PublicStatsController as PSControl')
+            
+            title {{::PSControl.tournamentName.name}} Stats | Neg 5
+                
             nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-blue.nf-shadow(role='navigation')
                     .navbar-header
                         button.navbar-toggle(type='button' data-toggle='collapse' data-target='#tournament-list')
@@ -14,15 +18,15 @@ block content
                     
                     div.collapse.navbar-collapse.hidden-lg.hidden-md.hidden-sm#tournament-list
                         ul.nav.navbar-nav
-                            li(class="center" ng-click='PSControl.tab = "team_standings"')
+                            li(class="center" ng-click='PSControl.tab = "team_standings"' ng-class="{'active': PSControl.tab === 'team_standings'}")
                                 a(data-toggle="tab" class='tournament-tab btn-md') Team Standings
-                            li(class="center" ng-click='PSControl.tab = "player_standings"')
+                            li(class="center" ng-click='PSControl.tab = "player_standings"' ng-class="{'active': PSControl.tab === 'player_standings'}")
                                 a(data-toggle="tab" class='tournament-tab btn-md') Individual
-                            li(class="center" ng-click='PSControl.tab = "team_full"')
+                            li(class="center" ng-click='PSControl.tab = "team_full"' ng-class="{'active': PSControl.tab === 'team_full'}")
                                 a(data-toggle="tab" class='tournament-tab btn-md') Team Full
-                            li(class="center" ng-click='PSControl.tab = "player_full"')
+                            li(class="center" ng-click='PSControl.tab = "player_full"' ng-class="{'active': PSControl.tab === 'player_full'}")
                                 a(data-toggle='tab' class='tournament-tab btn-md') Player Full
-                            li(class="center" ng-click='PSControl.tab = "round_report"')
+                            li(class="center" ng-click='PSControl.tab = "round_report"' ng-class="{'active': PSControl.tab === 'round_report'}")
                                 a(data-toggle="tab" class='tournament-tab btn-md') Round Robin
                         
             div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;')
