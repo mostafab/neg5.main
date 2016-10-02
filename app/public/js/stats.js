@@ -75,6 +75,12 @@
             });
         };
 
+        vm.setHashLocation = function (newHash) {
+            $timeout(function () {
+                $window.location.hash = "#" + newHash;
+            }, 50);
+        };
+
         Phase.getPhases(tournamentId).then(function () {
             return vm.refreshStats();
         });

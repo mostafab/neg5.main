@@ -70,7 +70,13 @@
                     vm.toast(toastConfig);
                 })
         }
-
+        
+        vm.setHashLocation = (newHash) => {
+            $timeout(() => {
+                $window.location.hash = "#" + newHash;    
+            }, 50);
+        }
+        
         Phase.getPhases(tournamentId)
             .then(() => vm.refreshStats());        
 

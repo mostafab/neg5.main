@@ -21,7 +21,7 @@
                 th(class="table-head nf-white" title='A player\'s ratio between total points and tossups heard.') P / TU
                 th(class="table-head nf-white" title='A player\'s points per game.') PPG
 
-            tr(class='nf-list-item nf-dark-blue' ng-repeat='player in PSControl.playerStats | filter:PSControl.playerQuery track by player.player_id')
+            tr(class='nf-list-item nf-dark-blue' ng-repeat='player in PSControl.playerStats | filter:PSControl.playerQuery track by player.player_id' ng-click='PSControl.tab = "player_full"; PSControl.setHashLocation(player.player_id)')
                 td {{$index + 1}}
                 td {{player.player_name}}
                 td {{player.team_name}}

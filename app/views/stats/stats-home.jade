@@ -3,60 +3,70 @@ extends ../layout
 block content
 
     div(ng-app='statsApp')
-        div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;' ng-controller='PublicStatsController as PSControl')
-                                    
-            div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
-                div(class='row')
-                    div(class='col-sm-7 col-lg-12 col-md-12')
-                        h2(class="nf-panel-heading nf-dark-blue center") {{::PSControl.tournamentName.name}} Stats
+        div(ng-controller='PublicStatsController as PSControl')
+            nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-blue.nf-shadow(role='navigation')
+                    .navbar-header
+                        button.navbar-toggle(type='button' data-toggle='collapse' data-target='#tournament-list')
+                            span.sr-only Toggle navigation
+                            span.icon-bar
+                            span.icon-bar
+                            span.icon-bar                    
+                    
+                    div.collapse.navbar-collapse.hidden-lg.hidden-md.hidden-sm#tournament-list
+                        ul.nav.navbar-nav
+                            li(class="center" ng-click='PSControl.tab = "team_standings"')
+                                a(data-toggle="tab" class='tournament-tab btn-md') Team Standings
+                            li(class="center" ng-click='PSControl.tab = "player_standings"')
+                                a(data-toggle="tab" class='tournament-tab btn-md') Individual
+                            li(class="center" ng-click='PSControl.tab = "team_full"')
+                                a(data-toggle="tab" class='tournament-tab btn-md') Team Full
+                            li(class="center" ng-click='PSControl.tab = "player_full"')
+                                a(data-toggle='tab' class='tournament-tab btn-md') Player Full
+                            li(class="center" ng-click='PSControl.tab = "round_report"')
+                                a(data-toggle="tab" class='tournament-tab btn-md') Round Robin
+                        
+            div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;')
                 
-                div(class="panel-body")
-                    div(class="row")
-                        div(class='col-sm-7 col-md-12 col-lg-12')
-                            ul(class="nav nav-bar no-border-radius")
-                                li(class="center")
-                                    .input-group
-                                        select(class='form-control nf-input' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase' ng-change='PSControl.refreshStats()')
-                                            option(value='') All Games
-                                        span(class='input-group-addon nf-blue nf-button btn' title='Refresh teams' ng-click='PSControl.refreshStats()')
-                                            i(class='fa fa-refresh')
-                                hr                               
+                div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
+                    div(class='row')
+                        div(class='col-sm-7 col-lg-12 col-md-12')
+                            h2(class="nf-panel-heading nf-dark-blue center") {{::PSControl.tournamentName.name}} Stats
+                    
+                    div(class="panel-body")
+                        div(class="row")
+                            div(class='col-sm-7 col-md-12 col-lg-12')
+                                ul(class="nav nav-bar no-border-radius")
+                                    li(class="center")
+                                        .input-group
+                                            select(class='form-control nf-input' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase' ng-change='PSControl.refreshStats()')
+                                                option(value='') All Games
+                                            span(class='input-group-addon nf-blue nf-button btn' title='Refresh teams' ng-click='PSControl.refreshStats()')
+                                                i(class='fa fa-refresh')              
 
-                                li(class="center" ng-click='PSControl.tab = "team_standings"')
-                                    a(data-toggle="tab" class='tournament-tab btn-md') Team Standings
-                                li(class="center" ng-click='PSControl.tab = "player_standings"')
-                                    a(data-toggle="tab" class='tournament-tab btn-md') Individual Standings
-                                li(class="center" ng-click='PSControl.tab = "team_full"')
-                                    a(data-toggle='tab' class='tournament-tab btn-md') Team Full
-                                li(class="center" ng-click='PSControl.tab = "player_full"')
-                                    a(data-toggle="tab" class='tournament-tab btn-md') Player Full
-                                li(class="center" ng-click='PSControl.tab = "round_report"')
-                                    a(data-toggle="tab" class='tournament-tab btn-md') Round Report                
+                                                
 
-                                            
+                div(class='col-sm-12 col-md-10 col-lg-10 col-lg-offset-2')
+                    div(class="tab-content")
+                        div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='team_standings', 'fade': PSControl.tab !=='team_standings'}")
+                            include ./quick-teams.jade
 
-            div(class='col-sm-12 col-md-10 col-lg-10 col-lg-offset-2')
-                div(class="tab-content")
-                    div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='team_standings', 'fade': PSControl.tab !=='team_standings'}")
-                        include ./quick-teams.jade
+                        div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='player_standings'}")
+                            include ./quick-players.jade
 
-                    div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='player_standings'}")
-                        include ./quick-players.jade
-
-                    div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='team_full'}")
-                        include ./full-teams.jade
+                        div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='team_full'}")
+                            include ./full-teams.jade
 
 
-                    div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='player_full'}")
-                        include ./full-player.jade
+                        div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='player_full'}")
+                            include ./full-player.jade
 
-                    div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='round_report'}")
-                        include ./round-report.jade
-                                
-                .nf-toast(style='position:fixed' class='angular-animate' ng-show='PSControl.toastMessage !== null')
-                    .nf-toast-content.nf-button.btn(style='float:left' ng-class="{'nf-red': PSControl.toastMessage.success === false, 'nf-green': PSControl.toastMessage.success === true, 'nf-orange' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
-                        i.fa(ng-class="{'fa-check': PSControl.toastMessage.success === true, 'fa-times': PSControl.toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
-                        | {{PSControl.toastMessage.message}}
+                        div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='round_report'}")
+                            include ./round-report.jade
+                                    
+                    .nf-toast(style='position:fixed' class='angular-animate' ng-show='PSControl.toastMessage !== null')
+                        .nf-toast-content.nf-button.btn(style='float:left' ng-class="{'nf-red': PSControl.toastMessage.success === false, 'nf-green': PSControl.toastMessage.success === true, 'nf-orange' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
+                            i.fa(ng-class="{'fa-check': PSControl.toastMessage.success === true, 'fa-times': PSControl.toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
+                            | {{PSControl.toastMessage.message}}
                         
 
 block scripts

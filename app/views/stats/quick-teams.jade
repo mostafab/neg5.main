@@ -26,7 +26,7 @@
                 th(class="table-head nf-white" title='A team\'s ratio between total gets and negs.') G / N
                 th(class="table-head nf-white" title='A team\'s measure of successfully converting bonuses.') PPB
 
-            tr(class='nf-list-item nf-dark-blue' ng-repeat='team in PSControl.teamStats | filter:PSControl.teamQuery track by team.team_id')
+            tr(class='nf-list-item nf-dark-blue' ng-repeat='team in PSControl.teamStats | filter:PSControl.teamQuery track by team.team_id' ng-click='PSControl.tab = "team_full"; PSControl.setHashLocation(team.team_id)')
                 td {{team.rank}}
                 td {{team.team_name}}
                 td {{team.wins}}
@@ -66,7 +66,7 @@
                         th(class="table-head nf-white" title='A team\'s ratio between total gets and negs.') G / N
                         th(class="table-head nf-white" title='A team\'s measure of successfully converting bonuses.') PPB
                     
-                    tr(class='nf-list-item nf-dark-blue' ng-repeat='team in PSControl.teamStats | filter:PSControl.teamQuery track by team.team_id' ng-if='team.division_id === division.division_id')
+                    tr(class='nf-list-item nf-dark-blue' ng-repeat='team in PSControl.teamStats | filter:PSControl.teamQuery track by team.team_id' ng-if='team.division_id === division.division_id' ng-click='PSControl.tab = "team_full"; PSControl.setHashLocation(team.team_id)')
                         td {{team.rank}}
                         td {{team.team_name}}
                         td {{team.wins}}
@@ -104,7 +104,7 @@
                 th(class="table-head nf-white" title='A team\'s ratio between total gets and negs.') G / N
                 th(class="table-head nf-white" title='A team\'s measure of successfully converting bonuses.') PPB
             
-            tr(class='nf-list-item nf-dark-blue' ng-repeat='team in PSControl.unassignedTeams | filter:PSControl.teamQuery track by team.team_id')
+            tr(class='nf-list-item nf-dark-blue' ng-repeat='team in PSControl.unassignedTeams | filter:PSControl.teamQuery track by team.team_id' ng-click='PSControl.tab = "team_full"; PSControl.setHashLocation(team.team_id)')
                 td {{team.rank}}
                 td {{team.team_name}}
                 td {{team.wins}}

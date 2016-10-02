@@ -10,7 +10,7 @@
         br               
 
         div        
-            div(ng-repeat='player in PSControl.playerFullStats | filter:{player_name: PSControl.fullPlayerQuery}')
+            div(ng-repeat='player in PSControl.playerFullStats | filter:{player_name: PSControl.fullPlayerQuery}' id='{{player.player_id}}')
                     .row
                         .col-lg-4.col-sm-12.col-md-5
                             .nf-panel-heading.stat-header {{player.player_name}} ({{player.team_name}})

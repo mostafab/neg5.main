@@ -10,7 +10,7 @@
         br               
 
         div        
-            div(ng-repeat='team in PSControl.teamFullStats | filter:{team_name: PSControl.fullTeamQuery}')
+            div(ng-repeat='team in PSControl.teamFullStats | filter:{team_name: PSControl.fullTeamQuery}' id='{{team.team_id}}')
                     .row
                         .col-lg-4.col-sm-8.col-md-5
                             .nf-panel-heading.stat-header {{team.team_name}}
@@ -61,7 +61,7 @@
                                     th(class="table-head nf-white" title='A player\'s ratio between total points and tossups heard.') P / TU
                                     th(class="table-head nf-white" title='A player\'s points per game.') PPG
 
-                                tr(class='nf-list-item nf-dark-blue' ng-if='player.team_id === team.team_id' ng-repeat='player in PSControl.playerStats track by player.player_id')
+                                tr(class='nf-list-item nf-dark-blue' ng-if='player.team_id === team.team_id' ng-repeat='player in PSControl.playerStats track by player.player_id' ng-click='PSControl.tab = "player_full"; PSControl.setHashLocation(player.player_id)')
                                     td {{player.player_name}}
                                     td {{player.team_name}}
                                     td {{player.games_played}}
