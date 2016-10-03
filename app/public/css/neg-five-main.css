@@ -412,6 +412,10 @@ div.readonly {
 
 select.readonly {
     pointer-events: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
 }
 
 /*td.pad, tr.pad {
