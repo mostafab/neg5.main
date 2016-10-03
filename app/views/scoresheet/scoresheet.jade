@@ -13,6 +13,10 @@
                     .panel.nf-panel
                         .nf-panel-heading.nf-blue.center 
                             | {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}} ({{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
+                            p.nf-margin.warning-text(ng-show='Scoresheet.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) > Scoresheet.rules.maxActive') 
+                                | # active more than max allowed active players.
+                            p.nf-margin.warning-text(ng-show='Scoresheet.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) === 0') 
+                                | No active players.
                         .panel-body.nf-panel-body.nf-dark-blue.relative(style='position:relative')
                             .input-group.nf-margin.responsive(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'not-visible' : !player.active}")
                                 div.player-name
@@ -53,6 +57,10 @@
                     .panel.nf-panel
                         .nf-panel-heading.nf-blue.center 
                             | {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}} ({{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
+                            p.warning-text.nf-margin(ng-show='Scoresheet.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) > Scoresheet.rules.maxActive') 
+                                | # active more than max allowed active players.
+                            p.nf-margin.warning-text(ng-show='Scoresheet.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) === 0') 
+                                | No active players.
                         .panel-body.nf-panel-body.nf-dark-blue.relative
                             .input-group.nf-margin.responsive(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'not-visible' : !player.active}")
                                 div.player-name
@@ -116,7 +124,7 @@
             br            
 
             .row
-                .col-lg-12.col-md-12.col-sm-12
+                .col-lg-6.col-md-12.col-sm-12
                     .panel.nf-panel.nf-blue 
                         table.table.table-condensed.responsive-font.player-table
                             thead
@@ -132,7 +140,7 @@
                                     td.pad.center
                                        input.center.input-sm.nf-input.form-control(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' ng-model='player.tuh' autocomplete='off')
 
-                .col-lg-12.col-md-12.col-sm-12
+                .col-lg-6.col-md-12.col-sm-12
                     .panel.nf-panel.nf-blue 
                         table.table.table-condensed.responsive-font.player-table
                             thead
@@ -169,19 +177,19 @@
                     table.table.table-condensed.responsive-font.table-bordered
                         thead
                             tr.no-border
-                                th.center.table-head.nf-blue(ng-repeat='player in Scoresheet.game.teams[0].players' title='{{player.name}}' ng-show='player.active') {{player.name | limitTo:2}}
+                                th.center.table-head.nf-blue(ng-repeat='player in Scoresheet.game.teams[0].players' title='{{player.name}}') {{player.name | limitTo:2}}
                                 th.center.table-head.nf-gray Bonus
                                 th.center.table-head.nf-gray Total
                                 th.center.table-head.nf-gray TU # 
                                 th.center.table-head.nf-gray Total
                                 th.center.table-head.nf-gray Bonus
-                                th.center.table-head.nf-blue(ng-repeat='player in Scoresheet.game.teams[1].players' title='{{player.name}}' ng-show='player.active') {{player.name | limitTo:2}}
+                                th.center.table-head.nf-blue(ng-repeat='player in Scoresheet.game.teams[1].players' title='{{player.name}}') {{player.name | limitTo:2}}
 
                         tbody
                             tr(ng-repeat='cycle in Scoresheet.game.cycles track by $index', 
                                 ng-class="{'nf-dark-blue': $index + 1 !== Scoresheet.game.currentCycle.number, 'nf-green green-text': $index + 1 === Scoresheet.game.currentCycle.number}",
                                 ng-click='Scoresheet.displayCycle()')
-                                td.center(ng-repeat='player in Scoresheet.game.teams[0].players' ng-show='player.active') 
+                                td.center(ng-repeat='player in Scoresheet.game.teams[0].players') 
                                     p(ng-show='!cycle.editing[player.id]' ng-click='Scoresheet.displayPlayerAnswerForCycle(player, $parent.$index)') 
                                         | {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
                                     .input-group(ng-if='cycle.editing[player.id]')
@@ -224,7 +232,7 @@
                                         span.btn.nf-button.nf-green.nf-margin(ng-click='Scoresheet.editCycleBonuses(cycle)')
                                             i.fa.fa-check
 
-                                td.center(ng-repeat='player in Scoresheet.game.teams[1].players' ng-show='player.active') 
+                                td.center(ng-repeat='player in Scoresheet.game.teams[1].players') 
                                     p(ng-show='!cycle.editing[player.id]' ng-click='Scoresheet.displayPlayerAnswerForCycle(player, $parent.$index)') 
                                         | {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
                                     .input-group(ng-if='cycle.editing[player.id]')

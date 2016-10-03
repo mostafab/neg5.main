@@ -103,6 +103,8 @@
             }
             
         }
+
+        vm.getNumberOfActivePlayers = (players) => players.filter(p => p.active).length;
         
         vm.getTeamBouncebacks = (teamId) => {
             let sum = 0;

@@ -21,6 +21,10 @@
     cursor: pointer;
 }
 
+.warning-text {
+    color: #fbc02d !important;
+}
+
 .neg-box {
     display: block;
     position: absolute;

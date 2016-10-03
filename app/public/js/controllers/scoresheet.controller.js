@@ -102,6 +102,12 @@
             }
         };
 
+        vm.getNumberOfActivePlayers = function (players) {
+            return players.filter(function (p) {
+                return p.active;
+            }).length;
+        };
+
         vm.getTeamBouncebacks = function (teamId) {
             var sum = 0;
             vm.game.cycles.forEach(function (cycle) {
