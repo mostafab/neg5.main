@@ -133,15 +133,16 @@
                                 th.table-head.center Pts
                                 th.table-head.center TUH
                             tbody
-                                tr.nf-dark-blue(ng-repeat='player in Scoresheet.game.teams[0].players' title='Toggle active/inactive state' ng-class="{'green-text': player.active}")
-                                    td.pad(ng-click='player.active = !player.active') {{player.name}}
+                                tr.nf-dark-blue(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'green-text': player.active}")
+                                    td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state') {{player.name}}
                                     td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)}}
                                     td.pad.center {{Scoresheet.getPlayerTotalPoints(player)}}
                                     td.pad.center
                                        input.center.input-sm.nf-input.form-control(type='number', 
-                                            name='{{"player" + player.id + "_tuh"}}' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}',
+                                            name='{{"player" + player.id + "_tuh"}}' min='{{Scoresheet.getNumberOfAnswersForPlayer(player)}}' max='{{Scoresheet.game.currentCycle.number - 1}}',
                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}", 
-                                            ng-model='player.tuh' autocomplete='off')
+                                            ng-model='player.tuh' autocomplete='off', 
+                                            title='{{ Scoresheet.scoresheetForm["player" + player.id + "_tuh"].$valid ? "" : ("This player must have at least " + Scoresheet.getNumberOfAnswersForPlayer(player) + " TUH and at most " + (Scoresheet.game.currentCycle.number - 1)) + " TUH" }}')
 
                 .col-lg-6.col-md-12.col-sm-12
                     .panel.nf-panel.nf-blue 
@@ -152,13 +153,13 @@
                                 th.table-head.center Pts
                                 th.table-head.center TUH
                             tbody
-                                tr.nf-dark-blue(ng-repeat='player in Scoresheet.game.teams[1].players' title='Toggle active/inactive state' ng-class="{'green-text': player.active}")
-                                    td.pad(ng-click='player.active = !player.active' ) {{player.name}}
+                                tr.nf-dark-blue(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'green-text': player.active}")
+                                    td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state' ) {{player.name}}
                                     td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)}}
                                     td.pad.center {{Scoresheet.getPlayerTotalPoints(player)}}
                                     td.pad.center
                                         input.center.input-sm.nf-input.form-control(type='number', 
-                                            name='{{"player" + player.id + "_tuh"}}' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}',
+                                            name='{{"player" + player.id + "_tuh"}}' min='{{Scoresheet.getNumberOfAnswersForPlayer(player)}}' max='{{Scoresheet.game.currentCycle.number - 1}}',
                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}",  
                                             ng-model='player.tuh' autocomplete='off')            
             

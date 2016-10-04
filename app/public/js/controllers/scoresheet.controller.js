@@ -150,8 +150,16 @@
             angular.copy(tempArray, players);
         };
 
+        vm.getNumberOfAnswersForPlayer = function (player) {
+            return vm.game.cycles.reduce(function (total, current) {
+                var playerAnsweredThisCycle = current.answers.some(function (a) {
+                    return a.playerId === player.id;
+                });
+                return total + (playerAnsweredThisCycle ? 1 : 0);
+            }, 0);
+        };
+
         vm.setTeamThatGotBonusPartCurrentCycle = function (index, team, bonusesArray) {
-            // vm.game.currentCycle.bonuses[index] = vm.game.currentCycle.bonuses[index] === team.id ? null : team.id;
             bonusesArray[index] = bonusesArray[index] === team.id ? null : team.id;
         };
 

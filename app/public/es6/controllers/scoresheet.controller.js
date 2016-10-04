@@ -144,8 +144,12 @@
 
         }
 
+        vm.getNumberOfAnswersForPlayer = player => vm.game.cycles.reduce((total, current) => {
+            let playerAnsweredThisCycle = current.answers.some(a => a.playerId === player.id);
+            return total + (playerAnsweredThisCycle ? 1 : 0);
+        }, 0);
+
         vm.setTeamThatGotBonusPartCurrentCycle = (index, team, bonusesArray) => {
-            // vm.game.currentCycle.bonuses[index] = vm.game.currentCycle.bonuses[index] === team.id ? null : team.id;
             bonusesArray[index] = bonusesArray[index] === team.id ? null : team.id;
         }
 
