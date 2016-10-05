@@ -237,6 +237,17 @@
             };
         };
 
+        vm.matchSearch = function (match) {
+            var normalizedQuery = vm.gameQuery.toLowerCase();
+            var round = match.round;
+            var teams = match.teams;
+
+            var teamOneName = teams.one.name.toLowerCase();
+            var teamTwoName = teams.two.name.toLowerCase();
+
+            return match.round == normalizedQuery || teamOneName.indexOf(normalizedQuery) !== -1 || teamTwoName.indexOf(normalizedQuery) !== -1;
+        };
+
         function resetForm() {
             vm.resetCurrentGame();
             vm.newGameForm.$setUntouched();

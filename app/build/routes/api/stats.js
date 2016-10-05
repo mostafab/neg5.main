@@ -56,4 +56,6 @@ exports.default = function (app) {
             return res.status(500).send({ error: error, success: false });
         });
     });
+
+    app.get('/api/t/:tid/qbj', function (req, res) {});
 };

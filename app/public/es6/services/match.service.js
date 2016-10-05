@@ -36,7 +36,10 @@
                 let token = Cookies.get('nfToken');
                 $http.get('/api/t/' + tournamentId + '/matches?token=' + token)
                     .then(({data}) => {
-                        let formattedGames = data.matches.map(({match_id: id, tossups_heard: tuh, round, team_1_id, team_1_score, team_2_id, team_2_score, phases}) => {
+                        let formattedGames = data.matches.map(({match_id: id, 
+                                tossups_heard: tuh, round, team_1_id, team_1_score, team_2_id, team_2_score, 
+                                team_1_name, team_2_name,
+                                phases}) => {
                             return {
                                 id,
                                 tuh,
@@ -44,11 +47,13 @@
                                 teams: {
                                     one: {
                                         score: team_1_score,
-                                        id: team_1_id
+                                        id: team_1_id,
+                                        name: team_1_name
                                     },
                                     two: {
                                         score: team_2_score,
-                                        id: team_2_id
+                                        id: team_2_id,
+                                        name: team_2_name
                                     }
                                 },
                                 phases: phases.reduce((obj, current) => {

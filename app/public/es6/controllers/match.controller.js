@@ -235,6 +235,17 @@
                 notes: null
             }
         }
+
+        vm.matchSearch = (match) => {
+            const normalizedQuery = vm.gameQuery.toLowerCase();
+            const {round, teams} = match;
+            const teamOneName = teams.one.name.toLowerCase();
+            const teamTwoName = teams.two.name.toLowerCase();
+            
+            return match.round == normalizedQuery
+                || teamOneName.indexOf(normalizedQuery) !== -1
+                || teamTwoName.indexOf(normalizedQuery) !== -1
+        }
         
         function resetForm() {
             vm.resetCurrentGame();

@@ -41,4 +41,8 @@ export default (app) => {
             .catch(error => res.status(500).send({error, success: false}))
     })
 
+    app.get('/api/t/:tid/qbj', (req, res) => {
+        
+    })
+
 }

@@ -48,6 +48,8 @@
                     var team_1_score = _ref3.team_1_score;
                     var team_2_id = _ref3.team_2_id;
                     var team_2_score = _ref3.team_2_score;
+                    var team_1_name = _ref3.team_1_name;
+                    var team_2_name = _ref3.team_2_name;
                     var phases = _ref3.phases;
 
                     return {
@@ -57,11 +59,13 @@
                         teams: {
                             one: {
                                 score: team_1_score,
-                                id: team_1_id
+                                id: team_1_id,
+                                name: team_1_name
                             },
                             two: {
                                 score: team_2_score,
-                                id: team_2_id
+                                id: team_2_id,
+                                name: team_2_name
                             }
                         },
                         phases: phases.reduce(function (obj, current) {

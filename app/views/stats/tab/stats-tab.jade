@@ -1,24 +1,19 @@
 div(class="panel panel-default nf-panel")
-    div(class="collapsable nf-panel-heading nf-dark-blue") Generate Complete Statistics
+    div(class="collapsable nf-panel-heading nf-dark-blue") Stats
     div(class="nf-panel-body panel-body tournament-panel")
         div(class="col-md-12")                        
             .row
                 .col-md-6.col-sm-6.col-lg-6
                     .list-group.nf-shadow
                         a(class='list-group-item nf-blue') Statistics
-                        a(target="_blank" href='/t/{{tournamentId}}/stats' class="stat-link nf-dark-blue list-group-item nf-list-item" data-stats-type='team') Go to Stats
+                        a(target="_blank" href='/t/{{::tournamentId}}/stats' class="stat-link nf-dark-blue list-group-item nf-list-item" data-stats-type='team') Go to Stats
+            .row
+                .col-md-6.col-sm-6.col-lg-6
+                    .list-group.nf-shadow       
+                        a(class='list-group-item nf-blue') Export     
+                        a(href="/api/t/{{::tournamentId}}/qbj" class="download list-group-item nf-dark-blue nf-list-item") QBJ (NAQT)
+                        a(href="/api/t/{{::tournamentId}}/scoresheets" class="download list-group-item nf-dark-blue nf-list-item") Scoresheets
 
-                //- .col-md-6.col-sm-6.col-lg-6
-                //-     .list-group.nf-shadow       
-                //-         a(class='list-group-item nf-blue') Download      
-                //-         a(href="/t/{{::tournamentId}}/stats/team/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='team' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_standings.html') Team Stats
-                //-         a(href="/t/{{::tournamentId}}/stats/player/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='player' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_individuals.html') Player Stats
-                //-         a(href="/t/{{::tournamentId}}/stats/teamfull/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='teamfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_teamdetail.html') 
-                //-             | Team Full Report
-                //-         a(href="/t/{{::tournamentId}}/stats/playerfull/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='playerfull' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_playerdetail.html') 
-                //-             | Players Full Report
-                //-         a(href="/t/{{::tournamentId}}/stats/roundreport/dl?phase=1" class="download list-group-item nf-dark-blue nf-list-item" data-stats-type='roundreport' data-link="#{linkName}" data-phase='#{activePhase}' data-file='_rounds.html') 
-                //-             | Round Report
 
 
         div(class="col-md-6 col-sm-12")

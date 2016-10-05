@@ -14,7 +14,7 @@
                         .row
                             .col-lg-12
                                 .input-group(ng-repeat='result in Collab.searchResults | orderBy: "username" track by $index')
-                                    div.form-control.nf-input.nf-dark-blue.no-border {{result.username}}
+                                    div.form-control.nf-input.nf-dark-blue.no-border {{result.username}} | {{result.name}}
                                     span.input-group-addon.no-border.nf-button.nf-green(ng-click='Collab.addCollaborator(result.username, true)') Add as Admin
                                     span.input-group-addon.no-border.nf-button.nf-blue(ng-click='Collab.addCollaborator(result.username, false)') Add
 
