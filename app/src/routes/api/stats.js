@@ -1,4 +1,5 @@
 import {StatsReport} from './../../models/stats-models/report';
+import Qbj from './../../models/stats-models/qbj';
 
 export default (app) => {
     
@@ -42,7 +43,9 @@ export default (app) => {
     })
 
     app.get('/api/t/:tid/qbj', (req, res) => {
-        
+        const schema = Qbj.createQBJObject(req.params.tid);
+        res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json')
+        res.send({result: schema});
     })
 
 }

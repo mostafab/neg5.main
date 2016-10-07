@@ -6,6 +6,12 @@ Object.defineProperty(exports, "__esModule", {
 
 var _report = require('./../../models/stats-models/report');
 
+var _qbj = require('./../../models/stats-models/qbj');
+
+var _qbj2 = _interopRequireDefault(_qbj);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = function (app) {
 
     app.get('/t/:tid/stats', function (req, res) {
@@ -57,5 +63,9 @@ exports.default = function (app) {
         });
     });
 
-    app.get('/api/t/:tid/qbj', function (req, res) {});
+    app.get('/api/t/:tid/qbj', function (req, res) {
+        var schema = _qbj2.default.createQBJObject(req.params.tid);
+        res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json');
+        res.send({ result: schema });
+    });
 };
