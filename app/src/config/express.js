@@ -13,8 +13,6 @@ import playerApi from '../routes/api/player';
 
 import configuration from './configuration';
 
-const {cookieName, secret, duration} = configuration.session;
-
 export default () => {
     const app = express();
 

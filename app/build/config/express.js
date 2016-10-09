@@ -54,11 +54,6 @@ var _configuration2 = _interopRequireDefault(_configuration);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _configuration$sessio = _configuration2.default.session;
-var cookieName = _configuration$sessio.cookieName;
-var secret = _configuration$sessio.secret;
-var duration = _configuration$sessio.duration;
-
 exports.default = function () {
     var app = (0, _express2.default)();
 
