@@ -140,13 +140,23 @@
             });
         }
 
-        function getQBJReport(tournamentId) {
+        function getQBJReport(tournamentId, _ref6) {
+            var _ref6$download = _ref6.download;
+            var download = _ref6$download === undefined ? false : _ref6$download;
+            var _ref6$fileName = _ref6.fileName;
+            var fileName = _ref6$fileName === undefined ? 'qbj_file' : _ref6$fileName;
+
             return $q(function (resolve, reject) {
                 var token = Cookies.get('nfToken');
-                $http.get('/api/t/' + tournamentId + '/qbj?token=' + token).then(function (_ref6) {
-                    var data = _ref6.data;
+                $http.get('/api/t/' + tournamentId + '/qbj?token=' + token).then(function (_ref7) {
+                    var data = _ref7.data;
 
-                    console.log(data);
+                    if (download) {
+                        downloadQBJ(data.result, fileName);
+                    }
+                    resolve();
+                }).catch(function (error) {
+                    return reject(error);
                 });
             });
         }
@@ -170,6 +180,38 @@
                 });
             }
             angular.copy(toCopy, service.factory.unassignedTeams);
+        }
+
+        function downloadQBJ(json, fileName) {
+            if (window.navigator.msSaveOrOpenBlob) {
+                var fileData = [JSON.stringify(json, null, 4)];
+                var blobObject = new Blob(fileData);
+                window.navigator.msSaveOrOpenBlob(blobObject, fileName + '.qbj');
+            } else {
+                var tempAnchor;
+
+                (function () {
+                    var type = 'json';
+                    var blob = new Blob([JSON.stringify(json, null, 4)], { type: type });
+                    var URL = window.URL || window.webkitURL;
+                    var downloadUrl = URL.createObjectURL(blob);
+                    tempAnchor = document.createElement("a");
+
+
+                    if (typeof tempAnchor.download === 'undefined') {
+                        window.location = downloadUrl;
+                    } else {
+                        tempAnchor.href = downloadUrl;
+                        tempAnchor.download = fileName + '.qbj';
+                        document.body.appendChild(tempAnchor);
+                        tempAnchor.click();
+                        setTimeout(function () {
+                            document.body.removeChild(tempAnchor);
+                            window.URL.revokeObjectURL(downloadUrl);
+                        }, 100);
+                    }
+                })();
+            }
         }
 
         return service.factory;
