@@ -43,8 +43,8 @@ If you're interested in contributing to Neg 5's development, please see the
 Neg 5's documentation can be found in the ```docs``` directory in this Github repo. The
 SQL database schema is under ```docs/database```. 
 
-# Liscence
+# License
 
-[MIT]
+[MIT](LICENSE.md)
 
 
