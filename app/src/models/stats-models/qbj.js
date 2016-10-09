@@ -63,7 +63,7 @@ function tournamentQbjFactory(tournament) {
             maximum_players_per_team: tournament.max_active_players_per_team,
             maximum_bonus_score: tournament.bonus_point_value * tournament.parts_per_bonus,
             bonus_divisor: tournament.bonus_point_value,
-            bounuses_bounce_back: tournament.bouncebacks || false,
+            bonuses_bounce_back: tournament.bouncebacks || false,
             answer_types: tournament.tossup_point_scheme.map(tv => {
                 return {
                     value: tv.value,
