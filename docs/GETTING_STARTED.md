@@ -70,3 +70,4 @@ specified in ```configuration.json```. Open up a web browser and navigate to loc
 
 For information on workflow and contributing, please see the [contributing guide](CONTRIBUTING.md).
 
+If you think there's a step missing here, please let me know! 
