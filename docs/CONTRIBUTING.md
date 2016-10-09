@@ -1,5 +1,6 @@
 # Contributing
 These are the guidelines for contributions:
+
 1. If you plan on contributing, please make a fork of the repo and develop
 on that.
 2. Every contribution will go through a pull request.
