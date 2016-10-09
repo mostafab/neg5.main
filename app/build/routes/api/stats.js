@@ -10,6 +10,10 @@ var _qbj = require('./../../models/stats-models/qbj');
 
 var _qbj2 = _interopRequireDefault(_qbj);
 
+var _token = require('./../../auth/middleware/token');
+
+var _tournamentAccess = require('./../../auth/middleware/tournament-access');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (app) {
@@ -63,9 +67,12 @@ exports.default = function (app) {
         });
     });
 
-    app.get('/api/t/:tid/qbj', function (req, res) {
-        var schema = _qbj2.default.createQBJObject(req.params.tid);
-        res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json');
-        res.send({ result: schema });
+    app.get('/api/t/:tid/qbj', _token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
+        _qbj2.default.createQBJObject(req.params.tid, req.currentUser).then(function (qbj) {
+            res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json');
+            res.send({ result: qbj, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
     });
 };

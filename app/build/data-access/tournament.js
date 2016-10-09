@@ -100,13 +100,6 @@ exports.default = {
             }).catch(function (error) {
                 return reject(error);
             });
-            // query(tournament.findById, params, qm.one)
-            //     .then(tournament => {
-            //         resolve(tournament);
-            //     })
-            //     .catch(error => {
-            //         reject(error);
-            //     });
         });
     },
 

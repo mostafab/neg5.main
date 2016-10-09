@@ -1,6 +1,8 @@
 'use strict';
 
-function levenshteinDistance(first, second) {
+import mdiff from 'mdiff';
+
+export const levenshteinDistance = (first, second) => {
     if (first.length === 0) {
         return second.length;
     }
@@ -31,4 +33,4 @@ function levenshteinDistance(first, second) {
     return distanceMatrix[first.length - 1][second.length - 1];
 }
 
-exports.levenshteinDistance = levenshteinDistance;
+export const longestCommonSubsequence = (first, second) => mdiff(first, second).getLcs();

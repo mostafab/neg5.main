@@ -36,10 +36,17 @@ exports.default = {
         });
     },
 
+    /**
+     * Returns either the details for a single match or all matches depending on if detailedAll is true
+     */
     findById: function findById(tournamentId, matchId) {
+        var detailedAll = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
         return new Promise(function (resolve, reject) {
+            matchId = detailedAll ? null : matchId;
             var params = [tournamentId, matchId];
-            (0, _db.query)(match.findById, params, _db.queryTypeMap.one).then(function (match) {
+            var returnType = detailedAll ? _db.queryTypeMap.any : _db.queryTypeMap.one;
+            (0, _db.query)(match.findById, params, returnType).then(function (match) {
                 resolve(match);
             }).catch(function (error) {
                 return reject(error);

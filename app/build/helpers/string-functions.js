@@ -1,6 +1,17 @@
 'use strict';
 
-function levenshteinDistance(first, second) {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.longestCommonSubsequence = exports.levenshteinDistance = undefined;
+
+var _mdiff = require('mdiff');
+
+var _mdiff2 = _interopRequireDefault(_mdiff);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var levenshteinDistance = exports.levenshteinDistance = function levenshteinDistance(first, second) {
     if (first.length === 0) {
         return second.length;
     }
@@ -29,6 +40,8 @@ function levenshteinDistance(first, second) {
         }
     }
     return distanceMatrix[first.length - 1][second.length - 1];
-}
+};
 
-exports.levenshteinDistance = levenshteinDistance;
+var longestCommonSubsequence = exports.longestCommonSubsequence = function longestCommonSubsequence(first, second) {
+    return (0, _mdiff2.default)(first, second).getLcs();
+};

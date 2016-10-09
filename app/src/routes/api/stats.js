@@ -1,6 +1,9 @@
 import {StatsReport} from './../../models/stats-models/report';
 import Qbj from './../../models/stats-models/qbj';
 
+import {hasToken} from './../../auth/middleware/token';
+import {accessToTournament} from './../../auth/middleware/tournament-access';
+
 export default (app) => {
     
     app.get('/t/:tid/stats', (req, res) => {
@@ -42,10 +45,13 @@ export default (app) => {
             .catch(error => res.status(500).send({error, success: false}))
     })
 
-    app.get('/api/t/:tid/qbj', (req, res) => {
-        const schema = Qbj.createQBJObject(req.params.tid);
-        res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json')
-        res.send({result: schema});
+    app.get('/api/t/:tid/qbj', hasToken, accessToTournament, (req, res) => {
+        Qbj.createQBJObject(req.params.tid, req.currentUser)
+            .then(qbj => {
+                res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json')
+                res.send({result: qbj, success: true});        
+            })
+            .catch(error => res.status(500).send({error, success: false}));
     })
 
 }
