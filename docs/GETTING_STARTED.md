@@ -46,7 +46,8 @@ values. You can use this as a template.
             "secret" : "MyJSONSecret"
         },
         "port" : 8080
-}```
+}
+```
 Remember the database you created in step 5? For the database string in 
 ```databaseConnections.postgres.development```, replace ```#username``` with the username you
 created, ```#password``` with the password you created for that username, and ````#databaseName```
