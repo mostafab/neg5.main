@@ -2,7 +2,7 @@
 
 (function () {
 
-  angular.module('tournamentApp', ['ngCookies', 'ngAnimate']).config(function ($animateProvider) {
+  angular.module('tournamentApp', ['ngCookies', 'ngAnimate', 'statsApp']).config(function ($animateProvider) {
     $animateProvider.classNameFilter(/angular-animate/);
   });
 })();

@@ -2,15 +2,30 @@
 
 (function () {
 
-    angular.module('tournamentApp').controller('StatisticsCtrl', ['$scope', 'Team', 'Phase', StatisticsCtrl]);
+    angular.module('tournamentApp').controller('StatisticsCtrl', ['$scope', 'Stats', StatisticsCtrl]);
 
-    function StatisticsCtrl($scope, Team, Phase) {
+    function StatisticsCtrl($scope, Stats) {
 
         var vm = this;
 
-        vm.teams = Team.teams;
-        vm.phases = Phase.phases;
-
-        vm.phase = null;
+        vm.downloadQBJ = function () {
+            var toastConfig = {
+                message: 'Generating QBJ file.'
+            };
+            $scope.toast(toastConfig);
+            Stats.getQBJReport($scope.tournamentId, {
+                download: true,
+                fileName: $scope.tournamentInfo.name.toLowerCase().replace(/ /g, '_')
+            }).then(function () {
+                toastConfig.message = 'Generated QBJ file.';
+                toastConfig.success = true;
+            }).catch(function (error) {
+                toastConfig.message = 'Could not download QBJ file.';
+                toastConfig.success = false;
+            }).finally(function () {
+                toastConfig.hideAfter = true;
+                $scope.toast(toastConfig);
+            });
+        };
     }
 })();

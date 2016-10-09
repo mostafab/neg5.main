@@ -23,11 +23,16 @@ export default {
                 })
         })
     },
-
-    findById: (tournamentId, matchId) => {
+    
+    /**
+     * Returns either the details for a single match or all matches depending on if detailedAll is true
+     */
+    findById: (tournamentId, matchId, detailedAll = false) => {
         return new Promise((resolve, reject) => {
-            let params = [tournamentId, matchId];
-            query(match.findById, params, qm.one)
+            matchId = detailedAll ? null : matchId;
+            const params = [tournamentId, matchId];
+            const returnType = detailedAll ? qm.any : qm.one;
+            query(match.findById, params, returnType)
                 .then(match => {
                     resolve(match);
                 })

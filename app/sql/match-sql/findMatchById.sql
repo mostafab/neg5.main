@@ -78,7 +78,7 @@ FROM
 
                 player_match_tossup PMT
 
-                WHERE PMT.tournament_id = $1 and PMT.match_id = $2
+                WHERE PMT.tournament_id = $1 and ($2 IS NULL OR PMT.match_id = $2)
 
                 GROUP BY PMT.player_id
 
@@ -86,7 +86,8 @@ FROM
 
             ON PPM.player_id = player_match_values.player_id
 
-            WHERE TTM.tournament_id = $1 and TTM.match_id = $2 AND PPM.match_id = $2 AND PPM.tournament_id = $1
+            WHERE TTM.tournament_id = $1 and ($2 IS NULL OR TTM.match_id = $2) 
+                AND ($2 IS NULL OR PPM.match_id = $2) AND PPM.tournament_id = $1
 
             GROUP BY TTM.team_id, TTM.match_id, TTM.score, TTM.bounceback_points, TTM.overtime_tossups_gotten
 
@@ -110,7 +111,7 @@ FROM
 
     ON M.id = match_teams.match_id
 
-    WHERE M.tournament_id = $1 AND M.id = $2
+    WHERE M.tournament_id = $1 AND ($2 IS NULL OR M.id = $2)
 
 ) as match_information
 
@@ -136,7 +137,7 @@ INNER JOIN
 
     ON MP.tournament_id = P.tournament_id AND MP.phase_id = P.id
 
-    WHERE P.tournament_id = $1 and MP.match_id = $2
+    WHERE P.tournament_id = $1 and ($2 IS NULL OR MP.match_id = $2)
 
     GROUP BY MP.match_id
 
