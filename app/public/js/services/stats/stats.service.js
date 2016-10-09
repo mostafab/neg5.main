@@ -2,12 +2,13 @@
 
 (function () {
 
-    angular.module('statsApp').factory('Stats', ['$http', '$q', function ($http, $q) {
+    angular.module('statsApp').factory('Stats', ['$http', '$q', 'Cookies', function ($http, $q, Cookies) {
 
         var service = this;
 
         service.factory = {
             refreshStats: refreshStats,
+            getQBJReport: getQBJReport,
 
             playerStats: [],
             teamStats: [],
@@ -135,6 +136,17 @@
                     resolve();
                 }).catch(function (error) {
                     return reject(error);
+                });
+            });
+        }
+
+        function getQBJReport(tournamentId) {
+            return $q(function (resolve, reject) {
+                var token = Cookies.get('nfToken');
+                $http.get('/api/t/' + tournamentId + '/qbj?token=' + token).then(function (_ref6) {
+                    var data = _ref6.data;
+
+                    console.log(data);
                 });
             });
         }

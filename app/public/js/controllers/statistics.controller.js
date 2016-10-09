@@ -2,15 +2,14 @@
 
 (function () {
 
-    angular.module('tournamentApp').controller('StatisticsCtrl', ['$scope', 'Team', 'Phase', StatisticsCtrl]);
+    angular.module('tournamentApp').controller('StatisticsCtrl', ['$scope', 'Stats', StatisticsCtrl]);
 
-    function StatisticsCtrl($scope, Team, Phase) {
+    function StatisticsCtrl($scope, Stats) {
 
         var vm = this;
 
-        vm.teams = Team.teams;
-        vm.phases = Phase.phases;
-
-        vm.phase = null;
+        vm.downloadQBJ = function () {
+            Stats.getQBJReport($scope.tournamentId);
+        };
     }
 })();

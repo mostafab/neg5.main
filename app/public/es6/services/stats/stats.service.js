@@ -1,12 +1,13 @@
 (() => {
    
    angular.module('statsApp')
-        .factory('Stats', ['$http', '$q', function($http, $q) {
+        .factory('Stats', ['$http', '$q', 'Cookies', function($http, $q, Cookies) {
             
             let service = this;
             
             service.factory = {
                 refreshStats,
+                getQBJReport,
 
                 playerStats: [],
                 teamStats: [],
@@ -117,6 +118,16 @@
                             resolve();
                         })
                         .catch(error => reject(error));
+                })
+            }
+            
+            function getQBJReport(tournamentId) {
+                return $q((resolve, reject) => {
+                    const token = Cookies.get('nfToken');
+                    $http.get('/api/t/' + tournamentId + '/qbj?token=' + token)
+                        .then(({data}) => {
+                            console.log(data);
+                        })
                 })
             }
 
