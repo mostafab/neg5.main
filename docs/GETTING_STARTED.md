@@ -1,5 +1,5 @@
 # Getting Started
-Here are the basic steps to get started contributing to Neg 5.
+Here are the basic steps to set up the Neg 5 server.
 
 1. Clone the repo:
         git clone https://github.com/mostafab/neg5.git
@@ -67,5 +67,6 @@ able to start the server by running
         npm start.
 The terminal should print a message stating "Express serving running on port X", where X is the port
 specified in ```configuration.json```. Open up a web browser and navigate to localhost:X to confirm.
-        
+
+For information on workflow and contributing, please see the [contributing guide](CONTRIBUTING.md).
 

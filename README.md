@@ -36,7 +36,7 @@ I'd love to hear your ideas on what you'd like the application to support!
 # Contributing
 
 If you're interested in contributing to Neg 5's development, please see the
-[Getting Started](docs/getting_started.md) guide.
+[Getting Started](docs/GETTING_STARTED.md) and [Contributing](docs/CONTRIBUTING.md) guides.
 
 # Documentation
 
