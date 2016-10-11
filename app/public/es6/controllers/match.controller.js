@@ -235,7 +235,17 @@
                 notes: null
             }
         }
-
+        
+        vm.numPlayerAnswers = (player) => {
+            let sum = 0;
+            for (const point in player.points) {
+                if (player.points.hasOwnProperty(point)) {
+                    sum += (player.points[point] || 0);
+                }
+            }
+            return sum;
+        }
+        
         vm.matchSearch = (match) => {
             const normalizedQuery = vm.gameQuery.toLowerCase();
             const {round, teams} = match;

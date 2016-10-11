@@ -45,7 +45,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                                     tr(ng-repeat='player in Game.loadedGame.teams[0].players track by player.id' class='nf-gray')
                                         td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                         td
-                                            input(type='number' min='0' max='{{Game.loadedGame.tuh !== null ? Game.loadedGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
+                                            input(type='number' min='{{Game.numPlayerAnswers(player)}}' max='{{Game.loadedGame.tuh !== null ? Game.loadedGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
                                             name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.editGameForm[player.id + '_tuh'].$invalid}") 
                                         td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value"')
                                             input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.editGameForm[player.id + point.value].$invalid}")
@@ -65,7 +65,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                                     tr(ng-repeat='player in Game.loadedGame.teams[1].players track by player.id' class='nf-gray')
                                         td(class='vertical-center' title='{{player.name}}') {{player.name}}
                                         td
-                                            input(type='number' min='0' max='{{Game.loadedGame.tuh !== null ? Game.loadedGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
+                                            input(type='number' min='{{Game.numPlayerAnswers(player)}}' max='{{Game.loadedGame.tuh !== null ? Game.loadedGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
                                             name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.editGameForm[player.id + '_tuh'].$invalid}") 
                                         td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value"')
                                             input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.editGameForm[player.id + point.value].$invalid}")
@@ -192,7 +192,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                 
                 hr
                 
-                button(type="submit" class="btn btn-md nf-blue nf-button" ng-if='tournamentContext.admin' ng-disabled='Game.editGameForm.$invalid' ng-click='Game.editLoadedGame()' ng-show='Game.loadedGame.editing') Edit Match Information
+                button(type="submit" class="btn btn-md nf-green nf-button" ng-if='tournamentContext.admin' ng-disabled='Game.editGameForm.$invalid' ng-click='Game.editLoadedGame()' ng-show='Game.loadedGame.editing') Save Changes
     
     .nf-panel-footer.panel-footer.nf-blue.no-border
         h5 Added by: {{Game.loadedGame.addedBy}}

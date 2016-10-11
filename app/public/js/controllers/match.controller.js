@@ -237,6 +237,16 @@
             };
         };
 
+        vm.numPlayerAnswers = function (player) {
+            var sum = 0;
+            for (var point in player.points) {
+                if (player.points.hasOwnProperty(point)) {
+                    sum += player.points[point] || 0;
+                }
+            }
+            return sum;
+        };
+
         vm.matchSearch = function (match) {
             var normalizedQuery = vm.gameQuery.toLowerCase();
             var round = match.round;
