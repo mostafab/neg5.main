@@ -72,19 +72,20 @@ FROM
             (
                 SELECT 
                 PMT.player_id,
+                PMT.match_id,
                 array_agg(json_build_object('value', PMT.tossup_value, 'number', PMT.number_gotten)) as tossup_values
-
+                
                 FROM
 
                 player_match_tossup PMT
 
                 WHERE PMT.tournament_id = $1 and ($2 IS NULL OR PMT.match_id = $2)
 
-                GROUP BY PMT.player_id
+                GROUP BY PMT.player_id, PMT.match_id
 
             ) as player_match_values
 
-            ON PPM.player_id = player_match_values.player_id
+            ON PPM.player_id = player_match_values.player_id AND PPM.match_id = player_match_values.match_id
 
             WHERE TTM.tournament_id = $1 and ($2 IS NULL OR TTM.match_id = $2) 
                 AND ($2 IS NULL OR PPM.match_id = $2) AND PPM.tournament_id = $1
