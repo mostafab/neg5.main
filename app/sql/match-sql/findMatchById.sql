@@ -36,7 +36,6 @@ FROM
 
         (
             SELECT
-
             TTM.team_id,
             TTM.match_id,
             TTM.score,
@@ -73,7 +72,9 @@ FROM
                 SELECT 
                 PMT.player_id,
                 PMT.match_id,
-                array_agg(json_build_object('value', PMT.tossup_value, 'number', PMT.number_gotten)) as tossup_values
+                array_agg(
+                    json_build_object('value', PMT.tossup_value, 'number', PMT.number_gotten)
+                ) as tossup_values
                 
                 FROM
 
@@ -88,7 +89,6 @@ FROM
             ON PPM.player_id = player_match_values.player_id AND PPM.match_id = player_match_values.match_id
 
             WHERE TTM.tournament_id = $1 and ($2 IS NULL OR TTM.match_id = $2) 
-                AND ($2 IS NULL OR PPM.match_id = $2) AND PPM.tournament_id = $1
 
             GROUP BY TTM.team_id, TTM.match_id, TTM.score, TTM.bounceback_points, TTM.overtime_tossups_gotten
 
