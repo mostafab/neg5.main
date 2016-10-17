@@ -185,17 +185,17 @@ function matchQbjArrayFactory(matches) {
                     match_players: t.players.map(function (p) {
                         return {
                             player: {
-                                $ref: 'player_' + p.player_id,
-                                tossups_heard: p.tossups_heard,
-                                answer_counts: p.tossup_values.map(function (tv) {
-                                    return {
-                                        answer_type: {
-                                            value: tv.value
-                                        },
-                                        number: tv.number
-                                    };
-                                })
-                            }
+                                $ref: 'player_' + p.player_id
+                            },
+                            tossups_heard: p.tossups_heard,
+                            answer_counts: p.tossup_values.map(function (tv) {
+                                return {
+                                    answer_type: {
+                                        value: tv.value
+                                    },
+                                    number: tv.number
+                                };
+                            })
                         };
                     })
                 };
