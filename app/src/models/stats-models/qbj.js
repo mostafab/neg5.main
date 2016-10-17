@@ -16,38 +16,50 @@ export default {
                 version: versionNumber,
                 objects: []
             };
-            Promise.all(
-                [
-                    teamDB.getTeamsByTournament(tournamentId), 
-                    tournamentDB.findTournamentById(tournamentId, currentUser),
-                    matchDB.findById(tournamentId, null, true)
-                ])
-                .then(results => {
-                    const [teams, tournament, matches] = results;
-                    
-                    const tournamentQbj = tournamentQbjFactory(tournament.tournament);
-                    const registrations = registrationsArrayFactory(teams);
-                    const matchObjects = matchQbjArrayFactory(matches);
-                    
-                    tournamentQbj.registrations = registrations.map(r => {
-                        return {$ref: r.id}
-                    })
-                    tournamentQbj.phases = [
-                        {
-                            name: 'All Matches',
-                            rounds: separateMatchesByRound(matches)
-                        }
-                    ]
-                    
-                    qbjObj.objects.push(tournamentQbj);
-                    qbjObj.objects.push(...registrations);
-                    qbjObj.objects.push(...matchObjects);
-                    
-                    resolve(qbjObj);
+            matchDB.getMatchesByTournament(tournamentId)
+                .then(matches => {
+                    const matchPromises = createMatchPromises(tournamentId, matches);
+                    Promise.all(
+                        [
+                            teamDB.getTeamsByTournament(tournamentId), 
+                            tournamentDB.findTournamentById(tournamentId, currentUser),
+                            ...matchPromises
+                        ])
+                        .then(results => {
+                            const [teams, tournament, ...matches] = results;
+                            
+                            const tournamentQbj = tournamentQbjFactory(tournament.tournament);
+                            const registrations = registrationsArrayFactory(teams);
+                            const matchObjects = matchQbjArrayFactory(matches);
+                            
+                            tournamentQbj.registrations = registrations.map(r => {
+                                return {$ref: r.id}
+                            })
+                            tournamentQbj.phases = [
+                                {
+                                    name: 'All Matches',
+                                    rounds: separateMatchesByRound(matches)
+                                }
+                            ]
+                            
+                            qbjObj.objects.push(tournamentQbj);
+                            qbjObj.objects.push(...registrations);
+                            qbjObj.objects.push(...matchObjects);
+                            
+                            resolve(qbjObj);
+                        })
                 })
                 .catch(error => reject(error));
         })
     }
+}
+
+function createMatchPromises(tournamentId, matches) {
+    return matches.reduce((promises, match) => {
+        const matchPromise = matchDB.findById(tournamentId, match.match_id);
+        promises.push(matchPromise);
+        return promises;
+    }, []);
 }
 
 function tournamentQbjFactory(tournament) {

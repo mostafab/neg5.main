@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _tournament = require('./../../data-access/tournament');
 
 var _tournament2 = _interopRequireDefault(_tournament);
@@ -22,6 +20,8 @@ var _stringFunctions = require('./../../helpers/string-functions');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var versionNumber = "1.2";
@@ -35,33 +35,36 @@ exports.default = {
                 version: versionNumber,
                 objects: []
             };
-            Promise.all([_team2.default.getTeamsByTournament(tournamentId), _tournament2.default.findTournamentById(tournamentId, currentUser), _match2.default.findById(tournamentId, null, true)]).then(function (results) {
-                var _qbjObj$objects, _qbjObj$objects2;
+            _match2.default.getMatchesByTournament(tournamentId).then(function (matches) {
+                var matchPromises = createMatchPromises(tournamentId, matches);
+                Promise.all([_team2.default.getTeamsByTournament(tournamentId), _tournament2.default.findTournamentById(tournamentId, currentUser)].concat(_toConsumableArray(matchPromises))).then(function (results) {
+                    var _qbjObj$objects, _qbjObj$objects2;
 
-                var _results = _slicedToArray(results, 3);
+                    var _results = _toArray(results);
 
-                var teams = _results[0];
-                var tournament = _results[1];
-                var matches = _results[2];
+                    var teams = _results[0];
+                    var tournament = _results[1];
 
+                    var matches = _results.slice(2);
 
-                var tournamentQbj = tournamentQbjFactory(tournament.tournament);
-                var registrations = registrationsArrayFactory(teams);
-                var matchObjects = matchQbjArrayFactory(matches);
+                    var tournamentQbj = tournamentQbjFactory(tournament.tournament);
+                    var registrations = registrationsArrayFactory(teams);
+                    var matchObjects = matchQbjArrayFactory(matches);
 
-                tournamentQbj.registrations = registrations.map(function (r) {
-                    return { $ref: r.id };
+                    tournamentQbj.registrations = registrations.map(function (r) {
+                        return { $ref: r.id };
+                    });
+                    tournamentQbj.phases = [{
+                        name: 'All Matches',
+                        rounds: separateMatchesByRound(matches)
+                    }];
+
+                    qbjObj.objects.push(tournamentQbj);
+                    (_qbjObj$objects = qbjObj.objects).push.apply(_qbjObj$objects, _toConsumableArray(registrations));
+                    (_qbjObj$objects2 = qbjObj.objects).push.apply(_qbjObj$objects2, _toConsumableArray(matchObjects));
+
+                    resolve(qbjObj);
                 });
-                tournamentQbj.phases = [{
-                    name: 'All Matches',
-                    rounds: separateMatchesByRound(matches)
-                }];
-
-                qbjObj.objects.push(tournamentQbj);
-                (_qbjObj$objects = qbjObj.objects).push.apply(_qbjObj$objects, _toConsumableArray(registrations));
-                (_qbjObj$objects2 = qbjObj.objects).push.apply(_qbjObj$objects2, _toConsumableArray(matchObjects));
-
-                resolve(qbjObj);
             }).catch(function (error) {
                 return reject(error);
             });
@@ -69,6 +72,14 @@ exports.default = {
     }
 };
 
+
+function createMatchPromises(tournamentId, matches) {
+    return matches.reduce(function (promises, match) {
+        var matchPromise = _match2.default.findById(tournamentId, match.match_id);
+        promises.push(matchPromise);
+        return promises;
+    }, []);
+}
 
 function tournamentQbjFactory(tournament) {
     return {
