@@ -8,6 +8,8 @@ var _stats = require('./../data-access/stats');
 
 var _stats2 = _interopRequireDefault(_stats);
 
+var _htmlUtils = require('./html-utils');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (tournamentId) {
@@ -20,15 +22,20 @@ exports.default = function (tournamentId) {
             var pointScheme = results.pointScheme;
             var stats = results.stats;
             var divisions = results.divisions;
+            var tournamentName = results.tournamentName;
+            var phase = results.phase;
 
-
-            resolve(buildHtmlString(stats, divisions, pointScheme));
+            resolve(buildHtmlString(tournamentName, stats, divisions, pointScheme));
+        }).catch(function (error) {
+            return reject(error);
         });
     });
 };
 
-function buildHtmlString(stats, divisions, pointScheme) {
+function buildHtmlString(tournamentName, stats, divisions, pointScheme) {
     var reportHtmlString = '<HTML>';
+
+    reportHtmlString += (0, _htmlUtils.statsNavigationBarHtml)(tournamentName);
 
     reportHtmlString += '</HTML>';
 
