@@ -165,7 +165,8 @@ div(id='add-game-div')
                         div(class="col-lg-6 col-md-6 col-sm-6")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6")
-                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases* ({{Game.currentGame.phases.length}})
+                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases ({{Game.currentGame.phases.length}})
+                                        p.warning-text(ng-show='Game.newGameForm.phases.$invalid') Please select a phase(s).
                                 div(class="col-md-6 col-sm-6")
                                     select(multiple required class="form-control nf-input no-overflow" name='phases' ng-class='{"nf-error" : Game.newGameForm.phases.$invalid && Game.newGameForm.phases.$touched}' ng-attr-size='{{Game.phases.length}}' ng-options='phase.name for phase in Game.phases | orderBy:"name" track by phase.id' ng-model='Game.currentGame.phases')
                                         

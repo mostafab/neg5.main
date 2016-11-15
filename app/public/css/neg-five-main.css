@@ -29,6 +29,10 @@
     color: #fbc02d !important;
 }
 
+.nf-modal-content {
+    border: none;
+}
+
 .neg-box {
     display: block;
     position: absolute;
