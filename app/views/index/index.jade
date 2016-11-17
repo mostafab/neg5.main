@@ -12,93 +12,96 @@ block content
 
     nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-dark-blue.nf-shadow(role='navigation')
         .navbar-header
-            p.navbar-brand Quizbowl.io
+            p.navbar-brand Welcome to Neg 5!
         div(class="collapse navbar-collapse")
             ul(class="nav navbar-nav")
-                // li
-                //     a(href="/about" style="color:white;") About
                 li(class="list-element")
                     a(style='color:white;' href='https://github.com/mostafab/neg5')
                         i.fa.fa-github.fa-2x
 
-    div(class="jumbotron vertical-center-container" style='background-color:transparent;overflow:hidden;' ng-app='IndexApp')
+    div(class="vertical-center-container" style='background-color:transparent;overflow:hidden;' ng-app='IndexApp')
         div.container(ng-controller='IndexController as Index')
+
+            div(style='text-align:center')
+                img(src='img/logo_edited.png' style='width:300px;height:auto')
 
             .panel-body.nf-dark-blue
                 .row                
-                    ul.nav-bar
-                        li.center.col-lg-6.col-sm-6
-                            a(ng-click='Index.onRegister = true;Index.onLogin = false' style='font-size:1.3em' ng-class='{"green-text" : Index.onRegister}') Register
-                        li.active.center.col-lg-6.col-sm-6
-                            a(ng-click='Index.onLogin = true;Index.onRegister = false' style='font-size:1.3em' ng-class='{"green-text" : Index.onLogin}') Login
+                    ul.nav-bar.login-panel
+                        li.center.col-lg-6.col-sm-6(ng-click='Index.loggingIn = false;')
+                            a(style='font-size:1.3em' ng-class='{"green-text" : !Index.loggingIn}') Register
+                        li.center.col-lg-6.col-sm-6(ng-click='Index.loggingIn = true;' )
+                            a(style='font-size:1.3em' ng-class='{"green-text" : Index.loggingIn}') Login
             
             .tab-content
                 div
                     .panel.nf-panel
                         .row
-                            .col-lg-12.col-md-12.col-sm-12(ng-show='Index.onRegister')
-                                .panel-body.nf-panel-body.nf-shadow.nf-blue
+                            .col-lg-12.col-md-12.col-sm-12(ng-show='!Index.loggingIn')
+                                .panel-body.nf-panel-body.nf-shadow
                                     form.center(name='registrationForm' novalidate ng-submit='Index.register()')
                                             .row
-                                                label.label.nf-label.col-lg-5.col-md-5.col-sm-5 Username
-                                                .form-group.input-group.col-lg-6.col-md-6.col-sm-6
+                                                label.label.nf-label.col-lg-4.col-md-5.col-sm-5 Username
+                                                .form-group.input-group.col-lg-8.col-md-6.col-sm-6
                                                     input.form-control.nf-input.input-md.btn-shadow(type='text' autocomplete='off' name='username' placeholder='Username (between 5 and 20 characters)'
                                                         ng-model='Index.newUser.username' ng-minlength='5' ng-maxlength='20' ng-pattern='/^[a-zA-Z0-9]*$/' required)
                                                     span.input-group-addon.btn.btn-md.nf-button(ng-class='{"nf-red" : registrationForm.username.$invalid && !registrationForm.username.$pristine, "nf-green" : registrationForm.username.$valid}')
-                                                        i.fa.fa-user   
+                                                        
                                             .row
-                                                label.label.nf-label.col-lg-5.col-md-5.col-sm-5 Name (optional)
-                                                .form-group.input-group.col-lg-6.col-md-6.col-sm-6
+                                                label.label.nf-label.col-lg-4.col-md-5.col-sm-5 Name (optional)
+                                                .form-group.input-group.col-lg-8.col-md-6.col-sm-6
                                                     input.form-control.nf-input.input-md.btn-shadow(type='text' autocomplete='off' name='name' placeholder='Name (optional)'
                                                         ng-model='Index.newUser.name' ng-maxlength='50')
                                                     span.input-group-addon.btn.btn-md.nf-button(ng-class='{"nf-red" : registrationForm.name.$invalid, "nf-green" : registrationForm.name.$valid}')
-                                                        i.fa.fa-user    
+                                                            
                                             .row
-                                                label.label.nf-label.col-lg-5.col-md-5.col-sm-5 Email (optional)
-                                                .form-group.input-group.col-lg-6.col-md-6.col-sm-6
+                                                label.label.nf-label.col-lg-4.col-md-5.col-sm-5 Email (optional)
+                                                .form-group.input-group.col-lg-8.col-md-6.col-sm-6
                                                     input.form-control.nf-input.input-md.btn-shadow(type='email' autocomplete='off' name='email' placeholder='Email (optional)'
                                                         ng-model='Index.newUser.email' ng-maxlength='50')
                                                     span.input-group-addon.btn.btn-md.nf-button(ng-class='{"nf-red" : registrationForm.email.$invalid, "nf-green" : registrationForm.email.$valid}')
-                                                        i.fa.fa-user    
+                                                           
                                             .row
-                                                label.label.nf-label.col-lg-5.col-md-5.col-sm-5 Password
-                                                .form-group.input-group.col-lg-6.col-md-6.col-sm-6
+                                                label.label.nf-label.col-lg-4.col-md-5.col-sm-5 Password
+                                                .form-group.input-group.col-lg-8.col-md-6.col-sm-6
                                                     input.form-control.nf-input.input-md.btn-shadow(type='password' name='password' placeholder='Password (at least 5 characters long)'
                                                         ng-model='Index.newUser.password' ng-minlength='5' ng-maxlength='20' required)
                                                     span.input-group-addon.btn.btn-md.nf-button(ng-class='{"nf-red" : registrationForm.password.$invalid && !registrationForm.password.$pristine, "nf-green" : registrationForm.password.$valid}')
-                                                        i.fa.fa-lock     
+                                                        
                                             .row
-                                                label.label.nf-label.col-lg-5.col-md-5.col-sm-5 Confirm Password
-                                                .form-group.input-group.col-lg-6.col-md-6.col-sm-6
+                                                label.label.nf-label.col-lg-4.col-md-5.col-sm-5 Confirm Password
+                                                .form-group.input-group.col-lg-8.col-md-6.col-sm-6
                                                     input.form-control.nf-input.input-md.btn-shadow(type='password' placeholder='Confirm Password (must match)'
                                                         ng-model='Index.newUser.passwordConfirm' required)
                                                     span.input-group-addon.btn.btn-md.nf-button(ng-class='{"nf-red" : Index.newUser.passwordConfirm !== Index.newUser.password, "nf-green" : Index.newUser.passwordConfirm === Index.newUser.password}')
-                                                        i.fa.fa-lock
+                                                        
                                             .row
                                                 button(type="submit" class="btn btn-md nf-button nf-green")
                                                     | Register
 
-                            .col-lg-12.col-md-12.col-sm-12(ng-show='Index.onLogin' ng-init='Index.onLogin = true')
-                                .panel-body.nf-panel-body.nf-shadow.nf-blue
+                            .col-lg-12.col-md-12.col-sm-12(ng-show='Index.loggingIn')
+                                .panel-body.nf-panel-body.nf-shadow
                                     form.center(name="loginForm" novalidate ng-submit='Index.login()')
                                         .row
-                                            label.label.nf-label.col-lg-5.col-md-5.col-sm-5 Username 
-                                            .form-group.input-group.col-lg-6.col-md-6.col-sm-6
-                                                input(type="text" name='username' ng-model='Index.user.username' class="form-control nf-input input-md" placeholder="Between 5 and 20 alphanumeric characters" 
+                                            //- label.label.nf-label.col-lg-5.col-md-5.col-sm-5 Username 
+                                            .form-group.input-group
+                                                input(type="text" name='username' ng-model='Index.user.username' class="form-control nf-input input-md center" placeholder="Username" 
                                                             ng-minlength='5' ng-maxlength='20' ng-pattern='/^[a-zA-Z0-9]*$/' required)
-                                                span(ng-class='{"nf-red" : loginForm.username.$invalid && !loginForm.username.$pristine, "nf-green" : loginForm.username.$valid}' class="input-group-addon btn-md nf-button" style='border:none')
-                                                    i.fa.fa-user
+                                                span(ng-class='{"nf-red" : loginForm.username.$invalid && !loginForm.username.$pristine, "nf-green" : loginForm.username.$valid}' class="input-group-addon nf-button")
+                                                    //- i.fa.fa-user
                                         .row
-                                            label.label.nf-label.col-lg-5.col-md-5.col-sm-5 Password
-                                            .form-group.input-group.col-lg-6.col-md-6.col-sm-6
-                                                input.form-control.nf-input.input-md(type='password' name='password' ng-model='Index.user.password' placeholder='At least five characters'
+                                            //- label.label.nf-label.col-lg-5.col-md-5.col-sm-5 Password
+                                            .form-group.input-group
+                                                input.form-control.nf-input.input-md.center(type='password' name='password' ng-model='Index.user.password' placeholder='Password'
                                                             ng-minlength='5' ng-maxlength='20' required)
-                                                span(ng-class='{"nf-red" : loginForm.password.$invalid && !loginForm.password.$pristine, "nf-green" : loginForm.password.$valid}' class="input-group-addon btn-md nf-button" style='border:none')
-                                                    i.fa.fa-lock
+                                                span(ng-class='{"nf-red" : loginForm.password.$invalid && !loginForm.password.$pristine, "nf-green" : loginForm.password.$valid}' class="input-group-addon btn-md nf-button")
+                                                    //- i.fa.fa-lock
                                         .row
                                             button(type="submit" class="btn btn-md nf-button nf-green")
                                                 | Login
 
+            
+            
             .nf-toast(style='position:fixed' class='angular-animate' ng-show='Index.toastMessage !== null')
                 .nf-toast-content.nf-button.btn(ng-class="{'nf-red': Index.toastMessage.success === false, 'nf-green': Index.toastMessage.success === true, 'nf-orange' : Index.toastMessage.success !== true && Index.toastMessage.success !== false}")
                     i.fa(ng-class="{'fa-check': Index.toastMessage.success === true, 'fa-times': Index.toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : Index.toastMessage.success !== true && Index.toastMessage.success !== false}")

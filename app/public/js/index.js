@@ -10,7 +10,7 @@
 
         var vm = this;
 
-        vm.loggingIn = false;
+        vm.loggingIn = true;
 
         vm.user = {
             username: '',

@@ -14,7 +14,7 @@
 
 .nf-button {
     border-radius: 2px;
-    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     font-size: 1.3em;
 }
 
@@ -115,11 +115,11 @@ li > a:hover {
 
 .nf-input {
     border-radius: 2px;
-    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     font-size: 1.3em;
 }
 .nf-input:focus {
-    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .nf-label {
@@ -225,7 +225,7 @@ li > a:hover {
 }
 
 .nf-green {
-    background-color: #00695C;
+    background-color: #00796b ;
     color: white;
 }
 
@@ -431,8 +431,20 @@ select.readonly {
 }*/
 
 /**
-Redefine Boostrap definitions
+Redefine Bootstrap definitions
 */
+
+@media (min-width: 800px) {
+    div.container {
+        width: 750px;
+    }
+}
+
+.input-group-addon {
+    border: none;
+}
+
+
 .table > thead > tr > th {
     border-bottom: 0px solid black;
 }
