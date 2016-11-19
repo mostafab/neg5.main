@@ -1,5 +1,7 @@
 .nf-background-main {
-    background-color: #455a64;
+    /*background-color: #455a64;*/
+    /*background-color: #EAEAEA;*/
+    background-color: #E0E0E0;
 }
 
 .nf-image {
@@ -65,8 +67,10 @@ form.readonly-form * input, form.readonly-form * select, form.readonly-form * te
 }
 
 li.active > a {
-    color: lightgreen !important;
+    /*color: lightgreen !important;*/
     background-color: transparent !important;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    border-bottom: 5px solid #90a4ae;
 }
 
 li > a:hover {
@@ -153,7 +157,7 @@ li > a:hover {
 }
 
 .nf-panel {
-    border-color: #455a64;
+    /*border-color: #455a64;*/
     border-radius: 2px;
     background-color: transparent;
 }
@@ -161,13 +165,13 @@ li > a:hover {
 .nf-panel-heading {
     padding: 20px;
     font-size: 1.5em;
-    border-color: #455a64 !important;
+    /*border-color: #455a64 !important;*/
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
 }
 
 .nf-panel-body {
-    background-color: #455a64; 
+    /*background-color: #455a64; */
 }
 
 .nf-panel-footer {
@@ -296,7 +300,7 @@ li > a:hover {
 }
 
 .white {
-    color: white;
+    /*color: white;*/
 }
 
 .preserve-white-space {
@@ -308,7 +312,8 @@ li > a:hover {
 }
 
 .nav-bar * a {
-    color: white;
+    /*color: white;*/
+    color: black;
 }
 .nav-bar * a:hover {
     color: black;
@@ -434,6 +439,10 @@ select.readonly {
 Redefine Bootstrap definitions
 */
 
+div.panel-default {
+    border: none;
+}
+
 @media (min-width: 800px) {
     div.container {
         width: 750px;
@@ -514,6 +523,15 @@ tr > .table-head {
 .underline {
     text-decoration: underline;
 }
+
+
+@media (min-width: 1000px) {
+    #save-tournament-overview {
+        position: fixed;
+        bottom: 10px;
+    }    
+}
+
 
 
 
