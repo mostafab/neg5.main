@@ -29,7 +29,7 @@ block content
                 .row                
                     ul.nav-bar.login-panel
                         li.center.col-lg-6.col-sm-6(ng-click='Index.loggingIn = false;')
-                            a(style='font-size:1.3em' ng-class='{"green-text" : !Index.loggingIn}') Register
+                            a(style='font-size:1.3em' ng-class='{"green-text" : !Index.loggingIn}') Sign Up
                         li.center.col-lg-6.col-sm-6(ng-click='Index.loggingIn = true;' )
                             a(style='font-size:1.3em' ng-class='{"green-text" : Index.loggingIn}') Sign In
             
@@ -38,7 +38,7 @@ block content
                     .panel.nf-panel
                         .row
                             .col-lg-12.col-md-12.col-sm-12(ng-show='!Index.loggingIn')
-                                .panel-body.nf-panel-body.nf-shadow
+                                .panel-body.nf-panel-body
                                     form.center(name='registrationForm' novalidate ng-submit='Index.register()')
                                             .row
                                                 // label.label.nf-label.col-lg-4.col-md-5.col-sm-5 Username
@@ -80,7 +80,7 @@ block content
                                                     | Register
 
                             .col-lg-12.col-md-12.col-sm-12(ng-show='Index.loggingIn')
-                                .panel-body.nf-panel-body.nf-shadow
+                                .panel-body.nf-panel-body
                                     form.center(name="loginForm" novalidate ng-submit='Index.login()')
                                         .row
                                             //- label.label.nf-label.col-lg-5.col-md-5.col-sm-5 Username 

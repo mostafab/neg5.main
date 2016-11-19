@@ -338,12 +338,20 @@
                     hideAfter: true
                 });
             } else {
-                vm.game = JSON.parse(lastScoresheet);
-                $scope.toast({
-                    message: 'Loaded scoresheet',
-                    success: true,
-                    hideAfter: true
-                });
+                try {
+                    vm.game = JSON.parse(lastScoresheet);
+                    $scope.toast({
+                        message: 'Loaded scoresheet.',
+                        success: true,
+                        hideAfter: true
+                    });
+                } catch (err) {
+                    $scope.toast({
+                        message: 'Could not read scoresheet.',
+                        success: false,
+                        hideAfter: true
+                    });
+                }
             }
         };
 

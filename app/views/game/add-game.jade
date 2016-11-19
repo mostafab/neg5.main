@@ -1,8 +1,8 @@
 div(id='add-game-div')
     div(class="panel panel-default nf-panel")
 
-        div(class="collapsable nf-panel-heading nf-dark-blue") 
-            p.inline Add a Game
+        // div(class="collapsable nf-panel-heading nf-dark-blue") 
+        //     p.inline Add a Match
             
         div(class="nf-panel-body panel-body tournament-panel" id="addgamepanel")
 
@@ -134,7 +134,7 @@ div(id='add-game-div')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Total TUH
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" min='0' class="form-control nf-input " name="tossupsheard" placeholder="Tossups Heard" ng-model='Game.currentGame.tuh' ng-class="{'nf-error' : Game.newGameForm.tossupsheard.$invalid}")
+                                    input(type="number" min='{{Game.minPossibleTossupsHeard(Game.currentGame)}}' class="form-control nf-input " name="tossupsheard" placeholder="Tossups Heard" ng-model='Game.currentGame.tuh' ng-class="{'nf-error' : Game.newGameForm.tossupsheard.$invalid}")
                     
 
                     div(class="row")

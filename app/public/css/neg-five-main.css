@@ -71,6 +71,7 @@ li.active > a {
     background-color: transparent !important;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     border-bottom: 5px solid #90a4ae;
+    transition: border .1s;
 }
 
 li > a:hover {
@@ -122,6 +123,7 @@ li > a:hover {
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     font-size: 1.3em;
 }
+
 .nf-input:focus {
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
@@ -183,7 +185,7 @@ li > a:hover {
 }
 
 .nf-shadow {
-    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .nf-th {

@@ -29,27 +29,27 @@ block content
                             li(class="center" ng-click='PSControl.tab = "round_report"' ng-class="{'active': PSControl.tab === 'round_report'}")
                                 a(data-toggle="tab" class='tournament-tab btn-md') Round Robin
                         
-            div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:120px;')
+            div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:90px;')
                 
-                div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
-                    div(class='row')
-                        div(class='col-sm-7 col-lg-12 col-md-12')
-                            h2(class="nf-panel-heading nf-dark-blue center") {{::PSControl.tournamentName.name}} Stats
+                // div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
+                //     div(class='row')
+                //         div(class='col-sm-7 col-lg-12 col-md-12')
+                //             h2(class="nf-panel-heading nf-dark-blue center") {{::PSControl.tournamentName.name}} Stats
                     
-                    div(class="panel-body")
-                        div(class="row")
-                            div(class='col-sm-7 col-md-12 col-lg-12')
-                                ul(class="nav nav-bar no-border-radius")
-                                    li(class="center")
-                                        .input-group
-                                            select(class='form-control nf-input' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase' ng-change='PSControl.refreshStats()')
-                                                option(value='') All Games
-                                            span(class='input-group-addon nf-blue nf-button btn' title='Refresh teams' ng-click='PSControl.refreshStats()')
-                                                i(class='fa fa-refresh')              
+                //     div(class="panel-body")
+                //         div(class="row")
+                //             div(class='col-sm-7 col-md-12 col-lg-12')
+                //                 ul(class="nav nav-bar no-border-radius")
+                //                     li(class="center")
+                //                         .input-group
+                //                             select(class='form-control nf-input' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase' ng-change='PSControl.refreshStats()')
+                //                                 option(value='') All Games
+                //                             span(class='input-group-addon nf-blue nf-button btn' title='Refresh teams' ng-click='PSControl.refreshStats()')
+                //                                 i(class='fa fa-refresh')              
 
                                                 
 
-                div(class='col-sm-12 col-md-10 col-lg-10 col-lg-offset-2')
+                div(class='col-sm-12 col-md-12 col-lg-12')
                     div(class="tab-content")
                         div(class="tab-pane fade angular-animate" ng-class="{'active in' : PSControl.tab ==='team_standings', 'fade': PSControl.tab !=='team_standings'}")
                             include ./quick-teams.jade

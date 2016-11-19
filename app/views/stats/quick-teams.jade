@@ -1,7 +1,7 @@
 .row
     .col-lg-12
         div(class="panel panel-default nf-panel")
-            div(class="collapsable nf-panel-heading nf-dark-blue") Team Standings - {{PSControl.phase.name || 'All Games'}}                      
+            h1(class="collapsable") Team Standings - {{PSControl.phase.name || 'All Games'}}                      
         .row
             .col-lg-4
                 input(type="text" class="form-control nf-input search btn-shadow" placeholder="Search for Teams" ng-model='PSControl.teamQuery')
@@ -26,7 +26,7 @@
                 th(class="table-head nf-white" title='A team\'s ratio between total gets and negs.') G / N
                 th(class="table-head nf-white" title='A team\'s measure of successfully converting bonuses.') PPB
 
-            tr(class='nf-list-item nf-dark-blue' ng-repeat='team in PSControl.teamStats | filter:PSControl.teamQuery track by team.team_id' ng-click='PSControl.tab = "team_full"; PSControl.setHashLocation(team.team_id)')
+            tr(class='' ng-repeat='team in PSControl.teamStats | filter:PSControl.teamQuery track by team.team_id' ng-click='PSControl.tab = "team_full"; PSControl.setHashLocation(team.team_id)')
                 td {{team.rank}}
                 td {{team.team_name}}
                 td {{team.wins}}

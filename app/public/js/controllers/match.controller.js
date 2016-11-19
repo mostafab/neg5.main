@@ -247,6 +247,15 @@
             return sum;
         };
 
+        vm.minPossibleTossupsHeard = function (match) {
+            return match.teams ? match.teams.reduce(function (sum, currentTeam) {
+                var tossupsGotten = currentTeam.players.reduce(function (t, curr) {
+                    return t + vm.numPlayerAnswers(curr);
+                }, 0);
+                return sum + tossupsGotten;
+            }, 0) : 0;
+        };
+
         vm.matchSearch = function (match) {
             var normalizedQuery = vm.gameQuery.toLowerCase();
             var round = match.round;

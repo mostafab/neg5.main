@@ -246,6 +246,11 @@
             return sum;
         }
         
+        vm.minPossibleTossupsHeard = (match) => match.teams ? match.teams.reduce((sum, currentTeam) => {
+            let tossupsGotten = currentTeam.players.reduce((t, curr) => t + vm.numPlayerAnswers(curr), 0);
+            return sum + tossupsGotten;
+        }, 0) : 0
+        
         vm.matchSearch = (match) => {
             const normalizedQuery = vm.gameQuery.toLowerCase();
             const {round, teams} = match;
