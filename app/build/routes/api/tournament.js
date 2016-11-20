@@ -17,6 +17,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = function (app) {
 
     app.route('/api/t').get(_token.hasToken, function (req, res) {
+        console.log(req.currentUser);
         _tournament2.default.findByUser(req.currentUser).then(function (data) {
             return res.json({ data: data, success: true });
         }).catch(function (error) {

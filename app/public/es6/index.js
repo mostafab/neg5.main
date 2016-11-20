@@ -63,8 +63,6 @@
                             toastConfig.hideAfter = true;
                         })
                         .finally(() => vm.toast(toastConfig));
-                } else {
-                    console.log(2);
                 }
             }
 
@@ -100,6 +98,13 @@
                             })
                     
                 }
+            }
+            
+            vm.googleLogin = () => {
+                $http.get('/auth/google')
+                    .then(({data}) => {
+                        console.log(data);
+                    })
             }
 
         }]);

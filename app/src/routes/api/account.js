@@ -1,6 +1,7 @@
 import Account from '../../models/sql-models/account';
 import {hasToken} from '../../auth/middleware/token';
 import Passport from '../../config/passport/passport';
+import {encode} from '../../helpers/jwt';
 
 export default (app) => {
     
@@ -39,6 +40,26 @@ export default (app) => {
             .catch(error => res.send({error, success: false}))
     })
     
-    app.get('/auth/facebook', Passport.authenticate('facebook'));
+    app.get('/auth/facebook', Passport.authenticate('facebook', {session: false}));
+    
+    app.get('/auth/facebook/callback', Passport.authenticate('facebook', {
+        failureRedirect: '/',
+        session: false
+    }), (req, res) => {
+        res.json(req.user)
+    });
+    
+    app.get('/auth/google', Passport.authenticate('google', {
+        session: false,
+        scope: ['email profile']
+    }))
+    
+    app.get('/auth/google/callback', Passport.authenticate('google', {
+        failureRedirect: '/',
+        session: false
+    }), (req, res) => {
+        res.cookie('nfToken', encode(req.user));
+        res.redirect('/tournaments');
+    })
     
 }

@@ -14,6 +14,8 @@ var _passport = require('../../config/passport/passport');
 
 var _passport2 = _interopRequireDefault(_passport);
 
+var _jwt = require('../../helpers/jwt');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (app) {
@@ -49,5 +51,25 @@ exports.default = function (app) {
         });
     });
 
-    app.get('/auth/facebook', _passport2.default.authenticate('facebook'));
+    app.get('/auth/facebook', _passport2.default.authenticate('facebook', { session: false }));
+
+    app.get('/auth/facebook/callback', _passport2.default.authenticate('facebook', {
+        failureRedirect: '/',
+        session: false
+    }), function (req, res) {
+        res.json(req.user);
+    });
+
+    app.get('/auth/google', _passport2.default.authenticate('google', {
+        session: false,
+        scope: ['email profile']
+    }));
+
+    app.get('/auth/google/callback', _passport2.default.authenticate('google', {
+        failureRedirect: '/',
+        session: false
+    }), function (req, res) {
+        res.cookie('nfToken', (0, _jwt.encode)(req.user));
+        res.redirect('/tournaments');
+    });
 };

@@ -70,8 +70,6 @@
                         return vm.toast(toastConfig);
                     });
                 })();
-            } else {
-                console.log(2);
             }
         };
 
@@ -106,6 +104,14 @@
                     });
                 })();
             }
+        };
+
+        vm.googleLogin = function () {
+            $http.get('/auth/google').then(function (_ref4) {
+                var data = _ref4.data;
+
+                console.log(data);
+            });
         };
     }]);
 })();

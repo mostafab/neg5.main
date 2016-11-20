@@ -1,11 +1,11 @@
-import {Strategy as FacebookStrategy} from 'passport-facebook';
+import {OAuth2Strategy as GoogleStrategy} from 'passport-google-oauth';
 import Config from './config';
 
 export default (passport) => {
     
-    const {clientID, clientSecret, callbackURL} = Config.facebook;
+    const {clientID, clientSecret, callbackURL} = Config.google;
     
-    passport.use(new FacebookStrategy(
+    passport.use(new GoogleStrategy(
         {
             clientID,
             clientSecret,
@@ -16,6 +16,6 @@ export default (passport) => {
             user.token = 'TEST TOKEN';
             verifyCallback(null, user);
         }
-    )) 
+    )); 
 
 }
