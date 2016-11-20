@@ -1,8 +1,14 @@
 import passport from 'passport';
 import passportFB from './facebook';
 
-export default () => {
+function initializePassport() {
     
-    passportFB(passport);
+    let passportInstance = passport;
+    
+    passportFB(passportInstance);
+    
+    return passportInstance;
     
 }
+
+export default initializePassport();

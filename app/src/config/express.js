@@ -12,6 +12,7 @@ import statsApi from '../routes/api/stats';
 import playerApi from '../routes/api/player';
 
 import configuration from './configuration';
+import passport from './passport/passport';
 
 export default () => {
     const app = express();
@@ -24,6 +25,8 @@ export default () => {
     app.use(helmet());
     app.use(cookieParser());
     app.use(bodyParser.json());
+    
+    app.use(passport.initialize());
     
     app.set("views", path.join(__dirname, '../../views'));
     app.set("view engine", "jade");

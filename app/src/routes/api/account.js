@@ -1,5 +1,6 @@
 import Account from '../../models/sql-models/account';
 import {hasToken} from '../../auth/middleware/token';
+import Passport from '../../config/passport/passport';
 
 export default (app) => {
     
@@ -37,5 +38,7 @@ export default (app) => {
             .then(users => res.json({users, currentUser: req.currentUser, success: true}))
             .catch(error => res.send({error, success: false}))
     })
+    
+    app.get('/auth/facebook', Passport.authenticate('facebook'));
     
 }

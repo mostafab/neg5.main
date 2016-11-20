@@ -52,6 +52,10 @@ var _configuration = require('./configuration');
 
 var _configuration2 = _interopRequireDefault(_configuration);
 
+var _passport = require('./passport/passport');
+
+var _passport2 = _interopRequireDefault(_passport);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function () {
@@ -65,6 +69,8 @@ exports.default = function () {
     app.use((0, _helmet2.default)());
     app.use((0, _cookieParser2.default)());
     app.use(_bodyParser2.default.json());
+
+    app.use(_passport2.default.initialize());
 
     app.set("views", _path2.default.join(__dirname, '../../views'));
     app.set("view engine", "jade");

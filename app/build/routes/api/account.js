@@ -10,6 +10,10 @@ var _account2 = _interopRequireDefault(_account);
 
 var _token = require('../../auth/middleware/token');
 
+var _passport = require('../../config/passport/passport');
+
+var _passport2 = _interopRequireDefault(_passport);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (app) {
@@ -44,4 +48,6 @@ exports.default = function (app) {
             return res.send({ error: error, success: false });
         });
     });
+
+    app.get('/auth/facebook', _passport2.default.authenticate('facebook'));
 };

@@ -14,7 +14,13 @@ var _facebook2 = _interopRequireDefault(_facebook);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = function () {
+function initializePassport() {
 
-    (0, _facebook2.default)(_passport2.default);
-};
+    var passportInstance = _passport2.default;
+
+    (0, _facebook2.default)(passportInstance);
+
+    return passportInstance;
+}
+
+exports.default = initializePassport();

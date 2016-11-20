@@ -6,10 +6,21 @@ Object.defineProperty(exports, "__esModule", {
 
 var _passportFacebook = require('passport-facebook');
 
+var _config = require('./config');
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = function (passport) {
-    return passport.use(new _passportFacebook.Strategy({
-        clientID: 'sdada',
-        clientSecret: 'MySecret',
+    var _Config$facebook = _config2.default.facebook;
+    var clientID = _Config$facebook.clientID;
+    var clientSecret = _Config$facebook.clientSecret;
+
+
+    passport.use(new _passportFacebook.Strategy({
+        clientID: clientID,
+        clientSecret: clientSecret,
         callbackURL: 'http://test.com/callback'
-    }, function (accessToken, refreshToken, profile, done) {}));
+    }, function (accessToken, refreshToken, profile, verifyCallback) {}));
 };
