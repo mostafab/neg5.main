@@ -97,9 +97,16 @@ block content
                                                 span(ng-class='{"nf-red" : loginForm.password.$invalid && !loginForm.password.$pristine, "nf-green" : loginForm.password.$valid}' class="input-group-addon btn-md nf-button")
                                                     //- i.fa.fa-lock
                                         .row
-                                            button(type="submit" class="btn btn-md nf-button nf-green")
+                                            button.inline(type="submit" class="btn btn-md nf-button nf-green")
                                                 | Login
-
+                                        
+                                            p.nf-panel-heading.inline Or use
+                                            
+                                            .nf-margin.inline
+                                                button.nf-button.btn.nf-blue.btn-md(type='button')
+                                                    i.fa.fa-facebook-official(style='margin:0')
+                                                button.nf-button.btn.nf-red.btn-md(type='button')
+                                                    i.fa.fa-google(style='margin:0')
             
             
             .nf-toast(style='position:fixed' class='angular-animate' ng-show='Index.toastMessage !== null')
