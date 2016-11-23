@@ -5,7 +5,7 @@ block content
     div(ng-app='statsApp')
         div(ng-controller='PublicStatsController as PSControl')
             
-            title {{::PSControl.tournamentName.name}} - {{PSControl.phase.name || 'All'}} Stats | Neg 5
+            title(ng-bind='PSControl.tournamentName.name + " " + (PSControl.phase.name || "All") + " Stats | Neg 5"')
                 
             nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-blue.nf-shadow(role='navigation')
                     .navbar-header
@@ -30,6 +30,7 @@ block content
                         
                         
                         
+                        
             div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:90px;')
                 
                 // div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
@@ -37,7 +38,7 @@ block content
                 //         div(class='col-sm-7 col-lg-12 col-md-12')
                 //             h2(class="nf-panel-heading nf-dark-blue center") {{::PSControl.tournamentName.name}} Stats
                 
-                div(style='padding:50px;padding-bottom:0')
+                div(style='padding:50px;padding-bottom:0;padding-top:0')
                     div(class="panel-body")
                         .input-group
                             select(class='form-control' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase' ng-change='PSControl.refreshStats()')

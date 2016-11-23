@@ -8,7 +8,7 @@ block content
     
     div(ng-app='tournamentApp')
         div(ng-controller='TournamentCtrl as Tournament')
-            title {{tournamentInfo.name}} | Neg 5
+            title(ng-bind='tournamentInfo.name + " | Neg 5"')
             
             nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-blue.nf-shadow(role='navigation')
                 .navbar-header

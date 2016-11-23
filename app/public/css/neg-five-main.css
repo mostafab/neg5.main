@@ -111,7 +111,7 @@ li > a:hover {
 }
 
 .nf-error {
-    border: 3px solid red;
+    border: 3px solid red !important;
 }
 
 .nf-text-warning {
@@ -120,6 +120,7 @@ li > a:hover {
 
 .nf-input {
     border-radius: 2px;
+    border: none;
     /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
     /*font-size: 1.3em;*/
 }
@@ -130,7 +131,7 @@ li > a:hover {
 
 .nf-label {
     padding: 10px;
-    font-size: 1.3em;
+    font-size: 1.1em;
     line-height: 140%;
     font-weight: 400;
 }
