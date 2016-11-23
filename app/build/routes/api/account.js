@@ -14,8 +14,6 @@ var _passport = require('../../config/passport/passport');
 
 var _passport2 = _interopRequireDefault(_passport);
 
-var _jwt = require('../../helpers/jwt');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (app) {
@@ -69,7 +67,7 @@ exports.default = function (app) {
         failureRedirect: '/',
         session: false
     }), function (req, res) {
-        res.cookie('nfToken', (0, _jwt.encode)(req.user));
+        res.cookie('nfToken', req.user);
         res.redirect('/tournaments');
     });
 };

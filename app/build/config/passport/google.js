@@ -10,6 +10,8 @@ var _config = require('./config');
 
 var _config2 = _interopRequireDefault(_config);
 
+var _jwt = require('./../../helpers/jwt');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (passport) {
@@ -25,7 +27,6 @@ exports.default = function (passport) {
         callbackURL: callbackURL
     }, function (accessToken, refreshToken, profile, verifyCallback) {
         var user = profile;
-        user.token = 'TEST TOKEN';
-        verifyCallback(null, user);
+        verifyCallback(null, (0, _jwt.encode)(user));
     }));
 };

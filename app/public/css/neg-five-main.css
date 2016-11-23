@@ -120,8 +120,8 @@ li > a:hover {
 
 .nf-input {
     border-radius: 2px;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
-    font-size: 1.3em;
+    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
+    /*font-size: 1.3em;*/
 }
 
 .nf-input:focus {
@@ -185,7 +185,7 @@ li > a:hover {
 }
 
 .nf-shadow {
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
 }
 
 .nf-th {

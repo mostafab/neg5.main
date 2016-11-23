@@ -1,5 +1,6 @@
 import {OAuth2Strategy as GoogleStrategy} from 'passport-google-oauth';
 import Config from './config';
+import {encode} from './../../helpers/jwt';
 
 export default (passport) => {
     
@@ -13,8 +14,7 @@ export default (passport) => {
         },
         (accessToken, refreshToken, profile, verifyCallback) => {
             const user = profile;
-            user.token = 'TEST TOKEN';
-            verifyCallback(null, user);
+            verifyCallback(null, encode(user));
         }
     )); 
 

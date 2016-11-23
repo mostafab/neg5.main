@@ -2,7 +2,6 @@ extends ../layout
 
 block content
     
-    
     div(ng-app='statsApp')
         div(ng-controller='PublicStatsController as PSControl')
             
@@ -35,17 +34,14 @@ block content
                 //     div(class='row')
                 //         div(class='col-sm-7 col-lg-12 col-md-12')
                 //             h2(class="nf-panel-heading nf-dark-blue center") {{::PSControl.tournamentName.name}} Stats
-                    
-                //     div(class="panel-body")
-                //         div(class="row")
-                //             div(class='col-sm-7 col-md-12 col-lg-12')
-                //                 ul(class="nav nav-bar no-border-radius")
-                //                     li(class="center")
-                //                         .input-group
-                //                             select(class='form-control nf-input' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase' ng-change='PSControl.refreshStats()')
-                //                                 option(value='') All Games
-                //                             span(class='input-group-addon nf-blue nf-button btn' title='Refresh teams' ng-click='PSControl.refreshStats()')
-                //                                 i(class='fa fa-refresh')              
+                
+                div(style='padding:50px;padding-bottom:0')
+                    div(class="panel-body")
+                        .input-group
+                            select(class='form-control' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase' ng-change='PSControl.refreshStats()')
+                                option(value='') All Games
+                            span(class='input-group-addon nf-blue nf-button btn' title='Refresh teams' ng-click='PSControl.refreshStats()')
+                                i(class='fa fa-refresh')              
 
                                                 
 

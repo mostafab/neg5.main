@@ -1,34 +1,31 @@
 .row
     .col-lg-12
-        div(class="panel panel-default nf-panel")
-            div(class="collapsable nf-panel-heading nf-dark-blue") Player Full - {{PSControl.phase.name || 'All Games'}}
+        div(style='padding:50px')
+            .row
+                .col-lg-4
+                    input(type="text" class="form-control input-sm" placeholder="Search for Players" ng-model='PSControl.fullPlayerQuery')
 
-        .row
-            .col-lg-4
-                input(type="text" class="form-control nf-input" placeholder="Search for Players" ng-model='PSControl.fullPlayerQuery')
+            br               
 
-        br               
+            div        
+                div(ng-repeat='player in PSControl.playerFullStats | filter:{player_name: PSControl.fullPlayerQuery}' id='{{player.player_id}}')
+                        .panel.panel-default.nf-shadow
+                            table.table.table-hover.table-condensed.table-responsive
+                                thead
+                                    tr
+                                        th.nf-blue(colspan='{{PSControl.pointScheme.length + 8}}') {{player.player_name}} ({{player.team_name}})
+                                    tr
+                                        th.nf-gray( title='Match round') Round
+                                        th.nf-gray( title='Player\'s opponent in the match.') Opponent
+                                        th.nf-gray( title='How much of this match the player played.') GP
+                                        th.nf-gray( ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value') {{pv.value}}
+                                        th.nf-gray( title='Tossups heard in the match') TUH
+                                        th.nf-gray( title='Points per tossup heard') P / TU
+                                        th.nf-gray( title='Ratio between powers and negs') P / N
+                                        th.nf-gray( title='Ratio between gets and negs') G / N
+                                        th.nf-gray( title='Total points') Points
 
-        div        
-            div(ng-repeat='player in PSControl.playerFullStats | filter:{player_name: PSControl.fullPlayerQuery}' id='{{player.player_id}}')
-                    .row
-                        .col-lg-4.col-sm-12.col-md-5
-                            .nf-panel-heading.stat-header {{player.player_name}} ({{player.team_name}})
-                    .row
-                        .col-lg-12.col-sm-12.col-md-12
-                            table(class="table table-condensed nf-shadow")
-                                tr
-                                    th(class="table-head nf-white" title='Match round') Round
-                                    th(class="table-head nf-white" title='Player\'s opponent in the match.') Opponent
-                                    th(class="table-head nf-white" title='How much of this match the player played.') GP
-                                    th(class="table-head nf-white" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value') {{pv.value}}
-                                    th(class="table-head nf-white" title='Tossups heard in the match') TUH
-                                    th(class="table-head nf-white" title='Points per tossup heard') P / TU
-                                    th(class="table-head nf-white" title='Ratio between powers and negs') P / N
-                                    th(class="table-head nf-white" title='Ratio between gets and negs') G / N
-                                    th(class="table-head nf-white" title='Total points') Points
-
-                                tr(class='nf-list-item nf-dark-blue' ng-repeat='match in player.matches | orderBy:"round"')
+                                tr(ng-repeat='match in player.matches | orderBy:"round"')
                                     td {{match.round}}
                                     td {{match.opponent_team_name}}
                                     td {{match.game_played}}

@@ -1,19 +1,18 @@
 .row
     .col-lg-12
-        div(class="panel panel-default nf-panel")
-            div(class="collapsable nf-panel-heading nf-dark-blue") Round Report - {{PSControl.phase.name || 'All Games'}}       
-
-        br
-
-        table(class="table table-condensed nf-shadow")
-            tr
-                th(class="table-head nf-white" title='Round') Round
-                th(class="table-head nf-white" title='Average points per game per team') PPG
-                th(class="table-head nf-white" title='Average tossup points per tossups heard.') TUPts / TUH
-                th(class="table-head nf-white" title='Average points per bonus for this round') PPB
-        
-            tr(class='nf-list-item nf-dark-blue' ng-repeat='stat in PSControl.roundReportStats track by stat.round')
-                td {{stat.round}}
-                td {{stat.ppg_round_average}}
-                td {{stat.round_cumulative_tossup_points / stat.round_tossups_heard | number:2}}
-                td {{stat.round_ppb}}
+        div(style='padding:50px')
+            br
+            .panel.panel-default.nf-shadow
+                table.table.table-hover.table-condensed.table-responsive
+                    thead
+                        tr
+                            th.nf-gray(title='Round') Round
+                            th.nf-gray(title='Average points per game per team') PPG
+                            th.nf-gray(title='Average tossup points per tossups heard.') TUPts / TUH
+                            th.nf-gray(title='Average points per bonus for this round') PPB
+                    tbody
+                        tr(ng-repeat='stat in PSControl.roundReportStats track by stat.round')
+                            td {{stat.round}}
+                            td {{stat.ppg_round_average}}
+                            td {{stat.round_cumulative_tossup_points / stat.round_tossups_heard | number:2}}
+                            td {{stat.round_ppb}}
