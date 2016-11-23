@@ -16,7 +16,7 @@
 
 .nf-button {
     border-radius: 2px;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
     font-size: 1.3em;
 }
 
@@ -147,7 +147,7 @@ li > a:hover {
 .nf-list-item {
     border: 0px solid black;
     padding: 15px;
-    font-size: 1.3em;
+    /*font-size: 1.3em;*/
 }
 .nf-list-item:hover {
     background: #90a4ae !important;
