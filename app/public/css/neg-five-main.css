@@ -121,12 +121,14 @@ li > a:hover {
 .nf-input {
     border-radius: 2px;
     border: none;
-    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
-    /*font-size: 1.3em;*/
+    -webkit-transition: .1s border; 
+    -moz-transition: .1s border; 
+    transition: .1s border; 
 }
 
 .nf-input:focus {
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    /*border-bottom: 5px solid #2B3E50;*/
 }
 
 .nf-label {
@@ -333,7 +335,7 @@ li > a:hover {
 
 /* End Neg 5 colors */
 
-@media (max-width: 1919px) {
+@media (max-width: 1400px) {
     .responsive.input-group {
         display: block;
     }

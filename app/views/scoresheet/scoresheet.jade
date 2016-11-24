@@ -172,9 +172,9 @@
                 
         .col-lg-6.col-md-6.col-sm-12(ng-show='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
             .row
-                button.btn.nf-button.nf-green(type='button' data-toggle='modal' data-target='#myModal') View / Submit Match Information
-            br
-            .row
+                a.btn.nf-button.nf-green(data-toggle='modal' data-target='#myModal') View / Submit Match Information
+                br
+                br
                 p.nf-panel-heading.nf-blue(style='padding:20px') 
                     | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'medium'}}
             
@@ -338,7 +338,8 @@
                                                     ng-model='Scoresheet.game.room',
                                                     ng-class="{'nf-error' : Scoresheet.scoresheetForm.room.$invalid}"
                                                 )
-
+                                br
+                                
                                 div(class="row")
                                     div(class="col-lg-12 col-md-12 col-sm-12")
                                         div(class="row")
