@@ -40,8 +40,6 @@ var startServer = function startServer() {
             key: _fs2.default.readFileSync(httpsDir + keyName, 'utf8'),
             cert: _fs2.default.readFileSync(httpsDir + certName, 'utf8')
         };
-        console.log(options.key);
-        console.log(options.cert);
         _https2.default.createServer(options, app).listen(httpsPort);
         console.log('Https server running on port ' + httpsPort);
     } else {

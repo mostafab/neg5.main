@@ -16,8 +16,6 @@ const startServer = () => {
             key: fs.readFileSync(httpsDir + keyName, 'utf8'),
             cert: fs.readFileSync(httpsDir + certName, 'utf8')
         }
-        console.log(options.key);
-        console.log(options.cert);
         https.createServer(options, app).listen(httpsPort);
         console.log('Https server running on port ' + httpsPort);
     } else {
