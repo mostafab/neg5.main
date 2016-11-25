@@ -47,7 +47,7 @@ block content
                                                             i.fa.fa-check
                                         
                                         
-                                        .col-lg-8.col-md-7.col-sm-7
+                                        .col-lg-8.col-md-7.col-sm-7(ng-cloak)
                                             div
                                                 .nf-panel(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | orderBy:"name"')
                                                     a(href='/t/{{tournament.id}}')
@@ -58,16 +58,7 @@ block content
                                                             p.nf-margin Location : {{tournament.location || 'None'}}
                                                             p.nf-margin Question Set : {{tournament.question_set || 'None'}}
                                                             p.nf-margin Date : {{tournament.tournament_date || 'None' | date}}
-                                                            
-                                                            // .col-lg-12.nf-margin
-                                                            //         p.inline.left Location
-                                                            //         p.inline.right {{tournament.location || 'None'}}
-                                                            // .col-lg-12.nf-margin
-                                                            //         p.inline.left Question Set
-                                                            //         p.inline.right {{tournament.question_set || 'None'}}
-                                                            // .col-lg-12.nf-margin
-                                                            //         p.inline.left Date
-                                                            //         p.inline.right {{tournament.tournament_date || 'None' | date}} 
+                                                           
 
                                         
                                                                     

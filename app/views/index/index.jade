@@ -24,20 +24,12 @@ block content
 
             div(style='text-align:center')
                 img(src='img/logo_edited.png' style='width:300px;height:auto')
-
-            .panel-body.nf-dark-blue
-                .row                
-                    ul.nav-bar.login-panel
-                        li.center.col-lg-6.col-sm-6(ng-click='Index.loggingIn = false;')
-                            a(style='font-size:1.3em' ng-class='{"green-text" : !Index.loggingIn}') Sign Up
-                        li.center.col-lg-6.col-sm-6(ng-click='Index.loggingIn = true;' )
-                            a(style='font-size:1.3em' ng-class='{"green-text" : Index.loggingIn}') Sign In
             
             .tab-content
                 div
                     .panel.nf-panel
                         .row
-                            .col-lg-12.col-md-12.col-sm-12(ng-show='!Index.loggingIn')
+                            .col-lg-12.col-md-12.col-sm-12(ng-show='!Index.loggingIn' ng-cloak)
                                 .panel-body.nf-panel-body
                                     form.center(name='registrationForm' novalidate ng-submit='Index.register()')
                                             .row
@@ -78,6 +70,11 @@ block content
                                             .row
                                                 button(type="submit" class="btn btn-md nf-button nf-green")
                                                     | Register
+                                            
+                                            br
+                                            
+                                            a(href='#' ng-click='Index.loggingIn = true')
+                                                | Go back
 
                             .col-lg-12.col-md-12.col-sm-12(ng-show='Index.loggingIn')
                                 .panel-body.nf-panel-body
@@ -100,14 +97,20 @@ block content
                                             button.inline(type="submit" class="btn btn-md nf-button nf-green")
                                                 | Login
                                         
-                                            // p.nf-panel-heading.inline Or use
+                                            p.nf-panel-heading.inline Or use
                                             
-                                            // .nf-margin.inline
-                                            //     a.nf-button.btn.nf-blue.btn-md(role='button' href='/auth/facebook')
-                                            //         i.fa.fa-facebook-official(style='margin:0')
-                                            //     a.nf-button.btn.nf-red.btn-md.nf-margin(role='button' href='/auth/google')
-                                            //         i.fa.fa-google(style='margin:0')
-            
+                                            .nf-margin.inline
+                                                a.nf-button.btn.nf-blue.btn-md(role='button' href='/auth/facebook')
+                                                    i.fa.fa-facebook-official(style='margin:0')
+                                                a.nf-button.btn.nf-red.btn-md.nf-margin(role='button' href='/auth/google')
+                                                    i.fa.fa-google(style='margin:0')
+                                        
+                                        br
+                                        
+                                        p
+                                           | Don't have an account? 
+                                           a(href='#' ng-click='Index.loggingIn = false') 
+                                                | Register
             
             .nf-toast(style='position:fixed' class='angular-animate' ng-show='Index.toastMessage !== null')
                 .nf-toast-content.nf-button.btn(ng-class="{'nf-red': Index.toastMessage.success === false, 'nf-green': Index.toastMessage.success === true, 'nf-orange' : Index.toastMessage.success !== true && Index.toastMessage.success !== false}")

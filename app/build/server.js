@@ -4,6 +4,14 @@ var _http = require('http');
 
 var _http2 = _interopRequireDefault(_http);
 
+var _https = require('https');
+
+var _https2 = _interopRequireDefault(_https);
+
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
 var _configuration = require('./config/configuration');
 
 var _configuration2 = _interopRequireDefault(_configuration);
@@ -14,15 +22,29 @@ var _express2 = _interopRequireDefault(_express);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// const mongoose = require('./config/mongoose');   
+var _config$https = _configuration2.default.https;
+var usingHttps = _config$https === undefined ? false : _config$https;
+var httpsDir = _configuration2.default.httpsDir;
+var keyName = _configuration2.default.keyName;
+var certName = _configuration2.default.certName;
+
 
 var PORT_NUM = _configuration2.default.port;
 
-// const db = mongoose();
 var app = (0, _express2.default)();
 
-var server = _http2.default.createServer(app).listen(PORT_NUM);
+var startServer = function startServer() {
+    if (usingHttps) {
+        var options = {
+            key: _fs2.default.readFileSync(httpsDir + keyName),
+            cert: _fs2.default.readFileSync(httpsDir + certName)
+        };
+        _https2.default.createServer(options, app).listen(8080);
+        console.log('Https server running on port 443');
+    } else {
+        _http2.default.createServer(app).listen(PORT_NUM);
+        console.log('Express server running on port ' + PORT_NUM);
+    }
+};
 
-console.log('Express server running on port ' + PORT_NUM);
-
-module.exports = server;
+startServer();

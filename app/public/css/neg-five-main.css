@@ -136,6 +136,8 @@ li > a:hover {
     font-size: 1.1em;
     line-height: 140%;
     font-weight: 400;
+    border: none;
+    border-radius: 1px;
 }
 
 .list-group-item.nf-blue {
