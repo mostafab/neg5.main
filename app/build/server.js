@@ -37,8 +37,8 @@ var app = (0, _express2.default)();
 var startServer = function startServer() {
     if (usingHttps) {
         var options = {
-            key: _fs2.default.readFileSync(httpsDir + keyName),
-            cert: _fs2.default.readFileSync(httpsDir + certName)
+            key: _fs2.default.readFileSync(httpsDir + keyName, 'utf8'),
+            cert: _fs2.default.readFileSync(httpsDir + certName, 'utf8')
         };
         console.log(options.key);
         console.log(options.cert);

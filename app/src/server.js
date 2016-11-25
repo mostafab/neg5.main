@@ -13,8 +13,8 @@ const app = express();
 const startServer = () => {
     if (usingHttps) {
         const options = {
-            key: fs.readFileSync(httpsDir + keyName),
-            cert: fs.readFileSync(httpsDir + certName)
+            key: fs.readFileSync(httpsDir + keyName, 'utf8'),
+            cert: fs.readFileSync(httpsDir + certName, 'utf8')
         }
         console.log(options.key);
         console.log(options.cert);
