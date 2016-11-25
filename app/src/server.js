@@ -17,10 +17,11 @@ const startServer = () => {
             cert: fs.readFileSync(httpsDir + certName, 'utf8')
         }
         https.createServer(options, app).listen(httpsPort);
-        console.log('Express https server running on port ' + httpsPort);
+        console.log('Https server running on port ' + httpsPort);
+    } else {
+        http.createServer(app).listen(PORT_NUM);
+        console.log('Express server running on port ' + PORT_NUM);
     }
-    http.createServer(app).listen(PORT_NUM);
-    console.log('Express http server running on port ' + PORT_NUM);
 }
 
 startServer();

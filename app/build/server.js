@@ -41,10 +41,11 @@ var startServer = function startServer() {
             cert: _fs2.default.readFileSync(httpsDir + certName, 'utf8')
         };
         _https2.default.createServer(options, app).listen(httpsPort);
-        console.log('Express https server running on port ' + httpsPort);
+        console.log('Https server running on port ' + httpsPort);
+    } else {
+        _http2.default.createServer(app).listen(PORT_NUM);
+        console.log('Express server running on port ' + PORT_NUM);
     }
-    _http2.default.createServer(app).listen(PORT_NUM);
-    console.log('Express http server running on port ' + PORT_NUM);
 };
 
 startServer();
