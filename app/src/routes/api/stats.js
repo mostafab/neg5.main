@@ -1,5 +1,6 @@
 import {StatsReport} from './../../models/stats-models/report';
 import Qbj from './../../models/stats-models/qbj';
+import Match from './../../models/sql-models/match';
 
 import {hasToken} from './../../auth/middleware/token';
 import {accessToTournament} from './../../auth/middleware/tournament-access';
@@ -57,6 +58,12 @@ export default (app) => {
                 res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json')
                 res.send({result: qbj, success: true});        
             })
+            .catch(error => res.status(500).send({error, success: false}));
+    })
+    
+    app.get('/api/t/:tid/scoresheets', hasToken, accessToTournament, (req, res) => {
+        Match.getScoresheets(req.params.tid)
+            .then(result => res.json({result, success: true}))
             .catch(error => res.status(500).send({error, success: false}));
     })
 

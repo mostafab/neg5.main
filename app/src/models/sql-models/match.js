@@ -1,5 +1,7 @@
 import shortid from 'shortid';
 import db from './../../data-access/match';
+import Team from './team';
+import playerUtil from './../../helpers/player-util';
 
 export default {
 
@@ -60,7 +62,19 @@ export default {
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
-    }
+    },
+    
+    getScoresheets: (tournamentId) => new Promise((resolve, reject) => {
+        const teamsPromise = Team.findByTournament(tournamentId);
+        const matchesPromise = db.getMatchesByTournament(tournamentId);
+        Promise.all([teamsPromise, matchesPromise])
+            .then(result => {
+                const allPlayers = playerUtil.buildPlayerListFromTeams(result[0]);
+                const playerMap = playerUtil.buildPlayerMap(allPlayers);
+                resolve(result[1]);
+            })
+            .catch(error => reject(error));
+    })
 
 }
 

@@ -12,6 +12,14 @@ var _match = require('./../../data-access/match');
 
 var _match2 = _interopRequireDefault(_match);
 
+var _team = require('./team');
+
+var _team2 = _interopRequireDefault(_team);
+
+var _playerUtil = require('./../../helpers/player-util');
+
+var _playerUtil2 = _interopRequireDefault(_playerUtil);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -85,6 +93,20 @@ exports.default = {
         return new Promise(function (resolve, reject) {
             _match2.default.deleteTournamentMatch(tournamentId, gameId).then(function (result) {
                 return resolve(result);
+            }).catch(function (error) {
+                return reject(error);
+            });
+        });
+    },
+
+    getScoresheets: function getScoresheets(tournamentId) {
+        return new Promise(function (resolve, reject) {
+            var teamsPromise = _team2.default.findByTournament(tournamentId);
+            var matchesPromise = _match2.default.getMatchesByTournament(tournamentId);
+            Promise.all([teamsPromise, matchesPromise]).then(function (result) {
+                var allPlayers = _playerUtil2.default.buildPlayerListFromTeams(result[0]);
+                var playerMap = _playerUtil2.default.buildPlayerMap(allPlayers);
+                resolve(result[1]);
             }).catch(function (error) {
                 return reject(error);
             });

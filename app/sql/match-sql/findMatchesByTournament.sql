@@ -5,7 +5,7 @@ SELECT  match_info.match_id, outer_team_result.tournament_id,
          
         match_info.round, match_info.room, match_info.moderator,
         match_info.packet, match_info.tossups_heard, match_info.added_by,
-        match_info.phases 
+        match_info.phases, match_info.scoresheet
 
 FROM
 (
@@ -67,9 +67,18 @@ FROM
     RIGHT OUTER JOIN
     -- Get all matches and phases that they are a part of
     (
-        SELECT M.tournament_id as tid, M.id AS match_id, M.round, M.room, M.moderator, M.packet, M.tossups_heard, M.added_by, 
-                array_agg(json_build_object('phase_id', P.id, 'phase_name', P.name)) AS phases
-                
+        SELECT 
+            M.tournament_id as tid, 
+            M.id AS match_id, 
+            M.round, 
+            M.room, 
+            M.moderator, 
+            M.packet, 
+            M.tossups_heard, 
+            M.added_by,
+            COALESCE(M.scoresheet, '{}') as scoresheet,
+            array_agg(json_build_object('phase_id', P.id, 'phase_name', P.name)) AS phases
+            
         FROM  
         match_is_part_of_phase MP JOIN tournament_phase P 
         ON MP.phase_id = P.id AND MP.tournament_id = P.tournament_id

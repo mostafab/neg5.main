@@ -10,6 +10,10 @@ var _qbj = require('./../../models/stats-models/qbj');
 
 var _qbj2 = _interopRequireDefault(_qbj);
 
+var _match = require('./../../models/sql-models/match');
+
+var _match2 = _interopRequireDefault(_match);
+
 var _token = require('./../../auth/middleware/token');
 
 var _tournamentAccess = require('./../../auth/middleware/tournament-access');
@@ -91,6 +95,14 @@ exports.default = function (app) {
         _qbj2.default.createQBJObject(req.params.tid, req.currentUser).then(function (qbj) {
             res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json');
             res.send({ result: qbj, success: true });
+        }).catch(function (error) {
+            return res.status(500).send({ error: error, success: false });
+        });
+    });
+
+    app.get('/api/t/:tid/scoresheets', _token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
+        _match2.default.getScoresheets(req.params.tid).then(function (result) {
+            return res.json({ result: result, success: true });
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
         });
