@@ -68,6 +68,7 @@ div(id='add-game-div')
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Team 1 Score *
                                 div(class="col-md-6 col-sm-6 col-md-6")
                                     input(required type="number" name='leftScore' ng-class="{'nf-error' : Game.newGameForm.leftScore.$invalid && Game.newGameForm.leftScore.$touched}"  class="form-control nf-input" placeholder="{{(Game.currentGame.teams[0].teamInfo.name || 'Team 1') + ' Score'}}" ng-model='Game.currentGame.teams[0].score')
+                            br
                             div(class='row' ng-if='Game.rules.bouncebacks')
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Bouncebacks
@@ -80,6 +81,7 @@ div(id='add-game-div')
                                     input(required type="number" class="form-control nf-input " name="rightScore" ng-class="{'nf-error' : Game.newGameForm.rightScore.$invalid && Game.newGameForm.rightScore.$touched}" placeholder="{{(Game.currentGame.teams[1].teamInfo.name || 'Team 2') + ' Score'}}" ng-model='Game.currentGame.teams[1].score') 
                                 div(class="col-md-6 col-sm-6")
                                     label(class="label nf-dark-blue nf-label btn-block" style='float:right') Team 2 Score *
+                            br
                             div(class="row" ng-if='Game.rules.bouncebacks')
                                 div(class="col-md-6 col-sm-6")
                                     input(type="number" min='0' class="form-control nf-input " name="rightbounceback" ng-class="{'nf-error' : Game.newGameForm.rightbounceback.$invalid}" placeholder="Bounceback Points" ng-model='Game.currentGame.teams[1].bouncebacks')

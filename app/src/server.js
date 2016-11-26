@@ -4,7 +4,7 @@ import fs from 'fs';
 import config from './config/configuration';
 import express from './config/express';  
 
-const {https : usingHttps = false, httpsDir, keyName, certName, httpsPort} = config;
+const {https : usingHttps = false, httpsDir, keyName, certName, caName, httpsPort} = config;
 
 const PORT_NUM = config.port;
 
@@ -14,7 +14,8 @@ const startServer = () => {
     if (usingHttps) {
         const options = {
             key: fs.readFileSync(httpsDir + keyName, 'utf8'),
-            cert: fs.readFileSync(httpsDir + certName, 'utf8')
+            cert: fs.readFileSync(httpsDir + certName, 'utf8'),
+            ca: fs.readFileSync(httpsDir + caName, 'utf8')
         }
         https.createServer(options, app).listen(httpsPort);
         console.log('Https server running on port ' + httpsPort);

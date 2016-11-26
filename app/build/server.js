@@ -27,6 +27,7 @@ var usingHttps = _config$https === undefined ? false : _config$https;
 var httpsDir = _configuration2.default.httpsDir;
 var keyName = _configuration2.default.keyName;
 var certName = _configuration2.default.certName;
+var caName = _configuration2.default.caName;
 var httpsPort = _configuration2.default.httpsPort;
 
 
@@ -38,7 +39,8 @@ var startServer = function startServer() {
     if (usingHttps) {
         var options = {
             key: _fs2.default.readFileSync(httpsDir + keyName, 'utf8'),
-            cert: _fs2.default.readFileSync(httpsDir + certName, 'utf8')
+            cert: _fs2.default.readFileSync(httpsDir + certName, 'utf8'),
+            ca: _fs2.default.readFileSync(httpsDir + caName, 'utf8')
         };
         _https2.default.createServer(options, app).listen(httpsPort);
         console.log('Https server running on port ' + httpsPort);
