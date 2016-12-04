@@ -37,4 +37,8 @@ module.exports = function (app) {
     app.get("/about", function (req, res) {
         res.render("index/about", { tournamentd: req.session.director });
     });
+
+    app.get('/insights', function (req, res) {
+        return res.render('viz/base');
+    });
 };

@@ -66,9 +66,16 @@ exports.default = function () {
     app.use(_bodyParser2.default.urlencoded({
         extended: true
     }));
-    app.use((0, _helmet2.default)());
+    app.use((0, _helmet2.default)({
+        noCache: false
+    }));
     app.use((0, _cookieParser2.default)());
     app.use(_bodyParser2.default.json());
+    app.use(function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
 
     app.use(_passport2.default.initialize());
 

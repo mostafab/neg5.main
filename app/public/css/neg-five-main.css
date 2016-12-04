@@ -18,6 +18,11 @@
     border-radius: 2px;
     /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
     font-size: 1.3em;
+    transition: .3s all;
+}
+
+.nf-button:hover {
+    filter: brightness(120%);
 }
 
 .nf-button.transition, .input-group.transition {
@@ -123,7 +128,8 @@ li > a:hover {
     border: none;
     -webkit-transition: .1s border; 
     -moz-transition: .1s border; 
-    transition: .1s border; 
+    transition: .3s background;
+    /*transition: .2s border-bottom;*/
 }
 
 .nf-input:focus {
@@ -131,13 +137,19 @@ li > a:hover {
     /*border-bottom: 5px solid #2B3E50;*/
 }
 
+input.nf-input:hover, textarea.nf-input:hover {
+    /*background: #fff8e1 ;    */
+    /*border-bottom: 3px solid green;*/
+}
+
 .nf-label {
-    padding: 10px;
+    padding: 7px;
     font-size: 1.1em;
     line-height: 140%;
     font-weight: 400;
     border: none;
     border-radius: 1px;
+    /*border-bottom: 2px solid black;*/
 }
 
 .list-group-item.nf-blue {
@@ -290,6 +302,9 @@ li > a:hover {
 
 .no-border {
     border-width: 0px;
+    border-radius: 2px;
+}
+th.no-border {
     border-radius: 0px;
 }
 

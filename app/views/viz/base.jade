@@ -1,0 +1,57 @@
+extends ./../layout
+
+block titleContent
+    title Insights
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.5/nv.d3.css')
+    link(rel='stylesheet' href='css/insights.css')
+    
+block content
+    
+    div.container-fluid(ng-app='VizApp' style='padding:20px')
+        div(ng-controller='BarChartCtrl as Bar')
+            
+            .row.center
+                h1 Vizualizations for {{Bar.tournamentInfo.name}}
+            
+            br
+            br
+            
+            .row
+                .col-lg-12.col-md-12.col-sm-12
+                    .row
+                        .col-lg-12.col-md-12.center(style='padding-left:10px; padding-right:40px')
+                            form.form-inline
+                                div.form-group
+                                    label.label.nf-label(for='stat-select') Y-Axis:
+                                    select.no-border.form-control.nf-input.input-sm(
+                                        id='stat-select'
+                                        ng-options='stat as Bar.statsDisplayMap[stat] for stat in Bar.statOptions' 
+                                        ng-model='Bar.yAxisStat',
+                                        ng-change='Bar.refresh()')
+                                div.form-group
+                                    label.label.nf-label(for='phase-select') Phase:
+                                    select.no-border.form-control.nf-input.input-sm(
+                                        id='phase-select'
+                                        ng-options='phase as phase.name for phase in Bar.phases' 
+                                        ng-model='Bar.selectedPhase',
+                                        ng-change='Bar.getStats()')
+                                            option(value='') All Matches
+                    .row
+                        .col-lg-12
+                            nvd3(options='Bar.options' data='Bar.data' api='api')
+    
+    
+block scripts
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.js" type='text/javascript')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.5/nv.d3.min.js' type='text/javascript')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.9/angular-nvd3.min.js' type='text/javascript')
+    script(type='text/javascript' src='/js/app.js')
+    script(type='text/javascript' src='/js/services/cookies.service.js')
+    script(type='text/javascript' src='/js/services/tournament.service.js')
+    script(type='text/javascript' src='/js/services/phase.service.js')
+    script(type='text/javascript' src='/js/services/division.service.js')
+    script(type='text/javascript' src='/js/stats.js')
+    script(type='text/javascript' src='/js/services/stats/stats.service.js')
+    script(src='js/visualization/app.js' type='text/javascript')
+    script(type='text/javascript' src='/js/visualization/factories/colors.factory.js')
+    script(src='js/visualization/controllers/barchart.controller.js' type='text/javascript')

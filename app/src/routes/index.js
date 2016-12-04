@@ -32,4 +32,6 @@ module.exports = app => {
         res.render("index/about", {tournamentd : req.session.director});
     });
     
+    app.get('/insights', (req, res) => res.render('viz/base'))
+    
 };

@@ -29,9 +29,11 @@ block content
                         li(class="center" ng-click='Tournament.tab = "collaborator"' ng-class="{'active': Tournament.tab === 'collaborator'}")
                             a(data-toggle='tab' class='tournament-tab btn-md') Collaborators
                         li(class="center" ng-click='Tournament.tab = "match"' ng-class="{'active': Tournament.tab === 'match'}")
-                            a(data-toggle="tab" class='tournament-tab btn-md') Matches ({{Tournament.games.length}})
+                            a(data-toggle="tab" class='tournament-tab btn-md inline') Matches
+                                p.inline(ng-bind='"(" + Tournament.games.length + ")"')
                         li(class="center" ng-click='Tournament.tab = "team"' ng-class="{'active': Tournament.tab === 'team'}")
-                            a(data-toggle="tab" class='tournament-tab btn-md') Teams ({{Tournament.teams.length}})
+                            a(data-toggle="tab" class='tournament-tab btn-md inline') Teams
+                                p.inline(ng-bind='"(" + Tournament.teams.length + ")"')
                         li(class="center" ng-click='Tournament.tab = "statistics"' ng-class="{'active': Tournament.tab === 'statistics'}")
                             a(data-toggle="tab" class='tournament-tab btn-md') Stats
                         

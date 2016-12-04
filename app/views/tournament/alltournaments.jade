@@ -49,7 +49,7 @@ block content
                                         
                                         .col-lg-8.col-md-7.col-sm-7(ng-cloak)
                                             div
-                                                .nf-panel(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | orderBy:"name"')
+                                                .nf-panel.tournament-card(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | orderBy:"name"')
                                                     a(href='/t/{{tournament.id}}')
                                                         div.list-group-item.nf-blue
                                                             p.inline {{tournament.name}}
