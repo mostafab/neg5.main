@@ -38,6 +38,15 @@
             'wins',
             'losses'
         ]
+
+        vm.orderByDivisions = () => vm.teamStats.sort((first, second) => {
+            if (first.division_id === second.division_id) {
+                return first[vm.yAxisStat] - second[vm.yAxisStat]
+            }
+            return first.division_id.localeCompare(second.division_id)
+        })
+
+        vm.orderByCurrentAxis = () => vm.teamStats.sort((first, second) => first[vm.yAxisStat] - second[vm.yAxisStat])
         
         vm.statsDisplayMap = {
             ppg: 'PPG',
@@ -124,27 +133,8 @@
         vm.getStats = () => {
              Stats.refreshStats(tournamentId, vm.selectedPhase ? vm.selectedPhase.id : null)
                 .then(() => {
-                    const copy = []
-                    angular.copy(Stats.teamStats, copy)
-
-                    const filtered = copy.filter(c => c.num_games > 0)
-                        .sort((first, second) => first.team_name.localeCompare(second.team_name))
-
-                    filtered.forEach(t => {
-                        t.tossup_totals.forEach(tv => t[tv.value] = tv.total)
-                        t.Wins = t.wins
-                        t.Losses = t.losses
-                        t.PPG = t.ppg
-                        t.PAPG = t.papg
-                        t.Margin = t.margin,
-                        t.TUH = t.total_tuh,
-                        t.PPB = t.ppb
-                    })
-                    
-                    angular.copy(filtered, vm.teamStats)
-
+                    handleNewStats(Stats.teamStats, vm.teamStats)
                     vm.divisionsColorMap = generateDivisionColors(vm.divisions)
-
                     if (!addedPointValues) {
                         const vals = Stats.pointScheme.map(pv => pv.value)
                         vm.pcOptions.chart.dimensions.push(...vals)
@@ -153,6 +143,27 @@
                     }       
                     BarchartService.bindMouseOver()             
                 })    
+        }
+
+        function handleNewStats(src, dest) {
+            const copy = []
+            angular.copy(src, copy)
+
+            const filtered = copy.filter(c => c.num_games > 0)
+                .sort((first, second) => first.team_name.localeCompare(second.team_name))
+
+            filtered.forEach(t => {
+                t.tossup_totals.forEach(tv => t[tv.value] = tv.total)
+                t.Wins = t.wins
+                t.Losses = t.losses
+                t.PPG = t.ppg
+                t.PAPG = t.papg
+                t.Margin = t.margin,
+                t.TUH = t.total_tuh,
+                t.PPB = t.ppb
+            })
+            
+            angular.copy(filtered, dest)
         }
 
         vm.getStats()     

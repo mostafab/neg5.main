@@ -9,11 +9,15 @@ block content
     
     div.container-fluid(ng-app='VizApp' style='padding:20px')
         div(ng-controller='BarChartCtrl as Bar')
-
-            .row
+            row.center
+                h1
+                    b(ng-bind='"Visualization for " + Bar.tournamentInfo.name')
+            br
+            .row.section
                 .col-lg-12.col-md-12.col-sm-12
-                    row.center
-                        h1(ng-bind='"Visualization for " + Bar.tournamentInfo.name')
+                    .row.center
+                        h1 
+                            b Team Averages
                     br
                     .row
                         .col-lg-12.col-md-12.center(style='padding-left:10px; padding-right:40px')
@@ -37,8 +41,12 @@ block content
                     br
 
                     .row
+                        .col-lg-12.center
+                            button.nf-button.btn.nf-green.btn-sm(ng-click='Bar.orderByDivisions()' ng-show='Bar.divisions.length > 0') Group by Divisions
+                            button.nf-button.btn.nf-green.btn-sm(ng-click='Bar.orderByCurrentAxis()' ng-show='Bar.divisions.length > 0') Order by {{Bar.statsDisplayMap[Bar.yAxisStat] || Bar.yAxisStat}}
                         .col-lg-7.col-md-12.col-sm-12
                             nvd3(options='Bar.options' id='bar2' data='Bar.data' api='api')
+                            
                         .col-lg-5.col-md-12.col-sm-12
                             nvd3(options='Bar.pcOptions' data='Bar.teamStats')
 
