@@ -1,3 +1,10 @@
 .nv-axisLabel {
     font-weight: bold;
 }
+
+.nv-parallelCoordinates > path {
+    stroke-width: 2px;
+}
+.nv-parallelCoordinates > path:hover {
+    stroke-width: 4px;
+}
