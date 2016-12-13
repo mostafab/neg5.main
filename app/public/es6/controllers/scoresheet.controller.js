@@ -14,7 +14,7 @@
 
         vm.game = newScoresheet();
         vm.newScoresheet = newScoresheet;
-
+        
         function newScoresheet() {
             return {
                 teams: [
