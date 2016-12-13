@@ -18,14 +18,14 @@
             // return presetColors[Math.floor(Math.random() * presetColors.length)]
         }
         
-        const generateDivisionColors = divisions => {
+        const generateKeyColors = (array, key) => {
             const seenColors = {}
-            return divisions.reduce((map, current) => {
+            return array.reduce((map, current) => {
                 let color = randomHexColor()
                 while (seenColors[color]) {
                     color = randomHexColor()
                 }
-                map[current.division_id] = color
+                map[current[key]] = color
                 return map
             }, {})
         }
@@ -33,7 +33,7 @@
 
         return {
             randomHexColor,
-            generateDivisionColors
+            generateKeyColors
         }
         
     }

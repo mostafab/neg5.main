@@ -8,47 +8,77 @@ block titleContent
 block content
     
     div.container-fluid(ng-app='VizApp' style='padding:20px')
-        div(ng-controller='BarChartCtrl as Bar')
-            row.center
-                h1
-                    b(ng-bind='"Visualization for " + Bar.tournamentInfo.name')
-            br
-            .row.section
-                .col-lg-12.col-md-12.col-sm-12
-                    .row.center
-                        h1 
-                            b Team Averages
-                    br
-                    .row
-                        .col-lg-12.col-md-12.center(style='padding-left:10px; padding-right:40px')
-                            form.form-inline
-                                div.form-group
-                                    label.label.nf-label(for='stat-select') Y-Axis:
-                                    select.no-border.form-control.nf-input.input-sm(
-                                        id='stat-select'
-                                        ng-options='stat as Bar.statsDisplayMap[stat] || stat for stat in Bar.statOptions' 
-                                        ng-model='Bar.yAxisStat',
-                                        ng-change='Bar.refresh()')
-                                div.form-group
-                                    label.label.nf-label(for='phase-select') Phase:
-                                    select.no-border.form-control.nf-input.input-sm(
-                                        id='phase-select'
-                                        ng-options='phase as phase.name for phase in Bar.phases' 
-                                        ng-model='Bar.selectedPhase',
-                                        ng-change='Bar.getStats()')
-                                            option(value='') All Matches
-                    br
-                    br
+        div(ng-controller='BaseCtrl as Base')
+            .row
+                .col-lg-12.col-md-12.col-sm-12.center
+                    form.form-inline(style='position:fixed;z-index:25;top:5px; left:45%')
+                        div.form-group
+                            label.label.nf-label(for='phase-select') Phase:
+                            select.no-border.form-control.nf-input.input-sm(
+                                id='phase-select'
+                                ng-options='phase as phase.name for phase in phases' 
+                                ng-model='selectedPhase',
+                                ng-change='getStats()')
+                                    option(value='') All Matches
+                                
+            // row.center
+            //     h1
+            //         b(ng-bind='"Visualization for " + $scope.tournamentInfo.name')
+            
+            .row
+                .col-lg-6
+                    div(ng-controller='BarChartCtrl as Bar')
+                        br
+                        .row
+                            .col-lg-12.col-md-12.col-sm-12
+                                .row.center
+                                    h1 
+                                        b Team Averages
+                                br
+                                .row
+                                    .col-lg-12.col-md-12.center(style='padding-left:10px; padding-right:40px')
+                                        form.form-inline
+                                            div.form-group
+                                                label.label.nf-label(for='stat-select') Y-Axis:
+                                                select.no-border.form-control.nf-input.input-sm(
+                                                    id='stat-select'
+                                                    ng-options='stat as Bar.statsDisplayMap[stat] || stat for stat in Bar.statOptions' 
+                                                    ng-model='Bar.yAxisStat',
+                                                    ng-change='Bar.refresh()')
+                                            
+                                br
+                                br
 
-                    .row
-                        .col-lg-12.center
-                            button.nf-button.btn.nf-green.btn-sm(ng-click='Bar.orderByDivisions()' ng-show='Bar.divisions.length > 0') Group by Divisions
-                            button.nf-button.btn.nf-green.btn-sm(ng-click='Bar.orderByCurrentAxis()' ng-show='Bar.divisions.length > 0') Order by {{Bar.statsDisplayMap[Bar.yAxisStat] || Bar.yAxisStat}}
-                        .col-lg-7.col-md-12.col-sm-12
-                            nvd3(options='Bar.options' id='bar2' data='Bar.data' api='api')
-                            
-                        .col-lg-5.col-md-12.col-sm-12
-                            nvd3(options='Bar.pcOptions' data='Bar.teamStats')
+                                .row
+                                    .col-lg-12.center
+                                        button.nf-button.btn.nf-green.btn-sm(ng-click='Bar.orderByDivisions()' ng-show='divisions.length > 0') Group by Divisions
+                                        button.nf-button.btn.nf-green.btn-sm(ng-click='Bar.orderByCurrentAxis()' ng-show='divisions.length > 0') Order by {{Bar.statsDisplayMap[Bar.yAxisStat] || Bar.yAxisStat}}
+                                
+                                .col-lg-12.col-md-12.col-sm-12
+                                    nvd3(options='Bar.options' id='bar2' data='Bar.data' api='api')
+                .col-lg-6
+                    div(ng-controller='PieChartCtrl as Pie')
+                        br
+                        .row
+                            .col-lg-12.col-md-12.center
+                                .row.center
+                                    h1 
+                                        b Pie Chart
+                                br
+                                .row
+                                    .col-lg-12.col-md-12.center(style='padding-left:10px; padding-right:40px')
+                                        form.form-inline
+                                            div.form-group
+                                                label.label.nf-label(for='stat-select') Slice:
+                                                select.no-border.form-control.nf-input.input-sm(
+                                                    id='stat-select'
+                                                    ng-options='stat as Pie.statsDisplayMap[stat] || stat for stat in Pie.statOptions' 
+                                                    ng-model='Pie.yAxisStat',
+                                                    ng-change='Pie.refresh()')
+                        .row
+                            .col-lg-12.col-md-12.col-sm-12
+                                nvd3(options='Pie.pieOptions' data='Pie.teamStats' api='api')
+            
 
 
 block scripts
@@ -68,4 +98,6 @@ block scripts
     script(src='js/visualization/services/barchart.service.js')
     script(type='text/javascript' src='/js/visualization/factories/colors.factory.js')
     script(type='text/javascript' src='/js/visualization/factories/stat-util.factory.js')
+    script(src='js/visualization/controllers/base.controller.js' type='text/javascript')
     script(src='js/visualization/controllers/barchart.controller.js' type='text/javascript')
+    script(src='js/visualization/controllers/piechart.controller.js' type='text/javascript')

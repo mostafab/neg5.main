@@ -1,12 +1,10 @@
 'use strict';
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 (function () {
 
-    angular.module('VizApp').controller('BarChartCtrl', ['$scope', '$timeout', 'Phase', 'Stats', 'ColorsFactory', 'StatsUtil', 'BarchartService', BarChartCtrl]);
+    angular.module('VizApp').controller('PieChartCtrl', ['$scope', '$timeout', 'Phase', 'Stats', 'ColorsFactory', 'StatsUtil', PieChartCtrl]);
 
-    function BarChartCtrl($scope, $timeout, Phase, Stats, ColorsFactory, StatsUtil, BarchartService) {
+    function PieChartCtrl($scope, $timeout, Phase, Stats, ColorsFactory, StatsUtil, BarchartService) {
 
         var vm = this;
 
@@ -22,33 +20,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         }, onReceiveNewTeamStats, true);
 
         vm.teamStats = [];
-
-        vm.selectedPhase = null;
-
-        vm.divisionsColorMap = {};
         vm.yAxisStat = 'ppg';
 
-        vm.statOptions = ['ppg', 'ppb', 'papg', 'margin', 'total_negs', 'total_powers', 'raw_total_gets', 'raw_total_tossup_points', 'total_points', 'wins', 'losses'];
-
-        vm.orderByDivisions = function () {
-            return vm.teamStats.sort(function (first, second) {
-                if (first.division_id === second.division_id) {
-                    return first[vm.yAxisStat] - second[vm.yAxisStat];
-                }
-                return first.division_id.localeCompare(second.division_id);
-            });
-        };
-
-        vm.orderByCurrentAxis = function () {
-            return vm.teamStats.sort(function (first, second) {
-                return first[vm.yAxisStat] - second[vm.yAxisStat];
-            });
-        };
+        vm.statOptions = ['ppg', 'ppb', 'papg', 'total_negs', 'total_powers', 'raw_total_gets', 'raw_total_tossup_points', 'total_points', 'wins', 'losses'];
 
         vm.statsDisplayMap = {
             ppg: 'PPG',
             ppb: 'PPB',
-            margin: 'Average Margin of Victory',
             papg: 'Average Points Scored by Opponent',
             total_negs: 'Total Negs',
             total_powers: 'Total Powers',
@@ -63,38 +41,40 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             $scope.api.refresh();
         };
 
-        vm.options = {
+        vm.pieOptions = {
             chart: {
-                type: 'discreteBarChart',
-                height: 700,
-                margin: {
-                    top: 20,
-                    right: 0,
-                    bottom: 60,
-                    left: 55
-                },
-                color: function color(d) {
-                    return $scope.divisions.length === 0 ? defaultBarColor : $scope.divisionsColorMap[d.division_id] || 'black';
-                },
+                type: 'pieChart',
+                height: 1000,
+                donut: true,
                 x: function x(d) {
                     return d.team_name;
                 },
                 y: function y(d) {
                     return d[vm.yAxisStat];
                 },
-                showValues: true,
-                valueFormat: function valueFormat(d) {
-                    return d;
+                showLabels: true,
+                labelsOutside: true,
+                color: function color(d) {
+                    return $scope.divisions.length === 0 ? defaultBarColor : $scope.divisionsColorMap[d.division_id] || 'black';
                 },
-                transitionDuration: 500,
-                xAxis: {
-                    axisLabel: 'Team'
+                pie: {
+                    startAngle: function startAngle(d) {
+                        return d.startAngle - Math.PI / 2;
+                    },
+                    endAngle: function endAngle(d) {
+                        return d.endAngle - Math.PI / 2;
+                    }
                 },
-                yAxis: {
-                    axisLabel: '',
-                    axisLabelDistance: -15
-                },
-                staggerLabels: true
+                showLegend: false,
+                duration: 500,
+                legend: {
+                    margin: {
+                        top: 5,
+                        right: 70,
+                        bottom: 5,
+                        left: 50
+                    }
+                }
             }
         };
 
@@ -106,12 +86,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         function onReceiveNewTeamStats(newStats) {
             handleNewStats(newStats, vm.teamStats);
             if (!addedPointValues) {
-                var _vm$statOptions;
-
                 var vals = Stats.pointScheme.map(function (pv) {
                     return pv.value;
                 });
-                (_vm$statOptions = vm.statOptions).push.apply(_vm$statOptions, _toConsumableArray(vals));
                 addedPointValues = true;
             }
         }

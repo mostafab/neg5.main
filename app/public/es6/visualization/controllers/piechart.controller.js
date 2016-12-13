@@ -1,30 +1,25 @@
 (() => {
-
-    angular.module('VizApp').controller('BarChartCtrl', ['$scope', '$timeout', 'Phase', 'Stats', 'ColorsFactory', 'StatsUtil', 'BarchartService', BarChartCtrl])
     
-    function BarChartCtrl($scope, $timeout, Phase, Stats, ColorsFactory, StatsUtil, BarchartService) {
+    angular.module('VizApp').controller('PieChartCtrl', ['$scope', '$timeout', 'Phase', 'Stats', 'ColorsFactory', 'StatsUtil', PieChartCtrl])
+    
+    function PieChartCtrl($scope, $timeout, Phase, Stats, ColorsFactory, StatsUtil, BarchartService) {
         
         const vm = this
         
         const {randomHexColor, generateKeyColors} = ColorsFactory
         const defaultBarColor = '#5c6bc0'
-
+        
         let addedPointValues = false
         
         $scope.$watch(() => Stats.teamStats, onReceiveNewTeamStats, true)
         
         vm.teamStats = []
-        
-        vm.selectedPhase = null
-        
-        vm.divisionsColorMap = {}
         vm.yAxisStat = 'ppg'
         
         vm.statOptions = [
             'ppg',
             'ppb',
             'papg',
-            'margin',
             'total_negs',
             'total_powers',
             'raw_total_gets',
@@ -33,20 +28,10 @@
             'wins',
             'losses'
         ]
-
-        vm.orderByDivisions = () => vm.teamStats.sort((first, second) => {
-            if (first.division_id === second.division_id) {
-                return first[vm.yAxisStat] - second[vm.yAxisStat]
-            }
-            return first.division_id.localeCompare(second.division_id)
-        })
-
-        vm.orderByCurrentAxis = () => vm.teamStats.sort((first, second) => first[vm.yAxisStat] - second[vm.yAxisStat])
         
         vm.statsDisplayMap = {
             ppg: 'PPG',
             ppb: 'PPB',
-            margin: 'Average Margin of Victory',
             papg: 'Average Points Scored by Opponent',
             total_negs: 'Total Negs',
             total_powers: 'Total Powers',
@@ -61,30 +46,30 @@
             $scope.api.refresh()
         }
         
-        vm.options = {
+        vm.pieOptions = {
             chart: {
-                type: 'discreteBarChart',
-                height: 700,
-                margin: {
-                    top: 20,
-                    right: 0,
-                    bottom: 60,
-                    left: 55
-                },
-                color: d => $scope.divisions.length === 0 ? defaultBarColor : ($scope.divisionsColorMap[d.division_id] || 'black'),
+                type: 'pieChart',
+                height: 1000,
+                donut: true,
                 x: d => d.team_name,
                 y: d => d[vm.yAxisStat],
-                showValues: true,
-                valueFormat: d => d,
-                transitionDuration: 500,
-                xAxis: {
-                    axisLabel: 'Team',
+                showLabels: true,
+                labelsOutside: true,
+                color: d => $scope.divisions.length === 0 ? defaultBarColor : ($scope.divisionsColorMap[d.division_id] || 'black'),
+                pie: {
+                    startAngle: d => d.startAngle - Math.PI / 2,
+                    endAngle: d => d.endAngle - Math.PI / 2
                 },
-                yAxis: {
-                    axisLabel: '',
-                    axisLabelDistance: -15
-                },
-                staggerLabels: true
+                showLegend: false,
+                duration: 500,
+                legend: {
+                    margin: {
+                        top: 5,
+                        right: 70,
+                        bottom: 5,
+                        left: 50
+                    }
+                }
             }
         }
 
@@ -99,11 +84,10 @@
             handleNewStats(newStats, vm.teamStats)
             if (!addedPointValues) {
                 const vals = Stats.pointScheme.map(pv => pv.value)
-                vm.statOptions.push(...vals)
                 addedPointValues = true
             }             
         }
-        
+
         function handleNewStats(src, dest) {
             const copy = []
             angular.copy(src, copy)
@@ -124,6 +108,7 @@
             
             angular.copy(filtered, dest)
         }
+
 
     }
     

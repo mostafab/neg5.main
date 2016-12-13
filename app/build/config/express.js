@@ -61,7 +61,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = function () {
     var app = (0, _express2.default)();
 
-    app.locals.pretty = true;
+    app.locals.pretty = false;
 
     app.use(_bodyParser2.default.urlencoded({
         extended: true

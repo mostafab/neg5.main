@@ -17,21 +17,21 @@
             // return presetColors[Math.floor(Math.random() * presetColors.length)]
         };
 
-        var generateDivisionColors = function generateDivisionColors(divisions) {
+        var generateKeyColors = function generateKeyColors(array, key) {
             var seenColors = {};
-            return divisions.reduce(function (map, current) {
+            return array.reduce(function (map, current) {
                 var color = randomHexColor();
                 while (seenColors[color]) {
                     color = randomHexColor();
                 }
-                map[current.division_id] = color;
+                map[current[key]] = color;
                 return map;
             }, {});
         };
 
         return {
             randomHexColor: randomHexColor,
-            generateDivisionColors: generateDivisionColors
+            generateKeyColors: generateKeyColors
         };
     }
 })();
