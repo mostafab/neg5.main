@@ -71,13 +71,4 @@ block content
                             i.fa(ng-class="{'fa-check': PSControl.toastMessage.success === true, 'fa-times': PSControl.toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
                             | {{PSControl.toastMessage.message}}
                         
-
-block scripts
-    script(type='text/javascript' src='/js/app.js')
-    script(type='text/javascript' src='/js/services/cookies.service.js')
-    script(type='text/javascript' src='/js/services/tournament.service.js')
-    script(type='text/javascript' src='/js/services/phase.service.js')
-    script(type='text/javascript' src='/js/services/division.service.js')
-    script(type='text/javascript' src='/js/stats.js')
-    script(type='text/javascript' src='/js/services/stats/stats.service.js')
     
