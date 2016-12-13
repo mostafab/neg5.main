@@ -3,7 +3,7 @@
         .col-lg-6.col-md-6.col-sm-12
             .row(ng-show='Scoresheet.game.onTossup')
                 .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                    select.form-control.nf-input.nf-gray(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id', 
+                    select.form-control.nf-input.nf-gray(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id | orderBy:"name"', 
                         ng-model='Scoresheet.game.teams[0].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[0])',
                         ng-class="{'readonly': Scoresheet.game.currentCycle.number > 1}"    
                     )
@@ -48,7 +48,7 @@
                                     i.fa.fa-check
                                     
                 .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                    select.form-control.nf-input.nf-gray(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id', 
+                    select.form-control.nf-input.nf-gray(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id | orderBy:"name"', 
                         ng-model='Scoresheet.game.teams[1].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[1])', 
                         ng-class="{'readonly' : Scoresheet.game.currentCycle.number > 1}"    
                     )

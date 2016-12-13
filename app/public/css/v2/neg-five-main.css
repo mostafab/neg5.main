@@ -1,6 +1,4 @@
 .nf-background-main {
-    /*background-color: #455a64;*/
-    /*background-color: #EAEAEA;*/
     background-color: #E0E0E0;
 }
 
@@ -10,13 +8,9 @@
     background-size: cover;
 }
 
-.nf-button > .fa {
-    /*margin-left: 10px;*/
-}
-
 .nf-button {
     border-radius: 2px;
-    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
+    margin: 5px;
     font-size: 1.3em;
 }
 
@@ -46,6 +40,10 @@
     padding: 45px;
     background: rgba(200, 200, 200, .9);
     text-align: center;
+}
+
+.navbar-nav > li:hover {
+    cursor: pointer !important;
 }
 
 table.player-table * td:first-child:hover {
@@ -128,7 +126,6 @@ li > a:hover {
 
 .nf-input:focus {
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
-    /*border-bottom: 5px solid #2B3E50;*/
 }
 
 .nf-label {

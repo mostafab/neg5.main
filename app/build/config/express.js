@@ -24,6 +24,10 @@ var _helmet = require('helmet');
 
 var _helmet2 = _interopRequireDefault(_helmet);
 
+var _compression = require('compression');
+
+var _compression2 = _interopRequireDefault(_compression);
+
 var _account = require('../routes/api/account');
 
 var _account2 = _interopRequireDefault(_account);
@@ -69,7 +73,7 @@ exports.default = function () {
     app.use((0, _helmet2.default)());
     app.use((0, _cookieParser2.default)());
     app.use(_bodyParser2.default.json());
-
+    app.use((0, _compression2.default)());
     app.use(_passport2.default.initialize());
 
     app.set("views", _path2.default.join(__dirname, '../../views'));

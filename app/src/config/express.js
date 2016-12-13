@@ -3,6 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
+import compression from 'compression';
 
 import accountApi from '../routes/api/account';
 import tournamentApi from '../routes/api/tournament';
@@ -25,7 +26,7 @@ export default () => {
     app.use(helmet());
     app.use(cookieParser());
     app.use(bodyParser.json());
-    
+    app.use(compression());    
     app.use(passport.initialize());
     
     app.set("views", path.join(__dirname, '../../views'));
