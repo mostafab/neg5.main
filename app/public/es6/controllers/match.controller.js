@@ -236,20 +236,42 @@
             }
         }
         
-        vm.numPlayerAnswers = (player) => {
+        vm.numPlayerAnswers = (player, onlyCorrectAnswers = false) => {
             let sum = 0;
             for (const point in player.points) {
-                if (player.points.hasOwnProperty(point)) {
+                if (player.points.hasOwnProperty(point) && (point >= 0 || !onlyCorrectAnswers)) {
                     sum += (player.points[point] || 0);
                 }
             }
             return sum;
         }
         
-        vm.minPossibleTossupsHeard = (match) => match.teams ? match.teams.reduce((sum, currentTeam) => {
-            let tossupsGotten = currentTeam.players.reduce((t, curr) => t + vm.numPlayerAnswers(curr), 0);
-            return sum + tossupsGotten;
-        }, 0) : 0
+        vm.minPossibleTossupsHeard = (match) => {
+            const totalCorrectAnswers = match.teams ? match.teams.reduce((sum, currentTeam) => {
+                let tossupsGotten = currentTeam.players.reduce((t, curr) => t + vm.numPlayerAnswers(curr, true), 0);
+                return sum + tossupsGotten;
+            }, 0) : 0
+            
+            const totalWrongAnswers = match.teams ? match.teams.reduce((sum, currentTeam) => {
+                let totalNegs = currentTeam.players.reduce((t, curr) => {
+                    let total = 0;
+                    for (const point in curr.points) {
+                        if (curr.points.hasOwnProperty(point) && point < 0) {
+                            total += curr.points[point]
+                        }
+                    } 
+                    return t + total
+                }, 0)
+                return sum += totalNegs
+            }, 0) : 0
+            
+            if (totalWrongAnswers > totalCorrectAnswers) {
+                const extraNegs = totalWrongAnswers - totalCorrectAnswers
+                return extraNegs + totalCorrectAnswers
+            }
+            return totalCorrectAnswers
+            
+        }
         
         vm.matchSearch = (match) => {
             const normalizedQuery = vm.gameQuery.toLowerCase();

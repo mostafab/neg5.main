@@ -120,7 +120,7 @@ li > a:hover {
 
 .nf-input {
     border-radius: 2px;
-    border: none;
+    border: 1px solid #e0e0e0;
     -webkit-transition: .1s border; 
     -moz-transition: .1s border; 
     transition: .1s border; 
@@ -427,7 +427,8 @@ input[type=number] {
 }
 
 div.readonly {
-    background-color: #f8f5f0;
+    background-color: #f4f0ea;
+    pointer-events: none;
 }
 
 select.readonly {

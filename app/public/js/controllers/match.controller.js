@@ -238,9 +238,11 @@
         };
 
         vm.numPlayerAnswers = function (player) {
+            var onlyCorrectAnswers = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
             var sum = 0;
             for (var point in player.points) {
-                if (player.points.hasOwnProperty(point)) {
+                if (player.points.hasOwnProperty(point) && (point >= 0 || !onlyCorrectAnswers)) {
                     sum += player.points[point] || 0;
                 }
             }
@@ -248,12 +250,31 @@
         };
 
         vm.minPossibleTossupsHeard = function (match) {
-            return match.teams ? match.teams.reduce(function (sum, currentTeam) {
+            var totalCorrectAnswers = match.teams ? match.teams.reduce(function (sum, currentTeam) {
                 var tossupsGotten = currentTeam.players.reduce(function (t, curr) {
-                    return t + vm.numPlayerAnswers(curr);
+                    return t + vm.numPlayerAnswers(curr, true);
                 }, 0);
                 return sum + tossupsGotten;
             }, 0) : 0;
+
+            var totalWrongAnswers = match.teams ? match.teams.reduce(function (sum, currentTeam) {
+                var totalNegs = currentTeam.players.reduce(function (t, curr) {
+                    var total = 0;
+                    for (var point in curr.points) {
+                        if (curr.points.hasOwnProperty(point) && point < 0) {
+                            total += curr.points[point];
+                        }
+                    }
+                    return t + total;
+                }, 0);
+                return sum += totalNegs;
+            }, 0) : 0;
+
+            if (totalWrongAnswers > totalCorrectAnswers) {
+                var extraNegs = totalWrongAnswers - totalCorrectAnswers;
+                return extraNegs + totalCorrectAnswers;
+            }
+            return totalCorrectAnswers;
         };
 
         vm.matchSearch = function (match) {
