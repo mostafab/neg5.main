@@ -10,10 +10,10 @@ div(ng-class="{'col-lg-12': !Team.currentTeam.id, 'col-lg-4 col-md-12 col-sm-12'
         table(class="table table-condensed nf-shadow")
             thead
                 tr
-                    th(class="table-head nf-blue") Team
-                    th(class="table-head nf-blue") Divisions
+                    th(class="table-head nf-gray") Team
+                    th(class="table-head nf-gray") Divisions
             tbody
-                tr(class='nf-list-item nf-dark-blue' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id' ng-click='Team.findTeam(team)')
+                tr(class='nf-list-item nf-white' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id' ng-click='Team.findTeam(team)')
                     td {{team.name}}
                     td
                         //- .col-lg-4

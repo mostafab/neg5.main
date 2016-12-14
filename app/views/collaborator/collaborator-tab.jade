@@ -1,33 +1,47 @@
 .row
-    .col-lg-4.col-sm-12.col-md-6(ng-if='tournamentContext.admin === true')
-        div(class="panel panel-default nf-panel")
-            div(class="collapsable nf-panel-heading nf-dark-blue") Add Collaborator
-            div(class="panel-body nf-panel-body tournament-panel")
+    .col-lg-5.col-sm-12.col-md-6(ng-if='tournamentContext.admin === true')
+        div(class="col-md-12 col-sm-12 col-lg-12")
+            input(type="text" ng-model='Collab.searchQuery' class="form-control nf-input" ng-keyup='Collab.getKeyPress($event)' placeholder="Search for other users by email or name.")
+        
+        //- div(style='margin-top:50px')    
+        
+        div(style='margin-top:75px')
+            .col-lg-12.col-md-12.col-sm-12(ng-repeat='result in Collab.searchResults | orderBy: "username" track by $index')
+                .input-group
+                    div.form-control.nf-input.nf-white.no-border {{result.username}}
+                    span.input-group-addon.no-border.nf-button.nf-green(ng-click='Collab.addCollaborator(result.username, true)') Add as Admin
+                    span.input-group-addon.no-border.nf-button.nf-gray(ng-click='Collab.addCollaborator(result.username, false)') Add
+                br
+                
+
+    .col-lg-7.col-sm-12.col-md-6
+
+        .col-lg-6.col-md-6.col-sm-12(ng-repeat='collab in Collab.collaborators | orderBy:["username"]')
+            .input-group
+                span.input-group-addon.btn(ng-click='!tournamentContext.owner || Collab.toggleAdmin(collab)' ng-class="{'nf-green' : collab.admin, 'nf-gray' : !collab.admin}" title='{{tournamentContext.owner ? "Toggle admin priviledges" : ""}}') {{collab.admin ? 'A' : ''}}
+                div.nf-white.nf-input.form-control.no-border.btn {{collab.username}}
+                span.input-group-addon.nf-red.no-border(role='button' ng-click='Collab.removeCollaborator(collab.username)' ng-if='tournamentContext.owner === true')
+                    i.fa.fa-trash
             
-                .row
-                        div(class="col-md-12 col-sm-12 col-lg-12")
-                            input(type="text" ng-model='Collab.searchQuery' class="form-control nf-input" ng-keyup='Collab.getKeyPress($event)' placeholder="Search for other users by email or name.")
-                .row
-                    div(class="col-md-12 col-sm-12 col-lg-12")
-
-                        br
-                        .row
-                            .col-lg-12
-                                .input-group(ng-repeat='result in Collab.searchResults | orderBy: "username" track by $index')
-                                    div.form-control.nf-input.nf-dark-blue.no-border {{result.username}} | {{result.name}}
-                                    span.input-group-addon.no-border.nf-button.nf-green(ng-click='Collab.addCollaborator(result.username, true)') Add as Admin
-                                    span.input-group-addon.no-border.nf-button.nf-blue(ng-click='Collab.addCollaborator(result.username, false)') Add
-
-    .col-lg-8.col-sm-12.col-md-6
-        div(class="panel panel-default nf-panel")
-            div(class="collapsable nf-panel-heading nf-dark-blue") Collaborators ({{Collab.collaborators.length}})
-            div(class="panel-body tournament-panel nf-panel-body")        
-                    
-                .row
-                    .col-md-12.col-sm-12.col-lg-12
-                        .input-group.nf-margin(ng-repeat='collab in Collab.collaborators | orderBy: ["username"]') 
-                            span.input-group-addon.btn.nf-button(ng-click='!tournamentContext.owner || Collab.toggleAdmin(collab)' ng-class="{'nf-green' : collab.admin, 'nf-blue' : !collab.admin}" title='Toggle Admin priviledges') {{collab.admin ? 'Admin' : ''}}
-                            div.form-control.nf-input.nf-gray.no-border.nf-dark-blue.nf-list-item(style='padding:10px') {{collab.username}} | {{collab.name}} 
-                            span.input-group-addon.nf-red.btn.nf-button(role='button' ng-click='Collab.removeCollaborator(collab.username)' ng-if='tournamentContext.admin === true')
-                                i.fa.fa-trash  
+            br
+            
+            //- .panel.nf-panel.nf-shadow
+            //-     .nf-panel-heading.nf-gray.center(ng-class='{"nf-green" : collab.admin}')
+            //-         | {{collab.username}} 
+            //-         span.nf-red.btn.nf-button(role='button' ng-click='Collab.removeCollaborator(collab.username)' ng-if='tournamentContext.admin === true')
+            //-             i.fa.fa-trash
+                //- .panel-body.nf-panel-body.nf-white.relative(style='position:relative')
+                //-     | {{collab.name}}
+                //-     span.nf-red.btn.nf-button.right(role='button' ng-click='Collab.removeCollaborator(collab.username)' ng-if='tournamentContext.admin === true')
+                //-         i.fa.fa-trash
+        //- div(class="panel panel-default nf-panel")
+        //-     div(class="panel-body tournament-panel nf-panel-body")        
+                
+        //-         .row
+        //-             .col-md-12.col-sm-12.col-lg-12
+        //-                 .input-group.nf-margin(ng-repeat='collab in Collab.collaborators | orderBy: ["username"]') 
+        //-                     span.input-group-addon.btn.nf-button(ng-click='!tournamentContext.owner || Collab.toggleAdmin(collab)' ng-class="{'nf-green' : collab.admin, 'nf-blue' : !collab.admin}" title='Toggle Admin priviledges') {{collab.admin ? 'Admin' : ''}}
+        //-                     div.form-control.nf-input.no-border.nf-white.nf-list-item(style='padding:10px') {{collab.username}} | {{collab.name}} 
+        //-                     span.input-group-addon.nf-red.btn.nf-button(role='button' ng-click='Collab.removeCollaborator(collab.username)' ng-if='tournamentContext.admin === true')
+        //-                         i.fa.fa-trash  
                                 

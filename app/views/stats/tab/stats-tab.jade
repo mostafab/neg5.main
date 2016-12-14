@@ -1,12 +1,12 @@
 div(class="panel panel-default nf-panel")
-    // div(class="collapsable nf-panel-heading nf-dark-blue") Stats
     div(class="nf-panel-body panel-body tournament-panel")
         div(class="col-md-12")                        
             .row
                 .col-md-6.col-sm-6.col-lg-6
-                    .list-group.nf-shadow
-                        a(class='list-group-item nf-blue') Statistics
-                        a(target="_blank" href='/t/{{::tournamentId}}/stats' class="stat-link nf-dark-blue list-group-item nf-list-item" data-stats-type='team') Go to Stats
+                    //- .list-group.nf-shadow
+                        //- a(class='list-group-item nf-gray') Statistics
+                    a(target="_blank" href='/t/{{::tournamentId}}/stats' class="stat-link nf-gray no-border list-group-item" data-stats-type='team') Go to Stats
+            br
             .row
                 .col-md-6.col-sm-6.col-lg-6
                     .list-group.nf-shadow       

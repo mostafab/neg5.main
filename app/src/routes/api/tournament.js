@@ -53,9 +53,6 @@ export default (app) => {
         })
 
     app.route('/api/t/:tid/collaborators/:username')
-        .get(hasToken, (req, res) => {
-            
-        })
         .put(hasToken, directorAccessToTournament, (req, res) => {
             Tournament.updateCollaborator(req.params.tid, req.params.username, req.body.admin)
                 .then(result => res.json({result, success: true}))

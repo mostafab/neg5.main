@@ -9,12 +9,12 @@ div(ng-show='!Game.loadedGame.id')
     div(class="nf-panel")
         table(class="table table-condensed nf-shadow")
             tr
-                th(class="table-head nf-blue" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse') Round
-                th(class="table-head nf-blue") Phase(s)
-                th(class="table-head nf-blue") Team 1
-                th(class="table-head nf-blue") Team 2
+                th(class="table-head nf-gray" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse') Round
+                th(class="table-head nf-gray") Phase(s)
+                th(class="table-head nf-gray") Team 1
+                th(class="table-head nf-gray") Team 2
                 
-            tr(class='nf-list-item nf-dark-blue' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | filter:Game.matchSearch track by game.id' ng-click='Game.loadGame(game.id)')
+            tr(class='nf-list-item nf-white' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | filter:Game.matchSearch track by game.id' ng-click='Game.loadGame(game.id)')
                 td {{game.round}}
                 td
                     p(ng-repeat='phase in Game.phases track by phase.id' ng-if='game.phases[phase.id] === true') {{phase.name}}

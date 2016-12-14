@@ -66,7 +66,7 @@ exports.default = function (app) {
         });
     });
 
-    app.route('/api/t/:tid/collaborators/:username').get(_token.hasToken, function (req, res) {}).put(_token.hasToken, _tournamentAccess.directorAccessToTournament, function (req, res) {
+    app.route('/api/t/:tid/collaborators/:username').put(_token.hasToken, _tournamentAccess.directorAccessToTournament, function (req, res) {
         _tournament2.default.updateCollaborator(req.params.tid, req.params.username, req.body.admin).then(function (result) {
             return res.json({ result: result, success: true });
         }).catch(function (error) {
