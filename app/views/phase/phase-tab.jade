@@ -1,7 +1,7 @@
 div(class='col-md-12 col-sm-12 col-lg-6')
     div(class="panel nf-panel panel-default")
-        div(class="collapsable nf-panel-heading nf-dark-blue") New Phase
-        div(class="nf-panel-body panel-body tournament-panel")
+        div(class="collapsable nf-panel-heading nf-blue") New Phase
+        div(class="nf-panel-body panel-body tournament-panel nf-white")
         
             div(class="row")
                 div(class="col-md-12 col-sm-12 col-lg-8")
@@ -13,14 +13,14 @@ div(class='col-md-12 col-sm-12 col-lg-6')
 
 div(class='col-md-12 col-sm-12 col-lg-6')
     div(class="panel nf-panel panel-default")
-        div(class="collapsable nf-panel-heading nf-dark-blue") 
+        div(class="collapsable nf-panel-heading nf-blue") 
             .row
                 .col-lg-6
                     h4.left Current Phases 
                 .col-lg-6
                     h4.right(title='Active phase is used to choose correct divisions when viewing stats for all games.') {{'Active Phase: ' + (Phase.activePhase.name || 'No Active Phase Set')}}
 
-        div(class="nf-panel-body panel-body  tournament-panel")
+        div(class="nf-panel-body panel-body nf-white")
             .row
                 div(class="col-md-11 col-sm-11 col-lg-9")
                     .row.nf-margin(ng-repeat='phase in Phase.phases | orderBy: "name" track by phase.id')

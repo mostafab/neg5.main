@@ -15,7 +15,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                 button.nf-button.nf-red.btn-md.btn.right(title='Delete Game.' ng-if='tournamentContext.admin' ng-click='Game.deleteGame(Game.loadedGame.id)')
                     i.fa.fa-trash
 
-    .nf-panel-body.panel-body
+    .nf-panel-body.panel-body.nf-white
             form(name="Game.editGameForm" novalidate ng-class='{"readonly-form": !Game.loadedGame.editing}' ng-init='Game.loadedGame.editing = false')
                 div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6")
@@ -198,5 +198,5 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                 
                 button(type="submit" class="btn btn-md nf-green nf-button" ng-if='tournamentContext.admin' ng-disabled='Game.editGameForm.$invalid' ng-click='Game.editLoadedGame()' ng-show='Game.loadedGame.editing') Save Changes
     
-    .nf-panel-footer.panel-footer.nf-blue.no-border
+    .nf-panel-footer.panel-footer.nf-gray.no-border
         h5 Added by: {{Game.loadedGame.addedBy}}

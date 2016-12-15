@@ -1,5 +1,5 @@
 div(class="panel nf-panel")
-    div(class="collapsable nf-dark-blue nf-panel-heading") 
+    div(class="collapsable nf-blue nf-panel-heading") 
         .row
             .col-lg-11.col-sm-11.col-md-11
                 label.nf-label Overview
@@ -9,7 +9,7 @@ div(class="panel nf-panel")
                 span.btn.nf-button.nf-red.btn-md(style='float:right;' title='Cancel' ng-click='Tournament.editing = false; Tournament.resetOverview()' ng-show='Tournament.editing === true')
                     i.fa.fa-times 
 
-    div(class="panel-body tournament-panel nf-panel-body")
+    div(class="panel-body tournament-panel nf-white nf-panel-body")
         form(name='Tournament.editTournamentForm' ng-submit='Tournament.editTournament()' novalidate)
             div(class="row")
                 div(class="col-md-12 col-lg-12")

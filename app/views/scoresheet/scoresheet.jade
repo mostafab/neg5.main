@@ -11,7 +11,7 @@
                     br
                     
                     .panel.nf-panel
-                        .nf-panel-heading.nf-gray.center 
+                        .nf-panel-heading.nf-blue.center 
                             | {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}} ({{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
                             p.nf-margin.warning-text(ng-show='Scoresheet.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) > Scoresheet.rules.maxActive') 
                                 | # active more than max allowed active players.
@@ -56,7 +56,7 @@
                         option(disabled value='') Choose a Team
                     br
                     .panel.nf-panel
-                        .nf-panel-heading.nf-gray.center 
+                        .nf-panel-heading.nf-blue.center 
                             | {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}} ({{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
                             p.warning-text.nf-margin(ng-show='Scoresheet.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) > Scoresheet.rules.maxActive') 
                                 | # active more than max allowed active players.
@@ -128,7 +128,7 @@
                 .col-lg-6.col-md-12.col-sm-12
                     .panel.nf-panel
                         table.table.table-condensed.responsive-font.player-table
-                            thead.nf-gray
+                            thead.nf-blue
                                 th.table-head {{Scoresheet.game.teams[0].teamInfo.name}}
                                 th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{tv.value}}
                                 th.table-head.center Pts
@@ -148,7 +148,7 @@
                 .col-lg-6.col-md-12.col-sm-12
                     .panel.nf-panel 
                         table.table.table-condensed.responsive-font.player-table
-                            thead.nf-gray
+                            thead.nf-blue
                                 th.table-head {{Scoresheet.game.teams[1].teamInfo.name}}
                                 th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true') {{tv.value}}
                                 th.table-head.center Pts

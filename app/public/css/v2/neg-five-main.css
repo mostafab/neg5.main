@@ -241,7 +241,7 @@ li > a:hover {
 }
 
 .nf-gray {
-   background-color: #ECEFF1;
+   background-color: #ECEFF1 !important;
 }
 
 .nf-green {
