@@ -89,7 +89,7 @@
                                 
                             })
                             .catch(error => {
-                                toastConfig.message = 'Could not register. This username might be taken.';
+                                toastConfig.message = 'Could not register. This username or email might be taken.';
                                 toastConfig.success = false;
                                 
                                 toastConfig.hideAfter = true;

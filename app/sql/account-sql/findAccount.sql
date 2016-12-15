@@ -1,1 +1,1 @@
-SELECT username, hash from account WHERE username=$1 LIMIT 1;
+SELECT username, hash from account WHERE username=$1 OR email=$1 LIMIT 1;

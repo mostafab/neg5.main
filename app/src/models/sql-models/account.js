@@ -7,8 +7,8 @@ export default {
             let newAccount = {
                 username: username.trim().toLowerCase(),
                 password: password.trim(),
-                email: email === null ? null : email.trim().toLowerCase(),
-                name: name === null ? null : name.trim()
+                email: (!email || email.trim() === '') ? null : email.trim().toLowerCase(),
+                name: (!name || name.trim() === '') ? null : name.trim()
             };
             db.saveAccount(newAccount)
                 .then(user => resolve(user))

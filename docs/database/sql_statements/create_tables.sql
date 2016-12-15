@@ -4,6 +4,7 @@ CREATE TABLE account (
     name varchar(50),
     email varchar(50), 
     hidden boolean DEFAULT false,
+    UNIQUE(email),
     PRIMARY KEY (username) 
 );
 
