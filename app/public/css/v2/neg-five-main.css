@@ -26,6 +26,12 @@ span.nf-button:hover, button.nf-button:hover {
 /*.nf-button.transition:hover, .input-group.transition {
     cursor: pointer;
 }*/
+a.tournament-card {
+    color: black;
+}
+a.tournament-card:hover {
+    text-decoration: none;
+}
 
 .warning-text {
     color: #f9a825 !important;
@@ -176,7 +182,7 @@ li > a:hover {
 
 .nf-panel-heading {
     padding: 15px;
-    font-size: 1.3em;
+    font-size: 1.2em;
     /*border-color: #455a64 !important;*/
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;

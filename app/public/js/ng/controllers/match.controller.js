@@ -128,13 +128,15 @@
             return Game.getGames($scope.tournamentId);
         };
 
+        vm.resetForm = resetForm;
+
         vm.addGame = function () {
             if (vm.newGameForm.$valid) {
                 (function () {
                     var toastConfig = { message: 'Adding match.' };
                     $scope.toast(toastConfig);
                     Game.postGame($scope.tournamentId, vm.currentGame).then(function () {
-                        resetForm();
+                        vm.resetForm();
                         vm.getGames();
                         toastConfig.success = true;
                         toastConfig.message = 'Added match';

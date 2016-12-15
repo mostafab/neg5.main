@@ -119,6 +119,8 @@
         }
         
         vm.getGames = () => Game.getGames($scope.tournamentId);
+
+        vm.resetForm = resetForm;
         
         vm.addGame = () => {
             if (vm.newGameForm.$valid) {
@@ -126,7 +128,7 @@
                 $scope.toast(toastConfig);
                 Game.postGame($scope.tournamentId, vm.currentGame)
                     .then(() => {
-                        resetForm();
+                        vm.resetForm();
                         vm.getGames();
                         toastConfig.success = true;
                         toastConfig.message = 'Added match';

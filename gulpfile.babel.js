@@ -38,7 +38,7 @@ gulp.task('babel-client', () => {
     .pipe(gulp.dest('app/public/js/ng'));
 })
 
-gulp.task('minify', () => {
+gulp.task('minify-js', () => {
     gulp.src(['app/public/js/ng/**/*.js'])
         .pipe(concat('bundle.js'))
         .pipe(ngAnnotate())
@@ -56,7 +56,7 @@ gulp.task('minify-css', () => {
 gulp.task('watch', () => {
    gulp.watch(['app/src/**/*.js'], ['babel-server']);
    gulp.watch(['app/public/es6/**/*.js'], ['babel-client']);
-   gulp.watch(['app/public/js/ng/**/*.js'], ['minify']);
+   gulp.watch(['app/public/js/ng/**/*.js'], ['minify-js']);
    gulp.watch(['app/public/css/v2/*.css'], ['minify-css']);
 });
 

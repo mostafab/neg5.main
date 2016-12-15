@@ -39,7 +39,7 @@ block content
                                             .nf-panel
                                                 div.list-group-item.nf-green(style='border:none')
                                                     p.inline New Tournament
-                                                .panel-body.nf-panel-body.nf-dark-blue.nf-shadow
+                                                .panel-body.nf-panel-body.nf-white.nf-shadow
                                                     form(novalidate name='Home.newTournamentForm' ng-submit='Home.createNewTournament()')
                                                         input.form-control.nf-input(type='text' required placeholder='Name' ng-model='Home.newTournament.name' maxlength='20')
                                                         br
@@ -50,11 +50,11 @@ block content
                                         .col-lg-8.col-md-7.col-sm-7(ng-cloak)
                                             div
                                                 .nf-panel(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | orderBy:"name"')
-                                                    a(href='/t/{{tournament.id}}')
+                                                    a.tournament-card(href='/t/{{tournament.id}}')
                                                         div.list-group-item.nf-blue
                                                             p.inline {{tournament.name}}
                                                             // p.inline.right {{tournament.director_id}}
-                                                        .panel-body.nf-panel-body.nf-dark-blue.nf-shadow.tournament-card.responsive-font
+                                                        .panel-body.nf-panel-body.nf-white.nf-shadow.tournament-card.responsive-font
                                                             p.nf-margin Location : {{tournament.location || 'None'}}
                                                             p.nf-margin Question Set : {{tournament.question_set || 'None'}}
                                                             p.nf-margin Date : {{tournament.tournament_date || 'None' | date}}

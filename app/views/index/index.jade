@@ -5,7 +5,7 @@ block titleContent
 
 
 block extrastylesheets
-    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+    //- link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
     
 
 block content
@@ -27,7 +27,7 @@ block content
             
             .tab-content
                 div
-                    .panel.nf-panel
+                    
                         .row
                             .col-lg-12.col-md-12.col-sm-12(ng-show='!Index.loggingIn' ng-cloak)
                                 .panel-body.nf-panel-body
@@ -77,7 +77,6 @@ block content
                                                 | Go back
 
                             .col-lg-12.col-md-12.col-sm-12(ng-show='Index.loggingIn')
-                                .panel-body.nf-panel-body
                                     form.center(name="loginForm" novalidate ng-submit='Index.login()')
                                         .row
                                             //- label.label.nf-label.col-lg-5.col-md-5.col-sm-5 Username 

@@ -253,29 +253,29 @@
         .modal#myModal(role='dialog')
             .modal-dialog.modal-lg
                 .modal-content.nf-modal-content
-                    .modal-header.nf-dark-blue(style='border-bottom:none')
+                    .modal-header.nf-gray(style='border-bottom:none')
                         button.btn.nf-button.nf-red(data-dismiss='modal') Close
                         button.nf-button.btn.nf-green.right(type='submit' ng-disabled='Scoresheet.game.currentCycle.number === 1 || Scoresheet.scoresheetForm.$invalid' ng-show='!Scoresheet.game.submitted')
                             | Submit Match
-                    .modal-body.nf-dark-blue
-                        .panel.nf-panel(style='border:none')
+                    .modal-body.nf-white
+                        .panel(style='border:none')
                             .nf-panel-heading.nf-blue.center Match Summary
-                            .nf-panel-body.panel-body.nf-dark-blue
+                            .nf-panel-body.panel-body.nf-white
                                 .row
                                     .col-lg-6.col-md-6.col-sm-6(style='text-align:left')
                                         .row.nf-margin
-                                            label.label.nf-label.green-text {{Scoresheet.game.teams[0].teamInfo.name}}
+                                            label.nf-label(style='text-decoration:underline') {{Scoresheet.game.teams[0].teamInfo.name}}
                                         .row.nf-margin
-                                            label.label.nf-label 
+                                            label.nf-label 
                                                 p.inline Score: 
                                                 p.inline {{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}}
                                         .row.nf-margin(ng-if='Scoresheet.rules.bouncebacks')
-                                            label.label.nf-label 
+                                            label.nf-label 
                                                 p.inline Bouncebacks: 
                                                 p.inline {{Scoresheet.getTeamBouncebacks(Scoresheet.game.teams[0].teamInfo.id)}}
                                         .row
                                             .col-md-6.col-sm-6
-                                                label.label.nf-label.btn-block TUs with no bonuses
+                                                label.nf-label.btn-block TUs with no bonuses
                                             .col-md-6.col-sm-6
                                                 input.form-control.nf-input(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' placeholder='Tossups answered correctly that didn\'t lead to bonuses.', 
                                                     ng-model='Scoresheet.game.teams[0].overtime',
@@ -286,13 +286,13 @@
                                             
                                     .col-lg-6.col-md-6.col-sm-6(style='text-align:right')
                                         .row.nf-margin
-                                            label.label.nf-label.green-text {{Scoresheet.game.teams[1].teamInfo.name}}
+                                            label.nf-label(style='text-decoration:underline') {{Scoresheet.game.teams[1].teamInfo.name}}
                                         .row.nf-margin
-                                            label.label.nf-label 
+                                            label.nf-label 
                                                 p.inline Score: 
                                                 p.inline {{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}}
                                         .row.nf-margin(ng-if='Scoresheet.rules.bouncebacks')
-                                            label.label.nf-label 
+                                            label.nf-label 
                                                 p.inline Bouncebacks: 
                                                 p.inline {{Scoresheet.getTeamBouncebacks(Scoresheet.game.teams[1].teamInfo.id)}}
                                         .row
@@ -304,14 +304,14 @@
                                                     ng-class="{'nf-error' : Scoresheet.scoresheetForm.ot2.$invalid}", 
                                                 )
                                             .col-md-6.col-sm-6
-                                                label.label.nf-label.btn-block TUs with no bonuses                         
+                                                label.nf-label.btn-block TUs with no bonuses                         
                                 br
                                 br
                                 
                                 .row
                                     .col-lg-6.col-md-6.col-sm-6
                                         .row.nf-margin
-                                            label.label.nf-label Tossups Heard: {{Scoresheet.game.currentCycle.number - 1}}
+                                            label.nf-label Tossups Heard: {{Scoresheet.game.currentCycle.number - 1}}
                                 
                                 
                                 hr
