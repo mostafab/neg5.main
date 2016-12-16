@@ -181,7 +181,9 @@
                                 td(colspan='{{Scoresheet.game.teams[0].players.length + Scoresheet.game.teams[1].players.length + 5}}')
                                     p.left
                                         | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'medium'}}
-                                    
+                                    p.right
+                                        | Timer: {{Scoresheet.scoresheetTime}} 
+                                        button.nf-red.btn.nf-button.circle.btn-circle(type='button')
                             tr.no-border
                                 th.center.table-head.nf-white(ng-repeat='player in Scoresheet.game.teams[0].players' title='{{player.name}}') {{player.name | limitTo:2}}
                                 th.center.table-head.nf-blue Bonus

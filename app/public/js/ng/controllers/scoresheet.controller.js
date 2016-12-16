@@ -2,7 +2,7 @@
 
 (function () {
 
-    angular.module('tournamentApp').controller('ScoresheetCtrl', ['$scope', 'Tournament', 'Team', 'Phase', 'Game', 'Cookies', ScoresheetCtrl]);
+    angular.module('tournamentApp').controller('ScoresheetCtrl', ['$scope', '$interval', 'Tournament', 'Team', 'Phase', 'Game', 'Cookies', ScoresheetCtrl]);
 
     function ScoresheetCtrl($scope, Tournament, Team, Phase, Game, Cookies) {
 
