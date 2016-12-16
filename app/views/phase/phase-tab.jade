@@ -4,7 +4,7 @@ div(class='col-md-12 col-sm-12 col-lg-6')
         div(class="nf-panel-body panel-body tournament-panel nf-white")
         
             div(class="row")
-                div(class="col-md-12 col-sm-12 col-lg-8")
+                div(class="col-md-12 col-sm-12 col-lg-12")
                     div(class='input-group')
                         input(type='text' placeholder='Enter New Phase Name Here' class="form-control nf-input" ng-model='Phase.newPhase' ng-keyup='!($event.which === 13) || Phase.addPhase()')
                         span(class='nf-button btn input-group-addon nf-green' ng-click='Phase.addPhase()')
@@ -22,7 +22,7 @@ div(class='col-md-12 col-sm-12 col-lg-6')
 
         div(class="nf-panel-body panel-body nf-white")
             .row
-                div(class="col-md-11 col-sm-11 col-lg-9")
+                div(class="col-md-12 col-sm-12 col-lg-12")
                     .row.nf-margin(ng-repeat='phase in Phase.phases | orderBy: "name" track by phase.id')
                         .col-lg-11
                             .input-group

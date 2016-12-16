@@ -3,12 +3,12 @@
         .col-lg-6.col-md-6.col-sm-12
             .row(ng-show='Scoresheet.game.onTossup')
                 .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                    select.form-control.nf-input.nf-gray(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id | orderBy:"name"', 
+                    select.form-control.nf-input.nf-gray.no-border.scoresheet-team(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id | orderBy:"name"', 
                         ng-model='Scoresheet.game.teams[0].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[0])',
-                        ng-class="{'readonly': Scoresheet.game.currentCycle.number > 1}"    
+                        ng-hide='Scoresheet.game.currentCycle.number > 1'    
                     )
                         option(disabled value='') Choose a Team
-                    br
+                    
                     
                     .panel.nf-panel
                         .nf-panel-heading.nf-blue.center 
@@ -49,12 +49,12 @@
                                     i.fa.fa-check
                                     
                 .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                    select.form-control.nf-input.nf-gray(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id | orderBy:"name"', 
-                        ng-model='Scoresheet.game.teams[1].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[1])', 
-                        ng-class="{'readonly' : Scoresheet.game.currentCycle.number > 1}"    
+                    select.form-control.nf-input.no-border.nf-gray.scoresheet-team(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id | orderBy:"name"', 
+                        ng-model='Scoresheet.game.teams[1].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[1])',
+                        ng-hide='Scoresheet.game.currentCycle.number > 1' 
                     )
                         option(disabled value='') Choose a Team
-                    br
+                    
                     .panel.nf-panel
                         .nf-panel-heading.nf-blue.center 
                             | {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}} ({{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
@@ -179,7 +179,9 @@
                         thead
                             tr.nf-dark-blue
                                 td(colspan='{{Scoresheet.game.teams[0].players.length + Scoresheet.game.teams[1].players.length + 5}}')
-                                    | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'medium'}}
+                                    p.left
+                                        | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'medium'}}
+                                    
                             tr.no-border
                                 th.center.table-head.nf-white(ng-repeat='player in Scoresheet.game.teams[0].players' title='{{player.name}}') {{player.name | limitTo:2}}
                                 th.center.table-head.nf-blue Bonus

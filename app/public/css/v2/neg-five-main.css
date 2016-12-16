@@ -270,6 +270,10 @@ li > a:hover {
     color: white;
 }
 
+.hidden {
+    display: none;
+}
+
 .navbar-brand {
     position: absolute;
     width: 100%;
