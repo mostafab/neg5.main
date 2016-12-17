@@ -182,8 +182,12 @@
                                     p.left
                                         | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'medium'}}
                                     p.right
-                                        | Timer: {{Scoresheet.scoresheetTime}} 
-                                        button.nf-red.btn.nf-button.circle.btn-circle(type='button')
+                                        button.nf-green.nf-button.circle.btn-circle(type='button' ng-click='Scoresheet.startTimer()')
+                                    p.right
+                                        | Timer: {{Scoresheet.diff}} 
+                                        button.nf-red.btn.nf-button.circle.btn-circle(type='button' ng-click='Scoresheet.stopTimer()')
+                                    
+
                             tr.no-border
                                 th.center.table-head.nf-white(ng-repeat='player in Scoresheet.game.teams[0].players' title='{{player.name}}') {{player.name | limitTo:2}}
                                 th.center.table-head.nf-blue Bonus

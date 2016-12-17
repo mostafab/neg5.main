@@ -3,7 +3,7 @@
     angular.module('tournamentApp')
         .controller('ScoresheetCtrl', ['$scope', '$interval', 'Tournament', 'Team', 'Phase', 'Game', 'Cookies', ScoresheetCtrl]);
         
-    function ScoresheetCtrl($scope, Tournament, Team, Phase, Game, Cookies) {
+    function ScoresheetCtrl($scope, $interval, Tournament, Team, Phase, Game, Cookies) {
         
         let vm = this;
         
@@ -14,7 +14,22 @@
 
         vm.game = newScoresheet();
         vm.newScoresheet = newScoresheet;
-        
+
+        vm.scoresheetTime = new Date(1000)
+        vm.originalTime = new Date(vm.scoresheetTime)
+        vm.diff = 0
+
+        let inter = $interval(timer, 1000)
+
+        function timer() {
+            vm.scoresheetTime.setSeconds(vm.scoresheetTime.getSeconds() + 1)
+            vm.diff = vm.scoresheetTime.getSeconds() - vm.originalTime.getSeconds()
+        }
+
+        vm.stopTimer = () => $interval.cancel(inter)
+
+        vm.startTimer = () => inter = $interval(timer, 1000)
+
         function newScoresheet() {
             return {
                 teams: [
