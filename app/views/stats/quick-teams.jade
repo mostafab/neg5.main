@@ -21,7 +21,7 @@
                             th(title='A team\'s average points per game.') PPG
                             th(title='The average points per game scored against this team.') PAPG
                             th(title='The average margin of victory for a team.') Margin
-                            th(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value') {{pv.value}}
+                            th(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value' ng-bind='pv.value')
                             th(title='The total number of tossups a team heard.') TUH
                             th(title='A team\'s ratio between total points and tossups heard.') PPTH
                             th(title='A team\'s ratio between total powers and negs.') P / N
@@ -30,21 +30,21 @@
                     
                     tbody
                         tr(ng-repeat='team in PSControl.teamStats | filter:PSControl.teamQuery track by team.team_id' ng-click='PSControl.tab = "team_full"; PSControl.setHashLocation(team.team_id)')
-                            td {{team.rank}}
-                            td {{team.team_name}}
-                            td {{team.wins}}
-                            td {{team.losses}}
-                            td {{team.ties}}
-                            td {{team.win_percentage}}
-                            td {{team.ppg}}
-                            td {{team.papg}}
-                            td {{team.margin}}
-                            td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{team.pointMap[pv.value] || 0}}
-                            td {{team.total_tuh}}
-                            td {{team.total_points / team.total_tuh || 0 | number:2}}
-                            td {{team.total_powers / team.total_negs || 0 | number:2}}
-                            td {{team.raw_total_gets / team.total_negs || 0 | number:2}}
-                            td {{team.ppb}}
+                            td(ng-bind='team.rank')
+                            td(ng-bind='team.team_name')
+                            td(ng-bind='team.wins')
+                            td(ng-bind='team.losses')
+                            td(ng-bind='team.ties')
+                            td(ng-bind='team.win_percentage')
+                            td(ng-bind='team.ppg')
+                            td(ng-bind='team.papg')
+                            td(ng-bind='team.margin')
+                            td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' ng-bind='team.pointMap[pv.value] || 0')
+                            td(ng-bind='team.total_tuh')
+                            td(ng-bind='team.total_points / team.total_tuh || 0 | number:2')
+                            td(ng-bind='team.total_powers / team.total_negs || 0 | number:2')
+                            td(ng-bind='team.raw_total_gets / team.total_negs || 0 | number:2')
+                            td(ng-bind='team.ppb')
             
             div(ng-if='PSControl.divisions.length > 0')
                 div(ng-repeat='division in PSControl.divisions | orderBy:"division_name"')
@@ -52,7 +52,7 @@
                         table.table.table-hover.table-condensed.table-responsive
                             thead
                                 tr
-                                    th.nf-blue(colspan='{{PSControl.pointScheme.length + 14}}') {{division.division_name}}
+                                    th.nf-blue(colspan='{{PSControl.pointScheme.length + 14}}' ng-bind='division.division_name')
                                 tr
                                     th( title='Represents a team\'s overall standing in the tournament.') Rank
                                     th( title='Represents a team\'s name in this tournament.') Team
@@ -63,7 +63,7 @@
                                     th( title='A team\'s average points per game.') PPG
                                     th( title='The average points per game scored against this team.') PAPG
                                     th( title='The average margin of victory for a team.') Margin
-                                    th( ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value') {{pv.value}}
+                                    th( ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value' ng-bind='pv.value')
                                     th( title='The total number of tossups a team heard.') TUH
                                     th( title='A team\'s ratio between total points and tossups heard.') PPTH
                                     th( title='A team\'s ratio between total powers and negs.') P / N
@@ -71,21 +71,21 @@
                                     th( title='A team\'s measure of successfully converting bonuses.') PPB
                             
                             tr(ng-repeat='team in PSControl.teamStats | filter:PSControl.teamQuery track by team.team_id' ng-if='team.division_id === division.division_id' ng-click='PSControl.tab = "team_full"; PSControl.setHashLocation(team.team_id)')
-                                td {{team.rank}}
-                                td {{team.team_name}}
-                                td {{team.wins}}
-                                td {{team.losses}}
-                                td {{team.ties}}
-                                td {{team.win_percentage}}
-                                td {{team.ppg}}
-                                td {{team.papg}}
-                                td {{team.margin}}
-                                td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{team.pointMap[pv.value] || 0}}
-                                td {{team.total_tuh}}
-                                td {{team.total_points / team.total_tuh || 0 | number:2}}
-                                td {{team.total_powers / team.total_negs || 0 | number:2}}
-                                td {{team.raw_total_gets / team.total_negs || 0 | number:2}}
-                                td {{team.ppb}}
+                                td(ng-bind='team.rank')
+                                td(ng-bind='team.team_name')
+                                td(ng-bind='team.wins')
+                                td(ng-bind='team.losses')
+                                td(ng-bind='team.ties')
+                                td(ng-bind='team.win_percentage')
+                                td(ng-bind='team.ppg')
+                                td(ng-bind='team.papg')
+                                td(ng-bind='team.margin')
+                                td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' ng-bind='team.pointMap[pv.value] || 0')
+                                td(ng-bind='team.total_tuh')
+                                td(ng-bind='team.total_points / team.total_tuh || 0 | number:2')
+                                td(ng-bind='team.total_powers / team.total_negs || 0 | number:2')
+                                td(ng-bind='team.raw_total_gets / team.total_negs || 0 | number:2')
+                                td(ng-bind='team.ppb')
             
             .panel.panel-default.nf-shadow
                 table.table.table-hover.table-condensed.table-responsive(ng-if='PSControl.unassignedTeams.length > 0')
@@ -102,7 +102,7 @@
                             th( title='A team\'s average points per game.') PPG
                             th( title='The average points per game scored against this team.') PAPG
                             th( title='The average margin of victory for a team.') Margin
-                            th( ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value') {{pv.value}}
+                            th( ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value' ng-bind='pv.value')
                             th( title='The total number of tossups a team heard.') TUH
                             th( title='A team\'s ratio between total points and tossups heard.') PPTH
                             th( title='A team\'s ratio between total powers and negs.') P / N
@@ -111,18 +111,18 @@
                     
                     tbody
                         tr(ng-repeat='team in PSControl.unassignedTeams | filter:PSControl.teamQuery track by team.team_id' ng-click='PSControl.tab = "team_full"; PSControl.setHashLocation(team.team_id)')
-                            td {{team.rank}}
-                            td {{team.team_name}}
-                            td {{team.wins}}
-                            td {{team.losses}}
-                            td {{team.ties}}
-                            td {{team.win_percentage}}
-                            td {{team.ppg}}
-                            td {{team.papg}}
-                            td {{team.margin}}
-                            td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{team.pointMap[pv.value] || 0}}
-                            td {{team.total_tuh}}
-                            td {{team.total_points / team.total_tuh || 0 | number:2}}
-                            td {{team.total_powers / team.total_negs || 0 | number:2}}
-                            td {{team.raw_total_gets / team.total_negs || 0 | number:2}}
-                            td {{team.ppb}}
+                            td(ng-bind='team.rank')
+                            td(ng-bind='team.team_name')
+                            td(ng-bind='team.wins')
+                            td(ng-bind='team.losses')
+                            td(ng-bind='team.ties')
+                            td(ng-bind='team.win_percentage')
+                            td(ng-bind='team.ppg')
+                            td(ng-bind='team.papg')
+                            td(ng-bind='team.margin')
+                            td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' ng-bind='team.pointMap[pv.value] || 0')
+                            td(ng-bind='team.total_tuh')
+                            td(ng-bind='team.total_points / team.total_tuh || 0 | number:2')
+                            td(ng-bind='team.total_powers / team.total_negs || 0 | number:2')
+                            td(ng-bind='team.raw_total_gets / team.total_negs || 0 | number:2')
+                            td(ng-bind='team.ppb')
