@@ -62,8 +62,7 @@ The port is of course just the port that the Express server listens on. Feel fre
 to your favorite port number :)
 
 8. Ok, we're almost done, I promise! At this point, if all the other steps went well, you should be
-able to start the server by running 
-        npm start.
+able to start the server by running ```npm start```.
 The terminal should print a message stating "Express serving running on port X", where X is the port
 specified in ```configuration.json```. Open up a web browser and navigate to localhost:X to confirm.
 
