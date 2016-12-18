@@ -25,11 +25,11 @@ div(class="panel panel-default nf-panel")
                         .input-group.nf-margin(ng-repeat='phase in Team.phases')
                             span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle.nf-blue(data-toggle='dropdown' title='Pick a division for {{phase.name}}') {{phase.name}}
                                 i.fa.fa-caret-down
-                            div.form-control.nf-gray.nf-input {{Team.newTeam.divisions[phase.id].name || 'None'}}
+                            div.form-control.nf-gray.nf-input(ng-bind='Team.newTeam.divisions[phase.id] || "None"')
                             ul.dropdown-menu.nf-dropdown(aria-role='menu')
                                 li
                                     a(ng-show='Team.newTeam.divisions[phase.id]' ng-click='Team.newTeam.divisions[phase.id] = null') Reset
-                                    a(ng-repeat='division in Team.divisions' ng-if='division.phaseId === phase.id' ng-click='Team.newTeam.divisions[phase.id] = division') {{division.name}}
+                                    a(ng-repeat='division in Team.divisions' ng-if='division.phaseId === phase.id' ng-click='Team.newTeam.divisions[phase.id] = division' ng-bind='division.name')
 
                 br
 

@@ -8,17 +8,17 @@
             br               
 
             div        
-                div(ng-repeat='player in PSControl.playerFullStats | filter:{player_name: PSControl.fullPlayerQuery}' id='{{player.player_id}}')
+                div(ng-repeat='player in PSControl.playerFullStats | filter:{player_name: PSControl.fullPlayerQuery}' id='{{::player.player_id}}')
                         .panel.panel-default.nf-shadow
                             table.table.table-hover.table-condensed.table-responsive
                                 thead
                                     tr
-                                        th.nf-blue(colspan='{{PSControl.pointScheme.length + 8}}') {{player.player_name}} ({{player.team_name}})
+                                        th.nf-blue(colspan='{{PSControl.pointScheme.length + 8}}' ng-bind='player.player_name + " (" + player.team_name + ")" ')
                                     tr
                                         th.nf-gray( title='Match round') Round
                                         th.nf-gray( title='Player\'s opponent in the match.') Opponent
                                         th.nf-gray( title='How much of this match the player played.') GP
-                                        th.nf-gray( ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value') {{pv.value}}
+                                        th.nf-gray( ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value' ng-bind='pv.value')
                                         th.nf-gray( title='Tossups heard in the match') TUH
                                         th.nf-gray( title='Points per tossup heard') P / TU
                                         th.nf-gray( title='Ratio between powers and negs') P / N
@@ -26,12 +26,12 @@
                                         th.nf-gray( title='Total points') Points
 
                                 tr(ng-repeat='match in player.matches | orderBy:"round"')
-                                    td {{match.round}}
-                                    td {{match.opponent_team_name}}
-                                    td {{match.game_played}}
-                                    td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{match.pointMap[pv.value]}}
-                                    td {{match.tossups_heard}}
-                                    td {{match.total_points / match.tossups_heard | number:2}}
-                                    td {{match.powers / match.negs | number:2}}
-                                    td {{match.gets / match.negs | number:2}}
-                                    td {{match.total_points}}
+                                    td(ng-bind='match.round')
+                                    td(ng-bind='match.opponent_team_name')
+                                    td(ng-bind='match.game_played')
+                                    td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' ng-bind='match.pointMap[pv.value]')
+                                    td(ng-bind='match.tossups_heard')
+                                    td(ng-bind='match.total_points / match.tossups_heard | number:2')
+                                    td(ng-bind='match.powers / match.negs | number:2')
+                                    td(ng-bind='match.gets / match.negs | number:2')
+                                    td(ng-bind='match.total_points')

@@ -56,23 +56,25 @@ export default {
         })
     },
 
-    findTournamentById: (id, currentUser) => {
+    findTournamentById: (id, currentUser = null, getPermissions = true) => {
         
         return new Promise((resolve, reject) => {
-            let params = [id];
+            const params = [id];
             
-            let queriesArray = [
+            const queriesArray = [
                 {
                     text: tournament.findById,
                     params: [id],
                     queryType: tm.one
-                },
-                {
+                }
+            ]
+            if (getPermissions) {
+                queriesArray.push({
                     text: account.permissions,
                     params: [id, currentUser],
                     queryType: tm.one
-                }
-            ]
+                })
+            }
 
             transaction(queriesArray)
                 .then(result => {

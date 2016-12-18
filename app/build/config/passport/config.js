@@ -17,13 +17,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var configurationFilePath = _path2.default.join(__dirname, '../../../../../passport-config.json');
 
 var buffer = void 0;
-var configurationJson = void 0;
+var configurationJson = {};
 
 try {
     buffer = _fs2.default.readFileSync(configurationFilePath);
     configurationJson = JSON.parse(buffer);
 } catch (err) {
-    throw err;
+    console.log('No valid passport-config.json file found. 3rd party login will not be supported.');
 }
 
 exports.default = configurationJson;

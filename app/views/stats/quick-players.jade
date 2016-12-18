@@ -1,8 +1,5 @@
 .row
     .col-lg-12
-        // div(class="panel panel-default nf-panel")
-            div(class="collapsable nf-panel-heading nf-dark-blue") Individual Standings - {{PSControl.phase.name || 'All Games'}}
-        
         div(style='padding:50px')
             .row
                 .col-lg-4
@@ -18,45 +15,19 @@
                             th.nf-gray(title='The player\'s name in the tournament.') Player Name
                             th.nf-gray(title='The team the player is representing.') Team
                             th.nf-gray(title='The number of total games this player played.') GP
-                            th.nf-gray(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this player got for this value') {{pv.value}}
+                            th.nf-gray(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this player got for this value' ng-bind='pv.value')
                             th.nf-gray(title='A player\'s total number of tossups heard') TUH  
                             th.nf-gray(title='A player\'s total number of points') Points
                             th.nf-gray(title='A player\'s ratio between total points and tossups heard.') P / TU
                             th.nf-gray(title='A player\'s points per game.') PPG
                     tbody
                         tr(ng-repeat='player in PSControl.playerStats | filter:PSControl.playerQuery track by player.player_id' ng-click='PSControl.tab = "player_full"; PSControl.setHashLocation(player.player_id)')
-                            td {{$index + 1}}
-                            td {{player.player_name}}
-                            td {{player.team_name}}
-                            td {{player.games_played}}
-                            td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{player.pointMap[pv.value] || 0}}
-                            td {{player.total_player_tuh}}
-                            td {{player.total_points}}
-                            td {{player.points_per_tossup}}
-                            td {{player.points_per_game}}
-        
-        
-        // .panel.panel-default
-        //     table(class="table table-condensed nf-shadow")
-        //         thead
-        //             tr
-        //                 th.nf-gray(class="table-head" title='Represents a player\'s place in the standings.') Rank
-        //                 th.nf-gray(class="table-head" title='The player\'s name in the tournament.') Player Name
-        //                 th.nf-gray(class="table-head" title='The team the player is representing.') Team
-        //                 th.nf-gray(class='table-head' title='The number of total games this player played.') GP
-        //                 th.nf-gray(class="table-head" ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this player got for this value') {{pv.value}}
-        //                 th.nf-gray(class="table-head" title='A player\'s total number of tossups heard') TUH  
-        //                 th.nf-gray(class="table-head" title='A player\'s total number of points') Points
-        //                 th.nf-gray(class="table-head" title='A player\'s ratio between total points and tossups heard.') P / TU
-        //                 th.nf-gray(class="table-head" title='A player\'s points per game.') PPG
-
-        //         tr(class='nf-dark-blue' ng-repeat='player in PSControl.playerStats | filter:PSControl.playerQuery track by player.player_id' ng-click='PSControl.tab = "player_full"; PSControl.setHashLocation(player.player_id)')
-        //             td {{$index + 1}}
-        //             td {{player.player_name}}
-        //             td {{player.team_name}}
-        //             td {{player.games_played}}
-        //             td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true') {{player.pointMap[pv.value] || 0}}
-        //             td {{player.total_player_tuh}}
-        //             td {{player.total_points}}
-        //             td {{player.points_per_tossup}}
-        //             td {{player.points_per_game}}
+                            td(ng-bind='$index + 1')
+                            td(ng-bind='player.player_name')
+                            td(ng-bind='player.team_name')
+                            td(ng-bind='player.games_played')
+                            td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' ng-bind='player.pointMap[pv.value] || 0')
+                            td(ng-bind='player.total_player_tuh')
+                            td(ng-bind='player.total_points')
+                            td(ng-bind='player.points_per_tossup') 
+                            td(ng-bind='player.points_per_game')

@@ -6,13 +6,13 @@ import path from 'path';
 const configurationFilePath = path.join(__dirname, '../../../../../passport-config.json'); 
 
 let buffer;
-let configurationJson;
+let configurationJson = {}
 
 try {
     buffer = fs.readFileSync(configurationFilePath);
     configurationJson = JSON.parse(buffer);
 } catch (err) {
-    throw err;
+    console.log('No valid passport-config.json file found. 3rd party login will not be supported.')
 }
 
 export default configurationJson;
