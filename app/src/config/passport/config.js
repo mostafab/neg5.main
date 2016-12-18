@@ -12,7 +12,7 @@ try {
     buffer = fs.readFileSync(configurationFilePath);
     configurationJson = JSON.parse(buffer);
 } catch (err) {
-    console.log('No passport-config.json file found. 3rd party login will not be supported.')
+    console.log('No valid passport-config.json file found. 3rd party login will not be supported.')
 }
 
 export default configurationJson;
