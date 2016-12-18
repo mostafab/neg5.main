@@ -64,7 +64,7 @@ export default {
         })
     },
     
-    getScoresheets: (tournamentId) => new Promise((resolve, reject) => {
+    getScoresheets: tournamentId => new Promise((resolve, reject) => {
         const teamsPromise = Team.findByTournament(tournamentId);
         const matchesPromise = db.getMatchesByTournament(tournamentId);
         Promise.all([teamsPromise, matchesPromise])

@@ -91,7 +91,7 @@ exports.default = function (app) {
         });
     });
 
-    app.get('/api/t/:tid/qbj', _token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
+    app.get('/api/t/:tid/qbj', function (req, res) {
         _qbj2.default.createQBJObject(req.params.tid, req.currentUser).then(function (qbj) {
             res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json');
             res.send({ result: qbj, success: true });
@@ -100,7 +100,7 @@ exports.default = function (app) {
         });
     });
 
-    app.get('/api/t/:tid/scoresheets', _token.hasToken, _tournamentAccess.accessToTournament, function (req, res) {
+    app.get('/api/t/:tid/scoresheets', function (req, res) {
         _match2.default.getScoresheets(req.params.tid).then(function (result) {
             return res.json({ result: result, success: true });
         }).catch(function (error) {

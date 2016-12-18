@@ -52,7 +52,7 @@ export default (app) => {
             .catch(error => res.status(500).send({error, success: false}))
     })
 
-    app.get('/api/t/:tid/qbj', hasToken, accessToTournament, (req, res) => {
+    app.get('/api/t/:tid/qbj', (req, res) => {
         Qbj.createQBJObject(req.params.tid, req.currentUser)
             .then(qbj => {
                 res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json')
@@ -61,7 +61,7 @@ export default (app) => {
             .catch(error => res.status(500).send({error, success: false}));
     })
     
-    app.get('/api/t/:tid/scoresheets', hasToken, accessToTournament, (req, res) => {
+    app.get('/api/t/:tid/scoresheets', (req, res) => {
         Match.getScoresheets(req.params.tid)
             .then(result => res.json({result, success: true}))
             .catch(error => res.status(500).send({error, success: false}));
