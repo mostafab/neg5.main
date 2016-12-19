@@ -10,10 +10,9 @@ server.
 
 3. Install all NPM dependencies at the top level of the repo 
 (in the same location as package.json). If Node was installed correctly, NPM should have also
-been installed with it. Running the below command will install application
+been installed with it. Run ```npm install``` to install application
 dependencies as well as development dependencies (Babel, Gulp, Karma, Jasmine).
 Look at package.json for details on which specific packages were installed.
-        npm install
         
 4. So you've got Node.js and all Neg 5's dependencies installed? Great!
 Now you need a database. Neg 5 uses Postgresql as its data store. First, Install the [Postgres server](https://www.postgresql.org/). 
@@ -63,8 +62,7 @@ The port is of course just the port that the Express server listens on. Feel fre
 to your favorite port number :)
 
 8. Ok, we're almost done, I promise! At this point, if all the other steps went well, you should be
-able to start the server by running 
-        npm start.
+able to start the server by running ```npm start```.
 The terminal should print a message stating "Express serving running on port X", where X is the port
 specified in ```configuration.json```. Open up a web browser and navigate to localhost:X to confirm.
 

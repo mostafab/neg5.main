@@ -7,7 +7,7 @@ CREATE INDEX index_on_tournament_match_round ON tournament_match (round);
 
 CREATE INDEX hash_on_tournament_player_tournament_id ON tournament_player (tournament_id);
 
-CREATE INDEX hash_on_user_collaborates_username ON tournament_team (username);
+CREATE INDEX hash_on_user_collaborates_username ON user_collaborates_on_tournament (username);
 
 CREATE INDEX hash_on_tournament_tossup_values_tournament_id ON tournament_tossup_values (tournament_id);
 
