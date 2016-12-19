@@ -29,7 +29,7 @@ var highestAllowedDifference = 1;
 
 exports.default = {
 
-    createQBJObject: function createQBJObject(tournamentId, currentUser) {
+    createQBJObject: function createQBJObject(tournamentId) {
         return new Promise(function (resolve, reject) {
             var qbjObj = {
                 version: versionNumber,
@@ -37,7 +37,7 @@ exports.default = {
             };
             _match2.default.getMatchesByTournament(tournamentId).then(function (matches) {
                 var matchPromises = createMatchPromises(tournamentId, matches);
-                Promise.all([_team2.default.getTeamsByTournament(tournamentId), _tournament2.default.findTournamentById(tournamentId, currentUser)].concat(_toConsumableArray(matchPromises))).then(function (results) {
+                Promise.all([_team2.default.getTeamsByTournament(tournamentId), _tournament2.default.findTournamentById(tournamentId, null, false)].concat(_toConsumableArray(matchPromises))).then(function (results) {
                     var _qbjObj$objects, _qbjObj$objects2;
 
                     var _results = _toArray(results);
@@ -52,7 +52,9 @@ exports.default = {
                     var matchObjects = matchQbjArrayFactory(matches);
 
                     tournamentQbj.registrations = registrations.map(function (r) {
-                        return { $ref: r.id };
+                        return {
+                            $ref: r.id
+                        };
                     });
                     tournamentQbj.phases = [{
                         name: 'All Matches',
@@ -64,6 +66,8 @@ exports.default = {
                     (_qbjObj$objects2 = qbjObj.objects).push.apply(_qbjObj$objects2, _toConsumableArray(matchObjects));
 
                     resolve(qbjObj);
+                }).catch(function (err) {
+                    return reject(err);
                 });
             }).catch(function (error) {
                 return reject(error);

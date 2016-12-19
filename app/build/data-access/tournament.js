@@ -77,7 +77,10 @@ exports.default = {
         });
     },
 
-    findTournamentById: function findTournamentById(id, currentUser) {
+    findTournamentById: function findTournamentById(id) {
+        var currentUser = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+        var getPermissions = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+
 
         return new Promise(function (resolve, reject) {
             var params = [id];
@@ -86,11 +89,14 @@ exports.default = {
                 text: tournament.findById,
                 params: [id],
                 queryType: _db.txMap.one
-            }, {
-                text: account.permissions,
-                params: [id, currentUser],
-                queryType: _db.txMap.one
             }];
+            if (getPermissions) {
+                queriesArray.push({
+                    text: account.permissions,
+                    params: [id, currentUser],
+                    queryType: _db.txMap.one
+                });
+            }
 
             (0, _db.transaction)(queriesArray).then(function (result) {
                 resolve({

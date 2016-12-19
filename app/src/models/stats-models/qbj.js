@@ -10,7 +10,7 @@ const highestAllowedDifference = 1;
 
 export default {
 
-    createQBJObject: (tournamentId, currentUser) => {
+    createQBJObject: tournamentId => {
         return new Promise((resolve, reject) => {
             const qbjObj = {
                 version: versionNumber,
@@ -22,7 +22,7 @@ export default {
                     Promise.all(
                         [
                             teamDB.getTeamsByTournament(tournamentId), 
-                            tournamentDB.findTournamentById(tournamentId, currentUser),
+                            tournamentDB.findTournamentById(tournamentId, null, false),
                             ...matchPromises
                         ])
                         .then(results => {
@@ -33,7 +33,9 @@ export default {
                             const matchObjects = matchQbjArrayFactory(matches);
                             
                             tournamentQbj.registrations = registrations.map(r => {
-                                return {$ref: r.id}
+                                return {
+                                    $ref: r.id
+                                }
                             })
                             tournamentQbj.phases = [
                                 {
@@ -48,6 +50,7 @@ export default {
                             
                             resolve(qbjObj);
                         })
+                        .catch(err => reject(err))
                 })
                 .catch(error => reject(error));
         })

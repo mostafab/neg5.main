@@ -12,7 +12,7 @@
                             th.nf-gray(title='Average points per bonus for this round') PPB
                     tbody
                         tr(ng-repeat='stat in PSControl.roundReportStats track by stat.round')
-                            td {{stat.round}}
-                            td {{stat.ppg_round_average}}
-                            td {{stat.round_cumulative_tossup_points / stat.round_tossups_heard | number:2}}
-                            td {{stat.round_ppb}}
+                            td(ng-bind='stat.round')
+                            td(ng-bind='stat.ppg_round_average')
+                            td(ng-bind='stat.round_cumulative_tossup_points / stat.round_tossups_heard | number:2')
+                            td(ng-bind='stat.round_ppb')
