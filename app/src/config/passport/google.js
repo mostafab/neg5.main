@@ -2,7 +2,7 @@ import {OAuth2Strategy as GoogleStrategy} from 'passport-google-oauth';
 import Config from './config';
 import {encode} from './../../helpers/jwt';
 
-export default (passport) => {
+export default passport => {
     
     if (Config.google) {
         const {clientID, clientSecret, callbackURL} = Config.google;

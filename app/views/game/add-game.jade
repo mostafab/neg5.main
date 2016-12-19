@@ -52,7 +52,7 @@ div(id='add-game-div')
                                         tr(class='nf-blue')
                                             th.nf-label 
                                             th(class='center no-border nf-label') TUH
-                                            th(class='center nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ' ng-bind='point.value')
+                                            th(class='center nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true' ng-bind='point.value')
                                             th(class='center nf-label') Total
                                     tbody
                                         tr(ng-repeat='player in Game.currentGame.teams[1].players track by player.id' class='nf-white')

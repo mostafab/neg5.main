@@ -1,7 +1,7 @@
 import {Strategy as FacebookStrategy} from 'passport-facebook';
 import Config from './config';
 
-export default (passport) => {
+export default passport => {
     
     if (Config.facebook) {
         

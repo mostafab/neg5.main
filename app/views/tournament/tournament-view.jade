@@ -119,28 +119,6 @@ block content
                         
                         div(class='tab-pane fade angular-animate' id='scoresheet' ng-controller='ScoresheetCtrl as Scoresheet' ng-class="{'active in' : Tournament.tab === 'scoresheet'}")
                             include ./../scoresheet/scoresheet.jade
-                            
-                        //- div(ng-if='tournamentContext.owner === true' class="tab-pane fade" id="delete" ng-class="{'active in' : Tournament.tab ==='delete'}")
-
-                        //-     div(class="panel panel-default")
-                        //-         div(class="panel-heading collapsable nf-panel-heading nf-dark-blue") Delete {{tournamentInfo.name}}
-                        //-             i(class='fa arrow fa-arrow-up' style='margin-left:5px;float:right')
-                        //-         div(class="panel-body  tournament-panel")
-                        //-             div(class="row")
-                        //-                 div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
-                        //-                     div(class="alert alert-danger")
-                        //-                         | If you no longer need this tournament, you can delete it here. Please make sure this is what you want
-                        //-                         | to do. This action is final.
-                        //-                         strong There is no way to undo a tournament deletion.
-
-                        //-                     form(method="delete" action='{{"/t/" + tournamentId}}' name="deleteTournament")
-                        //-                         button(type="button" class="btn btn-md nf-red " id="delete-tournament-button") Delete This Tournament
-
-                        //-             div(class="col-md-6" id="confirm-delete-div" style='display:none')
-                        //-                 div(class="col-md-6")
-                        //-                     button(type="button" class="btn btn-md nf-red btn-block " id="no-delete") Never Mind
-                        //-                 div(class="col-md-6")
-                        //-                     button(type="button" class="btn btn-md nf-blue btn-block " id="yes-delete") Yes
                         
                         .nf-toast(style='position:fixed' class='angular-animate' ng-show='toastMessage !== null')
                             .nf-toast-content.nf-button.btn(ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
