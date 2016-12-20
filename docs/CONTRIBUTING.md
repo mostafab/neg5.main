@@ -3,7 +3,8 @@ These are the guidelines for contributions:
 
 1. If you plan on contributing, please make a fork of the repo and develop
 on that.
-2. Every contribution will go through a pull request.
+2. Every contribution will go through a pull request on the 
+***dev*** branch. Please make all pull requests to that branch. 
 3. Every pull request must include appropriate unit tests if it is a code change.
 I write my tests using Jasmine and Karma. [Here's a good guide to using those tools](https://scotch.io/tutorials/testing-angularjs-with-jasmine-and-karma-part-1).
  

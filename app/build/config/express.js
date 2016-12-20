@@ -66,9 +66,13 @@ exports.default = function () {
     var app = (0, _express2.default)();
     var _configuration$minify = _configuration2.default.minifyJs;
     var minifyJs = _configuration$minify === undefined ? false : _configuration$minify;
+    var _configuration$env = _configuration2.default.env;
+    var env = _configuration$env === undefined ? 'development' : _configuration$env;
 
 
     app.set('minifyJs', minifyJs);
+    app.set('configEnv', env);
+
     app.locals.pretty = false;
 
     app.use(_bodyParser2.default.urlencoded({

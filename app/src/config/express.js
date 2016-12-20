@@ -17,9 +17,11 @@ import passport from './passport/passport';
 
 export default () => {
     const app = express();
-    const {minifyJs = false} = configuration
+    const {minifyJs = false, env = 'development'} = configuration
 
     app.set('minifyJs', minifyJs)
+    app.set('configEnv', env)
+    
     app.locals.pretty = false;
 
     app.use(bodyParser.urlencoded({
