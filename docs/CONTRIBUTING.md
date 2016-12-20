@@ -16,8 +16,15 @@ Both the ```es6``` and ```src``` folders hold ES6 Javascript code, which Babel
 transpiles down to ES5 code and pipes to the other two folders. To set up automatic
 Babel transpilation, run the ```gulp``` command. This will prompt gulp to
 automatically listen for file changes and transpile the appropriate files as specified
-by ```gulpfile.babel.js```. Both Node and the browser run on the transpiled files.
+by ```gulpfile.babel.js```. For client side javascript, gulp takes the files in ```app/public/es6``` and
+transpiles them to ```app/public/js/ng```, then takes those files and minifies them to ```app/public/js/min/bundle.js```.
+
 You should never have to manually change the transpiled files.
+
+The ```configuration.json``` file also allows you to specify if you want to serve minified client side Javascript or not. 
+Setting a top-level key called ```minifyJs``` value to ```true``` will serve the minified, bundled version in ```app/public/js/min/bundle.js```.
+Omitting this key or setting it to false will serve the normal files and make gulp skip minification after transpiling.  
+Take a look at the jade files and ```gulpfile.babel.js``` to see how this works.  
 
 For a guide on ES6 Javascript, please check out [this very helpful guide](https://github.com/lukehoban/es6features).
 

@@ -77,23 +77,6 @@
 
         vm.currentGame = newGame();
 
-        // $scope.$watchGroup([() => Phase.phases, () => Phase.activePhase], onPhasesChanged, true)
-
-        // function onPhasesChanged(newValues) {
-        //     // console.log(newValues)
-        //     let [newPhases, activePhase] = newValues
-        //     newPhases = newValues[0]
-        //     if (newPhases.length === 1) {
-        //         vm.currentGame.phases = [vm.phases[0]]
-        //     } else if (newPhases.length > 1) {
-        //         const indexOfActive = vm.phases.findIndex(p => p.id === activePhase.id)
-        //         console.log(indexOfActive)
-        //         if (indexOfActive !== -1) {
-        //             vm.currentGame.phases = [vm.phases[indexOfActive]]
-        //         }
-        //     }
-        // }
-
         vm.loadedGame = {};
         vm.loadedGameOriginal = {};
 
