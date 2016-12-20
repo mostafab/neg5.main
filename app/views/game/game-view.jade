@@ -48,7 +48,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                                             input.nf-input(type='number' min='{{Game.numPlayerAnswers(player)}}' max='{{Game.loadedGame.tuh !== null ? Game.loadedGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
                                             name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.editGameForm[player.id + '_tuh'].$invalid}") 
                                         td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value"')
-                                            input.nf-input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.editGameForm[player.id + point.value].$invalid}")
+                                            input.nf-input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.editGameForm[player.id + point.value].$invalid, 'readonly' : player.tuh <= 0 || Game.editGameForm[player.id + '_tuh'].$invalid}")
                                         td 
                                             div(tabindex="-1" class='form-control readonly input-sm' ng-bind='Game.pointSum(player.points)')
                                         
@@ -68,7 +68,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                                             input.nf-input(type='number' min='{{Game.numPlayerAnswers(player)}}' max='{{Game.loadedGame.tuh !== null ? Game.loadedGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
                                             name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.editGameForm[player.id + '_tuh'].$invalid}") 
                                         td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value"')
-                                            input.nf-input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.editGameForm[player.id + point.value].$invalid}")
+                                            input.nf-input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.editGameForm[player.id + point.value].$invalid, 'readonly' : player.tuh <= 0 || Game.editGameForm[player.id + '_tuh'].$invalid}")
                                         td 
                                             div(tabindex="-1" class='form-control readonly input-sm' ng-bind='Game.pointSum(player.points)')
                                 

@@ -75,22 +75,24 @@
             return totalTossups;
         }
 
-        vm.currentGame = {
-            teams: [{
-                teamInfo: null,
-                players: []
-            }, {
-                teamInfo: null,
-                players: []
-            }],
-            phases: [],
-            round: 1,
-            tuh: 20,
-            room: null,
-            moderator: null,
-            packet: null,
-            notes: null
-        };
+        vm.currentGame = newGame();
+
+        // $scope.$watchGroup([() => Phase.phases, () => Phase.activePhase], onPhasesChanged, true)
+
+        // function onPhasesChanged(newValues) {
+        //     // console.log(newValues)
+        //     let [newPhases, activePhase] = newValues
+        //     newPhases = newValues[0]
+        //     if (newPhases.length === 1) {
+        //         vm.currentGame.phases = [vm.phases[0]]
+        //     } else if (newPhases.length > 1) {
+        //         const indexOfActive = vm.phases.findIndex(p => p.id === activePhase.id)
+        //         console.log(indexOfActive)
+        //         if (indexOfActive !== -1) {
+        //             vm.currentGame.phases = [vm.phases[indexOfActive]]
+        //         }
+        //     }
+        // }
 
         vm.loadedGame = {};
         vm.loadedGameOriginal = {};
@@ -220,24 +222,7 @@
             }
         };
 
-        vm.resetCurrentGame = function () {
-            vm.currentGame = {
-                teams: [{
-                    teamInfo: null,
-                    players: []
-                }, {
-                    teamInfo: null,
-                    players: []
-                }],
-                phases: [],
-                round: 1,
-                tuh: 20,
-                room: null,
-                moderator: null,
-                packet: null,
-                notes: null
-            };
-        };
+        vm.resetCurrentGame = newGame;
 
         vm.numPlayerAnswers = function (player) {
             var onlyCorrectAnswers = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -290,8 +275,29 @@
             return match.round == normalizedQuery || teamOneName.indexOf(normalizedQuery) !== -1 || teamTwoName.indexOf(normalizedQuery) !== -1;
         };
 
+        function newGame() {
+            return {
+                teams: [{
+                    teamInfo: null,
+                    players: [],
+                    overtime: 0
+                }, {
+                    teamInfo: null,
+                    players: [],
+                    overtime: 0
+                }],
+                phases: [],
+                round: 1,
+                tuh: 20,
+                room: null,
+                moderator: null,
+                packet: null,
+                notes: null
+            };
+        }
+
         function resetForm() {
-            vm.resetCurrentGame();
+            vm.currentGame = vm.resetCurrentGame();
             vm.newGameForm.$setUntouched();
         }
 

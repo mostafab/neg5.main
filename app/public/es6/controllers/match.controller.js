@@ -13,7 +13,7 @@
     function GameCtrl($scope, Team, Game, Phase, Tournament) {
         
         let vm = this;
-
+        
         vm.teams = Team.teams;
         vm.games = Game.games;
         vm.phases = Phase.phases;
@@ -24,7 +24,7 @@
 
         vm.pointScheme = Tournament.pointScheme;
         vm.rules = Tournament.rules;
-        
+
         vm.pointSum = function(points) {
             if (!points) {return 0;}
             let values = Object.keys(points);
@@ -66,25 +66,24 @@
             return totalTossups;
         }
         
-        vm.currentGame = {
-            teams: [
-               {
-                  teamInfo: null,
-                  players: []
-               },
-               {
-                  teamInfo: null,
-                  players: []
-               } 
-            ],
-            phases: [],
-            round: 1,
-            tuh: 20,
-            room: null,
-            moderator: null,
-            packet: null,
-            notes: null
-        }
+        vm.currentGame = newGame()
+
+        // $scope.$watchGroup([() => Phase.phases, () => Phase.activePhase], onPhasesChanged, true)
+
+        // function onPhasesChanged(newValues) {
+        //     // console.log(newValues)
+        //     let [newPhases, activePhase] = newValues
+        //     newPhases = newValues[0]
+        //     if (newPhases.length === 1) {
+        //         vm.currentGame.phases = [vm.phases[0]]
+        //     } else if (newPhases.length > 1) {
+        //         const indexOfActive = vm.phases.findIndex(p => p.id === activePhase.id)
+        //         console.log(indexOfActive)
+        //         if (indexOfActive !== -1) {
+        //             vm.currentGame.phases = [vm.phases[indexOfActive]]
+        //         }
+        //     }
+        // }
 
         vm.loadedGame = {};
         vm.loadedGameOriginal = {};
@@ -216,27 +215,7 @@
             }
         }
 
-        vm.resetCurrentGame = () => {
-            vm.currentGame = {
-                teams: [
-                {
-                    teamInfo: null,
-                    players: []
-                },
-                {
-                    teamInfo: null,
-                    players: []
-                } 
-                ],
-                phases: [],
-                round: 1,
-                tuh: 20,
-                room: null,
-                moderator: null,
-                packet: null,
-                notes: null
-            }
-        }
+        vm.resetCurrentGame = newGame
         
         vm.numPlayerAnswers = (player, onlyCorrectAnswers = false) => {
             let sum = 0;
@@ -286,8 +265,32 @@
                 || teamTwoName.indexOf(normalizedQuery) !== -1
         }
         
+        function newGame() {
+            return {
+                teams: [
+                {
+                    teamInfo: null,
+                    players: [],
+                    overtime: 0
+                },
+                {
+                    teamInfo: null,
+                    players: [],
+                    overtime: 0
+                } 
+                ],
+                phases: [],
+                round: 1,
+                tuh: 20,
+                room: null,
+                moderator: null,
+                packet: null,
+                notes: null
+            }
+        }
+
         function resetForm() {
-            vm.resetCurrentGame();
+            vm.currentGame = vm.resetCurrentGame();
             vm.newGameForm.$setUntouched();
         }
         

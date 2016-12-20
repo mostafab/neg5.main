@@ -64,7 +64,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function () {
     var app = (0, _express2.default)();
+    var _configuration$minify = _configuration2.default.minifyJs;
+    var minifyJs = _configuration$minify === undefined ? false : _configuration$minify;
 
+
+    app.set('minifyJs', minifyJs);
     app.locals.pretty = false;
 
     app.use(_bodyParser2.default.urlencoded({

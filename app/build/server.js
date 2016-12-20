@@ -46,8 +46,12 @@ var startServer = function startServer() {
         console.log('Https server running on port ' + httpsPort);
     } else {
         _http2.default.createServer(app).listen(PORT_NUM);
-        console.log('Express server running on port ' + PORT_NUM);
+        console.log(new Date() + ': Express server running on port ' + PORT_NUM);
     }
+
+    console.log('Express Settings: -----------');
+    console.log(JSON.stringify(app.locals, null, 4));
+    console.log('---------------------');
 };
 
 startServer();

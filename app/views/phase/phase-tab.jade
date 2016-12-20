@@ -18,7 +18,7 @@ div(class='col-md-12 col-sm-12 col-lg-6')
                 .col-lg-6
                     h4.left Current Phases 
                 .col-lg-6
-                    h4.right(title='Active phase is used to choose correct divisions when viewing stats for all games.' ng-bind='"Active/Default Phase: " + Phase.activePhase.name || "No Active Phase Set"')
+                    h4.right(title='Active phase is used to choose correct divisions when viewing stats for all games.' ng-bind='"Active/Default Phase: " + (Phase.activePhase.name || "None")')
 
         div(class="nf-panel-body panel-body nf-white")
             .row

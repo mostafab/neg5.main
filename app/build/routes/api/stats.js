@@ -42,10 +42,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function (app) {
 
-    app.get('/t/:tid/stats', function (req, res) {
-        res.render('stats/stats-home');
-    });
-
     app.get('/api/t/:tid/stats/player', requestedStatsHtml, function (req, res) {
         var report = new _report.StatsReport(req.params.tid);
         report.getIndividualReport(req.query.phase || null).then(function (result) {

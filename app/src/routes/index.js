@@ -6,13 +6,13 @@ import Tournament from './../models/sql-models/tournament';
 
 module.exports = app => {
 
-    const index = require('../controllers/index-controller');
+    const minifyJs = app.get('minifyJs')
 
     app.get('/', (req, res) => {
         if (req.cookies.nfToken) {
             res.redirect('/tournaments');
         } else {
-            index.render(req, res);
+            res.render("index/index", {minifyJs});
         }
     });
 
@@ -20,16 +20,16 @@ module.exports = app => {
         if (!req.cookies.nfToken) {
             res.redirect('/');
         } else {
-            res.render('tournament/alltournaments');
+            res.render('tournament/alltournaments', {minifyJs});
         }        
     });
 
     app.get("/t/:tid", hasToken, accessToTournament, (req, res, next) => {
-        res.render("tournament/tournament-view", {tournamentd : req.currentUser});
+        res.render("tournament/tournament-view", {minifyJs})
     });
 
-    app.get("/about", (req, res) => {
-        res.render("index/about", {tournamentd : req.session.director});
-    });
+    app.get('/t/:tid/stats', (req, res) => {
+        res.render('stats/stats-home', {minifyJs});
+    })
     
 };

@@ -17,7 +17,9 @@ import passport from './passport/passport';
 
 export default () => {
     const app = express();
+    const {minifyJs = false} = configuration
 
+    app.set('minifyJs', minifyJs)
     app.locals.pretty = false;
 
     app.use(bodyParser.urlencoded({

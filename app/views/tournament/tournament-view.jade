@@ -124,15 +124,26 @@ block content
                             .nf-toast-content.nf-button.btn(ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
                                 i.fa(ng-class="{'fa-check': toastMessage.success === true, 'fa-times': toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : toastMessage.success !== true && toastMessage.success !== false}")
                                 | {{toastMessage.message}}
-                                
-
-
-                        // .nf-toast(style='position:fixed' class='angular-animate')
-                        //     .panel.no-border(style='width:16.7%')
-                        //         .panel-heading.nf-panel-heading.nf-orange.nf-shadow Chat
-                        //             i.fa.right.fa-2x.chat-expand(ng-click='Chat.chatOpen = !Chat.chatOpen' ng-class='{"fa-caret-up" : !Chat.chatOpen, "fa-caret-down" : Chat.chatOpen}')
-                        //         .panel-body.nf-dark-blue.nf-shadow(ng-class='{"chat-open" : Chat.chatOpen, "chat-closed" : !Chat.chatOpen}')
                             
 
 block scripts
+    if minifyJs === false
+        script(src='/js/ng/stats.js')
+        script(src='/js/ng/app.js')
+        script(src='/js/ng/services/cookies.service.js')
+        script(src='/js/ng/services/division.service.js')
+        script(src='/js/ng/services/tournament.service.js')
+        script(src='/js/ng/services/phase.service.js')
+        script(src='/js/ng/services/team.service.js')
+        script(src='/js/ng/services/match.service.js')
+        script(src='/js/ng/services/stats/stats.service.js')
+        script(src='/js/ng/services/collaborator.service.js')
+        script(src='/js/ng/controllers/team.controller.js')
+        script(src='/js/ng/controllers/match.controller.js')
+        script(src='/js/ng/controllers/tournament.controller.js')
+        script(src='/js/ng/controllers/statistics.controller.js')
+        script(src='/js/ng/controllers/phase.controller.js')
+        script(src='/js/ng/controllers/collaborator.controller.js')
+        script(src='/js/ng/controllers/config.controller.js')
+        script(src='/js/ng/controllers/scoresheet.controller.js')
 

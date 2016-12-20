@@ -33,11 +33,6 @@ block content
                         
             div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:90px;')
                 
-                // div(class="col-md-2 col-sm-12 col-lg-2 tournament-navigation-panel hidden-sm hidden-xs")
-                //     div(class='row')
-                //         div(class='col-sm-7 col-lg-12 col-md-12')
-                //             h2(class="nf-panel-heading nf-dark-blue center") {{::PSControl.tournamentName.name}} Stats
-                
                 div(style='padding:50px;padding-bottom:0;padding-top:0')
                     div(class="panel-body")
                         .input-group
@@ -71,4 +66,12 @@ block content
                             i.fa(ng-class="{'fa-check': PSControl.toastMessage.success === true, 'fa-times': PSControl.toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
                             | {{PSControl.toastMessage.message}}
                         
-    
+block scripts
+    if minifyJs === false
+        script(type='text/javascript' src='/js/ng/app.js')
+        script(type='text/javascript' src='/js/ng/services/cookies.service.js')
+        script(type='text/javascript' src='/js/ng/services/tournament.service.js')
+        script(type='text/javascript' src='/js/ng/services/phase.service.js')
+        script(type='text/javascript' src='/js/ng/services/division.service.js')
+        script(type='text/javascript' src='/js/ng/stats.js')
+        script(type='text/javascript' src='/js/ng/services/stats/stats.service.js')

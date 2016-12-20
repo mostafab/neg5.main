@@ -68,5 +68,5 @@ block content
                                     | {{toastMessage.message}}
                                                 
 block scripts
-    
-    // script(src="/js/ng/home.js")
+    if minifyJs === false
+        script(src="/js/ng/home.js")

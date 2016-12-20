@@ -12,13 +12,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 module.exports = function (app) {
 
-    var index = require('../controllers/index-controller');
+    var minifyJs = app.get('minifyJs');
 
     app.get('/', function (req, res) {
         if (req.cookies.nfToken) {
             res.redirect('/tournaments');
         } else {
-            index.render(req, res);
+            res.render("index/index", { minifyJs: minifyJs });
         }
     });
 
@@ -26,15 +26,15 @@ module.exports = function (app) {
         if (!req.cookies.nfToken) {
             res.redirect('/');
         } else {
-            res.render('tournament/alltournaments');
+            res.render('tournament/alltournaments', { minifyJs: minifyJs });
         }
     });
 
     app.get("/t/:tid", _token.hasToken, _tournamentAccess.accessToTournament, function (req, res, next) {
-        res.render("tournament/tournament-view", { tournamentd: req.currentUser });
+        res.render("tournament/tournament-view", { minifyJs: minifyJs });
     });
 
-    app.get("/about", function (req, res) {
-        res.render("index/about", { tournamentd: req.session.director });
+    app.get('/t/:tid/stats', function (req, res) {
+        res.render('stats/stats-home', { minifyJs: minifyJs });
     });
 };

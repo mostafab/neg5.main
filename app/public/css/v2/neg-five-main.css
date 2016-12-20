@@ -459,6 +459,11 @@ div.readonly {
     pointer-events: none;
 }
 
+input.readonly {
+    pointer-events: none;
+    background-color: #f4f0ea;
+}
+
 select.readonly {
     pointer-events: none;
     -webkit-appearance: none;
