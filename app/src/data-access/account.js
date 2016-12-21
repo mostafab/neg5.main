@@ -4,12 +4,12 @@ import { encode } from '../helpers/jwt';
 import { query, queryTypeMap as qm } from '../database/db';
 import sql from '../database/sql';
 
-const account = sql.account;
+const accountSQL = sql.account;
 
 export default {
   getUserPermissions: (username, tournamentId) => new Promise((resolve, reject) => {
     const params = [tournamentId, username];
-    query(account.permissions, params, qm.any)
+    query(accountSQL.permissions, params, qm.any)
         .then(result => resolve(result))
         .catch(error => reject(error));
   }),
@@ -19,7 +19,7 @@ export default {
           hashExpression(password)
               .then((hash) => {
                 const params = [username, hash, email, name];
-                return query(account.add, params, qm.one);
+                return query(accountSQL.add, params, qm.one);
               })
               .then(user => resolve(user.username))
               .catch(error => reject(error));
@@ -28,7 +28,7 @@ export default {
   authenticateAccount: ({ user, password }) => new Promise((resolve, reject) => {
     const params = [user];
     let retrievedUsername = null;
-    query(account.findOne, params, qm.one)
+    query(accountSQL.findOne, params, qm.one)
         .then(({ username, hash }) => {
           retrievedUsername = username;
           return compareToHash(password, hash);
@@ -44,7 +44,7 @@ export default {
   findByQuery: searchQuery => new Promise((resolve, reject) => {
     const expression = `%${searchQuery}%`;
     const params = [expression];
-    query(account.findUsers, params, qm.any)
+    query(accountSQL.findUsers, params, qm.any)
         .then(users => resolve(users))
         .catch(error => reject(error));
   }),

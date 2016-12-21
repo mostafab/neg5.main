@@ -16,13 +16,13 @@ var _sql2 = _interopRequireDefault(_sql);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var match = _sql2.default.match;
+var matchSQL = _sql2.default.match;
 
 exports.default = {
   getMatchesByTournament: function getMatchesByTournament(tournamentId) {
     return new Promise(function (resolve, reject) {
       var params = [tournamentId];
-      (0, _db.query)(match.findByTournament, params, _db.queryTypeMap.any).then(function (matches) {
+      (0, _db.query)(matchSQL.findByTournament, params, _db.queryTypeMap.any).then(function (matches) {
         return resolve(matches.map(function (m) {
           return _extends({}, m, {
             phases: m.phases.filter(function (p) {
@@ -45,7 +45,7 @@ exports.default = {
     return new Promise(function (resolve, reject) {
       var params = [tournamentId, detailedAll ? null : matchId];
       var returnType = detailedAll ? _db.queryTypeMap.any : _db.queryTypeMap.one;
-      (0, _db.query)(match.findById, params, returnType).then(function (foundMatch) {
+      (0, _db.query)(matchSQL.findById, params, returnType).then(function (foundMatch) {
         return resolve(foundMatch);
       }).catch(function (error) {
         return reject(error);
@@ -75,30 +75,30 @@ exports.default = {
 
       if (replacing) {
         queriesArray.push({
-          text: match.remove,
+          text: matchSQL.remove,
           params: [tournamentId, matchId],
           queryType: _db.txMap.one
         });
       }
 
       queriesArray.push({
-        text: match.add.addMatch,
+        text: matchSQL.add.addMatch,
         params: [matchId, tournamentId, round, room, moderator, packet, tuh, notes, scoresheet, user],
         queryType: _db.txMap.one
       }, {
-        text: match.add.addMatchPhases,
+        text: matchSQL.add.addMatchPhases,
         params: [matchPhases.phaseMatchId, matchPhases.phaseTournamentId, matchPhases.phaseId],
         queryType: _db.txMap.any
       }, {
-        text: match.add.addMatchTeams,
+        text: matchSQL.add.addMatchTeams,
         params: [matchTeams.teamIds, matchTeams.matchId, matchTeams.tournamentId, matchTeams.score, matchTeams.bouncebacks, matchTeams.overtime],
         queryType: _db.txMap.many
       }, {
-        text: match.add.addMatchPlayers,
+        text: matchSQL.add.addMatchPlayers,
         params: [matchPlayers.playerIds, matchPlayers.matchIds, matchPlayers.tournamentIds, matchPlayers.tossups],
         queryType: _db.txMap.any
       }, {
-        text: match.add.addPlayerTossups,
+        text: matchSQL.add.addPlayerTossups,
         params: [matchPlayerPoints.playerIds, matchPlayerPoints.matchIds, matchPlayerPoints.tournamentIds, matchPlayerPoints.values, matchPlayerPoints.numbers],
         queryType: _db.txMap.any
       });
@@ -114,7 +114,7 @@ exports.default = {
   deleteTournamentMatch: function deleteTournamentMatch(tournamentId, matchId) {
     return new Promise(function (resolve, reject) {
       var params = [tournamentId, matchId];
-      (0, _db.query)(match.remove, params, _db.queryTypeMap.one).then(function (result) {
+      (0, _db.query)(matchSQL.remove, params, _db.queryTypeMap.one).then(function (result) {
         return resolve(result);
       }).catch(function (error) {
         return reject(error);

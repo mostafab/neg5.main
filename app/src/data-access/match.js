@@ -2,12 +2,12 @@ import { query, transaction, queryTypeMap as qm, txMap as tm } from '../database
 import { buildMatchPhasesObject, buildMatchPlayers, buildMatchTeams, buildPlayerMatchPoints } from './../helpers/array_builders/match.builder';
 import sql from '../database/sql';
 
-const match = sql.match;
+const matchSQL = sql.match;
 
 export default {
   getMatchesByTournament: tournamentId => new Promise((resolve, reject) => {
     const params = [tournamentId];
-    query(match.findByTournament, params, qm.any)
+    query(matchSQL.findByTournament, params, qm.any)
         .then(matches => resolve(matches.map(m => ({
           ...m,
           phases: m.phases.filter(p => p.phase_id !== null),
@@ -22,7 +22,7 @@ export default {
   findById: (tournamentId, matchId, detailedAll = false) => new Promise((resolve, reject) => {
     const params = [tournamentId, detailedAll ? null : matchId];
     const returnType = detailedAll ? qm.any : qm.one;
-    query(match.findById, params, returnType)
+    query(matchSQL.findById, params, returnType)
         .then(foundMatch => resolve(foundMatch))
         .catch(error => reject(error));
   }),
@@ -39,7 +39,7 @@ export default {
 
       if (replacing) {
         queriesArray.push({
-          text: match.remove,
+          text: matchSQL.remove,
           params: [tournamentId, matchId],
           queryType: tm.one,
         });
@@ -47,30 +47,30 @@ export default {
 
       queriesArray.push(
         {
-          text: match.add.addMatch,
+          text: matchSQL.add.addMatch,
           params: [matchId, tournamentId, round, room, moderator, packet,
             tuh, notes, scoresheet, user],
           queryType: tm.one,
         },
         {
-          text: match.add.addMatchPhases,
+          text: matchSQL.add.addMatchPhases,
           params: [matchPhases.phaseMatchId, matchPhases.phaseTournamentId, matchPhases.phaseId],
           queryType: tm.any,
         },
         {
-          text: match.add.addMatchTeams,
+          text: matchSQL.add.addMatchTeams,
           params: [matchTeams.teamIds, matchTeams.matchId, matchTeams.tournamentId,
             matchTeams.score, matchTeams.bouncebacks, matchTeams.overtime],
           queryType: tm.many,
         },
         {
-          text: match.add.addMatchPlayers,
+          text: matchSQL.add.addMatchPlayers,
           params: [matchPlayers.playerIds, matchPlayers.matchIds,
             matchPlayers.tournamentIds, matchPlayers.tossups],
           queryType: tm.any,
         },
         {
-          text: match.add.addPlayerTossups,
+          text: matchSQL.add.addPlayerTossups,
           params: [matchPlayerPoints.playerIds, matchPlayerPoints.matchIds,
             matchPlayerPoints.tournamentIds, matchPlayerPoints.values, matchPlayerPoints.numbers],
           queryType: tm.any,
@@ -84,7 +84,7 @@ export default {
 
   deleteTournamentMatch: (tournamentId, matchId) => new Promise((resolve, reject) => {
     const params = [tournamentId, matchId];
-    query(match.remove, params, qm.one)
+    query(matchSQL.remove, params, qm.one)
         .then(result => resolve(result))
         .catch(error => reject(error));
   }),

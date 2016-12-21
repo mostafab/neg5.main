@@ -16,13 +16,13 @@ var _sql2 = _interopRequireDefault(_sql);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var account = _sql2.default.account;
+var accountSQL = _sql2.default.account;
 
 exports.default = {
   getUserPermissions: function getUserPermissions(username, tournamentId) {
     return new Promise(function (resolve, reject) {
       var params = [tournamentId, username];
-      (0, _db.query)(account.permissions, params, _db.queryTypeMap.any).then(function (result) {
+      (0, _db.query)(accountSQL.permissions, params, _db.queryTypeMap.any).then(function (result) {
         return resolve(result);
       }).catch(function (error) {
         return reject(error);
@@ -40,7 +40,7 @@ exports.default = {
     return new Promise(function (resolve, reject) {
       (0, _crypto.hashExpression)(password).then(function (hash) {
         var params = [username, hash, email, name];
-        return (0, _db.query)(account.add, params, _db.queryTypeMap.one);
+        return (0, _db.query)(accountSQL.add, params, _db.queryTypeMap.one);
       }).then(function (user) {
         return resolve(user.username);
       }).catch(function (error) {
@@ -55,7 +55,7 @@ exports.default = {
     return new Promise(function (resolve, reject) {
       var params = [user];
       var retrievedUsername = null;
-      (0, _db.query)(account.findOne, params, _db.queryTypeMap.one).then(function (_ref3) {
+      (0, _db.query)(accountSQL.findOne, params, _db.queryTypeMap.one).then(function (_ref3) {
         var username = _ref3.username;
         var hash = _ref3.hash;
 
@@ -77,7 +77,7 @@ exports.default = {
     return new Promise(function (resolve, reject) {
       var expression = '%' + searchQuery + '%';
       var params = [expression];
-      (0, _db.query)(account.findUsers, params, _db.queryTypeMap.any).then(function (users) {
+      (0, _db.query)(accountSQL.findUsers, params, _db.queryTypeMap.any).then(function (users) {
         return resolve(users);
       }).catch(function (error) {
         return reject(error);
