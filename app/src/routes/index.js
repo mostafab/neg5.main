@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 import {hasToken} from './../auth/middleware/token';
 import {accessToTournament} from './../auth/middleware/tournament-access';
