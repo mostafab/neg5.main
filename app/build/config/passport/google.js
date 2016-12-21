@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _passportGoogleOauth = require('passport-google-oauth');
@@ -15,21 +15,20 @@ var _jwt = require('./../../helpers/jwt');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (passport) {
+  if (_config2.default.google) {
+    var _Config$google = _config2.default.google;
+    var clientID = _Config$google.clientID;
+    var clientSecret = _Config$google.clientSecret;
+    var callbackURL = _Config$google.callbackURL;
 
-    if (_config2.default.google) {
-        var _Config$google = _config2.default.google;
-        var clientID = _Config$google.clientID;
-        var clientSecret = _Config$google.clientSecret;
-        var callbackURL = _Config$google.callbackURL;
 
-
-        passport.use(new _passportGoogleOauth.OAuth2Strategy({
-            clientID: clientID,
-            clientSecret: clientSecret,
-            callbackURL: callbackURL
-        }, function (accessToken, refreshToken, profile, verifyCallback) {
-            var user = profile;
-            verifyCallback(null, (0, _jwt.encode)(user));
-        }));
-    }
+    passport.use(new _passportGoogleOauth.OAuth2Strategy({
+      clientID: clientID,
+      clientSecret: clientSecret,
+      callbackURL: callbackURL
+    }, function (accessToken, refreshToken, profile, verifyCallback) {
+      var user = profile;
+      verifyCallback(null, (0, _jwt.encode)(user));
+    }));
+  }
 };

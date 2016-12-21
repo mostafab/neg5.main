@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _path = require('path');
@@ -63,40 +63,38 @@ var _passport2 = _interopRequireDefault(_passport);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function () {
-    var app = (0, _express2.default)();
-    var _configuration$minify = _configuration2.default.minifyJs;
-    var minifyJs = _configuration$minify === undefined ? false : _configuration$minify;
-    var _configuration$env = _configuration2.default.env;
-    var env = _configuration$env === undefined ? 'development' : _configuration$env;
+  var app = (0, _express2.default)();
+  var _configuration$minify = _configuration2.default.minifyJs;
+  var minifyJs = _configuration$minify === undefined ? false : _configuration$minify;
+  var _configuration$env = _configuration2.default.env;
+  var env = _configuration$env === undefined ? 'development' : _configuration$env;
 
 
-    app.set('minifyJs', minifyJs);
-    app.set('configEnv', env);
+  app.set('minifyJs', minifyJs);
+  app.set('configEnv', env);
+  app.locals.pretty = false;
 
-    app.locals.pretty = false;
+  app.use(_bodyParser2.default.urlencoded({
+    extended: true
+  }));
+  app.use((0, _helmet2.default)());
+  app.use((0, _cookieParser2.default)());
+  app.use(_bodyParser2.default.json());
+  app.use((0, _compression2.default)());
+  app.use(_passport2.default.initialize());
 
-    app.use(_bodyParser2.default.urlencoded({
-        extended: true
-    }));
-    app.use((0, _helmet2.default)());
-    app.use((0, _cookieParser2.default)());
-    app.use(_bodyParser2.default.json());
-    app.use((0, _compression2.default)());
-    app.use(_passport2.default.initialize());
+  app.set('views', _path2.default.join(__dirname, '../../views'));
+  app.set('view engine', 'jade');
 
-    app.set("views", _path2.default.join(__dirname, '../../views'));
-    app.set("view engine", "jade");
+  app.use(_express2.default.static(_path2.default.join(__dirname, '../../public')));
 
-    app.use(_express2.default.static(_path2.default.join(__dirname, '../../public')));
+  require('../routes/index.js')(app);
+  (0, _account2.default)(app);
+  (0, _tournament2.default)(app);
+  (0, _match2.default)(app);
+  (0, _team2.default)(app);
+  (0, _stats2.default)(app);
+  (0, _player2.default)(app);
 
-    require('../routes/index.js')(app);
-
-    (0, _account2.default)(app);
-    (0, _tournament2.default)(app);
-    (0, _match2.default)(app);
-    (0, _team2.default)(app);
-    (0, _stats2.default)(app);
-    (0, _player2.default)(app);
-
-    return app;
+  return app;
 };

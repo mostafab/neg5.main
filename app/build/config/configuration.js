@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _fs = require('fs');
@@ -20,10 +20,10 @@ var buffer = void 0;
 var configurationJson = void 0;
 
 try {
-    buffer = _fs2.default.readFileSync(configurationFilePath);
-    configurationJson = JSON.parse(buffer);
+  buffer = _fs2.default.readFileSync(configurationFilePath);
+  configurationJson = JSON.parse(buffer);
 } catch (err) {
-    throw err;
+  throw err;
 }
 
 exports.default = configurationJson;

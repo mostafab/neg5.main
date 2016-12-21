@@ -19,11 +19,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var account = _sql2.default.account;
 
 exports.default = {
-
     getUserPermissions: function getUserPermissions(username, tournamentId) {
         return new Promise(function (resolve, reject) {
             var params = [tournamentId, username];
-
             (0, _db.query)(account.permissions, params, _db.queryTypeMap.any).then(function (result) {
                 return resolve(result);
             }).catch(function (error) {
@@ -39,17 +37,14 @@ exports.default = {
         var email = _ref$email === undefined ? null : _ref$email;
         var _ref$name = _ref.name;
         var name = _ref$name === undefined ? null : _ref$name;
-
         return new Promise(function (resolve, reject) {
             (0, _crypto.hashExpression)(password).then(function (hash) {
-
                 var params = [username, hash, email, name];
                 return (0, _db.query)(account.add, params, _db.queryTypeMap.one);
             }).then(function (user) {
-                resolve(user.username);
+                return resolve(user.username);
             }).catch(function (error) {
-                console.log(error);
-                reject(error);
+                return reject(error);
             });
         });
     },
