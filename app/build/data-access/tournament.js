@@ -255,8 +255,7 @@ exports.default = {
       (0, _db.query)(division.findByTournament, params, _db.queryTypeMap.any).then(function (result) {
         return resolve(result);
       }).catch(function (error) {
-        console.log(error);
-        reject(error);
+        return reject(error);
       });
     });
   },
@@ -348,5 +347,4 @@ exports.default = {
       });
     });
   }
-
 };

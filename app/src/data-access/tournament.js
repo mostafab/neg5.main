@@ -165,88 +165,69 @@ export default {
         .catch(error => reject(error));
   }),
 
-  getTournamentDivisions: (id) => {
-      return new Promise((resolve, reject) => {
-          let params = [id];
-          query(division.findByTournament, params, qm.any)
-              .then(result => resolve(result))
-              .catch(error => {
-                  console.log(error);
-                  reject(error);
-              });
-      })
-  },
+  getTournamentDivisions: id => new Promise((resolve, reject) => {
+    const params = [id];
+    query(division.findByTournament, params, qm.any)
+        .then(result => resolve(result))
+        .catch(error => reject(error));
+  }),
 
-  editTournamentDivision: (tournamentId, divisionId, newDivisionName) => {
-      return new Promise((resolve, reject) => {
-          let params = [tournamentId, divisionId, newDivisionName];
-          query(division.edit, params, qm.one)
-              .then(result => resolve(result))
-              .catch(error => reject(error));
-      });
-  },
+  editTournamentDivision: (tournamentId, divisionId, newDivisionName) =>
+    new Promise((resolve, reject) => {
+      const params = [tournamentId, divisionId, newDivisionName];
+      query(division.edit, params, qm.one)
+          .then(result => resolve(result))
+          .catch(error => reject(error));
+    }),
 
-  addTournamentDivision: (tournamentId, divisionName, divisionId, phaseId) => {
-      return new Promise((resolve, reject) => {
-          let params = [tournamentId, divisionId, divisionName, phaseId];
-          query(division.add, params, qm.one)
-              .then(result => resolve(result))
-              .catch(error => reject(error));
-      })
-  },
+  addTournamentDivision: (tournamentId, divisionName, divisionId, phaseId) =>
+    new Promise((resolve, reject) => {
+      const params = [tournamentId, divisionId, divisionName, phaseId];
+      query(division.add, params, qm.one)
+          .then(result => resolve(result))
+          .catch(error => reject(error));
+    }),
 
-  removeDivisionFromTournament: (tournamentId, divisionId) => {
-      return new Promise((resolve, reject) => {
-          let params = [tournamentId, divisionId];
-          query(division.remove, params, qm.one)
-              .then(result => resolve(result))
-              .catch(error => reject(error));
-      })
-  },
+  removeDivisionFromTournament: (tournamentId, divisionId) => new Promise((resolve, reject) => {
+    const params = [tournamentId, divisionId];
+    query(division.remove, params, qm.one)
+        .then(result => resolve(result))
+        .catch(error => reject(error));
+  }),
 
-  getTournamentPhases: (id) => {
-      return new Promise((resolve, reject) => {
-          let params = [id];
-          query(phase.findByTournament, params, qm.any)
-              .then(result => resolve(result))
-              .catch(error => reject(error));
-      })
-  },
+  getTournamentPhases: id => new Promise((resolve, reject) => {
+    const params = [id];
+    query(phase.findByTournament, params, qm.any)
+        .then(result => resolve(result))
+        .catch(error => reject(error));
+  }),
 
-  updateTournamentPhase: (id, phaseId, newName) => {
-      return new Promise((resolve, reject) => {
-          let params = [id, phaseId, newName];
-          query(phase.update, params, qm.one)
-              .then(result => resolve(result))
-              .catch(error => reject(error));
-      })
-  },
+  updateTournamentPhase: (id, phaseId, newName) => new Promise((resolve, reject) => {
+    const params = [id, phaseId, newName];
+    query(phase.update, params, qm.one)
+        .then(result => resolve(result))
+        .catch(error => reject(error));
+  }),
 
-  addTournamentPhase: (id, phaseId, name) => {
-      return new Promise((resolve, reject) => {
-          let params = [id, phaseId, name];
-          query(phase.add, params, qm.one)
-              .then(result => resolve(result))
-              .catch(error => reject(error));
-      })
-  },
+  addTournamentPhase: (id, phaseId, name) => new Promise((resolve, reject) => {
+    const params = [id, phaseId, name];
+    query(phase.add, params, qm.one)
+        .then(result => resolve(result))
+        .catch(error => reject(error));
+  }),
 
-  deleteTournamentPhase: (id, phaseId) => {
-      return new Promise((resolve, reject) => {
-          let params = [id, phaseId];
-          query(phase.remove, params, qm.one)
-              .then(result => resolve(result))
-              .catch(error => reject(error));
-      })
-  },
+  deleteTournamentPhase: (id, phaseId) => new Promise((resolve, reject) => {
+    const params = [id, phaseId];
+    query(phase.remove, params, qm.one)
+        .then(result => resolve(result))
+        .catch(error => reject(error));
+  }),
 
-  setTournamentActivePhase: (tournamentId, phaseId) => {
-      return new Promise((resolve, reject) => {
-          let params = [tournamentId, phaseId];
-          query(phase.setActive, params, qm.one)
-              .then(result => resolve(result))
-              .catch(error => reject(error));
-      })
-  }
-    
-}
+  setTournamentActivePhase: (tournamentId, phaseId) => new Promise((resolve, reject) => {
+    const params = [tournamentId, phaseId];
+    query(phase.setActive, params, qm.one)
+        .then(result => resolve(result))
+        .catch(error => reject(error));
+  }),
+};
+

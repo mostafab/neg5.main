@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.decode = exports.encode = undefined;
 
@@ -18,9 +18,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var secret = _configuration2.default.jwt.secret;
 
 var encode = exports.encode = function encode(payload) {
-    return _jwtSimple2.default.encode(payload, secret);
+  return _jwtSimple2.default.encode(payload, secret);
 };
 
 var decode = exports.decode = function decode(token) {
-    return _jwtSimple2.default.decode(token, secret);
+  return _jwtSimple2.default.decode(token, secret);
 };
