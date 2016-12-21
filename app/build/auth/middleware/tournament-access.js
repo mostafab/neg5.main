@@ -16,7 +16,7 @@ var accessToTournament = exports.accessToTournament = function accessToTournamen
     var tournamentId = req.params.tid;
     _account2.default.getUserPermissions(username, tournamentId).then(function (result) {
         if (result.length === 0) return res.status(403).send({ error: 'Access to this endpoint is denied' });
-        next();
+        return next();
     }).catch(function (error) {
         res.status(500).send({ error: error });
     });
