@@ -25,38 +25,27 @@ export default {
               .catch(error => reject(error));
         }),
 
-  authenticateAccount: ({user, password}) => {
-      return new Promise((resolve, reject) => {
-          let params = [user];
-          query(account.findOne, params, qm.one)
-              .then(({username, hash}) => {
+  authenticateAccount: ({ user, password }) => new Promise((resolve, reject) => {
+    const params = [user];
+    let retrievedUsername = null;
+    query(account.findOne, params, qm.one)
+        .then(({ username, hash }) => {
+          retrievedUsername = username;
+          return compareToHash(password, hash);
+        })
+        .then(({ match }) => {
+          if (!match) return reject({ authenticated: false });
+          const token = encode(retrievedUsername);
+          return resolve(token);
+        })
+        .catch(error => reject(error));
+  }),
 
-                  compareToHash(password, hash)
-                      .then(({match}) => {
-                          if (!match) return reject({authenticated: false})
-                          let token = encode(username);
-                          resolve(token);
-                      })
-                      .catch((error) => reject({error: error})); 
-
-              })
-              .catch(error => reject(error)); 
-      })
-  },
-
-  findByQuery: (searchQuery) => {
-      return new Promise((resolve, reject) => {
-          let expression = '%' + searchQuery + '%';
-          let params = [expression];
-          query(account.findUsers, params, qm.any)
-              .then(users => {
-                  resolve(users)
-              })
-              .catch(error => {
-                  console.log(error);
-                  reject(error)
-              });
-      })
-  }
-    
-}
+  findByQuery: searchQuery => new Promise((resolve, reject) => {
+    const expression = `%${searchQuery}%`;
+    const params = [expression];
+    query(account.findUsers, params, qm.any)
+        .then(users => resolve(users))
+        .catch(error => reject(error));
+  }),
+};

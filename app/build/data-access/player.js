@@ -22,7 +22,6 @@ exports.default = {
     addTournamentPlayer: function addTournamentPlayer(tournamentId, teamId, _ref, currentUser) {
         var id = _ref.id;
         var name = _ref.name;
-
         return new Promise(function (resolve, reject) {
             var playersArray = [{ id: id, teamId: teamId, name: name }];
 
