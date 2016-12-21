@@ -35,6 +35,14 @@ Neg 5's front end is written with AngularJS 1.5. If you don't know Angular, that
 Now's a great time to learn. I recommend starting with the official docs or just 
 looking through the jade files and angular files in the project.
 
+# Style Guide
+This project includes an ```.eslintrc.json``` file for ESLint configuration.
+It follows the [Airbnb Javascript style guide.](https://github.com/airbnb/javascript)
+If you use Visual Studio Code, please install the ESLint extension.
+VS Code should automatically pick up the ```.eslintrc.json``` and warn of any
+style errors. Please follow the warnings as closely as you can.
 
+If you don't use Visual Studio Code, please use ESLint with the given
+```eslintrc.json``` with your preferred text editor.  
 
 

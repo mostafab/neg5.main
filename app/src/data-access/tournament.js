@@ -151,23 +151,19 @@ export default {
         .catch(error => reject(error));
   }),
 
-  updateCollaborator: (id, username, isAdmin) => {
-      return new Promise((resolve, reject) => {
-          let params = [id, username, isAdmin];
-          query(collaborator.edit, params, qm.one)
-              .then(result => resolve(result))
-              .catch(error => reject(error));
-      });
-  },
+  updateCollaborator: (id, username, isAdmin) => new Promise((resolve, reject) => {
+    const params = [id, username, isAdmin];
+    query(collaborator.edit, params, qm.one)
+        .then(result => resolve(result))
+        .catch(error => reject(error));
+  }),
 
-  deleteCollaborator: (id, username) => {
-      return new Promise((resolve, reject) => {
-          let params = [id, username];
-          query(collaborator.remove, params, qm.one)
-              .then(result => resolve(result))
-              .catch(error => reject(error));
-      });
-  },
+  deleteCollaborator: (id, username) => new Promise((resolve, reject) => {
+    const params = [id, username];
+    query(collaborator.remove, params, qm.one)
+        .then(result => resolve(result))
+        .catch(error => reject(error));
+  }),
 
   getTournamentDivisions: (id) => {
       return new Promise((resolve, reject) => {
