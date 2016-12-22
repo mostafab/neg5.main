@@ -16,16 +16,32 @@ FROM
 
         FROM
             (
-                SELECT  team_info.team_1_id AS team_1_id, team_info.team_1_name AS team_1_name, team_info.team_1_score AS team_1_score, 
-                        team_info.team_2_id AS team_2_id, team_info.team_2_name AS team_2_name, team_info.team_2_score AS team_2_score,
-                        team_info.match_id AS match_id, team_info.tournament_id AS tournament_id
+                -- Winner is team_1, Loser is team_2
+                SELECT  
+                    CASE WHEN (team_info.team_1_score >= team_info.team_2_score) THEN team_info.team_1_id ELSE team_info.team_2_id END AS team_1_id, 
+                    CASE WHEN (team_info.team_1_score >= team_info.team_2_score) THEN team_info.team_1_name ELSE team_info.team_2_name END AS team_1_name, 
+                    CASE WHEN (team_info.team_1_score >= team_info.team_2_score) THEN team_info.team_1_score ELSE team_info.team_2_score END AS team_1_score, 
+                    
+                    CASE WHEN (team_info.team_1_score < team_info.team_2_score) THEN team_info.team_1_id ELSE team_info.team_2_id END AS team_2_id, 
+                    CASE WHEN (team_info.team_1_score < team_info.team_2_score) THEN team_info.team_1_name ELSE team_info.team_2_name END AS team_2_name, 
+                    CASE WHEN (team_info.team_1_score < team_info.team_2_score) THEN team_info.team_1_score ELSE team_info.team_2_score END AS team_2_score, 
+
+                    team_info.match_id AS match_id, 
+                    team_info.tournament_id AS tournament_id
 
                 FROM
 
                 -- Below SQL in parens joins the team_plays_in_tournament_match table with itself to get the two teams in a match and joins with the tournament_team table to get the team names
                     (
-                        SELECT  DISTINCT ON (team_1_info.tournament_id, team_1_info.match_id) team_1_info.match_id AS match_id, team_1_info.tournament_id AS tournament_id, team_1_info.id AS team_1_id, team_1_info.name AS team_1_name, team_1_info.score AS team_1_score, 
-                                team_2_info.id AS team_2_id, team_2_info.name AS team_2_name, team_2_info.score AS team_2_score
+                        SELECT  DISTINCT ON (team_1_info.tournament_id, team_1_info.match_id) 
+                            team_1_info.match_id AS match_id, 
+                            team_1_info.tournament_id AS tournament_id, 
+                            team_1_info.id AS team_1_id, 
+                            team_1_info.name AS team_1_name, 
+                            team_1_info.score AS team_1_score, 
+                            team_2_info.id AS team_2_id, 
+                            team_2_info.name AS team_2_name, 
+                            team_2_info.score AS team_2_score
 
                         FROM 
                         (

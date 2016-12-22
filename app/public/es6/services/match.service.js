@@ -39,7 +39,7 @@
                         let formattedGames = data.matches.map(({match_id: id, 
                                 tossups_heard: tuh, round, team_1_id, team_1_score, team_2_id, team_2_score, 
                                 team_1_name, team_2_name,
-                                phases}) => {
+                                phases }) => {
                             return {
                                 id,
                                 tuh,
