@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
     angular.module('tournamentApp').controller('ConfigCtrl', ['$scope', '$timeout', 'Tournament', 'Game', 'Division', 'Phase', ConfigCtrl]);
 
     function ConfigCtrl($scope, $timeout, Tournament, Game, Division, Phase) {
@@ -148,7 +147,7 @@
                     Division.addDivision($scope.tournamentId, newDivisionName, vm.newDivision.phaseId).then(function (divisionName) {
                         toastConfig.message = 'Added division: ' + divisionName;
                         toastConfig.success = true;
-                        vm.newDivision = { name: '' };
+                        vm.resetNewDivision();
                     }).catch(function (error) {
                         toastConfig.message = 'Could not add division';
                         toastConfig.success = false;
@@ -175,6 +174,10 @@
                 toastConfig.hideAfter = true;
                 $scope.toast(toastConfig);
             });
+        };
+
+        vm.resetNewDivision = function () {
+            return vm.newDivision.name = '';
         };
 
         var duplicatePointValues = function duplicatePointValues() {

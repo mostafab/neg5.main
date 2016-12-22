@@ -42,7 +42,7 @@ exports.default = function (app) {
         }).catch(function (error) {
             return res.status(500).send({ error: error, success: false });
         });
-    }).delete(function (req, res) {});
+    });
 
     app.route('/api/t/:tid/rules').put(_token.hasToken, _tournamentAccess.directorAccessToTournament, function (req, res) {
         _tournament2.default.updateRules(req.params.tid, req.body.rules).then(function (result) {
@@ -104,7 +104,7 @@ exports.default = function (app) {
         _tournament2.default.addDivision(req.params.tid, req.body.name, req.body.phaseId).then(function (result) {
             return res.json({ result: result, success: true });
         }).catch(function (error) {
-            return reject(error);
+            return res.status(500).send({ error: error, success: false });
         });
     });
 

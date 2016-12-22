@@ -31,5 +31,5 @@ module.exports = app => {
     app.get('/t/:tid/stats', (req, res) => {
         res.render('stats/stats-home', {minifyJs});
     })
-    
+
 };
