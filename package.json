@@ -5,7 +5,8 @@
   "main": "app/build/server.js",
   "scripts": {
     "test": "test",
-    "start": "nodemon --ignore app/public/**/*.js app/build/server.js"
+    "start": "nodemon --ignore app/public/**/*.js app/build/server.js",
+    "start-prod": "node app/build/server.js"
   },
   "author": "mostafa",
   "license": "MIT",
