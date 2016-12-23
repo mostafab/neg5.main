@@ -51,7 +51,7 @@ exports.default = {
   },
 
   findByQuery: function findByQuery(query) {
-    return Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
       if (!query) {
         reject(new Error('No query provided'));
       }

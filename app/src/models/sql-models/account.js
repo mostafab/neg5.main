@@ -24,7 +24,7 @@ export default {
         .catch(error => reject(error));
   }),
 
-  findByQuery: query => Promise((resolve, reject) => {
+  findByQuery: query => new Promise((resolve, reject) => {
     if (!query) {
       reject(new Error('No query provided'));
     }
