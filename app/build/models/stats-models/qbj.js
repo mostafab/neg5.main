@@ -81,7 +81,7 @@ exports.default = {
 
 function createMatchPromises(tournamentId, matches) {
     return matches.map(function (m) {
-        return _match2.default.findById(tournamentId, match.match_id);
+        return _match2.default.findById(tournamentId, m.match_id);
     });
 }
 

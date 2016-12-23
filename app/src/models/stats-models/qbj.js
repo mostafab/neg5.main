@@ -58,7 +58,7 @@ export default {
 }
 
 function createMatchPromises(tournamentId, matches) {
-    return matches.map(m => matchDB.findById(tournamentId, match.match_id))
+    return matches.map(m => matchDB.findById(tournamentId, m.match_id))
 }
 
 function tournamentQbjFactory(tournament) {
