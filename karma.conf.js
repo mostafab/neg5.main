@@ -19,11 +19,11 @@ module.exports = function(config) {
       'https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-cookies.min.js',
       'https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-animate.min.js',
       'node_modules/angular-mocks/angular-mocks.js',
-      'app/public/js/app.js',
-      'app/public/js/index.js',
-      'app/public/js/home.js',
-      'app/public/js/services/*.js',
-      'app/public/js/controllers/*.js',
+      'app/public/js/ng/app.js',
+      'app/public/js/ng/index.js',
+      'app/public/js/ng/home.js',
+      'app/public/js/ng/services/*.js',
+      'app/public/js/ng/controllers/*.js',
       'tests/**/*.js'
     ],
 

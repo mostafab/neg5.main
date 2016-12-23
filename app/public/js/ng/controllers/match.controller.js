@@ -59,8 +59,7 @@
         };
 
         function totalTeamTossupGets(team) {
-            if (!team) return 0;
-
+            if (!team || !team.players) return 0;
             var totalTossups = team.players.map(function (player) {
                 var sum = 0;
                 for (var pv in player.points) {
@@ -74,6 +73,7 @@
             }, 0);
             return totalTossups;
         }
+        vm.totalTeamTossupGets = totalTeamTossupGets;
 
         vm.currentGame = newGame();
 
