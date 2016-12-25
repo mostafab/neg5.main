@@ -334,6 +334,49 @@ describe('MatchController | ', () => {
       match.teams[1].players[1].points['-5'] = 1; // one extra neg
       expect(MatchController.minPossibleTossupsHeard(match)).toBe(3);
     });
+  });
 
+  describe('MatchController.matchSearch | Function should return true depending on if the match fits the search criteria by round or team name', () => {
+    let match;
+    beforeEach(() => {
+      match = {
+        round: 1,
+        teams: {
+          one: {
+            name: 'One',
+          },
+          two: {
+            name: 'Two',
+          },
+        },
+      };
+    });
+
+    it('and should return true if the search query == match.round. Note the double equals.', () => {
+      MatchController.gameQuery = '1';
+      expect(MatchController.matchSearch(match)).toBe(true);
+      MatchController.gameQuery = '2';
+      expect(MatchController.matchSearch(match)).toBe(false);
+    });
+
+    it('and should normalize team names and search query to lowercase when searching.', () => {
+      MatchController.gameQuery = 'One';
+      expect(MatchController.matchSearch(match)).toBe(true);
+      MatchController.gameQuery = 'one';
+      expect(MatchController.matchSearch(match)).toBe(true);
+      MatchController.gameQuery = 'oNe';
+      expect(MatchController.matchSearch(match)).toBe(true);
+      match.teams.one.name = 'oNe';
+      expect(MatchController.matchSearch(match)).toBe(true);
+    });
+
+    it('and should return true if search query contains part or all of the team\'s names.', () => {
+      MatchController.gameQuery = 'on';
+      expect(MatchController.matchSearch(match)).toBe(true);
+      MatchController.gameQuery = 'oN';
+      expect(MatchController.matchSearch(match)).toBe(true);
+      MatchController.gameQuery = 'twos';
+      expect(MatchController.matchSearch(match)).toBe(false);
+    });
   });
 });
