@@ -76,13 +76,20 @@ form.readonly-form * input, form.readonly-form * select, form.readonly-form * te
     color: white !important;
 }
 
+#tab-holder {
+    padding-left:0px;
+    padding-right:10px;
+    padding-top:90px
+}
+
 @media (orientation: landscape) and (max-width: 500px), (max-height: 600px) {
     nav.no-fixed-sm {
         position: relative;
     }
+    #tab-holder {
+       padding: 0;
+    }
 }
-
-
 
 li.active > a {
     /*color: lightgreen !important;*/
