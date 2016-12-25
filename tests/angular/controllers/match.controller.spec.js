@@ -266,7 +266,7 @@ describe('MatchController | ', () => {
     });
   });
 
-  describe('MatchController.minPossibleTossupsHeard | ', () => {
+  describe('MatchController.minPossibleTossupsHeard | Minimum possible TUH should be calculated correctly', () => {
     let match;
 
     beforeEach(() => {
@@ -276,12 +276,14 @@ describe('MatchController | ', () => {
             players: [
               {
                 points: {
-
+                  10: 1,
+                  15: 1,
                 },
               },
               {
                 points: {
-
+                  10: 0,
+                  15: 0,
                 },
               },
             ],
@@ -290,12 +292,14 @@ describe('MatchController | ', () => {
             players: [
               {
                 points: {
-
+                  10: 0,
+                  15: 0,
                 },
               },
               {
                 points: {
-
+                  10: 0,
+                  15: 0,
                 },
               },
             ],
@@ -303,5 +307,33 @@ describe('MatchController | ', () => {
         ],
       };
     });
+
+    it('and should return 0 if match.teams is undefined or null', () => {
+      match.teams = null;
+      expect(MatchController.minPossibleTossupsHeard(match)).toBe(0);
+      match.teams = undefined;
+      expect(MatchController.minPossibleTossupsHeard(match)).toBe(0);
+    });
+
+    it('and should return the sum of all gets if there are no negs', () => {
+      expect(MatchController.minPossibleTossupsHeard(match)).toBe(2);
+      match.teams[1].players[0].points[10] = 3;
+      expect(MatchController.minPossibleTossupsHeard(match)).toBe(5);
+    });
+
+    it('and should return the total number of correct answers if the # of incorrect is less than or equal to correct', () => {
+      match.teams[0].players[0].points['-5'] = 1; // negs < correct
+      expect(MatchController.minPossibleTossupsHeard(match)).toBe(2);
+      match.teams[0].players[1].points['-5'] = 1; // negs = correct
+      expect(MatchController.minPossibleTossupsHeard(match)).toBe(2);
+    });
+
+    it('and should return the sum of correct answers and (incorrect - correct) if the number of incorrect > correct', () => {
+      match.teams[1].players[0].points['-5'] = 2; // negs = correct
+      expect(MatchController.minPossibleTossupsHeard(match)).toBe(2);
+      match.teams[1].players[1].points['-5'] = 1; // one extra neg
+      expect(MatchController.minPossibleTossupsHeard(match)).toBe(3);
+    });
+
   });
 });

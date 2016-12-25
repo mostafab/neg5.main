@@ -228,7 +228,7 @@
                 }, 0)
                 return sum += totalNegs
             }, 0) : 0
-            
+
             if (totalWrongAnswers > totalCorrectAnswers) {
                 const extraNegs = totalWrongAnswers - totalCorrectAnswers
                 return extraNegs + totalCorrectAnswers
