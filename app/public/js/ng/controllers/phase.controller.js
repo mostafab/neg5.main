@@ -101,7 +101,7 @@
         };
 
         vm.isValidNewPhaseName = function (phaseName) {
-            phaseName = phaseName.toLowerCase();
+            phaseName = phaseName.toLowerCase().trim();
             return phaseName.length > 0 && !vm.phases.some(function (phase) {
                 return phase.name.toLowerCase() === phaseName;
             });

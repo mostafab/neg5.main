@@ -1,18 +1,16 @@
 'use strict';
 
+/* global angular */
 (function () {
-
     angular.module('tournamentApp').controller('ScoresheetCtrl', ['$scope', 'Tournament', 'Team', 'Phase', 'Game', 'Cookies', ScoresheetCtrl]);
 
     function ScoresheetCtrl($scope, Tournament, Team, Phase, Game, Cookies) {
-
         var vm = this;
 
         vm.teams = Team.teams;
         vm.pointScheme = Tournament.pointScheme;
         vm.rules = Tournament.rules;
         vm.phases = Phase.phases;
-
         vm.game = newScoresheet();
         vm.newScoresheet = newScoresheet;
 
@@ -50,7 +48,6 @@
             var id = _team$teamInfo.id;
             var name = _team$teamInfo.name;
 
-
             var toastConfig = { message: 'Loading ' + name + ' players.' };
             $scope.toast(toastConfig);
             Team.getTeamById($scope.tournamentId, id).then(function (_ref) {
@@ -61,10 +58,9 @@
                     player.active = index < vm.rules.maxActive;
                     player.tuh = 0;
                 });
-
                 toastConfig.message = 'Loaded ' + name + ' players.';
                 toastConfig.success = true;
-            }).catch(function (error) {
+            }).catch(function () {
                 toastConfig.message = 'Could not load ' + name + ' players.';
                 toastConfig.success = false;
             }).finally(function () {
@@ -77,7 +73,7 @@
             if (team.newPlayer.length > 0) {
                 (function () {
                     var toastConfig = {
-                        message: 'Adding ' + team.newPlayer + ' to ' + team.teamInfo.name
+                        message: 'Adding ' + team.newPlayer + ' to ' + team.teamInfo.name + '.'
                     };
                     $scope.toast(toastConfig);
                     Team.addPlayer($scope.tournamentId, team.teamInfo.id, team.newPlayer).then(function (player) {
@@ -88,10 +84,9 @@
                             active: team.players.length + 1 <= vm.rules.maxActive
                         });
                         team.newPlayer = '';
-
-                        toastConfig.message = 'Added ' + player.name + ' to ' + team.teamInfo.name;
+                        toastConfig.message = 'Added ' + player.name + ' to ' + team.teamInfo.name + '.';
                         toastConfig.success = true;
-                    }).catch(function (error) {
+                    }).catch(function () {
                         toastConfig.message = 'Could not add ' + team.newPlayer + ' to ' + team.teamInfo.name;
                         toastConfig.success = false;
                     }).finally(function () {
@@ -124,7 +119,6 @@
                 }).length;
                 sum += numPartsBouncedBack * vm.pointScheme.bonusPointValue;
             }
-
             return sum;
         };
 
@@ -139,7 +133,6 @@
             } else if (toIndex === players.length) {
                 toIndex = 0;
             }
-
             var tempArray = [];
             angular.copy(players, tempArray);
 

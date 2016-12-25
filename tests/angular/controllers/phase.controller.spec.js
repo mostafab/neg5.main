@@ -13,7 +13,7 @@ describe('Controller: Match', () => {
     PhaseController = controller('PhaseCtrl', { $scope });
   }));
 
-  describe('Controller should be initialized properly', () => {
+  describe('PhaseController() | Controller should be initialized properly', () => {
     it('and should be defined', () => {
       expect(PhaseController).toBeDefined();
     });
@@ -22,7 +22,7 @@ describe('Controller: Match', () => {
     });
   });
 
-  describe('Check edit phase name logic', () => {
+  describe('PhaseController.phaseNameWasChanged | Check edit phase name logic', () => {
     let phase;
     beforeEach(() => {
       phase = {};
@@ -46,7 +46,7 @@ describe('Controller: Match', () => {
       phase.name = 'Old Phase';
       phase.newName = 'Old Phase';
       expect(PhaseController.phaseNameWasChanged(phase)).toBe(false);
-    })
+    });
 
     it(' and it should return false when new phase name and old phase name are the same but new name has trailing white space', () => {
       phase.name = 'Old Phase';
@@ -66,15 +66,14 @@ describe('Controller: Match', () => {
       expect(PhaseController.phaseNameWasChanged(phase)).toBe(true);
     });
 
-    it(' and calling editPhase when phase name was not changed should set phase.editing to false', () => {
+    it('and should return true if new name has different capitalization', () => {
       phase.name = 'Old Phase';
-      phase.newName = '';
-      PhaseController.editPhase(phase);
-      expect(phase.editing).toBe(false);
+      phase.newName = 'old phase';
+      expect(PhaseController.phaseNameWasChanged(phase)).toBe(true);
     });
   });
 
-  describe('Check adding new phase logic', () => {
+  describe('PhaseController.isValidNewPhaseName | Check adding new phase logic', () => {
     let phase;
     beforeEach(() => {
       phase = {};
@@ -84,20 +83,24 @@ describe('Controller: Match', () => {
       ];
     });
 
-    it('should return true if phase name length is greater than 0 and is not the same as another phase name', () => {
+    it('and should return true if phase name length is greater than 0 and is not the same as another phase name', () => {
       phase.name = 'Next Phase';
       expect(PhaseController.isValidNewPhaseName(phase.name)).toBe(true);
-    })
+    });
 
-    it('should return false if phase name length is 0', () => {
+    it('and should return false if phase name length (trimmed) is 0', () => {
       phase.name = '';
       expect(PhaseController.isValidNewPhaseName(phase.name)).toBe(false);
-    })
+      phase.name = ' ';
+      expect(PhaseController.isValidNewPhaseName(phase.name)).toBe(false);
+    });
 
-    it('should return false if phase name is already in the existing phases', () => {
+    it('and should return false if phase name is already in the existing phases', () => {
       phase.name = 'Prelim';
       expect(PhaseController.isValidNewPhaseName(phase.name)).toBe(false);
       phase.name = 'prelim';
+      expect(PhaseController.isValidNewPhaseName(phase.name)).toBe(false);
+      phase.name = 'prelim   ';
       expect(PhaseController.isValidNewPhaseName(phase.name)).toBe(false);
     });
   });
