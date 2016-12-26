@@ -83,6 +83,27 @@ form.readonly-form * input, form.readonly-form * select, form.readonly-form * te
 }
 
 @media (max-width: 767px) {
+  [data-keep-name='0'] * tr > td:nth-child(2) {
+      transition: .5s all;
+  }
+  [data-keep-name='1'] * tr > td:nth-child(2) {
+      position: absolute;
+      background: rgba(210, 220, 220, 1);
+      left: 65px;
+      width: 20%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      transition: .5s all;
+  }
+  .table-responsive > thead * th {
+      height: 40px;
+      position: relative;
+  }
+  .table-responsive > thead * th > p {
+      position: absolute;
+      top: 10px;
+  }
   .row.reorder-xs {
     transform: rotate(180deg);
     direction: rtl; /* Fix the horizontal alignment */

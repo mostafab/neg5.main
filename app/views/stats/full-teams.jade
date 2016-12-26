@@ -11,64 +11,66 @@
                 div(ng-repeat='team in PSControl.teamFullStats | filter:{team_name: PSControl.fullTeamQuery}' id='{{::team.team_id}}')
                         
                         .panel.panel-default.nf-shadow
-                            table.table.table-hover.table-condensed.table-responsive
-                                thead
-                                    tr
-                                        th.nf-blue(colspan='{{PSControl.pointScheme.length + 13}}' ng-bind='team.team_name')
-                                    tr
-                                        th.nf-gray( title='Match round') Round
-                                        th.nf-gray( title='Team\'s opponent in the match.') Opponent
-                                        th.nf-gray( title='Whether the team won (W), lost (L), or tied (T)') Result
-                                        th.nf-gray( title='Team\'s score') PF
-                                        th.nf-gray( title='Opponent team\'s score') PA
-                                        th.nf-gray( ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value' ng-bind='pv.value')
-                                        th.nf-gray( title='Tossups heard in the match') TUH
-                                        th.nf-gray( title='Points per tossup heard') PPTH
-                                        th.nf-gray( title='Ratio between powers and negs') P / N
-                                        th.nf-gray( title='Ratio between gets and negs') G / N
-                                        th.nf-gray( title='Number of bonuses heard (does not include overtime)') Bonuses Heard
-                                        th.nf-gray( title='Bonus points gotten (score - tossup points - bounceback_points)') Bonus Points
-                                        th.nf-gray( title='Number of bounceback points') Bounceback Points
-                                        th.nf-gray( title='Team\'s points per bonus') PPB
-                                tbody
-                                    tr(ng-repeat='match in team.matches | orderBy:"round"')
-                                        td(ng-bind='match.round')
-                                        td(ng-bind='match.opponent_name')
-                                        td(ng-bind='match.result')
-                                        td(ng-bind='match.score')
-                                        td(ng-bind='match.opponent_score')
-                                        td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' ng-bind='match.pointMap[pv.value]')
-                                        td(ng-bind='match.tossups_heard')
-                                        td(ng-bind='match.score / match.tossups_heard | number:2')
-                                        td(ng-bind='match.total_powers / match.total_negs | number:2')
-                                        td(ng-bind='match.total_gets / match.total_negs | number:2')
-                                        td(ng-bind='match.total_gets - match.overtime_tossups')
-                                        td(ng-bind='match.score - match.tossup_points - match.bounceback_points')
-                                        td(ng-bind='match.bounceback_points')
-                                        td(ng-bind='match.ppb')
+                            .table-responsive(keep-name-scroll)
+                                table.table.table-hover.table-condensed.table-responsive
+                                    thead
+                                        tr
+                                            th.nf-blue(colspan='{{PSControl.pointScheme.length + 13}}' ng-bind='team.team_name')
+                                        tr
+                                            th.nf-gray( title='Match round') Round
+                                            th.nf-gray( title='Team\'s opponent in the match.') Opponent
+                                            th.nf-gray( title='Whether the team won (W), lost (L), or tied (T)') Result
+                                            th.nf-gray( title='Team\'s score') PF
+                                            th.nf-gray( title='Opponent team\'s score') PA
+                                            th.nf-gray( ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this team got for this value' ng-bind='pv.value')
+                                            th.nf-gray( title='Tossups heard in the match') TUH
+                                            th.nf-gray( title='Points per tossup heard') PPTH
+                                            th.nf-gray( title='Ratio between powers and negs') P / N
+                                            th.nf-gray( title='Ratio between gets and negs') G / N
+                                            th.nf-gray( title='Number of bonuses heard (does not include overtime)') Bonuses Heard
+                                            th.nf-gray( title='Bonus points gotten (score - tossup points - bounceback_points)') Bonus Points
+                                            th.nf-gray( title='Number of bounceback points') Bounceback Points
+                                            th.nf-gray( title='Team\'s points per bonus') PPB
+                                    tbody
+                                        tr(ng-repeat='match in team.matches | orderBy:"round"')
+                                            td(ng-bind='match.round')
+                                            td(ng-bind='match.opponent_name')
+                                            td(ng-bind='match.result')
+                                            td(ng-bind='match.score')
+                                            td(ng-bind='match.opponent_score')
+                                            td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' ng-bind='match.pointMap[pv.value]')
+                                            td(ng-bind='match.tossups_heard')
+                                            td(ng-bind='match.score / match.tossups_heard | number:2')
+                                            td(ng-bind='match.total_powers / match.total_negs | number:2')
+                                            td(ng-bind='match.total_gets / match.total_negs | number:2')
+                                            td(ng-bind='match.total_gets - match.overtime_tossups')
+                                            td(ng-bind='match.score - match.tossup_points - match.bounceback_points')
+                                            td(ng-bind='match.bounceback_points')
+                                            td(ng-bind='match.ppb')
                         
                         .panel.panel-default.nf-shadow
-                            table.table.table-hover.table-condensed.table-responsive
-                                thead
-                                    tr
-                                        th.nf-gray( title='The player\'s name in the tournament.') Player Name
-                                        th.nf-gray( title='The team the player is representing.') Team
-                                        th.nf-gray(title='The number of total games this player played.') GP
-                                        th.nf-gray( ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this player got for this value' ng-bind='pv.value')
-                                        th.nf-gray( title='A player\'s total number of tossups heard') TUH  
-                                        th.nf-gray( title='A player\'s total number of points') Points
-                                        th.nf-gray( title='A player\'s ratio between total points and tossups heard.') P / TU
-                                        th.nf-gray( title='A player\'s points per game.') PPG
-                                
-                                tbody
-                                    tr(ng-if='player.team_id === team.team_id' ng-repeat='player in PSControl.playerStats track by player.player_id' ng-click='PSControl.tab = "player_full"; PSControl.setHashLocation(player.player_id)')
-                                        td(ng-bind='player.player_name')
-                                        td(ng-bind='player.team_name')
-                                        td(ng-bind='player.games_played')
-                                        td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' ng-bind='player.pointMap[pv.value] || 0')
-                                        td(ng-bind='player.total_player_tuh')
-                                        td(ng-bind='player.total_points')
-                                        td(ng-bind='player.points_per_tossup')
-                                        td(ng-bind='player.points_per_game')
+                            .table-responsive(keep-name-scroll)
+                                table.table.table-hover.table-condensed.table-responsive
+                                    thead
+                                        tr
+                                            th.nf-gray( title='The player\'s name in the tournament.') Player Name
+                                            th.nf-gray( title='The team the player is representing.') Team
+                                            th.nf-gray(title='The number of total games this player played.') GP
+                                            th.nf-gray( ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' title='The total number of tossups this player got for this value' ng-bind='pv.value')
+                                            th.nf-gray( title='A player\'s total number of tossups heard') TUH  
+                                            th.nf-gray( title='A player\'s total number of points') Points
+                                            th.nf-gray( title='A player\'s ratio between total points and tossups heard.') P / TU
+                                            th.nf-gray( title='A player\'s points per game.') PPG
+                                    
+                                    tbody
+                                        tr(ng-if='player.team_id === team.team_id' ng-repeat='player in PSControl.playerStats track by player.player_id' ng-click='PSControl.tab = "player_full"; PSControl.setHashLocation(player.player_id)')
+                                            td(ng-bind='player.player_name')
+                                            td(ng-bind='player.team_name')
+                                            td(ng-bind='player.games_played')
+                                            td(ng-repeat='pv in PSControl.pointScheme | orderBy:"value":true' ng-bind='player.pointMap[pv.value] || 0')
+                                            td(ng-bind='player.total_player_tuh')
+                                            td(ng-bind='player.total_points')
+                                            td(ng-bind='player.points_per_tossup')
+                                            td(ng-bind='player.points_per_game')
 
                         
