@@ -36,11 +36,11 @@
                     div(class="collapsable nf-panel-heading nf-blue") Divisions
                     div(class="panel-body tournament-panel nf-panel-body nf-white")
                         .row
-                            div.nf-margin(class="col-md-12 col-sm-12 col-lg-12 col-xl-9" ng-repeat='phase in Config.phases')
-                                .col-lg-4.col-md-4.col-sm-4
-                                    .input-group.btn-block
-                                        div.nf-dark-blue.nf-panel-heading(ng-bind='phase.name') 
-                                .col-lg-8.col-md-8.col-sm-8
+                            div(class="clearfix col-md-12 col-sm-12 col-lg-12" ng-repeat='phase in Config.phases')
+                                .col-lg-4.col-md-4.col-sm-4.col-xs-3
+                                    .btn-block
+                                        div.nf-dark-blue.nf-panel-heading.truncate-xs(ng-bind='phase.name') 
+                                .col-lg-8.col-md-8.col-sm-8.col-xs-9
                                     .row.nf-margin(ng-repeat='division in Config.divisions' ng-if='division.phaseId === phase.id')
                                         .col-lg-10.col-md-10.col-sm-10
                                             .input-group
