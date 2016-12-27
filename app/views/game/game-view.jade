@@ -1,7 +1,7 @@
 div(class="panel nf-panel" ng-show='Game.loadedGame.id')
     .nf-panel-heading.nf-blue
         .row
-            .col-lg-2.col-md-2.col-sm-2.col-xs-2
+            .col-lg-6.col-md-6.col-sm-6.col-xs-6
                 button.nf-button.nf-orange.btn-md.btn(ng-click='Game.loadedGame = {}')
                     i.fa.fa-arrow-left
                 button.nf-button.btn-md.btn.nf-blue(ng-click='Game.loadedGame.editing = true' ng-show='!Game.loadedGame.editing' ng-if='tournamentContext.admin')
@@ -9,9 +9,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                 button.nf-button.btn-md.btn.nf-red(ng-click='Game.resetLoadedGame(); Game.loadedGame.editing = false' ng-show='Game.loadedGame.editing' ng-if='tournamentContext.admin')
                     i.fa.fa-times
                 
-            .col-lg-8.col-md-8.col-sm-8.col-xs-8.center 
-                // h5(style='font-size:1.3em;margin:1.6%') {{Game.loadedGame.teams[0].teamInfo.name}} vs {{Game.loadedGame.teams[1].teamInfo.name}}
-            .col-lg-2.col-md-2.col-sm-2.col-xs-2
+            .col-lg-6.col-md-6.col-sm-6.col-xs-6
                 button.nf-button.nf-red.btn-md.btn.right(title='Delete Game.' ng-if='tournamentContext.admin' ng-click='Game.deleteGame(Game.loadedGame.id)')
                     i.fa.fa-trash
 
@@ -37,7 +35,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                             table(class='table')                                   
                                 thead
                                     tr(class='nf-blue')
-                                        th(class='no-border nf-label')
+                                        th(class='no-border nf-label' ng-bind='Game.loadedGame.teams[0].teamInfo.name')
                                         th(class='center no-border nf-label') TUH
                                         th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ' ng-bind='point.value')
                                         th(class='center no-border nf-label') Total
@@ -57,7 +55,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                             table(class='table')                                   
                                 thead
                                     tr(class='nf-blue')
-                                        th.nf-label 
+                                        th.nf-label(ng-bind='Game.loadedGame.teams[1].teamInfo.name')
                                         th(class='center no-border nf-label') TUH
                                         th(class='center nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value" ' ng-bind='point.value')
                                         th(class='center nf-label') Total
@@ -122,12 +120,18 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                             .col-md-6.col-sm-6.col-xs-12
                                 label.label.nf-blue.nf-label.btn-block(style='float:right') Bonuses / PPB 
                             .col-md-6.col-sm-6.col-xs-12
-                                .form-control.readonly.nf-input {{Game.teamBonusPoints(Game.loadedGame.teams[0])}} / {{Game.teamPPB(Game.loadedGame.teams[0]) | number:2}} PPB
+                                .form-control.readonly.nf-input
+                                    p.inline.nf-margin {{Game.teamBonusPoints(Game.loadedGame.teams[0])}}
+                                    p.inline /
+                                    p.inline.nf-margin(ng-class='{"warning-text": !Game.isValidPPB(Game.teamPPB(Game.loadedGame.teams[0]))}') {{Game.teamPPB(Game.loadedGame.teams[0]) | number:2}}
 
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
                         .row.reorder-xs
                             .col-md-6.col-sm-6.col-xs-12
-                                .form-control.readonly.nf-input {{Game.teamBonusPoints(Game.loadedGame.teams[1])}} / {{Game.teamPPB(Game.loadedGame.teams[1]) | number:2}} PPB
+                                .form-control.readonly.nf-input
+                                    p.inline.nf-margin {{Game.teamBonusPoints(Game.loadedGame.teams[1])}}
+                                    p.inline /
+                                    p.inline.nf-margin(ng-class='{"warning-text": !Game.isValidPPB(Game.teamPPB(Game.loadedGame.teams[1]))}') {{Game.teamPPB(Game.loadedGame.teams[1]) | number:2}}
                             .col-md-6.col-sm-6.col-xs-12
                                 label.label.nf-blue.nf-label.btn-block(style='float:right') Bonuses / PPB 
                 br

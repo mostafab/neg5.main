@@ -36,6 +36,9 @@ a.tournament-card:hover {
 .warning-text {
     color: #f9a825 !important;
 }
+.error-text {
+    color: red;
+}
 
 .nf-modal-content {
     border: none;

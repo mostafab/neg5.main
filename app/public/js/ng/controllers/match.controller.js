@@ -1,7 +1,7 @@
 'use strict';
 
+/* global angular */
 (function () {
-
     angular.module('tournamentApp').filter('preventSameMatchTeams', function () {
         return function (items, otherTeamId) {
             return items.filter(function (item) {
@@ -56,6 +56,14 @@
             var totalTossupsWithoutOT = totalTeamTossupGets(team) - (team.overtime || 0);
             var totalBonusPoints = vm.teamBonusPoints(team);
             return totalBonusPoints / totalTossupsWithoutOT || 0;
+        };
+
+        vm.isValidPPB = function (givenPPB) {
+            var _vm$pointScheme = vm.pointScheme;
+            var partsPerBonus = _vm$pointScheme.partsPerBonus;
+            var bonusPointValue = _vm$pointScheme.bonusPointValue;
+
+            return givenPPB >= 0 && givenPPB <= partsPerBonus * bonusPointValue;
         };
 
         function totalTeamTossupGets(team) {

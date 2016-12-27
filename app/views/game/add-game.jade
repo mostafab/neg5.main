@@ -30,7 +30,7 @@ div(id='add-game-div')
                                 table(class='table')                                   
                                     thead
                                         tr(class='nf-blue')
-                                            th(class='no-border nf-label')
+                                            th(class='no-border nf-label' ng-bind='Game.currentGame.teams[0].teamInfo.name') 
                                             th(class='center no-border nf-label') TUH
                                             th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ' ng-bind='point.value')
                                             th(class='center no-border nf-label') Total
@@ -50,7 +50,7 @@ div(id='add-game-div')
                                 table(class='table')                                   
                                     thead
                                         tr(class='nf-blue')
-                                            th.nf-label 
+                                            th.nf-label(ng-bind='Game.currentGame.teams[1].teamInfo.name') 
                                             th(class='center no-border nf-label') TUH
                                             th(class='center nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true' ng-bind='point.value')
                                             th(class='center nf-label') Total
@@ -114,12 +114,18 @@ div(id='add-game-div')
                                 .col-md-6.col-sm-6.col-xs-12
                                     label.label.nf-blue.nf-label.btn-block(style='float:right') Bonuses / PPB 
                                 .col-md-6.col-sm-6.col-xs-12
-                                    .form-control.readonly.nf-input {{Game.teamBonusPoints(Game.currentGame.teams[0])}} / {{Game.teamPPB(Game.currentGame.teams[0]) | number:2}} PPB
+                                    .form-control.readonly.nf-input
+                                        p.inline.nf-margin {{Game.teamBonusPoints(Game.currentGame.teams[0])}}
+                                        p.inline / 
+                                        p.inline(ng-class='{"warning-text": !Game.isValidPPB(Game.teamPPB(Game.currentGame.teams[0]))}') {{Game.teamPPB(Game.currentGame.teams[0]) | number:2}}
 
                         .col-lg-6.col-md-6.col-sm-6.col-xs-6
                             .row.reorder-xs
                                 .col-md-6.col-sm-6.col-xs-12
-                                    .form-control.readonly.nf-input {{Game.teamBonusPoints(Game.currentGame.teams[1])}} / {{Game.teamPPB(Game.currentGame.teams[1]) | number:2}} PPB
+                                    .form-control.readonly.nf-input 
+                                        p.inline.nf-margin {{Game.teamBonusPoints(Game.currentGame.teams[1])}}
+                                        p.inline / 
+                                        p.inline(ng-class='{"warning-text": !Game.isValidPPB(Game.teamPPB(Game.currentGame.teams[1]))}') {{Game.teamPPB(Game.currentGame.teams[1]) | number:2}}
                                 .col-md-6.col-sm-6.col-xs-12
                                     label.label.nf-blue.nf-label.btn-block(style='float:right') Bonuses / PPB 
                     br
