@@ -65,8 +65,11 @@ exports.default = {
         var match = _ref4.match;
 
         if (!match) return reject({ authenticated: false });
-        var token = (0, _jwt.encode)(retrievedUsername);
-        return resolve(token);
+        // const token = encode({
+        //   retrievedUsername,
+        //   date: new Date(),
+        // });
+        return resolve(retrievedUsername);
       }).catch(function (error) {
         return reject(error);
       });

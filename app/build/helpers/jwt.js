@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.decode = exports.encode = undefined;
+exports.buildUserToken = exports.decode = exports.encode = undefined;
 
 var _jwtSimple = require('jwt-simple');
 
@@ -23,4 +23,12 @@ var encode = exports.encode = function encode(payload) {
 
 var decode = exports.decode = function decode(token) {
   return _jwtSimple2.default.decode(token, secret);
+};
+
+var buildUserToken = exports.buildUserToken = function buildUserToken(username) {
+  var token = {
+    username: username,
+    issuedAt: new Date()
+  };
+  return encode(token);
 };

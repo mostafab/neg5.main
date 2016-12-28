@@ -1,4 +1,5 @@
 import db from '../../data-access/account';
+import { buildUserToken } from '../../helpers/jwt';
 
 export default {
 
@@ -20,7 +21,7 @@ export default {
       password: password.trim(),
     };
     db.authenticateAccount(accountToRetrieve)
-        .then(jwt => resolve(jwt))
+        .then(foundUsername => resolve(buildUserToken(foundUsername)))
         .catch(error => reject(error));
   }),
 

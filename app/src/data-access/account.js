@@ -35,8 +35,11 @@ export default {
         })
         .then(({ match }) => {
           if (!match) return reject({ authenticated: false });
-          const token = encode(retrievedUsername);
-          return resolve(token);
+          // const token = encode({
+          //   retrievedUsername,
+          //   date: new Date(),
+          // });
+          return resolve(retrievedUsername);
         })
         .catch(error => reject(error));
   }),

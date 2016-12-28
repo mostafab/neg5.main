@@ -8,6 +8,8 @@ var _account = require('../../data-access/account');
 
 var _account2 = _interopRequireDefault(_account);
 
+var _jwt = require('../../helpers/jwt');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -42,8 +44,8 @@ exports.default = {
         user: username.trim().toLowerCase(),
         password: password.trim()
       };
-      _account2.default.authenticateAccount(accountToRetrieve).then(function (jwt) {
-        return resolve(jwt);
+      _account2.default.authenticateAccount(accountToRetrieve).then(function (foundUsername) {
+        return resolve((0, _jwt.buildUserToken)(foundUsername));
       }).catch(function (error) {
         return reject(error);
       });
