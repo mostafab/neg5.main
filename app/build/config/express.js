@@ -62,6 +62,8 @@ var _passport2 = _interopRequireDefault(_passport);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var indexRoute = require('../routes/index');
+
 exports.default = function () {
   var app = (0, _express2.default)();
   var _configuration$minify = _configuration2.default.minifyJs;
@@ -88,7 +90,7 @@ exports.default = function () {
 
   app.use(_express2.default.static(_path2.default.join(__dirname, '../../public')));
 
-  require('../routes/index.js')(app);
+  indexRoute(app);
   (0, _account2.default)(app);
   (0, _tournament2.default)(app);
   (0, _match2.default)(app);

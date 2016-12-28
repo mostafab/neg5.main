@@ -15,6 +15,8 @@ import playerApi from '../routes/api/player';
 import configuration from './configuration';
 import passport from './passport/passport';
 
+const indexRoute = require('../routes/index');
+
 export default () => {
   const app = express();
   const { minifyJs = false, env = 'development' } = configuration;
@@ -37,7 +39,7 @@ export default () => {
 
   app.use(express.static(path.join(__dirname, '../../public')));
 
-  require('../routes/index.js')(app);
+  indexRoute(app);
   accountApi(app);
   tournamentApi(app);
   matchApi(app);

@@ -18,18 +18,15 @@ block content
                     div.collapse.navbar-collapse.hidden-lg.hidden-md.hidden-sm#tournament-list
                         ul.nav.navbar-nav
                             li(class="center" ng-click='PSControl.tab = "team_standings"' ng-class="{'active': PSControl.tab === 'team_standings'}")
-                                a(data-toggle="tab" class='tournament-tab btn-md') Team Standings
+                                a(data-toggle="tab" class='tournament-tab btn-md' href='#/team_standings') Team Standings
                             li(class="center" ng-click='PSControl.tab = "player_standings"' ng-class="{'active': PSControl.tab === 'player_standings'}")
-                                a(data-toggle="tab" class='tournament-tab btn-md') Individual
+                                a(data-toggle="tab" class='tournament-tab btn-md' href='#/individual') Individual
                             li(class="center" ng-click='PSControl.tab = "team_full"' ng-class="{'active': PSControl.tab === 'team_full'}")
-                                a(data-toggle="tab" class='tournament-tab btn-md') Team Full
+                                a(data-toggle="tab" class='tournament-tab btn-md' href='#/team_full') Team Full
                             li(class="center" ng-click='PSControl.tab = "player_full"' ng-class="{'active': PSControl.tab === 'player_full'}")
-                                a(data-toggle='tab' class='tournament-tab btn-md') Player Full
+                                a(data-toggle='tab' class='tournament-tab btn-md' href='#/player_full') Player Full
                             li(class="center" ng-click='PSControl.tab = "round_report"' ng-class="{'active': PSControl.tab === 'round_report'}")
-                                a(data-toggle="tab" class='tournament-tab btn-md') Round Report
-                        
-                        
-                        
+                                a(data-toggle="tab" class='tournament-tab btn-md' href='#/round_report') Round Report
                         
             div(class="content-wrapper box" style='padding-left:0px;padding-right:10px;padding-top:90px;')
                 
