@@ -65,4 +65,4 @@ gulp.task('watch', () => {
    gulp.watch(['app/public/css/v2/*.css'], ['minify-css']);
 });
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['babel-server', 'babel-client', 'minify-js', 'minify-css', 'watch']);
