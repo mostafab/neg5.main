@@ -12,18 +12,18 @@ I write my tests using Jasmine and Karma. [Here's a good guide to using those to
 # ES6 to ES5 Transpilation
 As you may have noticed, Neg 5's file structure has a ```src``` folder
 and a ```build``` folder. Both of these hold server side code. Similarly,
-there are folders named ```es6``` and ```js``` within the ```public``` folder.
+there are folders named ```es6``` and ```es5``` within the ```public/javascript``` folder.
 Both the ```es6``` and ```src``` folders hold ES6 Javascript code, which Babel
 transpiles down to ES5 code and pipes to the other two folders. To set up automatic
 Babel transpilation, run the ```gulp``` command. This will prompt gulp to
 automatically listen for file changes and transpile the appropriate files as specified
-by ```gulpfile.babel.js```. For client side javascript, gulp takes the files in ```app/public/es6``` and
-transpiles them to ```app/public/js/ng```, then takes those files and minifies them to ```app/public/js/min/bundle.js```.
+by ```gulpfile.babel.js```. For client side javascript, gulp takes the files in ```app/public/javascript/es6``` and
+transpiles them to ```app/public/javascript/es5```, then takes those files and minifies them to ```app/public/javascript/bundle.min.js```.
 
 You should never have to manually change the transpiled files.
 
 The ```configuration.json``` file also allows you to specify if you want to serve minified client side Javascript or not. 
-Setting a top-level key called ```minifyJs``` value to ```true``` will serve the minified, bundled version in ```app/public/js/min/bundle.js```.
+Setting a top-level key called ```minifyJs``` value to ```true``` will serve the minified, bundled version in ```app/public/javascript/bundle.min.js```.
 Omitting this key or setting it to false will serve the normal files and make gulp skip minification after transpiling.  
 Take a look at the jade files and ```gulpfile.babel.js``` to see how this works.  
 
