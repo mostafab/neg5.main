@@ -1,5 +1,7 @@
 'use strict';
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 /* global angular */
 (function () {
     angular.module('tournamentApp').filter('preventSameMatchTeams', function () {
@@ -10,9 +12,9 @@
         };
     });
 
-    angular.module('tournamentApp').controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', 'Tournament', GameCtrl]);
+    angular.module('tournamentApp').controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', 'Tournament', 'ArrayUtil', 'MathUtil', GameCtrl]);
 
-    function GameCtrl($scope, Team, Game, Phase, Tournament) {
+    function GameCtrl($scope, Team, Game, Phase, Tournament, ArrayUtil, MathUtil) {
 
         var vm = this;
 
@@ -64,6 +66,29 @@
             var bonusPointValue = _vm$pointScheme.bonusPointValue;
 
             return givenPPB >= 0 && givenPPB <= partsPerBonus * bonusPointValue;
+        };
+
+        vm.isValidScore = function () {
+            var score = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+
+            var divisors = [].concat(_toConsumableArray(vm.pointScheme.tossupValues.map(function (tv) {
+                return tv.value;
+            })), [vm.pointScheme.bonusPointValue]).filter(function (num) {
+                return num !== undefined;
+            }).map(function (num) {
+                return Math.abs(num);
+            });
+            var uniqueDivisors = ArrayUtil.arrayUnique(divisors, function (num) {
+                return num;
+            });
+            if (uniqueDivisors.length === 0) {
+                return true;
+            }
+            var gcd = uniqueDivisors[0];
+            for (var i = 0; i < uniqueDivisors.length - 1; i++) {
+                gcd = MathUtil.gcd(uniqueDivisors[i], uniqueDivisors[i + 1]);
+            }
+            return Math.abs(score) % gcd === 0;
         };
 
         function totalTeamTossupGets(team) {

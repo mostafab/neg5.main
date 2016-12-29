@@ -8,9 +8,9 @@
       });
 
   angular.module('tournamentApp')
-      .controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', 'Tournament', GameCtrl]);
+      .controller('GameCtrl', ['$scope', 'Team', 'Game', 'Phase', 'Tournament', 'ArrayUtil', 'MathUtil', GameCtrl]);
 
-  function GameCtrl($scope, Team, Game, Phase, Tournament) {
+  function GameCtrl($scope, Team, Game, Phase, Tournament, ArrayUtil, MathUtil) {
 
     const vm = this;
 
@@ -56,19 +56,34 @@
       return givenPPB >= 0 && givenPPB <= (partsPerBonus * bonusPointValue);
     };
 
+    vm.isValidScore = (score = 0) => {
+      const divisors = [...vm.pointScheme.tossupValues.map(tv =>
+        tv.value), vm.pointScheme.bonusPointValue].filter(num => num !== undefined)
+        .map(num => Math.abs(num));
+      const uniqueDivisors = ArrayUtil.arrayUnique(divisors, num => num);
+      if (uniqueDivisors.length === 0) {
+        return true;
+      }
+      let gcd = uniqueDivisors[0];
+      for (let i = 0; i < uniqueDivisors.length - 1; i++) {
+        gcd = MathUtil.gcd(uniqueDivisors[i], uniqueDivisors[i + 1]);
+      }
+      return Math.abs(score) % gcd === 0;
+    };
+
     function totalTeamTossupGets(team) {
-        if (!team || !team.players) return 0;
-          let totalTossups = team.players.map(player => {
-            let sum = 0;
-            for (let pv in player.points) {
-                if (player.points.hasOwnProperty(pv) && pv > 0) {
-                    sum += player.points[pv];
-                }
-            }
-            return sum;
-        })
-        .reduce((sum, current) => sum + current, 0);
-        return totalTossups;
+      if (!team || !team.players) return 0;
+      const totalTossups = team.players.map(player => {
+        let sum = 0;
+        for (const pv in player.points) {
+          if (player.points.hasOwnProperty(pv) && pv > 0) {
+            sum += player.points[pv];
+          }
+        }
+        return sum;
+      })
+      .reduce((sum, current) => sum + current, 0);
+      return totalTossups;
     }
     vm.totalTeamTossupGets = totalTeamTossupGets;
 
