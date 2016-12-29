@@ -152,7 +152,7 @@
       const cycle = cycleIndex + 1 === vm.game.currentCycle.number ? vm.game.currentCycle : vm.game.cycles[cycleIndex];
       return cycle.bonuses.filter(b => b === teamId).length * vm.pointScheme.bonusPointValue;
     };
-    
+
     vm.getTeamScoreUpToCycle = (teamId, cycleIndex) => {
         let score = 0;
         for (let i = 0; i <= cycleIndex; i++) {
@@ -172,7 +172,7 @@
             })
             score += vm.game.currentCycle.bonuses.filter(b => b === teamId).length * vm.pointScheme.bonusPointValue;
         }
-        
+
         return score;
     }
 
@@ -196,7 +196,7 @@
         }
 
         incrementActivePlayersTUH(1);
-        
+
         saveScoresheet();
 
     }
@@ -219,7 +219,7 @@
         }
 
         incrementActivePlayersTUH(-1);
-        
+
         saveScoresheet();
     }
 
@@ -235,30 +235,30 @@
                 value: answer.value,
                 type: answer.type
             })
-        }            
+        }
     }
-    
+
     vm.getNumberOfTossupTypeForPlayer = (player, tossupValue) => {
         let cycleTotal = vm.game.cycles.reduce((total, cycle) => {
-            
+
             let numberInCycle = cycle.answers.filter(a => a.playerId === player.id && a.value === tossupValue.value).length;
-            
+
             return total + numberInCycle;
-            
+
         }, 0);
-        
-        let numberInCurrentCycle = vm.game.currentCycle.answers.filter(a => a.playerId === player.id && a.type === tossupValue.type).length; 
-        
+
+        let numberInCurrentCycle = vm.game.currentCycle.answers.filter(a => a.playerId === player.id && a.type === tossupValue.type).length;
+
         return cycleTotal + numberInCurrentCycle;
     }
-    
+
     vm.getPlayerTotalPoints = (player) => {
         let total = 0;
         vm.pointScheme.tossupValues.forEach(tv => {
             let numberForCurrentTV = vm.getNumberOfTossupTypeForPlayer(player, tv);
-            
+
             total += (numberForCurrentTV * tv.value);
-        })            
+        })
         return total;
 
     }
@@ -268,7 +268,7 @@
             vm.switchCurrentCycleContext(true);
         }
     }
-    
+
     vm.removeLastAnswerFromCycle = (cycle) => {
         cycle.answers.pop();
         cycle.bonuses = [];
@@ -283,15 +283,15 @@
     vm.switchCurrentCycleContext = (toBonus) => {
         vm.game.onTossup = !toBonus;
     }
-    
+
     vm.teamDidNotNegInCycle = (teamId, cycle) => {
         return cycle.answers.findIndex(answer => answer.type === 'Neg' && answer.teamId === teamId) === -1;
     }
-    
+
     vm.removeTeamNegsFromCycle = (teamId, cycle) => {
         cycle.answers = cycle.answers.filter(a => !(a.type === 'Neg' && a.teamId === teamId));
     }
-    
+
     vm.loadLastSavedScoresheet = () => {
         let lastScoresheet = Cookies.localStorage.get('scoresheet_' + $scope.tournamentId);
         if (!lastScoresheet) {
@@ -307,13 +307,13 @@
                     message: 'Loaded scoresheet.',
                     success: true,
                     hideAfter: true
-                })      
+                })
             } catch (err) {
                 $scope.toast({
                     message: 'Could not read scoresheet.',
                     success: false,
                     hideAfter: true
-                }) 
+                })
             }
         }
     }
@@ -349,7 +349,7 @@
     }
 
     vm.editPlayerAnswerForCycle = (playerId, teamId, newTossupValue, cycle) => {
-        
+
         let filterFunction;
 
         if (newTossupValue && newTossupValue.type !== 'Neg') {
@@ -386,7 +386,7 @@
             cycle.editingBonus = false;
         }
     }
-    
+
     vm.submitScoresheet = () => {
         if (!vm.scoresheetForm.$valid) {
             $scope.toast({
@@ -401,7 +401,7 @@
                 hideAfter: true
             })
         } else {
-            let parsedScoresheet = vm.parseScoresheet(vm.game);    
+            let parsedScoresheet = vm.parseScoresheet(vm.game);
             let toastConfig = {
                 message: 'Adding match.'
             }
@@ -410,9 +410,9 @@
                 .then(match => {
                     vm.game.id = match[0].id;
                     vm.game.submitted = true;
-                    
+
                     saveScoresheet();
-                    
+
                     toastConfig.success = true;
                     toastConfig.message = 'Added match';
                     Game.getGames($scope.tournamentId);
@@ -427,7 +427,7 @@
                 })
         }
     }
-    
+
     vm.parseScoresheet = (scoresheet) => {
         let game = {
             moderator: scoresheet.moderator,
@@ -464,14 +464,14 @@
                             part: index + 1,
                             teamThatGotBonus: c.bonuses[index] || null
                         }
-                    })       
+                    })
                 }
-            }) 
+            })
         }
-        
+
         return game;
     }
-    
+
     vm.revertScoresheetSubmission = () => {
         let matchId = vm.game.id;
         if (matchId) {
@@ -483,7 +483,7 @@
                 .then(() => {
                     vm.game.id = null;
                     vm.game.submitted = false;
-                    
+
                     toastConfig.message = 'Reverted submission';
                     toastConfig.success = true;
                 })
@@ -497,7 +497,7 @@
                 })
         }
     }
-    
+
     function makeArray(length) {
         let arr = [];
         for (let i = 0; i < length; i++) {
@@ -505,15 +505,15 @@
         }
         return arr;
     }
-    
+
     function teamDidNotAnswerInCycle(team, cycle) {
         return cycle.answers.findIndex(answer => answer.teamId === team.id) === -1;
     }
-    
+
     function cycleHasCorrectAnswer(cycle) {
         return cycle.answers.some(a => a.type !== 'Neg');
     }
-    
+
     function teamAnsweredTossupCorrectly(teamId, cycle) {
         return cycle.answers.some(a => a.teamId === teamId && a.type !== 'Neg');
     }
@@ -538,12 +538,12 @@
         }
         return arr;
     }
-    
+
     function saveScoresheet() {
         vm.game.lastSavedAt = new Date();
         Cookies.localStorage.set('scoresheet_' + $scope.tournamentId, JSON.stringify(vm.game));
     }
-      
+
   }
-    
+
 })();
