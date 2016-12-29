@@ -10,7 +10,7 @@
       };
 
       const gcdArray = (arr) => {
-        if (!arr) {
+        if (!arr || !Array.isArray(arr)) {
           throw new Error(`Invalid parameter: ${arr}`);
         }
         if (arr.length === 0) {
