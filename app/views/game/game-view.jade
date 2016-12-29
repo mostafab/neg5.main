@@ -75,6 +75,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                         div(class="row")
                             div(class="col-sm-6 col-md-6 col-xs-12")
                                 label(class="label nf-blue nf-label btn-block" style='float:right') Team 1 Score *
+                                    p.warning-text.wrap(ng-hide='Game.isValidScore(Game.loadedGame.teams[0].score)') Invalid score.
                             div(class="col-md-6 col-sm-6 col-md-6")
                                 input(required type="number" name='leftScore' ng-class="{'nf-error' : Game.loadedGame.leftScore.$invalid && Game.loadedGame.leftScore.$touched}"  class="form-control nf-input" placeholder="{{(Game.loadedGame.teams[0].teamInfo.name || 'Team 1') + ' Score'}}" ng-model='Game.loadedGame.teams[0].score')
                         br
@@ -87,9 +88,10 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                     div(class="col-lg-6 col-md-6 col-sm-6 col-xs-6")
                         div(class="row reorder-xs")
                             div(class="col-md-6 col-sm-6")
-                                input(required type="number" class="form-control nf-input " name="rightScore" ng-class="{'nf-error' : Game.editGameForm.rightScore.$invalid && Game.editGameForm.rightScore.$touched}" placeholder="{{(Game.loadedGame.teams[1].teamInfo.name || 'Team 2') + ' Score'}}" ng-model='Game.loadedGame.teams[1].score') 
+                                input(required type="number" class="form-control nf-input " name="rightScore" ng-class="{'nf-error' : Game.editGameForm.rightScore.$invalid && Game.editGameForm.rightScore.$touched}" placeholder="{{(Game.loadedGame.teams[1].teamInfo.name || 'Team 2') + ' Score'}}" ng-model='Game.loadedGame.teams[1].score')
                             div(class="col-md-6 col-sm-6")
                                 label(class="label nf-blue nf-label btn-block" style='float:right') Team 2 Score *
+                                    p.warning-text.wrap(ng-hide='Game.isValidScore(Game.loadedGame.teams[1].score)') Invalid score.
                         br
                         div(class="row reorder-xs" ng-if='Game.rules.bouncebacks')
                             div(class="col-md-6 col-sm-6")

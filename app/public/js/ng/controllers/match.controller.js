@@ -84,10 +84,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             if (uniqueDivisors.length === 0) {
                 return true;
             }
-            var gcd = uniqueDivisors[0];
-            for (var i = 0; i < uniqueDivisors.length - 1; i++) {
-                gcd = MathUtil.gcd(uniqueDivisors[i], uniqueDivisors[i + 1]);
-            }
+            var gcd = MathUtil.gcdArray(uniqueDivisors);
             return Math.abs(score) % gcd === 0;
         };
 
