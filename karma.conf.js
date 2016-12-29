@@ -22,6 +22,7 @@ module.exports = function(config) {
       'app/public/js/ng/app.js',
       'app/public/js/ng/index.js',
       'app/public/js/ng/home.js',
+      'app/public/js/ng/factories/*.js',
       'app/public/js/ng/services/*.js',
       'app/public/js/ng/controllers/*.js',
       'tests/**/*.js'
