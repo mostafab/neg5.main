@@ -17,7 +17,7 @@
       if (arr.length === 0) {
         throw new Error('Empty array given.');
       }
-      var currentGcd = arr[0];
+      var currentGcd = Math.abs(arr[0]);
       for (var i = 0; i < arr.length - 1; i++) {
         currentGcd = gcd(currentGcd, arr[i + 1]);
       }
