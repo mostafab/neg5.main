@@ -55,12 +55,12 @@ block content
                         div(class="tab-pane fade angular-animate" id="overview" ng-class="{'active in' : Tournament.tab ==='overview', 'fade': Tournament.tab !=='overview'}")
                             include ./tournament-tab.jade
 
-                        div(class='tab-pane fade angular-animate' id='collaborators' ng-controller='CollabCtrl as Collab' ng-class="{'active in' : Tournament.tab ==='collaborator'}")
-                            include ./../collaborator/collaborator-tab.jade                        
+                        //- div(class='tab-pane fade angular-animate' id='collaborators' ng-controller='CollabCtrl as Collab' ng-class="{'active in' : Tournament.tab ==='collaborator'}")
+                        //-     include ./../collaborator/collaborator-tab.jade                        
 
-                        div(class="tab-pane fade angular-animate" id="divisions" ng-controller='ConfigCtrl as Config' ng-class="{'active in' : Tournament.tab ==='config'}")
-                            div(ng-if='tournamentContext.owner === true')
-                                include ./../config/config-tab.jade
+                        //- div(class="tab-pane fade angular-animate" id="divisions" ng-controller='ConfigCtrl as Config' ng-class="{'active in' : Tournament.tab ==='config'}")
+                        //-     div(ng-if='tournamentContext.owner === true')
+                        //-         include ./../config/config-tab.jade
 
                         div(class="tab-pane fade angular-animate" id="games" ng-controller='GameCtrl as Game' ng-class="{'active in' : Tournament.tab ==='match'}")
 
@@ -88,36 +88,36 @@ block content
                             div(class='row')
                                 div(class='col-md-12' id='game-view-div')
 
-                        div(class="tab-pane fade angular-animate" id="teams" ng-controller='TeamCtrl as Team' ng-class="{'active in' : Tournament.tab ==='team'}")
+                        //- div(class="tab-pane fade angular-animate" id="teams" ng-controller='TeamCtrl as Team' ng-class="{'active in' : Tournament.tab ==='team'}")
                             
-                            .row
-                                .col-lg-1
-                                    ul(class="nav nav-bar no-border-radius")
-                                        li(class="center" ng-click='Tournament.teamTab = "add"' ng-class="{'active' : Tournament.teamTab === 'add'}")
-                                            a(data-toggle="tab" class='tournament-tab btn-md') Add Team
-                                        li(class="center" ng-click='Tournament.teamTab = "list"' ng-class="{'active': Tournament.teamTab === 'list'}")
-                                            a(data-toggle="tab" class='tournament-tab btn-md') Team List
-                                        br
-                                .col-lg-11
-                                    .tab-content
-                                        .tab-pane.fade#add-team(ng-class='{"active in" : Tournament.teamTab === "add"}')            
-                                            include ./../team/add-team.jade
-                                        .tab-pane.fade#team-list(ng-class='{"active in" : Tournament.teamTab === "list"}') 
-                                            include ./../team/team-list.jade
+                        //-     .row
+                        //-         .col-lg-1
+                        //-             ul(class="nav nav-bar no-border-radius")
+                        //-                 li(class="center" ng-click='Tournament.teamTab = "add"' ng-class="{'active' : Tournament.teamTab === 'add'}")
+                        //-                     a(data-toggle="tab" class='tournament-tab btn-md') Add Team
+                        //-                 li(class="center" ng-click='Tournament.teamTab = "list"' ng-class="{'active': Tournament.teamTab === 'list'}")
+                        //-                     a(data-toggle="tab" class='tournament-tab btn-md') Team List
+                        //-                 br
+                        //-         .col-lg-11
+                        //-             .tab-content
+                        //-                 .tab-pane.fade#add-team(ng-class='{"active in" : Tournament.teamTab === "add"}')            
+                        //-                     include ./../team/add-team.jade
+                        //-                 .tab-pane.fade#team-list(ng-class='{"active in" : Tournament.teamTab === "list"}') 
+                        //-                     include ./../team/team-list.jade
 
-                            div(class='row' style='margin-left:20px')
-                                div(class='col-md-12' id='team-view-div')
+                        //-     div(class='row' style='margin-left:20px')
+                        //-         div(class='col-md-12' id='team-view-div')
 
-                        div(class="tab-pane fade angular-animate" id="stats" ng-controller='StatisticsCtrl as Statistics' ng-class="{'active in' : Tournament.tab ==='statistics'}")
+                        //- div(class="tab-pane fade angular-animate" id="stats" ng-controller='StatisticsCtrl as Statistics' ng-class="{'active in' : Tournament.tab ==='statistics'}")
                             
-                            include ./../stats/tab/stats-tab.jade
+                        //-     include ./../stats/tab/stats-tab.jade
                         
-                        div(class="tab-pane fade angular-animate" id="phase" ng-controller='PhaseCtrl as Phase' ng-class="{'active in' : Tournament.tab ==='phase'}")
-                            div(ng-if='tournamentContext.admin === true')
-                                include ./../phase/phase-tab.jade
+                        //- div(class="tab-pane fade angular-animate" id="phase" ng-controller='PhaseCtrl as Phase' ng-class="{'active in' : Tournament.tab ==='phase'}")
+                        //-     div(ng-if='tournamentContext.admin === true')
+                        //-         include ./../phase/phase-tab.jade
                         
-                        div(class='tab-pane fade angular-animate' id='scoresheet' ng-controller='ScoresheetCtrl as Scoresheet' ng-class="{'active in' : Tournament.tab === 'scoresheet'}")
-                            include ./../scoresheet/scoresheet.jade
+                        //- div(class='tab-pane fade angular-animate' id='scoresheet' ng-controller='ScoresheetCtrl as Scoresheet' ng-class="{'active in' : Tournament.tab === 'scoresheet'}")
+                        //-     include ./../scoresheet/scoresheet.jade
                         
                         .nf-toast(style='position:fixed' class='angular-animate' ng-show='toastMessage !== null')
                             .nf-toast-content.nf-button.btn(ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
@@ -125,25 +125,25 @@ block content
                                 | {{toastMessage.message}}
                             
 
-block scripts
-    if minifyJs === false
-        script(src='/javascript/es5/app.es5.js')
-        script(src='/javascript/es5/factories/array-util.factory.es5.js')
-        script(src='/javascript/es5/factories/math-util.factory.es5.js')
-        script(src='/javascript/es5/services/cookies.service.es5.js')
-        script(src='/javascript/es5/services/division.service.es5.js')
-        script(src='/javascript/es5/services/tournament.service.es5.js')
-        script(src='/javascript/es5/services/phase.service.es5.js')
-        script(src='/javascript/es5/services/team.service.es5.js')
-        script(src='/javascript/es5/services/match.service.es5.js')
-        script(src='/javascript/es5/services/stats/qbj.service.es5.js')
-        script(src='/javascript/es5/services/collaborator.service.es5.js')
-        script(src='/javascript/es5/controllers/team.controller.es5.js')
-        script(src='/javascript/es5/controllers/match.controller.es5.js')
-        script(src='/javascript/es5/controllers/tournament.controller.es5.js')
-        script(src='/javascript/es5/controllers/statistics.controller.es5.js')
-        script(src='/javascript/es5/controllers/phase.controller.es5.js')
-        script(src='/javascript/es5/controllers/collaborator.controller.es5.js')
-        script(src='/javascript/es5/controllers/config.controller.es5.js')
-        script(src='/javascript/es5/controllers/scoresheet.controller.es5.js')
+//- block scripts
+    //- if minifyJs === false
+    //-     script(src='/javascript/es5/app.es5.js')
+    //-     script(src='/javascript/es5/factories/array-util.factory.es5.js')
+    //-     script(src='/javascript/es5/factories/math-util.factory.es5.js')
+    //-     script(src='/javascript/es5/services/cookies.service.es5.js')
+    //-     script(src='/javascript/es5/services/division.service.es5.js')
+    //-     script(src='/javascript/es5/services/tournament.service.es5.js')
+    //-     script(src='/javascript/es5/services/phase.service.es5.js')
+    //-     script(src='/javascript/es5/services/team.service.es5.js')
+    //-     script(src='/javascript/es5/services/match.service.es5.js')
+    //-     script(src='/javascript/es5/services/stats/qbj.service.es5.js')
+    //-     script(src='/javascript/es5/services/collaborator.service.es5.js')
+    //-     script(src='/javascript/es5/controllers/team.controller.es5.js')
+    //-     script(src='/javascript/es5/controllers/match.controller.es5.js')
+    //-     script(src='/javascript/es5/controllers/tournament.controller.es5.js')
+    //-     script(src='/javascript/es5/controllers/statistics.controller.es5.js')
+    //-     script(src='/javascript/es5/controllers/phase.controller.es5.js')
+    //-     script(src='/javascript/es5/controllers/collaborator.controller.es5.js')
+    //-     script(src='/javascript/es5/controllers/config.controller.es5.js')
+    //-     script(src='/javascript/es5/controllers/scoresheet.controller.es5.js')
 
