@@ -1,10 +1,11 @@
 import angular from 'angular';
 
 export default class MatchController {
-  constructor($scope, MatchService, TournamentService) {
+  constructor($scope, MatchService, TournamentService, MatchUtilFactory) {
     this.$scope = $scope;
     this.MatchService = MatchService;
     this.TournamentService = TournamentService;
+    this.MatchUtil = MatchUtilFactory(this);
 
     this.$scope.tournamentId = this.$scope.$parent.tournamentId;
     this.$scope.toast = this.$scope.$parent.toast;
@@ -95,4 +96,4 @@ export default class MatchController {
   }
 }
 
-MatchController.$inject = ['$scope', 'MatchService', 'TournamentService'];
+MatchController.$inject = ['$scope', 'MatchService', 'TournamentService', 'MatchUtilFactory'];

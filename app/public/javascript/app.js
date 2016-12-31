@@ -10,6 +10,7 @@ import AuthService from './modules/services/auth.service';
 import TournamentService from './modules/services/tournament.service';
 import MatchService from './modules/services/match.service';
 import MatchHttpService from './modules/services/http/match-http.service';
+import MatchUtilFactory from './modules/factories/util/match-util.factory';
 import PreventSameMatchTeamFilter from './modules/filters/prevent-same-match-teams';
 
 angular.module('IndexApp', [ngCookies, ngAnimate])
@@ -27,6 +28,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('TournamentService', TournamentService)
   .service('MatchService', MatchService)
   .service('MatchHttpService', MatchHttpService)
+  .factory('MatchUtilFactory', MatchUtilFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)
   .filter('preventSameMatchTeams', PreventSameMatchTeamFilter);

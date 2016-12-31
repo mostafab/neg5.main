@@ -4,7 +4,6 @@ export default class MatchService {
   constructor($q, MatchHttpService) {
     this.$q = $q;
     this.MatchHttpService = MatchHttpService;
-
     this.games = [];
   }
 
@@ -54,8 +53,8 @@ export default class MatchService {
             packet: game.packet,
             room: game.room,
             round: game.round,
-            teams: game.teams.map((team) => {
-              return {
+            teams: game.teams.map(team => (
+              {
                 id: team.team_id,
                 name: team.team_name,
                 overtime: team.overtime_tossups,
@@ -70,14 +69,14 @@ export default class MatchService {
                     return aggr;
                   }, {}),
                 })),
-              };
-            }),
-            phases: game.phases.map((phase) => {
-              return {
+              }
+            )),
+            phases: game.phases.map(phase => (
+              {
                 id: phase.phase_id,
                 name: phase.phase_name,
-              };
-            }) },
+              }
+            )) },
         ))
         .catch(error => reject(error));
     });
@@ -98,12 +97,12 @@ export default class MatchService {
   getTeamPlayers(tournamentId, teamId) {
     return this.$q((resolve, reject) => {
       this.MatchHttpService.getTeamPlayers(tournamentId, teamId)
-        .then(players => resolve(players.map((p) => {
-          return {
+        .then(players => resolve(players.map(p => (
+          {
             id: p.player_id,
             name: p.player_name,
-          };
-        })))
+          }
+        ))))
         .catch(error => reject(error));
     });
   }
@@ -119,27 +118,27 @@ export default class MatchService {
     const gameCopy = {};
     angular.copy(game, gameCopy);
     gameCopy.phases = gameCopy.phases.map(phase => phase.id);
-    gameCopy.teams = gameCopy.teams.map((team) => {
-      return {
+    gameCopy.teams = gameCopy.teams.map(team => (
+      {
         id: team.teamInfo.id,
         score: team.score,
         bouncebacks: team.bouncebacks,
         overtime: team.overtime,
-        players: team.players.map((player) => {
-          return {
+        players: team.players.map(player => (
+          {
             id: player.id,
             tuh: player.tuh || 0,
             points: Object.keys(player.points)
-                .map(Number).map((pv) => {
-                  return {
+                .map(Number).map(pv => (
+                  {
                     value: pv,
                     number: player.points[pv] || 0,
-                  };
-                }),
-          };
-        }),
-      };
-    });
+                  }
+                )),
+          }
+        )),
+      }
+    ));
     return gameCopy;
   }
 
@@ -154,8 +153,8 @@ export default class MatchService {
       team_2_score,
       team_1_name,
       team_2_name,
-      phases }) => {
-      return {
+      phases }) => (
+      {
         id,
         tuh,
         round,
@@ -175,8 +174,8 @@ export default class MatchService {
           obj[current.phase_id] = true;
           return obj;
         }, {}),
-      };
-    });
+      }
+      ));
   }
 }
 

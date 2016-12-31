@@ -13,7 +13,7 @@ export default class MatchHttpService {
       };
       this.$http.post(`/api/t/${tournamentId}/matches`, body)
         .then(({ data }) => resolve(data.result))
-        .catch(error => reject(error));
+        .catch(err => reject(err));
     });
   }
 
