@@ -6,10 +6,13 @@ import IndexController from './modules/controllers/index.controller';
 import HomeController from './modules/controllers/home.controller';
 import TournamentController from './modules/controllers/tournament.controller';
 import MatchController from './modules/controllers/match.controller';
+import TeamController from './modules/controllers/team.controller';
 import AuthService from './modules/services/auth.service';
 import TournamentService from './modules/services/tournament.service';
 import MatchService from './modules/services/match.service';
+import TeamService from './modules/services/team.service';
 import MatchHttpService from './modules/services/http/match-http.service';
+import TeamHttpService from './modules/services/http/team-http.service';
 import MatchUtilFactory from './modules/factories/util/match-util.factory';
 import PreventSameMatchTeamFilter from './modules/filters/prevent-same-match-teams';
 
@@ -28,7 +31,10 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('TournamentService', TournamentService)
   .service('MatchService', MatchService)
   .service('MatchHttpService', MatchHttpService)
+  .service('TeamService', TeamService)
+  .service('TeamHttpService', TeamHttpService)
   .factory('MatchUtilFactory', MatchUtilFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)
+  .controller('TeamCtrl', TeamController)
   .filter('preventSameMatchTeams', PreventSameMatchTeamFilter);

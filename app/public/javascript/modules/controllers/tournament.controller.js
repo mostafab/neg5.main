@@ -11,7 +11,7 @@ export default class TournamentController {
     this.$scope.toastMessage = null;
     this.toastPromise = null;
 
-    this.tab = 'overview';
+    this.tab = this.$cookies.get('nfTab') || 'overview';
     this.matchTab = 'add';
     this.teamTab = 'add';
 
