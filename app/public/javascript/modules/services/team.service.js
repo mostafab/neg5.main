@@ -7,9 +7,14 @@ export default class TeamService {
 
     this.teams = [];
     this.currentTeam = {
+      id: null,
       newName: '',
       name: '',
       editingName: '',
+      players: [],
+      newPlayer: {
+        name: '',
+      },
     };
     this.newTeam = {
       name: '',
@@ -36,6 +41,11 @@ export default class TeamService {
       newName: '',
       name: '',
       editingName: '',
+      id: null,
+      newPlayer: {
+        name: '',
+      },
+      players: [],
     }, this.currentTeam);
   }
 
@@ -56,13 +66,23 @@ export default class TeamService {
     angular.copy({}, this.newTeam.divisions);
   }
 
-  resetPlayer(player, newName = player.name) {
+  /**
+   * @param player can be a string of the player's id or the actual player object
+   */
+  resetPlayerOnCurrentTeam(player, newName = player.name) {
+    let foundPlayer;
     const template = {
       name: newName,
       newName,
       editing: false,
     };
-    angular.copy(template, player);
+    if (typeof (player) === 'object') {
+      foundPlayer = player;
+    } else {
+      foundPlayer = this.currentTeam.players.find(p => p.id === player);
+    }
+    template.id = foundPlayer.id;
+    angular.copy(template, foundPlayer);
   }
 
   getTeams(tournamentId) {
@@ -140,11 +160,45 @@ export default class TeamService {
     });
   }
 
+  editCurrentTeamPlayer(tournamentId, playerId, newName) {
+    return this.$q((resolve, reject) => {
+      if (TeamService.isUniqueTeamPlayerName(playerId, newName, this.currentTeam.players)) {
+        this.editTeamPlayerName(tournamentId, playerId, newName)
+          .then((savedName) => {
+            this.resetPlayerOnCurrentTeam(playerId, savedName);
+            resolve(savedName);
+          })
+          .catch(error => reject(error));
+      } else {
+        reject({ reason: 'Another player on this team has this name.' });
+      }
+    });
+  }
+
   editTeamPlayerName(tournamentId, playerId, name) {
     return this.$q((resolve, reject) => {
       this.TeamHttpService.editTeamPlayerName(tournamentId, playerId, name)
         .then(newName => resolve(newName))
         .catch(error => reject(error));
+    });
+  }
+
+  addPlayerToCurrentTeam(tournamentId) {
+    return this.$q((resolve, reject) => {
+      const { newPlayer, id: teamId } = this.currentTeam;
+      const { name: playerName } = newPlayer;
+      if (playerName.length > 0
+        && TeamService.isUniqueTeamPlayerName(null, playerName, this.currentTeam.players)) {
+        this.addPlayer(tournamentId, teamId, playerName)
+          .then((addedPlayer) => {
+            this.addPlayerToCurrentTeamArray(addedPlayer);
+            this.resetCurrentTeamNewPlayer();
+            resolve(addedPlayer);
+          })
+          .catch(error => reject(error));
+      } else {
+        reject({ reason: `Invalid name: ${playerName}` });
+      }
     });
   }
 
@@ -164,6 +218,28 @@ export default class TeamService {
     });
   }
 
+  deletePlayerOnCurrentTeam(tournamentId, player) {
+    return this.$q((resolve, reject) => {
+      this.deletePlayer(tournamentId, player.id)
+        .then((deletedPlayerId) => {
+          this.removePlayerFromCurrentTeamArray(deletedPlayerId);
+          resolve(deletedPlayerId);
+        })
+        .catch(error => reject(error));
+    });
+  }
+
+  deleteCurrentTeam(tournamentId) {
+    return this.$q((resolve, reject) => {
+      this.deleteTeam(tournamentId, this.currentTeam.id)
+        .then(() => {
+          this.emptyCurrentTeam();
+          resolve();
+        })
+        .catch(error => reject(error));
+    });
+  }
+
   deleteTeam(tournamentId, teamId) {
     return this.$q((resolve, reject) => {
       this.TeamHttpService.deleteTeam(tournamentId, teamId)
@@ -173,6 +249,27 @@ export default class TeamService {
         })
         .catch(error => reject(error));
     });
+  }
+
+  addPlayerToCurrentTeamArray(player) {
+    this.currentTeam.players.push({
+      name: player.name,
+      newName: player.name,
+      id: player.player_id,
+      addedBy: player.added_by,
+      games: 0,
+    });
+  }
+
+  removePlayerFromCurrentTeamArray(playerId) {
+    const index = this.currentTeam.players.findIndex(p => p.id === playerId);
+    if (index !== -1) {
+      this.currentTeam.players.splice(index, 1);
+    }
+  }
+
+  resetCurrentTeamNewPlayer() {
+    this.currentTeam.newPlayer.name = '';
   }
 
   deleteTeamFromArray(teamId) {
@@ -198,6 +295,11 @@ export default class TeamService {
     const formattedName = name.trim().toLowerCase();
     return !this.teams.some(team =>
       team.id !== id && team.name.trim().toLowerCase() === formattedName);
+  }
+
+  static isUniqueTeamPlayerName(playerId, name, players) {
+    const formattedName = name.trim().toLowerCase();
+    return !players.some(p => p.id !== playerId && p.name.trim().toLowerCase() === formattedName);
   }
 
   static formatTeams(teams) {
@@ -236,6 +338,9 @@ export default class TeamService {
       }, {}),
       addedBy,
       games,
+      newPlayer: {
+        name: '',
+      },
     };
     return formattedTeam;
   }

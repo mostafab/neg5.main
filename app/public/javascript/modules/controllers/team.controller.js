@@ -123,24 +123,80 @@ export default class TeamController {
         message: `Editing player: ${name} \u2192 ${newName}`,
       };
       this.$scope.toast(toastConfig);
-      this.TeamService.editTeamPlayerName(this.$scope.tournamentId, id, name)
+      this.TeamService.editCurrentTeamPlayer(this.$scope.tournamentId, id, newName)
         .then((savedName) => {
           toastConfig.success = true;
           toastConfig.message = `Saved player name: ${name} \u2192 ${savedName}`;
         })
         .catch((error = {}) => {
           toastConfig.success = false;
-          toastConfig.message = error.message || `Could not update player name: ${name}.`;
+          toastConfig.message = error.reason || `Could not update player name: ${name}.`;
         })
         .finally(() => {
           toastConfig.hideAfter = true;
           this.$scope.toast(toastConfig);
         });
     } else {
-      this.TeamService.resetPlayer(player);
+      this.TeamService.resetPlayerOnCurrentTeam(player);
     }
   }
 
+  addTeamPlayer() {
+    const toastConfig = {
+      message: 'Adding player.',
+    };
+    this.$scope.toast(toastConfig);
+    this.TeamService.addPlayerToCurrentTeam(this.$scope.tournamentId)
+      .then(({ name }) => {
+        toastConfig.message = `Added player: ${name}.`;
+        toastConfig.success = true;
+      })
+      .catch((err = {}) => {
+        toastConfig.message = err.reason || 'Could not add player to team.';
+        toastConfig.success = false;
+      })
+      .finally(() => {
+        toastConfig.hideAfter = true;
+        this.$scope.toast(toastConfig);
+      });
+  }
+
+  removeCurrentTeamPlayer(player) {
+    const toastConfig = { message: `Deleting player: ${player.name} ` };
+    this.$scope.toast(toastConfig);
+    this.TeamService.deletePlayerOnCurrentTeam(this.$scope.tournamentId, player)
+      .then(() => {
+        toastConfig.success = true;
+        toastConfig.message = `Removed player: ${player.name}`;
+      })
+      .catch(() => {
+        toastConfig.success = false;
+        toastConfig.message = 'Could not remove player';
+      })
+      .finally(() => {
+        toastConfig.hideAfter = true;
+        this.$scope.toast(toastConfig);
+      });
+  }
+
+  removeCurrentTeam() {
+    const { name } = this.currentTeam;
+    const toastConfig = { message: `Deleting team. ${name}` };
+    this.$scope.toast(toastConfig);
+    this.TeamService.deleteCurrentTeam(this.$scope.tournamentId)
+      .then(() => {
+        toastConfig.message = `Deleted team: ${name}`;
+        toastConfig.success = true;
+      })
+      .catch(() => {
+        toastConfig.message = `Could not delete team: ${name}.`;
+        toastConfig.success = false;
+      })
+      .finally(() => {
+        toastConfig.hideAfter = true;
+        this.$scope.toast(toastConfig);
+      });
+  }
 
 }
 

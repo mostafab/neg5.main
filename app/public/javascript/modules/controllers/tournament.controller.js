@@ -1,7 +1,7 @@
 import angular from 'angular';
 
 export default class TournamentController {
-  constructor($scope, $window, $timeout, $cookies, TournamentService) {
+  constructor($scope, $window, $timeout, $cookies, TournamentService, TeamService) {
     this.$scope = $scope;
     this.$window = $window;
     this.$timeout = $timeout;
@@ -17,6 +17,8 @@ export default class TournamentController {
 
     this.tournamentInfoCopy = {};
     this.editing = false;
+
+    this.teams = TeamService.teams;
 
     this.$scope.tournamentId = $window.location.pathname.split('/')[2];
     this.$scope.tournamentContext = {
@@ -107,4 +109,4 @@ export default class TournamentController {
   }
 }
 
-TournamentController.$inject = ['$scope', '$window', '$timeout', '$cookies', 'TournamentService'];
+TournamentController.$inject = ['$scope', '$window', '$timeout', '$cookies', 'TournamentService', 'TeamService'];

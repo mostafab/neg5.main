@@ -65,7 +65,8 @@ export default class TeamHttpService {
         token: this.$cookies.get('nfToken'),
         name,
       };
-      this.$http.put(`/api/t/${tournamentId}/players/${playerId}`, body)
+      const url = `/api/t/${tournamentId}/players/${playerId}`;
+      this.$http.put(url, body)
         .then(({ data }) => resolve(data.result.name))
         .catch(error => reject(error));
     });
