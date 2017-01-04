@@ -14,6 +14,7 @@ export default class TeamController {
 
     this.emptyCurrentTeam = this.TeamService.emptyCurrentTeam;
     this.resetCurrentTeam = this.TeamService.resetCurrentTeam;
+    this.getDivisionNameInPhase = this.TeamService.getDivisionNameInPhase;
     this.newTeam = this.TeamService.newTeam;
     this.currentTeam = this.TeamService.currentTeam;
     this.removePlayerSlot = this.TeamService.removePlayerSlotFromNewTeam;

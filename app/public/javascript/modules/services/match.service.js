@@ -1,15 +1,24 @@
 import angular from 'angular';
 
 export default class MatchService {
-  constructor($q, MatchHttpService) {
+  constructor($q, TeamService, TournamentService, MatchHttpService) {
     this.$q = $q;
     this.MatchHttpService = MatchHttpService;
+    this.TournamentService = TournamentService;
+    this.TeamService = TeamService;
+
     this.games = [];
+    this.phases = [];
+    this.teams = TeamService.teams;
+    this.currentGame = MatchService.newGame();
+
+    this.loadedGame = {};
+    this.loadedGameOriginal = {};
   }
 
-  postGame(tournamentId, game) {
+  postGame(tournamentId) {
     return this.$q((resolve, reject) => {
-      const formattedGame = MatchService.formatGame(game);
+      const formattedGame = MatchService.formatGame(this.currentGame);
       this.MatchHttpService.postMatch(tournamentId, formattedGame)
         .then(() => {
           this.getGames(tournamentId);
@@ -43,8 +52,8 @@ export default class MatchService {
   getGameById(tournamentId, gameId) {
     return this.$q((resolve, reject) => {
       this.MatchHttpService.getMatchById(tournamentId, gameId)
-        .then(game => resolve(
-          {
+        .then((game) => {
+          const formatted = {
             addedBy: game.added_by,
             id: game.match_id,
             tuh: game.tossups_heard,
@@ -76,8 +85,12 @@ export default class MatchService {
                 id: phase.phase_id,
                 name: phase.phase_name,
               }
-            )) },
-        ))
+            )),
+          };
+          angular.copy(formatted, this.loadedGame);
+          angular.copy(formatted, this.loadedGameOriginal);
+          resolve(formatted);
+        })
         .catch(error => reject(error));
     });
   }
@@ -107,11 +120,83 @@ export default class MatchService {
     });
   }
 
+  addTeamToCurrentGame(tournamentId, team) {
+    return this.$q((resolve, reject) => {
+      this.getTeamPlayers(tournamentId, team.teamInfo.id)
+        .then((players) => {
+          const { pointScheme, rules } = this.TournamentService;
+          const maxActive = rules.maxActive;
+          const pointMap = pointScheme.tossupValues.reduce((aggr, tv) => {
+            aggr[tv.value] = 0;
+            return aggr;
+          }, {});
+          const formatted = players.map((player, index) => ({
+            ...player,
+            points: Object.assign({}, pointMap),
+            tuh: index < maxActive ? 20 : 0,
+          }));
+          angular.copy(formatted, team.players);
+          resolve(players);
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  resetLoadedGame() {
+    angular.copy(this.loadedGameOriginal, this.loadedGame);
+  }
+
+  resetLoadedGamePhases() {
+    const loadedGamePhaseMap = this.loadedGame.phases.reduce((aggr, current) => {
+      aggr[current.id] = true;
+      return aggr;
+    }, {});
+    return this.phases.filter(phase => loadedGamePhaseMap[phase.id] === true);
+  }
+
+  setLoadedGameTeams() {
+    this.loadedGame.teams.forEach((matchTeam) => {
+      const index = this.teams.findIndex(team => team.id === matchTeam.id);
+      if (index !== -1) {
+        matchTeam.teamInfo = teams[index];
+      }
+    });
+  }
+
+  resetCurrentGame() {
+    const game = MatchService.newGame();
+    angular.copy(game, this.currentGame);
+  }
+
   removeMatchFromArray(matchId) {
     const index = this.games.findIndex(game => game.id === matchId);
     if (index !== -1) {
       this.games.splice(index, 1);
     }
+  }
+
+  static newGame() {
+    return {
+      teams: [
+        {
+          teamInfo: null,
+          players: [],
+          overtime: 0,
+        },
+        {
+          teamInfo: null,
+          players: [],
+          overtime: 0,
+        },
+      ],
+      phases: [],
+      round: 1,
+      tuh: 20,
+      room: null,
+      moderator: null,
+      packet: null,
+      notes: null,
+    };
   }
 
   static formatGame(game) {
@@ -179,4 +264,4 @@ export default class MatchService {
   }
 }
 
-MatchService.$inject = ['$q', 'MatchHttpService'];
+MatchService.$inject = ['$q', 'TeamService', 'TournamentService', 'MatchHttpService'];

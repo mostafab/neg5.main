@@ -1,39 +1,45 @@
-import angular from 'angular';
-
 export default class MatchController {
-  constructor($scope, MatchService, TournamentService, MatchUtilFactory) {
+  constructor($scope, MatchService, TournamentService, TeamService, MatchUtilFactory) {
     this.$scope = $scope;
     this.MatchService = MatchService;
     this.TournamentService = TournamentService;
+    this.TeamService = TeamService;
     this.MatchUtil = MatchUtilFactory(this);
 
     this.$scope.tournamentId = this.$scope.$parent.tournamentId;
     this.$scope.toast = this.$scope.$parent.toast;
 
-    this.teams = [];
+    this.teams = this.TeamService.teams;
     this.games = this.MatchService.games;
     this.phases = [];
-    this.currentGame = MatchController.newGame();
-    this.loadedGame = {};
-    this.loadedGameOriginal = {};
+    this.currentGame = this.MatchService.currentGame;
+    this.loadedGame = this.MatchService.loadedGame;
+    this.loadedGameOriginal = this.MatchService.loadedGame;
 
     this.sortType = 'round';
     this.sortReverse = false;
     this.gameQuery = '';
 
+    this.resetLoadedGame = MatchService.resetLoadedGame;
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
 
     this.MatchService.getGames(this.$scope.tournamentId);
   }
 
-  resetLoadedGame() {
-    angular.copy(this.loadedGameOriginal, this.loadedGame);
+  addGame() {
+    if (this.newGameForm.$valid) {
+      this.MatchService.postGame(this.$scope.tournamentId);
+    }
   }
 
   resetForm() {
-    this.currentGame = MatchController.newGame();
+    this.MatchService.resetCurrentGame();
     this.newGameForm.$setUntouched();
+  }
+
+  addTeam(team) {
+    this.MatchService.addTeamToCurrentGame(this.$scope.tournamentId, team);
   }
 
   matchSearch(match) {
@@ -45,14 +51,6 @@ export default class MatchController {
     return round == normalizedQuery
         || teamOneName.indexOf(normalizedQuery) !== -1
         || teamTwoName.indexOf(normalizedQuery) !== -1;
-  }
-
-  static resetLoadedGamePhases(loadedGame, tournamentPhases) {
-    const loadedGamePhaseMap = loadedGame.phases.reduce((aggr, current) => {
-      aggr[current.id] = true;
-      return aggr;
-    }, {});
-    return tournamentPhases.filter(phase => loadedGamePhaseMap[phase.id] === true);
   }
 
   static setLoadedGameTeams(loadedGame, teams) {
@@ -70,30 +68,6 @@ export default class MatchController {
       return aggr;
     }, {});
   }
-
-  static newGame() {
-    return {
-      teams: [
-        {
-          teamInfo: null,
-          players: [],
-          overtime: 0,
-        },
-        {
-          teamInfo: null,
-          players: [],
-          overtime: 0,
-        },
-      ],
-      phases: [],
-      round: 1,
-      tuh: 20,
-      room: null,
-      moderator: null,
-      packet: null,
-      notes: null,
-    };
-  }
 }
 
-MatchController.$inject = ['$scope', 'MatchService', 'TournamentService', 'MatchUtilFactory'];
+MatchController.$inject = ['$scope', 'MatchService', 'TournamentService', 'TeamService', 'MatchUtilFactory'];

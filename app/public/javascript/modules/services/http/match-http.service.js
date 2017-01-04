@@ -30,7 +30,7 @@ export default class MatchHttpService {
     return this.$q((resolve, reject) => {
       const token = this.$cookies.get('nfToken');
       this.$http.get(`/api/t/${tournamentId}/teams/${teamId}?token=${token}`)
-        .then(({ data }) => resolve(data.result))
+        .then(({ data }) => resolve(data.result.players))
         .catch(error => reject(error));
     });
   }

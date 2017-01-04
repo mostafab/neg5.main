@@ -232,9 +232,9 @@ export default class TeamService {
   deleteCurrentTeam(tournamentId) {
     return this.$q((resolve, reject) => {
       this.deleteTeam(tournamentId, this.currentTeam.id)
-        .then(() => {
+        .then((deletedTeam) => {
           this.emptyCurrentTeam();
-          resolve();
+          resolve(deletedTeam);
         })
         .catch(error => reject(error));
     });
@@ -295,6 +295,22 @@ export default class TeamService {
     const formattedName = name.trim().toLowerCase();
     return !this.teams.some(team =>
       team.id !== id && team.name.trim().toLowerCase() === formattedName);
+  }
+
+  getDivisionNameInPhase(divisionId) {
+    if (!divisionId) {
+      return '';
+    }
+    const division = this.divisions.find(d => d.id === divisionId);
+    if (!division) {
+      return '';
+    }
+    return division.name;
+  }
+
+  teamHasPlayedNoGames(teamId) {
+    return !this.games.some(g => g.teams.one.id === teamId
+      || g.teams.two.id === teamId);
   }
 
   static isUniqueTeamPlayerName(playerId, name, players) {
