@@ -54,6 +54,7 @@ export default class MatchService {
       this.MatchHttpService.getMatchById(tournamentId, gameId)
         .then((game) => {
           const formatted = {
+            editing: false,
             addedBy: game.added_by,
             id: game.match_id,
             tuh: game.tossups_heard,
@@ -92,6 +93,30 @@ export default class MatchService {
           resolve(formatted);
         })
         .catch(error => reject(error));
+    });
+  }
+
+  editLoadedGame(tournamentId) {
+    return this.$q((resolve, reject) => {
+      this.editGame(tournamentId, this.loadedGame.id, this.loadedGame)
+        .then((match) => {
+          this.loadedGame.editing = false;
+          angular.copy(this.loadedGame, this.loadedGameOriginal);
+          resolve(match);
+        })
+        .catch(error => reject(error));
+    });
+  }
+
+  deleteLoadedGame(tournamentId) {
+    return this.$q((resolve, reject) => {
+      this.deleteGame(tournamentId, this.loadedGame)
+        .then(() => {
+          angular.copy({}, this.loadedGameOriginal);
+          this.resetLoadedGame();
+          resolve();
+        })
+        .catch(err => reject(err));
     });
   }
 

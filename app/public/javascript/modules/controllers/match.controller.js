@@ -38,6 +38,14 @@ export default class MatchController {
     this.newGameForm.$setUntouched();
   }
 
+  editLoadedGame() {
+    this.MatchService.editLoadedGame(this.$scope.tournamentId);
+  }
+
+  deleteGame() {
+    this.MatchService.deleteLoadedGame(this.$scope.tournamentId);
+  }
+
   addTeam(team) {
     this.MatchService.addTeamToCurrentGame(this.$scope.tournamentId, team);
   }
