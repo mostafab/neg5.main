@@ -14,6 +14,14 @@ export default class TournamentService {
       bouncebacks: false,
       maxActive: 4,
     };
+
+    this.rulesCopy = {};
+    this.pointSchemeCopy = {
+      tossupValues: [],
+    };
+    this.newPointValue = {
+      type: null,
+    };
   }
 
   getUserTournaments() {
@@ -119,7 +127,7 @@ export default class TournamentService {
     });
   }
 
-  updateRules(tournamentId, { bouncebacks, maxActive }) {
+  updateRules(tournamentId, { bouncebacks, maxActive } = this.rulesCopy) {
     return this.$q((resolve, reject) => {
       const token = this.$cookies.get('nfToken');
       const body = {
@@ -142,7 +150,7 @@ export default class TournamentService {
     });
   }
 
-  addPointValue(tournamentId, { type, value }) {
+  addPointValue(tournamentId, { type, value } = this.newPointValue) {
     return this.$q((resolve, reject) => {
       const token = this.$cookies.get('nfToken');
       const body = {
@@ -162,7 +170,7 @@ export default class TournamentService {
     });
   }
 
-  postPointValues(tournamentId, newPointValues) {
+  postPointValues(tournamentId, newPointValues = this.pointSchemeCopy) {
     return this.$q((resolve, reject) => {
       const token = this.$cookies.get('nfToken');
       const body = {
@@ -189,6 +197,80 @@ export default class TournamentService {
         })
         .catch(error => reject(error));
     });
+  }
+
+  resetPointSchemeCopyToOriginal() {
+    angular.copy(this.pointScheme, this.pointSchemeCopy);
+    this.pointSchemeCopy.tossupValues.sort((first, second) =>
+      first.value - second.value);
+  }
+
+  resetRules() {
+    angular.copy(this.rules, this.rulesCopy);
+  }
+
+  saveRules(tournamentId) {
+    return this.$q((resolve, reject) => {
+      const rulesDidChange = !angular.equals(this.rulesCopy, this.rules);
+      if (rulesDidChange) {
+        this.updateRules(tournamentId)
+          .then(() => {
+            this.resetRules();
+            resolve();
+          })
+          .catch(err => reject(err));
+      } else {
+        reject({ reason: 'Rules did not change' });
+      }
+    });
+  }
+
+  editPointScheme(tournamentId) {
+    return this.$q((resolve, reject) => {
+      if (!this.duplicatePointValues()) {
+        this.postPointValues(tournamentId)
+          .then(() => {
+            this.resetPointSchemeCopyToOriginal();
+          })
+          .catch(err => reject(err));
+      } else {
+        reject({ reason: 'Duplicate tossup point values' });
+      }
+    });
+  }
+
+  addNewPointValue(tournamentId) {
+    return this.$q((resolve, reject) => {
+      if (this.newPointValue.type && this.newPointValue.value) {
+        this.addPointValue(tournamentId)
+          .then(() => {
+            this.resetPointSchemeCopyToOriginal();
+            angular.copy({
+              type: null,
+            }, this.newPointValue);
+          })
+          .catch(err => reject(err));
+      } else {
+        reject({ reason: 'Invalid point value.' });
+      }
+    });
+  }
+
+  removeFromPointSchemeCopy(point) {
+    const index = this.pointSchemeCopy.tossupValues.findIndex(tv =>
+      tv === point);
+    this.pointSchemeCopy.tossupValues.splice(index, 1);
+  }
+
+  duplicatePointValues() {
+    const seenValues = {};
+    for (let i = 0; i < this.pointSchemeCopy.tossupValues.length; i++) {
+      if (seenValues[this.pointSchemeCopy.tossupValues[i].value]) {
+        return true;
+      }
+      seenValues[this.pointSchemeCopy.tossupValues[i].value] = true;
+    }
+    return false;
   }
 }
 
