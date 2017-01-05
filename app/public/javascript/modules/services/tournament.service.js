@@ -209,20 +209,28 @@ export default class TournamentService {
     angular.copy(this.rules, this.rulesCopy);
   }
 
-  saveRules(tournamentId) {
-    return this.$q((resolve, reject) => {
-      const rulesDidChange = !angular.equals(this.rulesCopy, this.rules);
-      if (rulesDidChange) {
-        this.updateRules(tournamentId)
-          .then(() => {
-            this.resetRules();
-            resolve();
-          })
-          .catch(err => reject(err));
-      } else {
-        reject({ reason: 'Rules did not change' });
-      }
-    });
+  * saveRules() {
+    // return this.$q((resolve, reject) => {
+      
+    // });
+    const tournamentIdResponse = yield !angular.equals(this.rulesCopy, this.rules);
+    if (tournamentIdResponse) {
+      console.log(tournamentIdResponse);
+      return 'done';
+      // this.updateRules(tour)
+    }
+    return 'skippedResponse';
+    // if (rulesDidChange) {
+    //   const firstPass = yield true;
+    //   console.log(firstPass);
+    //   // this.updateRules(tournamentId)
+    //   //   .then(() => {
+    //   //     this.resetRules();
+    //   //   })
+    //   //   .catch(err => r);
+    // } else {
+    //   yield false;
+    // }
   }
 
   editPointScheme(tournamentId) {
