@@ -22,8 +22,8 @@ block content
                             a(data-toggle="tab" class='tournament-tab btn-md') Overview
                         li(class="center" ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "config"' ng-class="{'active': Tournament.tab === 'config'}")
                             a(data-toggle="tab" class='tournament-tab btn-md') Configuration
-                        li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"' ng-class="{'active': Tournament.tab === 'phase'}")
-                            a(data-toggle="tab" class='tournament-tab btn-md') Phases
+                        //- li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"' ng-class="{'active': Tournament.tab === 'phase'}")
+                        //-     a(data-toggle="tab" class='tournament-tab btn-md') Phases
                         li(class="center" ng-click='Tournament.tab = "collaborator"' ng-class="{'active': Tournament.tab === 'collaborator'}")
                             a(data-toggle='tab' class='tournament-tab btn-md') Collaborators
                         li(class="center" ng-click='Tournament.tab = "match"' ng-class="{'active': Tournament.tab === 'match'}")

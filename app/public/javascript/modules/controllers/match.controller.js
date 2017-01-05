@@ -1,9 +1,10 @@
 export default class MatchController {
-  constructor($scope, MatchService, TournamentService, TeamService, MatchUtilFactory) {
+  constructor($scope, MatchService, TournamentService, TeamService, PhaseService, MatchUtilFactory) {
     this.$scope = $scope;
     this.MatchService = MatchService;
     this.TournamentService = TournamentService;
     this.TeamService = TeamService;
+    this.PhaseService = PhaseService;
     this.MatchUtil = MatchUtilFactory(this);
 
     this.$scope.tournamentId = this.$scope.$parent.tournamentId;
@@ -11,7 +12,7 @@ export default class MatchController {
 
     this.teams = this.TeamService.teams;
     this.games = this.MatchService.games;
-    this.phases = [];
+    this.phases = this.PhaseService.phases;
     this.currentGame = this.MatchService.currentGame;
     this.loadedGame = this.MatchService.loadedGame;
     this.loadedGameOriginal = this.MatchService.loadedGame;
@@ -78,4 +79,4 @@ export default class MatchController {
   }
 }
 
-MatchController.$inject = ['$scope', 'MatchService', 'TournamentService', 'TeamService', 'MatchUtilFactory'];
+MatchController.$inject = ['$scope', 'MatchService', 'TournamentService', 'TeamService', 'PhaseService', 'MatchUtilFactory'];

@@ -7,6 +7,7 @@ import HomeController from './modules/controllers/home.controller';
 import TournamentController from './modules/controllers/tournament.controller';
 import MatchController from './modules/controllers/match.controller';
 import TeamController from './modules/controllers/team.controller';
+import PhaseController from './modules/controllers/phase.controller';
 import StatisticsController from './modules/controllers/statistics.controller';
 import ConfigController from './modules/controllers/config.controller';
 import AuthService from './modules/services/auth.service';
@@ -49,4 +50,5 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .controller('TeamCtrl', TeamController)
   .controller('StatisticsCtrl', StatisticsController)
   .controller('ConfigCtrl', ConfigController)
+  .controller('PhaseController', PhaseController)
   .filter('preventSameMatchTeams', PreventSameMatchTeamFilter);

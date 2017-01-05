@@ -26,8 +26,6 @@ export default class ConfigurationController {
 
     this.phases = this.PhaseService.phases;
 
-    this.PhaseService.getPhases(this.$scope.tournamentId);
-
     this.$timeout(() => {
       this.resetPointSchemeCopyToOriginal();
       this.resetRules();

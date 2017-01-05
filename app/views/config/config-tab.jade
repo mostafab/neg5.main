@@ -30,8 +30,47 @@
                                             div.form-control.nf-input.nf-gray(ng-show='Config.editingRules === false') {{Config.rules.bouncebacks ? 'Yes' : 'No'}}  
                                             input.form-control(type='checkbox' name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks' ng-show='Config.editingRules === true')
         
+        .row(ng-controller='PhaseController as Phase')
+            div(class='col-md-5 col-sm-4 col-lg-6')
+                div(class="panel nf-panel panel-default")
+                    div(class="collapsable nf-panel-heading nf-blue") New Phase
+                    div(class="nf-panel-body panel-body tournament-panel nf-white")
+                    
+                        div(class="row")
+                            div(class="col-md-12 col-sm-12 col-lg-12 col-xs-12")
+                                div(class='input-group')
+                                    input(type='text' placeholder='Enter New Phase Name Here' class="form-control nf-input" ng-model='Phase.newPhase.name' ng-keyup='!($event.which === 13) || Phase.addPhase()')
+                                    span(class='nf-button btn input-group-addon nf-green' ng-click='Phase.addPhase()')
+                                        i(class='fa fa-plus')
+            div(class='col-md-7 col-sm-8 col-lg-6 col-xs-12')
+                    div(class="panel nf-panel panel-default")
+                        div(class="collapsable nf-panel-heading nf-blue") 
+                            .row
+                                .col-lg-6.col-md-6.col-sm-12.col-xs-12
+                                    h4.left Current Phases 
+                                .col-lg-6.col-md-6.col-sm-12.col-xs-12
+                                    h4(title='Active phase is used to choose correct divisions when viewing stats for all games.' ng-bind='"Active/Default Phase: " + (Phase.activePhase.name || "None")')
+
+                        div(class="nf-panel-body panel-body nf-white")
+                            .row
+                                div(class="col-md-12 col-sm-12 col-lg-12 col-xs-12")
+                                    .row.nf-margin(ng-repeat='phase in Phase.phases | orderBy: "name" track by phase.id')
+                                        .col-lg-10.col-md-10.col-sm-10.col-xs-10
+                                            .input-group
+                                                span.btn.input-group-addon.nf-button.no-border(ng-show='!phase.editing' ng-class='{"nf-green" : phase.id === Phase.activePhase.id}' ng-click='Phase.updateActivePhase(phase)' title='Set this phase as active') {{phase.id === Phase.activePhase.id ? 'Active' : ''}}
+                                                input(type='text' class='form-control nf-input' ng-model='phase.newName' ng-show='phase.editing')
+                                                span.form-control.nf-input.nf-gray(ng-show='!phase.editing' ng-bind='phase.name')
+                                                span.btn.input-group-addon.nf-button.nf-blue.no-border(ng-click='phase.editing = true' ng-show='!phase.editing' title='Edit')
+                                                    i.fa.fa-pencil
+                                                span.btn.input-group-addon.nf-button.nf-red.no-border(ng-click='phase.newName = phase.name; phase.editing = false' ng-show='phase.editing' title='Cancel')
+                                                    i.fa.fa-times   
+                                                span.btn.input-group-addon.nf-button.nf-green.no-border(ng-click='Phase.editPhase(phase)' ng-show='phase.editing' title='Save')
+                                                    i.fa.fa-check  
+                                        .col-lg-2.col-md-2.col-sm-2.col-xs-2
+                                            span.btn.input-group-addon.nf-button.nf-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
+                                                i.fa.fa-trash
         .row
-            .col-lg-12.col-md-12.col-sm-12
+            .col-lg-12.col-md-12.col-sm-12.col-xs-12
                 div(class="panel panel-default nf-panel")
                     div(class="collapsable nf-panel-heading nf-blue") Divisions
                     div(class="panel-body tournament-panel nf-panel-body nf-white")
@@ -71,7 +110,6 @@
                                                     a(ng-repeat='phase in Config.phases' title='{{phase.name}}' ng-click='Config.newDivision.phaseName = phase.name; Config.newDivision.phaseId = phase.id' ng-bind='phase.name')
                                             span.input-group-addon.nf-button.btn.nf-green(ng-click='Config.addNewDivision()')
                                                 i.fa.fa-check
-        
 
     .col-lg-6                   
     
@@ -163,3 +201,4 @@
                                             i.fa.fa-check
 
 
+    
