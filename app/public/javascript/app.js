@@ -13,8 +13,10 @@ import AuthService from './modules/services/auth.service';
 import TournamentService from './modules/services/tournament.service';
 import MatchService from './modules/services/match.service';
 import TeamService from './modules/services/team.service';
+import PhaseService from './modules/services/phase.service';
 import QBJService from './modules/services/qbj.service';
 import QBJHttpService from './modules/services/http/qbj-http.service';
+import PhaseHttpService from './modules/services/http/phase-http.service';
 import MatchHttpService from './modules/services/http/match-http.service';
 import TeamHttpService from './modules/services/http/team-http.service';
 import MatchUtilFactory from './modules/factories/util/match-util.factory';
@@ -37,6 +39,8 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('MatchHttpService', MatchHttpService)
   .service('TeamService', TeamService)
   .service('TeamHttpService', TeamHttpService)
+  .service('PhaseService', PhaseService)
+  .service('PhaseHttpService', PhaseHttpService)
   .service('QBJHttpService', QBJHttpService)
   .service('QBJService', QBJService)
   .factory('MatchUtilFactory', MatchUtilFactory)

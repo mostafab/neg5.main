@@ -151,7 +151,7 @@
                                                 data-toggle='dropdown'
                                             ) {{Config.newPointValue.type || 'Type'}}
                                                 i.fa.fa-caret-down
-                                            input.form-control.nf-input(type='number' ng-model='Config.newPointValue.value' placeholder='New tossup point value' required)                                            
+                                            input.form-control.nf-input(type='number' name='val' min='{{Config.minTossupValue()}}' max='{{Config.maxTossupValue()}}' ng-model='Config.newPointValue.value' placeholder='New tossup point value' required)                                            
                                             ul.dropdown-menu.nf-dropdown(aria-role='menu')
                                                 li
                                                     a(title='Reset' ng-click='Config.newPointValue.type = null' ng-show='Config.newPointValue.type !== null') Reset

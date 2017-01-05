@@ -209,28 +209,16 @@ export default class TournamentService {
     angular.copy(this.rules, this.rulesCopy);
   }
 
-  * saveRules() {
-    // return this.$q((resolve, reject) => {
-      
-    // });
-    const tournamentIdResponse = yield !angular.equals(this.rulesCopy, this.rules);
-    if (tournamentIdResponse) {
-      console.log(tournamentIdResponse);
-      return 'done';
-      // this.updateRules(tour)
-    }
-    return 'skippedResponse';
-    // if (rulesDidChange) {
-    //   const firstPass = yield true;
-    //   console.log(firstPass);
-    //   // this.updateRules(tournamentId)
-    //   //   .then(() => {
-    //   //     this.resetRules();
-    //   //   })
-    //   //   .catch(err => r);
-    // } else {
-    //   yield false;
-    // }
+  saveRules(tournamentId) {
+    return this.$q((resolve, reject) => {
+      this.updateRules(tournamentId)
+        .then(() => resolve())
+        .catch(err => reject(err));
+    });
+  }
+
+  rulesChanged() {
+    return !angular.equals(this.rules, this.rulesCopy);
   }
 
   editPointScheme(tournamentId) {
@@ -239,10 +227,11 @@ export default class TournamentService {
         this.postPointValues(tournamentId)
           .then(() => {
             this.resetPointSchemeCopyToOriginal();
+            resolve();
           })
           .catch(err => reject(err));
       } else {
-        reject({ reason: 'Duplicate tossup point values' });
+        reject({ reason: 'Duplicate tossup point values.' });
       }
     });
   }
@@ -256,10 +245,11 @@ export default class TournamentService {
             angular.copy({
               type: null,
             }, this.newPointValue);
+            resolve();
           })
           .catch(err => reject(err));
       } else {
-        reject({ reason: 'Invalid point value.' });
+        reject({ reason: 'Invalid point value. Add a type and value.' });
       }
     });
   }
@@ -279,6 +269,20 @@ export default class TournamentService {
       seenValues[this.pointSchemeCopy.tossupValues[i].value] = true;
     }
     return false;
+  }
+
+  minTossupValue() {
+    if (this.newPointValue.type !== 'Neg') {
+      return 0;
+    }
+    return Number.NEGATIVE_INFINITY;
+  }
+
+  maxTossupValue() {
+    if (this.newPointValue.type === 'Neg') {
+      return 0;
+    }
+    return Number.POSITIVE_INFINITY;
   }
 }
 
