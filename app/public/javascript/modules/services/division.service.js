@@ -72,6 +72,17 @@ export default class DivisionService {
     });
   }
 
+  removeDivision(tournamentId, divisionId) {
+    return this.$q((resolve, reject) => {
+      this.DivisionHttpService.deleteDivision(tournamentId, divisionId)
+        .then((deletedId) => {
+          this.removeDivisionFromArray(deletedId);
+          resolve(deletedId);
+        })
+        .catch(err => reject(err));
+    })
+  }
+
   addDivisionToArray({ name, id, phase_id: phaseId }) {
     this.divisions.push({
       name,
@@ -79,6 +90,13 @@ export default class DivisionService {
       id,
       phaseId,
     });
+  }
+
+  removeDivisionFromArray(divisionId) {
+    const index = this.divisions.findIndex(d => d.id === divisionId);
+    if (index !== -1) {
+      this.divisions.splice(index, 1);
+    }
   }
 
   updateDivisionInArray(id, newName) {

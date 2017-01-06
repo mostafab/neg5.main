@@ -1,5 +1,5 @@
 .row
-    .col-lg-5.col-sm-12.col-md-6(ng-if='tournamentContext.admin === true')
+    .col-lg-5.col-sm-12.col-md-6(ng-if='tournamentContext.admin === true' ng-controller='CollaboratorSearchCtrl as CollabSearch')
         div(class="col-md-12 col-sm-12 col-lg-12")
             input(type="text" ng-model='Collab.searchQuery' class="form-control nf-input" ng-keyup='Collab.getKeyPress($event)' placeholder="Search for other users by email or name.")
         

@@ -1,15 +1,17 @@
 export default class TeamController {
-  constructor($scope, TeamService, MatchService) {
+  constructor($scope, TeamService, MatchService, DivisionService, PhaseService) {
     this.$scope = $scope;
     this.TeamService = TeamService;
     this.MatchService = MatchService;
+    this.DivisionService = DivisionService;
+    this.PhaseService = PhaseService;
 
     this.$scope.tournamentId = this.$scope.$parent.tournamentId;
     this.$scope.toast = this.$scope.$parent.toast;
 
-    this.teams = TeamService.teams;
-    this.phases = [];
-    this.divisions = [];
+    this.teams = this.TeamService.teams;
+    this.phases = this.PhaseService.phases;
+    this.divisions = this.DivisionService.divisions;
     this.games = MatchService.games;
 
     this.emptyCurrentTeam = this.TeamService.emptyCurrentTeam;
@@ -201,5 +203,5 @@ export default class TeamController {
 
 }
 
-TeamController.$inject = ['$scope', 'TeamService', 'MatchService'];
+TeamController.$inject = ['$scope', 'TeamService', 'MatchService', 'DivisionService', 'PhaseService'];
 

@@ -64,6 +64,27 @@ export default class DivisionController {
       division.newName = division.name;
     }
   }
+
+  removeDivision(division) {
+    const { name, id } = division;
+    const toastConfig = {
+      message: `Removing division: ${name}`,
+    };
+    this.$scope.toast(toastConfig);
+    this.DivisionService.removeDivision(this.$scope.tournamentId, id)
+      .then(() => {
+        toastConfig.message = `Removed division: ${name}`;
+        toastConfig.success = true;
+      })
+      .catch(() => {
+        toastConfig.message = `Could not remove division ${name}`;
+        toastConfig.success = false;
+      })
+      .finally(() => {
+        toastConfig.hideAfter = true;
+        this.$scope.toast(toastConfig);
+      });
+  }
 }
 
 DivisionController.$inject = ['$scope', 'DivisionService', 'PhaseService'];
