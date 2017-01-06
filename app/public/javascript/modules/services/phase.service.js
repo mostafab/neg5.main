@@ -37,7 +37,7 @@ export default class PhaseService {
 
   editPhase(tournamentId, phase) {
     return this.$q((resolve, reject) => {
-      if (PhaseService.phaseWasChanged(phase)) {
+      if (PhaseService.phaseWasChanged(phase) && this.isUniquePhaseName(phase)) {
         this.PhaseHttpService.editPhase(tournamentId, phase.id, phase.newName)
           .then(({ id, name }) => {
             this.updatePhaseInArray(id, name);
@@ -45,7 +45,7 @@ export default class PhaseService {
           })
           .catch(err => reject(err));
       } else {
-        reject({ err: 'Invalid phase name.' });
+        reject({ reason: 'Invalid phase name or duplicate.' });
       }
     });
   }
@@ -108,6 +108,7 @@ export default class PhaseService {
     const index = this.phases.findIndex(phase => phase.id === phaseId);
     if (index !== -1) {
       this.phases[index].name = newPhaseName;
+      this.phases[index].newName = newPhaseName;
       if (this.activePhase.id === phaseId) {
         this.updateActivePhaseObject(phaseId);
       }
@@ -122,13 +123,27 @@ export default class PhaseService {
 
   updateActivePhase(tournamentId, phaseId) {
     return this.$q((resolve, reject) => {
-      this.PhaseHttpService.updateActivePhase(tournamentId, phaseId)
-        .then((newActivePhaseId) => {
-          this.updateActivePhaseObject(newActivePhaseId);
-          resolve();
-        })
-        .catch(error => reject(error));
+      if (this.activePhase.id !== phaseId) {
+        this.PhaseHttpService.updateActivePhase(tournamentId, phaseId)
+          .then((newActivePhaseId) => {
+            this.updateActivePhaseObject(newActivePhaseId);
+            resolve();
+          })
+          .catch(error => reject(error));
+      }
     });
+  }
+
+  isUniquePhaseName(phase) {
+    const { id: thisId, newName } = phase;
+    const thisName = newName.toLowerCase().trim();
+    for (let i = 0; i < this.phases.length; i++) {
+      const { id: currentId, name: currentName } = this.phases[i];
+      if (currentId !== thisId && thisName === currentName.toLowerCase().trim()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   static phaseWasChanged(phase) {
