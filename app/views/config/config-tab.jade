@@ -69,18 +69,18 @@
                                         .col-lg-2.col-md-2.col-sm-2.col-xs-2
                                             span.btn.input-group-addon.nf-button.nf-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
                                                 i.fa.fa-trash
-        .row
+        .row(ng-controller='DivisionController as Division')
             .col-lg-12.col-md-12.col-sm-12.col-xs-12
                 div(class="panel panel-default nf-panel")
                     div(class="collapsable nf-panel-heading nf-blue") Divisions
                     div(class="panel-body tournament-panel nf-panel-body nf-white")
                         .row
-                            div(class="clearfix col-md-12 col-sm-12 col-lg-12" ng-repeat='phase in Config.phases')
+                            div(class="clearfix col-md-12 col-sm-12 col-lg-12" ng-repeat='phase in Division.phases')
                                 .col-lg-4.col-md-4.col-sm-4.col-xs-3
                                     .btn-block
                                         div.nf-dark-blue.nf-panel-heading.truncate-xs(ng-bind='phase.name') 
                                 .col-lg-8.col-md-8.col-sm-8.col-xs-9
-                                    .row.nf-margin(ng-repeat='division in Config.divisions' ng-if='division.phaseId === phase.id')
+                                    .row.nf-margin(ng-repeat='division in Division.divisions' ng-if='division.phaseId === phase.id')
                                         .col-lg-10.col-md-10.col-sm-10
                                             .input-group
                                                 span.form-control.nf-input.nf-gray(ng-show='!division.editing' ng-bind='division.name')
@@ -89,10 +89,10 @@
                                                     i.fa.fa-pencil
                                                 span.btn.input-group-addon.nf-button.no-border.nf-red(ng-show='division.editing' ng-click='division.newName = division.name; division.editing = false' title='Cancel')
                                                     i.fa.fa-times
-                                                span.btn.input-group-addon.nf-button.no-border.nf-green(ng-show='division.editing' ng-click='Config.saveDivision(division)' title='Save')
+                                                span.btn.input-group-addon.nf-button.no-border.nf-green(ng-show='division.editing' ng-click='Division.saveDivision(division)' title='Save')
                                                     i.fa.fa-check
                                         .col-lg-2.col-md-2.col-sm-2(ng-show='division.editing' ng-if='tournamentContext.admin === true')
-                                            span.btn.input-group-addon.nf-button.no-border.nf-red(title='Remove {{division.name}}' ng-click='Config.removeDivision(division)')
+                                            span.btn.input-group-addon.nf-button.no-border.nf-red(title='Remove {{division.name}}' ng-click='Division.removeDivision(division)')
                                                 i.fa.fa-trash
 
                             .nf-margin
@@ -102,13 +102,13 @@
                                     .row.nf-margin
                                         .input-group
                                             span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle.nf-blue(data-toggle='dropdown'
-                                                    ) {{Config.newDivision.phaseName || 'Phase'}}
+                                                    ) {{Division.newDivision.phaseName || 'Phase'}}
                                                         i.fa.fa-caret-down
-                                            input.form-control.nf-input(type='text' placeholder='New division' ng-model='Config.newDivision.name' ng-keyup='!($event.which === 13) || Config.addNewDivision()')                                            
+                                            input.form-control.nf-input(type='text' placeholder='New division' ng-model='Division.newDivision.name' ng-keyup='!($event.which === 13) || Division.addNewDivision()')                                            
                                             ul.dropdown-menu.nf-dropdown(aria-role='menu' title='Pick division name.')
                                                 li
-                                                    a(ng-repeat='phase in Config.phases' title='{{phase.name}}' ng-click='Config.newDivision.phaseName = phase.name; Config.newDivision.phaseId = phase.id' ng-bind='phase.name')
-                                            span.input-group-addon.nf-button.btn.nf-green(ng-click='Config.addNewDivision()')
+                                                    a(ng-repeat='phase in Division.phases' title='{{phase.name}}' ng-click='Division.newDivision.phaseName = phase.name; Division.newDivision.phaseId = phase.id' ng-bind='phase.name')
+                                            span.input-group-addon.nf-button.btn.nf-green(ng-click='Division.addNewDivision()')
                                                 i.fa.fa-check
 
     .col-lg-6                   

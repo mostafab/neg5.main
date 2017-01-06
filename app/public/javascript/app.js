@@ -10,14 +10,17 @@ import TeamController from './modules/controllers/team.controller';
 import PhaseController from './modules/controllers/phase.controller';
 import StatisticsController from './modules/controllers/statistics.controller';
 import ConfigController from './modules/controllers/config.controller';
+import DivisionController from './modules/controllers/division.controller';
 import AuthService from './modules/services/auth.service';
 import TournamentService from './modules/services/tournament.service';
 import MatchService from './modules/services/match.service';
 import TeamService from './modules/services/team.service';
 import PhaseService from './modules/services/phase.service';
+import DivisionService from './modules/services/division.service';
 import QBJService from './modules/services/qbj.service';
 import QBJHttpService from './modules/services/http/qbj-http.service';
 import PhaseHttpService from './modules/services/http/phase-http.service';
+import DivisionHttpService from './modules/services/http/division-http.service';
 import MatchHttpService from './modules/services/http/match-http.service';
 import TeamHttpService from './modules/services/http/team-http.service';
 import MatchUtilFactory from './modules/factories/util/match-util.factory';
@@ -44,6 +47,8 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('PhaseHttpService', PhaseHttpService)
   .service('QBJHttpService', QBJHttpService)
   .service('QBJService', QBJService)
+  .service('DivisionService', DivisionService)
+  .service('DivisionHttpService', DivisionHttpService)
   .factory('MatchUtilFactory', MatchUtilFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)
@@ -51,4 +56,5 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .controller('StatisticsCtrl', StatisticsController)
   .controller('ConfigCtrl', ConfigController)
   .controller('PhaseController', PhaseController)
+  .controller('DivisionController', DivisionController)
   .filter('preventSameMatchTeams', PreventSameMatchTeamFilter);
