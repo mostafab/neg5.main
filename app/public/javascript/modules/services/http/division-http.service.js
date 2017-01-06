@@ -33,7 +33,7 @@ export default class DivisionHttpService {
         name,
         phaseId,
       };
-      this.$http.put(`/api/t/${tournamentId}/divisions`, body)
+      this.$http.post(`/api/t/${tournamentId}/divisions`, body)
         .then(({ data }) => resolve(data.result))
         .catch(err => reject(err));
     });
