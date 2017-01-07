@@ -1,4 +1,4 @@
-import mathjs from 'mathjs';
+import { gcd } from 'mathjs';
 
 /*
 The MatchUtilFactory takes in an optional MatchController instance.
@@ -72,8 +72,8 @@ const MatchUtilFactory = (MatchControllerInstance) => {
     if (divisors.length === 0) {
       return true;
     }
-    const gcd = mathjs.gcd(...divisors);
-    return Math.abs(score) % gcd === 0;
+    const thisGcd = gcd(...divisors);
+    return Math.abs(score) % thisGcd === 0;
   }
 
   function numPlayerAnswers(player, onlyCorrectAnswers = false) {
