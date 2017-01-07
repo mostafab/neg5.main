@@ -14,7 +14,7 @@ div(ng-show='!Game.loadedGame.id')
                 th(class="table-head nf-gray") Team 1
                 th(class="table-head nf-gray") Team 2
                 
-            tr(class='nf-list-item nf-white' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | filter:Game.matchSearch track by game.id' ng-click='Game.loadGame(game.id)')
+            tr(class='nf-list-item nf-white' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | matchSearch:Game.gameQuery track by game.id' ng-click='Game.loadGame(game.id)')
                 td(ng-bind='game.round')
                 td
                     p(ng-repeat='phase in Game.phases track by phase.id' ng-if='game.phases[phase.id] === true' ng-bind='phase.name')

@@ -29,6 +29,7 @@ import TeamHttpService from './modules/services/http/team-http.service';
 import CollaboratorHttpService from './modules/services/http/collaborator-http.service';
 import MatchUtilFactory from './modules/factories/util/match-util.factory';
 import PreventSameMatchTeamFilter from './modules/filters/prevent-same-match-teams';
+import MatchSearchFilter from './modules/filters/match-search.filter';
 
 angular.module('IndexApp', [ngCookies, ngAnimate])
   .config(config)
@@ -65,4 +66,5 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .controller('DivisionController', DivisionController)
   .controller('CollaboratorSearchCtrl', CollaboratorSearchController)
   .controller('CollaboratorListCtrl', CollaboratorListController)
-  .filter('preventSameMatchTeams', PreventSameMatchTeamFilter);
+  .filter('preventSameMatchTeams', PreventSameMatchTeamFilter)
+  .filter('matchSearch', MatchSearchFilter);

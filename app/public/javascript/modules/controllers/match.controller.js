@@ -1,5 +1,6 @@
 export default class MatchController {
-  constructor($scope, MatchService, TournamentService, TeamService, PhaseService, MatchUtilFactory) {
+  constructor($scope, MatchService, TournamentService, TeamService,
+    PhaseService, MatchUtilFactory) {
     this.$scope = $scope;
     this.MatchService = MatchService;
     this.TournamentService = TournamentService;
@@ -51,16 +52,16 @@ export default class MatchController {
     this.MatchService.addTeamToCurrentGame(this.$scope.tournamentId, team);
   }
 
-  matchSearch(match) {
-    const normalizedQuery = this.gameQuery.toLowerCase();
-    const { round, teams } = match;
-    const teamOneName = teams.one.name.toLowerCase();
-    const teamTwoName = teams.two.name.toLowerCase();
+  // matchSearch(match) {
+  //   const normalizedQuery = this.gameQuery.toLowerCase();
+  //   const { round, teams } = match;
+  //   const teamOneName = teams.one.name.toLowerCase();
+  //   const teamTwoName = teams.two.name.toLowerCase();
 
-    return round == normalizedQuery
-        || teamOneName.indexOf(normalizedQuery) !== -1
-        || teamTwoName.indexOf(normalizedQuery) !== -1;
-  }
+  //   return round == normalizedQuery
+  //       || teamOneName.indexOf(normalizedQuery) !== -1
+  //       || teamTwoName.indexOf(normalizedQuery) !== -1;
+  // }
 
   static setLoadedGameTeams(loadedGame, teams) {
     loadedGame.teams.forEach((matchTeam) => {

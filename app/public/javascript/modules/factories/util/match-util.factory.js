@@ -58,8 +58,8 @@ const MatchUtilFactory = (MatchControllerInstance) => {
   }
 
   function isValidPPB(givenPPB,
-    partsPerBonus = MatchControllerInstance.partsPerBonus,
-    bonusPointValue = MatchControllerInstance.bonusPointValue) {
+    partsPerBonus = MatchControllerInstance.pointScheme.partsPerBonus,
+    bonusPointValue = MatchControllerInstance.pointScheme.bonusPointValue) {
     return givenPPB >= 0 && givenPPB <= (partsPerBonus * bonusPointValue);
   }
 
