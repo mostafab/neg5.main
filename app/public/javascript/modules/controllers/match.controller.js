@@ -16,23 +16,65 @@ export default class MatchController {
     this.phases = this.PhaseService.phases;
     this.currentGame = this.MatchService.currentGame;
     this.loadedGame = this.MatchService.loadedGame;
-    this.loadedGameOriginal = this.MatchService.loadedGame;
+    this.loadedGameOriginal = this.MatchService.loadedGameOriginal;
+    this.emptyLoadedGame = this.MatchService.emptyLoadedGame;
 
     this.sortType = 'round';
     this.sortReverse = false;
     this.gameQuery = '';
 
-    this.resetLoadedGame = MatchService.resetLoadedGame;
+    this.resetLoadedGame = MatchService.resetLoadedGame.bind(this.MatchService);
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
 
     this.MatchService.getGames(this.$scope.tournamentId);
   }
 
+  getGames() {
+    this.MatchService.getGames(this.$scope.tournamentId);
+  }
+
   addGame() {
     if (this.newGameForm.$valid) {
-      this.MatchService.postGame(this.$scope.tournamentId);
+      const toastConfig = {
+        message: 'Adding match',
+      };
+      this.$scope.toast(toastConfig);
+      this.MatchService.postGame(this.$scope.tournamentId)
+        .then(() => {
+          toastConfig.message = 'Added match';
+          toastConfig.success = true;
+          this.resetForm();
+        })
+        .catch(() => {
+          toastConfig.message = 'Could not add match';
+          toastConfig.success = false;
+        })
+        .finally(() => {
+          toastConfig.hideAfter = true;
+          this.$scope.toast(toastConfig);
+        });
     }
+  }
+
+  loadGame(gameId) {
+    const toastConfig = {
+      message: 'Loading match',
+    };
+    this.$scope.toast(toastConfig);
+    this.MatchService.getGameById(this.$scope.tournamentId, gameId)
+      .then(() => {
+        toastConfig.message = 'Loaded match';
+        toastConfig.success = true;
+      })
+      .catch(() => {
+        toastConfig.message = 'Could not load match';
+        toastConfig.success = false;
+      })
+      .finally(() => {
+        toastConfig.hideAfter = true;
+        this.$scope.toast(toastConfig);
+      });
   }
 
   resetForm() {
@@ -41,35 +83,47 @@ export default class MatchController {
   }
 
   editLoadedGame() {
-    this.MatchService.editLoadedGame(this.$scope.tournamentId);
+    const toastConfig = {
+      message: 'Editing match',
+    };
+    this.$scope.toast(toastConfig);
+    this.MatchService.editLoadedGame(this.$scope.tournamentId)
+      .then(() => {
+        toastConfig.success = true;
+        toastConfig.message = 'Edited match';
+      })
+      .catch(() => {
+        toastConfig.success = false;
+        toastConfig.message = 'Could not edit match';
+      })
+      .finally(() => {
+        toastConfig.hideAfter = true;
+        this.$scope.toast(toastConfig);
+      });
   }
 
   deleteGame() {
-    this.MatchService.deleteLoadedGame(this.$scope.tournamentId);
+    const toastConfig = {
+      message: 'Deleting match.',
+    };
+    this.$scope.toast(toastConfig);
+    this.MatchService.deleteLoadedGame(this.$scope.tournamentId)
+      .then(() => {
+        toastConfig.success = true;
+        toastConfig.message = 'Deleted match';
+      })
+      .catch(() => {
+        toastConfig.success = false;
+        toastConfig.message = 'Could not delete match';
+      })
+      .finally(() => {
+        toastConfig.hideAfter = true;
+        this.$scope.toast(toastConfig);
+      });
   }
 
   addTeam(team) {
     this.MatchService.addTeamToCurrentGame(this.$scope.tournamentId, team);
-  }
-
-  // matchSearch(match) {
-  //   const normalizedQuery = this.gameQuery.toLowerCase();
-  //   const { round, teams } = match;
-  //   const teamOneName = teams.one.name.toLowerCase();
-  //   const teamTwoName = teams.two.name.toLowerCase();
-
-  //   return round == normalizedQuery
-  //       || teamOneName.indexOf(normalizedQuery) !== -1
-  //       || teamTwoName.indexOf(normalizedQuery) !== -1;
-  // }
-
-  static setLoadedGameTeams(loadedGame, teams) {
-    loadedGame.teams.forEach((matchTeam) => {
-      const index = teams.findIndex(team => team.id === matchTeam.id);
-      if (index !== -1) {
-        matchTeam.teamInfo = teams[index];
-      }
-    });
   }
 
   static buildTeamMap(teams) {

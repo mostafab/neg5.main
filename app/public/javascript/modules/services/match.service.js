@@ -22,6 +22,8 @@ export default class MatchService {
       this.MatchHttpService.postMatch(tournamentId, formattedGame)
         .then(() => {
           this.getGames(tournamentId);
+          this.resetCurrentGame();
+          resolve();
         })
         .catch(error => reject(error));
     });
@@ -88,9 +90,10 @@ export default class MatchService {
               }
             )),
           };
+          this.setLoadedGameTeams(formatted);
           angular.copy(formatted, this.loadedGame);
           angular.copy(formatted, this.loadedGameOriginal);
-          resolve(formatted);
+          resolve();
         })
         .catch(error => reject(error));
     });
@@ -110,9 +113,10 @@ export default class MatchService {
 
   deleteLoadedGame(tournamentId) {
     return this.$q((resolve, reject) => {
-      this.deleteGame(tournamentId, this.loadedGame)
+      this.deleteGame(tournamentId, this.loadedGame.id)
         .then(() => {
           angular.copy({}, this.loadedGameOriginal);
+          this.getGames(tournamentId);
           this.resetLoadedGame();
           resolve();
         })
@@ -167,6 +171,11 @@ export default class MatchService {
     });
   }
 
+  emptyLoadedGame() {
+    angular.copy({}, this.loadedGame);
+    angular.copy({}, this.loadedGameOriginal);
+  }
+
   resetLoadedGame() {
     angular.copy(this.loadedGameOriginal, this.loadedGame);
   }
@@ -179,11 +188,11 @@ export default class MatchService {
     return this.phases.filter(phase => loadedGamePhaseMap[phase.id] === true);
   }
 
-  setLoadedGameTeams() {
-    this.loadedGame.teams.forEach((matchTeam) => {
+  setLoadedGameTeams(loadedGame) {
+    loadedGame.teams.forEach((matchTeam) => {
       const index = this.teams.findIndex(team => team.id === matchTeam.id);
       if (index !== -1) {
-        matchTeam.teamInfo = teams[index];
+        matchTeam.teamInfo = this.teams[index];
       }
     });
   }
