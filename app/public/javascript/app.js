@@ -13,6 +13,9 @@ import ConfigController from './modules/controllers/config.controller';
 import DivisionController from './modules/controllers/division.controller';
 import CollaboratorSearchController from './modules/controllers/collaborator-search.controller';
 import CollaboratorListController from './modules/controllers/collaborator-list.controller';
+import ScoresheetFormController from './modules/controllers/scoresheet-form.controller';
+import ScoresheetPointsTrackerController from './modules/controllers/scoresheet-points-tracker.controller';
+import ScoresheetCycleController from './modules/controllers/scoresheet-cycle.controller';
 import AuthService from './modules/services/auth.service';
 import TournamentService from './modules/services/tournament.service';
 import MatchService from './modules/services/match.service';
@@ -27,6 +30,7 @@ import DivisionHttpService from './modules/services/http/division-http.service';
 import MatchHttpService from './modules/services/http/match-http.service';
 import TeamHttpService from './modules/services/http/team-http.service';
 import CollaboratorHttpService from './modules/services/http/collaborator-http.service';
+import ScoresheetService from './modules/services/scoresheet.service';
 import MatchUtilFactory from './modules/factories/util/match-util.factory';
 import PreventSameMatchTeamFilter from './modules/filters/prevent-same-match-teams';
 import MatchSearchFilter from './modules/filters/match-search.filter';
@@ -57,6 +61,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('DivisionHttpService', DivisionHttpService)
   .service('CollaboratorService', CollaboratorService)
   .service('CollaboratorHttpService', CollaboratorHttpService)
+  .service('ScoresheetService', ScoresheetService)
   .factory('MatchUtilFactory', MatchUtilFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)
@@ -67,6 +72,9 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .controller('DivisionController', DivisionController)
   .controller('CollaboratorSearchCtrl', CollaboratorSearchController)
   .controller('CollaboratorListCtrl', CollaboratorListController)
+  .controller('ScoresheetFormCtrl', ScoresheetFormController)
+  .controller('ScoresheetCycleController', ScoresheetCycleController)
+  .controller('ScoresheetPointsTrackerCtrl', ScoresheetPointsTrackerController)
   .filter('preventSameMatchTeams', PreventSameMatchTeamFilter)
   .filter('matchSearch', MatchSearchFilter)
   .filter('divisionPhase', DivisionPhaseFilter);

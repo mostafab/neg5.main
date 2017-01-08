@@ -2,9 +2,9 @@
     form(novalidate name='Scoresheet.scoresheetForm' ng-submit='Scoresheet.submitScoresheet()' ng-class="{'readonly-form' : Scoresheet.game.submitted}")
         .col-lg-6.col-md-6.col-sm-12
             div(ng-controller='ScoresheetCycleController as CycleCtrl')
-                .row(ng-show='Scoresheet.game.onTossup')
+                .row(ng-show='CycleCtrl.game.onTossup')
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                        select.form-control.nf-input.nf-gray.no-border.scoresheet-team(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id | orderBy:"name"', 
+                        select.form-control.nf-input.nf-gray.no-border.scoresheet-team(required ng-options='team as team.name for team in CycleCtrl.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id | orderBy:"name"', 
                             ng-model='Scoresheet.game.teams[0].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[0])',
                             ng-hide='Scoresheet.game.currentCycle.number > 1'    
                         )
@@ -127,268 +127,267 @@
                         button.nf-button.btn.nf-black.btn-block.no-margin(type='button' ng-click='Scoresheet.nextCycle()') Dead Tossup
             br            
 
-            .row(ng-controller='ScoresheetPointsTrackerCtrl as TrackerCtrl')
-                .col-lg-6.col-md-12.col-sm-12
-                    .panel.nf-panel
-                        table.table.table-condensed.responsive-font.player-table
-                            thead.nf-blue
-                                th.table-head(ng-bind='Scoresheet.game.teams[0].teamInfo.name')
-                                th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='tv.value')
-                                th.table-head.center Pts
-                                th.table-head.center TUH
-                            tbody
-                                tr.nf-white(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'nf-green': player.active}")
-                                    td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state' ng-bind='player.name')
-                                    td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)')
-                                    td.pad.center(ng-bind='Scoresheet.getPlayerTotalPoints(player)')
-                                    td.pad.center
-                                       input.center.input-sm.nf-input.form-control(type='number', 
-                                            name='{{"player" + player.id + "_tuh"}}' min='{{Scoresheet.getNumberOfAnswersForPlayer(player)}}' max='{{Scoresheet.game.currentCycle.number - 1}}',
-                                            ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}", 
-                                            ng-model='player.tuh' autocomplete='off', 
-                                            title='{{ Scoresheet.scoresheetForm["player" + player.id + "_tuh"].$valid ? "" : ("This player must have at least " + Scoresheet.getNumberOfAnswersForPlayer(player) + " TUH and at most " + (Scoresheet.game.currentCycle.number - 1)) + " TUH" }}')
+        //-     .row(ng-controller='ScoresheetPointsTrackerCtrl as TrackerCtrl')
+        //-         .col-lg-6.col-md-12.col-sm-12
+        //-             .panel.nf-panel
+        //-                 table.table.table-condensed.responsive-font.player-table
+        //-                     thead.nf-blue
+        //-                         th.table-head(ng-bind='Scoresheet.game.teams[0].teamInfo.name')
+        //-                         th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='tv.value')
+        //-                         th.table-head.center Pts
+        //-                         th.table-head.center TUH
+        //-                     tbody
+        //-                         tr.nf-white(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'nf-green': player.active}")
+        //-                             td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state' ng-bind='player.name')
+        //-                             td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)')
+        //-                             td.pad.center(ng-bind='Scoresheet.getPlayerTotalPoints(player)')
+        //-                             td.pad.center
+        //-                                input.center.input-sm.nf-input.form-control(type='number', 
+        //-                                     name='{{"player" + player.id + "_tuh"}}' min='{{Scoresheet.getNumberOfAnswersForPlayer(player)}}' max='{{Scoresheet.game.currentCycle.number - 1}}',
+        //-                                     ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}", 
+        //-                                     ng-model='player.tuh' autocomplete='off', 
+        //-                                     title='{{ Scoresheet.scoresheetForm["player" + player.id + "_tuh"].$valid ? "" : ("This player must have at least " + Scoresheet.getNumberOfAnswersForPlayer(player) + " TUH and at most " + (Scoresheet.game.currentCycle.number - 1)) + " TUH" }}')
 
-                .col-lg-6.col-md-12.col-sm-12
-                    .panel.nf-panel 
-                        table.table.table-condensed.responsive-font.player-table
-                            thead.nf-blue
-                                th.table-head(ng-bind='Scoresheet.game.teams[1].teamInfo.name')
-                                th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='tv.value')
-                                th.table-head.center Pts
-                                th.table-head.center TUH
-                            tbody
-                                tr.nf-white(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'nf-green': player.active}")
-                                    td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state' ng-bind='player.name')
-                                    td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)')
-                                    td.pad.center(ng-bind='Scoresheet.getPlayerTotalPoints(player)')
-                                    td.pad.center
-                                        input.center.input-sm.nf-input.form-control(type='number', 
-                                            name='{{"player" + player.id + "_tuh"}}' min='{{Scoresheet.getNumberOfAnswersForPlayer(player)}}' max='{{Scoresheet.game.currentCycle.number - 1}}',
-                                            ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}",  
-                                            ng-model='player.tuh' autocomplete='off')            
+        //-         .col-lg-6.col-md-12.col-sm-12
+        //-             .panel.nf-panel 
+        //-                 table.table.table-condensed.responsive-font.player-table
+        //-                     thead.nf-blue
+        //-                         th.table-head(ng-bind='Scoresheet.game.teams[1].teamInfo.name')
+        //-                         th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='tv.value')
+        //-                         th.table-head.center Pts
+        //-                         th.table-head.center TUH
+        //-                     tbody
+        //-                         tr.nf-white(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'nf-green': player.active}")
+        //-                             td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state' ng-bind='player.name')
+        //-                             td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)')
+        //-                             td.pad.center(ng-bind='Scoresheet.getPlayerTotalPoints(player)')
+        //-                             td.pad.center
+        //-                                 input.center.input-sm.nf-input.form-control(type='number', 
+        //-                                     name='{{"player" + player.id + "_tuh"}}' min='{{Scoresheet.getNumberOfAnswersForPlayer(player)}}' max='{{Scoresheet.game.currentCycle.number - 1}}',
+        //-                                     ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}",  
+        //-                                     ng-model='player.tuh' autocomplete='off')            
             
-            .row(ng-if='!Scoresheet.game.teams[0].teamInfo && !Scoresheet.game.teams[1].teamInfo')
-                .col-lg-6.col-md-6.col-sm-6
-                    button.nf-button.button.btn.btn-block.nf-orange(type='button' ng-click='Scoresheet.loadLastSavedScoresheet()') Load Last Scoresheet
-            .row(ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
-                .col-lg-6.col-md-6.col-sm-6
-                    button.nf-button.button.btn.btn-block.nf-orange(type='button' title='Load a new scoresheet' ng-click='Scoresheet.game = Scoresheet.newScoresheet()') New Scoresheet
+        //-     .row(ng-if='!Scoresheet.game.teams[0].teamInfo && !Scoresheet.game.teams[1].teamInfo')
+        //-         .col-lg-6.col-md-6.col-sm-6
+        //-             button.nf-button.button.btn.btn-block.nf-orange(type='button' ng-click='Scoresheet.loadLastSavedScoresheet()') Load Last Scoresheet
+        //-     .row(ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
+        //-         .col-lg-6.col-md-6.col-sm-6
+        //-             button.nf-button.button.btn.btn-block.nf-orange(type='button' title='Load a new scoresheet' ng-click='Scoresheet.game = Scoresheet.newScoresheet()') New Scoresheet
                 
-        .col-lg-6.col-md-6.col-sm-12(ng-controller='ScoresheetTableController as ScoresheetTable' ng-show='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
+        //- .col-lg-6.col-md-6.col-sm-12(ng-controller='ScoresheetTableController as ScoresheetTable' ng-show='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
                       
-            .row
-                .panel.nf-panel.relative
-                    table.table.table-condensed.responsive-font.table-bordered
-                        thead
-                            tr.nf-dark-blue
-                                td(colspan='{{Scoresheet.game.teams[0].players.length + Scoresheet.game.teams[1].players.length + 5}}')
-                                    p.left
-                                        | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'medium'}}
+        //-     .row
+        //-         .panel.nf-panel.relative
+        //-             table.table.table-condensed.responsive-font.table-bordered
+        //-                 thead
+        //-                     tr.nf-dark-blue
+        //-                         td(colspan='{{Scoresheet.game.teams[0].players.length + Scoresheet.game.teams[1].players.length + 5}}')
+        //-                             p.left
+        //-                                 | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'medium'}}
                                     
-                            tr.no-border
-                                th.center.table-head.nf-white(ng-repeat='player in Scoresheet.game.teams[0].players' title='{{player.name}}' ng-bind='player.name | limitTo:2')
-                                th.center.table-head.nf-blue Bonus
-                                th.center.table-head.nf-blue Total
-                                th.center.table-head.nf-blue TU # 
-                                th.center.table-head.nf-blue Total
-                                th.center.table-head.nf-blue Bonus
-                                th.center.table-head.nf-white(ng-repeat='player in Scoresheet.game.teams[1].players' title='{{player.name}}' ng-bind='player.name | limitTo:2')
+        //-                     tr.no-border
+        //-                         th.center.table-head.nf-white(ng-repeat='player in Scoresheet.game.teams[0].players' title='{{player.name}}' ng-bind='player.name | limitTo:2')
+        //-                         th.center.table-head.nf-blue Bonus
+        //-                         th.center.table-head.nf-blue Total
+        //-                         th.center.table-head.nf-blue TU # 
+        //-                         th.center.table-head.nf-blue Total
+        //-                         th.center.table-head.nf-blue Bonus
+        //-                         th.center.table-head.nf-white(ng-repeat='player in Scoresheet.game.teams[1].players' title='{{player.name}}' ng-bind='player.name | limitTo:2')
 
-                        tbody
-                            tr(ng-repeat='cycle in Scoresheet.game.cycles track by $index', 
-                                ng-class="{'nf-gray': $index + 1 !== Scoresheet.game.currentCycle.number, 'nf-green green-text': $index + 1 === Scoresheet.game.currentCycle.number}",
-                                ng-click='Scoresheet.displayCycle()')
-                                td.center(ng-repeat='player in Scoresheet.game.teams[0].players') 
-                                    p(ng-show='!cycle.editing[player.id]' ng-click='Scoresheet.displayPlayerAnswerForCycle(player, $parent.$index)') 
-                                        | {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
-                                    .input-group(ng-if='cycle.editing[player.id]')
-                                        select.form-control.nf-input(style='font-size:.9em' ng-options='pv as pv.value for pv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-model='cycle.newAnswer[player.id]')
-                                            option(value='') -
-                                        span.input-group-addon.nf-button.btn.nf-red.btn-sm(ng-click='cycle.editing[player.id] = false')
-                                            i.fa.fa-times
-                                        span.input-group-addon.nf-button.btn.nf-green.btn-sm(ng-click='Scoresheet.editPlayerAnswerForCycle(player.id, Scoresheet.game.teams[0].teamInfo.id, cycle.newAnswer[player.id], cycle)')
-                                            i.fa.fa-check
+        //-                 tbody
+        //-                     tr(ng-repeat='cycle in Scoresheet.game.cycles track by $index', 
+        //-                         ng-class="{'nf-gray': $index + 1 !== Scoresheet.game.currentCycle.number, 'nf-green green-text': $index + 1 === Scoresheet.game.currentCycle.number}",
+        //-                         ng-click='Scoresheet.displayCycle()')
+        //-                         td.center(ng-repeat='player in Scoresheet.game.teams[0].players') 
+        //-                             p(ng-show='!cycle.editing[player.id]' ng-click='Scoresheet.displayPlayerAnswerForCycle(player, $parent.$index)') 
+        //-                                 | {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
+        //-                             .input-group(ng-if='cycle.editing[player.id]')
+        //-                                 select.form-control.nf-input(style='font-size:.9em' ng-options='pv as pv.value for pv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-model='cycle.newAnswer[player.id]')
+        //-                                     option(value='') -
+        //-                                 span.input-group-addon.nf-button.btn.nf-red.btn-sm(ng-click='cycle.editing[player.id] = false')
+        //-                                     i.fa.fa-times
+        //-                                 span.input-group-addon.nf-button.btn.nf-green.btn-sm(ng-click='Scoresheet.editPlayerAnswerForCycle(player.id, Scoresheet.game.teams[0].teamInfo.id, cycle.newAnswer[player.id], cycle)')
+        //-                                     i.fa.fa-check
 
-                                td.center 
-                                    p(ng-show='!cycle.editingBonus' ng-click='Scoresheet.displayCycleBonuses(Scoresheet.game.teams[0].teamInfo.id, $index)') 
-                                        | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamBonusPointsForCycle(Scoresheet.game.teams[0].teamInfo.id, $index) : '-'}}
-                                    div(ng-if='cycle.editingBonus && (Scoresheet.rules.bouncebacks || Scoresheet.getTeamThatGotTossup(cycle) === Scoresheet.game.teams[0].teamInfo.id)')
-                                        .input-group.nf-margin.transition(ng-repeat='part in Scoresheet.range(Scoresheet.pointScheme.partsPerBonus) track by $index')
-                                            span.input-group-addon.transition.nf-gray.no-border( 
-                                                ng-class="{'nf-green' : cycle.bonusesCopy[$index] === Scoresheet.game.teams[0].teamInfo.id}",
-                                                ng-click='Scoresheet.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[0].teamInfo, cycle.bonusesCopy)')  
-                                                | + {{Scoresheet.pointScheme.bonusPointValue}} for {{Scoresheet.game.teams[0].teamInfo.name}}
-                                        span.btn.nf-button.nf-red.nf-margin(ng-click='cycle.editingBonus = false')
-                                            i.fa.fa-times
-                                        span.btn.nf-button.nf-green.nf-margin(ng-click='Scoresheet.editCycleBonuses(cycle)')
-                                            i.fa.fa-check
-                                td.center 
-                                    | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[0].teamInfo.id, $index) : '-'}}
-                                td.center(ng-bind='$index + 1')
-                                td.center
-                                    | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[1].teamInfo.id, $index) : '-'}}
-                                td.center
-                                    p(ng-show='!cycle.editingBonus' ng-click='Scoresheet.displayCycleBonuses(Scoresheet.game.teams[1].teamInfo.id, $index)') 
-                                        | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamBonusPointsForCycle(Scoresheet.game.teams[1].teamInfo.id, $index) : '-'}}
-                                    div(ng-if='cycle.editingBonus && (Scoresheet.rules.bouncebacks || Scoresheet.getTeamThatGotTossup(cycle) === Scoresheet.game.teams[1].teamInfo.id)')
-                                        .input-group.nf-margin.transition(ng-repeat='part in Scoresheet.range(Scoresheet.pointScheme.partsPerBonus) track by $index')
-                                            span.input-group-addon.transition.nf-gray.no-border( 
-                                                ng-class="{'nf-green' : cycle.bonusesCopy[$index] === Scoresheet.game.teams[1].teamInfo.id}",
-                                                ng-click='Scoresheet.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[1].teamInfo, cycle.bonusesCopy)')  
-                                                | + {{Scoresheet.pointScheme.bonusPointValue}} for {{Scoresheet.game.teams[1].teamInfo.name}}
-                                        span.btn.nf-button.nf-red.nf-margin(ng-click='cycle.editingBonus = false')
-                                            i.fa.fa-times
-                                        span.btn.nf-button.nf-green.nf-margin(ng-click='Scoresheet.editCycleBonuses(cycle)')
-                                            i.fa.fa-check
+        //-                         td.center 
+        //-                             p(ng-show='!cycle.editingBonus' ng-click='Scoresheet.displayCycleBonuses(Scoresheet.game.teams[0].teamInfo.id, $index)') 
+        //-                                 | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamBonusPointsForCycle(Scoresheet.game.teams[0].teamInfo.id, $index) : '-'}}
+        //-                             div(ng-if='cycle.editingBonus && (Scoresheet.rules.bouncebacks || Scoresheet.getTeamThatGotTossup(cycle) === Scoresheet.game.teams[0].teamInfo.id)')
+        //-                                 .input-group.nf-margin.transition(ng-repeat='part in Scoresheet.range(Scoresheet.pointScheme.partsPerBonus) track by $index')
+        //-                                     span.input-group-addon.transition.nf-gray.no-border( 
+        //-                                         ng-class="{'nf-green' : cycle.bonusesCopy[$index] === Scoresheet.game.teams[0].teamInfo.id}",
+        //-                                         ng-click='Scoresheet.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[0].teamInfo, cycle.bonusesCopy)')  
+        //-                                         | + {{Scoresheet.pointScheme.bonusPointValue}} for {{Scoresheet.game.teams[0].teamInfo.name}}
+        //-                                 span.btn.nf-button.nf-red.nf-margin(ng-click='cycle.editingBonus = false')
+        //-                                     i.fa.fa-times
+        //-                                 span.btn.nf-button.nf-green.nf-margin(ng-click='Scoresheet.editCycleBonuses(cycle)')
+        //-                                     i.fa.fa-check
+        //-                         td.center 
+        //-                             | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[0].teamInfo.id, $index) : '-'}}
+        //-                         td.center(ng-bind='$index + 1')
+        //-                         td.center
+        //-                             | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[1].teamInfo.id, $index) : '-'}}
+        //-                         td.center
+        //-                             p(ng-show='!cycle.editingBonus' ng-click='Scoresheet.displayCycleBonuses(Scoresheet.game.teams[1].teamInfo.id, $index)') 
+        //-                                 | {{Scoresheet.game.currentCycle.number > $index ? Scoresheet.getTeamBonusPointsForCycle(Scoresheet.game.teams[1].teamInfo.id, $index) : '-'}}
+        //-                             div(ng-if='cycle.editingBonus && (Scoresheet.rules.bouncebacks || Scoresheet.getTeamThatGotTossup(cycle) === Scoresheet.game.teams[1].teamInfo.id)')
+        //-                                 .input-group.nf-margin.transition(ng-repeat='part in Scoresheet.range(Scoresheet.pointScheme.partsPerBonus) track by $index')
+        //-                                     span.input-group-addon.transition.nf-gray.no-border( 
+        //-                                         ng-class="{'nf-green' : cycle.bonusesCopy[$index] === Scoresheet.game.teams[1].teamInfo.id}",
+        //-                                         ng-click='Scoresheet.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[1].teamInfo, cycle.bonusesCopy)')  
+        //-                                         | + {{Scoresheet.pointScheme.bonusPointValue}} for {{Scoresheet.game.teams[1].teamInfo.name}}
+        //-                                 span.btn.nf-button.nf-red.nf-margin(ng-click='cycle.editingBonus = false')
+        //-                                     i.fa.fa-times
+        //-                                 span.btn.nf-button.nf-green.nf-margin(ng-click='Scoresheet.editCycleBonuses(cycle)')
+        //-                                     i.fa.fa-check
 
-                                td.center(ng-repeat='player in Scoresheet.game.teams[1].players') 
-                                    p(ng-show='!cycle.editing[player.id]' ng-click='Scoresheet.displayPlayerAnswerForCycle(player, $parent.$index)') 
-                                        | {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
-                                    .input-group(ng-if='cycle.editing[player.id]')
-                                        select.form-control.nf-input(style='font-size:.9em' ng-options='pv as pv.value for pv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-model='cycle.newAnswer[player.id]')
-                                            option(value='') -
-                                        span.input-group-addon.nf-button.btn.nf-red.btn-sm(ng-click='cycle.editing[player.id] = false')
-                                            i.fa.fa-times
-                                        span.input-group-addon.nf-button.btn.nf-green.btn-sm(ng-click='Scoresheet.editPlayerAnswerForCycle(player.id, Scoresheet.game.teams[1].teamInfo.id, cycle.newAnswer[player.id], cycle)')
-                                            i.fa.fa-check
+        //-                         td.center(ng-repeat='player in Scoresheet.game.teams[1].players') 
+        //-                             p(ng-show='!cycle.editing[player.id]' ng-click='Scoresheet.displayPlayerAnswerForCycle(player, $parent.$index)') 
+        //-                                 | {{Scoresheet.getPlayerAnswerForCycle(player, $parent.$index + 1 === Scoresheet.game.currentCycle.number ? Scoresheet.game.currentCycle : cycle).value || '-'}}
+        //-                             .input-group(ng-if='cycle.editing[player.id]')
+        //-                                 select.form-control.nf-input(style='font-size:.9em' ng-options='pv as pv.value for pv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-model='cycle.newAnswer[player.id]')
+        //-                                     option(value='') -
+        //-                                 span.input-group-addon.nf-button.btn.nf-red.btn-sm(ng-click='cycle.editing[player.id] = false')
+        //-                                     i.fa.fa-times
+        //-                                 span.input-group-addon.nf-button.btn.nf-green.btn-sm(ng-click='Scoresheet.editPlayerAnswerForCycle(player.id, Scoresheet.game.teams[1].teamInfo.id, cycle.newAnswer[player.id], cycle)')
+        //-                                     i.fa.fa-check
 
-                    .panel-footer.nf-panel-footer.nf-dark-blue
-                        a.btn.nf-button.nf-green.btn-sm(data-toggle='modal' data-target='#myModal') View / Submit Match Information
+        //-             .panel-footer.nf-panel-footer.nf-dark-blue
+        //-                 a.btn.nf-button.nf-green.btn-sm(data-toggle='modal' data-target='#myModal') View / Submit Match Information
 
-        .modal#myModal(role='dialog')
-            .modal-dialog.modal-lg
-                .modal-content.nf-modal-content
-                    .modal-header.nf-gray(style='border-bottom:none')
-                        button.btn.nf-button.nf-red(data-dismiss='modal') Close
-                        button.nf-button.btn.nf-green.right(type='submit' ng-disabled='Scoresheet.game.currentCycle.number === 1 || Scoresheet.scoresheetForm.$invalid' ng-show='!Scoresheet.game.submitted')
-                            | Submit Match
-                        button.nf-button.btn.nf-orange.right(type='button' ng-show='Scoresheet.game.submitted' ng-click='Scoresheet.revertScoresheetSubmission()')
-                            | Revert submission
-                    .modal-body.nf-white
-                        .panel(style='border:none')
-                            .nf-panel-heading.nf-blue.center Match Summary
-                            .nf-panel-body.panel-body.nf-white
-                                .row
-                                    .col-lg-6.col-md-6.col-sm-6(style='text-align:left')
-                                        .row.nf-margin
-                                            label.nf-label(style='text-decoration:underline' ng-bind='Scoresheet.game.teams[0].teamInfo.name')
-                                        .row.nf-margin
-                                            label.nf-label 
-                                                p.inline Score: 
-                                                p.inline {{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}}
-                                        .row.nf-margin(ng-if='Scoresheet.rules.bouncebacks')
-                                            label.nf-label 
-                                                p.inline Bouncebacks: 
-                                                p.inline {{Scoresheet.getTeamBouncebacks(Scoresheet.game.teams[0].teamInfo.id)}}
-                                        .row
-                                            .col-md-6.col-sm-6
-                                                label.nf-label.btn-block TUs with no bonuses
-                                            .col-md-6.col-sm-6
-                                                input.form-control.nf-input(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' placeholder='Tossups answered correctly that didn\'t lead to bonuses.', 
-                                                    ng-model='Scoresheet.game.teams[0].overtime',
-                                                    name='ot1',
-                                                    title='Tossups answered correctly that didn\'t lead to bonuses.'
-                                                    ng-class="{'nf-error' : Scoresheet.scoresheetForm.ot1.$invalid}", 
-                                                )
+        //- .modal#myModal(role='dialog')
+        //-     .modal-dialog.modal-lg
+        //-         .modal-content.nf-modal-content
+        //-             .modal-header.nf-gray(style='border-bottom:none')
+        //-                 button.btn.nf-button.nf-red(data-dismiss='modal') Close
+        //-                 button.nf-button.btn.nf-green.right(type='submit' ng-disabled='Scoresheet.game.currentCycle.number === 1 || Scoresheet.scoresheetForm.$invalid' ng-show='!Scoresheet.game.submitted')
+        //-                     | Submit Match
+        //-                 button.nf-button.btn.nf-orange.right(type='button' ng-show='Scoresheet.game.submitted' ng-click='Scoresheet.revertScoresheetSubmission()')
+        //-                     | Revert submission
+        //-             .modal-body.nf-white
+        //-                 .panel(style='border:none')
+        //-                     .nf-panel-heading.nf-blue.center Match Summary
+        //-                     .nf-panel-body.panel-body.nf-white
+        //-                         .row
+        //-                             .col-lg-6.col-md-6.col-sm-6(style='text-align:left')
+        //-                                 .row.nf-margin
+        //-                                     label.nf-label(style='text-decoration:underline' ng-bind='Scoresheet.game.teams[0].teamInfo.name')
+        //-                                 .row.nf-margin
+        //-                                     label.nf-label 
+        //-                                         p.inline Score: 
+        //-                                         p.inline {{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}}
+        //-                                 .row.nf-margin(ng-if='Scoresheet.rules.bouncebacks')
+        //-                                     label.nf-label 
+        //-                                         p.inline Bouncebacks: 
+        //-                                         p.inline {{Scoresheet.getTeamBouncebacks(Scoresheet.game.teams[0].teamInfo.id)}}
+        //-                                 .row
+        //-                                     .col-md-6.col-sm-6
+        //-                                         label.nf-label.btn-block TUs with no bonuses
+        //-                                     .col-md-6.col-sm-6
+        //-                                         input.form-control.nf-input(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' placeholder='Tossups answered correctly that didn\'t lead to bonuses.', 
+        //-                                             ng-model='Scoresheet.game.teams[0].overtime',
+        //-                                             name='ot1',
+        //-                                             title='Tossups answered correctly that didn\'t lead to bonuses.'
+        //-                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm.ot1.$invalid}", 
+        //-                                         )
                                             
-                                    .col-lg-6.col-md-6.col-sm-6(style='text-align:right')
-                                        .row.nf-margin
-                                            label.nf-label(style='text-decoration:underline' ng-bind='Scoresheet.game.teams[1].teamInfo.name')
-                                        .row.nf-margin
-                                            label.nf-label 
-                                                p.inline Score: 
-                                                p.inline {{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}}
-                                        .row.nf-margin(ng-if='Scoresheet.rules.bouncebacks')
-                                            label.nf-label 
-                                                p.inline Bouncebacks: 
-                                                p.inline {{Scoresheet.getTeamBouncebacks(Scoresheet.game.teams[1].teamInfo.id)}}
-                                        .row
-                                            .col-md-6.col-sm-6
-                                                input.form-control.nf-input(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' placeholder='Tossups answered correctly that didn\'t lead to bonuses.', 
-                                                    ng-model='Scoresheet.game.teams[1].overtime',
-                                                    name='ot2',
-                                                    title='Tossups answered correctly that didn\'t lead to bonuses.'
-                                                    ng-class="{'nf-error' : Scoresheet.scoresheetForm.ot2.$invalid}", 
-                                                )
-                                            .col-md-6.col-sm-6
-                                                label.nf-label.btn-block TUs with no bonuses                         
-                                br
-                                br
+        //-                             .col-lg-6.col-md-6.col-sm-6(style='text-align:right')
+        //-                                 .row.nf-margin
+        //-                                     label.nf-label(style='text-decoration:underline' ng-bind='Scoresheet.game.teams[1].teamInfo.name')
+        //-                                 .row.nf-margin
+        //-                                     label.nf-label 
+        //-                                         p.inline Score: 
+        //-                                         p.inline {{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}}
+        //-                                 .row.nf-margin(ng-if='Scoresheet.rules.bouncebacks')
+        //-                                     label.nf-label 
+        //-                                         p.inline Bouncebacks: 
+        //-                                         p.inline {{Scoresheet.getTeamBouncebacks(Scoresheet.game.teams[1].teamInfo.id)}}
+        //-                                 .row
+        //-                                     .col-md-6.col-sm-6
+        //-                                         input.form-control.nf-input(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' placeholder='Tossups answered correctly that didn\'t lead to bonuses.', 
+        //-                                             ng-model='Scoresheet.game.teams[1].overtime',
+        //-                                             name='ot2',
+        //-                                             title='Tossups answered correctly that didn\'t lead to bonuses.'
+        //-                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm.ot2.$invalid}", 
+        //-                                         )
+        //-                                     .col-md-6.col-sm-6
+        //-                                         label.nf-label.btn-block TUs with no bonuses                         
+        //-                         br
+        //-                         br
                                 
-                                .row
-                                    .col-lg-6.col-md-6.col-sm-6
-                                        .row.nf-margin
-                                            label.nf-label Tossups Heard: {{Scoresheet.game.currentCycle.number - 1}}
+        //-                         .row
+        //-                             .col-lg-6.col-md-6.col-sm-6
+        //-                                 .row.nf-margin
+        //-                                     label.nf-label Tossups Heard: {{Scoresheet.game.currentCycle.number - 1}}
                                 
                                 
-                                hr
+        //-                         hr
                                                                             
-                                div(class="row")
-                                    div(class="col-lg-12 col-md-12 col-sm-12")
-                                        div(class="row")
-                                            div(class="col-md-6 col-sm-6")
-                                                label(class="label nf-dark-blue nf-label btn-block" style='float:right') Round
-                                            div(class="col-md-6 col-sm-6")
-                                                input(type="number" min='0' class="form-control nf-input " name="round" placeholder="Round", 
-                                                    ng-model='Scoresheet.game.round',
-                                                    ng-class="{'nf-error' : Scoresheet.scoresheetForm.round.$invalid}"
-                                                )
-                                br                        
+        //-                         div(class="row")
+        //-                             div(class="col-lg-12 col-md-12 col-sm-12")
+        //-                                 div(class="row")
+        //-                                     div(class="col-md-6 col-sm-6")
+        //-                                         label(class="label nf-dark-blue nf-label btn-block" style='float:right') Round
+        //-                                     div(class="col-md-6 col-sm-6")
+        //-                                         input(type="number" min='0' class="form-control nf-input " name="round" placeholder="Round", 
+        //-                                             ng-model='Scoresheet.game.round',
+        //-                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm.round.$invalid}"
+        //-                                         )
+        //-                         br                        
 
-                                div(class="row")
-                                    div(class="col-lg-12 col-md-12 col-sm-12")
-                                        div(class="row")
-                                            div(class="col-md-6 col-sm-6")
-                                                label(class="label nf-dark-blue nf-label btn-block" style='float:right') Room
-                                            div(class="col-md-6 col-sm-6")
-                                                input(type="text" class="form-control nf-input " name="room" placeholder="Room", 
-                                                    ng-model='Scoresheet.game.room',
-                                                    ng-class="{'nf-error' : Scoresheet.scoresheetForm.room.$invalid}"
-                                                )
-                                br
+        //-                         div(class="row")
+        //-                             div(class="col-lg-12 col-md-12 col-sm-12")
+        //-                                 div(class="row")
+        //-                                     div(class="col-md-6 col-sm-6")
+        //-                                         label(class="label nf-dark-blue nf-label btn-block" style='float:right') Room
+        //-                                     div(class="col-md-6 col-sm-6")
+        //-                                         input(type="text" class="form-control nf-input " name="room" placeholder="Room", 
+        //-                                             ng-model='Scoresheet.game.room',
+        //-                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm.room.$invalid}"
+        //-                                         )
+        //-                         br
                                 
-                                div(class="row")
-                                    div(class="col-lg-12 col-md-12 col-sm-12")
-                                        div(class="row")
-                                            div(class="col-md-6 col-sm-6")
-                                                label(class="label nf-dark-blue nf-label btn-block" style='float:right') Moderator
-                                            div(class="col-md-6 col-sm-6")
-                                                input(type="text" class="form-control nf-input " name="moderator" placeholder="Moderator", 
-                                                    ng-model='Scoresheet.game.moderator', 
-                                                    ng-class="{'nf-error' : Scoresheet.scoresheetForm.moderator.$invalid}"
-                                                )
-                                br
-                                div(class="row")
-                                    div(class="col-lg-12 col-md-12 col-sm-12")
-                                        div(class="row")
-                                            div(class="col-md-6 col-sm-6")
-                                                label(class="label nf-dark-blue nf-label btn-block" style='float:right') Packet
-                                            div(class="col-md-6 col-sm-6")
-                                                input(type="text" class="form-control nf-input " name="packet" placeholder="Packet", 
-                                                    ng-model='Scoresheet.game.packet',
-                                                    ng-class="{'nf-error' : Scoresheet.scoresheetForm.packet.$invalid}"
-                                                )
-                                br
-                                div(class="row")
-                                    div(class="col-lg-12 col-md-12 col-sm-12")
-                                        div(class="row")
-                                            div(class="col-md-6 col-sm-6")
-                                                label(class="label nf-dark-blue nf-label btn-block" style='float:right' title='Select all phases that you want this game to count for.') Phases* ({{Scoresheet.game.phases.length}})
-                                                    p.warning-text(ng-show='Scoresheet.scoresheetForm.phases.$invalid') Select a phase(s).
-                                            div(class="col-md-6 col-sm-6")
-                                                select(multiple required class="form-control nf-input no-overflow" name='phases' ng-attr-size='{{Scoresheet.phases.length}}', 
-                                                    ng-options='phase.name for phase in Scoresheet.phases | orderBy:"name" track by phase.id' ng-model='Scoresheet.game.phases',
-                                                    ng-class="{'nf-error' : Scoresheet.scoresheetForm.phases.$invalid}"
-                                                )
+        //-                         div(class="row")
+        //-                             div(class="col-lg-12 col-md-12 col-sm-12")
+        //-                                 div(class="row")
+        //-                                     div(class="col-md-6 col-sm-6")
+        //-                                         label(class="label nf-dark-blue nf-label btn-block" style='float:right') Moderator
+        //-                                     div(class="col-md-6 col-sm-6")
+        //-                                         input(type="text" class="form-control nf-input " name="moderator" placeholder="Moderator", 
+        //-                                             ng-model='Scoresheet.game.moderator', 
+        //-                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm.moderator.$invalid}"
+        //-                                         )
+        //-                         br
+        //-                         div(class="row")
+        //-                             div(class="col-lg-12 col-md-12 col-sm-12")
+        //-                                 div(class="row")
+        //-                                     div(class="col-md-6 col-sm-6")
+        //-                                         label(class="label nf-dark-blue nf-label btn-block" style='float:right') Packet
+        //-                                     div(class="col-md-6 col-sm-6")
+        //-                                         input(type="text" class="form-control nf-input " name="packet" placeholder="Packet", 
+        //-                                             ng-model='Scoresheet.game.packet',
+        //-                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm.packet.$invalid}"
+        //-                                         )
+        //-                         br
+        //-                         div(class="row")
+        //-                             div(class="col-lg-12 col-md-12 col-sm-12")
+        //-                                 div(class="row")
+        //-                                     div(class="col-md-6 col-sm-6")
+        //-                                         label(class="label nf-dark-blue nf-label btn-block" style='float:right' title='Select all phases that you want this game to count for.') Phases* ({{Scoresheet.game.phases.length}})
+        //-                                             p.warning-text(ng-show='Scoresheet.scoresheetForm.phases.$invalid') Select a phase(s).
+        //-                                     div(class="col-md-6 col-sm-6")
+        //-                                         select(multiple required class="form-control nf-input no-overflow" name='phases' ng-attr-size='{{Scoresheet.phases.length}}', 
+        //-                                             ng-options='phase.name for phase in Scoresheet.phases | orderBy:"name" track by phase.id' ng-model='Scoresheet.game.phases',
+        //-                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm.phases.$invalid}"
+        //-                                         )
                                                     
-                                br
+        //-                         br
                                 
-                                div(class='row')
-                                    div(class="col-lg-12 col-md-12 col-sm-12")
-                                        div(class="row")
-                                            div(class="col-md-4 col-sm-4")
-                                                label(class="label nf-dark-blue nf-label btn-block" style='float:right;') Notes
-                                            div(class="col-md-8 col-sm-8")
-                                                textarea(class="form-control nf-input " name="notes" placeholder="Notes" style='min-height:200px' ng-model='Scoresheet.game.notes')                                                            
-
+        //-                         div(class='row')
+        //-                             div(class="col-lg-12 col-md-12 col-sm-12")
+        //-                                 div(class="row")
+        //-                                     div(class="col-md-4 col-sm-4")
+        //-                                         label(class="label nf-dark-blue nf-label btn-block" style='float:right;') Notes
+        //-                                     div(class="col-md-8 col-sm-8")
+        //-                                         textarea(class="form-control nf-input " name="notes" placeholder="Notes" style='min-height:200px' ng-model='Scoresheet.game.notes')
                         
