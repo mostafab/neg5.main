@@ -29,6 +29,10 @@ export default class TeamController {
     this.TeamService.getTeams(this.$scope.tournamentId);
   }
 
+  getTournamentTeams() {
+    this.TeamService.getTeams(this.$scope.tournamentId);
+  }
+
   addTeam() {
     if (this.newTeamForm.$valid) {
       const toastConfig = {

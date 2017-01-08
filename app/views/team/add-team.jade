@@ -23,13 +23,15 @@ div(class="panel panel-default nf-panel")
                         label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Divisions
                     .col-lg-8.col-md-8.col-sm-8.col-xs-12
                         .input-group.nf-margin(ng-repeat='phase in Team.phases')
-                            span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle.nf-blue(data-toggle='dropdown' title='Pick a division for {{phase.name}}') {{phase.name}}
-                                i.fa.fa-caret-down
-                            div.form-control.nf-gray.nf-input(ng-bind='Team.newTeam.divisions[phase.id] || "None"')
-                            ul.dropdown-menu.nf-dropdown(aria-role='menu')
-                                li
-                                    a(ng-show='Team.newTeam.divisions[phase.id]' ng-click='Team.newTeam.divisions[phase.id] = null') Reset
-                                    a(ng-repeat='division in Team.divisions' ng-if='division.phaseId === phase.id' ng-click='Team.newTeam.divisions[phase.id] = division' ng-bind='division.name')
+                            span.input-group-addon.nf-button.no-border.point-label.nf-blue(title='Pick a division for {{phase.name}}') {{phase.name}}
+                            select.form-control.nf-input.no-border(ng-model='Team.newTeam.divisions[phase.id]' ng-options='div as div.name for div in Team.divisions | divisionPhase:phase.id | orderBy:"name"')
+                                option(value='') Select a division
+                            //-     i.fa.fa-caret-down
+                            //- div.form-control.nf-gray.nf-input(ng-bind='Team.newTeam.divisions[phase.id] || "None"')
+                            //- ul.dropdown-menu.nf-dropdown(aria-role='menu')
+                            //-     li
+                            //-         a(ng-show='Team.newTeam.divisions[phase.id]' ng-click='Team.newTeam.divisions[phase.id] = null') Reset
+                            //-         a(ng-repeat='division in Team.divisions' ng-if='division.phaseId === phase.id' ng-click='Team.newTeam.divisions[phase.id] = division' ng-bind='division.name')
 
                 br
 
