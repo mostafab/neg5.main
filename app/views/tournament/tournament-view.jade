@@ -107,12 +107,8 @@ block content
                         div(class="tab-pane fade angular-animate" id="stats" ng-controller='StatisticsCtrl as Statistics' ng-class="{'active in' : Tournament.tab ==='statistics'}")    
                             include ./../stats/tab/stats-tab.jade
                         
-                        //- div(class="tab-pane fade angular-animate" id="phase" ng-controller='PhaseCtrl as Phase' ng-class="{'active in' : Tournament.tab ==='phase'}")
-                        //-     div(ng-if='tournamentContext.admin === true')
-                        //-         include ./../phase/phase-tab.jade
-                        
-                        //- div(class='tab-pane fade angular-animate' id='scoresheet' ng-controller='ScoresheetCtrl as Scoresheet' ng-class="{'active in' : Tournament.tab === 'scoresheet'}")
-                        //-     include ./../scoresheet/scoresheet.jade
+                        div(class='tab-pane fade angular-animate' id='scoresheet' ng-controller='ScoresheetFormCtrl as Scoresheet' ng-class="{'active in' : Tournament.tab === 'scoresheet'}")
+                            include ./../scoresheet/scoresheet.jade
                         
                         .nf-toast(style='position:fixed' class='angular-animate' ng-show='toastMessage !== null')
                             .nf-toast-content.nf-button.btn(ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")

@@ -100,13 +100,17 @@ export default class TeamService {
   postTeam(tournamentId) {
     return this.$q((resolve, reject) => {
       const formattedTeam = TeamService.formatNewTeam(this.newTeam);
-      this.TeamHttpService.postTeam(tournamentId, formattedTeam)
-        .then((teamName) => {
-          this.getTeams(tournamentId);
-          this.resetNewTeam();
-          resolve(teamName);
-        })
-        .catch(error => reject(error));
+      if (this.isUniqueNewTeamName(formattedTeam.name)) {
+        this.TeamHttpService.postTeam(tournamentId, formattedTeam)
+          .then((teamName) => {
+            this.getTeams(tournamentId);
+            this.resetNewTeam();
+            resolve(teamName);
+          })
+          .catch(error => reject(error));
+      } else {
+        reject({ reason: 'Another team with this name already exists.' });
+      }
     });
   }
 
@@ -289,6 +293,11 @@ export default class TeamService {
     if (index !== -1) {
       this.teams[index].name = name;
     }
+  }
+
+  isUniqueNewTeamName(name) {
+    const formatted = name.toLowerCase().trim();
+    return !this.teams.some(team => team.name.toLowerCase().trim() === formatted);
   }
 
   isUniqueTeamName(id, name) {

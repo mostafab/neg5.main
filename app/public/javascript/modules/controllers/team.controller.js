@@ -44,8 +44,8 @@ export default class TeamController {
           toastConfig.message = `Added team: ${teamName}.`;
           toastConfig.success = true;
         })
-        .catch(() => {
-          toastConfig.message = 'Could not add team.';
+        .catch((err = {}) => {
+          toastConfig.message = err.reason || 'Could not add team.';
           toastConfig.success = false;
         })
         .finally(() => {
@@ -102,7 +102,7 @@ export default class TeamController {
     }
   }
 
-  saveCurrentTeamDivisions() {
+  updateCurrentTeamDivisions() {
     const name = this.currentTeam.name;
     const toastConfig = {
       message: `Updating divisions for: ${name}`,
