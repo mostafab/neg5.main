@@ -1,14 +1,35 @@
+import angular from 'angular';
+
 export default class ScoresheetService {
-  constructor($q, TournamentService, PhaseService, MatchService) {
+  constructor($q, TournamentService, TeamHttpService, PhaseService, MatchService) {
     this.$q = $q;
     this.TournamentService = TournamentService;
     this.PhaseService = PhaseService;
     this.MatchService = MatchService;
+    this.TeamHttpService = TeamHttpService;
 
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
     this.phases = this.PhaseService.phases;
     this.game = ScoresheetService.newScoresheet();
+  }
+
+  loadTeamPlayers(tournamentId, team) {
+    return this.$q((resolve, reject) => {
+      const { id } = team.teamInfo;
+      this.TeamHttpService.getTeamById(tournamentId, id)
+        .then(({ players }) => {
+          const formatted = players.map((p, index) => ({
+            id: p.player_id,
+            name: p.player_name,
+            active: index < this.rules.maxActive,
+            tuh: 0,
+          }));
+          angular.copy(formatted, team.players);
+          resolve(formatted);
+        })
+        .catch(err => reject(err));
+    });
   }
 
   static newScoresheet() {
@@ -55,6 +76,6 @@ export default class ScoresheetService {
   }
 }
 
-ScoresheetService.$inject = ['$q', 'TournamentService', 'PhaseService', 'MatchService'];
+ScoresheetService.$inject = ['$q', 'TournamentService', 'TeamHttpService', 'PhaseService', 'MatchService'];
 
 

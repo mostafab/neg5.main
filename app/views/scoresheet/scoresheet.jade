@@ -5,7 +5,7 @@
                 .row(ng-show='CycleCtrl.game.onTossup')
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
                         select.form-control.nf-input.nf-gray.no-border.scoresheet-team(required ng-options='team as team.name for team in CycleCtrl.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id | orderBy:"name"', 
-                            ng-model='Scoresheet.game.teams[0].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[0])',
+                            ng-model='Scoresheet.game.teams[0].teamInfo' ng-change='CycleCtrl.loadTeamPlayers(Scoresheet.game.teams[0])',
                             ng-hide='Scoresheet.game.currentCycle.number > 1'    
                         )
                             option(disabled value='') Choose a Team
@@ -14,7 +14,7 @@
                         .panel.nf-panel
                             .nf-panel-heading.nf-blue.center    
                                 | {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}} ({{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
-                                p.nf-margin.warning-text(ng-show='Scoresheet.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) > Scoresheet.rules.maxActive') 
+                                p.nf-margin.warning-text(ng-show='Scoresheet.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) > CycleCtrl.rules.maxActive') 
                                     | # active more than max allowed active players.
                                 p.nf-margin.warning-text(ng-show='Scoresheet.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) === 0') 
                                     | No active players.
@@ -51,8 +51,8 @@
                                         i.fa.fa-check
                                         
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                        select.form-control.nf-input.no-border.nf-gray.scoresheet-team(required ng-options='team as team.name for team in Scoresheet.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id | orderBy:"name"', 
-                            ng-model='Scoresheet.game.teams[1].teamInfo' ng-change='Scoresheet.loadTeamPlayers(Scoresheet.game.teams[1])',
+                        select.form-control.nf-input.no-border.nf-gray.scoresheet-team(required ng-options='team as team.name for team in CycleCtrl.teams | preventSameMatchTeams:Scoresheet.game.teams[0].teamInfo.id | orderBy:"name"', 
+                            ng-model='Scoresheet.game.teams[1].teamInfo' ng-change='CycleCtrl.loadTeamPlayers(Scoresheet.game.teams[1])',
                             ng-hide='Scoresheet.game.currentCycle.number > 1' 
                         )
                             option(disabled value='') Choose a Team
