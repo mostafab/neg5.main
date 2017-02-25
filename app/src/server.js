@@ -6,7 +6,7 @@ import express from './config/express';
 
 const {https : usingHttps = false, httpsDir, keyName, certName, caName, httpsPort} = config;
 
-const PORT_NUM = config.port;
+const PORT_NUM = process.env.PORT || config.port || 3000;
 
 const app = express();
 

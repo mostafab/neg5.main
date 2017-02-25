@@ -31,7 +31,7 @@ var caName = _configuration2.default.caName;
 var httpsPort = _configuration2.default.httpsPort;
 
 
-var PORT_NUM = _configuration2.default.port;
+var PORT_NUM = process.env.PORT || _configuration2.default.port || 3000;
 
 var app = (0, _express2.default)();
 
