@@ -39,6 +39,16 @@ export default () => {
 
   app.use(express.static(path.join(__dirname, '../../public')));
 
+  app.use((request, response, next) => {
+    if (process.env.NODE_ENV === 'production') {
+      if (request.headers['x-forwarded-proto'] !== 'https') {
+        return response.redirect(`https://${request.headers.host}${request.url}`);
+      }
+      return next();
+    }
+    return next();
+  });
+
   indexRoute(app);
   accountApi(app);
   tournamentApi(app);
