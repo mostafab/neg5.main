@@ -38,6 +38,4 @@ try {
   };
 }
 
-console.log(configurationJson);
-
 exports.default = configurationJson;

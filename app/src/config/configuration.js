@@ -24,6 +24,4 @@ try {
   };
 }
 
-console.log(configurationJson);
-
 export default configurationJson;

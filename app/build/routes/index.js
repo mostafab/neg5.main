@@ -37,4 +37,9 @@ module.exports = function (app) {
     app.get('/t/:tid/stats', function (req, res) {
         res.render('stats/stats-home', { minifyJs: minifyJs });
     });
+
+    app.get('/t/:tid/stats/:page(team|player|teamfull|playerfull|roundreport)/', function (req, res) {
+        var url = req.url;
+        res.redirect('https://v1.neg5.org' + url);
+    });
 };
