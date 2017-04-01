@@ -52,10 +52,6 @@ var startServer = function startServer() {
     process.on('unhandledRejection', function (error, promise) {
         console.log(error.stack);
     });
-
-    console.log('Express Settings: -----------');
-    console.log(JSON.stringify(app.locals, null, 4));
-    console.log('---------------------');
 };
 
 startServer();
