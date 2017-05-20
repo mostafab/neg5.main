@@ -2,7 +2,7 @@
     .col-lg-6
         div(class="panel panel-default nf-panel")
             div(class="collapsable nf-panel-heading nf-blue") General
-            div(class="panel-body tournament-panel nf-white nf-panel-body")
+            div(class="panel-body tournament-panel nf-panel-body")
                 .row
                     div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
                         form(name='Config.editConfigurationRules' novalidate)
@@ -34,7 +34,7 @@
             div(class='col-md-5 col-sm-4 col-lg-6')
                 div(class="panel nf-panel panel-default")
                     div(class="collapsable nf-panel-heading nf-blue") New Phase
-                    div(class="nf-panel-body panel-body tournament-panel nf-white")
+                    div(class="nf-panel-body panel-body tournament-panel")
                     
                         div(class="row")
                             div(class="col-md-12 col-sm-12 col-lg-12 col-xs-12")
@@ -51,7 +51,7 @@
                                 .col-lg-6.col-md-6.col-sm-12.col-xs-12
                                     h4(title='Active phase is used to choose correct divisions when viewing stats for all games.' ng-bind='"Active/Default Phase: " + (Phase.activePhase.name || "None")')
 
-                        div(class="nf-panel-body panel-body nf-white")
+                        div(class="nf-panel-body panel-body")
                             .row
                                 div(class="col-md-12 col-sm-12 col-lg-12 col-xs-12")
                                     .row.nf-margin(ng-repeat='phase in Phase.phases | orderBy: "name" track by phase.id')
@@ -73,7 +73,7 @@
             .col-lg-12.col-md-12.col-sm-12.col-xs-12
                 div(class="panel panel-default nf-panel")
                     div(class="collapsable nf-panel-heading nf-blue") Divisions
-                    div(class="panel-body tournament-panel nf-panel-body nf-white")
+                    div(class="panel-body tournament-panel nf-panel-body")
                         .row
                             div(class="clearfix col-md-12 col-sm-12 col-lg-12" ng-repeat='phase in Division.phases')
                                 .col-lg-4.col-md-4.col-sm-4.col-xs-3
@@ -115,7 +115,7 @@
     
         div(class="panel panel-default nf-panel")
             div(class="collapsable nf-panel-heading nf-dark-blue") Point Scheme 
-            div(class="panel-body tournament-panel nf-panel-body nf-white")
+            div(class="panel-body tournament-panel nf-panel-body")
                 .row
                     div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
                         form(name='Config.editPointSchemeForm' ng-submit='Config.editPointScheme()' novalidate)
