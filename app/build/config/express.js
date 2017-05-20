@@ -90,6 +90,16 @@ exports.default = function () {
 
   app.use(_express2.default.static(_path2.default.join(__dirname, '../../public')));
 
+  app.use(function (request, response, next) {
+    if (process.env.NODE_ENV === 'production') {
+      if (request.headers['x-forwarded-proto'] !== 'https') {
+        return response.redirect('https://' + request.headers.host + request.url);
+      }
+      return next();
+    }
+    return next();
+  });
+
   indexRoute(app);
   (0, _account2.default)(app);
   (0, _tournament2.default)(app);
