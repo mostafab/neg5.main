@@ -1,19 +1,19 @@
 .row
     .col-lg-6
         div(class="panel panel-default nf-panel")
-            div(class="collapsable nf-panel-heading nf-blue") General
+            div(class="collapsable nf-panel-heading") General
             div(class="panel-body tournament-panel nf-panel-body")
                 .row
                     div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
                         form(name='Config.editConfigurationRules' novalidate)
                             .row.nf-margin
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingRules === false')
-                                    span.nf-button.btn-md.btn.nf-blue(style='float:left' title='Edit' ng-if='tournamentContext.owner' ng-show='Config.editingRules === false' ng-click='Config.editingRules = true')
+                                    span.nf-button.btn-md.btn.button-outline.button-outline-blue(style='float:left' title='Edit' ng-if='tournamentContext.owner' ng-show='Config.editingRules === false' ng-click='Config.editingRules = true')
                                         i.fa.fa-pencil
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingRules === true')
-                                    span.nf-button.btn-md.btn.nf-red(style='float:left' ng-show='Config.editingRules === true' title='Cancel' ng-click='Config.editingRules = false; Config.resetRules()')
+                                    span.nf-button.btn-md.btn.button-outline.button-outline-red(style='float:left' ng-show='Config.editingRules === true' title='Cancel' ng-click='Config.editingRules = false; Config.resetRules()')
                                         i.fa.fa-times
-                                    button.nf-button.btn-md.btn.nf-green(type='submit' ng-show='Config.editingRules === true' title='Save' ng-click='Config.saveRules()')
+                                    button.nf-button.btn-md.btn.button-outline.button-outline-green(type='submit' ng-show='Config.editingRules === true' title='Save' ng-click='Config.saveRules()')
                                         i.fa.fa-check
                                         
                             .row.nf-margin(ng-if='tournamentContext.owner')
@@ -33,18 +33,18 @@
         .row(ng-controller='PhaseController as Phase')
             div(class='col-md-5 col-sm-4 col-lg-6')
                 div(class="panel nf-panel panel-default")
-                    div(class="collapsable nf-panel-heading nf-blue") New Phase
+                    div(class="collapsable nf-panel-heading") New Phase
                     div(class="nf-panel-body panel-body tournament-panel")
-                    
                         div(class="row")
                             div(class="col-md-12 col-sm-12 col-lg-12 col-xs-12")
                                 div(class='input-group')
                                     input(type='text' placeholder='Enter New Phase Name Here' class="form-control nf-input" ng-model='Phase.newPhase.name' ng-keyup='!($event.which === 13) || Phase.addPhase()')
-                                    span(class='nf-button btn input-group-addon nf-green' ng-click='Phase.addPhase()')
+                                    span(class='nf-button btn input-group-addon button-outline button-outline-green' ng-click='Phase.addPhase()')
                                         i(class='fa fa-plus')
+
             div(class='col-md-7 col-sm-8 col-lg-6 col-xs-12')
                     div(class="panel nf-panel panel-default")
-                        div(class="collapsable nf-panel-heading nf-blue") 
+                        div(class="collapsable nf-panel-heading") 
                             .row
                                 .col-lg-6.col-md-6.col-sm-12.col-xs-12
                                     h4.left Current Phases 
@@ -60,19 +60,19 @@
                                                 span.btn.input-group-addon.nf-button.no-border(ng-show='!phase.editing' ng-class='{"nf-green" : phase.id === Phase.activePhase.id}' ng-click='Phase.updateActivePhase(phase)' title='Set this phase as active') {{phase.id === Phase.activePhase.id ? 'Active' : ''}}
                                                 input(type='text' class='form-control nf-input' ng-model='phase.newName' ng-show='phase.editing')
                                                 span.form-control.nf-input.nf-gray(ng-show='!phase.editing' ng-bind='phase.name')
-                                                span.btn.input-group-addon.nf-button.nf-blue.no-border(ng-click='phase.editing = true' ng-show='!phase.editing' title='Edit')
+                                                span.btn.input-group-addon.nf-button.button-outline.button-outline-blue.no-border(ng-click='phase.editing = true' ng-show='!phase.editing' title='Edit')
                                                     i.fa.fa-pencil
-                                                span.btn.input-group-addon.nf-button.nf-red.no-border(ng-click='phase.newName = phase.name; phase.editing = false' ng-show='phase.editing' title='Cancel')
+                                                span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-click='phase.newName = phase.name; phase.editing = false' ng-show='phase.editing' title='Cancel')
                                                     i.fa.fa-times   
-                                                span.btn.input-group-addon.nf-button.nf-green.no-border(ng-click='Phase.editPhase(phase)' ng-show='phase.editing' title='Save')
+                                                span.btn.input-group-addon.nf-button.button-outline.button-outline-green.no-border(ng-click='Phase.editPhase(phase)' ng-show='phase.editing' title='Save')
                                                     i.fa.fa-check  
                                         .col-lg-2.col-md-2.col-sm-2.col-xs-2
-                                            span.btn.input-group-addon.nf-button.nf-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
+                                            span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
                                                 i.fa.fa-trash
         .row(ng-controller='DivisionController as Division')
             .col-lg-12.col-md-12.col-sm-12.col-xs-12
                 div(class="panel panel-default nf-panel")
-                    div(class="collapsable nf-panel-heading nf-blue") Divisions
+                    div(class="collapsable nf-panel-heading") Divisions
                     div(class="panel-body tournament-panel nf-panel-body")
                         .row
                             div(class="clearfix col-md-12 col-sm-12 col-lg-12" ng-repeat='phase in Division.phases')
@@ -85,14 +85,14 @@
                                             .input-group
                                                 span.form-control.nf-input.nf-gray(ng-show='!division.editing' ng-bind='division.name')
                                                 input.form-control.nf-input(type='text' ng-model='division.newName' ng-show='division.editing')
-                                                span.btn.input-group-addon.nf-button.no-border.nf-blue(ng-show='!division.editing && tournamentContext.admin === true' ng-click='division.editing = true' title='Edit')
+                                                span.btn.input-group-addon.nf-button.no-border.button-outline.button-outline-blue(ng-show='!division.editing && tournamentContext.admin === true' ng-click='division.editing = true' title='Edit')
                                                     i.fa.fa-pencil
-                                                span.btn.input-group-addon.nf-button.no-border.nf-red(ng-show='division.editing' ng-click='division.newName = division.name; division.editing = false' title='Cancel')
+                                                span.btn.input-group-addon.nf-button.no-border.button-outline.button-outline-red(ng-show='division.editing' ng-click='division.newName = division.name; division.editing = false' title='Cancel')
                                                     i.fa.fa-times
-                                                span.btn.input-group-addon.nf-button.no-border.nf-green(ng-show='division.editing' ng-click='Division.saveDivision(division)' title='Save')
+                                                span.btn.input-group-addon.nf-button.no-border.button-outline.button-outline-green(ng-show='division.editing' ng-click='Division.saveDivision(division)' title='Save')
                                                     i.fa.fa-check
                                         .col-lg-2.col-md-2.col-sm-2(ng-show='division.editing' ng-if='tournamentContext.admin === true')
-                                            span.btn.input-group-addon.nf-button.no-border.nf-red(title='Remove {{division.name}}' ng-click='Division.removeDivision(division)')
+                                            span.btn.input-group-addon.nf-button.no-border.button-outline.button-outline-red(title='Remove {{division.name}}' ng-click='Division.removeDivision(division)')
                                                 i.fa.fa-trash
 
                             .nf-margin
@@ -108,25 +108,25 @@
                                             ul.dropdown-menu.nf-dropdown(aria-role='menu' title='Pick division name.')
                                                 li
                                                     a(ng-repeat='phase in Division.phases' title='{{phase.name}}' ng-click='Division.newDivision.phaseName = phase.name; Division.newDivision.phaseId = phase.id' ng-bind='phase.name')
-                                            span.input-group-addon.nf-button.btn.nf-green(ng-click='Division.addNewDivision()')
+                                            span.input-group-addon.nf-button.btn.button-outline.button-outline-green(ng-click='Division.addNewDivision()')
                                                 i.fa.fa-check
 
     .col-lg-6                   
     
         div(class="panel panel-default nf-panel")
-            div(class="collapsable nf-panel-heading nf-dark-blue") Point Scheme 
+            div(class="collapsable nf-panel-heading") Point Scheme 
             div(class="panel-body tournament-panel nf-panel-body")
                 .row
                     div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
                         form(name='Config.editPointSchemeForm' ng-submit='Config.editPointScheme()' novalidate)
                             .row.nf-margin(ng-if='Config.games.length === 0')
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingPointScheme === false')
-                                    span.nf-button.btn-md.btn.nf-blue(style='float:left' title='Edit' ng-if='Config.games.length === 0' ng-click='Config.editingPointScheme = true')
+                                    span.nf-button.btn-md.btn.button-outline.button-outline-blue(style='float:left' title='Edit' ng-if='Config.games.length === 0' ng-click='Config.editingPointScheme = true')
                                         i.fa.fa-pencil
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingPointScheme === true')
-                                    span.nf-button.btn-md.btn.nf-red(style='float:left' title='Cancel' ng-click='Config.resetPointSchemeCopyToOriginal(); Config.editingPointScheme = false')
+                                    span.nf-button.btn-md.btn.button-outline.button-outline-red(style='float:left' title='Cancel' ng-click='Config.resetPointSchemeCopyToOriginal(); Config.editingPointScheme = false')
                                         i.fa.fa-times
-                                    button.nf-button.btn-md.btn.nf-green(type='submit' title='Save')
+                                    button.nf-button.btn-md.btn.button-outline.button-outline-green(type='submit' title='Save')
                                         i.fa.fa-check
                                         
                             .row.nf-margin(ng-show='Config.editingPointScheme' ng-if='Config.games.length === 0')
@@ -148,7 +148,7 @@
                                                     a(title='Set as Neg' ng-click='ps.type = "Neg"') Neg
                                     .col-lg-2.col-sm-2
                                         .input-group
-                                            span.nf-button.nf-red.btn.btn-md(ng-click='Config.removeFromPointSchemeCopy(ps)')
+                                            span.nf-button.button-outline.button-outline-red.btn.btn-md(ng-click='Config.removeFromPointSchemeCopy(ps)')
                                                 i.fa.fa-trash
                                                 
                             .row.nf-margin(ng-show='Config.editingPointScheme === false')                        
@@ -197,7 +197,7 @@
                                                     a(title='Set as Base' ng-click='Config.newPointValue.type = "Base"') Base
                                                     a(title='Set as Neg' ng-click='Config.newPointValue.type = "Neg"') Neg
                                     .col-lg-2.col-md-2
-                                        button.nf-button.nf-green.btn(type='submit')
+                                        button.nf-button.button-outline.button-outline-green.btn(type='submit')
                                             i.fa.fa-check
 
 

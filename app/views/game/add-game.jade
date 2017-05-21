@@ -1,12 +1,12 @@
 div(id='add-game-div')
     div(class="panel panel-default nf-panel")
-        .nf-panel-heading.nf-blue
+        .nf-panel-heading
             .row 
                 .col-lg-11.col-sm-11.col-md-11.col-xs-11
                     label.nf-label Add a Match
                 .col-lg-1.col-md-1.col-sm-1.col-xs-1
-                    span.nf-button.nf-orange.btn.right.btn-sm(role='button' ng-click='Game.resetForm()') Reset
-        .panel-body.nf-panel-body.nf-white
+                    span.nf-button.button-outline.button-outline-blue.btn.right(role='button' ng-click='Game.resetForm()') Reset
+        .panel-body.nf-panel-body
 
                 form(name="Game.newGameForm" novalidate ng-submit='Game.addGame()')
                     div(class="row")

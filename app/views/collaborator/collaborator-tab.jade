@@ -4,7 +4,7 @@
             .input-group
                 input(type="text" ng-model='CollabSearch.searchQuery.query' class="form-control nf-input" ng-keyup='CollabSearch.handleKeyPress($event)' placeholder="Search for other users by email or name.")
                 //- span.input-group-addon.nf-button.no-border.btn.nf-green(ng-bind='CollabSearch.searchResults.length')
-                span.input-group-addon.nf-button.no-border.btn.nf-orange(ng-click='CollabSearch.resetSearch()')
+                span.input-group-addon.nf-button.no-border.btn.button-outline.button-outline-blue(ng-click='CollabSearch.resetSearch()')
                     | Reset
         //- div(style='margin-top:50px')    
         
@@ -12,8 +12,8 @@
             .col-lg-12.col-md-12.col-sm-12(ng-repeat='result in CollabSearch.searchResults | orderBy: "username" track by $index')
                 .input-group
                     div.form-control.nf-input.nf-white.no-border(ng-bind='result.username')
-                    span.input-group-addon.no-border.nf-button.nf-green(ng-click='CollabSearch.addCollaborator(result.username, true)') Add as Admin
-                    span.input-group-addon.no-border.nf-button.nf-gray(ng-click='CollabSearch.addCollaborator(result.username, false)') Add
+                    span.input-group-addon.no-border.btn.nf-button.button-outline.button-outline-green(ng-click='CollabSearch.addCollaborator(result.username, true)') Add as Admin
+                    span.input-group-addon.no-border.nf-button.button-outline.button-outline-blue.btn(ng-click='CollabSearch.addCollaborator(result.username, false)') Add
                 br
                 
 
@@ -23,7 +23,7 @@
             .input-group
                 span.input-group-addon.btn(ng-click='!tournamentContext.owner || CollabList.toggleAdmin(collab)' ng-class="{'nf-green' : collab.admin, 'nf-gray' : !collab.admin}" title='{{tournamentContext.owner ? "Toggle admin priviledges" : ""}}') {{collab.admin ? 'A' : ''}}
                 div.nf-white.nf-input.form-control.no-border.btn(ng-bind='collab.username')
-                span.input-group-addon.nf-red.no-border(role='button' ng-click='CollabList.removeCollaborator(collab.username)' ng-if='tournamentContext.owner === true')
+                span.input-group-addon.button-outline.button-outline-red.no-border(role='button' ng-click='CollabList.removeCollaborator(collab.username)' ng-if='tournamentContext.owner === true')
                     i.fa.fa-trash
             
             br

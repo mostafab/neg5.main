@@ -14,6 +14,46 @@
     font-size: 1.1em;
     /*box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);*/
 }
+.button-outline {
+    /*padding: 10px;*/
+    background: #fff;
+    font-size: 18px;
+    letter-spacing: .4px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border: 1px solid #e0e0e0;
+    -webkit-transition: 0.2s background; 
+    -moz-transition: 0.2s background; 
+    transition: 0.2s background;
+}
+.button-outline:hover {
+    color: currentColor;
+    border: ;
+}
+.button-outline-blue {
+    border: 1px solid #5ab8f8;
+    color: #5ab8f8;
+}
+.button-outline-blue:hover {
+    background: #5ab8f8;
+}
+.button-outline-red {
+    border: 1px solid #ef5350;
+    color: #ef5350;
+}
+.button-outline-red:hover {
+    background: #ef5350;
+    color: white;
+}
+.button-outline-green {
+    border: 1px solid #26a69a;
+    color: #26a69a; 
+}
+.button-outline-green:hover {
+    background: #26a69a;
+    color: white;
+}
 
 .nf-button.transition, .input-group.transition {
     transition: .1s background;
@@ -195,16 +235,53 @@ li > a:hover {
 }
 
 .nf-input {
-    border-radius: 2px;
+    border-radius: 3px;
     border: 1px solid #e0e0e0;
-    -webkit-transition: .1s border; 
-    -moz-transition: .1s border; 
-    transition: .1s border; 
+    -webkit-transition: 0s border; 
+    -moz-transition: 0s border; 
+    transition: 0s border; 
     /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);*/
 }
 
 .nf-input:focus {
     /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.nf-input:focus,
+.uneditable-input:focus {   
+  border: 2px solid #5ab8f8;
+    border-top-color: rgb(90, 184, 248);
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-right-color: rgb(90, 184, 248);
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-bottom-color: rgb(90, 184, 248);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-left-color: rgb(90, 184, 248);
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
 }
 
 .nf-label {
@@ -253,6 +330,7 @@ li > a:hover {
     /*border-color: #455a64 !important;*/
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
+    border-bottom: 1px solid #e7e7e7;
 }
 
 .nf-panel-body {
@@ -562,6 +640,13 @@ Redefine Bootstrap definitions
 }
 
 .input-group-addon {
+    line-height: 1!important;
+}
+
+.button-outline.input-group-addon {
+    border: 1px solid;
+}
+.button-outline.input-group-addon:hover {
     border: none;
 }
 
