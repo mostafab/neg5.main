@@ -293,6 +293,24 @@ input[type="color"]:focus,
     border-radius: 1px;
 }
 
+th.nf-label, .label.nf-label, .nf-panel-heading * label.nf-label, 
+.nf-panel-heading > label.nf-label {
+    position: relative;
+    float: left;
+    color: #51517d;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.nf-panel > table > thead {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+th.nf-label {
+    float: none;
+}
+
 .list-group-item.nf-blue {
     border: none;
     color: white;

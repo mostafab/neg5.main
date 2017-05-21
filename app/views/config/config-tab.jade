@@ -1,7 +1,10 @@
 .row
     .col-lg-6
         div(class="panel panel-default nf-panel")
-            div(class="collapsable nf-panel-heading") General
+            div(class="collapsable nf-panel-heading")
+                .row
+                    .col-lg-11.col-sm-11.col-md-11.col-xs-11 
+                        label.nf-label General
             div(class="panel-body tournament-panel nf-panel-body")
                 .row
                     div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
@@ -33,7 +36,10 @@
         .row(ng-controller='PhaseController as Phase')
             div(class='col-md-5 col-sm-4 col-lg-6')
                 div(class="panel nf-panel panel-default")
-                    div(class="collapsable nf-panel-heading") New Phase
+                    div(class="collapsable nf-panel-heading") 
+                        .row
+                            .col-lg-11.col-sm-11.col-md-11.col-xs-11 
+                                label.nf-label New Phase
                     div(class="nf-panel-body panel-body tournament-panel")
                         div(class="row")
                             div(class="col-md-12 col-sm-12 col-lg-12 col-xs-12")
@@ -47,9 +53,10 @@
                         div(class="collapsable nf-panel-heading") 
                             .row
                                 .col-lg-6.col-md-6.col-sm-12.col-xs-12
-                                    h4.left Current Phases 
+                                    h4.left 
+                                        label.nf-label Current Phases 
                                 .col-lg-6.col-md-6.col-sm-12.col-xs-12
-                                    h4(title='Active phase is used to choose correct divisions when viewing stats for all games.' ng-bind='"Active/Default Phase: " + (Phase.activePhase.name || "None")')
+                                    label.nf-label(title='Active phase is used to choose correct divisions when viewing stats for all games.' ng-bind='"Active/Default Phase: " + (Phase.activePhase.name || "None")')
 
                         div(class="nf-panel-body panel-body")
                             .row
@@ -72,13 +79,15 @@
         .row(ng-controller='DivisionController as Division')
             .col-lg-12.col-md-12.col-sm-12.col-xs-12
                 div(class="panel panel-default nf-panel")
-                    div(class="collapsable nf-panel-heading") Divisions
+                    div(class="collapsable nf-panel-heading") 
+                        .row
+                            .col-lg-11.col-sm-11.col-md-11.col-xs-11 
+                                label.nf-label Divisions
                     div(class="panel-body tournament-panel nf-panel-body")
                         .row
                             div(class="clearfix col-md-12 col-sm-12 col-lg-12" ng-repeat='phase in Division.phases')
                                 .col-lg-4.col-md-4.col-sm-4.col-xs-3
-                                    .btn-block
-                                        div.nf-dark-blue.nf-panel-heading.truncate-xs(ng-bind='phase.name') 
+                                        label.nf-label(ng-bind='phase.name') 
                                 .col-lg-8.col-md-8.col-sm-8.col-xs-9
                                     .row.nf-margin(ng-repeat='division in Division.divisions' ng-if='division.phaseId === phase.id')
                                         .col-lg-10.col-md-10.col-sm-10
@@ -114,7 +123,10 @@
     .col-lg-6                   
     
         div(class="panel panel-default nf-panel")
-            div(class="collapsable nf-panel-heading") Point Scheme 
+            div(class="collapsable nf-panel-heading") 
+                .row
+                    .col-lg-11.col-sm-11.col-md-11.col-xs-11 
+                        label.nf-label Point Scheme 
             div(class="panel-body tournament-panel nf-panel-body")
                 .row
                     div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
