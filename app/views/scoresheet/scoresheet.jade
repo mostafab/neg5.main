@@ -13,7 +13,7 @@
                         
                         .panel.nf-panel
                             .nf-panel-heading.nf-blue.center    
-                                | {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}} ({{Scoresheet.getTeamScoreUpToCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
+                                | {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}} ({{CycleCtrl.getTeamScoreUpToCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
                                 p.nf-margin.warning-text(ng-show='Scoresheet.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) > CycleCtrl.rules.maxActive') 
                                     | # active more than max allowed active players.
                                 p.nf-margin.warning-text(ng-show='Scoresheet.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) === 0') 
@@ -35,14 +35,14 @@
                                         div.form-control.nf-input.nf-gray.name(ng-bind='player.name')
                                     span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true', 
                                         ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
-                                        ng-click='Scoresheet.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[0].teamInfo, tv); Scoresheet.switchToBonusIfTossupGotten(tv, Scoresheet.game.teams[0].teamInfo.id)',
+                                        ng-click='CycleCtrl.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[0].teamInfo, tv); CycleCtrl.switchToBonusIfTossupGotten(tv, Scoresheet.game.teams[0].teamInfo.id)',
                                         ng-bind='tv.value')
                                 
                                     br                               
                                     
                                     
-                                div.neg-box(ng-show='!Scoresheet.teamDidNotNegInCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle)')
-                                    button.nf-red.nf-button.btn.btn-block(type='button' ng-click='Scoresheet.removeTeamNegsFromCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle)') Undo Neg
+                                div.neg-box(ng-show='!CycleCtrl.teamDidNotNegInCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle)')
+                                    button.nf-red.nf-button.btn.btn-block(type='button' ng-click='CycleCtrl.removeTeamNegsFromCycle(Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle)') Undo Neg
                                     
                             .panel-footer.nf-panel-footer.nf-gray
                                 .input-group.nf-margin(ng-show='Scoresheet.game.teams[0].teamInfo')
