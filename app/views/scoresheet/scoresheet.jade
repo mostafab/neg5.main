@@ -116,15 +116,15 @@
                             .panel-footer.nf-panel-footer.nf-gray
                                 .row
                                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                                        button.btn-sm.nf-button.btn.nf-orange.btn-block(type='button' ng-click='Scoresheet.removeLastAnswerFromCycle(Scoresheet.game.currentCycle); Scoresheet.switchCurrentCycleContext(false)') Back
+                                        button.btn-sm.nf-button.btn.nf-orange.btn-block(type='button' ng-click='CycleCtrl.removeLastAnswerFromCycle(Scoresheet.game.currentCycle); CycleCtrl.switchCurrentCycleContext(false)') Back
                                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                                        button.btn-sm.nf-button.btn.nf-green.btn-block(type='button' ng-click='Scoresheet.switchCurrentCycleContext(false); Scoresheet.nextCycle()') Next
+                                        button.btn-sm.nf-button.btn.nf-green.btn-block(type='button' ng-click='CycleCtrl.switchCurrentCycleContext(false); CycleCtrl.nextCycle()') Next
 
                 .row(ng-show='Scoresheet.game.onTossup && Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                        button.nf-button.btn.nf-orange.btn-block.no-margin(type='button' ng-click='Scoresheet.lastCycle()' ng-disabled='Scoresheet.game.currentCycle.number <= 1') Back One Cycle
+                        button.nf-button.btn.nf-orange.btn-block.no-margin(type='button' ng-click='CycleCtrl.lastCycle()' ng-disabled='Scoresheet.game.currentCycle.number <= 1') Back One Cycle
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                        button.nf-button.btn.nf-black.btn-block.no-margin(type='button' ng-click='Scoresheet.nextCycle()') Dead Tossup
+                        button.nf-button.btn.nf-black.btn-block.no-margin(type='button' ng-click='CycleCtrl.nextCycle()') Dead Tossup
             br            
 
         //-     .row(ng-controller='ScoresheetPointsTrackerCtrl as TrackerCtrl')

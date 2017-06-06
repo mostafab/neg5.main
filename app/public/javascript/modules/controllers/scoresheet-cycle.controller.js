@@ -73,6 +73,11 @@ export default class ScoresheetCycleController {
     cycle.answers = cycle.answers.filter(a => !(a.type === 'Neg' && a.teamId === teamId));
   }
 
+  removeLastAnswerFromCycle(cycle) {
+    cycle.answers.pop();
+    cycle.bonuses = [];
+  }
+
   addPlayerAnswerToCurrentCycle(player, teamInfo, answer) {
     if (this.teamDidNotAnswerInCycle(teamInfo, this.game.currentCycle)) {
       this.game.currentCycle.answers.push({
@@ -94,8 +99,65 @@ export default class ScoresheetCycleController {
     }
   }
 
+  nextCycle() {
+    const nextCycleNumber = this.game.currentCycle.number + 1;
+    const indexToAddCurrentCycleTo = this.game.currentCycle.number - 1;
+    if (indexToAddCurrentCycleTo >= this.game.cycles.length - 1) {
+      this.game.cycles.push({
+        answers: [],
+        bonuses: []
+      });
+    }
+    angular.copy(this.game.currentCycle.answers,
+      this.game.cycles[indexToAddCurrentCycleTo].answers);
+    angular.copy(this.game.currentCycle.bonuses,
+      this.game.cycles[indexToAddCurrentCycleTo].bonuses);
+    this.game.currentCycle = {
+      number: nextCycleNumber,
+      answers: [],
+      bonuses: [],
+    };
+    this.incrementActivePlayersTUH(1);
+    this.saveScoresheet();
+  }
+
+  lastCycle() {
+    if (this.game.currentCycle.number > 1) {
+      const indexToReset = this.game.currentCycle.number - 1;
+      this.game.cycles[indexToReset] = {
+        answers: [],
+        bonuses: []
+      };
+      this.game.cycles[indexToReset - 1].bonuses = [];
+      this.game.cycles[indexToReset - 1].answers = [];
+      this.game.currentCycle = {
+        answers: [],
+        bonuses: [],
+        number: this.game.currentCycle.number - 1,
+      };
+    }
+    this.incrementActivePlayersTUH(-1);
+    this.saveScoresheet();
+  }
+
   switchCurrentCycleContext(toBonus) {
     this.game.onTossup = !toBonus;
+  }
+
+  incrementActivePlayersTUH(num) {
+    this.game.teams.forEach((team) => {
+      team.players.forEach((player) => {
+        if (player.active && player.tuh + num >= 0) {
+          player.tuh += num;
+        }
+      });
+    });
+  }
+
+  saveScoresheet() {
+    this.game.lastSavedAt = new Date();
+    localStorage.setItem(`scoresheet_${this.$scope.tournamentId}`,
+      JSON.stringify(this.game));
   }
 
 }
