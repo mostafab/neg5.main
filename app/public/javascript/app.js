@@ -16,6 +16,7 @@ import CollaboratorListController from './modules/controllers/collaborator-list.
 import ScoresheetFormController from './modules/controllers/scoresheet-form.controller';
 import ScoresheetPointsTrackerController from './modules/controllers/scoresheet-points-tracker.controller';
 import ScoresheetCycleController from './modules/controllers/scoresheet-cycle.controller';
+import ScoresheetTableController from './modules/controllers/scoresheet/scoresheet-table.controller';
 import AuthService from './modules/services/auth.service';
 import TournamentService from './modules/services/tournament.service';
 import MatchService from './modules/services/match.service';
@@ -75,6 +76,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .controller('ScoresheetFormCtrl', ScoresheetFormController)
   .controller('ScoresheetCycleController', ScoresheetCycleController)
   .controller('ScoresheetPointsTrackerCtrl', ScoresheetPointsTrackerController)
+  .controller('ScoresheetTableController', ScoresheetTableController)
   .filter('preventSameMatchTeams', PreventSameMatchTeamFilter)
   .filter('matchSearch', MatchSearchFilter)
   .filter('divisionPhase', DivisionPhaseFilter);
