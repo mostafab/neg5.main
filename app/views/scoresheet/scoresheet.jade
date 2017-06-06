@@ -33,8 +33,8 @@
                                             ) 
                                                 i.fa.fa-arrow-down(style='position:absolute;top:20%;font-size:0.8em;right:25%')
                                         div.form-control.nf-input.nf-gray.name(ng-bind='player.name')
-                                    span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true', 
-                                        ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
+                                    span.input-group-addon.btn.nf-button.button-outline(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true', 
+                                        ng-class="{'button-outline-green': tv.type === 'Power', 'button-outline-blue': tv.type === 'Base', 'button-outline-red': tv.type === 'Neg'}",
                                         ng-click='CycleCtrl.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[0].teamInfo, tv); CycleCtrl.switchToBonusIfTossupGotten(tv, Scoresheet.game.teams[0].teamInfo.id)',
                                         ng-bind='tv.value')
                                 
@@ -79,8 +79,8 @@
                                             ) 
                                                 i.fa.fa-arrow-down(style='position:absolute;top:20%;font-size:0.8em;right:25%')
                                         div.form-control.nf-input.nf-gray.name(ng-bind='player.name')
-                                    span.input-group-addon.btn.nf-button(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true', 
-                                        ng-class="{'nf-green': tv.type === 'Power', 'nf-blue': tv.type === 'Base', 'nf-red': tv.type === 'Neg'}",
+                                    span.input-group-addon.btn.nf-button.button-outline(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true', 
+                                        ng-class="{'button-outline-green': tv.type === 'Power', 'button-outline-blue': tv.type === 'Base', 'button-outline-red': tv.type === 'Neg'}",
                                         ng-click='CycleCtrl.addPlayerAnswerToCurrentCycle(player, Scoresheet.game.teams[1].teamInfo, tv); CycleCtrl.switchToBonusIfTossupGotten(tv, Scoresheet.game.teams[1].teamInfo.id)', 
                                         ng-bind='tv.value') 
                                     

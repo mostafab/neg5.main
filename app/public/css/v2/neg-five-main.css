@@ -30,7 +30,7 @@
 }
 .button-outline:hover {
     color: currentColor;
-    border: ;
+    border: 1px solid transparent;
 }
 .button-outline-blue {
     border: 1px solid #5ab8f8;
@@ -693,7 +693,7 @@ Redefine Bootstrap definitions
     border: 1px solid;
 }
 .button-outline.input-group-addon:hover {
-    border: none;
+    border: 1px solid transparent;
 }
 
 
