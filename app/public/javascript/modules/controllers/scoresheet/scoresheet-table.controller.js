@@ -25,8 +25,39 @@ export default class ScoresheetTableController {
     return index === -1 ? null : cycle.answers[index].teamId;
   }
 
+  getTeamScoreUpToCycle(teamId, cycleIndex) {
+    let score = 0;
+    for (let i = 0; i <= cycleIndex; i++) {
+      const cycle = this.game.cycles[i];
+      cycle.answers.forEach((a) => {
+        if (a.teamId === teamId) {
+          score += a.value;
+        }
+      });
+      score += cycle.bonuses.filter(b =>
+        b === teamId).length * this.pointScheme.bonusPointValue;
+    }
+    if (cycleIndex + 1 === this.game.currentCycle.number) {
+      this.game.currentCycle.answers.forEach((a) => {
+        if (a.teamId === teamId) {
+          score += a.value;
+        }
+      });
+      score += this.game.currentCycle.bonuses.filter(b =>
+        b === teamId).length * this.pointScheme.bonusPointValue;
+    }
+    return score;
+  }
+
   setTeamThatGotBonusPartCurrentCycle(index, team, bonusesArray) {
     bonusesArray[index] = bonusesArray[index] === team.id ? null : team.id;
+  }
+
+  editCycleBonuses(cycle) {
+    if (cycle.bonusesCopy) {
+      angular.copy(cycle.bonusesCopy, cycle.bonuses);
+      cycle.editingBonus = false;
+    }
   }
 
   displayPlayerAnswerForCycle(player, cycleIndex) {
