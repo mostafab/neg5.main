@@ -24,6 +24,17 @@ export default class ScoresheetFormController {
         });
     }
   }
+
+  getTeam(teamId) {
+    if (teamId) {
+      return this.game.teams.find(team => team.teamInfo.id === teamId);
+    }
+    return null;
+  }
+
+  range(num) {
+    return new Array(num);
+  }
 }
 
 ScoresheetFormController.$inject = ['$scope', 'ScoresheetService', 'TournamentService', 'TeamService'];

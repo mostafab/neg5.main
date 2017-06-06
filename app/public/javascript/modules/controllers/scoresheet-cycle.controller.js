@@ -1,3 +1,5 @@
+import angular from 'angular';
+
 export default class ScoresheetCycleController {
   constructor($scope, ScoresheetService, TeamService, TournamentService) {
     this.$scope = $scope;
@@ -12,16 +14,22 @@ export default class ScoresheetCycleController {
   }
 
   loadTeamPlayers(team) {
-    this.ScoresheetService.loadTeamPlayers(this.$scope.tournamentId, team)
-      .then((players) => {
+    this.ScoresheetService.loadTeamPlayers(this.$scope.tournamentId, team);
+  }
 
-      })
-      .catch(err => {
-
-      })
-      .finally(() => {
-
-      });
+  swapPlayers(players, initialIndex, toIndex) {
+    let targetIndex = toIndex;
+    if (toIndex < 0) {
+      targetIndex = players.length - 1;
+    } else if (toIndex === players.length) {
+      targetIndex = 0;
+    }
+    const tempArray = [];
+    angular.copy(players, tempArray);
+    const temp = players[initialIndex];
+    tempArray[initialIndex] = tempArray[targetIndex];
+    tempArray[targetIndex] = temp;
+    angular.copy(tempArray, players);
   }
 
   getTeamScoreUpToCycle(teamId, cycleIndex) {
@@ -45,6 +53,15 @@ export default class ScoresheetCycleController {
         b === teamId).length * this.pointScheme.bonusPointValue;
     }
     return score;
+  }
+
+  getTeamThatGotTossup(cycle) {
+    const index = cycle.answers.findIndex(a => a.type !== 'Neg');
+    return index === -1 ? null : cycle.answers[index].teamId;
+  }
+
+  setTeamThatGotBonusPartCurrentCycle(index, team, bonusesArray) {
+    bonusesArray[index] = (bonusesArray[index] === team.id ? null : team.id);
   }
 
   teamDidNotNegInCycle(teamId, cycle) {
