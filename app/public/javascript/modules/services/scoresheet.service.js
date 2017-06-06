@@ -32,6 +32,11 @@ export default class ScoresheetService {
     });
   }
 
+  resetScoresheet() {
+    const copy = ScoresheetService.newScoresheet();
+    angular.copy(copy, this.game);
+  }
+
   static newScoresheet() {
     return {
       teams: [

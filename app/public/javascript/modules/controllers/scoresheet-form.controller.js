@@ -1,3 +1,5 @@
+import angular from 'angular';
+
 export default class ScoresheetFormController {
   constructor($scope, ScoresheetService, TournamentService, TeamService) {
     this.$scope = $scope;
@@ -7,6 +9,8 @@ export default class ScoresheetFormController {
     this.game = this.ScoresheetService.game;
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
+
+    this.resetScoresheet = this.ScoresheetService.resetScoresheet;
   }
 
   addPlayer(team) {
@@ -34,6 +38,27 @@ export default class ScoresheetFormController {
 
   range(num) {
     return new Array(num);
+  }
+
+  loadLastSavedScoresheet() {
+    const lastScoresheet = localStorage.getItem(`scoresheet_${this.$scope.tournamentId}`);
+    if (!lastScoresheet) {
+      this.$scope.toast({
+        message: 'No prior saved scoresheet',
+        success: false,
+        hideAfter: true,
+      });
+    } else {
+      try {
+        angular.copy(JSON.parse(lastScoresheet), this.game);
+      } catch (err) {
+        this.$scope.toast({
+          message: 'Could not read scoresheet.',
+          success: false,
+          hideAfter: true,
+        });
+      }
+    }
   }
 }
 

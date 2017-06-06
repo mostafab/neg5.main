@@ -127,52 +127,52 @@
                         button.nf-button.btn.nf-black.btn-block.no-margin(type='button' ng-click='CycleCtrl.nextCycle()') Dead Tossup
             br            
 
-        //-     .row(ng-controller='ScoresheetPointsTrackerCtrl as TrackerCtrl')
-        //-         .col-lg-6.col-md-12.col-sm-12
-        //-             .panel.nf-panel
-        //-                 table.table.table-condensed.responsive-font.player-table
-        //-                     thead.nf-blue
-        //-                         th.table-head(ng-bind='Scoresheet.game.teams[0].teamInfo.name')
-        //-                         th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='tv.value')
-        //-                         th.table-head.center Pts
-        //-                         th.table-head.center TUH
-        //-                     tbody
-        //-                         tr.nf-white(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'nf-green': player.active}")
-        //-                             td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state' ng-bind='player.name')
-        //-                             td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)')
-        //-                             td.pad.center(ng-bind='Scoresheet.getPlayerTotalPoints(player)')
-        //-                             td.pad.center
-        //-                                input.center.input-sm.nf-input.form-control(type='number', 
-        //-                                     name='{{"player" + player.id + "_tuh"}}' min='{{Scoresheet.getNumberOfAnswersForPlayer(player)}}' max='{{Scoresheet.game.currentCycle.number - 1}}',
-        //-                                     ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}", 
-        //-                                     ng-model='player.tuh' autocomplete='off', 
-        //-                                     title='{{ Scoresheet.scoresheetForm["player" + player.id + "_tuh"].$valid ? "" : ("This player must have at least " + Scoresheet.getNumberOfAnswersForPlayer(player) + " TUH and at most " + (Scoresheet.game.currentCycle.number - 1)) + " TUH" }}')
+            .row(ng-controller='ScoresheetPointsTrackerCtrl as TrackerCtrl')
+                .col-lg-6.col-md-12.col-sm-12
+                    .panel.nf-panel
+                        table.table.table-condensed.responsive-font.player-table
+                            thead.nf-blue
+                                th.table-head(ng-bind='Scoresheet.game.teams[0].teamInfo.name')
+                                th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='tv.value')
+                                th.table-head.center Pts
+                                th.table-head.center TUH
+                            tbody
+                                tr.nf-white(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'nf-green': player.active}")
+                                    td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state' ng-bind='player.name')
+                                    td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='TrackerCtrl.getNumberOfTossupTypeForPlayer(player, tv)')
+                                    td.pad.center(ng-bind='TrackerCtrl.getPlayerTotalPoints(player)')
+                                    td.pad.center
+                                       input.center.input-sm.nf-input.form-control(type='number', 
+                                            name='{{"player" + player.id + "_tuh"}}' min='{{TrackerCtrl.getNumberOfAnswersForPlayer(player)}}' max='{{Scoresheet.game.currentCycle.number - 1}}',
+                                            ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}", 
+                                            ng-model='player.tuh' autocomplete='off', 
+                                            title='{{ Scoresheet.scoresheetForm["player" + player.id + "_tuh"].$valid ? "" : ("This player must have at least " + TrackerCtrl.getNumberOfAnswersForPlayer(player) + " TUH and at most " + (Scoresheet.game.currentCycle.number - 1)) + " TUH" }}')
 
-        //-         .col-lg-6.col-md-12.col-sm-12
-        //-             .panel.nf-panel 
-        //-                 table.table.table-condensed.responsive-font.player-table
-        //-                     thead.nf-blue
-        //-                         th.table-head(ng-bind='Scoresheet.game.teams[1].teamInfo.name')
-        //-                         th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='tv.value')
-        //-                         th.table-head.center Pts
-        //-                         th.table-head.center TUH
-        //-                     tbody
-        //-                         tr.nf-white(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'nf-green': player.active}")
-        //-                             td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state' ng-bind='player.name')
-        //-                             td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='Scoresheet.getNumberOfTossupTypeForPlayer(player, tv)')
-        //-                             td.pad.center(ng-bind='Scoresheet.getPlayerTotalPoints(player)')
-        //-                             td.pad.center
-        //-                                 input.center.input-sm.nf-input.form-control(type='number', 
-        //-                                     name='{{"player" + player.id + "_tuh"}}' min='{{Scoresheet.getNumberOfAnswersForPlayer(player)}}' max='{{Scoresheet.game.currentCycle.number - 1}}',
-        //-                                     ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}",  
-        //-                                     ng-model='player.tuh' autocomplete='off')            
+                .col-lg-6.col-md-12.col-sm-12
+                    .panel.nf-panel 
+                        table.table.table-condensed.responsive-font.player-table
+                            thead.nf-blue
+                                th.table-head(ng-bind='Scoresheet.game.teams[1].teamInfo.name')
+                                th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='tv.value')
+                                th.table-head.center Pts
+                                th.table-head.center TUH
+                            tbody
+                                tr.nf-white(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'nf-green': player.active}")
+                                    td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state' ng-bind='player.name')
+                                    td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='TrackerCtrl.getNumberOfTossupTypeForPlayer(player, tv)')
+                                    td.pad.center(ng-bind='TrackerCtrl.getPlayerTotalPoints(player)')
+                                    td.pad.center
+                                        input.center.input-sm.nf-input.form-control(type='number', 
+                                            name='{{"player" + player.id + "_tuh"}}' min='{{TrackerCtrl.getNumberOfAnswersForPlayer(player)}}' max='{{Scoresheet.game.currentCycle.number - 1}}',
+                                            ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}",  
+                                            ng-model='player.tuh' autocomplete='off')            
             
-        //-     .row(ng-if='!Scoresheet.game.teams[0].teamInfo && !Scoresheet.game.teams[1].teamInfo')
-        //-         .col-lg-6.col-md-6.col-sm-6
-        //-             button.nf-button.button.btn.btn-block.nf-orange(type='button' ng-click='Scoresheet.loadLastSavedScoresheet()') Load Last Scoresheet
-        //-     .row(ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
-        //-         .col-lg-6.col-md-6.col-sm-6
-        //-             button.nf-button.button.btn.btn-block.nf-orange(type='button' title='Load a new scoresheet' ng-click='Scoresheet.game = Scoresheet.newScoresheet()') New Scoresheet
+            .row(ng-if='!Scoresheet.game.teams[0].teamInfo && !Scoresheet.game.teams[1].teamInfo')
+                .col-lg-6.col-md-6.col-sm-6
+                    button.nf-button.button.btn.btn-block.nf-orange(type='button' ng-click='Scoresheet.loadLastSavedScoresheet()') Load Last Scoresheet
+            .row(ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
+                .col-lg-6.col-md-6.col-sm-6
+                    button.nf-button.button.btn.btn-block.nf-orange(type='button' title='Load a new scoresheet' ng-click='Scoresheet.resetScoresheet()') New Scoresheet
                 
         //- .col-lg-6.col-md-6.col-sm-12(ng-controller='ScoresheetTableController as ScoresheetTable' ng-show='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
                       
