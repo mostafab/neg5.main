@@ -1,11 +1,13 @@
 import angular from 'angular';
 
 export default class ScoresheetFormController {
-  constructor($scope, ScoresheetService, TournamentService, TeamService) {
+  constructor($scope, ScoresheetService, TournamentService, TeamService, PhaseService) {
     this.$scope = $scope;
     this.ScoresheetService = ScoresheetService;
     this.TournamentService = TournamentService;
     this.TeamService = TeamService;
+    this.PhaseService = PhaseService;
+    this.phases = this.PhaseService.phases;
     this.game = this.ScoresheetService.game;
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
@@ -40,6 +42,14 @@ export default class ScoresheetFormController {
     return new Array(num);
   }
 
+  revertScoresheetSubmission() {
+    this.ScoresheetService.revertScoresheetSubmission(this.$scope.tournamentId);
+  }
+
+  submitScoresheet() {
+    console.log('submitting scoresheet');
+  }
+
   loadLastSavedScoresheet() {
     const lastScoresheet = localStorage.getItem(`scoresheet_${this.$scope.tournamentId}`);
     if (!lastScoresheet) {
@@ -60,6 +70,13 @@ export default class ScoresheetFormController {
       }
     }
   }
+
 }
 
-ScoresheetFormController.$inject = ['$scope', 'ScoresheetService', 'TournamentService', 'TeamService'];
+ScoresheetFormController.$inject = [
+  '$scope',
+  'ScoresheetService',
+  'TournamentService',
+  'TeamService',
+  'PhaseService',
+];

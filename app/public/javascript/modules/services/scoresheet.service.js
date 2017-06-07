@@ -37,6 +37,23 @@ export default class ScoresheetService {
     angular.copy(copy, this.game);
   }
 
+  revertScoresheetSubmission(tournamentId) {
+    const matchId = this.game.id;
+    return this.$q((resolve, reject) => {
+      if (matchId) {
+        this.MatchService.deleteGame(tournamentId, matchId)
+          .then(() => {
+            this.game.id = null;
+            this.game.submitted = false;
+            resolve();
+          })
+          .catch(error => reject(error));
+      } else {
+        resolve();
+      }
+    });
+  }
+
   static newScoresheet() {
     return {
       teams: [

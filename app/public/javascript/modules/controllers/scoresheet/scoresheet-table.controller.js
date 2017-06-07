@@ -49,6 +49,23 @@ export default class ScoresheetTableController {
     return score;
   }
 
+  getTeamBouncebacks(teamId) {
+    let sum = 0;
+    this.game.cycles.forEach((cycle) => {
+      if (!this.teamAnsweredTossupCorrectly(teamId, cycle) &&
+        this.cycleHasCorrectAnswer(cycle)) {
+        const numPartsBouncedBack = cycle.bonuses.filter(b => b === teamId).length;
+        sum += (numPartsBouncedBack * this.pointScheme.bonusPointValue);
+      }
+    });
+    if (!this.teamAnsweredTossupCorrectly(teamId, this.game.currentCycle)
+      && this.cycleHasCorrectAnswer(this.game.currentCycle)) {
+      const numPartsBouncedBack = this.game.currentCycle.bonuses.filter(b => b === teamId).length;
+      sum += numPartsBouncedBack * this.pointScheme.bonusPointValue;
+    }
+    return sum;
+  }
+
   setTeamThatGotBonusPartCurrentCycle(index, team, bonusesArray) {
     bonusesArray[index] = bonusesArray[index] === team.id ? null : team.id;
   }
@@ -122,6 +139,10 @@ export default class ScoresheetTableController {
 
   cycleHasCorrectAnswer(cycle) {
     return cycle.answers.some(a => a.type !== 'Neg');
+  }
+
+  teamAnsweredTossupCorrectly(teamId, cycle) {
+    return cycle.answers.some(a => a.teamId === teamId && a.type !== 'Neg');
   }
 }
 
