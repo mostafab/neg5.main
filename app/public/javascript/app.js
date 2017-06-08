@@ -31,7 +31,8 @@ import DivisionHttpService from './modules/services/http/division-http.service';
 import MatchHttpService from './modules/services/http/match-http.service';
 import TeamHttpService from './modules/services/http/team-http.service';
 import CollaboratorHttpService from './modules/services/http/collaborator-http.service';
-import ScoresheetService from './modules/services/scoresheet.service';
+import ScoresheetService from './modules/services/scoresheet/scoresheet.service';
+import ScoresheetCycleService from './modules/services/scoresheet/scoresheet-cycle.service';
 import MatchUtilFactory from './modules/factories/util/match-util.factory';
 import PreventSameMatchTeamFilter from './modules/filters/prevent-same-match-teams';
 import MatchSearchFilter from './modules/filters/match-search.filter';
@@ -63,6 +64,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('CollaboratorService', CollaboratorService)
   .service('CollaboratorHttpService', CollaboratorHttpService)
   .service('ScoresheetService', ScoresheetService)
+  .service('ScoresheetCycleService', ScoresheetCycleService)
   .factory('MatchUtilFactory', MatchUtilFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)

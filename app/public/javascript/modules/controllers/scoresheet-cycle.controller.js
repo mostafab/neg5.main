@@ -1,36 +1,39 @@
 import angular from 'angular';
 
 export default class ScoresheetCycleController {
-  constructor($scope, ScoresheetService, TeamService, TournamentService) {
+  constructor($scope, ScoresheetService, TeamService, TournamentService, ScoresheetCycleService) {
     this.$scope = $scope;
     this.ScoresheetService = ScoresheetService;
     this.TeamService = TeamService;
     this.TournamentService = TournamentService;
+    this.ScoresheetCycleService = ScoresheetCycleService;
     this.game = this.ScoresheetService.game;
     this.teams = this.TeamService.teams;
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
     this.$scope.tournamentId = this.$scope.$parent.tournamentId;
+
+    this.swapPlayers = this.ScoresheetCycleService.swapPlayers;
   }
 
   loadTeamPlayers(team) {
     this.ScoresheetService.loadTeamPlayers(this.$scope.tournamentId, team);
   }
 
-  swapPlayers(players, initialIndex, toIndex) {
-    let targetIndex = toIndex;
-    if (toIndex < 0) {
-      targetIndex = players.length - 1;
-    } else if (toIndex === players.length) {
-      targetIndex = 0;
-    }
-    const tempArray = [];
-    angular.copy(players, tempArray);
-    const temp = players[initialIndex];
-    tempArray[initialIndex] = tempArray[targetIndex];
-    tempArray[targetIndex] = temp;
-    angular.copy(tempArray, players);
-  }
+  // swapPlayers(players, initialIndex, toIndex) {
+  //   let targetIndex = toIndex;
+  //   if (toIndex < 0) {
+  //     targetIndex = players.length - 1;
+  //   } else if (toIndex === players.length) {
+  //     targetIndex = 0;
+  //   }
+  //   const tempArray = [];
+  //   angular.copy(players, tempArray);
+  //   const temp = players[initialIndex];
+  //   tempArray[initialIndex] = tempArray[targetIndex];
+  //   tempArray[targetIndex] = temp;
+  //   angular.copy(tempArray, players);
+  // }
 
   getTeamScoreUpToCycle(teamId, cycleIndex) {
     let score = 0;
@@ -162,4 +165,4 @@ export default class ScoresheetCycleController {
 
 }
 
-ScoresheetCycleController.$inject = ['$scope', 'ScoresheetService', 'TeamService', 'TournamentService'];
+ScoresheetCycleController.$inject = ['$scope', 'ScoresheetService', 'TeamService', 'TournamentService', 'ScoresheetCycleService'];
