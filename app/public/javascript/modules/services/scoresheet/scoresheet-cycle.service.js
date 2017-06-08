@@ -87,6 +87,10 @@ export default class ScoresheetCycleService {
     return cycle.answers.findIndex(answer => answer.teamId === team.id) === -1;
   }
 
+  getNumberOfActivePlayers(players) {
+    return players.filter(p => p.active).length;
+  }
+
   switchToBonusIfTossupGotten(answer, teamId) {
     if (answer.type !== 'Neg' && this.teamDidNotNegInCycle(teamId, this.game.currentCycle)) {
       this.switchCurrentCycleContext(true);

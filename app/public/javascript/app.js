@@ -15,7 +15,7 @@ import CollaboratorSearchController from './modules/controllers/collaborator-sea
 import CollaboratorListController from './modules/controllers/collaborator-list.controller';
 import ScoresheetFormController from './modules/controllers/scoresheet-form.controller';
 import ScoresheetPointsTrackerController from './modules/controllers/scoresheet-points-tracker.controller';
-import ScoresheetCycleController from './modules/controllers/scoresheet-cycle.controller';
+import ScoresheetCycleController from './modules/controllers/scoresheet/scoresheet-cycle.controller';
 import ScoresheetTableController from './modules/controllers/scoresheet/scoresheet-table.controller';
 import AuthService from './modules/services/auth.service';
 import TournamentService from './modules/services/tournament.service';
