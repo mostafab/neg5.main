@@ -1,10 +1,14 @@
 export default class ScoresheetCycleController {
-  constructor($scope, ScoresheetService, TeamService, TournamentService, ScoresheetCycleService) {
+  constructor($scope, ScoresheetService, TeamService, TournamentService, ScoresheetCycleService,
+    ScoresheetPointsTrackerService) {
+
     this.$scope = $scope;
     this.ScoresheetService = ScoresheetService;
     this.TeamService = TeamService;
     this.TournamentService = TournamentService;
     this.ScoresheetCycleService = ScoresheetCycleService;
+    this.ScoresheetPointsTrackerService = ScoresheetPointsTrackerService;
+
     this.game = this.ScoresheetService.game;
     this.teams = this.TeamService.teams;
     this.pointScheme = this.TournamentService.pointScheme;
@@ -16,7 +20,8 @@ export default class ScoresheetCycleController {
       this.ScoresheetCycleService.getNumberOfActivePlayers.bind(this.ScoresheetCycleService);
 
     this.getTeamScoreUpToCycle =
-      this.ScoresheetCycleService.getTeamScoreUpToCycle.bind(this.ScoresheetCycleService);
+      this.ScoresheetPointsTrackerService.getTeamScoreUpToCycle
+        .bind(this.ScoresheetPointsTrackerService);
 
     this.getTeamThatGotTossup =
       this.ScoresheetCycleService.getTeamThatGotTossup.bind(this.ScoresheetCycleService);
@@ -56,4 +61,11 @@ export default class ScoresheetCycleController {
   }
 }
 
-ScoresheetCycleController.$inject = ['$scope', 'ScoresheetService', 'TeamService', 'TournamentService', 'ScoresheetCycleService'];
+ScoresheetCycleController.$inject = [
+  '$scope',
+  'ScoresheetService',
+  'TeamService',
+  'TournamentService',
+  'ScoresheetCycleService',
+  'ScoresheetPointsTrackerService',
+];

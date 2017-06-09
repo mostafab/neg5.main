@@ -2,6 +2,7 @@ import angular from 'angular';
 import ngCookies from 'angular-cookies';
 import ngAnimate from 'angular-animate';
 import config from './modules/config';
+
 import IndexController from './modules/controllers/index.controller';
 import HomeController from './modules/controllers/home.controller';
 import TournamentController from './modules/controllers/tournament.controller';
@@ -11,12 +12,15 @@ import PhaseController from './modules/controllers/phase.controller';
 import StatisticsController from './modules/controllers/statistics.controller';
 import ConfigController from './modules/controllers/config.controller';
 import DivisionController from './modules/controllers/division.controller';
+
 import CollaboratorSearchController from './modules/controllers/collaborator-search.controller';
 import CollaboratorListController from './modules/controllers/collaborator-list.controller';
-import ScoresheetFormController from './modules/controllers/scoresheet-form.controller';
-import ScoresheetPointsTrackerController from './modules/controllers/scoresheet-points-tracker.controller';
+
+import ScoresheetFormController from './modules/controllers/scoresheet/scoresheet-form.controller';
+import ScoresheetPointsTrackerController from './modules/controllers/scoresheet/scoresheet-points-tracker.controller';
 import ScoresheetCycleController from './modules/controllers/scoresheet/scoresheet-cycle.controller';
 import ScoresheetTableController from './modules/controllers/scoresheet/scoresheet-table.controller';
+
 import AuthService from './modules/services/auth.service';
 import TournamentService from './modules/services/tournament.service';
 import MatchService from './modules/services/match.service';
@@ -25,14 +29,18 @@ import PhaseService from './modules/services/phase.service';
 import DivisionService from './modules/services/division.service';
 import CollaboratorService from './modules/services/collaborator.service';
 import QBJService from './modules/services/qbj.service';
+
 import QBJHttpService from './modules/services/http/qbj-http.service';
 import PhaseHttpService from './modules/services/http/phase-http.service';
 import DivisionHttpService from './modules/services/http/division-http.service';
 import MatchHttpService from './modules/services/http/match-http.service';
 import TeamHttpService from './modules/services/http/team-http.service';
 import CollaboratorHttpService from './modules/services/http/collaborator-http.service';
+
 import ScoresheetService from './modules/services/scoresheet/scoresheet.service';
 import ScoresheetCycleService from './modules/services/scoresheet/scoresheet-cycle.service';
+import ScoresheetPointsTrackerService from './modules/services/scoresheet/scoresheet-points-tracker.service';
+
 import MatchUtilFactory from './modules/factories/util/match-util.factory';
 import PreventSameMatchTeamFilter from './modules/filters/prevent-same-match-teams';
 import MatchSearchFilter from './modules/filters/match-search.filter';
@@ -65,6 +73,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('CollaboratorHttpService', CollaboratorHttpService)
   .service('ScoresheetService', ScoresheetService)
   .service('ScoresheetCycleService', ScoresheetCycleService)
+  .service('ScoresheetPointsTrackerService', ScoresheetPointsTrackerService)
   .factory('MatchUtilFactory', MatchUtilFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)
