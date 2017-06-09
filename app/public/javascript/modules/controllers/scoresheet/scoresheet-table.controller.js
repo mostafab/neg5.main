@@ -1,148 +1,50 @@
-import angular from 'angular';
-
 export default class ScoresheetTableController {
-  constructor($scope, ScoresheetService, TeamService, TournamentService) {
+  constructor($scope, ScoresheetService, TeamService, TournamentService, ScoresheetTableService,
+    ScoresheetPointsTrackerService) {
+
     this.$scope = $scope;
     this.ScoresheetService = ScoresheetService;
     this.TeamService = TeamService;
     this.TournamentService = TournamentService;
+    this.ScoresheetTableService = ScoresheetTableService;
+    this.ScoresheetPointsTrackerService = ScoresheetPointsTrackerService;
     this.game = this.ScoresheetService.game;
     this.teams = this.TeamService.teams;
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
     this.$scope.tournamentId = this.$scope.$parent.tournamentId;
-  }
 
-  getTeamBonusPointsForCycle(teamId, cycleIndex) {
-    const cycle = cycleIndex + 1 ===
-      this.game.currentCycle.number ? this.game.currentCycle : this.game.cycles[cycleIndex];
-    return cycle.bonuses.filter(b =>
-      b === teamId).length * this.pointScheme.bonusPointValue;
-  }
+    this.getTeamBonusPointsForCycle =
+      this.ScoresheetPointsTrackerService.getTeamBonusPointsForCycle
+        .bind(this.ScoresheetPointsTrackerService);
+    this.getTeamThatGotTossup = this.ScoresheetPointsTrackerService.getTeamThatGotTossup
+      .bind(this.ScoresheetPointsTrackerService);
+    this.getTeamScoreUpToCycle = this.ScoresheetPointsTrackerService.getTeamScoreUpToCycle
+      .bind(this.ScoresheetPointsTrackerService);
+    this.getTeamBouncebacks = this.ScoresheetPointsTrackerService.getTeamBouncebacks
+      .bind(this.ScoresheetPointsTrackerService);
 
-  getTeamThatGotTossup(cycle) {
-    const index = cycle.answers.findIndex(a => a.type !== 'Neg');
-    return index === -1 ? null : cycle.answers[index].teamId;
-  }
+    this.setTeamThatGotBonusPartCurrentCycle =
+      this.ScoresheetTableService.setTeamThatGotBonusPartCurrentCycle
+        .bind(this.ScoresheetTableService);
+    this.editCycleBonuses = this.ScoresheetTableService.editCycleBonuses
+      .bind(this.ScoresheetTableService);
 
-  getTeamScoreUpToCycle(teamId, cycleIndex) {
-    let score = 0;
-    for (let i = 0; i <= cycleIndex; i++) {
-      const cycle = this.game.cycles[i];
-      cycle.answers.forEach((a) => {
-        if (a.teamId === teamId) {
-          score += a.value;
-        }
-      });
-      score += cycle.bonuses.filter(b =>
-        b === teamId).length * this.pointScheme.bonusPointValue;
-    }
-    if (cycleIndex + 1 === this.game.currentCycle.number) {
-      this.game.currentCycle.answers.forEach((a) => {
-        if (a.teamId === teamId) {
-          score += a.value;
-        }
-      });
-      score += this.game.currentCycle.bonuses.filter(b =>
-        b === teamId).length * this.pointScheme.bonusPointValue;
-    }
-    return score;
-  }
+    this.displayPlayerAnswerForCycle = this.ScoresheetTableService.displayPlayerAnswerForCycle
+      .bind(this.ScoresheetTableService);
+    this.displayCycleBonuses = this.ScoresheetTableService.displayCycleBonuses
+      .bind(this.ScoresheetTableService);
 
-  getTeamBouncebacks(teamId) {
-    let sum = 0;
-    this.game.cycles.forEach((cycle) => {
-      if (!this.teamAnsweredTossupCorrectly(teamId, cycle) &&
-        this.cycleHasCorrectAnswer(cycle)) {
-        const numPartsBouncedBack = cycle.bonuses.filter(b => b === teamId).length;
-        sum += (numPartsBouncedBack * this.pointScheme.bonusPointValue);
-      }
-    });
-    if (!this.teamAnsweredTossupCorrectly(teamId, this.game.currentCycle)
-      && this.cycleHasCorrectAnswer(this.game.currentCycle)) {
-      const numPartsBouncedBack = this.game.currentCycle.bonuses.filter(b => b === teamId).length;
-      sum += numPartsBouncedBack * this.pointScheme.bonusPointValue;
-    }
-    return sum;
-  }
+    this.getPlayerAnswerForCycle = this.ScoresheetPointsTrackerService.getPlayerAnswerForCycle
+      .bind(this.ScoresheetPointsTrackerService);
+    this.editPlayerAnswerForCycle = this.ScoresheetTableService.editPlayerAnswerForCycle
+      .bind(this.ScoresheetTableService);
 
-  setTeamThatGotBonusPartCurrentCycle(index, team, bonusesArray) {
-    bonusesArray[index] = bonusesArray[index] === team.id ? null : team.id;
-  }
-
-  editCycleBonuses(cycle) {
-    if (cycle.bonusesCopy) {
-      angular.copy(cycle.bonusesCopy, cycle.bonuses);
-      cycle.editingBonus = false;
-    }
-  }
-
-  displayPlayerAnswerForCycle(player, cycleIndex) {
-    const cycle = this.game.cycles[cycleIndex];
-    if (cycleIndex < this.game.currentCycle.number - 1) {
-      if (!cycle.editing) {
-        cycle.editing = {};
-      }
-      if (!cycle.newAnswer) {
-        cycle.newAnswer = {};
-      }
-      const playerAnswer = this.getPlayerAnswerForCycle(player, cycle);
-      if (!playerAnswer) {
-        cycle.newAnswer[player.id] = null;
-      } else {
-        cycle.newAnswer[player.id] =
-          this.pointScheme.tossupValues.find(tv => tv.value === playerAnswer.value);
-      }
-      cycle.editing[player.id] = true;
-    }
-  }
-
-  displayCycleBonuses(teamId, cycleIndex) {
-    const cycle = this.game.cycles[cycleIndex];
-    if (cycleIndex < this.game.currentCycle.number - 1 &&
-      this.cycleHasCorrectAnswer(cycle)) {
-      cycle.bonusesCopy = [];
-      angular.copy(cycle.bonuses, cycle.bonusesCopy);
-      cycle.editingBonus = true;
-    }
-  }
-
-  getPlayerAnswerForCycle(player, cycle) {
-    return cycle.answers.find(a => a.playerId === player.id);
-  }
-
-  editPlayerAnswerForCycle(playerId, teamId, newTossupValue, cycle) {
-    let filterFunction;
-    if (newTossupValue && newTossupValue.type !== 'Neg') {
-      filterFunction = a => a.teamId !== teamId && a.type === 'Neg';
-    } else {
-      filterFunction = a => a.teamId !== teamId && a.type !== 'Neg';
-    }
-    const filteredAnswers = cycle.answers.filter(filterFunction);
-    if (newTossupValue) {
-      filteredAnswers.push({
-        playerId,
-        teamId,
-        value: newTossupValue.value,
-        type: newTossupValue.type,
-      });
-    }
-    cycle.answers = filteredAnswers;
-    if (!this.cycleHasCorrectAnswer(cycle)) {
-      cycle.bonuses = [];
-    }
-    if (!cycle.editing) {
-      cycle.editing = {};
-    }
-    cycle.editing[playerId] = false;
-  }
-
-  cycleHasCorrectAnswer(cycle) {
-    return cycle.answers.some(a => a.type !== 'Neg');
-  }
-
-  teamAnsweredTossupCorrectly(teamId, cycle) {
-    return cycle.answers.some(a => a.teamId === teamId && a.type !== 'Neg');
+    this.cycleHasCorrectAnswer = this.ScoresheetPointsTrackerService.cycleHasCorrectAnswer
+      .bind(this.ScoresheetPointsTrackerService);
+    this.teamAnsweredTossupCorrectly =
+      this.ScoresheetPointsTrackerService.teamAnsweredTossupCorrectly
+        .bind(this.ScoresheetPointsTrackerService);
   }
 }
 
@@ -151,4 +53,6 @@ ScoresheetTableController.$inject = [
   'ScoresheetService',
   'TeamService',
   'TournamentService',
+  'ScoresheetTableService',
+  'ScoresheetPointsTrackerService',
 ];

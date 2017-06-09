@@ -57,4 +57,45 @@ export default class ScoresheetPointsTrackerService {
     return score;
   }
 
+  getTeamBonusPointsForCycle(teamId, cycleIndex) {
+    const cycle = cycleIndex + 1 ===
+      this.game.currentCycle.number ? this.game.currentCycle : this.game.cycles[cycleIndex];
+    return cycle.bonuses.filter(b =>
+      b === teamId).length * this.pointScheme.bonusPointValue;
+  }
+
+  getTeamThatGotTossup(cycle) {
+    const index = cycle.answers.findIndex(a => a.type !== 'Neg');
+    return index === -1 ? null : cycle.answers[index].teamId;
+  }
+
+  getPlayerAnswerForCycle(player, cycle) {
+    return cycle.answers.find(a => a.playerId === player.id);
+  }
+
+  cycleHasCorrectAnswer(cycle) {
+    return cycle.answers.some(a => a.type !== 'Neg');
+  }
+
+  teamAnsweredTossupCorrectly(teamId, cycle) {
+    return cycle.answers.some(a => a.teamId === teamId && a.type !== 'Neg');
+  }
+
+  getTeamBouncebacks(teamId) {
+    let sum = 0;
+    this.game.cycles.forEach((cycle) => {
+      if (!this.teamAnsweredTossupCorrectly(teamId, cycle) &&
+        this.cycleHasCorrectAnswer(cycle)) {
+        const numPartsBouncedBack = cycle.bonuses.filter(b => b === teamId).length;
+        sum += (numPartsBouncedBack * this.pointScheme.bonusPointValue);
+      }
+    });
+    if (!this.teamAnsweredTossupCorrectly(teamId, this.game.currentCycle)
+      && this.cycleHasCorrectAnswer(this.game.currentCycle)) {
+      const numPartsBouncedBack = this.game.currentCycle.bonuses.filter(b => b === teamId).length;
+      sum += numPartsBouncedBack * this.pointScheme.bonusPointValue;
+    }
+    return sum;
+  }
+
 }

@@ -37,6 +37,15 @@ export default class ScoresheetService {
     angular.copy(copy, this.game);
   }
 
+  saveScoresheet(tournamentId) {
+    if (!tournamentId) {
+      throw new Error('tournamentId param required.');
+    }
+    this.game.lastSavedAt = new Date();
+    localStorage.setItem(`scoresheet_${tournamentId}`,
+      JSON.stringify(this.game));
+  }
+
   revertScoresheetSubmission(tournamentId) {
     const matchId = this.game.id;
     return this.$q((resolve, reject) => {
@@ -98,6 +107,12 @@ export default class ScoresheetService {
   }
 }
 
-ScoresheetService.$inject = ['$q', 'TournamentService', 'TeamHttpService', 'PhaseService', 'MatchService'];
+ScoresheetService.$inject = [
+  '$q',
+  'TournamentService',
+  'TeamHttpService',
+  'PhaseService',
+  'MatchService',
+];
 
 

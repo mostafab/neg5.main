@@ -97,13 +97,13 @@ export default class ScoresheetCycleService {
     }
   }
 
-  nextCycle() {
+  nextCycle(tournamentId) {
     const nextCycleNumber = this.game.currentCycle.number + 1;
     const indexToAddCurrentCycleTo = this.game.currentCycle.number - 1;
     if (indexToAddCurrentCycleTo >= this.game.cycles.length - 1) {
       this.game.cycles.push({
         answers: [],
-        bonuses: []
+        bonuses: [],
       });
     }
     angular.copy(this.game.currentCycle.answers,
@@ -116,15 +116,15 @@ export default class ScoresheetCycleService {
       bonuses: [],
     };
     this.incrementActivePlayersTUH(1);
-    this.saveScoresheet();
+    this.ScoresheetService.saveScoresheet(tournamentId);
   }
 
-  lastCycle() {
+  lastCycle(tournamentId) {
     if (this.game.currentCycle.number > 1) {
       const indexToReset = this.game.currentCycle.number - 1;
       this.game.cycles[indexToReset] = {
         answers: [],
-        bonuses: []
+        bonuses: [],
       };
       this.game.cycles[indexToReset - 1].bonuses = [];
       this.game.cycles[indexToReset - 1].answers = [];
@@ -135,7 +135,7 @@ export default class ScoresheetCycleService {
       };
     }
     this.incrementActivePlayersTUH(-1);
-    this.saveScoresheet();
+    this.ScoresheetService.saveScoresheet(tournamentId);
   }
 
   switchCurrentCycleContext(toBonus) {
@@ -151,13 +151,6 @@ export default class ScoresheetCycleService {
       });
     });
   }
-
-  saveScoresheet() {
-    this.game.lastSavedAt = new Date();
-    localStorage.setItem(`scoresheet_${this.$scope.tournamentId}`,
-      JSON.stringify(this.game));
-  }
-
 }
 
 ScoresheetCycleService.$inject = [

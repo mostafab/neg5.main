@@ -40,6 +40,7 @@ import CollaboratorHttpService from './modules/services/http/collaborator-http.s
 import ScoresheetService from './modules/services/scoresheet/scoresheet.service';
 import ScoresheetCycleService from './modules/services/scoresheet/scoresheet-cycle.service';
 import ScoresheetPointsTrackerService from './modules/services/scoresheet/scoresheet-points-tracker.service';
+import ScoresheetTableService from './modules/services/scoresheet/scoresheet-table.service';
 
 import MatchUtilFactory from './modules/factories/util/match-util.factory';
 import PreventSameMatchTeamFilter from './modules/filters/prevent-same-match-teams';
@@ -74,6 +75,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('ScoresheetService', ScoresheetService)
   .service('ScoresheetCycleService', ScoresheetCycleService)
   .service('ScoresheetPointsTrackerService', ScoresheetPointsTrackerService)
+  .service('ScoresheetTableService', ScoresheetTableService)
   .factory('MatchUtilFactory', MatchUtilFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)

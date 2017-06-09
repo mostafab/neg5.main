@@ -43,17 +43,16 @@ export default class ScoresheetCycleController {
     this.switchToBonusIfTossupGotten =
       this.ScoresheetCycleService.switchToBonusIfTossupGotten.bind(this.ScoresheetCycleService);
     this.nextCycle =
-      this.ScoresheetCycleService.nextCycle.bind(this.ScoresheetCycleService);
+      this.ScoresheetCycleService.nextCycle
+        .bind(this.ScoresheetCycleService, this.$scope.tournamentId);
     this.lastCycle =
-      this.ScoresheetCycleService.lastCycle.bind(this.ScoresheetCycleService);
+      this.ScoresheetCycleService.lastCycle
+        .bind(this.ScoresheetCycleService, this.$scope.tournamentId);
     this.switchCurrentCycleContext =
       this.ScoresheetCycleService.switchCurrentCycleContext.bind(this.ScoresheetCycleService);
 
     this.incrementActivePlayersTUH =
       this.ScoresheetCycleService.incrementActivePlayersTUH.bind(this.ScoresheetCycleService);
-
-    this.saveScoresheet =
-      this.ScoresheetCycleService.saveScoresheet.bind(this.ScoresheetCycleService);
   }
 
   loadTeamPlayers(team) {
