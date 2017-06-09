@@ -258,14 +258,17 @@
                 .modal-dialog.modal-lg
                     .modal-content.nf-modal-content
                         .modal-header.nf-gray(style='border-bottom:none')
-                            button.btn.nf-button.nf-red(data-dismiss='modal') Close
-                            button.nf-button.btn.nf-green.right(type='submit' ng-disabled='Scoresheet.game.currentCycle.number === 1 || Scoresheet.scoresheetForm.$invalid' ng-show='!Scoresheet.game.submitted')
+                            button.btn.nf-button.button-outline.button-outline-red(data-dismiss='modal') Close
+                            button.nf-button.btn.button-outline.button-outline-green.right(type='submit' ng-disabled='Scoresheet.game.currentCycle.number === 1 || Scoresheet.scoresheetForm.$invalid' ng-show='!Scoresheet.game.submitted')
                                 | Submit Match
                             button.nf-button.btn.nf-orange.right(type='button' ng-show='Scoresheet.game.submitted' ng-click='Scoresheet.revertScoresheetSubmission()')
                                 | Revert submission
                         .modal-body.nf-white
                             .panel(style='border:none')
-                                .nf-panel-heading.nf-blue.center Match Summary
+                                .nf-panel-heading
+                                    .row
+                                        .col-lg-12.col-sm-12.col-md-12
+                                            label.nf-label Match Summary
                                 .nf-panel-body.panel-body.nf-white
                                     .row
                                         .col-lg-6.col-md-6.col-sm-6(style='text-align:left')
@@ -281,7 +284,8 @@
                                                     p.inline {{ScoresheetTable.getTeamBouncebacks(Scoresheet.game.teams[0].teamInfo.id)}}
                                             .row
                                                 .col-md-6.col-sm-6
-                                                    label.nf-label.btn-block TUs with no bonuses
+                                                    label.nf-label.btn-block
+                                                        p TUs with no bonuses
                                                 .col-md-6.col-sm-6
                                                     input.form-control.nf-input(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' placeholder='Tossups answered correctly that didn\'t lead to bonuses.', 
                                                         ng-model='Scoresheet.game.teams[0].overtime',
@@ -310,14 +314,16 @@
                                                         ng-class="{'nf-error' : Scoresheet.scoresheetForm.ot2.$invalid}", 
                                                     )
                                                 .col-md-6.col-sm-6
-                                                    label.nf-label.btn-block TUs with no bonuses                         
+                                                    label.nf-label.btn-block 
+                                                        p TUs with no bonuses                         
                                     br
                                     br
                                     
                                     .row
                                         .col-lg-6.col-md-6.col-sm-6
                                             .row.nf-margin
-                                                label.nf-label Tossups Heard: {{Scoresheet.game.currentCycle.number - 1}}
+                                                label.nf-label 
+                                                    p Tossups Heard: {{Scoresheet.game.currentCycle.number - 1}}
                                     
                                     
                                     hr
@@ -326,7 +332,7 @@
                                         div(class="col-lg-12 col-md-12 col-sm-12")
                                             div(class="row")
                                                 div(class="col-md-6 col-sm-6")
-                                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Round
+                                                    label(class="label nf-label btn-block" style='float:right') Round
                                                 div(class="col-md-6 col-sm-6")
                                                     input(type="number" min='0' class="form-control nf-input " name="round" placeholder="Round", 
                                                         ng-model='Scoresheet.game.round',
@@ -338,7 +344,7 @@
                                         div(class="col-lg-12 col-md-12 col-sm-12")
                                             div(class="row")
                                                 div(class="col-md-6 col-sm-6")
-                                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Room
+                                                    label(class="label nf-label btn-block" style='float:right') Room
                                                 div(class="col-md-6 col-sm-6")
                                                     input(type="text" class="form-control nf-input " name="room" placeholder="Room", 
                                                         ng-model='Scoresheet.game.room',
@@ -350,7 +356,7 @@
                                         div(class="col-lg-12 col-md-12 col-sm-12")
                                             div(class="row")
                                                 div(class="col-md-6 col-sm-6")
-                                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Moderator
+                                                    label(class="label nf-label btn-block" style='float:right') Moderator
                                                 div(class="col-md-6 col-sm-6")
                                                     input(type="text" class="form-control nf-input " name="moderator" placeholder="Moderator", 
                                                         ng-model='Scoresheet.game.moderator', 
@@ -361,7 +367,7 @@
                                         div(class="col-lg-12 col-md-12 col-sm-12")
                                             div(class="row")
                                                 div(class="col-md-6 col-sm-6")
-                                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right') Packet
+                                                    label(class="label nf-label btn-block" style='float:right') Packet
                                                 div(class="col-md-6 col-sm-6")
                                                     input(type="text" class="form-control nf-input " name="packet" placeholder="Packet", 
                                                         ng-model='Scoresheet.game.packet',
@@ -372,7 +378,7 @@
                                         div(class="col-lg-12 col-md-12 col-sm-12")
                                             div(class="row")
                                                 div(class="col-md-6 col-sm-6")
-                                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right' title='Select all phases that you want this game to count for.') Phases* ({{Scoresheet.game.phases.length}})
+                                                    label(class="label nf-label btn-block" style='float:right' title='Select all phases that you want this game to count for.') Phases* ({{Scoresheet.game.phases.length}})
                                                         p.warning-text(ng-show='Scoresheet.scoresheetForm.phases.$invalid') Select a phase(s).
                                                 div(class="col-md-6 col-sm-6")
                                                     select(multiple required class="form-control nf-input no-overflow" name='phases' ng-attr-size='{{Scoresheet.phases.length}}', 
@@ -386,7 +392,7 @@
                                         div(class="col-lg-12 col-md-12 col-sm-12")
                                             div(class="row")
                                                 div(class="col-md-4 col-sm-4")
-                                                    label(class="label nf-dark-blue nf-label btn-block" style='float:right;') Notes
+                                                    label(class="label nf-label btn-block" style='float:right;') Notes
                                                 div(class="col-md-8 col-sm-8")
                                                     textarea(class="form-control nf-input " name="notes" placeholder="Notes" style='min-height:200px' ng-model='Scoresheet.game.notes')
                         

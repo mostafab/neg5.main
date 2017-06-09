@@ -1,11 +1,12 @@
 import angular from 'angular';
 
 export default class ScoresheetService {
-  constructor($q, TournamentService, TeamHttpService, PhaseService, MatchService) {
+  constructor($q, TournamentService, TeamHttpService, PhaseService, MatchService, TeamService) {
     this.$q = $q;
     this.TournamentService = TournamentService;
     this.PhaseService = PhaseService;
     this.MatchService = MatchService;
+    this.TeamService = TeamService;
     this.TeamHttpService = TeamHttpService;
 
     this.pointScheme = this.TournamentService.pointScheme;
@@ -30,6 +31,29 @@ export default class ScoresheetService {
         })
         .catch(err => reject(err));
     });
+  }
+
+  addPlayer(tournamentId, team) {
+    const { length } = team.newPlayer;
+    if (length > 0) {
+      this.TeamService.addPlayer(tournamentId, team.teamInfo.id, team.newPlayer)
+        .then((player) => {
+          team.players.push({
+            name: player.name,
+            id: player.id,
+            tuh: 0,
+            active: team.players.length + 1 <= this.rules.maxActive,
+          });
+          team.newPlayer = '';
+        });
+    }
+  }
+
+  getTeam(teamId) {
+    if (teamId) {
+      return this.game.teams.find(team => team.teamInfo.id === teamId);
+    }
+    return null;
   }
 
   resetScoresheet() {
@@ -61,6 +85,10 @@ export default class ScoresheetService {
         resolve();
       }
     });
+  }
+
+  range(num) {
+    return new Array(num);
   }
 
   static newScoresheet() {
@@ -113,6 +141,7 @@ ScoresheetService.$inject = [
   'TeamHttpService',
   'PhaseService',
   'MatchService',
+  'TeamService',
 ];
 
 

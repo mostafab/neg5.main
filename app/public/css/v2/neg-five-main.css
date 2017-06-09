@@ -320,8 +320,8 @@ input[type="color"]:focus,
     border-radius: 1px;
 }
 
-th.nf-label, .label.nf-label, .nf-panel-heading * label.nf-label, 
-.nf-panel-heading > label.nf-label {
+th.nf-label, .label.nf-label, label.nf-label > p, .nf-panel-heading * label.nf-label, 
+.nf-panel-heading > label.nf-label, .nf-panel-heading > label.nf-label > p {
     position: relative;
     float: left;
     color: #51517d;

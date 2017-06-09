@@ -12,34 +12,14 @@ export default class ScoresheetFormController {
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
 
-    this.resetScoresheet = this.ScoresheetService.resetScoresheet;
+    this.getTeam = this.ScoresheetService.getTeam.bind(this.ScoresheetService);
+    this.resetScoresheet = this.ScoresheetService.resetScoresheet.bind(this.ScoresheetService);
+
+    this.range = this.ScoresheetService.range.bind(this.ScoresheetService);
   }
 
   addPlayer(team) {
-    const { length } = team.newPlayer;
-    if (length > 0) {
-      this.TeamService.addPlayer(this.$scope.tournamentId, team.teamInfo.id, team.newPlayer)
-        .then((player) => {
-          team.players.push({
-            name: player.name,
-            id: player.id,
-            tuh: 0,
-            active: team.players.length + 1 <= this.rules.maxActive,
-          });
-          team.newPlayer = '';
-        });
-    }
-  }
-
-  getTeam(teamId) {
-    if (teamId) {
-      return this.game.teams.find(team => team.teamInfo.id === teamId);
-    }
-    return null;
-  }
-
-  range(num) {
-    return new Array(num);
+    this.ScoresheetService.addPlayer(this.$scope.tournamentId, team);
   }
 
   revertScoresheetSubmission() {
