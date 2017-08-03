@@ -1,13 +1,16 @@
 import angular from 'angular';
 
 export default class ScoresheetService {
-  constructor($q, TournamentService, TeamHttpService, PhaseService, MatchService, TeamService) {
+  constructor($q, TournamentService, TeamHttpService, PhaseService, MatchService, TeamService,
+    ScoresheetPointsTrackerService) {
+
     this.$q = $q;
     this.TournamentService = TournamentService;
     this.PhaseService = PhaseService;
     this.MatchService = MatchService;
     this.TeamService = TeamService;
     this.TeamHttpService = TeamHttpService;
+    this.ScoresheetPointsTrackerService = ScoresheetPointsTrackerService;
 
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
@@ -87,6 +90,67 @@ export default class ScoresheetService {
     });
   }
 
+  submitScoresheet(tournamentId) {
+    if (!this.game.submitted) {
+      const parsedScoresheet = this.parseScoresheet(this.game);
+      console.log(parsedScoresheet);
+    }
+  }
+
+  parseScoresheet(scoresheet) {
+    return {
+      moderator: scoresheet.moderator,
+      notes: scoresheet.notes,
+      packet: scoresheet.packet,
+      phases: scoresheet.phases,
+      room: scoresheet.room,
+      round: scoresheet.round,
+      tuh: scoresheet.currentCycle.number - 1,
+      teams: scoresheet.teams.map((team) => {
+        return {
+          teamInfo: team.teamInfo,
+          players: team.players.filter(p => p.tuh > 0).map((player) => {
+            return {
+              id: player.id,
+              tuh: player.tuh,
+              points: this.pointScheme.tossupValues.reduce((aggr, tv) => {
+                aggr[tv.value] = this.ScoresheetPointsTrackerService
+                  .getNumberOfTossupTypeForPlayer(player, tv);
+                return aggr;
+              }, {}),
+            };
+          }),
+          score: this.ScoresheetPointsTrackerService
+            .getTeamScoreUpToCycle(team.teamInfo.id, scoresheet.currentCycle.number - 1),
+          bouncebacks: this.ScoresheetPointsTrackerService.getTeamBouncebacks(team.teamInfo.id),
+          overtime: team.overtime || 0,
+        };
+      }),
+      scoresheet: scoresheet.cycles.filter((c, index) =>
+        index < scoresheet.currentCycle.number - 1).map((c, index) => {
+          return {
+            number: index + 1,
+            answers: c.answers,
+            bonuses: ScoresheetService.makeArray(this.pointScheme.partsPerBonus)
+              .map((elem, innerIndex) => {
+                return {
+                  part: innerIndex + 1,
+                  teamThatGotBonus: c.bonuses[innerIndex] || null,
+                };
+              }),
+          };
+        }),
+    };
+  }
+
+  static makeArray(length) {
+    const arr = [];
+    for (let i = 0; i < length; i++) {
+      arr[i] = undefined;
+    }
+    return arr;
+  }
+
   range(num) {
     return new Array(num);
   }
@@ -142,6 +206,7 @@ ScoresheetService.$inject = [
   'PhaseService',
   'MatchService',
   'TeamService',
+  'ScoresheetPointsTrackerService',
 ];
 
 
