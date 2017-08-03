@@ -6,7 +6,8 @@
   "scripts": {
     "test": "test",
     "start": "node app/build/server.js",
-    "start-prod": "node app/build/server.js"
+    "start-prod": "node app/build/server.js",
+    "build": "gulp"
   },
   "author": "mostafa",
   "license": "MIT",

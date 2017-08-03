@@ -1,16 +1,16 @@
 import angular from 'angular';
+import ScoresheetPointsTrackerService from './scoresheet-points-tracker.service';
 
 export default class ScoresheetService {
-  constructor($q, TournamentService, TeamHttpService, PhaseService, MatchService, TeamService,
-    ScoresheetPointsTrackerService) {
-
+  constructor($q, TournamentService, TeamHttpService, PhaseService, MatchService, TeamService) {
     this.$q = $q;
     this.TournamentService = TournamentService;
     this.PhaseService = PhaseService;
     this.MatchService = MatchService;
     this.TeamService = TeamService;
     this.TeamHttpService = TeamHttpService;
-    this.ScoresheetPointsTrackerService = ScoresheetPointsTrackerService;
+    this.ScoresheetPointsTrackerService =
+      new ScoresheetPointsTrackerService(this, this.TournamentService);
 
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
@@ -206,7 +206,6 @@ ScoresheetService.$inject = [
   'PhaseService',
   'MatchService',
   'TeamService',
-  'ScoresheetPointsTrackerService',
 ];
 
 

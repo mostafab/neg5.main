@@ -35,3 +35,9 @@ data/
 
 #Karma output
 karma_html/
+
+# Build files
+app/build
+
+# Environment variables
+.env
