@@ -83,6 +83,9 @@ span.nf-button:hover, button.nf-button:hover {
 input[type='number'].tuh {
     min-width: 50px;
 }
+input[type='number'].point-value {
+    min-width: 30px;
+}
 
 a.tournament-card {
     color: black;
@@ -95,7 +98,7 @@ a.tournament-card:hover {
     color: #f9a825 !important;
 }
 .error-text {
-    color: red;
+    color: red !important;
 }
 
 .nf-modal-content {
@@ -666,15 +669,15 @@ input[type=number] {
     -moz-appearance:textfield;
 }
 
-div.readonly {
+div.readonly, input.readonly {
     background-color: #ECEFF1;
     pointer-events: none;
 }
 
-input.readonly {
+/*input.readonly {
     pointer-events: none;
     background-color: #f4f0ea;
-}
+}*/
 
 select.readonly {
     pointer-events: none;
