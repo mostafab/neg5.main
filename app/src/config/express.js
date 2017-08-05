@@ -19,11 +19,11 @@ const indexRoute = require('../routes/index');
 
 export default () => {
   const app = express();
-  const { minifyJs = false, env = 'development' } = configuration;
+  const { NODE_ENV } = configuration;
 
-  app.set('minifyJs', minifyJs);
-  app.set('configEnv', env);
-  app.locals.pretty = false;
+  if (NODE_ENV === 'PROD') {
+      app.locals.pretty = false;
+  }
 
   app.use(bodyParser.urlencoded({
     extended: true,
@@ -40,7 +40,7 @@ export default () => {
   app.use(express.static(path.join(__dirname, '../../public')));
 
   app.use((request, response, next) => {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'PROD') {
       if (request.headers['x-forwarded-proto'] !== 'https') {
         return response.redirect(`https://${request.headers.host}${request.url}`);
       }
