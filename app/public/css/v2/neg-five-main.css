@@ -80,9 +80,10 @@ span.nf-button:hover, button.nf-button:hover {
     /*box-shadow: 0 3px 2px rgba(0, 0, 0, 0.2);*/
 }
 
-/*.nf-button.transition:hover, .input-group.transition {
-    cursor: pointer;
-}*/
+input[type='number'].tuh {
+    min-width: 50px;
+}
+
 a.tournament-card {
     color: black;
 }
@@ -123,9 +124,6 @@ a.tournament-card:hover {
     height: 60px;
     margin-bottom: 0;
     background-color: hsla(0,0%,100%,.95);
-    box-shadow: 0 2px 4px 0 rgba(73,73,73,.1);
-    -webkit-box-shadow: 0 2px 4px 0 rgba(73,73,73,.1);
-    -moz-box-shadow: 0 2px 4px 0 rgba(73,73,73,.1);
 }
 
 .navbar-nav > li:hover {
@@ -618,7 +616,12 @@ div.name {
 
 .point-label {
     min-width: 130px;
+    border: 1px solid #e7e7e7;
 }
+.point-label:not(.nf-green):not(.nf-blue):not(.nf-red) {
+    background: white;
+}
+
 .point-label.dropdown-toggle:hover {
     cursor: pointer;
 }
@@ -664,7 +667,7 @@ input[type=number] {
 }
 
 div.readonly {
-    background-color: #f4f0ea;
+    background-color: #ECEFF1;
     pointer-events: none;
 }
 

@@ -20,7 +20,6 @@ div(id='add-game-div')
                                 ng-options='team.name for team in Game.teams | orderBy:"name" | preventSameMatchTeams:Game.currentGame.teams[0].teamInfo.id')
                                 option(disabled value='' selected) Choose a Team
                                 
-                                
                     br
                     
                     div(class="row")
@@ -38,7 +37,7 @@ div(id='add-game-div')
                                         tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id')
                                             td(class='vertical-center' title='{{player.name}}' ng-bind='player.name')
                                             td
-                                                input.nf-input(type='number' min='{{Game.MatchUtil.numPlayerAnswers(player)}}' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
+                                                input.nf-input.tuh(type='number' min='{{Game.MatchUtil.numPlayerAnswers(player)}}' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
                                                 name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.newGameForm[player.id + '_tuh'].$invalid}") 
                                             td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true')
                                                 input.nf-input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.newGameForm[player.id + point.value].$invalid, 'readonly' : player.tuh <= 0 || Game.newGameForm[player.id + '_tuh'].$invalid}")
@@ -58,7 +57,7 @@ div(id='add-game-div')
                                         tr(ng-repeat='player in Game.currentGame.teams[1].players track by player.id')
                                             td(class='vertical-center' title='{{player.name}}' ng-bind='player.name')
                                             td
-                                                input.nf-input(type='number' min='{{Game.MatchUtil.numPlayerAnswers(player)}}' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)' name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.newGameForm[player.id + '_tuh'].$invalid}") 
+                                                input.nf-input.tuh(type='number' min='{{Game.MatchUtil.numPlayerAnswers(player)}}' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)' name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.newGameForm[player.id + '_tuh'].$invalid}") 
                                             td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ')
                                                 input.nf-input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.newGameForm[player.id + point.value].$invalid, 'readonly': player.tuh <= 0 || Game.newGameForm[player.id + '_tuh'].$invalid}")
                                             td 
