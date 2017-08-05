@@ -1,6 +1,5 @@
 .nf-background-main {
-    /*background-color: #E0E0E0;*/
-    background-color: #FCFCFD;
+    background-color: white;
 }
 
 .nf-image {
@@ -13,8 +12,8 @@
     border-radius: 2px;
     margin: 5px;
     font-size: 1.1em;
-    /*box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);*/
 }
+
 .button-outline {
     /*padding: 10px;*/
     background: #fff;
@@ -661,6 +660,11 @@ select.readonly {
     -moz-appearance: none;
     text-indent: 1px;
     text-overflow: '';
+}
+
+select.nf-input {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 /*td.pad, tr.pad {

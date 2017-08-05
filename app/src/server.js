@@ -10,7 +10,7 @@ const PORT_NUM = process.env.PORT || config.port || 3000;
 
 const app = express();
 
-const startServer = () => {
+const init = () => {
     if (usingHttps) {
         const options = {
             key: fs.readFileSync(httpsDir + keyName, 'utf8'),
@@ -29,7 +29,7 @@ const startServer = () => {
     })
 }
 
-startServer();
+init();
 
 
 
