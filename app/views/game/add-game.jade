@@ -29,12 +29,16 @@ div(id='add-game-div')
                                 table(class='table')                                   
                                     thead
                                         tr
-                                            th(class='no-border nf-label' ng-bind='Game.currentGame.teams[0].teamInfo.name') 
-                                            th(class='center no-border nf-label') TUH
-                                            th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ' ng-bind='point.value')
-                                            th(class='center no-border nf-label') Total
+                                            th(class='no-border nf-label')
+                                                p.left(ng-bind='Game.currentGame.teams[0].teamInfo.name') 
+                                            th(class='center no-border nf-label')
+                                                p.left TUH
+                                            th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ')
+                                                p.left(ng-bind='point.value')
+                                            th(class='center no-border nf-label') 
+                                                p.left Total
                                     tbody
-                                        tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id')
+                                        tr.player-match-inputs(ng-repeat='player in Game.currentGame.teams[0].players track by player.id')
                                             td(class='vertical-center' title='{{player.name}}' ng-bind='player.name')
                                             td
                                                 input.nf-input.tuh(type='number' min='{{Game.MatchUtil.numPlayerAnswers(player)}}' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
@@ -49,12 +53,16 @@ div(id='add-game-div')
                                 table(class='table')                                   
                                     thead
                                         tr
-                                            th.nf-label(ng-bind='Game.currentGame.teams[1].teamInfo.name') 
-                                            th(class='center no-border nf-label') TUH
-                                            th(class='center nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true' ng-bind='point.value')
-                                            th(class='center nf-label') Total
+                                            th(class='no-border nf-label')
+                                                p.left(ng-bind='Game.currentGame.teams[1].teamInfo.name') 
+                                            th(class='center no-border nf-label')
+                                                p.left TUH
+                                            th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ')
+                                                p.left(ng-bind='point.value')
+                                            th(class='center no-border nf-label') 
+                                                p.left Total
                                     tbody
-                                        tr(ng-repeat='player in Game.currentGame.teams[1].players track by player.id')
+                                        tr.player-match-inputs(ng-repeat='player in Game.currentGame.teams[1].players track by player.id')
                                             td(class='vertical-center' title='{{player.name}}' ng-bind='player.name')
                                             td
                                                 input.nf-input.tuh(type='number' min='{{Game.MatchUtil.numPlayerAnswers(player)}}' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)' name='{{player.id + "_tuh"}}'

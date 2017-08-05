@@ -78,6 +78,10 @@ span.nf-button:hover, button.nf-button:hover {
     /*box-shadow: 0 3px 2px rgba(0, 0, 0, 0.2);*/
 }
 
+/*tr.player-match-inputs > td {
+    float: left;
+}*/
+
 input[type='number'].tuh {
     min-width: 50px;
 }
@@ -135,7 +139,6 @@ table.player-table * td:first-child:hover {
     cursor: pointer;
 }
 
-
 .relative {
     position: relative;
 }
@@ -146,7 +149,7 @@ table.player-table * td:first-child:hover {
 
 form.readonly-form * input, form.readonly-form * select, form.readonly-form * textarea {
     pointer-events: none;
-    background: #f8f5f0;
+    background: #ECEFF1;
 }
 
 .navbar-collapse * li > a, .navbar-right * li > a {
