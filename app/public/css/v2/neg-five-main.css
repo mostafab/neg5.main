@@ -54,10 +54,27 @@
     background: #26a69a;
     color: white;
 }
+.button-outline-orange {
+    border: 1px solid #FFA000;
+    color: #FFA000;
+}
+.button-outline-orange:hover, .button-outline-orange:focus {
+    background: #FFA000;
+    color: black;
+}
+.button-outline-black {
+    border: 1px solid black;
+    color: black;
+}
+.button-outline-black:hover, .button-outline-black:focus {
+    background: black;
+    color: white;
+}
 
 .nf-button.transition, .input-group.transition {
-    transition: .1s background;
+    transition: all .1s ease-out 0s
 }
+
 span.nf-button:hover, button.nf-button:hover {
     cursor: pointer;
     /*box-shadow: 0 3px 2px rgba(0, 0, 0, 0.2);*/
@@ -383,7 +400,7 @@ th.nf-label {
 }
 
 .nf-panel-footer {
-    border:none;
+    /*border:none;*/
 }
 
 .nf-select {
@@ -410,7 +427,8 @@ th.nf-label {
 /** Neg 5 colors */
 
 .nf-white {
-    background-color: #fafafa;
+    /*background-color: #fafafa;*/
+    background-color: rgb(255, 255, 255);
 }
 .nf-white:hover {
     color: black !important;
@@ -486,7 +504,7 @@ th.nf-label {
     margin: 0px;
 }
 
-.not-visible {
+.not-visible, .inactive-player {
     /*display: none !important;*/
     opacity: .35;
     pointer-events: none;
@@ -496,8 +514,9 @@ th.nf-label {
     color:#00e676 !important;
 }
 
-.inactive-player > td:first-child {
-    text-decoration: line-through;
+
+.player-table > tbody > tr > td:not(.active-player):first-child {
+    text-decoration-line: line-through;
 }
 
 .no-border {
