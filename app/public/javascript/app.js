@@ -103,5 +103,7 @@ angular.module('statsApp', [ngCookies, ngAnimate])
   .controller('PublicStatsController', StatsDisplayController)
   .service('StatsService', StatsService)
   .service('StatsHttpService', StatsHttpService)
-  .service('PhaseService', PhaseService);
+  .service('PhaseService', PhaseService)
+  .service('PhaseHttpService', PhaseHttpService)
+  .service('TournamentService', TournamentService)
 

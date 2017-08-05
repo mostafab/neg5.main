@@ -1,4 +1,4 @@
-export class StatsDisplayController {
+export default class StatsDisplayController {
 
     constructor($scope, $window, $timeout, $cookies, PhaseService, StatsService) {
         this.$scope = $scope;
