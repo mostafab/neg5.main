@@ -11,7 +11,7 @@
         div(style='margin-top:75px')
             .col-lg-12.col-md-12.col-sm-12(ng-repeat='result in CollabSearch.searchResults | orderBy: "username" track by $index')
                 .input-group
-                    div.form-control.nf-input.nf-white.no-border(ng-bind='result.username')
+                    div.form-control.nf-input.nf-white(ng-bind='result.username')
                     span.input-group-addon.no-border.btn.nf-button.button-outline.button-outline-green(ng-click='CollabSearch.addCollaborator(result.username, true)') Add as Admin
                     span.input-group-addon.no-border.nf-button.button-outline.button-outline-blue.btn(ng-click='CollabSearch.addCollaborator(result.username, false)') Add
                 br
@@ -22,7 +22,7 @@
         .col-lg-6.col-md-6.col-sm-12(ng-repeat='collab in CollabList.collaborators | orderBy:["username"]')
             .input-group
                 span.input-group-addon.btn(ng-click='!tournamentContext.owner || CollabList.toggleAdmin(collab)' ng-class="{'nf-green' : collab.admin, 'nf-gray' : !collab.admin}" title='{{tournamentContext.owner ? "Toggle admin priviledges" : ""}}') {{collab.admin ? 'A' : ''}}
-                div.nf-white.nf-input.form-control.no-border.btn(ng-bind='collab.username')
+                div.nf-white.nf-input.form-control.btn.readonly(ng-bind='collab.username')
                 span.input-group-addon.button-outline.button-outline-red.no-border(role='button' ng-click='CollabList.removeCollaborator(collab.username)' ng-if='tournamentContext.owner === true')
                     i.fa.fa-trash
             

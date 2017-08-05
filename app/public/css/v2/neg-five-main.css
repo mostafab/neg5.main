@@ -15,9 +15,7 @@
 }
 
 .button-outline {
-    /*padding: 10px;*/
     background: #fff;
-    font-size: 18px;
     letter-spacing: .4px;
     border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -140,6 +138,10 @@ table.player-table * td:first-child:hover {
 
 .relative {
     position: relative;
+}
+
+.readonly.nf-white {
+    background-color: white;
 }
 
 form.readonly-form * input, form.readonly-form * select, form.readonly-form * textarea {
