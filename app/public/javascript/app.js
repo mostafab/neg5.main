@@ -21,6 +21,8 @@ import ScoresheetPointsTrackerController from './modules/controllers/scoresheet/
 import ScoresheetCycleController from './modules/controllers/scoresheet/scoresheet-cycle.controller';
 import ScoresheetTableController from './modules/controllers/scoresheet/scoresheet-table.controller';
 
+import StatsDisplayController from './modules/controllers/stats-display.controller';
+
 import AuthService from './modules/services/auth.service';
 import TournamentService from './modules/services/tournament.service';
 import MatchService from './modules/services/match.service';
@@ -29,6 +31,7 @@ import PhaseService from './modules/services/phase.service';
 import DivisionService from './modules/services/division.service';
 import CollaboratorService from './modules/services/collaborator.service';
 import QBJService from './modules/services/qbj.service';
+import StatsService from './modules/services/stats.service';
 
 import QBJHttpService from './modules/services/http/qbj-http.service';
 import PhaseHttpService from './modules/services/http/phase-http.service';
@@ -36,6 +39,7 @@ import DivisionHttpService from './modules/services/http/division-http.service';
 import MatchHttpService from './modules/services/http/match-http.service';
 import TeamHttpService from './modules/services/http/team-http.service';
 import CollaboratorHttpService from './modules/services/http/collaborator-http.service';
+import StatsHttpService from './modules/services/http/stats-http.service';
 
 import ScoresheetService from './modules/services/scoresheet/scoresheet.service';
 import ScoresheetCycleService from './modules/services/scoresheet/scoresheet-cycle.service';
@@ -93,4 +97,11 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .filter('preventSameMatchTeams', PreventSameMatchTeamFilter)
   .filter('matchSearch', MatchSearchFilter)
   .filter('divisionPhase', DivisionPhaseFilter);
+
+angular.module('statsApp', [ngCookies, ngAnimate])
+  .config(config)
+  .controller('PublicStatsController', StatsDisplayController)
+  .service('StatsService', StatsService)
+  .service('StatsHttpService', StatsHttpService)
+  .service('PhaseService', PhaseService);
 

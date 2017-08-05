@@ -62,14 +62,3 @@ block content
                         .nf-toast-content.btn(style='float:left' ng-class="{'nf-red': PSControl.toastMessage.success === false, 'nf-green': PSControl.toastMessage.success === true, 'nf-orange' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
                             i.fa(ng-class="{'fa-check': PSControl.toastMessage.success === true, 'fa-times': PSControl.toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
                             | {{PSControl.toastMessage.message}}
-                        
-block scripts
-    if minifyJs === false
-        script(type='text/javascript' src='/javascript/es5/app.es5.js')
-        script(type='text/javascript' src='/javascript/es5/services/cookies.service.es5.js')
-        script(type='text/javascript' src='/javascript/es5/services/tournament.service.es5.js')
-        script(type='text/javascript' src='/javascript/es5/services/phase.service.es5.js')
-        script(type='text/javascript' src='/javascript/es5/services/division.service.es5.js')
-        script(type='text/javascript' src='/javascript/es5/stats.es5.js')
-        script(type='text/javascript' src='/javascript/es5/services/stats/stats.service.es5.js')
-        script(type='text/javascript' src='/javascript/es5/directives/keep-name-scroll.directive.es5.js')
