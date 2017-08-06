@@ -77,6 +77,7 @@ export default class StatsService {
     }
 
     refreshStats(tournamentId, phaseId) {
+        console.log(phaseId);
         return this.$q((resolve, reject) => {
             this.$q.all([
                 this.getPlayerStats(tournamentId, phaseId),
@@ -92,12 +93,9 @@ export default class StatsService {
 
     handlePlayerStats(stats) {
         const copyOfStats = Object.assign({}, stats);
-        copyOfStats.stats.forEach(stat => {
-            stat.pointMap = stat.tossup_totals.reduce((aggr, current) => {
-                aggr[current.value] = current.total;
-                return aggr;
-            }, {});
-        });
+        copyOfStats.stats.forEach(stat =>
+            stat.pointMap = StatsService.createTossupValuesToTotalsMap(stat.tossup_totals)
+        );
         angular.copy( { id: copyOfStats.activePhaseId }, this.activePhase);
         angular.copy(copyOfStats.stats, this.playerStats);
         angular.copy(copyOfStats.pointScheme, this.pointScheme);
@@ -106,12 +104,9 @@ export default class StatsService {
 
     handleTeamStats(stats) {
         const copyOfStats = Object.assign({}, stats);
-        copyOfStats.stats.forEach(stat => {
-            stat.pointMap = stat.tossup_totals.reduce((aggr, current) => {
-                aggr[current.value] = current.total;
-                return aggr;
-            }, {});
-        });
+        copyOfStats.stats.forEach(stat =>
+            stat.pointMap = StatsService.createTossupValuesToTotalsMap(stat.tossup_totals)
+        );
         angular.copy(copyOfStats.divisions, this.divisions);
         angular.copy(copyOfStats.stats, this.teamStats);
 
@@ -121,25 +116,19 @@ export default class StatsService {
     handleTeamFullStats(stats) {
         const copyOfStats = Object.assign({}, stats);
         copyOfStats.stats.forEach(stat => {
-            stat.matches.forEach(match => {
-                match.pointMap = match.tossup_totals.reduce((aggr, current) => {
-                    aggr[current.value] = current.total;
-                    return aggr;
-                }, {});
-            });
+            stat.matches.forEach(match =>
+                match.pointMap = StatsService.createTossupValuesToTotalsMap(match.tossup_totals)    
+            );
         });
-        angular.copy(copyOfStats, this.teamFullStats);
+        angular.copy(copyOfStats.stats, this.teamFullStats);
     }
 
     handlePlayerFullStats(stats) {
         const copyOfStats = Object.assign({}, stats);
         copyOfStats.stats.forEach(stat => {
-            stat.matches.forEach(match => {
-                match.pointMap = match.tossup_totals.reduce((aggr, current) => {
-                    aggr[current.value] = current.total;
-                    return aggr;
-                }, {});
-            });
+            stat.matches.forEach(match =>
+                match.pointMap = StatsService.createTossupValuesToTotalsMap(match.tossup_totals)
+            );
         });
         angular.copy(copyOfStats.stats, this.playerFullStats);
     }
@@ -154,6 +143,11 @@ export default class StatsService {
             toCopy = teams.filter(team => team.division_id === null);
         }
         angular.copy(toCopy, this.unassignedTeams);
+    }
+
+    static createTossupValuesToTotalsMap(tossupTotals) {
+        const mapped = tossupTotals.map(tv => ( { [tv.value] : tv.total } ));
+        return Object.assign({}, ...mapped);
     }
 }
 

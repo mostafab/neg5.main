@@ -51,6 +51,8 @@ import PreventSameMatchTeamFilter from './modules/filters/prevent-same-match-tea
 import MatchSearchFilter from './modules/filters/match-search.filter';
 import DivisionPhaseFilter from './modules/filters/division-phase.filter';
 
+import KeepNameScrollDirective from './modules/directives/keep-name-scroll.directive';
+
 angular.module('IndexApp', [ngCookies, ngAnimate])
   .config(config)
   .service('AuthService', AuthService)
@@ -106,4 +108,5 @@ angular.module('statsApp', [ngCookies, ngAnimate])
   .service('PhaseService', PhaseService)
   .service('PhaseHttpService', PhaseHttpService)
   .service('TournamentService', TournamentService)
+  .directive('keepNameScroll', KeepNameScrollDirective)
 

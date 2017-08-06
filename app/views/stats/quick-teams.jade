@@ -50,7 +50,7 @@
             div(ng-if='PSControl.divisions.length > 0')
                 div(ng-repeat='division in PSControl.divisions | orderBy:"division_name"')
                     .panel.panel-default.nf-shadow
-                        .table-responsive(keep-name-scroll)
+                        .table-responsive(keep-name-scroll scroll-class='')
                             table.table.table-hover.table-condensed.table-responsive
                                 thead
                                     tr

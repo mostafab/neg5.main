@@ -7,7 +7,7 @@ block content
             
             title(ng-bind='PSControl.tournamentName.name + " " + (PSControl.phase.name || "All") + " Stats | Neg 5"')
                 
-            nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-blue.nf-shadow(role='navigation')
+            nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top(role='navigation')
                     .navbar-header
                         button.navbar-toggle(type='button' data-toggle='collapse' data-target='#tournament-list')
                             span.sr-only Toggle navigation
@@ -33,7 +33,7 @@ block content
                 div(style='padding:50px;padding-bottom:0;padding-top:0')
                     div(class="panel-body")
                         .input-group
-                            select(class='form-control' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase' ng-change='PSControl.refreshStats()')
+                            select(class='form-control' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase')
                                 option(value='') All Games
                             span(class='input-group-addon nf-blue nf-button btn' title='Refresh teams' ng-click='PSControl.refreshStats()')
                                 i(class='fa fa-refresh')              
