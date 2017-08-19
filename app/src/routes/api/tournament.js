@@ -61,6 +61,11 @@ export default (app) => {
       })
 
   app.route('/api/t/:tid/pointscheme')
+      .get((req, res) => {
+          Tournament.findById(req.params.tid)
+            .then(result => res.json({ result: result.tournament.tossup_point_scheme, success: true }))
+            .catch(err => res.status(500).send({ error: err, success: false}));
+      })
       .post(hasToken, directorAccessToTournament, (req, res) => {
           Tournament.addTossupPointValue(req.params.tid, req.body)
               .then(result => res.json({result, success: true}))

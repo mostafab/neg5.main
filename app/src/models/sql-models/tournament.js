@@ -30,9 +30,9 @@ export default {
         })
     },
 
-    findById: (tournamentId, currentUser) => {
+    findById: (tournamentId, currentUser = null) => {
         return new Promise((resolve, reject) => {
-            db.findTournamentById(tournamentId, currentUser)
+            db.findTournamentById(tournamentId, currentUser, currentUser !== null)
                 .then(result => {
                     result.tournament.tossup_point_scheme = result.tournament.tossup_point_scheme.filter(tv => {
                         return tv.type !== null;
