@@ -45,6 +45,13 @@ export default {
         })
     },
 
+    // Default to a month
+    findRecent: (daysSince = 30) => new Promise((resolve, reject) => {
+        db.findRecent(daysSince)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+    }),
+
     update: (tournamentId, {location = null, name, date = null, questionSet = null, comments = null, hidden = false}) => {
         return new Promise((resolve, reject) => {
             let newTournamentInfo = {

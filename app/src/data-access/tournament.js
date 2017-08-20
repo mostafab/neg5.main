@@ -78,6 +78,15 @@ export default {
         .catch(error => reject(error));
     }),
 
+  findRecent: daysSince => new Promise((resolve, reject) => {
+    const params = {
+      maxDays: daysSince,
+    };
+    query(tournament.findByXDays, params, qm.any)
+      .then(tournaments => resolve(tournaments))
+      .catch(err => reject(err));
+  }),
+
   updateTournament: (id, newInfo) => new Promise((resolve, reject) => {
     const { name, location = null, date = null, questionSet = null,
       comments = null, hidden = false } = newInfo;

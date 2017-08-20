@@ -16,6 +16,13 @@ export default (app) => {
             .then(result => res.json({ result, success: true }))
             .catch(error => res.status(500).send({ error }));
       });
+  
+  app.route('/api/t/findRecent')
+      .get((req, res) => {
+          Tournament.findRecent(req.query.days)
+            .then(result => res.json({ result, success: true }))
+            .catch(error => res.status(500).send({ error: error.message }));
+      });
 
   app.route('/api/t/:tid')
       .get(hasToken, accessToTournament, (req, res) => {
