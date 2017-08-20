@@ -24,6 +24,13 @@ export default (app) => {
             .catch(error => res.status(500).send({ error: error.message }));
       });
 
+  app.route('/api/t/byDateRange')
+      .get((req, res) => {
+          Tournament.findBetweenDates(req.query.startDate, req.query.endDate)
+            .then(result => res.json({ result, success: true }))
+            .catch(error => res.status(500).send({ error: error.message }));
+      });
+
   app.route('/api/t/:tid')
       .get(hasToken, accessToTournament, (req, res) => {
         Tournament.findById(req.params.tid, req.currentUser)

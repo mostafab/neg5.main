@@ -13,6 +13,7 @@ export default {
     findByUser: getSQL('tournament-sql/findByUser.sql'),
     findById: getSQL('tournament-sql/findById.sql'),
     findByXDays: getSQL('tournament-sql/findByXDaysSince.sql'),
+    findBetweenDates: getSQL('tournament-sql/findTournamentsBetweenDates.sql'),
     update: getSQL('tournament-sql/updateTournament.sql'),
     updateRules: getSQL('tournament-sql/updateRules.sql'),
     editPointScheme: {

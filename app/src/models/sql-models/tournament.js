@@ -52,6 +52,12 @@ export default {
             .catch(err => reject(err));
     }),
 
+    findBetweenDates: (startDate, endDate) => new Promise((resolve, reject) => {
+        db.findBetweenDates(startDate, endDate)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+    }),
+
     update: (tournamentId, {location = null, name, date = null, questionSet = null, comments = null, hidden = false}) => {
         return new Promise((resolve, reject) => {
             let newTournamentInfo = {

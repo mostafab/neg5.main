@@ -87,6 +87,16 @@ export default {
       .catch(err => reject(err));
   }),
 
+  findBetweenDates: (startDate, endDate) => new Promise((resolve, reject) => {
+    const params = {
+      startDate,
+      endDate,
+    };
+    query(tournament.findBetweenDates, params, qm.any)
+      .then(tournaments => resolve(tournaments))
+      .catch(err => reject(err));
+  }),
+
   updateTournament: (id, newInfo) => new Promise((resolve, reject) => {
     const { name, location = null, date = null, questionSet = null,
       comments = null, hidden = false } = newInfo;
