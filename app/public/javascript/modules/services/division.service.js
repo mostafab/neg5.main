@@ -120,7 +120,7 @@ export default class DivisionService {
   }
 
   isUniqueNewDivisionNameInPhase(divisionName, phaseId) {
-    const formatted = divisionName.trim().toLowerCase();
+    const formatted = divisionName ? divisionName.trim().toLowerCase() : null;
     return !this.divisions.some(d =>
       d.phaseId === phaseId && formatted === d.name.toLowerCase().trim());
   }

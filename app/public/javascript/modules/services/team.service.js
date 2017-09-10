@@ -296,12 +296,12 @@ export default class TeamService {
   }
 
   isUniqueNewTeamName(name) {
-    const formatted = name.toLowerCase().trim();
+    const formatted = name ? name.toLowerCase().trim() : null;
     return !this.teams.some(team => team.name.toLowerCase().trim() === formatted);
   }
 
   isUniqueTeamName(id, name) {
-    const formattedName = name.trim().toLowerCase();
+    const formattedName = name ? name.trim().toLowerCase() : null;
     return !this.teams.some(team =>
       team.id !== id && team.name.trim().toLowerCase() === formattedName);
   }
@@ -323,7 +323,7 @@ export default class TeamService {
   }
 
   static isUniqueTeamPlayerName(playerId, name, players) {
-    const formattedName = name.trim().toLowerCase();
+    const formattedName = name ? name.trim().toLowerCase() : null;
     return !players.some(p => p.id !== playerId && p.name.trim().toLowerCase() === formattedName);
   }
 

@@ -84,7 +84,7 @@ export default class PhaseService {
   }
 
   isValidPhaseName(phaseName) {
-    const formatted = phaseName.toLowerCase().trim();
+    const formatted = phaseName ? phaseName.toLowerCase().trim() : null;
     return formatted.length > 0
       && !this.phases.some(p => p.name.toLowerCase() === formatted);
   }
