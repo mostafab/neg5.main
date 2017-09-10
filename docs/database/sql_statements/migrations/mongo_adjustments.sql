@@ -16,3 +16,8 @@ alter table tournament_player alter column name type varchar(255);
 alter table tournament_match alter column room type varchar(255);
 alter table tournament_match alter column moderator type varchar(255);
 alter table tournament_match alter column packet type varchar(255);
+
+alter table tournament add column mongo_id varchar(200);
+
+alter table tournament_division alter column id type varchar(255);
+alter table tournament_team_in_division alter column division_id type varchar(255);
