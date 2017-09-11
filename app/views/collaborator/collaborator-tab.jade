@@ -8,7 +8,7 @@
                     | Reset
         //- div(style='margin-top:50px')    
         
-        div(style='margin-top:75px')
+        div(style='margin-top:75px' class='collab-search-results')
             .col-lg-12.col-md-12.col-sm-12(ng-repeat='result in CollabSearch.searchResults | orderBy: "username" track by $index')
                 .input-group
                     div.form-control.nf-input.nf-white(ng-bind='result.username')

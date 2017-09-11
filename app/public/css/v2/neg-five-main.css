@@ -1,5 +1,5 @@
 .nf-background-main {
-    background-color: white;
+    background-color: #F8F8F8;
 }
 
 .nf-image {
@@ -11,7 +11,15 @@
 .nf-button {
     border-radius: 2px;
     margin: 5px;
-    font-size: 1.1em;
+}
+
+.nf-button > i {
+    font-size: 1.375rem;
+}
+
+*.disabled {
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 .button-outline {
@@ -75,13 +83,7 @@
 
 span.nf-button:hover, button.nf-button:hover {
     cursor: pointer;
-    /*box-shadow: 0 3px 2px rgba(0, 0, 0, 0.2);*/
 }
-
-/*tr.player-match-inputs > td {
-    float: left;
-}*/
-
 input[type='number'].tuh {
     min-width: 50px;
 }
@@ -135,6 +137,10 @@ a.tournament-card:hover {
     cursor: pointer !important;
 }
 
+.navbar-default .navbar-nav > li, .navbar-default .navbar-nav > li > a {
+    text-transform: none;
+}
+
 table.player-table * td:first-child:hover {
     cursor: pointer;
 }
@@ -149,13 +155,10 @@ table.player-table * td:first-child:hover {
 
 form.readonly-form * input, form.readonly-form * select, form.readonly-form * textarea {
     pointer-events: none;
-    background: #ECEFF1;
+    background: #F8F8F8;
 }
 
 .navbar-collapse * li > a, .navbar-right * li > a {
-    /*color: white !important;*/
-    /*position: relative;
-    float: left;*/
     color: #51517d;
     font-size: 13px;
     letter-spacing: 1px;
@@ -226,10 +229,6 @@ form.readonly-form * input, form.readonly-form * select, form.readonly-form * te
 }
 
 li.active > a, li.active > a:hover {
-    /*color: lightgreen !important;*/
-    /*background-color: transparent !important;*/
-    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
-    /*border-bottom: 2px solid #90a4ae;*/
     transition: border .1s;
     background-color: #2B3E50 !important;
     color: white;
@@ -289,11 +288,6 @@ li > a:hover {
     -webkit-transition: 0s border; 
     -moz-transition: 0s border; 
     transition: 0s border; 
-    /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);*/
-}
-
-.nf-input:focus {
-    /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);*/
 }
 
 textarea:focus,
@@ -335,21 +329,23 @@ input[type="color"]:focus,
 
 .nf-label {
     padding: 10px;
-    font-size: 1.1em;
+    font-size: 1.375rem;
     line-height: 140%;
-    font-weight: 400;
+    font-weight: 500;
     border: none;
-    border-radius: 1px;
+    color: #919496;
+    background: none;
 }
 
 th.nf-label, .label.nf-label, label.nf-label > p, .nf-panel-heading * label.nf-label, 
 .nf-panel-heading > label.nf-label, .nf-panel-heading > label.nf-label > p {
     position: relative;
     float: left;
-    color: #51517d;
-    font-size: 13px;
+    font-size: 1.375rem;
     letter-spacing: 1px;
-    text-transform: uppercase;
+    color: #919496;
+    font-weight: 400;
+    /* text-transform: uppercase; */
 }
 
 .nf-panel > table > thead {
@@ -370,12 +366,12 @@ th.nf-label {
 }
 
 .nf-list-item {
-    border: 0px solid black;
+    /* border: 0px solid black; */
     padding: 15px;
     /*font-size: 1.3em;*/
 }
-.nf-list-item:hover {
-    background: #90a4ae !important;
+.nf-list-item:hover > td {
+    color: #5ab8f8; 
     cursor: pointer;
 }
 
@@ -386,7 +382,7 @@ th.nf-label {
 .nf-panel {
     /*border-color: #455a64;*/
     /*border-radius: 2px;*/
-    background-color: transparent;
+    background-color: rgb(255, 255, 255);
     /*box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);*/
     border: 1px solid #e0e0e0;
 }
@@ -592,7 +588,7 @@ div.name {
     }
 }
 
-@media (min-width: 1921px) {
+/* @media (min-width: 1921px) {
     .responsive-font {
         font-size: 1.3em;
     }
@@ -614,7 +610,7 @@ div.name {
     .responsive-font {
         font-size: .8em;
     }
-}
+} */
 
 .nf-panel-heading.stat-header {
     margin-bottom: 0px;
@@ -809,6 +805,14 @@ tr > .table-head {
     }    
 }
 
+.collab-search-results:not(:empty) {
+    overflow: auto;
+    overflow-x: hidden;
+    max-height: 600px;
+
+    padding-top: 10px;
+    /* border: 1px solid grey; */
+}
 
 
 

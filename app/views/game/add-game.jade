@@ -79,7 +79,7 @@ div(id='add-game-div')
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-6")
                             div(class="row")
                                 div(class="col-sm-6 col-md-6 col-xs-12")
-                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text': !Game.MatchUtil.isValidScore(Game.currentGame.teams[0].score)}") Team 1 Score *
+                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text': !Game.MatchUtil.isValidScore(Game.currentGame.teams[0].score)}") Team 1 Score
                                 div(class="col-md-6 col-sm-6 col-md-6 col-xs-12")
                                     input(required type="number" name='leftScore' ng-class="{'error-text' : Game.newGameForm.leftScore.$invalid || !Game.MatchUtil.isValidScore(Game.currentGame.teams[0].score)}"  class="form-control nf-input" placeholder="{{(Game.currentGame.teams[0].teamInfo.name || 'Team 1') + ' Score'}}" ng-model='Game.currentGame.teams[0].score')
                             br
@@ -94,7 +94,7 @@ div(id='add-game-div')
                                 div(class="col-md-6 col-sm-6 ")
                                     input(required type="number" class="form-control nf-input " name="rightScore" ng-class="{'error-text' : Game.newGameForm.rightScore.$invalid || !Game.MatchUtil.isValidScore(Game.currentGame.teams[1].score)}" placeholder="{{(Game.currentGame.teams[1].teamInfo.name || 'Team 2') + ' Score'}}" ng-model='Game.currentGame.teams[1].score') 
                                 div(class="col-md-6 col-sm-6")
-                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text': !Game.MatchUtil.isValidScore(Game.currentGame.teams[1].score)}") Team 2 Score *
+                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text': !Game.MatchUtil.isValidScore(Game.currentGame.teams[1].score)}") Team 2 Score
                             br
                             div(class="row reorder-xs" ng-if='Game.rules.bouncebacks')
                                 div(class="col-md-6 col-sm-6")

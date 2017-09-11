@@ -11,10 +11,10 @@
                         form(name='Config.editConfigurationRules' novalidate)
                             .row.nf-margin
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingRules === false')
-                                    span.nf-button.btn-md.btn.button-outline.button-outline-blue(style='float:left' title='Edit' ng-if='tournamentContext.owner' ng-show='Config.editingRules === false' ng-click='Config.editingRules = true')
+                                    button.nf-button.btn-md.btn.button-outline.button-outline-blue(style='float:left' title='Edit' ng-if='tournamentContext.owner' ng-show='Config.editingRules === false' ng-click='Config.editingRules = true')
                                         i.fa.fa-pencil
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingRules === true')
-                                    span.nf-button.btn-md.btn.button-outline.button-outline-red(style='float:left' ng-show='Config.editingRules === true' title='Cancel' ng-click='Config.editingRules = false; Config.resetRules()')
+                                    button.nf-button.btn-md.btn.button-outline.button-outline-red(style='float:left' ng-show='Config.editingRules === true' title='Cancel' ng-click='Config.editingRules = false; Config.resetRules()')
                                         i.fa.fa-times
                                     button.nf-button.btn-md.btn.button-outline.button-outline-green(type='submit' ng-show='Config.editingRules === true' title='Save' ng-click='Config.saveRules()')
                                         i.fa.fa-check

@@ -4,9 +4,9 @@ div(class="panel nf-panel")
             .col-lg-11.col-sm-11.col-md-11.col-xs-11
                 label.nf-label Overview
             .col-lg-1.col-sm-1.col-md-1.col-xs-1(ng-if='tournamentContext.owner')
-                span.btn.nf-button.button-outline.button-outline-blue.btn-md(style='float:right' title='Edit' ng-click='Tournament.editing = true' ng-show='Tournament.editing === false')
+                button.btn.nf-button.button-outline.button-outline-blue.btn-md(style='float:right' title='Edit' ng-click='Tournament.editing = true' ng-show='Tournament.editing === false')
                     i.fa.fa-pencil 
-                span.btn.nf-button.button-outline.button-outline-red.btn-md(style='float:right;' title='Cancel' ng-click='Tournament.editing = false; Tournament.resetOverview()' ng-show='Tournament.editing === true')
+                button.btn.nf-button.button-outline.button-outline-red.btn-md(style='float:right;' title='Cancel' ng-click='Tournament.editing = false; Tournament.resetOverview()' ng-show='Tournament.editing === true')
                     i.fa.fa-times 
 
     div(class="panel-body tournament-panel nf-panel-body")

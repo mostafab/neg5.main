@@ -1,5 +1,15 @@
 import angular from 'angular';
 
+const validTabs = [
+  'overview',
+  'config',
+  'collaborator',
+  'match',
+  'team',
+  'statistics',
+  'scoresheet'
+];
+
 export default class TournamentController {
   constructor($scope, $window, $timeout, $cookies, TournamentService, TeamService, MatchService) {
     this.$scope = $scope;
@@ -13,7 +23,16 @@ export default class TournamentController {
     this.$scope.toastMessage = null;
     this.toastPromise = null;
 
-    this.tab = this.$cookies.get('nfTab') || 'overview';
+    if (location.hash) {
+      const tab = location.hash.substr(1);
+      if (validTabs.indexOf(tab) !== -1) {
+        this.tab = location.hash.substr(1);
+      } else {
+        this.tab = this.$cookies.get('nfTab') || 'overview';
+      }
+    } else {
+      this.tab = this.$cookies.get('nfTab') || 'overview';
+    }
     this.matchTab = 'add';
     this.teamTab = 'add';
 
@@ -92,6 +111,7 @@ export default class TournamentController {
       return this.tab;
     }), (newVal) => {
       this.$cookies.put('nfTab', newVal);
+      location.hash = `#${newVal}`;
     });
   }
 
