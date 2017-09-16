@@ -39,17 +39,18 @@ block content
                                 .col-lg-12.col-md-12
                                     .row
                                         .col-lg-4.col-md-5.col-sm-5
-                                            .nf-panel
-                                                .nf-panel-heading
-                                                    .row 
-                                                        .col-lg-11.col-sm-11.col-md-11.col-xs-11
-                                                            label.nf-label New Tournament
-                                                .panel-body.nf-panel-body
-                                                    form(novalidate name='Home.newTournamentForm' ng-submit='Home.createNewTournament()')
-                                                        input.form-control.nf-input(type='text' required placeholder='Name' ng-model='Home.newTournament.name' maxlength='20')
-                                                        br
-                                                        button.nf-button.btn.button-outline.button-outline-green.right(type='submit' ng-disabled='Home.submittingForm')
-                                                            i.fa.fa-check
+                                            div
+                                                .nf-panel
+                                                    .nf-panel-heading
+                                                        .row 
+                                                            .col-lg-11.col-sm-11.col-md-11.col-xs-11
+                                                                label.nf-label New Tournament
+                                                    .panel-body.nf-panel-body
+                                                        form(novalidate name='Home.newTournamentForm' ng-submit='Home.createNewTournament()')
+                                                            input.form-control.nf-input(type='text' required placeholder='Name' ng-model='Home.newTournament.name' maxlength='20')
+                                                            br
+                                                            button.nf-button.btn.button-outline.button-outline-green.right(type='submit' ng-disabled='Home.submittingForm')
+                                                                i.fa.fa-check
                                         
                                         
                                         .col-lg-8.col-md-7.col-sm-7(ng-cloak)

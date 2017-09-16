@@ -263,7 +263,6 @@ li > a:hover {
     width: 50%;
 }
 .nf-dropdown > li > a {
-    font-size: 1.3em;
     padding: 10px;
 }
 
@@ -350,6 +349,10 @@ th.nf-label, .label.nf-label, label.nf-label > p, .nf-panel-heading * label.nf-l
 
 .nf-panel > table > thead {
     border-bottom: 1px solid #e7e7e7;
+}
+
+.nf-panel {
+    transition: ease-in all .1s;
 }
 
 th.nf-label {
@@ -460,7 +463,7 @@ th.nf-label {
 }
 
 .nf-green {
-    background-color: #00796b;
+    background-color: #26a69a;
     color: white;
 }
 
@@ -516,8 +519,12 @@ th.nf-label {
     color:#00e676 !important;
 }
 
+.player-table > tbody > tr > td:nth-child(2):hover {
+    cursor: pointer;
+    color: #5ab8f8;
+}
 
-.player-table > tbody > tr > td:not(.active-player):first-child {
+.player-table > tbody > tr > td:not(.active-player):nth-child(2) {
     text-decoration-line: line-through;
 }
 
@@ -814,5 +821,13 @@ tr > .table-head {
     /* border: 1px solid grey; */
 }
 
+.phase-name > p {
+    text-align: left;
+    margin-top: 3px;
+}
+
+.input-group > select {
+    margin: 0;
+}
 
 

@@ -22,8 +22,6 @@ block content
                             a(data-toggle="tab" class='tournament-tab btn-md') Overview
                         li(class="center" ng-if='tournamentContext.owner === true' ng-click='Tournament.tab = "config"' ng-class="{'active': Tournament.tab === 'config'}")
                             a(data-toggle="tab" class='tournament-tab btn-md') Configuration
-                        //- li(class="center" ng-if='tournamentContext.admin === true' ng-click='Tournament.tab = "phase"' ng-class="{'active': Tournament.tab === 'phase'}")
-                        //-     a(data-toggle="tab" class='tournament-tab btn-md') Phases
                         li(class="center" ng-click='Tournament.tab = "collaborator"' ng-class="{'active': Tournament.tab === 'collaborator'}")
                             a(data-toggle='tab' class='tournament-tab btn-md') Collaborators
                         li(class="center" ng-click='Tournament.tab = "match"' ng-class="{'active': Tournament.tab === 'match'}")
@@ -114,27 +112,3 @@ block content
                             .nf-toast-content.nf-button.btn(ng-class="{'nf-red': toastMessage.success === false, 'nf-green': toastMessage.success === true, 'nf-orange' : toastMessage.success !== true && toastMessage.success !== false}")
                                 i.fa(ng-class="{'fa-check': toastMessage.success === true, 'fa-times': toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : toastMessage.success !== true && toastMessage.success !== false}")
                                 | {{toastMessage.message}}
-                            
-
-//- block scripts
-    //- if minifyJs === false
-    //-     script(src='/javascript/es5/app.es5.js')
-    //-     script(src='/javascript/es5/factories/array-util.factory.es5.js')
-    //-     script(src='/javascript/es5/factories/math-util.factory.es5.js')
-    //-     script(src='/javascript/es5/services/cookies.service.es5.js')
-    //-     script(src='/javascript/es5/services/division.service.es5.js')
-    //-     script(src='/javascript/es5/services/tournament.service.es5.js')
-    //-     script(src='/javascript/es5/services/phase.service.es5.js')
-    //-     script(src='/javascript/es5/services/team.service.es5.js')
-    //-     script(src='/javascript/es5/services/match.service.es5.js')
-    //-     script(src='/javascript/es5/services/stats/qbj.service.es5.js')
-    //-     script(src='/javascript/es5/services/collaborator.service.es5.js')
-    //-     script(src='/javascript/es5/controllers/team.controller.es5.js')
-    //-     script(src='/javascript/es5/controllers/match.controller.es5.js')
-    //-     script(src='/javascript/es5/controllers/tournament.controller.es5.js')
-    //-     script(src='/javascript/es5/controllers/statistics.controller.es5.js')
-    //-     script(src='/javascript/es5/controllers/phase.controller.es5.js')
-    //-     script(src='/javascript/es5/controllers/collaborator.controller.es5.js')
-    //-     script(src='/javascript/es5/controllers/config.controller.es5.js')
-    //-     script(src='/javascript/es5/controllers/scoresheet.controller.es5.js')
-

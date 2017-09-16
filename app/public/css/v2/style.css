@@ -18,7 +18,8 @@ html {
 
 body {
   font-size: 1.4rem;
-  font-family: "Montserrat", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   color: #3e454c;
   /*background-color: rgb(98, 98, 98);*/
 }
