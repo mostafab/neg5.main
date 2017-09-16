@@ -23,13 +23,31 @@ export default class ScoresheetFormController {
   }
 
   revertScoresheetSubmission() {
-    this.ScoresheetService.revertScoresheetSubmission(this.$scope.tournamentId);
+    if (this.game.submitted) {
+      this.ScoresheetService.revertScoresheetSubmission(this.$scope.tournamentId);
+    }
   }
 
   submitScoresheet() {
-    if (this.scoresheetForm.$valid) {
-      // const parsedScoresheet = this.parseScoresheet(this.game);
-      this.ScoresheetService.submitScoresheet(this.$scope.tournamentId);
+    if (this.scoresheetForm.$valid && !this.game.submitted) {
+      this.$scope.toast({
+        message: 'Submitting scoresheet.',
+      });
+      this.ScoresheetService.submitScoresheet(this.$scope.tournamentId)
+        .then(() => {
+          this.$scope.toast({
+            message: 'Successfully submitted scoresheet.',
+            success: true,
+            hideAfter: true,
+          });
+        })
+        .catch(() => {
+          this.$scope.toast({
+            message: 'Could not submit scoresheet.',
+            success: false,
+            hideAfter: true,
+          });
+        })
     }
   }
 
@@ -53,58 +71,6 @@ export default class ScoresheetFormController {
       }
     }
   }
-
-  // parseScoresheet(scoresheet) {
-  //   return {
-  //     moderator: scoresheet.moderator,
-  //     notes: scoresheet.notes,
-  //     packet: scoresheet.packet,
-  //     phases: scoresheet.phases,
-  //     room: scoresheet.room,
-  //     round: scoresheet.round,
-  //     tuh: scoresheet.currentCycle.number - 1,
-  //     teams: scoresheet.teams.map((team) => {
-  //       return {
-  //         teamInfo: team.teamInfo,
-  //         players: team.players.filter(p => p.tuh > 0).map((player) => {
-  //           return {
-  //             id: player.id,
-  //             tuh: player.tuh,
-  //             points: this.pointScheme.tossupValues.reduce((aggr, tv) => {
-  //               aggr[tv.value] = this.getNumberOfTossupTypeForPlayer(player, tv);
-  //               return aggr;
-  //             }, {}),
-  //           };
-  //         }),
-  //         score: this.getTeamScoreUpToCycle(team.teamInfo.id, scoresheet.currentCycle.number - 1),
-  //         bouncebacks: this.getTeamBouncebacks(team.teamInfo.id),
-  //         overtime: team.overtime || 0,
-  //       };
-  //     }),
-  //     scoresheet: scoresheet.cycles.filter((c, index) =>
-  //       index < scoresheet.currentCycle.number - 1).map((c, index) => {
-  //         return {
-  //           number: index + 1,
-  //           answers: c.answers,
-  //           bonuses: ScoresheetFormController.makeArray(this.pointScheme.partsPerBonus).map((elem, innerIndex) => {
-  //             return {
-  //               part: innerIndex + 1,
-  //               teamThatGotBonus: c.bonuses[innerIndex] || null,
-  //             }
-  //           }),
-  //         };
-  //       }),
-  //   };
-  // }
-
-  // static makeArray(length) {
-  //   const arr = [];
-  //   for (let i = 0; i < length; i++) {
-  //     arr[i] = undefined;
-  //   }
-  //   return arr;
-  // }
-
 }
 
 ScoresheetFormController.$inject = [

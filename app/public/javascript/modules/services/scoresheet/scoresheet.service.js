@@ -91,10 +91,19 @@ export default class ScoresheetService {
   }
 
   submitScoresheet(tournamentId) {
-    if (!this.game.submitted) {
-      const parsedScoresheet = this.parseScoresheet(this.game);
-      console.log(parsedScoresheet);
-    }
+    return this.$q((resolve, reject) => {
+      if (!this.game.submitted) {
+        const parsedScoresheet = this.parseScoresheet(this.game);
+        this.MatchService.postGameAsScoresheet(parsedScoresheet, tournamentId)
+          .then((match) => {
+            this.game.id = match[0].id; 
+            this.game.submitted = true;
+            this.saveScoresheet(tournamentId);
+            resolve();
+          })
+          .catch(err => reject(err));
+      }
+    })
   }
 
   parseScoresheet(scoresheet) {
@@ -115,14 +124,14 @@ export default class ScoresheetService {
               tuh: player.tuh,
               points: this.pointScheme.tossupValues.reduce((aggr, tv) => {
                 aggr[tv.value] = this.ScoresheetPointsTrackerService
-                  .getNumberOfTossupTypeForPlayer(player, tv);
+                  .getNumberOfTossupTypeForPlayer(scoresheet, player, tv);
                 return aggr;
               }, {}),
             };
           }),
           score: this.ScoresheetPointsTrackerService
-            .getTeamScoreUpToCycle(team.teamInfo.id, scoresheet.currentCycle.number - 1),
-          bouncebacks: this.ScoresheetPointsTrackerService.getTeamBouncebacks(team.teamInfo.id),
+            .getTeamScoreUpToCycle(scoresheet, team.teamInfo.id, scoresheet.currentCycle.number - 1),
+          bouncebacks: this.ScoresheetPointsTrackerService.getTeamBouncebacks(scoresheet, team.teamInfo.id),
           overtime: team.overtime || 0,
         };
       }),

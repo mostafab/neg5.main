@@ -8,7 +8,7 @@ div(id='add-game-div')
                     span.nf-button.button-outline.button-outline-blue.btn.right(role='button' ng-click='Game.resetForm()') Reset
         .panel-body.nf-panel-body
 
-                form(name="Game.newGameForm" novalidate ng-submit='Game.addGame()')
+                form(name="Game.newGameForm" novalidate ng-submit='Game.addGame()' ng-class='{"disabled": Game.savingNewGame}')
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-6")
                             select(required class='form-control nf-input' ng-model='Game.currentGame.teams[0].teamInfo' ng-change='Game.addTeam(Game.currentGame.teams[0])',

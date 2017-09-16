@@ -2,7 +2,7 @@ export default class ScoresheetPointsTrackerService {
   constructor(ScoresheetService, TournamentService) {
     this.ScoresheetService = ScoresheetService;
     this.TournamentService = TournamentService;
-
+    
     this.game = this.ScoresheetService.game;
     this.pointScheme = this.TournamentService.pointScheme;
   }
@@ -10,19 +10,19 @@ export default class ScoresheetPointsTrackerService {
   getPlayerTotalPoints(player) {
     let total = 0;
     this.pointScheme.tossupValues.forEach((tv) => {
-      const numberForCurrentTV = this.getNumberOfTossupTypeForPlayer(player, tv);
+      const numberForCurrentTV = this.getNumberOfTossupTypeForPlayer(this.game, player, tv);
       total += (numberForCurrentTV * tv.value);
     });
     return total;
   }
 
-  getNumberOfTossupTypeForPlayer(player, tossupValue) {
-    const cycleTotal = this.game.cycles.reduce((total, cycle) => {
+  getNumberOfTossupTypeForPlayer(game, player, tossupValue) {
+    const cycleTotal = game.cycles.reduce((total, cycle) => {
       const numberInCycle = cycle.answers.filter(a =>
         a.playerId === player.id && a.value === tossupValue.value).length;
       return total + numberInCycle;
     }, 0);
-    const numberInCurrentCycle = this.game.currentCycle.answers.filter(a =>
+    const numberInCurrentCycle = game.currentCycle.answers.filter(a =>
       a.playerId === player.id && a.type === tossupValue.type).length;
     return cycleTotal + numberInCurrentCycle;
   }
@@ -34,10 +34,10 @@ export default class ScoresheetPointsTrackerService {
     }, 0);
   }
 
-  getTeamScoreUpToCycle(teamId, cycleIndex) {
+  getTeamScoreUpToCycle(game, teamId, cycleIndex) {
     let score = 0;
     for (let i = 0; i <= cycleIndex; i++) {
-      const cycle = this.game.cycles[i];
+      const cycle = game.cycles[i];
       cycle.answers.forEach((a) => {
         if (a.teamId === teamId) {
           score += a.value;
@@ -45,13 +45,13 @@ export default class ScoresheetPointsTrackerService {
       });
       score += cycle.bonuses.filter(b => b === teamId).length * this.pointScheme.bonusPointValue;
     }
-    if (cycleIndex + 1 === this.game.currentCycle.number) {
-      this.game.currentCycle.answers.forEach((a) => {
+    if (cycleIndex + 1 === game.currentCycle.number) {
+      game.currentCycle.answers.forEach((a) => {
         if (a.teamId === teamId) {
           score += a.value;
         }
       });
-      score += this.game.currentCycle.bonuses.filter(b =>
+      score += game.currentCycle.bonuses.filter(b =>
         b === teamId).length * this.pointScheme.bonusPointValue;
     }
     return score;
@@ -81,18 +81,18 @@ export default class ScoresheetPointsTrackerService {
     return cycle.answers.some(a => a.teamId === teamId && a.type !== 'Neg');
   }
 
-  getTeamBouncebacks(teamId) {
+  getTeamBouncebacks(game, teamId) {
     let sum = 0;
-    this.game.cycles.forEach((cycle) => {
+    game.cycles.forEach((cycle) => {
       if (!this.teamAnsweredTossupCorrectly(teamId, cycle) &&
         this.cycleHasCorrectAnswer(cycle)) {
         const numPartsBouncedBack = cycle.bonuses.filter(b => b === teamId).length;
         sum += (numPartsBouncedBack * this.pointScheme.bonusPointValue);
       }
     });
-    if (!this.teamAnsweredTossupCorrectly(teamId, this.game.currentCycle)
-      && this.cycleHasCorrectAnswer(this.game.currentCycle)) {
-      const numPartsBouncedBack = this.game.currentCycle.bonuses.filter(b => b === teamId).length;
+    if (!this.teamAnsweredTossupCorrectly(teamId, game.currentCycle)
+      && this.cycleHasCorrectAnswer(game.currentCycle)) {
+      const numPartsBouncedBack = game.currentCycle.bonuses.filter(b => b === teamId).length;
       sum += numPartsBouncedBack * this.pointScheme.bonusPointValue;
     }
     return sum;

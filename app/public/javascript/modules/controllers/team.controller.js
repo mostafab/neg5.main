@@ -26,6 +26,8 @@ export default class TeamController {
     this.teamSortReverse = false;
     this.teamQuery = '';
 
+    this.savingNewTeam = false;
+
     this.TeamService.getTeams(this.$scope.tournamentId);
   }
 
@@ -39,6 +41,7 @@ export default class TeamController {
         message: `Adding team: ${this.newTeam.name}.`,
       };
       this.$scope.toast(toastConfig);
+      this.savingNewTeam = true;
       this.TeamService.postTeam(this.$scope.tournamentId)
         .then((teamName) => {
           toastConfig.message = `Added team: ${teamName}.`;
@@ -50,6 +53,7 @@ export default class TeamController {
         })
         .finally(() => {
           toastConfig.hideAfter = true;
+          this.savingNewTeam = false;
           this.$scope.toast(toastConfig);
         });
     }

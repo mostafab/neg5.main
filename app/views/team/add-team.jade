@@ -6,7 +6,7 @@ div(class="panel panel-default nf-panel")
     .panel-body.nf-panel-body
 
         div(class="col-md-12 col-sm-12")
-            form(novalidate name='Team.newTeamForm' ng-submit='Team.addTeam()')
+            form(novalidate name='Team.newTeamForm' ng-submit='Team.addTeam()' ng-class="{'disabled': Team.savingNewTeam}")
                 .row
                     .col-lg-4.col-md-4.col-sm-4.col-xs-4
                         label.label.nf-label.btn-block(style='float:right') Name

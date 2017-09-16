@@ -11,6 +11,7 @@ module.exports = {
     filename: '[name].bundle.js',
     publicPath: '/assets',
   },
+  devtool: 'source-map',
   module: {
     loaders: [{
       // JS LOADER

@@ -29,6 +29,18 @@ export default class MatchService {
     });
   }
 
+  postGameAsScoresheet(scoresheet, tournamentId) {
+    return this.$q((resolve, reject) => {
+      const formattedGame = MatchService.formatGame(scoresheet);
+      this.MatchHttpService.postMatch(tournamentId, formattedGame)
+        .then((match) => {
+          this.getGames(tournamentId);
+          resolve(match);
+        })
+        .catch(error => reject(error));
+    })
+  }
+
   getGames(tournamentId) {
     return this.$q((resolve, reject) => {
       this.MatchHttpService.getMatches(tournamentId)

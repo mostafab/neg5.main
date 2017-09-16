@@ -27,6 +27,9 @@ export default class MatchController {
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
 
+    this.savingNewGame = false;
+    this.savingOldGame = false;
+
     this.MatchService.getGames(this.$scope.tournamentId);
   }
 
@@ -39,6 +42,7 @@ export default class MatchController {
       const toastConfig = {
         message: 'Adding match',
       };
+      this.savingNewGame = true;
       this.$scope.toast(toastConfig);
       this.MatchService.postGame(this.$scope.tournamentId)
         .then(() => {
@@ -53,6 +57,7 @@ export default class MatchController {
         .finally(() => {
           toastConfig.hideAfter = true;
           this.$scope.toast(toastConfig);
+          this.savingNewGame = false;
         });
     }
   }
@@ -87,6 +92,7 @@ export default class MatchController {
       message: 'Editing match',
     };
     this.$scope.toast(toastConfig);
+    this.savingOldGame = true;
     this.MatchService.editLoadedGame(this.$scope.tournamentId)
       .then(() => {
         toastConfig.success = true;
@@ -97,6 +103,7 @@ export default class MatchController {
         toastConfig.message = 'Could not edit match';
       })
       .finally(() => {
+        this.savingOldGame = false;
         toastConfig.hideAfter = true;
         this.$scope.toast(toastConfig);
       });
