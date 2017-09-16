@@ -85,7 +85,6 @@ export default class IndexController {
       success,
     };
   }
-
 }
 
 IndexController.$inject = ['$scope', '$timeout', '$cookies', 'AuthService'];

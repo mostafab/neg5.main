@@ -1,3 +1,20 @@
+/**
+ * Import Bootstrap and jQuery
+ */
+import 'jquery';
+import 'bootstrap/dist/js/bootstrap.min.js';
+
+/**
+ * Import css
+ */
+import './styles/v2/index.css';
+import './styles/v2/neg-five-main.css';
+import './styles/v2/reset.css';
+import './styles/v2/style.css';
+
+/**
+ * Import Angular dependencies
+ */
 import angular from 'angular';
 import ngCookies from 'angular-cookies';
 import ngAnimate from 'angular-animate';

@@ -21,3 +21,6 @@ export default class AuthService {
     });
   }
 }
+
+AuthService.$inject = ['$http', '$q', '$cookies'];
+

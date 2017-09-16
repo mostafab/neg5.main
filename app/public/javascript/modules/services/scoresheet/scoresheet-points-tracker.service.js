@@ -97,5 +97,7 @@ export default class ScoresheetPointsTrackerService {
     }
     return sum;
   }
-
 }
+
+ScoresheetPointsTrackerService.$inject = ['ScoresheetService', 'TournamentService'];
+

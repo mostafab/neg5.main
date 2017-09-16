@@ -8,7 +8,7 @@
             div(class="panel-body tournament-panel nf-panel-body")
                 .row
                     div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
-                        form(name='Config.editConfigurationRules' novalidate)
+                        form(name='Config.editConfigurationRules' novalidate ng-class='{"disabled": Config.savingRules}')
                             .row.nf-margin
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingRules === false')
                                     button.nf-button.btn-md.btn.button-outline.button-outline-blue(style='float:left' title='Edit' ng-if='tournamentContext.owner' ng-show='Config.editingRules === false' ng-click='Config.editingRules = true')
@@ -46,7 +46,7 @@
                                 div(class="col-md-12 col-sm-12 col-lg-12 col-xs-12")
                                     div(class='input-group')
                                         input(type='text' placeholder='Enter New Phase Name Here' class="form-control nf-input" ng-model='Phase.newPhase.name' ng-keyup='!($event.which === 13) || Phase.addPhase()')
-                                        span(class='nf-button btn input-group-addon button-outline button-outline-green' ng-click='Phase.addPhase()')
+                                        span(class='nf-button btn input-group-addon button-outline button-outline-green' ng-click='Phase.addPhase()' ng-class="{'disabled': Phase.savingNewPhase}")
                                             i(class='fa fa-plus')
 
                 div(class='col-md-7 col-sm-8 col-lg-6 col-xs-12')
@@ -122,7 +122,7 @@
                                                 ul.dropdown-menu.nf-dropdown(aria-role='menu' title='Pick division name.')
                                                     li
                                                         a(ng-repeat='phase in Division.phases' title='{{phase.name}}' ng-click='Division.newDivision.phaseName = phase.name; Division.newDivision.phaseId = phase.id' ng-bind='phase.name')
-                                                span.input-group-addon.nf-button.btn.button-outline.button-outline-green(ng-click='Division.addNewDivision()')
+                                                span.input-group-addon.nf-button.btn.button-outline.button-outline-green(ng-click='Division.addNewDivision()' ng-class='{"disabled": Division.savingNewDivision}' )
                                                     i.fa.fa-check
 
     .col-lg-6(ng-if='tournamentContext.owner === true')                   
@@ -135,7 +135,7 @@
             div(class="panel-body tournament-panel nf-panel-body")
                 .row
                     div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
-                        form(name='Config.editPointSchemeForm' ng-submit='Config.editPointScheme()' novalidate)
+                        form(name='Config.editPointSchemeForm' ng-submit='Config.editPointScheme()' novalidate ng-class='{"disabled": Config.savingPointScheme}')
                             .row.nf-margin(ng-if='Config.games.length === 0')
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingPointScheme === false')
                                     span.nf-button.btn-md.btn.button-outline.button-outline-blue(style='float:left' title='Edit' ng-if='Config.games.length === 0' ng-click='Config.editingPointScheme = true')
@@ -196,7 +196,7 @@
                         br
                         br
 
-                        form(name='Config.newPointValueForm' novalidate ng-submit='Config.addNewPointValue()' ng-show='Config.editingPointScheme === false' ng-if='Config.games.length === 0')
+                        form(name='Config.newPointValueForm' novalidate ng-submit='Config.addNewPointValue()' ng-show='Config.editingPointScheme === false' ng-if='Config.games.length === 0' ng-class='{"disabled": Config.savingNewPointValue}')
                             .row.nf-margin
                                 .row.nf-margin
                                     .col-lg-8.col-md-6.col-sm-9

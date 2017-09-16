@@ -127,7 +127,7 @@
 
             .row(ng-controller='ScoresheetPointsTrackerCtrl as TrackerCtrl')
                 .col-lg-6.col-md-12.col-sm-12
-                    .panel.nf-panel
+                    div.table-responsive.nf-table
                         table.table.table-condensed.responsive-font.player-table
                             thead
                                 th.table-head
@@ -149,7 +149,7 @@
                                             title='{{ Scoresheet.scoresheetForm["player" + player.id + "_tuh"].$valid ? "" : ("This player must have at least " + TrackerCtrl.getNumberOfAnswersForPlayer(player) + " TUH and at most " + (Scoresheet.game.currentCycle.number - 1)) + " TUH" }}')
 
                 .col-lg-6.col-md-12.col-sm-12
-                    .panel.nf-panel 
+                    div.table-responsive.nf-table
                         table.table.table-condensed.responsive-font.player-table
                             thead
                                 th.table-head

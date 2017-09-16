@@ -9,6 +9,8 @@ export default class PhaseController {
     this.phases = this.PhaseService.phases;
     this.activePhase = this.PhaseService.activePhase;
 
+    this.savingNewPhase = false;
+
     this.PhaseService.getPhases(this.$scope.tournamentId);
   }
 
@@ -17,6 +19,7 @@ export default class PhaseController {
       message: 'Adding new phase.',
     };
     this.$scope.toast(config);
+    this.savingNewPhase = true;
     this.PhaseService.postPhase(this.$scope.tournamentId)
       .then((phaseName) => {
         config.success = true;
@@ -28,6 +31,7 @@ export default class PhaseController {
       })
       .finally(() => {
         config.hideAfter = true;
+        this.savingNewPhase = false;
         this.$scope.toast(config);
       });
   }

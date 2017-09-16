@@ -26,6 +26,10 @@ export default class ConfigurationController {
 
     this.phases = this.PhaseService.phases;
 
+    this.savingRules = false;
+    this.savingPointScheme = false;
+    this.savingNewPointValue = false;
+
     this.$timeout(() => {
       this.resetPointSchemeCopyToOriginal();
       this.resetRules();
@@ -40,6 +44,7 @@ export default class ConfigurationController {
           message: 'Updating rules',
         };
         this.$scope.toast(toastConfig);
+        this.savingRules = true;
         this.TournamentService.saveRules(this.$scope.tournamentId)
           .then(() => {
             this.editingRules = false;
@@ -53,6 +58,7 @@ export default class ConfigurationController {
           .finally(() => {
             toastConfig.hideAfter = true;
             this.$scope.toast(toastConfig);
+            this.savingRules = false;
           });
       } else {
         this.resetRules();
@@ -68,6 +74,7 @@ export default class ConfigurationController {
         message: 'Editing point scheme',
       };
       this.$scope.toast(toastConfig);
+      this.savingPointScheme = true;
       this.TournamentService.editPointScheme(this.$scope.tournamentId)
         .then(() => {
           this.editingPointScheme = false;
@@ -79,6 +86,7 @@ export default class ConfigurationController {
           toastConfig.success = false;
         })
         .finally(() => {
+          this.savingPointScheme = false;
           toastConfig.hideAfter = true;
           this.$scope.toast(toastConfig);
         });
@@ -92,6 +100,7 @@ export default class ConfigurationController {
         message: 'Adding new point value',
       };
       this.$scope.toast(toastConfig);
+      this.savingNewPointValue = true;
       this.TournamentService.addNewPointValue(this.$scope.tournamentId)
         .then(() => {
           toastConfig.success = true;
@@ -104,6 +113,7 @@ export default class ConfigurationController {
         .finally(() => {
           toastConfig.hideAfter = true;
           this.$scope.toast(toastConfig);
+          this.savingNewPointValue = false;
         });
     }
   }

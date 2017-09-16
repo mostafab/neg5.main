@@ -140,3 +140,6 @@ export default class CollaboratorService {
     }));
   }
 }
+
+
+CollaboratorService.$inject = ['$q', 'CollaboratorHttpService'];

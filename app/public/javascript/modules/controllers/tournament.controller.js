@@ -59,6 +59,8 @@ export default class TournamentController {
 
     this.setTabWatchers();
     this.getTournamentContext();
+
+    this.sendingRequest = false;
   }
 
   resetOverview() {
@@ -71,6 +73,7 @@ export default class TournamentController {
         message: 'Editing tournament',
       };
       this.$scope.toast(toastConfig);
+      this.sendingRequest = true;
       this.TournamentService.edit(this.$scope.tournamentId, this.tournamentInfoCopy)
         .then((data) => {
           this.copyToOriginalTournamentObject(data);
@@ -85,6 +88,7 @@ export default class TournamentController {
         })
         .finally(() => {
           toastConfig.hideAfter = true;
+          this.sendingRequest = false;
           this.$scope.toast(toastConfig);
         });
     }

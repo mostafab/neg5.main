@@ -7,9 +7,11 @@ div(class="panel nf-panel")
                 .col-lg-2.col-sm-2.col-md-2.col-xs-2(ng-if='tournamentContext.owner')
                     button.btn.nf-button.button-outline.button-outline-blue.btn-md(type='button' style='float:right' title='Edit' ng-click='Tournament.editing = true' ng-show='Tournament.editing === false')
                         i.fa.fa-pencil
-                    button.right(type="submit" ng-show='Tournament.editing === true' title='Confirm' class="btn btn-md button-outline button-outline-green nf-button")
+                    button.right(type="submit" ng-show='Tournament.editing === true' title='Confirm' class="btn btn-md button-outline button-outline-green nf-button" ng-class='{"disabled": Tournament.sendingRequest}')
                         i.fa.fa-check
-                    button.btn.nf-button.button-outline.button-outline-red.btn-md(type='button' style='float:right;' title='Cancel' ng-click='Tournament.editing = false; Tournament.resetOverview()' ng-show='Tournament.editing === true')
+                    button.btn.nf-button.button-outline.button-outline-red.btn-md(type='button' style='float:right;' title='Cancel'
+                        ng-click='Tournament.editing = false; Tournament.resetOverview()' ng-show='Tournament.editing === true'
+                        ng-class='{"disabled": Tournament.sendingRequest}')
                         i.fa.fa-times
 
         div(class="panel-body tournament-panel nf-panel-body")

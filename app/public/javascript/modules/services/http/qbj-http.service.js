@@ -14,3 +14,6 @@ export default class QBJHttpService {
     });
   }
 }
+
+QBJHttpService.$inject = ['$q', '$http'];
+

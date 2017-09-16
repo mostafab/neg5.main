@@ -10,6 +10,9 @@ export default class DivisionController {
 
     this.newDivision = this.DivisionService.newDivision;
 
+    this.savingNewDivision = false;
+    this.savingEditDivision = false;
+
     this.getDivisions();
   }
 
@@ -22,6 +25,7 @@ export default class DivisionController {
       message: `Adding new division: ${this.newDivision.name}.`,
     };
     this.$scope.toast(toastConfig);
+    this.savingNewDivision = true;
     this.DivisionService.addCurrentNewDivision(this.$scope.tournamentId)
       .then((newDivision) => {
         toastConfig.success = true;
@@ -34,6 +38,7 @@ export default class DivisionController {
       .finally(() => {
         toastConfig.hideAfter = true;
         this.$scope.toast(toastConfig);
+        this.savingNewDivision = false;
       });
   }
 
@@ -45,6 +50,7 @@ export default class DivisionController {
         message: `Updating division: ${division.name} \u2192 ${division.newName}`,
       };
       this.$scope.toast(toastConfig);
+      this.savingEditDivision = true;
       this.DivisionService.editDivision(this.$scope.tournamentId, division)
         .then((newName) => {
           toastConfig.message = `Updating division to ${newName}`;
@@ -58,6 +64,7 @@ export default class DivisionController {
         .finally(() => {
           toastConfig.hideAfter = true;
           this.$scope.toast(toastConfig);
+          this.savingEditDivision = false;
         });
     } else {
       division.editing = false;
