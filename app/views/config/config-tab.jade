@@ -31,8 +31,11 @@
                                         .input-group
                                             span.input-group-addon.nf-button.no-border.point-label Bouncebacks?
                                             div.form-control.nf-input.nf-gray(ng-show='Config.editingRules === false') {{Config.rules.bouncebacks ? 'Yes' : 'No'}}  
-                                            input.form-control(type='checkbox' name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks' ng-show='Config.editingRules === true')
-        
+                                            //- div.form-control(type='checkbox' name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks' ng-show='Config.editingRules === true')
+                                            .material-switch.form-control(ng-show='Config.editingRules === true')
+                                                input(id='bouncebacks' type="checkbox" name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks')
+                                                label(for="bouncebacks" class="nf-green")
+
         .row(ng-controller='PhaseController as Phase')
             div(ng-if='tournamentContext.owner === true')
                 div(class='col-md-5 col-sm-4 col-lg-6')
@@ -63,22 +66,36 @@
                                 .row
                                     div(class="col-md-12 col-sm-12 col-lg-12 col-xs-12")
                                         .row.nf-margin(ng-repeat='phase in Phase.phases | orderBy: "name" track by phase.id')
-                                            .col-lg-10.col-md-10.col-sm-10.col-xs-10
-                                                .input-group
-                                                    span.btn.input-group-addon.nf-button.no-border(ng-show='!phase.editing' ng-class='{"nf-green" : phase.id === Phase.activePhase.id}' ng-click='Phase.updateActivePhase(phase)' title='Set this phase as active') {{phase.id === Phase.activePhase.id ? 'Active' : ''}}
-                                                    input(type='text' class='form-control nf-input' ng-model='phase.newName' ng-show='phase.editing')
-                                                    span.form-control.nf-input.nf-gray.input-group-addon.phase-name(ng-show='!phase.editing')
-                                                        p(ng-bind='phase.name')
-                                                    span.btn.input-group-addon.nf-button.button-outline.button-outline-blue.no-border(ng-click='phase.editing = true' ng-show='!phase.editing' title='Edit')
-                                                        i.fa.fa-pencil
-                                                    span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-click='phase.newName = phase.name; phase.editing = false' ng-show='phase.editing' title='Cancel')
-                                                        i.fa.fa-times   
-                                                    span.btn.input-group-addon.nf-button.button-outline.button-outline-green.no-border(ng-click='Phase.editPhase(phase)' ng-show='phase.editing' title='Save')
-                                                        i.fa.fa-check  
-                                            .col-lg-2.col-md-2.col-sm-2.col-xs-2
-                                                .input-group
-                                                    span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
-                                                        i.fa.fa-trash
+                                            .col-lg-12.col-md-12.col-sm-12.col-xs-12(ng-show='!phase.editing')
+                                                .row
+                                                    .col-lg-10.col-md-10.col-sm-10.col-xs-10
+                                                        .input-group
+                                                            //- span.btn.input-group-addon.nf-button.no-border(ng-show='!phase.editing' ng-class='{"nf-green" : phase.id === Phase.activePhase.id}' ng-click='Phase.updateActivePhase(phase)' title='Set this phase as active') {{phase.id === Phase.activePhase.id ? 'Active' : ''}}
+                                                            span.form-control.nf-input.nf-gray.input-group-addon.phase-name(ng-show='!phase.editing' ng-bind='phase.name')
+                                                            span.btn.input-group-addon.nf-button.button-outline.button-outline-blue.no-border(ng-click='phase.editing = true' ng-show='!phase.editing' title='Edit')
+                                                                i.fa.fa-pencil 
+                                                    .col-lg-2.col-md-2.col-sm-2.col-xs-2
+                                                        div.material-switch.pull-right(style='padding-left:10px')
+                                                            input(id='{{ phase.id }}' type="checkbox" name='{{ phase.id }}' ng-checked='phase.id === Phase.activePhase.id' ng-click='Phase.updateActivePhase(phase)')
+                                                            label(for="{{ phase.id }}" class="nf-green")
+                                            .col-lg-12.col-md-12.col-sm-12.col-xs-12(ng-show='phase.editing')
+                                                .row
+                                                    .col-lg-10.col-md-10.col-sm-10.col-xs-10
+                                                        .input-group
+                                                            //- span.btn.input-group-addon.nf-button.no-border(ng-show='!phase.editing' ng-class='{"nf-green" : phase.id === Phase.activePhase.id}' ng-click='Phase.updateActivePhase(phase)' title='Set this phase as active') {{phase.id === Phase.activePhase.id ? 'Active' : ''}}
+                                                            input(type='text' class='form-control nf-input' ng-model='phase.newName' ng-show='phase.editing')
+                                                            span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-click='phase.newName = phase.name; phase.editing = false' ng-show='phase.editing' title='Cancel')
+                                                                i.fa.fa-times   
+                                                            span.btn.input-group-addon.nf-button.button-outline.button-outline-green.no-border(ng-click='Phase.editPhase(phase)' ng-show='phase.editing' title='Save')
+                                                                i.fa.fa-check  
+                                                     .col-lg-2.col-md-2.col-sm-2.col-xs-2
+                                                        .input-group
+                                                            span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
+                                                                i.fa.fa-trash
+                                            //- .col-lg-2.col-md-2.col-sm-2.col-xs-2
+                                            //-     .input-group
+                                            //-         span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
+                                            //-             i.fa.fa-trash
 
         .row(ng-controller='DivisionController as Division')
             div(ng-if='tournamentContext.owner === true')

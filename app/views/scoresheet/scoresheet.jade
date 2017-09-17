@@ -2,7 +2,7 @@
     form(novalidate name='Scoresheet.scoresheetForm' ng-submit='Scoresheet.submitScoresheet()' ng-class="{'readonly-form' : Scoresheet.game.submitted}")
         .col-lg-6.col-md-6.col-sm-12
             div(ng-controller='ScoresheetCycleController as CycleCtrl')
-                .row(ng-show='CycleCtrl.game.onTossup')
+                .row.tossup-cycle-container(ng-show='CycleCtrl.game.onTossup')
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
                         select.form-control.nf-input.scoresheet-team(required ng-options='team as team.name for team in CycleCtrl.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id | orderBy:"name"', 
                             ng-model='Scoresheet.game.teams[0].teamInfo' ng-change='CycleCtrl.loadTeamPlayers(Scoresheet.game.teams[0])',
@@ -45,7 +45,7 @@
                             .panel-footer.nf-panel-footer.nf-white
                                 .input-group.nf-margin(ng-show='Scoresheet.game.teams[0].teamInfo')
                                     input.form-control.nf-input(ng-model='Scoresheet.game.teams[0].newPlayer' placeholder='New Player for {{Scoresheet.game.teams[0].teamInfo.name}}' type='text' autocomplete='off')
-                                    span.input-group-addon.nf-button.btn.nf-green(ng-click='Scoresheet.addPlayer(Scoresheet.game.teams[0])')
+                                    span.input-group-addon.nf-button.btn.button-outline.button-outline-green(ng-click='Scoresheet.addPlayer(Scoresheet.game.teams[0])')
                                         i.fa.fa-check
                                         
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
@@ -90,7 +90,7 @@
                             .panel-footer.nf-panel-footer.nf-white
                                 .input-group.nf-margin(ng-show='Scoresheet.game.teams[1].teamInfo')
                                     input.form-control.nf-input(ng-model='Scoresheet.game.teams[1].newPlayer' placeholder='New Player for {{Scoresheet.game.teams[1].teamInfo.name}}' type='text' autocomplete='off')
-                                    span.input-group-addon.nf-button.btn.nf-green(ng-click='Scoresheet.addPlayer(Scoresheet.game.teams[1])')
+                                    span.input-group-addon.nf-button.btn.button-outline.button-outline-green(ng-click='Scoresheet.addPlayer(Scoresheet.game.teams[1])')
                                         i.fa.fa-check
                                         
                 .row(ng-show='!Scoresheet.game.onTossup')
@@ -122,7 +122,7 @@
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
                         button.nf-button.btn.button-outline.button-outline-orange.btn-block.no-margin(type='button' ng-click='CycleCtrl.lastCycle()' ng-disabled='Scoresheet.game.currentCycle.number <= 1') Back One Cycle
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                        button.nf-button.btn.button-outline.button-outline-black.btn-block.no-margin(type='button' ng-click='CycleCtrl.nextCycle()') Dead Tossup
+                        button.nf-button.btn.button-outline.button-outline-black.btn-block.no-margin(type='button' ng-click='CycleCtrl.nextCycle()') Dead Tossup / Next Tossup
             br            
 
             .row(ng-controller='ScoresheetPointsTrackerCtrl as TrackerCtrl')
