@@ -70,7 +70,6 @@
                                                 .row
                                                     .col-lg-10.col-md-10.col-sm-10.col-xs-10
                                                         .input-group
-                                                            //- span.btn.input-group-addon.nf-button.no-border(ng-show='!phase.editing' ng-class='{"nf-green" : phase.id === Phase.activePhase.id}' ng-click='Phase.updateActivePhase(phase)' title='Set this phase as active') {{phase.id === Phase.activePhase.id ? 'Active' : ''}}
                                                             span.form-control.nf-input.nf-gray.input-group-addon.phase-name(ng-show='!phase.editing' ng-bind='phase.name')
                                                             span.btn.input-group-addon.nf-button.button-outline.button-outline-blue.no-border(ng-click='phase.editing = true' ng-show='!phase.editing' title='Edit')
                                                                 i.fa.fa-pencil 
@@ -82,7 +81,6 @@
                                                 .row
                                                     .col-lg-10.col-md-10.col-sm-10.col-xs-10
                                                         .input-group
-                                                            //- span.btn.input-group-addon.nf-button.no-border(ng-show='!phase.editing' ng-class='{"nf-green" : phase.id === Phase.activePhase.id}' ng-click='Phase.updateActivePhase(phase)' title='Set this phase as active') {{phase.id === Phase.activePhase.id ? 'Active' : ''}}
                                                             input(type='text' class='form-control nf-input' ng-model='phase.newName' ng-show='phase.editing')
                                                             span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-click='phase.newName = phase.name; phase.editing = false' ng-show='phase.editing' title='Cancel')
                                                                 i.fa.fa-times   
@@ -92,10 +90,6 @@
                                                         .input-group
                                                             span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
                                                                 i.fa.fa-trash
-                                            //- .col-lg-2.col-md-2.col-sm-2.col-xs-2
-                                            //-     .input-group
-                                            //-         span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
-                                            //-             i.fa.fa-trash
 
         .row(ng-controller='DivisionController as Division')
             div(ng-if='tournamentContext.owner === true')
