@@ -25,46 +25,58 @@
     -moz-transition: 0.2s background; 
     transition: 0.2s background;
 }
-.button-outline:hover {
+.button-outline:hover, .button-outline:focus {
     color: currentColor;
     border: 1px solid transparent;
 }
-.button-outline-blue {
+
+.button-outline-blue:focus {
+    color: black;
+}
+.button-outline-blue, .button-outline-blue:active, .button-outline-blue:focus {
     border: 1px solid #5ab8f8;
     color: #5ab8f8;
 }
-.button-outline-blue:hover, .button-outline-blue:focus {
+.button-outline-blue:hover {
     background: #5ab8f8;
+    color: white;
 }
-.button-outline-red {
+
+.button-outline-red, .button-outline-red:active, .button-outline-red:focus {
     border: 1px solid #ef5350;
     color: #ef5350;
 }
-.button-outline-red:hover, .button-outline-red:focus {
+.button-outline-red:hover {
     background: #ef5350;
     color: white;
 }
-.button-outline-green {
+
+.button-outline-green, .button-outline-green:active, .button-outline-green:focus {
     border: 1px solid #26a69a;
     color: #26a69a; 
 }
-.button-outline-green:hover, .button-outline-green:focus {
+.button-outline-green:hover {
     background: #26a69a;
     color: white;
 }
-.button-outline-orange {
+
+.button-outline-orange, .button-outline-orange:active, .button-outline-orange:focus {
     border: 1px solid #FFA000;
     color: #FFA000;
 }
-.button-outline-orange:hover, .button-outline-orange:focus {
+.button-outline-orange:hover {
     background: #FFA000;
     color: white;
 }
-.button-outline-black {
+
+.button-outline-black, .button-outline-black:active, .button-outline-black:focus {
     border: 1px solid black;
     color: black;
 }
-.button-outline-black:hover, .button-outline-black:focus {
+.button-outline-black:focus {
+    color: black;
+}
+.button-outline-black:hover {
     background: black;
     color: white;
 }

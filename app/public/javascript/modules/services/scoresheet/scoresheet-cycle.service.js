@@ -1,14 +1,17 @@
 import angular from 'angular';
 
 export default class ScoresheetCycleService {
-  constructor(ScoresheetService, TeamService, TournamentService) {
+  constructor(ScoresheetService, TeamService, TournamentService, DivisionService) {
     this.ScoresheetService = ScoresheetService;
     this.TeamService = TeamService;
     this.TournamentService = TournamentService;
+    this.DivisionService = DivisionService;
+  
     this.game = this.ScoresheetService.game;
     this.teams = this.TeamService.teams;
     this.pointScheme = this.TournamentService.pointScheme;
     this.rules = this.TournamentService.rules;
+    this.divisions = this.DivisionService.divisions;
   }
 
   swapPlayers(players, initialIndex, toIndex) {
@@ -151,10 +154,20 @@ export default class ScoresheetCycleService {
       });
     });
   }
+
+  scoresheetSelectGroup(team) {
+    const activePhase = this.TournamentService.activePhase;
+    if (activePhase.id === null) {
+      return null;
+    }
+    const teamDivisionId = team.divisions[activePhase.id] || null;
+    return teamDivisionId ? this.divisions.find(d => d.id === teamDivisionId).name : 'Unassigned';
+  }
 }
 
 ScoresheetCycleService.$inject = [
   'ScoresheetService',
   'TeamService',
   'TournamentService',
+  'DivisionService',
 ];

@@ -148,7 +148,10 @@ export default class TeamService {
         .map(phaseId => this.currentTeam.mappedDivisions[phaseId]);
       this.updateTeamDivisions(tournamentId, this.currentTeam.id, this.currentTeam.mappedDivisions,
         divisionIds)
-        .then(() => resolve())
+        .then(() => { 
+          this.getTeams(tournamentId);
+          resolve();
+        })
         .catch(err => reject(err));
     });
   }

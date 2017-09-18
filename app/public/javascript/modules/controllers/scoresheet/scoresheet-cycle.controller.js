@@ -53,6 +53,8 @@ export default class ScoresheetCycleController {
 
     this.incrementActivePlayersTUH =
       this.ScoresheetCycleService.incrementActivePlayersTUH.bind(this.ScoresheetCycleService);
+
+    this.scoresheetSelectGroup = this.ScoresheetCycleService.scoresheetSelectGroup.bind(this.ScoresheetCycleService);
   }
 
   loadTeamPlayers(team) {
