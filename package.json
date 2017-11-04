@@ -4,7 +4,7 @@
   "description": "Quiz Bowl for the Cloud!",
   "main": "app/build/server.js",
   "scripts": {
-    "test": "test",
+    "test": "karma start",
     "start": "gulp babel-server && node app/build/server.js",
     "start-prod": "node app/build/server.js",
     "webpack": "webpack --watch",

@@ -172,7 +172,7 @@
             .row(ng-if='!Scoresheet.game.teams[0].teamInfo && !Scoresheet.game.teams[1].teamInfo')
                 .col-lg-6.col-md-6.col-sm-6
                     button.nf-button.button.btn.btn-block.nf-orange(type='button' ng-click='Scoresheet.loadLastSavedScoresheet()') Load Last Scoresheet
-            .row(ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
+            .row(ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo' style='margin-bottom:20px')
                 .col-lg-6.col-md-6.col-sm-6
                     button.nf-button.button.btn.btn-block.nf-orange(type='button' title='Load a new scoresheet' ng-click='Scoresheet.resetScoresheet()') New Scoresheet
                 
