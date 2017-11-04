@@ -1,7 +1,7 @@
 import jwt from 'jwt-simple';
 import configuration from '../config/configuration';
 
-const secret = configuration.jwt.secret;
+const secret = configuration.JWT_SECRET;
 
 export const encode = payload => jwt.encode(payload, secret);
 

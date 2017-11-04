@@ -1,12 +1,15 @@
 import pgp from 'pg-promise';
 import configuration from '../config/configuration';
+import log from './../helpers/log';
 
-const { env, databaseConnections } = configuration;
-const connectionString = databaseConnections.postgres[env];
+const { NODE_ENV } = configuration;
+const pgConnectionString = configuration[`PG_DB_URL_${NODE_ENV}`];
+
+log.INFO('Postgres connection string: ' + pgConnectionString);
 
 const pgPromise = pgp();
 
-const db = pgPromise(connectionString);
+const db = pgPromise(pgConnectionString);
 
 export const queryTypeMap = {
   one: pgp.queryResult.one,

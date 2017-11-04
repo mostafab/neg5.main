@@ -1,0 +1,31 @@
+.has-error {
+    border: 2px solid red;
+}
+
+span {
+    font-size: 1.375rem;
+    line-height: 140%;
+    font-weight: 500;
+    border: none;
+    color: black;
+}
+
+.font-size-base {
+    font-size: 1rem;
+}
+
+.font-size-medium {
+    font-size: 1.375rem;
+}
+
+.font-size-large {
+    font-size: 1.7rem;
+}
+
+.font-size-largest {
+    font-size: 2rem;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+  }

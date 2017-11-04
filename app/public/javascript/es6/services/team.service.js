@@ -114,7 +114,7 @@
                         divisions
                     }
                     $http.put('/api/t/' + tournamentId + '/teams/' + teamId + '/divisions', body)
-                        .then(({data}) => {
+                        .then(({ data }) => {
                             updateTeamDivisionsInArray(teamId, phaseDivisionMap);
                             resolve();
                         })

@@ -1,14 +1,14 @@
 div(id='add-game-div')
     div(class="panel panel-default nf-panel")
-        .nf-panel-heading.nf-blue
+        .nf-panel-heading
             .row 
                 .col-lg-11.col-sm-11.col-md-11.col-xs-11
                     label.nf-label Add a Match
                 .col-lg-1.col-md-1.col-sm-1.col-xs-1
-                    span.nf-button.nf-orange.btn.right.btn-sm(role='button' ng-click='Game.resetForm()') Reset
-        .panel-body.nf-panel-body.nf-white
+                    span.nf-button.button-outline.button-outline-blue.btn.right(role='button' ng-click='Game.resetForm()') Reset
+        .panel-body.nf-panel-body
 
-                form(name="Game.newGameForm" novalidate ng-submit='Game.addGame()')
+                form(name="Game.newGameForm" novalidate ng-submit='Game.addGame()' ng-class='{"disabled": Game.savingNewGame}')
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-6")
                             select(required class='form-control nf-input' ng-model='Game.currentGame.teams[0].teamInfo' ng-change='Game.addTeam(Game.currentGame.teams[0])',
@@ -20,93 +20,102 @@ div(id='add-game-div')
                                 ng-options='team.name for team in Game.teams | orderBy:"name" | preventSameMatchTeams:Game.currentGame.teams[0].teamInfo.id')
                                 option(disabled value='' selected) Choose a Team
                                 
-                                
                     br
                     
                     div(class="row")
                         
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            div(class='panel-default nf-panel nf-shadow')
+                            div(class='panel-default nf-panel')
                                 table(class='table')                                   
                                     thead
-                                        tr(class='nf-blue')
-                                            th(class='no-border nf-label' ng-bind='Game.currentGame.teams[0].teamInfo.name') 
-                                            th(class='center no-border nf-label') TUH
-                                            th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ' ng-bind='point.value')
-                                            th(class='center no-border nf-label') Total
+                                        tr
+                                            th(class='no-border nf-label')
+                                                p.left(ng-bind='Game.currentGame.teams[0].teamInfo.name') 
+                                            th(class='center no-border nf-label')
+                                                p.left TUH
+                                            th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ')
+                                                p.left(ng-bind='point.value')
+                                            th(class='center no-border nf-label') 
+                                                p.left Total
                                     tbody
-                                        tr(ng-repeat='player in Game.currentGame.teams[0].players track by player.id' class='nf-white')
+                                        tr.player-match-inputs(ng-repeat='player in Game.currentGame.teams[0].players track by player.id')
                                             td(class='vertical-center' title='{{player.name}}' ng-bind='player.name')
                                             td
-                                                input.nf-input(type='number' min='{{Game.numPlayerAnswers(player)}}' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
-                                                name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.newGameForm[player.id + '_tuh'].$invalid}") 
+                                                input.nf-input.tuh(type='number' min='{{Game.MatchUtil.numPlayerAnswers(player)}}' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
+                                                name='{{player.id + "_tuh"}}' ng-class="{'error-text' : Game.newGameForm[player.id + '_tuh'].$invalid}") 
                                             td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true')
-                                                input.nf-input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.newGameForm[player.id + point.value].$invalid, 'readonly' : player.tuh <= 0 || Game.newGameForm[player.id + '_tuh'].$invalid}")
+                                                input.nf-input.point-value(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'error-text' : Game.newGameForm[player.id + point.value].$invalid, 'readonly' : player.tuh <= 0 || Game.newGameForm[player.id + '_tuh'].$invalid}")
                                             td 
-                                                div(tabindex="-1" class='form-control readonly input-sm' ng-bind='Game.pointSum(player.points)')
-                                            
+                                                div(tabindex="-1" class='form-control readonly input-sm' ng-bind='Game.MatchUtil.pointSum(player.points)')
+                        
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            div(class='panel-default nf-panel nf-shadow')
+                            div(class='panel-default nf-panel')
                                 table(class='table')                                   
                                     thead
-                                        tr(class='nf-blue')
-                                            th.nf-label(ng-bind='Game.currentGame.teams[1].teamInfo.name') 
-                                            th(class='center no-border nf-label') TUH
-                                            th(class='center nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true' ng-bind='point.value')
-                                            th(class='center nf-label') Total
+                                        tr
+                                            th(class='no-border nf-label')
+                                                p.left(ng-bind='Game.currentGame.teams[1].teamInfo.name') 
+                                            th(class='center no-border nf-label')
+                                                p.left TUH
+                                            th(class='center no-border nf-label' ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ')
+                                                p.left(ng-bind='point.value')
+                                            th(class='center no-border nf-label') 
+                                                p.left Total
                                     tbody
-                                        tr(ng-repeat='player in Game.currentGame.teams[1].players track by player.id' class='nf-white')
+                                        tr.player-match-inputs(ng-repeat='player in Game.currentGame.teams[1].players track by player.id')
                                             td(class='vertical-center' title='{{player.name}}' ng-bind='player.name')
                                             td
-                                                input.nf-input(type='number' min='{{Game.numPlayerAnswers(player)}}' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)' name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.newGameForm[player.id + '_tuh'].$invalid}") 
+                                                input.nf-input.tuh(type='number' min='{{Game.MatchUtil.numPlayerAnswers(player)}}' max='{{Game.currentGame.tuh !== null ? Game.currentGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)' name='{{player.id + "_tuh"}}'
+                                                    ng-class="{'error-text' : Game.newGameForm[player.id + '_tuh'].$invalid}") 
                                             td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true ')
-                                                input.nf-input(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'nf-error' : Game.newGameForm[player.id + point.value].$invalid, 'readonly': player.tuh <= 0 || Game.newGameForm[player.id + '_tuh'].$invalid}")
+                                                input.nf-input.point-value(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}'
+                                                    ng-class="{'error-text' : Game.newGameForm[player.id + point.value].$invalid, 'readonly': player.tuh <= 0 || Game.newGameForm[player.id + '_tuh'].$invalid}")
                                             td 
-                                                div(tabindex="-1" class='form-control readonly input-sm' ng-bind='Game.pointSum(player.points)')
-                                    
+                                                div(tabindex="-1" class='form-control readonly input-sm' ng-bind='Game.MatchUtil.pointSum(player.points)')
+                    
+                    br
+
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-6")
                             div(class="row")
                                 div(class="col-sm-6 col-md-6 col-xs-12")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right') Team 1 Score *
-                                        p.warning-text.wrap(ng-hide='Game.isValidScore(Game.currentGame.teams[0].score)') Invalid score.
+                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text': !Game.MatchUtil.isValidScore(Game.currentGame.teams[0].score)}") Team 1 Score
                                 div(class="col-md-6 col-sm-6 col-md-6 col-xs-12")
-                                    input(required type="number" name='leftScore' ng-class="{'nf-error' : Game.newGameForm.leftScore.$invalid && Game.newGameForm.leftScore.$touched}"  class="form-control nf-input" placeholder="{{(Game.currentGame.teams[0].teamInfo.name || 'Team 1') + ' Score'}}" ng-model='Game.currentGame.teams[0].score')
+                                    input(required type="number" name='leftScore' ng-class="{'error-text' : Game.newGameForm.leftScore.$invalid || !Game.MatchUtil.isValidScore(Game.currentGame.teams[0].score)}"  class="form-control nf-input" placeholder="{{(Game.currentGame.teams[0].teamInfo.name || 'Team 1') + ' Score'}}" ng-model='Game.currentGame.teams[0].score')
                             br
                             div(class='row' ng-if='Game.rules.bouncebacks')
                                 div(class="col-md-6 col-sm-6 col-xs-12")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right') Bouncebacks
+                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text' : Game.newGameForm.leftbounceback.$invalid}") Bouncebacks
                                 div(class="col-md-6 col-sm-6 col-xs-12")
-                                    input(type="number" min='0' class="form-control nf-input " name="leftbounceback" placeholder="Bounceback Points" ng-model='Game.currentGame.teams[0].bouncebacks' ng-class="{'nf-error' : Game.newGameForm.leftbounceback.$invalid}")
+                                    input(type="number" min='0' class="form-control nf-input " name="leftbounceback" placeholder="Bounceback Points" ng-model='Game.currentGame.teams[0].bouncebacks' ng-class="{'error-text' : Game.newGameForm.leftbounceback.$invalid}")
                             br
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-6")
                             div(class="row reorder-xs")
                                 div(class="col-md-6 col-sm-6 ")
-                                    input(required type="number" class="form-control nf-input " name="rightScore" ng-class="{'nf-error' : Game.newGameForm.rightScore.$invalid && Game.newGameForm.rightScore.$touched}" placeholder="{{(Game.currentGame.teams[1].teamInfo.name || 'Team 2') + ' Score'}}" ng-model='Game.currentGame.teams[1].score') 
+                                    input(required type="number" class="form-control nf-input " name="rightScore" ng-class="{'error-text' : Game.newGameForm.rightScore.$invalid || !Game.MatchUtil.isValidScore(Game.currentGame.teams[1].score)}" placeholder="{{(Game.currentGame.teams[1].teamInfo.name || 'Team 2') + ' Score'}}" ng-model='Game.currentGame.teams[1].score') 
                                 div(class="col-md-6 col-sm-6")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right') Team 2 Score *
-                                        p.warning-text.wrap(ng-hide='Game.isValidScore(Game.currentGame.teams[1].score)') Invalid score.
+                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text': !Game.MatchUtil.isValidScore(Game.currentGame.teams[1].score)}") Team 2 Score
                             br
                             div(class="row reorder-xs" ng-if='Game.rules.bouncebacks')
                                 div(class="col-md-6 col-sm-6")
-                                    input(type="number" min='0' class="form-control nf-input " name="rightbounceback" ng-class="{'nf-error' : Game.newGameForm.rightbounceback.$invalid}" placeholder="Bounceback Points" ng-model='Game.currentGame.teams[1].bouncebacks')
+                                    input(type="number" min='0' class="form-control nf-input " name="rightbounceback" ng-class="{'error-text' : Game.newGameForm.rightbounceback.$invalid}" placeholder="Bounceback Points" ng-model='Game.currentGame.teams[1].bouncebacks')
                                 div(class="col-md-6 col-sm-6")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right') Bouncebacks
+                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text' : Game.newGameForm.rightbounceback.$invalid}") Bouncebacks
                             br
 
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-6")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6 col-xs-12")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right') TUs with no bonuses
+                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text' : Game.newGameForm.overtimetu1.$invalid}") TUs with no bonuses
                                 div(class="col-md-6 col-sm-6 col-xs-12")
-                                    input(type="number" min='0' title='Tossups answered correctly that didn\'t lead to bonuses.' class="form-control nf-input " name="overtimetu1" placeholder="# Overtime TU Team 1" ng-model='Game.currentGame.teams[0].overtime' ng-class="{'nf-error' : Game.newGameForm.overtimetu1.$invalid}")
+                                    input(type="number" min='0' title='Tossups answered correctly that didn\'t lead to bonuses.' class="form-control nf-input " name="overtimetu1" placeholder="# Overtime TU Team 1" ng-model='Game.currentGame.teams[0].overtime' ng-class="{'error-text' : Game.newGameForm.overtimetu1.$invalid}")
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-6")
                             div(class="row reorder-xs")
                                 div(class="col-md-6 col-sm-6 col-xs-12")
-                                    input(type="number" min='0' title='Tossups answered correctly that didn\'t lead to bonuses.' class="form-control nf-input " name="overtimetu2" placeholder="# Overtime TU Team 2" ng-model='Game.currentGame.teams[1].overtime' ng-class="{'nf-error' : Game.newGameForm.overtimetu2.$invalid}")
+                                    input(type="number" min='0' title='Tossups answered correctly that didn\'t lead to bonuses.' class="form-control nf-input " name="overtimetu2" placeholder="# Overtime TU Team 2" ng-model='Game.currentGame.teams[1].overtime' ng-class="{'error-text' : Game.newGameForm.overtimetu2.$invalid}")
                                 div(class="col-md-6 col-sm-6 col-xs-12")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right') TUs with no bonuses
+                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text' : Game.newGameForm.overtimetu2.$invalid}") TUs with no bonuses
 
                     br
 
@@ -114,40 +123,40 @@ div(id='add-game-div')
                         .col-lg-6.col-md-6.col-sm-6.col-xs-6
                             .row
                                 .col-md-6.col-sm-6.col-xs-12
-                                    label.label.nf-blue.nf-label.btn-block(style='float:right') Bonuses / PPB 
+                                    label.label.nf-label.btn-block(style='float:right' ng-class='{"warning-text": !Game.MatchUtil.isValidPPB(Game.MatchUtil.teamPPB(Game.currentGame.teams[0]))}') Bonuses / PPB 
                                 .col-md-6.col-sm-6.col-xs-12
                                     .form-control.readonly.nf-input
-                                        p.inline.nf-margin {{Game.teamBonusPoints(Game.currentGame.teams[0])}}
+                                        p.inline.nf-margin {{Game.MatchUtil.teamBonusPoints(Game.currentGame.teams[0])}}
                                         p.inline / 
-                                        p.inline(ng-class='{"warning-text": !Game.isValidPPB(Game.teamPPB(Game.currentGame.teams[0]))}') {{Game.teamPPB(Game.currentGame.teams[0]) | number:2}}
+                                        p.inline(ng-class='{"warning-text": !Game.MatchUtil.isValidPPB(Game.MatchUtil.teamPPB(Game.currentGame.teams[0]))}') {{Game.MatchUtil.teamPPB(Game.currentGame.teams[0]) | number:2}}
 
                         .col-lg-6.col-md-6.col-sm-6.col-xs-6
                             .row.reorder-xs
                                 .col-md-6.col-sm-6.col-xs-12
                                     .form-control.readonly.nf-input 
-                                        p.inline.nf-margin {{Game.teamBonusPoints(Game.currentGame.teams[1])}}
+                                        p.inline.nf-margin {{Game.MatchUtil.teamBonusPoints(Game.currentGame.teams[1])}}
                                         p.inline / 
-                                        p.inline(ng-class='{"warning-text": !Game.isValidPPB(Game.teamPPB(Game.currentGame.teams[1]))}') {{Game.teamPPB(Game.currentGame.teams[1]) | number:2}}
+                                        p.inline(ng-class='{"warning-text": !Game.MatchUtil.isValidPPB(Game.MatchUtil.teamPPB(Game.currentGame.teams[1]))}') {{Game.MatchUtil.teamPPB(Game.currentGame.teams[1]) | number:2}}
                                 .col-md-6.col-sm-6.col-xs-12
-                                    label.label.nf-blue.nf-label.btn-block(style='float:right') Bonuses / PPB 
+                                    label.label.nf-label.btn-block(style='float:right' ng-class='{"warning-text": !Game.MatchUtil.isValidPPB(Game.MatchUtil.teamPPB(Game.currentGame.teams[1]))}') Bonuses / PPB 
                     br
 
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-12")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6 col-md-6 col-xs-6")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right') Round
+                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text' : Game.newGameForm.round.$invalid}") Round
                                 div(class="col-md-6 col-sm-6 col-md-6 col-xs-6")
-                                    input(required type="number" min='1' class="form-control nf-input " name="round" placeholder="Round" ng-model='Game.currentGame.round' ng-class="{'nf-error' : Game.newGameForm.round.$invalid}")
+                                    input(required type="number" min='1' class="form-control nf-input " name="round" placeholder="Round" ng-model='Game.currentGame.round' ng-class="{'error-text' : Game.newGameForm.round.$invalid}")
                     br
 
                     div(class="row")
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-12")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6 col-xs-6")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right') Total TUH
+                                    label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text' : Game.newGameForm.tossupsheard.$invalid}") Total TUH
                                 div(class="col-md-6 col-sm-6 col-xs-6")
-                                    input(type="number" min='{{Game.minPossibleTossupsHeard(Game.currentGame)}}' class="form-control nf-input " name="tossupsheard" placeholder="Tossups Heard" ng-model='Game.currentGame.tuh' ng-class="{'nf-error' : Game.newGameForm.tossupsheard.$invalid}")
+                                    input(type="number" min='{{Game.MatchUtil.minPossibleTossupsHeard(Game.currentGame)}}' class="form-control nf-input " name="tossupsheard" placeholder="Tossups Heard" ng-model='Game.currentGame.tuh' ng-class="{'error-text' : Game.newGameForm.tossupsheard.$invalid}")
                     
                     br
 
@@ -155,7 +164,7 @@ div(id='add-game-div')
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-12")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6 col-xs-6")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right') Room
+                                    label(class="label nf-label btn-block" style='float:right') Room
                                 div(class="col-md-6 col-sm-6 col-xs-6")
                                     input(type="text" class="form-control nf-input " name="room" placeholder="Room" ng-model='Game.currentGame.room')
                     
@@ -165,7 +174,7 @@ div(id='add-game-div')
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-12")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6 col-xs-6")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right') Moderator
+                                    label(class="label nf-label btn-block" style='float:right') Moderator
                                 div(class="col-md-6 col-sm-6 col-xs-6")
                                     input(type="text" class="form-control nf-input " name="moderator" placeholder="Moderator" ng-model='Game.currentGame.moderator')
                     br
@@ -173,7 +182,7 @@ div(id='add-game-div')
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-12")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6 col-xs-6")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right') Packet
+                                    label(class="label nf-label btn-block" style='float:right') Packet
                                 div(class="col-md-6 col-sm-6 col-xs-6")
                                     input(type="text" class="form-control nf-input " name="packet" placeholder="Packet" ng-model='Game.currentGame.packet')
                     br
@@ -181,10 +190,10 @@ div(id='add-game-div')
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-12")
                             div(class="row")
                                 div(class="col-md-6 col-sm-6 col-xs-6")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases ({{Game.currentGame.phases.length}})
-                                        p.warning-text.wrap(ng-show='Game.newGameForm.phases.$invalid') Please select a phase(s).
+                                    label(class="label nf-label btn-block" style='float:right' data-toggle='tooltip' data-placement='left' title='Select all phases that you want this game to count for.') Phases ({{Game.currentGame.phases.length}})
+                                        p.error-text.wrap(ng-show='Game.newGameForm.phases.$invalid') Please select a phase(s).
                                 div(class="col-md-6 col-sm-6 col-xs-6")
-                                    select(multiple required class="form-control nf-input no-overflow" name='phases' ng-class='{"nf-error" : Game.newGameForm.phases.$invalid && Game.newGameForm.phases.$touched}' ng-attr-size='{{Game.phases.length}}' ng-options='phase.name for phase in Game.phases | orderBy:"name" track by phase.id' ng-model='Game.currentGame.phases')
+                                    select(multiple required class="form-control nf-input no-overflow" name='phases' ng-attr-size='{{Game.phases.length}}' ng-options='phase.name for phase in Game.phases | orderBy:"name" track by phase.id' ng-model='Game.currentGame.phases')
                                         
                     br
                     
@@ -192,10 +201,10 @@ div(id='add-game-div')
                         div(class="col-lg-6 col-md-6 col-sm-6 col-xs-12")
                             div(class="row")
                                 div(class="col-md-4 col-sm-4 col-xs-4")
-                                    label(class="label nf-blue nf-label btn-block" style='float:right;') Notes
+                                    label(class="label nf-label btn-block" style='float:right;') Notes
                                 div(class="col-md-8 col-sm-8 col-xs-8")
                                     textarea(class="form-control nf-input " name="notes" placeholder="Notes" style='min-height:200px' ng-model='Game.currentGame.notes')
                     
                     hr
                     
-                    button(type="submit" class="btn btn-md nf-blue nf-button" ng-disabled='Game.newGameForm.$invalid') Add Game Information
+                    button(type="submit" class="btn btn-md button-outline button-outline-green nf-button" ng-disabled='Game.newGameForm.$invalid') Add Game Information
