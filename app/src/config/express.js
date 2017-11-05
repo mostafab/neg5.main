@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import compression from 'compression';
+import morgan from 'morgan';
 
 import accountApi from '../routes/api/account';
 import tournamentApi from '../routes/api/tournament';
@@ -17,6 +18,8 @@ import passport from './passport/passport';
 
 const indexRoute = require('../routes/index');
 
+const MORGAN_REQUEST_LOGGING_FORMAT = ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :currentUser';
+
 export default () => {
   const app = express();
   const { NODE_ENV } = configuration;
@@ -25,6 +28,11 @@ export default () => {
       app.locals.pretty = false;
   }
 
+  morgan.token('currentUser', (req, res) => {
+    return req.currentUser || 'no-user-attached';
+  });
+
+  app.use(morgan(MORGAN_REQUEST_LOGGING_FORMAT));
   app.use(bodyParser.urlencoded({
     extended: true,
   }));

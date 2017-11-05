@@ -183,7 +183,7 @@
                         thead
                             th(colspan='{{Scoresheet.game.teams[0].players.length + Scoresheet.game.teams[1].players.length + 5}}')
                                 p.nf-label.left
-                                    | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'medium'}}
+                                    | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'short'}}
                         thead
                             th.center.nf-label(colspan='{{Scoresheet.game.teams[0].players.length}}' ng-bind='Scoresheet.game.teams[0].teamInfo.name')
                             th

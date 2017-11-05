@@ -24,12 +24,20 @@ module.exports = app => {
       }        
   });
 
-  app.get("/t/:tid", hasToken, accessToTournament, (req, res, next) => {
-    res.render("tournament/tournament-view", {minifyJs})
-  });
-
   app.get('/t/:tid/stats', (req, res) => {
     res.render('stats/stats-home', {minifyJs});
+  });
+
+  app.get('/t/:tid/:slug/stats', (req, res) => {
+    res.render('stats/stats-home', {minifyJs});
+  });
+
+  app.get('/t/:tid', hasToken, accessToTournament, (req, res, next) => {
+    res.render("tournament/tournament-view", {minifyJs})
+  })
+
+  app.get("/t/:tid/:slug", hasToken, accessToTournament, (req, res, next) => {
+    res.render("tournament/tournament-view", {minifyJs})
   });
 
   app.get('/t/:tid/stats/:page(team|player|teamfull|playerfull|roundreport)/', (req, res) => {

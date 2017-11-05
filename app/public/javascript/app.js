@@ -49,6 +49,7 @@ import DivisionService from './modules/services/division.service';
 import CollaboratorService from './modules/services/collaborator.service';
 import QBJService from './modules/services/qbj.service';
 import StatsService from './modules/services/stats.service';
+import SlugService from './modules/services/util/slug.service';
 
 import QBJHttpService from './modules/services/http/qbj-http.service';
 import PhaseHttpService from './modules/services/http/phase-http.service';
@@ -78,6 +79,7 @@ angular.module('IndexApp', [ngCookies, ngAnimate])
 angular.module('HomeApp', [ngCookies, ngAnimate])
   .config(config)
   .service('TournamentService', TournamentService)
+  .service('SlugService', SlugService)
   .controller('HomeController', HomeController);
 
 angular.module('tournamentApp', [ngCookies, ngAnimate])
@@ -99,6 +101,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('ScoresheetCycleService', ScoresheetCycleService)
   .service('ScoresheetPointsTrackerService', ScoresheetPointsTrackerService)
   .service('ScoresheetTableService', ScoresheetTableService)
+  .service('SlugService', SlugService)
   .factory('MatchUtilFactory', MatchUtilFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)

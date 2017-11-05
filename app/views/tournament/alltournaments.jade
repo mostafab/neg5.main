@@ -56,7 +56,7 @@ block content
                                         .col-lg-8.col-md-7.col-sm-7(ng-cloak)
                                             div
                                                 .nf-panel.card-wrapper(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | orderBy:"name"')
-                                                    a.tournament-card(href='/t/{{tournament.id}}')
+                                                    a.tournament-card(href='/t/{{tournament.id}}/{{Home.getTournamentSlug(tournament)}}')
                                                         .nf-panel-heading
                                                             .row 
                                                                 .col-lg-11.col-sm-11.col-md-11.col-xs-11

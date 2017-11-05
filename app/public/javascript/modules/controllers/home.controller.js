@@ -1,10 +1,24 @@
 /* global window */
+
+import slug from 'slug';
+
+slug.defaults.modes['rfc3986'] = {
+  replacement: '-',      // replace spaces with replacement 
+  symbols: true,         // replace unicode symbols or not 
+  remove: null,          // (optional) regex to remove characters 
+  lower: true,           // result in lower case 
+  charmap: slug.charmap, // replace special characters 
+  multicharmap: slug.multicharmap // replace multi-characters 
+};
+
 export default class HomeController {
-  constructor($scope, $timeout, $cookies, TournamentService) {
+
+  constructor($scope, $timeout, $cookies, TournamentService, SlugService) {
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.$cookies = $cookies;
     this.TournamentService = TournamentService;
+    this.SlugService = SlugService;
 
     this.tournaments = [];
     this.submittingForm = false;
@@ -29,6 +43,10 @@ export default class HomeController {
         this.tournaments = tournaments;
       })
       .catch(error => console.log(error));
+  }
+
+  getTournamentSlug(tournament) {
+    return this.SlugService.slugify(tournament.name);
   }
 
   createNewTournament() {
@@ -77,4 +95,4 @@ export default class HomeController {
   }
 }
 
-HomeController.$inject = ['$scope', '$timeout', '$cookies', 'TournamentService'];
+HomeController.$inject = ['$scope', '$timeout', '$cookies', 'TournamentService', 'SlugService'];

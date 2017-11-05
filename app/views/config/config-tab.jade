@@ -75,7 +75,7 @@
                                                                 i.fa.fa-pencil 
                                                     .col-lg-2.col-md-2.col-sm-2.col-xs-2
                                                         div.material-switch.pull-right(style='padding-left:10px')
-                                                            input(id='{{ phase.id }}' type="checkbox" name='{{ phase.id }}' ng-checked='phase.id === Phase.activePhase.id' ng-click='Phase.updateActivePhase(phase)')
+                                                            input(id='{{ phase.id }}' type="checkbox" name='{{ phase.id }}' ng-checked='phase.id === Phase.activePhase.id' ng-click='Phase.updateActivePhase(phase)' ng-disabled='Phase.phases.length === 1')
                                                             label(for="{{ phase.id }}" class="nf-green")
                                             .col-lg-12.col-md-12.col-sm-12.col-xs-12(ng-show='phase.editing')
                                                 .row

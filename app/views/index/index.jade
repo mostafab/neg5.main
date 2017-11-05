@@ -18,6 +18,9 @@ block content
                 li(class="list-element")
                     a(href='https://github.com/mostafab/neg5')
                         i.fa.fa-github.fa-2x
+                li(class="list-element")
+                    a(data-toggle='modal' data-target='#aboutModal')
+                        | About
 
     div(class="vertical-center-container" style='background-color:transparent;overflow:hidden;' ng-app='IndexApp')
         div.container(ng-controller='IndexController as Index')
@@ -126,3 +129,8 @@ block content
                 script.
                     (adsbygoogle = window.adsbygoogle || []).push({});
 
+    div#aboutModal.modal.fade.centered-modal(role='dialog')
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title About Neg 5

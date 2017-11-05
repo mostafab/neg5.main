@@ -930,6 +930,13 @@ Switch
     margin-left: 10px;
 }
 
+.centered-modal.in {
+    display: flex !important;
+}
+.centered-modal .modal-dialog {
+    margin: auto;
+}
+
 #tournament-list {
     background: white;
     border: 1px solid #e0e0e0;
