@@ -115,7 +115,8 @@ export default class TournamentController {
       return this.tab;
     }), (newVal) => {
       this.$cookies.put('nfTab', newVal);
-      location.hash = `#${newVal}`;
+      // location.hash = `#${newVal}`;
+      history.replaceState(undefined, undefined, `#${newVal}`)
     });
   }
 

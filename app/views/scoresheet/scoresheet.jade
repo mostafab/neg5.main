@@ -100,13 +100,13 @@
                                 | Bonus {{Scoresheet.game.currentCycle.number}} for {{Scoresheet.getTeam(Scoresheet.game.currentCycle.answers[Scoresheet.game.currentCycle.answers.length - 1].teamId).teamInfo.name }}
                             .panel-body.nf-panel-body.nf-white
                                 .input-group.nf-margin(ng-repeat='part in Scoresheet.range(Scoresheet.pointScheme.partsPerBonus) track by $index')
-                                    span.input-group-addon.nf-button.transition.button-outline.button-outline-green(ng-click='CycleCtrl.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[0].teamInfo, Scoresheet.game.currentCycle.bonuses)', 
-                                        ng-class="{'nf-green' : Scoresheet.game.currentCycle.bonuses[$index] === Scoresheet.game.teams[0].teamInfo.id}", 
+                                    span.input-group-addon.nf-button.transition.button-outline.bonus-part-toggle(ng-click='CycleCtrl.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[0].teamInfo, Scoresheet.game.currentCycle.bonuses)', 
+                                        ng-class="{'selected' : Scoresheet.game.currentCycle.bonuses[$index] === Scoresheet.game.teams[0].teamInfo.id}", 
                                         ng-show='Scoresheet.rules.bouncebacks || CycleCtrl.getTeamThatGotTossup(Scoresheet.game.currentCycle) === Scoresheet.game.teams[0].teamInfo.id')  
                                         | + {{Scoresheet.pointScheme.bonusPointValue}} for {{Scoresheet.game.teams[0].teamInfo.name}}
                                     .form-control.nf-input.center Part {{$index + 1}}
-                                    span.input-group-addon.nf-button.transition.button-outline.button-outline-green(ng-click='CycleCtrl.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[1].teamInfo, Scoresheet.game.currentCycle.bonuses)', 
-                                        ng-class="{'nf-green' : Scoresheet.game.currentCycle.bonuses[$index] === Scoresheet.game.teams[1].teamInfo.id}",
+                                    span.input-group-addon.nf-button.transition.button-outline.bonus-part-toggle(ng-click='CycleCtrl.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[1].teamInfo, Scoresheet.game.currentCycle.bonuses)', 
+                                        ng-class="{'selected' : Scoresheet.game.currentCycle.bonuses[$index] === Scoresheet.game.teams[1].teamInfo.id}",
                                         ng-show='Scoresheet.rules.bouncebacks || CycleCtrl.getTeamThatGotTossup(Scoresheet.game.currentCycle) === Scoresheet.game.teams[1].teamInfo.id')  
                                         | + {{Scoresheet.pointScheme.bonusPointValue}} for {{Scoresheet.game.teams[1].teamInfo.name}}
                                 
@@ -212,9 +212,9 @@
                                     .input-group(ng-if='cycle.editing[player.id]')
                                         select.form-control.nf-input(style='font-size:.9em' ng-options='pv as pv.value for pv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-model='cycle.newAnswer[player.id]')
                                             option(value='') -
-                                        span.input-group-addon.nf-button.btn.nf-red.btn-sm(ng-click='cycle.editing[player.id] = false')
+                                        span.input-group-addon.nf-button.btn.button-outline.button-outline-red.btn-sm(ng-click='cycle.editing[player.id] = false')
                                             i.fa.fa-times
-                                        span.input-group-addon.nf-button.btn.nf-green.btn-sm(ng-click='ScoresheetTable.editPlayerAnswerForCycle(player.id, Scoresheet.game.teams[0].teamInfo.id, cycle.newAnswer[player.id], cycle)')
+                                        span.input-group-addon.nf-button.btn.button-outline.button-outline-green.btn-sm(ng-click='ScoresheetTable.editPlayerAnswerForCycle(player.id, Scoresheet.game.teams[0].teamInfo.id, cycle.newAnswer[player.id], cycle)')
                                             i.fa.fa-check
 
                                 td.center 
@@ -226,9 +226,9 @@
                                                 ng-class="{'nf-green' : cycle.bonusesCopy[$index] === Scoresheet.game.teams[0].teamInfo.id}",
                                                 ng-click='ScoresheetTable.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[0].teamInfo, cycle.bonusesCopy)')  
                                                 | + {{Scoresheet.pointScheme.bonusPointValue}} for {{Scoresheet.game.teams[0].teamInfo.name}}
-                                        span.btn.nf-button.nf-red.nf-margin(ng-click='cycle.editingBonus = false')
+                                        span.btn.nf-button.button-outline.button-outline-red.nf-margin(ng-click='cycle.editingBonus = false')
                                             i.fa.fa-times
-                                        span.btn.nf-button.nf-green.nf-margin(ng-click='ScoresheetTable.editCycleBonuses(cycle)')
+                                        span.btn.nf-button.button-outline.button-outline-green.nf-margin(ng-click='ScoresheetTable.editCycleBonuses(cycle)')
                                             i.fa.fa-check
                                 td.center 
                                     | {{Scoresheet.game.currentCycle.number > $index ? ScoresheetTable.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[0].teamInfo.id, $index) : '-'}}
@@ -244,9 +244,9 @@
                                                 ng-class="{'nf-green' : cycle.bonusesCopy[$index] === Scoresheet.game.teams[1].teamInfo.id}",
                                                 ng-click='ScoresheetTable.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[1].teamInfo, cycle.bonusesCopy)')  
                                                 | + {{Scoresheet.pointScheme.bonusPointValue}} for {{Scoresheet.game.teams[1].teamInfo.name}}
-                                        span.btn.nf-button.nf-red.nf-margin(ng-click='cycle.editingBonus = false')
+                                        span.btn.nf-button.button-outline.button-outline-red.nf-margin(ng-click='cycle.editingBonus = false')
                                             i.fa.fa-times
-                                        span.btn.nf-button.nf-green.nf-margin(ng-click='ScoresheetTable.editCycleBonuses(cycle)')
+                                        span.btn.nf-button.button-outline.button-outline-green.nf-margin(ng-click='ScoresheetTable.editCycleBonuses(cycle)')
                                             i.fa.fa-check
 
                                 td.center(ng-repeat='player in Scoresheet.game.teams[1].players') 
@@ -255,9 +255,9 @@
                                     .input-group(ng-if='cycle.editing[player.id]')
                                         select.form-control.nf-input(style='font-size:.9em' ng-options='pv as pv.value for pv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-model='cycle.newAnswer[player.id]')
                                             option(value='') -
-                                        span.input-group-addon.nf-button.btn.nf-red.btn-sm(ng-click='cycle.editing[player.id] = false')
+                                        span.input-group-addon.nf-button.btn.button-outline.button-outline-red.btn-sm(ng-click='cycle.editing[player.id] = false')
                                             i.fa.fa-times
-                                        span.input-group-addon.nf-button.btn.nf-green.btn-sm(ng-click='ScoresheetTable.editPlayerAnswerForCycle(player.id, Scoresheet.game.teams[1].teamInfo.id, cycle.newAnswer[player.id], cycle)')
+                                        span.input-group-addon.nf-button.btn.button-outline.button-outline-green.btn-sm(ng-click='ScoresheetTable.editPlayerAnswerForCycle(player.id, Scoresheet.game.teams[1].teamInfo.id, cycle.newAnswer[player.id], cycle)')
                                             i.fa.fa-check
 
                     .panel-footer.nf-panel-footer.nf-white

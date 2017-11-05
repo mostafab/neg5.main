@@ -108,6 +108,18 @@ a.tournament-card:hover {
 .error-text {
     color: red !important;
 }
+.bonus-part-toggle {
+    border: 1px solid #26a69a;
+    color: #26a69a; 
+}
+.bonus-part-toggle:hover {
+    border: 1px solid #26a69a !important;
+    color: #26a69a;
+}
+.bonus-part-toggle.selected {
+    background-color: #26a69a;
+    color: white;
+}
 
 .nf-modal-content {
     border: none;
@@ -912,6 +924,10 @@ Switch
 .material-switch > input[type="checkbox"]:checked + label::after {
     background: inherit;
     left: 20px;
+}
+
+.qbj-button > i {
+    margin-left: 10px;
 }
 
 #tournament-list {
