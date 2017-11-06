@@ -60,7 +60,8 @@ span {
 
 .img-container > .thumbnail {
     background: transparent;
-    border: none;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -71,19 +72,23 @@ span {
   Footer CSS
   */
 
+  .sub-summary {
+      line-height: 1.5;
+  }
+
   .foot-links a, .foot-links p{
     display: block;
      color: rgb(63, 63, 63);
     transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
     text-decoration: none;
-    font-family: OpenSansRegular, Arial, sans-serif;
     font-size: 13px;
     color: rgb(63, 63, 63);
     padding-bottom: 5px;
     text-shadow: rgb(255, 255, 255) 1px 1px 0px;
     
   }
+
   .foot-links img{
       padding-top: 5px;
   }
@@ -91,15 +96,20 @@ span {
     background: rgb(241, 241, 241);
     border-top: 1px solid rgb(222, 222, 222);
     margin-top: -2px;
-    padding-top: 30px;
+    padding-top: 10px;
     padding-bottom: 30px;
    }
   .foot-header{
     font-family: OpenSansBold, Arial, sans-serif;
     font-size: 18px;
     color: rgb(63, 63, 63);
-    padding-bottom: 20px;
+    padding-bottom: 5px;
+    font-weight: bold;
     text-shadow: rgb(255, 255, 255) 1px 1px 0px;
+  }
+
+  .foot-header-container > div {
+      margin: 10px;
   }
     
   #footer .container{
