@@ -10,17 +10,19 @@ block extrastylesheets
 
 block content
 
-    nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top(role='navigation')
+    nav.navbar.navbar-default.top-nav-bar(role='navigation')
         .navbar-header
             p.navbar-brand(style='color: #2B3E50') Welcome to Neg 5!
-        div(class="collapse navbar-collapse")
+            button.navbar-toggle(type='button' data-toggle='collapse' data-target='#main-drop')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar           
+        div#main-drop(class="collapse navbar-collapse")
             ul(class="nav navbar-nav")
-                li(class="list-element")
+                li(class="list-element center")
                     a(href='https://github.com/mostafab/neg5')
                         i.fa.fa-github.fa-2x
-                li(class="list-element")
-                    a(data-toggle='modal' data-target='#aboutModal')
-                        | About
 
     div(class="vertical-center-container" style='background-color:transparent;overflow:hidden;' ng-app='IndexApp')
         div.container(ng-controller='IndexController as Index')
@@ -129,8 +131,24 @@ block content
                 script.
                     (adsbygoogle = window.adsbygoogle || []).push({});
 
-    div#aboutModal.modal.fade.centered-modal(role='dialog')
-        .modal-dialog
-            .modal-content
-                .modal-header
-                    h4.modal-title About Neg 5
+    include ./about.jade
+
+    #footer
+        .container
+            .row
+                .col-sm-12.col-lg-12.col-md-12.col-xs-12.center
+                    .foot-header.summary
+                        | Neg 5 is a web application written by Mostafa Bhuiyan, a former quizbowler at Norcross High School and
+                        | Georgia Tech, to help other quiz bowl tournament moderators run their events in a
+                        | distributed, collaborative manner and reduce the downtime between matches and stats availability.
+                        | A potentially unlimited number of staffers are able to work together
+                        | to enter team information and game information all in one application without the hassle and time sink of only one stats keeper.
+                    
+            .row
+                #bottom-footer
+                    .row
+                        .col-md-12.center
+                            a(href='http://hsquizbowl.org/forums/viewtopic.php?f=123&t=18220') QB Forum Thread
+                            a(href='http://stats.neg5.org') Stats
+                            a(href='https://github.com/mostafab/neg5.main') Github
+    #push

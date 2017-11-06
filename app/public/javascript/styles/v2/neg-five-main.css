@@ -524,7 +524,7 @@ th.nf-label {
 
 .vertical-center-container {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-    min-height: 100vh; /* These two lines are counted as one :-)       */
+    min-height: 70vh; /* These two lines are counted as one :-)       */
     display: flex;
     align-items: center;
 }
@@ -937,7 +937,11 @@ Switch
     margin: auto;
 }
 
-#tournament-list {
+#tournament-list, #main-drop {
     background: white;
     border: 1px solid #e0e0e0;
+}
+
+.footer > .container > a {
+    margin: 10px;
 }
