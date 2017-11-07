@@ -97,6 +97,15 @@ export default {
       .catch(err => reject(err));
   }),
 
+  findByName: name => new Promise((resolve, reject) => {
+    const params = {
+      searchName: `%${name}%`,
+    };
+    query(tournament.findByName, params, qm.any)
+      .then(tournaments => resolve(tournaments))
+      .catch(err => reject(err));
+  }),
+
   updateTournament: (id, newInfo) => new Promise((resolve, reject) => {
     const { name, location = null, date = null, questionSet = null,
       comments = null, hidden = false } = newInfo;

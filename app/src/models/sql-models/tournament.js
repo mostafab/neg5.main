@@ -58,6 +58,12 @@ export default {
             .catch(err => reject(err));
     }),
 
+    findByName: query => new Promise((resolve, reject) => {
+        db.findByName(query.trim().toLowerCase())
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+    }),
+
     update: (tournamentId, {location = null, name, date = null, questionSet = null, comments = null, hidden = false}) => {
         return new Promise((resolve, reject) => {
             let newTournamentInfo = {
