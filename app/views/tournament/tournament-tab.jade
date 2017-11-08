@@ -86,7 +86,8 @@ div(class="panel panel-default nf-panel" ng-controller='StatisticsCtrl as Statis
         div(class="col-md-12")                        
             .row
                 .col-md-6.col-sm-6.col-lg-6
-                    a(target="_blank" href='/t/{{::tournamentId}}/{{Tournament.slugify()}}/stats' class="stat-link nf-button nf-green btn no-border " data-stats-type='team') Go to Stats
+                    - var __STATS_URL__ = statsBaseUrl + '/t/{{::tournamentId}}/{{Tournament.slugify()}}/stats'
+                    a(target="_blank" href=__STATS_URL__ class="stat-link nf-button nf-green btn no-border " data-stats-type='team') Go to Stats
             br
             .row
                 .col-md-6.col-sm-6.col-lg-6

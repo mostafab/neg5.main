@@ -6,6 +6,8 @@ import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
 
+import log from './../helpers/log';
+
 import accountApi from '../routes/api/account';
 import tournamentApi from '../routes/api/tournament';
 import matchApi from '../routes/api/match';
@@ -19,14 +21,22 @@ import passport from './passport/passport';
 const indexRoute = require('../routes/index');
 
 const MORGAN_REQUEST_LOGGING_FORMAT = ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :currentUser';
+const STATS_BASE_URL_PREFIX = 'STATS_BASE_URL_';
+
+const getStatsBaseUrl = () => {
+  const env = configuration.NODE_ENV;
+  return configuration[STATS_BASE_URL_PREFIX + env];
+}
 
 export default () => {
   const app = express();
-  const { NODE_ENV } = configuration;
 
-  if (NODE_ENV === 'PROD') {
+  if (configuration.NODE_ENV === 'PROD') {
       app.locals.pretty = false;
   }
+
+  app.set('STATS_BASE_URL', getStatsBaseUrl());
+  log.INFO('STATS_BASE_URL : ' + app.get('STATS_BASE_URL'));
 
   morgan.token('currentUser', (req, res) => {
     return req.currentUser || 'no-user-attached';
