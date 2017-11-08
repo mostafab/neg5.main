@@ -24,7 +24,7 @@ const MORGAN_REQUEST_LOGGING_FORMAT = ':remote-addr - :remote-user [:date[clf]] 
 const STATS_BASE_URL_PREFIX = 'STATS_BASE_URL_';
 
 const getStatsBaseUrl = () => {
-  const env = configuration.NODE_ENV;
+  const env = configuration.OWN_NODE_ENV;
   return configuration[STATS_BASE_URL_PREFIX + env];
 }
 
