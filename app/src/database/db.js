@@ -5,7 +5,7 @@ import log from './../helpers/log';
 const { OWN_NODE_ENV } = configuration;
 const pgConnectionString = configuration[`PG_DB_URL_${OWN_NODE_ENV}`];
 
-log.INFO('Postgres connection string: ' + pgConnectionString);
+log.INFO('Postgres connection host: ' + pgConnectionString.split('@')[1]);
 
 const pgPromise = pgp();
 

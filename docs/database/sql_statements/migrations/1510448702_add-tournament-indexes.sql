@@ -1,0 +1,16 @@
+-- id
+CREATE INDEX tournament_id_idx ON tournament(id);
+
+-- create index on tournament_id for all tables referencing tournament_id
+CREATE INDEX user_collaborates_on_tournament_tournament_id_idx ON user_collaborates_on_tournament(tournament_id);
+CREATE INDEX tournament_tossup_values_tournament_id_idx ON tournament_tossup_values(tournament_id);
+CREATE INDEX tournament_team_in_division_tournament_id_idx ON tournament_team_in_division(tournament_id);
+CREATE INDEX tournament_team_tournament_id_idx ON tournament_team(tournament_id);
+CREATE INDEX tournament_player_tournament_id_idx ON tournament_player(tournament_id);
+CREATE INDEX tournament_phase_tournament_id_idx ON tournament_phase(tournament_id);
+CREATE INDEX tournament_match_tournament_id_idx ON tournament_match(tournament_id);
+CREATE INDEX tournament_division_tournament_id_idx ON tournament_division(tournament_id);
+CREATE INDEX team_plays_in_tournament_match_tournament_id_idx ON team_plays_in_tournament_match(tournament_id);
+CREATE INDEX player_plays_in_tournament_match_tournament_id_idx ON player_plays_in_tournament_match(tournament_id);
+CREATE INDEX player_match_tossup_tournament_id_idx ON player_match_tossup(tournament_id);
+CREATE INDEX match_is_part_of_phase_tournament_id_idx ON match_is_part_of_phase(tournament_id);

@@ -36,6 +36,8 @@
     "mdiff": "^0.4.0",
     "mongoose": "^4.2.5",
     "morgan": "^1.9.0",
+    "node-cache": "^4.1.1",
+    "object-sizeof": "^1.2.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
