@@ -1,4 +1,4 @@
-import { query, transaction, queryTypeMap as qm, txMap as tm } from '../database/db';
+import { readOnlyQuery, query, transaction, queryTypeMap as qm, txMap as tm } from '../database/db';
 import sql from '../database/sql';
 
 const { tournament, collaborator, division, phase, account } = sql;
@@ -99,9 +99,9 @@ export default {
 
   findByName: name => new Promise((resolve, reject) => {
     const params = {
-      searchName: `%${name}%`,
+      searchName: `${name}%`,
     };
-    query(tournament.findByName, params, qm.any)
+    readOnlyQuery(tournament.findByName, params, qm.any)
       .then(tournaments => resolve(tournaments))
       .catch(err => reject(err));
   }),

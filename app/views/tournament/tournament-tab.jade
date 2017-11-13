@@ -80,16 +80,10 @@ div(class="panel nf-panel")
 div(class="panel panel-default nf-panel" ng-controller='StatisticsCtrl as Statistics')
     .nf-panel-heading
         .row 
-            .col-lg-11.col-sm-11.col-md-11.col-xs-11
+            .col-lg-6.col-sm-6.col-md-6.col-xs-6
                 label.nf-label Stats
-    div(class="nf-panel-body panel-body tournament-panel")
-        div(class="col-md-12")                        
-            .row
-                .col-md-6.col-sm-6.col-lg-6
-                    - var __STATS_URL__ = statsBaseUrl + '/t/{{::tournamentId}}/{{Tournament.slugify()}}/stats'
-                    a(target="_blank" href=__STATS_URL__ class="stat-link nf-button nf-green btn no-border " data-stats-type='team') Go to Stats
-            br
-            .row
-                .col-md-6.col-sm-6.col-lg-6
-                    button.nf-button.nf-green.btn.btn-md.qbj-button(ng-click='Statistics.downloadQBJ()') QBJ
-                        i.fa.fa-download
+            .col-md-6.col-sm-6.col-lg-6
+                - var __NF_STATS_URL__ = statsBaseUrl + '/t/{{::tournamentId}}/{{Tournament.slugify()}}/stats'
+                a(target="_blank" href=__NF_STATS_URL__ class="stat-link nf-button button-outline button-outline-green btn" data-stats-type='team') Go to Stats
+                button.nf-button.button-outline.button-outline-green.btn.btn-md.qbj-button(ng-click='Statistics.downloadQBJ()') QBJ
+                    i.fa.fa-download

@@ -108,6 +108,9 @@ a.tournament-card:hover {
 .error-text {
     color: red !important;
 }
+input.error-text.ng-touched {
+    border: 1px solid red;
+}
 .bonus-part-toggle {
     border: 1px solid #26a69a;
     color: #26a69a; 
@@ -423,13 +426,22 @@ th.nf-label {
     border-bottom: 1px solid #e7e7e7;
 }
 
-.nf-panel-body {
-    /*background-color: #455a64; */
-    /*box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);*/
+.tab-pane .nf-breadcrumb {
+    margin-top: 10px;
 }
 
-.nf-panel-footer {
-    /*border:none;*/
+.nf-breadcrumb {
+    border: 1px solid #e0e0e0;
+}
+
+ol.nf-breadcrumb a {
+    letter-spacing: 1px;
+    color: #919496;
+    font-weight: 400;
+}
+
+ol.nf-breadcrumb a.active {
+    color: #5ab8f8;
 }
 
 .nf-select {

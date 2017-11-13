@@ -1,4 +1,4 @@
-import { transaction, txMap as tx } from '../database/db';
+import { readOnlyTransaction, txMap as tx } from '../database/db';
 import sql from '../database/sql';
 
 const statSQL = sql.statistics;
@@ -37,7 +37,7 @@ export default {
         queryType: tx.one,
       },
     );
-    transaction(queriesArray)
+    readOnlyTransaction(queriesArray)
         .then((result) => {
           const formattedResult = formatStatisticsResults(result);
           resolve(formattedResult);
@@ -69,7 +69,7 @@ export default {
         queryType: tx.any,
       },
     );
-    transaction(queriesArray)
+    readOnlyTransaction(queriesArray)
       .then((result) => {
         const formattedResult = formatStatisticsResults(result);
         if (phaseId) {
@@ -103,7 +103,7 @@ export default {
         queryType: tx.one,
       },
     );
-    transaction(queriesArray)
+    readOnlyTransaction(queriesArray)
         .then(result => resolve(formatStatisticsResults(result)))
         .catch(error => reject(error));
   }),
@@ -127,7 +127,7 @@ export default {
         queryType: tx.one,
       },
     );
-    transaction(queriesArray)
+    readOnlyTransaction(queriesArray)
         .then(result => resolve(formatStatisticsResults(result)))
         .catch(error => reject(error));
   }),
@@ -151,7 +151,7 @@ export default {
         queryType: tx.one,
       },
     );
-    transaction(queriesArray)
+    readOnlyTransaction(queriesArray)
         .then(result => resolve(formatStatisticsResults(result)))
         .catch(error => reject(error));
   }),

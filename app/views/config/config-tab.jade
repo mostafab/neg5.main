@@ -68,14 +68,14 @@
                                         .row.nf-margin(ng-repeat='phase in Phase.phases | orderBy: "name" track by phase.id')
                                             .col-lg-12.col-md-12.col-sm-12.col-xs-12(ng-show='!phase.editing')
                                                 .row
-                                                    .col-lg-10.col-md-10.col-sm-10.col-xs-10
+                                                    .col-lg-8.col-md-8.col-sm-8.col-xs-8
                                                         .input-group
                                                             span.form-control.nf-input.nf-gray.input-group-addon.phase-name(ng-show='!phase.editing' ng-bind='phase.name')
                                                             span.btn.input-group-addon.nf-button.button-outline.button-outline-blue.no-border(ng-click='phase.editing = true' ng-show='!phase.editing' title='Edit')
                                                                 i.fa.fa-pencil 
-                                                    .col-lg-2.col-md-2.col-sm-2.col-xs-2
+                                                    .col-lg-4.col-md-4.col-sm-4.col-xs-4
                                                         div.material-switch.pull-right(style='padding-left:10px')
-                                                            input(id='{{ phase.id }}' type="checkbox" name='{{ phase.id }}' ng-checked='phase.id === Phase.activePhase.id' ng-click='Phase.updateActivePhase(phase)' ng-disabled='Phase.phases.length === 1')
+                                                            input(id='{{ phase.id }}' type="checkbox" name='{{ phase.id }}' ng-checked='phase.id === Phase.activePhase.id' ng-click='Phase.updateActivePhase(phase)' ng-disabled='Phase.phases.length === 1 && Phase.activePhase.id')
                                                             label(for="{{ phase.id }}" class="nf-green")
                                             .col-lg-12.col-md-12.col-sm-12.col-xs-12(ng-show='phase.editing')
                                                 .row
