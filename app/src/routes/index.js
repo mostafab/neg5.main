@@ -41,12 +41,11 @@ module.exports = app => {
     res.render("tournament/tournament-view", { statsBaseUrl })
   })
 
-  app.get("/t/:tid/:slug", hasToken, accessToTournament, (req, res, next) => {
-    res.render("tournament/tournament-view", { statsBaseUrl })
+  app.get('/t/:tid/stats/:page(team|player|teamfull|playerfull|roundreport)/', (req, res) => {
+    res.redirect(`/t/${req.params.tid}/stats`);
   });
 
-  app.get('/t/:tid/stats/:page(team|player|teamfull|playerfull|roundreport)/', (req, res) => {
-    const url = req.url;
-    res.redirect(`https://v1.neg5.org${url}`);
+  app.get("/t/:tid/:slug", hasToken, accessToTournament, (req, res, next) => {
+    res.render("tournament/tournament-view", { statsBaseUrl })
   });
 };
