@@ -70,7 +70,7 @@ export default class MatchController {
     const toastConfig = {
       message: 'Loading match',
     };
-    // this.$scope.toast(toastConfig);
+    this.$scope.toast(toastConfig);
     this.MatchService.getGameById(this.$scope.tournamentId, gameId)
       .then(() => {
         toastConfig.message = 'Loaded match';
@@ -122,6 +122,7 @@ export default class MatchController {
       .then(() => {
         toastConfig.success = true;
         toastConfig.message = 'Deleted match';
+        $(DELETE_MATCH_MODAL).modal('hide');
       })
       .catch(() => {
         toastConfig.success = false;
@@ -131,7 +132,6 @@ export default class MatchController {
         toastConfig.hideAfter = true;
         this.$scope.toast(toastConfig);
         this.deletingMatch = false;
-        $(DELETE_MATCH_MODAL).modal('hide');
       });
   }
 

@@ -976,6 +976,17 @@ Switch
     margin-left: 5px;
 }
 
+.nf-panel-body.tournament-card {
+    font-size: 1.3em;
+}
+.nf-panel.card-wrapper:hover {
+   border: 1px solid #5ab8f8; 
+}
+
+.team-form .nf-label {
+    border: none;
+}
+
 .nf-button:disabled {
     cursor: not-allowed !important;
 }

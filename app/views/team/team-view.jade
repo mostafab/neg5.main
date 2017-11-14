@@ -8,17 +8,17 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                 .col-lg-8.col-md-8.col-sm-8.center
                     h5.nf-label(style='margin:1.6%') {{Team.currentTeam.name}}
                 .col-lg-2.col-md-2.col-sm-2
-                    button.nf-button.nf-red.btn-md.btn.right(title='Delete {{Team.currentTeam.name}}. Will fail if this team has matches played.' ng-if='Team.currentTeam.games === 0 && tournamentContext.admin' ng-click='Team.removeCurrentTeam()')
+                    button.nf-button.nf-red.btn-md.btn.right(ng-if='Team.currentTeam.games === 0 && tournamentContext.admin'  data-toggle='modal' data-target='#deleteTeamModal')
                         i.fa.fa-trash
 
         .panel-body.nf-panel-body.nf-white(style='padding:0px')
             .col-lg-12(style='padding:20px')
-                form(novalidate name='Team.currentTeamForm')
+                form.team-form(novalidate name='Team.currentTeamForm')
                     .col-lg-12.nf-margin
                         .row
                             .col-lg-3.col-md-4.col-sm-4
                                 .input-group.nf-margin
-                                    span.input-group-addon.nf-button.no-border.nf-label Team Name
+                                    span.input-group-addon.no-border.nf-label Team Name
                             .col-lg-9.col-md-8.col-sm-8
                                 .col-lg-12
                                     .input-group.nf-margin
@@ -36,7 +36,7 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                         .row
                             .col-lg-3.col-md-4.col-sm-4
                                 .input-group.nf-margin
-                                    span.input-group-addon.nf-button.no-border.nf-label Divisions
+                                    span.input-group-addon.no-border.nf-label Divisions
                             .col-lg-9.col-md-8.col-sm-8
                                 .col-lg-12(ng-repeat='phase in Team.phases')
                                     .input-group.nf-margin
@@ -50,7 +50,7 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                         .row
                             .col-lg-3.col-md-4.col-sm-4
                                 .input-group.nf-margin
-                                    span.input-group-addon.nf-button.no-border.nf-label Players ({{Team.currentTeam.players.length}})
+                                    span.input-group-addon.no-border.nf-label Players ({{Team.currentTeam.players.length}})
                             .col-lg-9.col-md-8.col-sm-8
                                 .col-lg-12(ng-repeat='player in Team.currentTeam.players')
                                     .row
@@ -75,7 +75,7 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                         .row
                             .col-lg-3.col-md-4.col-sm-4
                                 .input-group.nf-margin
-                                    span.input-group-addon.nf-button.no-border.nf-label New Player
+                                    span.input-group-addon.no-border.nf-label New Player
                             .col-lg-9.col-md-8.col-sm-8
                                 .col-lg-12
                                     .input-group.nf-margin
@@ -85,3 +85,19 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
 
         .panel-footer.nf-panel-footer.nf-white
             h5.nf-label Added by: {{Team.currentTeam.addedBy}}
+
+div#deleteTeamModal.modal.nf-modal
+    .modal-dialog
+        .modal-content
+            .modal-header
+                button.close(type='button' data-dismiss='modal' aria-hidden='true') &times;
+                h4.modal-title Delete Team
+            .modal-body
+                h5.nf-modal-message
+                    | Are you sure you want to delete {{Team.currentTeam.name}} from the tournament?
+                    | You will not be able to recover it after deletion.
+            .modal-footer
+                button.nf-button.nf-gray.btn.btn-md(type='button' data-dismiss='modal' ng-disabled='Team.deletingTeam') Cancel
+                button.nf-button.btn.nf-red(type='button' ng-disabled='Team.deletingTeam' ng-click='Team.removeCurrentTeam()') Yes, delete
+                span.modal-spinner(ng-show='Team.deletingTeam')
+                    i.fa.fa-circle-o-notch.fa-spin.fa-2x.fa-fw

@@ -16,7 +16,7 @@ module.exports = app => {
       if (req.cookies.nfToken) {
           res.redirect('/tournaments');
       } else {
-          res.render("index/index", {minifyJs});
+          res.render("index/index", { statsBaseUrl });
       }
   });
 
