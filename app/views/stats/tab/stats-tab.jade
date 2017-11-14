@@ -1,10 +1,13 @@
 div(class="panel panel-default nf-panel")
-    .nf-panel-heading.nf-blue Stats
-    div(class="nf-panel-body panel-body nf-white tournament-panel")
+    .nf-panel-heading
+        .row 
+            .col-lg-11.col-sm-11.col-md-11.col-xs-11
+                label.nf-label Stats
+    div(class="nf-panel-body panel-body tournament-panel")
         div(class="col-md-12")                        
             .row
                 .col-md-6.col-sm-6.col-lg-6
-                    a(target="_blank" href='/t/{{::tournamentId}}/stats' class="stat-link nf-button nf-green btn no-border " data-stats-type='team') Go to Stats
+                    a(target="_blank" href='https://stats.neg5.org/t/{{::tournamentId}}/{{Tournament.slugify()}}/stats' class="stat-link nf-button nf-green btn no-border " data-stats-type='team') Go to Stats
             br
             .row
                 .col-md-6.col-sm-6.col-lg-6

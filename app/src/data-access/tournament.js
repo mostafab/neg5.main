@@ -1,4 +1,4 @@
-import { query, transaction, queryTypeMap as qm, txMap as tm } from '../database/db';
+import { readOnlyQuery, query, transaction, queryTypeMap as qm, txMap as tm } from '../database/db';
 import sql from '../database/sql';
 
 const { tournament, collaborator, division, phase, account } = sql;
@@ -77,6 +77,34 @@ export default {
         }))
         .catch(error => reject(error));
     }),
+
+  findRecent: daysSince => new Promise((resolve, reject) => {
+    const params = {
+      maxDays: daysSince,
+    };
+    query(tournament.findByXDays, params, qm.any)
+      .then(tournaments => resolve(tournaments))
+      .catch(err => reject(err));
+  }),
+
+  findBetweenDates: (startDate, endDate) => new Promise((resolve, reject) => {
+    const params = {
+      startDate,
+      endDate,
+    };
+    query(tournament.findBetweenDates, params, qm.any)
+      .then(tournaments => resolve(tournaments))
+      .catch(err => reject(err));
+  }),
+
+  findByName: name => new Promise((resolve, reject) => {
+    const params = {
+      searchName: `${name}%`,
+    };
+    readOnlyQuery(tournament.findByName, params, qm.any)
+      .then(tournaments => resolve(tournaments))
+      .catch(err => reject(err));
+  }),
 
   updateTournament: (id, newInfo) => new Promise((resolve, reject) => {
     const { name, location = null, date = null, questionSet = null,

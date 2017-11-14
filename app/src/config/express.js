@@ -4,6 +4,9 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import compression from 'compression';
+import morgan from 'morgan';
+
+import log from './../helpers/log';
 
 import accountApi from '../routes/api/account';
 import tournamentApi from '../routes/api/tournament';
@@ -17,18 +20,40 @@ import passport from './passport/passport';
 
 const indexRoute = require('../routes/index');
 
+const MORGAN_REQUEST_LOGGING_FORMAT = ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :currentUser';
+const STATS_BASE_URL_PREFIX = 'STATS_BASE_URL_';
+
+const getStatsBaseUrl = () => {
+  const env = configuration.OWN_NODE_ENV;
+  return configuration[STATS_BASE_URL_PREFIX + env];
+}
+
 export default () => {
   const app = express();
-  const { minifyJs = false, env = 'development' } = configuration;
 
-  app.set('minifyJs', minifyJs);
-  app.set('configEnv', env);
-  app.locals.pretty = false;
+  if (configuration.OWN_NODE_ENV === 'PROD') {
+      app.locals.pretty = false;
+  }
 
+  app.set('STATS_BASE_URL', getStatsBaseUrl());
+  log.INFO('STATS_BASE_URL : ' + app.get('STATS_BASE_URL'));
+
+  morgan.token('currentUser', (req, res) => {
+    return req.currentUser || 'no-user-attached';
+  });
+
+  if (process.env.OWN_NODE_ENV !== 'PROD') {
+    app.use(morgan(MORGAN_REQUEST_LOGGING_FORMAT));
+  }
   app.use(bodyParser.urlencoded({
     extended: true,
   }));
-  app.use(helmet());
+  // app.use(helmet());
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
   app.use(cookieParser());
   app.use(bodyParser.json());
   app.use(compression());

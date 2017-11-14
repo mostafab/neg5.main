@@ -1,12 +1,15 @@
 div(class="panel panel-default nf-panel")
-    .nf-panel-heading.nf-blue Add a Team
-    .panel-body.nf-panel-body.nf-white
+    .nf-panel-heading
+        .row 
+            .col-lg-11.col-sm-11.col-md-11.col-xs-11
+                label.nf-label Add a Team
+    .panel-body.nf-panel-body
 
         div(class="col-md-12 col-sm-12")
-            form(novalidate name='Team.newTeamForm' ng-submit='Team.addTeam()')
+            form(novalidate name='Team.newTeamForm' ng-submit='Team.addTeam()' ng-class="{'disabled': Team.savingNewTeam}")
                 .row
                     .col-lg-4.col-md-4.col-sm-4.col-xs-4
-                        label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Name
+                        label.label.nf-label.btn-block(style='float:right') Name
                     .col-lg-8.col-md-8.col-sm-8.col-xs-8
                         input(
                             type="text",
@@ -20,16 +23,12 @@ div(class="panel panel-default nf-panel")
 
                 .row
                     .col-lg-4.col-md-4.col-sm-4.hidden-xs
-                        label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Divisions
+                        label.label.nf-label.btn-block(style='float:right') Divisions
                     .col-lg-8.col-md-8.col-sm-8.col-xs-12
                         .input-group.nf-margin(ng-repeat='phase in Team.phases')
-                            span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle.nf-blue(data-toggle='dropdown' title='Pick a division for {{phase.name}}') {{phase.name}}
-                                i.fa.fa-caret-down
-                            div.form-control.nf-gray.nf-input(ng-bind='Team.newTeam.divisions[phase.id] || "None"')
-                            ul.dropdown-menu.nf-dropdown(aria-role='menu')
-                                li
-                                    a(ng-show='Team.newTeam.divisions[phase.id]' ng-click='Team.newTeam.divisions[phase.id] = null') Reset
-                                    a(ng-repeat='division in Team.divisions' ng-if='division.phaseId === phase.id' ng-click='Team.newTeam.divisions[phase.id] = division' ng-bind='division.name')
+                            span.input-group-addon.nf-button.no-border.point-label.nf-blue(title='Pick a division for {{phase.name}}') {{phase.name}}
+                            select.form-control.nf-input(ng-model='Team.newTeam.divisions[phase.id]' ng-options='div as div.name for div in Team.divisions | divisionPhase:phase.id | orderBy:"name"')
+                                option(value='') Select a division
 
                 br
 
@@ -37,15 +36,15 @@ div(class="panel panel-default nf-panel")
                     .col-lg-4.col-md-4.col-sm-4
                         .row
                             .col-lg-8.col-md-8.col-sm-8.hidden-xs
-                                label.label.nf-dark-blue.nf-label.btn-block(style='float:right') Players
+                                label.label.nf-label.btn-block(style='float:right') Players
                             .col-lg-4.col-md-4.col-sm-4.hidden-xs
-                                span(role="button" class="btn btn-sm nf-blue nf-button btn-block" ng-click='Team.addPlayer()' style='margin:0px')
+                                span(role="button" class="btn btn-sm button-outline button-outline-blue nf-button btn-block" ng-click='Team.addPlayer()' style='margin:0px')
                                     i.fa.fa-plus
                     .col-lg-8.col-md-8.col-sm-8
                         div(ng-repeat='player in Team.newTeam.players' style='margin:3px')
                             div(class='input-group input-md')
                                 input(type='text' class='form-control nf-input input-md' autocomplete='off' placeholder='Player {{$index + 1}}' ng-model='Team.newTeam.players[$index].name')
-                                span(role='button' class='input-group-addon nf-red btn btn-md nf-button' ng-click='Team.removePlayerSlot($index)')
+                                span(role='button' class='input-group-addon button-outline button-outline-red btn btn-md nf-button' ng-click='Team.removePlayerSlot($index)')
                                     i(class='fa fa-times')
                     .hidden-lg.hidden-md.hidden-sm.col-xs-4
                         br

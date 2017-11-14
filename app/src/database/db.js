@@ -1,12 +1,18 @@
 import pgp from 'pg-promise';
 import configuration from '../config/configuration';
+import log from './../helpers/log';
 
-const { env, databaseConnections } = configuration;
-const connectionString = databaseConnections.postgres[env];
+const { OWN_NODE_ENV } = configuration;
+const pgConnectionString = configuration[`PG_DB_URL_${OWN_NODE_ENV}`];
+const pgConnectionStringReadOnly = configuration[`PG_DB_READ_ONLY_${OWN_NODE_ENV}`];
+
+log.INFO('Postgres connection host: ' + pgConnectionString.split('@')[1]);
+log.INFO('Readonly postgres connection host: ' + pgConnectionStringReadOnly.split('@')[1]);
 
 const pgPromise = pgp();
 
-const db = pgPromise(connectionString);
+const readWriteDb = pgPromise(pgConnectionString);
+const readOnlyDb = pgPromise(pgConnectionStringReadOnly);
 
 export const queryTypeMap = {
   one: pgp.queryResult.one,
@@ -22,9 +28,36 @@ export const txMap = {
   any: 'any',
 };
 
+export const readOnlyQuery = (text, params, queryType = pgp.queryResult.any) =>
+  new Promise((resolve, reject) => {
+    readOnlyDb.query(text, params, queryType)
+        .then(data => resolve(data))
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+  });
+
+export const readOnlyTransaction = queries => new Promise((resolve, reject) => {
+  readOnlyDb.tx((t) => {
+    const formattedQueries = [];
+    queries.forEach(({ text, params, queryType }) => {
+      formattedQueries.push(
+          t[queryType](text, params)
+      );
+    });
+    return t.batch(formattedQueries);
+  })
+  .then(data => resolve(data))
+  .catch((error) => {
+    console.log('ERROR: ', error.message || error);
+    reject(error);
+  });
+});
+
 export const query = (text, params, queryType = pgp.queryResult.any) =>
   new Promise((resolve, reject) => {
-    db.query(text, params, queryType)
+    readWriteDb.query(text, params, queryType)
         .then(data => resolve(data))
         .catch((error) => {
           console.log(error);
@@ -33,7 +66,7 @@ export const query = (text, params, queryType = pgp.queryResult.any) =>
   });
 
 export const transaction = queries => new Promise((resolve, reject) => {
-  db.tx((t) => {
+  readWriteDb.tx((t) => {
     const formattedQueries = [];
     queries.forEach(({ text, params, queryType }) => {
       formattedQueries.push(

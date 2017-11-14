@@ -35,3 +35,12 @@ data/
 
 #Karma output
 karma_html/
+
+# Build files
+app/build
+app/public/javascript/es5
+app/public/javascript/bundle.min.js
+app/public/css/min/bundle.css
+
+# Environment variables
+.env

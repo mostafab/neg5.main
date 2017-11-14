@@ -12,7 +12,7 @@ FROM
             FROM 
             tournament_team T LEFT JOIN tournament_phase P
             ON 1 = 1
-            WHERE T.tournament_id = $1
+            WHERE T.tournament_id = $1 AND P.tournament_id = $1
         ) AS tp_cross
 
         LEFT JOIN 
@@ -36,7 +36,7 @@ FROM
 INNER JOIN
 
 (
-    SELECT T.id as team_id, 
+    SELECT T.id as team_id, T.tournament_id,
         array_agg(json_build_object('player_name', P.name, 'player_id', P.id)) FILTER (WHERE P.name IS NOT NULL) as players
         
     FROM
@@ -51,11 +51,11 @@ INNER JOIN
     
     WHERE T.tournament_id = $1
     
-    GROUP BY T.id
+    GROUP BY T.id, T.tournament_id
     
 ) as team_players
 
-ON team_phases.team_id = team_players.team_id
+ON team_phases.team_id = team_players.team_id AND team_phases.tournament_id = team_players.tournament_id
 
 
 

@@ -16,6 +16,27 @@ export default (app) => {
             .then(result => res.json({ result, success: true }))
             .catch(error => res.status(500).send({ error }));
       });
+  
+  app.route('/api/t/findRecent')
+      .get((req, res) => {
+          Tournament.findRecent(req.query.days)
+            .then(result => res.json({ result, success: true }))
+            .catch(error => res.status(500).send({ error: error.message }));
+      });
+
+  app.route('/api/t/byDateRange')
+      .get((req, res) => {
+          Tournament.findBetweenDates(req.query.startDate, req.query.endDate)
+            .then(result => res.json({ result, success: true }))
+            .catch(error => res.status(500).send({ error: error.message }));
+      });
+
+  app.route('/api/t/byName')
+      .get((req, res) => {
+        Tournament.findByName(req.query.searchQuery)
+            .then(result => res.json({ result, success: true }))
+            .catch(error => res.status(500).send({ error: error.message }));
+      })
 
   app.route('/api/t/:tid')
       .get(hasToken, accessToTournament, (req, res) => {
@@ -28,6 +49,13 @@ export default (app) => {
             .then(result => res.json({ result, success: true }))
             .catch(error => res.status(500).send({ error, success: false }));
       });
+
+  app.route('/api/t/:tid/info')
+    .get((req, res) => {
+        Tournament.findById(req.params.tid, null)
+            .then(result => res.json({ result: result.tournament, success: true }))
+            .catch(error => res.send({ error, success: false }));
+    })    
 
   app.route('/api/t/:tid/rules')
       .put(hasToken, directorAccessToTournament, (req, res) => {
@@ -61,6 +89,11 @@ export default (app) => {
       })
 
   app.route('/api/t/:tid/pointscheme')
+      .get((req, res) => {
+          Tournament.findById(req.params.tid)
+            .then(result => res.json({ result: result.tournament.tossup_point_scheme, success: true }))
+            .catch(err => res.status(500).send({ error: err, success: false}));
+      })
       .post(hasToken, directorAccessToTournament, (req, res) => {
           Tournament.addTossupPointValue(req.params.tid, req.body)
               .then(result => res.json({result, success: true}))

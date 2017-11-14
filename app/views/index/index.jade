@@ -3,23 +3,33 @@ extends ../layout
 block titleContent
     title Neg 5 | Quizbowl for the Cloud
 
-
-block extrastylesheets
-    //- link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
-    
-
 block content
 
-    nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-dark-blue.nf-shadow(role='navigation')
+    nav.navbar.navbar-default.top-nav-bar(role='navigation')
         .navbar-header
-            p.navbar-brand Welcome to Neg 5!
-        div(class="collapse navbar-collapse")
+            p.navbar-brand(style='color: #2B3E50') Welcome to Neg 5!
+            button.navbar-toggle(type='button' data-toggle='collapse' data-target='#main-drop')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar           
+        div#main-drop(class="collapse navbar-collapse")
             ul(class="nav navbar-nav")
-                li(class="list-element")
-                    a(style='color:white;' href='https://github.com/mostafab/neg5')
+                li(class="list-element center")
+                    a(href='https://github.com/mostafab/neg5')
                         i.fa.fa-github.fa-2x
+                li.list-element.center
+                    a(href=statsBaseUrl) Stats
+                li.list-element.center
+                    a
+                        form(action='https://www.paypal.com/cgi-bin/webscr', method='post', target='_top')
+                            input(type='hidden', name='cmd', value='_s-xclick')
+                            input(type='hidden', name='hosted_button_id', value='RTWTDFYUMD258')
+                            input(type='image', src='https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif', border='0', name='submit', alt='PayPal - The safer, easier way to pay online!')
+                            img(alt='', border='0', src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif', width='1', height='1')
 
-    div(class="vertical-center-container" style='background-color:transparent;overflow:hidden;' ng-app='IndexApp')
+
+    div(class="vertical-center-container login-container" ng-app='IndexApp')
         div.container(ng-controller='IndexController as Index')
 
             div(style='text-align:center')
@@ -27,7 +37,6 @@ block content
             
             .tab-content
                 div
-                    
                         .row
                             .col-lg-12.col-md-12.col-sm-12(ng-show='!Index.loggingIn' ng-cloak)
                                 .panel-body.nf-panel-body
@@ -68,7 +77,7 @@ block content
                                                     span.input-group-addon.btn.btn-md.nf-button(ng-class='{"nf-red" : Index.newUser.passwordConfirm !== Index.newUser.password, "nf-green" : Index.newUser.passwordConfirm === Index.newUser.password}')
                                                         
                                             .row
-                                                button(type="submit" class="btn btn-md nf-button nf-green")
+                                                button(type="submit" class="btn btn-md nf-button button-outline button-outline-green")
                                                     | Register
                                             
                                             br
@@ -94,7 +103,7 @@ block content
                                                 span(ng-class='{"nf-red" : loginForm.password.$invalid && !loginForm.password.$pristine, "nf-green" : loginForm.password.$valid}' class="input-group-addon btn-md nf-button")
                                                     //- i.fa.fa-lock
                                         .row
-                                            button.inline(type="submit" class="btn btn-md nf-button nf-green")
+                                            button.inline(type="submit" class="btn btn-md nf-button button-outline button-outline-green")
                                                 | Login
                                         
                                             // p.nf-panel-heading.inline Or use
@@ -126,6 +135,59 @@ block content
                 script.
                     (adsbygoogle = window.adsbygoogle || []).push({});
 
-block scripts
-    if minifyJs === false
-        script(src="/javascript/es5/index.es5.js")
+    include ./about.jade
+
+    #footer
+        .container
+            .row.foot-header-container
+                .col-sm-12.col-lg-12.col-md-12.col-xs-12.center.nf-margin
+                    .foot-header.summary
+                        | About
+                    .sub-summary
+                        | Neg 5 is a web application written by Mostafa Bhuiyan, a former quizbowler at Norcross High School and
+                        | Georgia Tech, to help other quiz bowl tournament moderators run their events in a
+                        | distributed, collaborative manner and reduce the downtime between matches and stats availability.
+                        | A potentially unlimited number of staffers are able to work together
+                        | to enter team information and game information all in one application without the hassle and time sink of only one stats keeper.
+
+                .col-sm-12.col-lg-12.col-md-12.col-xs-12.center.nf-margin
+                    .foot-header
+                        | Future
+                    .sub-summary
+                        p
+                            | I envision Neg 5 to one day be a one-stop shop for all things quizbowl tournament management. This includes not only tournament match entry and scorekeeping, but also
+                            | team registration, schedule generation, question packet integration, and anything else that goes into making sure tournament day runs smoothly. Since a large part of Neg 5 is automatic scoresheets,
+                            | the application also has the potential to analyze tossup/bonus conversion and help packet set writers get better data on their questions and tell if they are hitting their
+                            | target difficulty.
+
+                .col-sm-12.col-lg-12.col-md-12.col-xs-12.center.nf-margin
+                    .foot-header
+                        | Tech Stack
+                    .sub-summary
+                        p
+                            | Neg 5 is an Express-based Node.js web application. It uses AngularJS + Bootstrap on the front-end and uses PostgreSQL for its data store.
+                            | The stats website is a React + Redux based application.
+                .col-sm-12.col-lg-12.col-md-12.col-xs-12.center.nf-margin
+                    .foot-header
+                        | Contributing
+                    .sub-summary
+                        p
+                            | Neg 5 is and always will be a 100% open-source project available on Github, where you'll find both the main repository and the repository for the stats site.
+                            | I am always looking for help, so if this peaks your interests, please see the contributing guide on Github.
+                        
+
+            .row
+                #bottom-footer
+                    .row
+                        .col-md-12.center
+                            a(href='http://hsquizbowl.org/forums/viewtopic.php?f=123&t=18220') QB Forum Thread
+                            a(href=statsBaseUrl) Stats
+                            a(href='https://github.com/mostafab/neg5.main') Github
+                        .col-md-12.center(style='margin-top:15px')
+                            form(action='https://www.paypal.com/cgi-bin/webscr', method='post', target='_top')
+                                input(type='hidden', name='cmd', value='_s-xclick')
+                                input(type='hidden', name='hosted_button_id', value='RTWTDFYUMD258')
+                                input(type='image', src='https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif', border='0', name='submit', alt='PayPal - The safer, easier way to pay online!')
+                                img(alt='', border='0', src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif', width='1', height='1')
+
+    #push

@@ -7,7 +7,7 @@ block content
             
             title(ng-bind='PSControl.tournamentName.name + " " + (PSControl.phase.name || "All") + " Stats | Neg 5"')
                 
-            nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.nf-blue.nf-shadow(role='navigation')
+            nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top(role='navigation')
                     .navbar-header
                         button.navbar-toggle(type='button' data-toggle='collapse' data-target='#tournament-list')
                             span.sr-only Toggle navigation
@@ -33,7 +33,7 @@ block content
                 div(style='padding:50px;padding-bottom:0;padding-top:0')
                     div(class="panel-body")
                         .input-group
-                            select(class='form-control' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase' ng-change='PSControl.refreshStats()')
+                            select(class='form-control' ng-options='phase as phase.name for phase in PSControl.phases' ng-model='PSControl.phase')
                                 option(value='') All Games
                             span(class='input-group-addon nf-blue nf-button btn' title='Refresh teams' ng-click='PSControl.refreshStats()')
                                 i(class='fa fa-refresh')              
@@ -62,14 +62,3 @@ block content
                         .nf-toast-content.btn(style='float:left' ng-class="{'nf-red': PSControl.toastMessage.success === false, 'nf-green': PSControl.toastMessage.success === true, 'nf-orange' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
                             i.fa(ng-class="{'fa-check': PSControl.toastMessage.success === true, 'fa-times': PSControl.toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : PSControl.toastMessage.success !== true && PSControl.toastMessage.success !== false}")
                             | {{PSControl.toastMessage.message}}
-                        
-block scripts
-    if minifyJs === false
-        script(type='text/javascript' src='/javascript/es5/app.es5.js')
-        script(type='text/javascript' src='/javascript/es5/services/cookies.service.es5.js')
-        script(type='text/javascript' src='/javascript/es5/services/tournament.service.es5.js')
-        script(type='text/javascript' src='/javascript/es5/services/phase.service.es5.js')
-        script(type='text/javascript' src='/javascript/es5/services/division.service.es5.js')
-        script(type='text/javascript' src='/javascript/es5/stats.es5.js')
-        script(type='text/javascript' src='/javascript/es5/services/stats/stats.service.es5.js')
-        script(type='text/javascript' src='/javascript/es5/directives/keep-name-scroll.directive.es5.js')

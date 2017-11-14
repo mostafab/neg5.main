@@ -30,9 +30,9 @@ export default {
         })
     },
 
-    findById: (tournamentId, currentUser) => {
+    findById: (tournamentId, currentUser = null) => {
         return new Promise((resolve, reject) => {
-            db.findTournamentById(tournamentId, currentUser)
+            db.findTournamentById(tournamentId, currentUser, currentUser !== null)
                 .then(result => {
                     result.tournament.tossup_point_scheme = result.tournament.tossup_point_scheme.filter(tv => {
                         return tv.type !== null;
@@ -44,6 +44,25 @@ export default {
                 .catch(error => reject(error));
         })
     },
+
+    // Default to a month
+    findRecent: (daysSince = 30) => new Promise((resolve, reject) => {
+        db.findRecent(daysSince)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+    }),
+
+    findBetweenDates: (startDate, endDate) => new Promise((resolve, reject) => {
+        db.findBetweenDates(startDate, endDate)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+    }),
+
+    findByName: query => new Promise((resolve, reject) => {
+        db.findByName(query.trim().toLowerCase())
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+    }),
 
     update: (tournamentId, {location = null, name, date = null, questionSet = null, comments = null, hidden = false}) => {
         return new Promise((resolve, reject) => {
