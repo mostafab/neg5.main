@@ -969,6 +969,16 @@ Switch
     vertical-align: middle;
     margin-right: -4px;
 }
+
+.modal .modal-spinner {
+    position: relative;
+    top: 8px;
+    margin-left: 5px;
+}
+
+.nf-button:disabled {
+    cursor: not-allowed !important;
+}
   
 .modal.nf-modal .modal-dialog {
     display: inline-block;

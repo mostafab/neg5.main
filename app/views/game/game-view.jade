@@ -224,7 +224,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
     .nf-panel-footer.panel-footer.nf-gray.no-border
         h5(ng-bind='"Added by: " + Game.loadedGame.addedBy')
 
-div#deleteMatchModal.modal.fade.nf-modal
+div#deleteMatchModal.modal.nf-modal
     .modal-dialog
         .modal-content
             .modal-header
@@ -235,5 +235,7 @@ div#deleteMatchModal.modal.fade.nf-modal
                     | Are you sure you want to delete this match between {{Game.loadedGame.teams[0].teamInfo.name}} and {{Game.loadedGame.teams[1].teamInfo.name}}?
                     | You will not be able to recover it after deletion.
             .modal-footer
-                button.nf-button.nf-gray.btn.btn-md(type='button' data-dismiss='modal') Cancel
-                button.nf-button.btn.nf-red(type='button') Yes, delete
+                button.nf-button.nf-gray.btn.btn-md(type='button' data-dismiss='modal' ng-disabled='Game.deletingMatch') Cancel
+                button.nf-button.btn.nf-red(type='button' ng-click='Game.deleteGame()' ng-disabled='Game.deletingMatch') Yes, delete
+                span.modal-spinner(ng-show='Game.deletingMatch')
+                    i.fa.fa-circle-o-notch.fa-spin.fa-2x.fa-fw
