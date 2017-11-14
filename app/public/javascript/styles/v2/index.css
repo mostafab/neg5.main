@@ -168,3 +168,20 @@ span {
       font-size: auto;
   }
   
+  .login-container {
+      background: transparent;
+      overflow: hidden;
+      position: relative;
+  }
+
+  @media (max-width: 768px) {
+      .login-container {
+        left: 35px;
+      }
+  }
+
+  @media (min-width: 768px) {
+      .login-container {
+          right: 100px;
+      }
+  }

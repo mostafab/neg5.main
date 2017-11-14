@@ -3,11 +3,6 @@ extends ../layout
 block titleContent
     title Neg 5 | Quizbowl for the Cloud
 
-
-block extrastylesheets
-    //- link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
-    
-
 block content
 
     nav.navbar.navbar-default.top-nav-bar(role='navigation')
@@ -25,8 +20,16 @@ block content
                         i.fa.fa-github.fa-2x
                 li.list-element.center
                     a(href=statsBaseUrl) Stats
+                li.list-element.center
+                    a
+                        form(action='https://www.paypal.com/cgi-bin/webscr', method='post', target='_top')
+                            input(type='hidden', name='cmd', value='_s-xclick')
+                            input(type='hidden', name='hosted_button_id', value='RTWTDFYUMD258')
+                            input(type='image', src='https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif', border='0', name='submit', alt='PayPal - The safer, easier way to pay online!')
+                            img(alt='', border='0', src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif', width='1', height='1')
 
-    div(class="vertical-center-container" style='background-color:transparent;overflow:hidden;' ng-app='IndexApp')
+
+    div(class="vertical-center-container login-container" ng-app='IndexApp')
         div.container(ng-controller='IndexController as Index')
 
             div(style='text-align:center')
@@ -34,7 +37,6 @@ block content
             
             .tab-content
                 div
-                    
                         .row
                             .col-lg-12.col-md-12.col-sm-12(ng-show='!Index.loggingIn' ng-cloak)
                                 .panel-body.nf-panel-body
@@ -181,4 +183,11 @@ block content
                             a(href='http://hsquizbowl.org/forums/viewtopic.php?f=123&t=18220') QB Forum Thread
                             a(href=statsBaseUrl) Stats
                             a(href='https://github.com/mostafab/neg5.main') Github
+                        .col-md-12.center(style='margin-top:15px')
+                            form(action='https://www.paypal.com/cgi-bin/webscr', method='post', target='_top')
+                                input(type='hidden', name='cmd', value='_s-xclick')
+                                input(type='hidden', name='hosted_button_id', value='RTWTDFYUMD258')
+                                input(type='image', src='https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif', border='0', name='submit', alt='PayPal - The safer, easier way to pay online!')
+                                img(alt='', border='0', src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif', width='1', height='1')
+
     #push

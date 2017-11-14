@@ -31,7 +31,7 @@ const getStatsBaseUrl = () => {
 export default () => {
   const app = express();
 
-  if (configuration.NODE_ENV === 'PROD') {
+  if (configuration.OWN_NODE_ENV === 'PROD') {
       app.locals.pretty = false;
   }
 
@@ -42,7 +42,9 @@ export default () => {
     return req.currentUser || 'no-user-attached';
   });
 
-  app.use(morgan(MORGAN_REQUEST_LOGGING_FORMAT));
+  if (process.env.OWN_NODE_ENV !== 'PROD') {
+    app.use(morgan(MORGAN_REQUEST_LOGGING_FORMAT));
+  }
   app.use(bodyParser.urlencoded({
     extended: true,
   }));
@@ -63,7 +65,7 @@ export default () => {
   app.use(express.static(path.join(__dirname, '../../public')));
 
   app.use((request, response, next) => {
-    if (process.env.NODE_ENV === 'PROD') {
+    if (process.env.NODE_ENV === 'production') {
       if (request.headers['x-forwarded-proto'] !== 'https') {
         return response.redirect(`https://${request.headers.host}${request.url}`);
       }
