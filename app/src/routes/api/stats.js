@@ -12,7 +12,7 @@ import PlayerFullStandingsHtml from './../../html-stats/player-full';
 import RoundReportHtml from './../../html-stats/round-report';
 
 import { checkStatsCache, addStatsToCache } from './../../cache/middleware/check-stats-cache';
-import statsConstants from './../../stats-cache/constants';
+import statsConstants from './../../cache/constants';
 
 export default (app) => {
     
