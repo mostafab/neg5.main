@@ -1,7 +1,10 @@
+import shortid from 'shortid';
 import { readOnlyQuery, query, transaction, queryTypeMap as qm, txMap as tm } from '../database/db';
 import sql from '../database/sql';
 
 const { tournament, collaborator, division, phase, account } = sql;
+
+const PLACEHOLDER_PHASE_NAME = 'Default Phase - Change Me';
 
 function buildTournamentPointSchemeInsertQuery(rows, tournamentId) {
   const tournamentIds = rows.map(() => tournamentId);
@@ -22,7 +25,7 @@ export default {
     const tournamentParams = [id, name, date, questionSet, comments, location, username];
     const { tournamentIds, values,
       types } = buildTournamentPointSchemeInsertQuery(tossupScheme, id);
-
+    const phaseId = shortid.generate();
     const queriesArray = [];
     queriesArray.push(
       {
@@ -35,6 +38,16 @@ export default {
         params: [id, tournamentIds, values, types],
         queryType: tm.any,
       },
+      {
+        text: phase.add,
+        params: [id, phaseId, PLACEHOLDER_PHASE_NAME],
+        queryType: tm.one,
+      },
+      {
+        text: phase.setActive,
+        params: [id, phaseId],
+        queryType: tm.one,
+      }
     );
     transaction(queriesArray)
       .then((result) => {
