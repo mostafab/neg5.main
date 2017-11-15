@@ -70,7 +70,7 @@ export default (app) => {
         Qbj.createQBJObject(req.params.tid)
             .then(qbj => {
                 res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json')
-                res.send({result: qbj, success: true});        
+                res.send({ ...qbj });        
             })
             .catch(error => res.status(500).send({error, success: false}));
     })

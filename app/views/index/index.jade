@@ -105,15 +105,6 @@ block content
                                         .row
                                             button.inline(type="submit" class="btn btn-md nf-button button-outline button-outline-green")
                                                 | Login
-                                        
-                                            // p.nf-panel-heading.inline Or use
-                                            
-                                            // .nf-margin.inline
-                                            //     a.nf-button.btn.nf-blue.btn-md(role='button' href='/auth/facebook')
-                                            //         i.fa.fa-facebook-official(style='margin:0')
-                                            //     a.nf-button.btn.nf-red.btn-md.nf-margin(role='button' href='/auth/google')
-                                            //         i.fa.fa-google(style='margin:0')
-                                        
                                         br
                                         
                                         p
@@ -125,15 +116,6 @@ block content
                 .nf-toast-content.nf-button.btn(ng-class="{'nf-red': Index.toastMessage.success === false, 'nf-green': Index.toastMessage.success === true, 'nf-orange' : Index.toastMessage.success !== true && Index.toastMessage.success !== false}")
                     i.fa(ng-class="{'fa-check': Index.toastMessage.success === true, 'fa-times': Index.toastMessage.success === false, 'fa-circle-o-notch fa-spin fa-fw' : Index.toastMessage.success !== true && Index.toastMessage.success !== false}")
                     | {{Index.toastMessage.message}}
-
-        div(class='row')
-            div(class='col-md-4')
-            div(class='col-md-4')
-                script(async='', src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')
-                // Ad 1
-                ins.adsbygoogle(style='display:block', data-ad-client='ca-pub-7416199853732232', data-ad-slot='9649668904', data-ad-format='auto')
-                script.
-                    (adsbygoogle = window.adsbygoogle || []).push({});
 
     include ./about.jade
 

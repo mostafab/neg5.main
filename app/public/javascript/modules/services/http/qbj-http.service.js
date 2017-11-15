@@ -8,7 +8,7 @@ export default class QBJHttpService {
     return this.$q((resolve, reject) => {
       this.$http.get(`/api/t/${tournamentId}/qbj`)
         .then(({ data }) => {
-          resolve(data.result);
+          resolve(data);
         })
         .catch(error => reject(error));
     });
