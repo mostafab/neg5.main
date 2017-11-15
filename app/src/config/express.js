@@ -65,7 +65,7 @@ export default () => {
   app.set('view engine', 'jade');
 
   const cacheTime = process.env.NODE_ENV === 'production' ? ONE_WEEK_MS : 0;
-  app.use(express.static(path.join(__dirname, '../../public'), { maxAge: ONE_WEEK_MS }));
+  app.use(express.static(path.join(__dirname, '../../public'), { maxAge: cacheTime }));
 
   app.use((request, response, next) => {
     if (process.env.NODE_ENV === 'production') {
