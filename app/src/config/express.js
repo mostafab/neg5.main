@@ -28,6 +28,8 @@ const getStatsBaseUrl = () => {
   return configuration[STATS_BASE_URL_PREFIX + env];
 }
 
+const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7; 
+
 export default () => {
   const app = express();
 
@@ -62,7 +64,8 @@ export default () => {
   app.set('views', path.join(__dirname, '../../views'));
   app.set('view engine', 'jade');
 
-  app.use(express.static(path.join(__dirname, '../../public')));
+  const cacheTime = process.env.NODE_ENV === 'production' ? ONE_WEEK_MS : 0;
+  app.use(express.static(path.join(__dirname, '../../public'), { maxAge: ONE_WEEK_MS }));
 
   app.use((request, response, next) => {
     if (process.env.NODE_ENV === 'production') {

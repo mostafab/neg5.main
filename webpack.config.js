@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   context: path.resolve(__dirname, 'app/public/javascript'),
@@ -42,7 +43,11 @@ module.exports = {
     },
     {
       test: /\.css$/,
-      use: ['style-loader', 'css-loader'],
+      // use: ['style-loader', 'css-loader'],
+      loader: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: 'css-loader',
+      })
     },
     ]
   },
@@ -52,6 +57,7 @@ module.exports = {
       jquery: "jquery",
       "window.jQuery": "jquery",
       jQuery:"jquery"
-    })
+    }),
+    new ExtractTextPlugin('bundle.css')
   ]
 }
