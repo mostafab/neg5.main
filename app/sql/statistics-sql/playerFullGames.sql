@@ -84,7 +84,7 @@ INNER JOIN
         M.round as round,
         M.id as match_id, 
         M.tournament_id, 
-        PTM.tossups_heard / M.tossups_heard::float as gp,
+        COALESCE(PTM.tossups_heard / NULLIF(M.tossups_heard::float, 0), 0) as gp,
         TTM.team_id as opponent_team_id
 
         FROM 

@@ -76,5 +76,14 @@ div(class="panel nf-panel")
                                 textarea(name="tournament_description" class="form-control nf-input" rows="30" ng-model='Tournament.tournamentInfoCopy.comments' ng-show='Tournament.editing === true')
                                 label(class='white nf-label preserve-white-space' ng-show='Tournament.editing === false' ng-bind='tournamentInfo.comments')
 
-                //- div(class="col-md-6" ng-show='Tournament.editing === true')
-                //-     button(type="submit" id='save-tournament-overview' class="btn btn-lg button-outline button-outline-green nf-button") Save Changes
+
+div(class="panel panel-default nf-panel" ng-controller='StatisticsCtrl as Statistics')
+    .nf-panel-heading
+        .row 
+            .col-lg-6.col-sm-6.col-md-6.col-xs-6
+                label.nf-label Stats
+            .col-md-6.col-sm-6.col-lg-6
+                - var __NF_STATS_URL__ = statsBaseUrl + '/t/{{::tournamentId}}/{{Tournament.slugify()}}/stats'
+                a(target="_blank" href=__NF_STATS_URL__ class="stat-link nf-button button-outline button-outline-green btn" data-stats-type='team') Go to Stats
+                button.nf-button.button-outline.button-outline-green.btn.btn-md.qbj-button(ng-click='Statistics.downloadQBJ()') QBJ
+                    i.fa.fa-download

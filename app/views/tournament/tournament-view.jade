@@ -32,8 +32,6 @@ block content
                             a(data-toggle="tab" class='tournament-tab btn-md') 
                                 p.inline Teams
                                 p.inline(ng-bind='" (" + Tournament.teams.length + ")"')
-                        li(class="center" ng-click='Tournament.tab = "statistics"' ng-class="{'active': Tournament.tab === 'statistics'}")
-                            a(data-toggle="tab" class='tournament-tab btn-md') Stats
                         
                 
                         li.center(ng-click='Tournament.tab = "scoresheet"' ng-class='{"active": Tournament.tab === "scoresheet"}')
@@ -61,16 +59,15 @@ block content
                                 include ./../config/config-tab.jade
 
                         div(class="tab-pane fade angular-animate" id="games" ng-controller='GameCtrl as Game' ng-class="{'active in' : Tournament.tab ==='match'}")
-
                             .row
-                                .col-lg-1
-                                    ul(class="nav nav-bar no-border-radius")
-                                        li(class="center" ng-click='Tournament.matchTab = "add"' ng-class="{'active': Tournament.matchTab === 'add'}")
-                                            a(data-toggle="tab" class='tournament-tab btn-md') Add Match
-                                        li(class="center" ng-click='Tournament.matchTab = "list"' ng-class="{'active': Tournament.matchTab === 'list'}")
-                                            a(data-toggle="tab" class='tournament-tab btn-md') Match List
-                                        br
-                                .col-lg-11
+                                .col-lg-4.col-md-4.col-sm-6.col-xs-12
+                                    ol.breadcrumb.nf-white.nf-breadcrumb
+                                        li
+                                            a(ng-click='Tournament.matchTab = "add"' ng-class="{'active': Tournament.matchTab === 'add'}") Add Match
+                                        li
+                                            a(ng-click='Tournament.matchTab = "list"' ng-class="{'active': Tournament.matchTab === 'list'}") Match List
+                            .row
+                                .col-lg-12.col-md-12.col-sm-12.col-xs-12
                                     .tab-content
                                         .tab-pane.fade#add-game(ng-class='{"active in" : Tournament.matchTab === "add"}') 
                                             include ./../game/add-game.jade
@@ -88,22 +85,19 @@ block content
 
                         div(class="tab-pane fade angular-animate" id="teams" ng-controller='TeamCtrl as Team' ng-class="{'active in' : Tournament.tab ==='team'}")
                             .row
-                                .col-lg-1
-                                    ul(class="nav nav-bar no-border-radius")
-                                        li(class="center" ng-click='Tournament.teamTab = "add"' ng-class="{'active' : Tournament.teamTab === 'add'}")
-                                            a(data-toggle="tab" class='tournament-tab btn-md') Add Team
-                                        li(class="center" ng-click='Tournament.teamTab = "list"' ng-class="{'active': Tournament.teamTab === 'list'}")
-                                            a(data-toggle="tab" class='tournament-tab btn-md') Team List
-                                        br
-                                .col-lg-11
+                                .col-lg-4.col-md-4.col-sm-6.col-xs-12
+                                    ol.breadcrumb.nf-white.nf-breadcrumb
+                                        li
+                                            a(ng-click='Tournament.teamTab = "add"' ng-class="{'active' : Tournament.teamTab === 'add'}") Add Team
+                                        li
+                                            a(ng-click='Tournament.teamTab = "list"' ng-class="{'active': Tournament.teamTab === 'list'}") Team List
+                            .row
+                                .col-lg-12.col-md-12.col-sm-12.col-xs-12
                                     .tab-content
                                         .tab-pane.fade#add-team(ng-class='{"active in" : Tournament.teamTab === "add"}')            
                                             include ./../team/add-team.jade
                                         .tab-pane.fade#team-list(ng-class='{"active in" : Tournament.teamTab === "list"}') 
                                             include ./../team/team-list.jade
-
-                        div(class="tab-pane fade angular-animate" id="stats" ng-controller='StatisticsCtrl as Statistics' ng-class="{'active in' : Tournament.tab ==='statistics'}")    
-                            include ./../stats/tab/stats-tab.jade
                         
                         div(class='tab-pane fade angular-animate' id='scoresheet' ng-controller='ScoresheetFormCtrl as Scoresheet' ng-class="{'active in' : Tournament.tab === 'scoresheet'}")
                             include ./../scoresheet/scoresheet.jade

@@ -1,3 +1,7 @@
+import $ from 'jquery';
+
+const DELETE_TEAM_MODAL = '#deleteTeamModal';
+
 export default class TeamController {
   constructor($scope, TeamService, MatchService, DivisionService, PhaseService) {
     this.$scope = $scope;
@@ -194,10 +198,12 @@ export default class TeamController {
     const { name } = this.currentTeam;
     const toastConfig = { message: `Deleting team. ${name}` };
     this.$scope.toast(toastConfig);
+    this.deletingTeam = true;
     this.TeamService.deleteCurrentTeam(this.$scope.tournamentId)
       .then(() => {
         toastConfig.message = `Deleted team: ${name}`;
         toastConfig.success = true;
+        $(DELETE_TEAM_MODAL).modal('hide');
       })
       .catch(() => {
         toastConfig.message = `Could not delete team: ${name}.`;
@@ -206,6 +212,7 @@ export default class TeamController {
       .finally(() => {
         toastConfig.hideAfter = true;
         this.$scope.toast(toastConfig);
+        this.deletingTeam = false;
       });
   }
 

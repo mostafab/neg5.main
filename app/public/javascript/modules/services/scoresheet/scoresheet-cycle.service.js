@@ -156,6 +156,9 @@ export default class ScoresheetCycleService {
   }
 
   scoresheetSelectGroup(team) {
+    if (this.divisions.length === 0) {
+      return 'All Teams';
+    }
     const activePhase = this.TournamentService.activePhase;
     if (activePhase.id === null) {
       return null;

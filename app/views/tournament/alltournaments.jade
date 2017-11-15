@@ -2,13 +2,6 @@ extends ../layout
 
 block titleContent
     title Tournaments
-    style.
-        .nf-panel-body.tournament-card {
-            font-size: 1.3em;
-        }
-        .nf-panel.card-wrapper:hover {
-           border: 1px solid #5ab8f8; 
-        }
 
 block content
     
@@ -40,14 +33,14 @@ block content
                                     .row
                                         .col-lg-4.col-md-5.col-sm-5
                                             div
-                                                .nf-panel
+                                                .nf-panel(style='margin-bottom:10px')
                                                     .nf-panel-heading
                                                         .row 
                                                             .col-lg-11.col-sm-11.col-md-11.col-xs-11
                                                                 label.nf-label New Tournament
                                                     .panel-body.nf-panel-body
                                                         form(novalidate name='Home.newTournamentForm' ng-submit='Home.createNewTournament()')
-                                                            input.form-control.nf-input(type='text' required placeholder='Name' ng-model='Home.newTournament.name' maxlength='20')
+                                                            input.form-control.nf-input(type='text' required placeholder='Name' ng-model='Home.newTournament.name' maxlength='50')
                                                             br
                                                             button.nf-button.btn.button-outline.button-outline-green.right(type='submit' ng-disabled='Home.submittingForm')
                                                                 i.fa.fa-check
@@ -55,13 +48,15 @@ block content
                                         
                                         .col-lg-8.col-md-7.col-sm-7(ng-cloak)
                                             div
-                                                .nf-panel.card-wrapper(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | orderBy:"name"')
-                                                    a.tournament-card(href='/t/{{tournament.id}}')
+                                                input.form-control.nf-input(type='text' placeholder='Filter your tournaments' ng-model='Home.query.name')
+                                            hr
+                                            div
+                                                .nf-panel.card-wrapper(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | filter:Home.query:strict | orderBy:"name"')
+                                                    a.tournament-card(href='/t/{{tournament.id}}/{{Home.getTournamentSlug(tournament)}}')
                                                         .nf-panel-heading
                                                             .row 
                                                                 .col-lg-11.col-sm-11.col-md-11.col-xs-11
                                                                     label.nf-label {{tournament.name}}
-                                                            // p.inline.right {{tournament.director_id}}
                                                         .panel-body.nf-panel-body.nf-white.tournament-card.responsive-font
                                                             p.nf-margin Location : {{tournament.location || 'None'}}
                                                             p.nf-margin Question Set : {{tournament.question_set || 'None'}}

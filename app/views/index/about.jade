@@ -1,123 +1,136 @@
-extends ../layout
+div#about.nf-white
+    .wrapper.center
+        .container
+            .row
+                .col-md-12.col-lg-12.col-sm-12.col-xs-12
+                    h2.summary-title Quizbowl for the Cloud
+        .row(style='margin-top: 0')
+            .container
+                hr
 
-block titleContent
-    title About | Neg 5
+        .row
+            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
+                h3(class="title btn-stats") All in One Place
+            
+            .col-lg-2.col-sm-12.col-md-2.col-xs-12
+            .col-xs-12.col-sm-12.col-md-8.col-lg-8.img-container
+                .thumbnail
+                    img.img-responsive.nf-margin(src='img/index/tournaments-home.png' alt='Tournament Home')
+                    .caption All Your Tournaments
+                .thumbnail
+                    img.img-responsive.nf-margin(src='img/index/tournament-overview.png' alt='Tournament Overview')
+                    .caption Easily Manageable
+            .col-lg-2.col-sm-12.col-md-2.col-xs-12
 
-block extrastylesheets
-    link(rel="stylesheet" href="/css/index.css")
-    link(rel="stylesheet" href="/css/tournamentstyle.css")
-    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+        .row
+            .container
+                hr
 
-block content
+        .row
+            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
+                h3(class="title btn-stats") Highly Configurable and Collaborative
+            .col-lg-2.col-sm-12.col-md-2.col-xs-12
+            .col-xs-12.col-sm-12.col-md-8.col-lg-8.img-container
+                .thumbnail
+                    img.img-responsive.nf-margin(src='img/index/config-page.png' alt='Configurable')
+                    .caption Compatible with most ACF and NAQT tournament formats. Handle different phases of your event on the same page.
+                .thumbnail
+                    img.img-responsive.nf-margin(src='img/index/collab-page.png' alt='Collaboration')
+                    .caption Add as many collaborators as you need for simple, distributed tournament management and collaboration.
+            .col-lg-2.col-sm-12.col-md-2.col-xs-12
 
-    +navbar
-    +navbar-bottom
-    
-    div(class="jumbotron vertical-center" style='background-color:transparent')
-        div(class="container")
-            div(style="margin:20px; margin-bottom:50px;")
+        .row
+            .container
+                hr
 
-            div(class="row")
-                div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center")
-                    h2(class="title btn-stats") What Exactly is Neg 5?
-                        i(class="fa fa-question" style="margin-left:10px")
+        .row
+            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12")
+                h3(class="title btn-stats") Automatic Scorekeeping and Live Stats
+            .col-lg-2.col-sm-12.col-md-2.col-xs-12
+            .col-xs-12.col-sm-12.col-md-8.col-lg-8.img-container
+                .thumbnail
+                    img.img-responsive.nf-margin(src='img/index/scoresheet.png' alt='Scoresheet')
+                    .caption Utilize the built-in scoresheet for fast and accurate scorekeeping.
+                .thumbnail
+                    img.img-responsive.nf-margin(src='img/index/stats-page.png' alt='Scoresheet')
+                    .caption Attendees of your tournament will have access to live, up-to-date statistics as your collaborators enter match information. No more waiting for reports!
+            .col-lg-2.col-sm-12.col-md-2.col-xs-12
 
-            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brushed" style="text-align:center;")
-                h4(style='font-size:16px;color:black')
-                    | Neg 5 is a web application written by a quiz bowler to help other quiz bowl tournament moderators and directors run their tournaments in a collaborative manner.
-                    | A potentially unlimited number of staffers are able to work together to enter team information, game information, and handle team registration
-                    | all in one application.
+        //- .row
+        //-     div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brushed")
+        //-         h4 You'll have one centralized place to manage your tournaments, teams, and matches.
+            
+        //- .row
+        //-     div(class='col-md-6')
+        //-         h4(class='title') Work with Other Moderators
 
-            div(class="row")
-                div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center")
-                    h2(class="title btn-stats") What can it do?
-                        i(class="fa fa-bolt" style="margin-left:10px")
+        //-     div(class='col-md-6')
+        //-         h4(style='font-size:16px;color:black')
+        //-             | Each tournament can be overseen by an unlimited number of people. You just need to enter their name or email
+        //-             | into a search box and add them to your tournament so that they can work on it! No one else except the people you
+        //-             | or collaborators add can work or view your tournament.
 
-            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brushed" style="text-align:center")
-                div(class="row")
-                    div(class="col-md-6")
-                        h4(class="title") All Your Tournaments in One Place
-                    div(class="col-md-6")
-                        h4(style='font-size:16px;color:black')
-                            | You'll know exactly where your tournaments are and how to find them.
+        //- .row
+        //-     div(class='col-md-6')
+        //-         h4(class='title') Quick Game and Team Entry
 
-                div(class="row")
-                    div(class='col-md-6')
-                        h4(class='title') Work with Other Moderators
+        //-     div(class='col-md-6')
+        //-         h4(style='font-size:16px;color:black')
+        //-             | You have the ability to enter full game, team, and player details as your tournament progresses for full control of your event.
 
-                    div(class='col-md-6')
-                        h4(style='font-size:16px;color:black')
-                            | Each tournament can be overseen by an unlimited number of people. You just need to enter their name or email
-                            | into a search box and add them to your tournament so that they can work on it! No one else except the people you
-                            | or collaborators add can work or view your tournament.
+        //- .row
+        //-     div(class="col-md-6")
+        //-         h4(class="title") Automatic Scoresheet Conversion
 
-                div(class="row")
-                    div(class='col-md-6')
-                        h4(class='title') Quick Game and Team Entry
+        //-     div(class="col-md-6")
+        //-         h4(style='font-size:16px;color:black')
+        //-             | Each tournament has its own easy to use scoresheet that a collaborator can fill out as a game progresses. Simply select teams from a list and add players if needed. When the game is done,
+        //-             | the scorekeeper can submit the scoresheet to automatically be converted into a game and put into your tournament history. No more running back and forth between rooms and mission control in
+        //-             | between games.
+        //-             | Each game submitted via scoresheet also saves its tossup and bonus information, so question writers will be able to look
+        //-             | at every single question and every single bonus part of bonuses to judge difficulties and see if they
+        //-             | hit their mark
 
-                    div(class='col-md-6')
-                        h4(style='font-size:16px;color:black')
-                            | You have the ability to enter full game, team, and player details as your tournament progresses for full control of your event.
+        //- .row
+        //-     div(class="col-md-6")
+        //-         h4(class="title") Generate Statistics
 
-                div(class="row")
-                    div(class="col-md-6")
-                        h4(class="title") Automatic Scoresheet Conversion
+        //-     div(class="col-md-6")
+        //-         h4(style='font-size:16px;color:black')
+        //-             | Neg 5 is able to generate complete or custom team and player statistics up to date with the latest game entered, all in line with a point scheme you define! Best
+        //-             | part is, teams don't need to wait for a paper copy to be posted somewhere on the walls of your event venue! They have the ability to go
+        //-             | to your tournament statistics link and look at the latest and greatest stats whenever they want.
 
-                    div(class="col-md-6")
-                        h4(style='font-size:16px;color:black')
-                            | Each tournament has its own easy to use scoresheet that a collaborator can fill out as a game progresses. Simply select teams from a list and add players if needed. When the game is done,
-                            | the scorekeeper can submit the scoresheet to automatically be converted into a game and put into your tournament history. No more running back and forth between rooms and mission control in
-                            | between games.
-                            | Each game submitted via scoresheet also saves its tossup and bonus information, so question writers will be able to look
-                            | at every single question and every single bonus part of bonuses to judge difficulties and see if they
-                            | hit their mark
+        //- .row
+        //-     div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brushed" style="text-align:center")
+        //-         h4(style='font-size:16px;color:black')
+        //-             | Neg 5 is powered by Node.js and the Express 4.0 framework on the server-side and communicates with a MongoDB database holding all information. The front-end was written using
+        //-             | regular Javascript and jQuery and is held together by Bootstrap.
 
-                div(class="row")
-                    div(class="col-md-6")
-                        h4(class="title") Generate Statistics
+        //- div(class="row")
+        //-     div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center")
+        //-         h2(class="title btn-stats") Sounds great, I want to help!
+        //-             i(class="fa fa-thumbs-o-up" style="margin-left:10px")
 
-                    div(class="col-md-6")
-                        h4(style='font-size:16px;color:black')
-                            | Neg 5 is able to generate complete or custom team and player statistics up to date with the latest game entered, all in line with a point scheme you define! Best
-                            | part is, teams don't need to wait for a paper copy to be posted somewhere on the walls of your event venue! They have the ability to go
-                            | to your tournament statistics link and look at the latest and greatest stats whenever they want.
+        //- div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brushed" style="text-align:center")
+        //-     div(class="row")
+        //-         div(class="col-md-6")
+        //-             h4(style='font-size:16px;color:black')
+        //-                 | Well, that's exciting to hear! I'm always looking to improve the app, so Neg 5 is and always will be a 100% open-source application.
+        //-                 | If you're interested in making Neg 5 the best quiz bowl app EVER and have an interest in web development, take a look at the Github page
+        //-                 | and git clone!
+        //-                 br
+        //-                 br
+        //-                 | Of course, I'm also always looking for feedback on the app. This includes usability, interface design, and even other features! If you've got any ideas on improving
+        //-                 | the experience or notice any weird bugs, drop me a line!
+        //-                 br
+        //-                 br
+        //-                 strong
+        //-                     | - Mostafa Bhuiyan
 
-            div(class="row")
-                div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center")
-                    h2(class="title btn-stats") How does it do?
-                        i(class="fa fa-code" style="margin-left:10px")
-
-            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brushed" style="text-align:center")
-                div(class="row")
-                    div(class="col-md-12")
-                        h4(style='font-size:16px;color:black')
-                            | Neg 5 is powered by Node.js and the Express 4.0 framework on the server-side and communicates with a MongoDB database holding all information. The front-end was written using
-                            | regular Javascript and jQuery and is held together by Bootstrap.
-
-            div(class="row")
-                div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center")
-                    h2(class="title btn-stats") Sounds great, I want to help!
-                        i(class="fa fa-thumbs-o-up" style="margin-left:10px")
-
-            div(class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brushed" style="text-align:center")
-                div(class="row")
-                    div(class="col-md-6")
-                        h4(style='font-size:16px;color:black')
-                            | Well, that's exciting to hear! I'm always looking to improve the app, so Neg 5 is and always will be a 100% open-source application.
-                            | If you're interested in making Neg 5 the best quiz bowl app EVER and have an interest in web development, take a look at the Github page
-                            | and git clone!
-                            br
-                            br
-                            | Of course, I'm also always looking for feedback on the app. This includes usability, interface design, and even other features! If you've got any ideas on improving
-                            | the experience or notice any weird bugs, drop me a line!
-                            br
-                            br
-                            strong
-                                | - Mostafa Bhuiyan
-
-                    div(class="col-md-6")
-                        h4(class="title")
-                            a(href="https://github.com/mostafab/neg5" style='color:white')
-                                i(class="fa fa-github" style="margin-left:10px")
-                            a(href="mailto:mostafa0104@gmail.com" style='color:white')
-                                i(class="fa fa-envelope" style="margin-left:10px")
+        //-         div(class="col-md-6")
+        //-             h4(class="title")
+        //-                 a(href="https://github.com/mostafab/neg5" style='color:white')
+        //-                     i(class="fa fa-github" style="margin-left:10px")
+        //-                 a(href="mailto:mostafa0104@gmail.com" style='color:white')
+        //-                     i(class="fa fa-envelope" style="margin-left:10px")

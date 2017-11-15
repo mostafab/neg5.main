@@ -11,7 +11,7 @@ const validTabs = [
 ];
 
 export default class TournamentController {
-  constructor($scope, $window, $timeout, $cookies, TournamentService, TeamService, MatchService) {
+  constructor($scope, $window, $timeout, $cookies, TournamentService, TeamService, MatchService, SlugService) {
     this.$scope = $scope;
     this.$window = $window;
     this.$timeout = $timeout;
@@ -19,6 +19,7 @@ export default class TournamentController {
     this.TournamentService = TournamentService;
     this.TeamService = TeamService;
     this.MatchService = MatchService;
+    this.SlugService = SlugService;
 
     this.$scope.toastMessage = null;
     this.toastPromise = null;
@@ -115,7 +116,8 @@ export default class TournamentController {
       return this.tab;
     }), (newVal) => {
       this.$cookies.put('nfTab', newVal);
-      location.hash = `#${newVal}`;
+      // location.hash = `#${newVal}`;
+      history.replaceState(undefined, undefined, `#${newVal}`)
     });
   }
 
@@ -134,6 +136,11 @@ export default class TournamentController {
       success,
     };
   }
+
+  slugify() {
+    const name = this.$scope.tournamentInfo.name;
+    return this.SlugService.slugify(name);
+  }
 }
 
-TournamentController.$inject = ['$scope', '$window', '$timeout', '$cookies', 'TournamentService', 'TeamService', 'MatchService'];
+TournamentController.$inject = ['$scope', '$window', '$timeout', '$cookies', 'TournamentService', 'TeamService', 'MatchService', 'SlugService'];

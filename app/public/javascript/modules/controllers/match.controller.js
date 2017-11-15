@@ -1,3 +1,7 @@
+import $ from 'jquery';
+
+const DELETE_MATCH_MODAL = '#deleteMatchModal';
+
 export default class MatchController {
   constructor($scope, MatchService, TournamentService, TeamService,
     PhaseService, MatchUtilFactory) {
@@ -110,14 +114,15 @@ export default class MatchController {
   }
 
   deleteGame() {
+    this.deletingMatch = true;
     const toastConfig = {
       message: 'Deleting match.',
     };
-    this.$scope.toast(toastConfig);
     this.MatchService.deleteLoadedGame(this.$scope.tournamentId)
       .then(() => {
         toastConfig.success = true;
         toastConfig.message = 'Deleted match';
+        $(DELETE_MATCH_MODAL).modal('hide');
       })
       .catch(() => {
         toastConfig.success = false;
@@ -126,6 +131,7 @@ export default class MatchController {
       .finally(() => {
         toastConfig.hideAfter = true;
         this.$scope.toast(toastConfig);
+        this.deletingMatch = false;
       });
   }
 

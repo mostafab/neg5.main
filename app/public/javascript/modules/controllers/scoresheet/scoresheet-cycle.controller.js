@@ -1,6 +1,6 @@
 export default class ScoresheetCycleController {
   constructor($scope, ScoresheetService, TeamService, TournamentService, ScoresheetCycleService,
-    ScoresheetPointsTrackerService) {
+    ScoresheetPointsTrackerService, PhaseService) {
 
     this.$scope = $scope;
     this.ScoresheetService = ScoresheetService;

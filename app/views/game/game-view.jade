@@ -12,7 +12,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                     i.fa.fa-times
                 
             .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                button.nf-button.nf-red.btn-md.btn.right(title='Delete Game.' ng-if='tournamentContext.admin' ng-click='Game.deleteGame(Game.loadedGame.id)')
+                button.nf-button.nf-red.btn-md.btn.right(title='Delete Game.' ng-if='tournamentContext.admin' data-toggle='modal' data-target='#deleteMatchModal')
                     i.fa.fa-trash
 
     .nf-panel-body.panel-body
@@ -52,7 +52,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                                         td
                                             input.nf-input.tuh(type='number' min='{{Game.MatchUtil.numPlayerAnswers(player)}}' max='{{Game.loadedGame.tuh !== null ? Game.loadedGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
                                             name='{{player.id + "_tuh"}}' ng-class="{'nf-error' : Game.editGameForm[player.id + '_tuh'].$invalid}") 
-                                        td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value"')
+                                        td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true')
                                             input.nf-input.point-value(type='number' ng-pattern='/^[0-9]*$/' min='0'
                                                 class='form-control input-sm' ng-model='player.points[point.value]'
                                                 ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}'
@@ -79,7 +79,7 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                                         td
                                             input.nf-input.tuh(type='number' min='{{Game.MatchUtil.numPlayerAnswers(player)}}' max='{{Game.loadedGame.tuh !== null ? Game.loadedGame.tuh : Number.POSITIVE_INFINITY}}' class='form-control input-sm' ng-model='player.tuh' ng-blur='player.tuh = (player.tuh === null ? 0 : player.tuh)', 
                                             name='{{player.id + "_tuh"}}' ng-class="{'error-text' : Game.editGameForm[player.id + '_tuh'].$invalid}") 
-                                        td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value"')
+                                        td(ng-repeat='point in Game.pointScheme.tossupValues | orderBy: "value":true')
                                             input.nf-input.point-value(type='number' ng-pattern='/^[0-9]*$/' min='0' class='form-control input-sm' ng-model='player.points[point.value]' ng-blur='player.points[point.value] = (player.points[point.value] === null ? 0 : player.points[point.value])' name='{{player.id + point.value}}' ng-class="{'error-text' : Game.editGameForm[player.id + point.value].$invalid, 'readonly' : player.tuh <= 0 || Game.editGameForm[player.id + '_tuh'].$invalid}")
                                         td 
                                             div(tabindex="-1" class='form-control readonly input-sm' ng-bind='Game.MatchUtil.pointSum(player.points)')
@@ -223,3 +223,19 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
     
     .nf-panel-footer.panel-footer.nf-gray.no-border
         h5(ng-bind='"Added by: " + Game.loadedGame.addedBy')
+
+div#deleteMatchModal.modal.nf-modal
+    .modal-dialog
+        .modal-content
+            .modal-header
+                button.close(type='button' data-dismiss='modal' aria-hidden='true') &times;
+                h4.modal-title Delete Match
+            .modal-body
+                h5.nf-modal-message
+                    | Are you sure you want to delete this match between {{Game.loadedGame.teams[0].teamInfo.name}} and {{Game.loadedGame.teams[1].teamInfo.name}}?
+                    | You will not be able to recover it after deletion.
+            .modal-footer
+                button.nf-button.nf-gray.btn.btn-md(type='button' data-dismiss='modal' ng-disabled='Game.deletingMatch') Cancel
+                button.nf-button.btn.nf-red(type='button' ng-click='Game.deleteGame()' ng-disabled='Game.deletingMatch') Yes, delete
+                span.modal-spinner(ng-show='Game.deletingMatch')
+                    i.fa.fa-circle-o-notch.fa-spin.fa-2x.fa-fw

@@ -31,6 +31,13 @@ export default (app) => {
             .catch(error => res.status(500).send({ error: error.message }));
       });
 
+  app.route('/api/t/byName')
+      .get((req, res) => {
+        Tournament.findByName(req.query.searchQuery)
+            .then(result => res.json({ result, success: true }))
+            .catch(error => res.status(500).send({ error: error.message }));
+      })
+
   app.route('/api/t/:tid')
       .get(hasToken, accessToTournament, (req, res) => {
         Tournament.findById(req.params.tid, req.currentUser)
@@ -42,6 +49,13 @@ export default (app) => {
             .then(result => res.json({ result, success: true }))
             .catch(error => res.status(500).send({ error, success: false }));
       });
+
+  app.route('/api/t/:tid/info')
+    .get((req, res) => {
+        Tournament.findById(req.params.tid, null)
+            .then(result => res.json({ result: result.tournament, success: true }))
+            .catch(error => res.send({ error, success: false }));
+    })    
 
   app.route('/api/t/:tid/rules')
       .put(hasToken, directorAccessToTournament, (req, res) => {

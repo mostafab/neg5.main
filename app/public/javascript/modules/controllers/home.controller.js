@@ -1,16 +1,33 @@
 /* global window */
+
+import slug from 'slug';
+
+slug.defaults.modes['rfc3986'] = {
+  replacement: '-',      // replace spaces with replacement 
+  symbols: true,         // replace unicode symbols or not 
+  remove: null,          // (optional) regex to remove characters 
+  lower: true,           // result in lower case 
+  charmap: slug.charmap, // replace special characters 
+  multicharmap: slug.multicharmap // replace multi-characters 
+};
+
 export default class HomeController {
-  constructor($scope, $timeout, $cookies, TournamentService) {
+
+  constructor($scope, $timeout, $cookies, TournamentService, SlugService) {
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.$cookies = $cookies;
     this.TournamentService = TournamentService;
+    this.SlugService = SlugService;
 
     this.tournaments = [];
     this.submittingForm = false;
     this.newTournament = {};
 
+    this.loadingTournaments = false;
+
     this.toastPromise = null;
+    this.query = {};
 
     this.$scope.toastMessage = null;
     this.$scope.logout = () => {
@@ -24,11 +41,30 @@ export default class HomeController {
 
   getTournaments() {
     const jwt = this.$cookies.get('nfToken');
+    this.loadingTournaments = true;
+    const toastConfig = {
+      message: 'Loading your tournaments',
+    };
+    this.$scope.toast(toastConfig);
     this.TournamentService.getUserTournaments(jwt)
       .then((tournaments) => {
         this.tournaments = tournaments;
+        toastConfig.success = true;
+        toastConfig.message = `Loaded ${tournaments.length} tournaments`;
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        toastConfig.success = false;
+        toastConfig.message = 'Could not load tournaments.';
+      })
+      .finally(() => {
+        toastConfig.hideAfter = true;
+        this.loadingTournaments = false;
+        this.$scope.toast(toastConfig);
+      })
+  }
+
+  getTournamentSlug(tournament) {
+    return this.SlugService.slugify(tournament.name);
   }
 
   createNewTournament() {
@@ -42,11 +78,11 @@ export default class HomeController {
       const token = this.$cookies.get('nfToken');
       const name = this.newTournament.name;
       this.TournamentService.newTournament(name, token)
-        .then(({ name: tournamentName }) => {
-          this.getTournaments();
+        .then((result) => {
           this.newTournament = {};
           toastConfig.success = true;
-          toastConfig.message = `Added tournament: ${tournamentName}`;
+          toastConfig.message = `Added tournament: ${result.name}`;
+          window.location = `/t/${result.id}/${this.getTournamentSlug(result)}`;
         })
         .catch(() => {
           toastConfig.success = false;
@@ -77,4 +113,4 @@ export default class HomeController {
   }
 }
 
-HomeController.$inject = ['$scope', '$timeout', '$cookies', 'TournamentService'];
+HomeController.$inject = ['$scope', '$timeout', '$cookies', 'TournamentService', 'SlugService'];
