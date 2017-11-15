@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 /**
  * Import css
  */
+import 'bootswatch/sandstone/bootstrap.min.css';
 import './styles/v2/index.css';
 import './styles/v2/neg-five-main.css';
 import './styles/v2/reset.css';
