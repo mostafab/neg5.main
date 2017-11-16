@@ -10,6 +10,10 @@ const validTabs = [
   'scoresheet'
 ];
 
+const TOURNAMENT_TAB_KEY = 'nfTab';
+const MATCH_TAB_KEY = 'matchTab';
+const TEAM_TAB_KEY = 'teamTab';
+
 export default class TournamentController {
   constructor($scope, $window, $timeout, $cookies, TournamentService, TeamService, MatchService, SlugService) {
     this.$scope = $scope;
@@ -29,13 +33,13 @@ export default class TournamentController {
       if (validTabs.indexOf(tab) !== -1) {
         this.tab = location.hash.substr(1);
       } else {
-        this.tab = this.$cookies.get('nfTab') || 'overview';
+        this.tab = localStorage.getItem(TOURNAMENT_TAB_KEY) || 'overview';
       }
     } else {
-      this.tab = this.$cookies.get('nfTab') || 'overview';
+      this.tab = localStorage.getItem(TOURNAMENT_TAB_KEY) || 'overview';
     }
-    this.matchTab = 'add';
-    this.teamTab = 'add';
+    this.matchTab = localStorage.getItem(MATCH_TAB_KEY) || 'add';
+    this.teamTab = localStorage.getItem(TEAM_TAB_KEY) || 'add';
 
     this.tournamentInfoCopy = {};
     this.editing = false;
@@ -115,9 +119,20 @@ export default class TournamentController {
     this.$scope.$watch(angular.bind(this, () => {
       return this.tab;
     }), (newVal) => {
-      this.$cookies.put('nfTab', newVal);
-      // location.hash = `#${newVal}`;
+      localStorage.setItem(TOURNAMENT_TAB_KEY, newVal);
       history.replaceState(undefined, undefined, `#${newVal}`)
+    });
+
+    this.$scope.$watch(angular.bind(this, () => {
+      return this.matchTab;
+    }), (newVal) => {
+      localStorage.setItem(MATCH_TAB_KEY, newVal);
+    });
+
+    this.$scope.$watch(angular.bind(this, () => {
+      return this.teamTab;
+    }), (newVal) => {
+      localStorage.setItem(TEAM_TAB_KEY, newVal);
     });
   }
 
