@@ -64,6 +64,12 @@ export default class MatchService {
   }
 
   getGameById(tournamentId, gameId) {
+    const matchingGame = this.games.find(game => game.id === gameId);
+    // Used to keep the order in which the teams are displayed in the list with how they're loaded into the match.
+    const teamOrderValues = {
+      [matchingGame.teams.one.id]: 0,
+      [matchingGame.teams.two.id]: 1,
+    };
     return this.$q((resolve, reject) => {
       this.MatchHttpService.getMatchById(tournamentId, gameId)
         .then((game) => {
@@ -77,24 +83,9 @@ export default class MatchService {
             packet: game.packet,
             room: game.room,
             round: game.round,
-            teams: game.teams.map(team => (
-              {
-                id: team.team_id,
-                name: team.team_name,
-                overtime: team.overtime_tossups,
-                bouncebacks: team.bounceback_points,
-                score: team.score,
-                players: team.players.map(player => ({
-                  id: player.player_id,
-                  name: player.player_name,
-                  tuh: player.tossups_heard,
-                  points: player.tossup_values.reduce((aggr, current) => {
-                    aggr[current.value] = current.number;
-                    return aggr;
-                  }, {}),
-                })),
-              }
-            )),
+            teams: game.teams.map(MatchService.mapMatchTeamFunction).sort((thisTeam, nextTeam) => {
+              return teamOrderValues[thisTeam.id] - teamOrderValues[nextTeam.id]
+            }),
             phases: game.phases.map(phase => (
               {
                 id: phase.phase_id,
@@ -105,7 +96,7 @@ export default class MatchService {
           this.setLoadedGameTeams(formatted);
           angular.copy(formatted, this.loadedGame);
           angular.copy(formatted, this.loadedGameOriginal);
-          resolve();
+          resolve(formatted);
         })
         .catch(error => reject(error));
     });
@@ -307,6 +298,25 @@ export default class MatchService {
         }, {}),
       }
       ));
+  }
+
+  static mapMatchTeamFunction(team) {
+    return {
+      id: team.team_id,
+      name: team.team_name,
+      overtime: team.overtime_tossups,
+      bouncebacks: team.bounceback_points,
+      score: team.score,
+      players: team.players.map(player => ({
+        id: player.player_id,
+        name: player.player_name,
+        tuh: player.tossups_heard,
+        points: player.tossup_values.reduce((aggr, current) => {
+          aggr[current.value] = current.number;
+          return aggr;
+        }, {}),
+      })),
+    }
   }
 }
 
