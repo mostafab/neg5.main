@@ -4,7 +4,7 @@ import sql from '../database/sql';
 
 const { tournament, collaborator, division, phase, account } = sql;
 
-const PLACEHOLDER_PHASE_NAME = 'Default Phase - Change Me';
+const PLACEHOLDER_PHASE_NAME = 'Default Phase';
 
 function buildTournamentPointSchemeInsertQuery(rows, tournamentId) {
   const tournamentIds = rows.map(() => tournamentId);
