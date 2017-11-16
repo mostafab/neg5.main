@@ -65,7 +65,7 @@ block content
                                         li
                                             a(ng-click='Tournament.matchTab = "add"' ng-class="{'active': Tournament.matchTab === 'add'}") Add Match
                                         li
-                                            a(ng-click='Tournament.matchTab = "list"' ng-class="{'active': Tournament.matchTab === 'list'}") Match List
+                                            a(ng-click='Tournament.matchTab = "list"; Game.emptyLoadedGame()' ng-class="{'active': Tournament.matchTab === 'list'}") Match List
                             .row
                                 .col-lg-12.col-md-12.col-sm-12.col-xs-12
                                     .tab-content
