@@ -85,7 +85,7 @@ block content
                                         li
                                             a(ng-click='Tournament.teamTab = "add"' ng-class="{'active' : Tournament.teamTab === 'add'}") Add Team
                                         li
-                                            a(ng-click='Tournament.teamTab = "list"' ng-class="{'active': Tournament.teamTab === 'list'}") Team List ({{Team.teams.length}})
+                                            a(ng-click='Tournament.teamTab = "list"; Team.emptyCurrentTeam()' ng-class="{'active': Tournament.teamTab === 'list'}") Team List ({{Team.teams.length}})
                             .row
                                 .col-lg-12.col-md-12.col-sm-12.col-xs-12
                                     .tab-content
