@@ -25,14 +25,9 @@ block content
                         li(class="center" ng-click='Tournament.tab = "collaborator"' ng-class="{'active': Tournament.tab === 'collaborator'}")
                             a(data-toggle='tab' class='tournament-tab btn-md') Collaborators
                         li(class="center" ng-click='Tournament.tab = "match"' ng-class="{'active': Tournament.tab === 'match'}")
-                            a(data-toggle="tab" class='tournament-tab btn-md') 
-                                p.inline Matches
-                                p.inline(ng-bind='" (" + Tournament.games.length + ")"')
+                            a(data-toggle="tab" class='tournament-tab btn-md') Matches
                         li(class="center" ng-click='Tournament.tab = "team"' ng-class="{'active': Tournament.tab === 'team'}")
-                            a(data-toggle="tab" class='tournament-tab btn-md') 
-                                p.inline Teams
-                                p.inline(ng-bind='" (" + Tournament.teams.length + ")"')
-                        
+                            a(data-toggle="tab" class='tournament-tab btn-md') Teams
                 
                         li.center(ng-click='Tournament.tab = "scoresheet"' ng-class='{"active": Tournament.tab === "scoresheet"}')
                             a(class='btn-md' ng-click='Tournament.tab = "scoresheet"') Scoresheet
@@ -65,7 +60,7 @@ block content
                                         li
                                             a(ng-click='Tournament.matchTab = "add"' ng-class="{'active': Tournament.matchTab === 'add'}") Add Match
                                         li
-                                            a(ng-click='Tournament.matchTab = "list"; Game.emptyLoadedGame()' ng-class="{'active': Tournament.matchTab === 'list'}") Match List
+                                            a(ng-click='Tournament.matchTab = "list"; Game.emptyLoadedGame()' ng-class="{'active': Tournament.matchTab === 'list'}") Match List ({{ Game.games.length }})
                             .row
                                 .col-lg-12.col-md-12.col-sm-12.col-xs-12
                                     .tab-content
@@ -90,7 +85,7 @@ block content
                                         li
                                             a(ng-click='Tournament.teamTab = "add"' ng-class="{'active' : Tournament.teamTab === 'add'}") Add Team
                                         li
-                                            a(ng-click='Tournament.teamTab = "list"' ng-class="{'active': Tournament.teamTab === 'list'}") Team List
+                                            a(ng-click='Tournament.teamTab = "list"' ng-class="{'active': Tournament.teamTab === 'list'}") Team List ({{Team.teams.length}})
                             .row
                                 .col-lg-12.col-md-12.col-sm-12.col-xs-12
                                     .tab-content
