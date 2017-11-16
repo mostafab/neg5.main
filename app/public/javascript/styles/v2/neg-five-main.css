@@ -325,19 +325,7 @@ input[type="tel"]:focus,
 input[type="color"]:focus,
 .nf-input:focus,
 .uneditable-input:focus {   
-  border: 2px solid #5ab8f8;
-    border-top-color: rgb(90, 184, 248);
-    border-top-style: solid;
-    border-top-width: 1px;
-    border-right-color: rgb(90, 184, 248);
-    border-right-style: solid;
-    border-right-width: 1px;
-    border-bottom-color: rgb(90, 184, 248);
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-left-color: rgb(90, 184, 248);
-    border-left-style: solid;
-    border-left-width: 1px;
+    border: 1px solid #5ab8f8;
     border-image-source: initial;
     border-image-slice: initial;
     border-image-width: initial;

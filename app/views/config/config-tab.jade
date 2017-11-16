@@ -31,7 +31,6 @@
                                         .input-group
                                             span.input-group-addon.nf-button.no-border.point-label Bouncebacks?
                                             div.form-control.nf-input.nf-gray(ng-show='Config.editingRules === false') {{Config.rules.bouncebacks ? 'Yes' : 'No'}}  
-                                            //- div.form-control(type='checkbox' name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks' ng-show='Config.editingRules === true')
                                             .material-switch.form-control(ng-show='Config.editingRules === true')
                                                 input(id='bouncebacks' type="checkbox" name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks')
                                                 label(for="bouncebacks" class="nf-green")
