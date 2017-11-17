@@ -8,41 +8,41 @@ export class StatsReport {
         this.tournamentId = tournamentId;
     }
 
-    getTeamReport(phaseId) {
+    generateTeamReport(phaseId) {
         return new Promise((resolve, reject) => {
-            db.teamReport(this.tournamentId, phaseId)
+            db.generateTeamReport(this.tournamentId, phaseId)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
     }
 
-    getIndividualReport(phaseId) {
+    generateIndividualReport(phaseId) {
         return new Promise((resolve, reject) => {
-            db.individualReport(this.tournamentId, phaseId)
+            db.generateIndividualReport(this.tournamentId, phaseId)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
     }
 
-    getTeamFullReport(phaseId) {
+    generateTeamFullReport(phaseId) {
         return new Promise((resolve, reject) => {
-            db.teamFullReport(this.tournamentId, phaseId)
+            db.generateTeamFullReport(this.tournamentId, phaseId)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
     }
 
-    getPlayerFullReport(phaseId) {
+    generatePlayerFullReport(phaseId) {
         return new Promise((resolve, reject) => {
-            db.playerFullReport(this.tournamentId, phaseId)
+            db.generatePlayerFullReport(this.tournamentId, phaseId)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })
     }
 
-    getRoundReport(phaseId) {
+    generateRoundReport(phaseId) {
         return new Promise((resolve, reject) => {
-            db.roundReport(this.tournamentId, phaseId)
+            db.generateRoundReport(this.tournamentId, phaseId)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
         })

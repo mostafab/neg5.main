@@ -88,5 +88,9 @@ export default {
     teamFull: getSQL('statistics-sql/teamFullGames.sql'),
     playerFull: getSQL('statistics-sql/playerFullGames.sql'),
     roundReport: getSQL('statistics-sql/roundReport.sql'),
+    reports: {
+      addOrUpdate: getSQL('statistics-sql/stats-report/addOrUpdateReport.sql'),
+      getByIdReportAndPhase: getSQL('statistics-sql/stats-report/getByTournamentIdReportTypeAndPhase.sql'),
+    }
   },
 };

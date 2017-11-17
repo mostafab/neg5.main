@@ -18,7 +18,7 @@ export default (app) => {
     
     app.get('/api/t/:tid/stats/player', checkStatsCache(statsConstants.INDIVIDUAL_STANDINGS), (req, res) => {
         let report = new StatsReport(req.params.tid)
-        report.getIndividualReport(req.query.phase || null)
+        report.generateIndividualReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.INDIVIDUAL_STANDINGS, result)
                 res.json({result, success: true})
@@ -28,7 +28,7 @@ export default (app) => {
 
     app.get('/api/t/:tid/stats/team', checkStatsCache(statsConstants.TEAM_STANDINGS), (req, res) => {
         let report = new StatsReport(req.params.tid);
-        report.getTeamReport(req.query.phase || null)
+        report.generateTeamReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.TEAM_STANDINGS, result);
                 res.json({result, success: true})
@@ -38,7 +38,7 @@ export default (app) => {
 
     app.get('/api/t/:tid/stats/teamfull', checkStatsCache(statsConstants.TEAM_FULL_STANDINGS), (req, res) => {
         let report = new StatsReport(req.params.tid);
-        report.getTeamFullReport(req.query.phase || null)
+        report.generateTeamFullReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.TEAM_FULL_STANDINGS, result);
                 res.json({result, success: true})
@@ -48,7 +48,7 @@ export default (app) => {
 
     app.get('/api/t/:tid/stats/playerfull', checkStatsCache(statsConstants.INDIVIDUAL_FULL), (req, res) => {
         let report = new StatsReport(req.params.tid);
-        report.getPlayerFullReport(req.query.phase || null)
+        report.generatePlayerFullReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.INDIVIDUAL_FULL, result);
                 res.json({result, success: true});
@@ -58,7 +58,7 @@ export default (app) => {
 
     app.get('/api/t/:tid/stats/roundreport', checkStatsCache(statsConstants.ROUND_REPORT), (req, res) => {
         let report = new StatsReport(req.params.tid);
-        report.getRoundReport(req.query.phase || null)
+        report.generateRoundReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.ROUND_REPORT, result);
                 res.json({result, success: true})
