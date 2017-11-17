@@ -1,4 +1,4 @@
-import { readOnlyQuery, queryTypeMap as qm } from '../database/db';
+import { readOnlyQuery, query as readWriteQuery, queryTypeMap as qm } from '../database/db';
 import sql from '../database/sql';
 
 const statSQL = sql.statistics;
@@ -53,4 +53,45 @@ export default {
         .then(result => resolve(formatStatisticsResults(result)))
         .catch(error => reject(error));
   }),
+
+  fetchReport: async (tournamentId, phaseId, reportType) => {
+    const params = {
+      tournamentId,
+      phaseId,
+      reportType
+    }
+    try {
+      return await readOnlyQuery(phaseId ? statSQL.reports.getByIdReportAndPhase : statSQL.reports.getNullPhase, params, qm.one);
+    } catch (error) {
+      throw err;
+    }
+  },
+
+  add: async (tournamentId, phaseId, reportType, stats) => {
+    const params = {
+      tournamentId,
+      phaseId,
+      reportType,
+      stats,
+    };
+    try {
+      return await readWriteQuery(statSQL.reports.add, params, qm.one);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  update: async (tournamentId, phaseId, reportType, stats) => {
+    const params = {
+      tournamentId,
+      phaseId,
+      reportType,
+      stats,
+    };
+    try {
+      return await readWriteQuery(phaseId ? statSQL.reports.update : statSQL.reports.updateWithNullPhase, params, qm.one);
+    } catch (err) {
+      throw err;
+    }
+  }
 };

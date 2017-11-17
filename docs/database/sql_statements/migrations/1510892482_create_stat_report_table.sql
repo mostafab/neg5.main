@@ -11,7 +11,6 @@ CREATE TABLE tournament_stat_report (
 
   PRIMARY KEY (id),
   FOREIGN KEY (tournament_id) REFERENCES tournament(id),
-  FOREIGN KEY (tournament_id, phase_id) REFERENCES tournament_phase(tournament_id, id),
   UNIQUE(tournament_id, phase_id, report_type)
 );
 

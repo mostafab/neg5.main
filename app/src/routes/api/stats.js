@@ -1,4 +1,4 @@
-import {StatsReport} from './../../managers/stats-models/report';
+import {StatsReportManager} from './../../managers/stats-models/report';
 import QbjManager from './../../managers/stats-models/qbj';
 import MatchManager from './../../managers/model-managers/match';
 
@@ -14,10 +14,12 @@ import RoundReportHtml from './../../html-stats/round-report';
 import { checkStatsCache, addStatsToCache } from './../../cache/middleware/check-stats-cache';
 import statsConstants from './../../cache/constants';
 
+import checkStatsTable from './../../middleware/check-stats-table';
+
 export default (app) => {
     
     app.get('/api/t/:tid/stats/player', checkStatsCache(statsConstants.INDIVIDUAL_STANDINGS), (req, res) => {
-        let report = new StatsReport(req.params.tid)
+        let report = new StatsReportManager(req.params.tid)
         report.generateIndividualReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.INDIVIDUAL_STANDINGS, result)
@@ -27,7 +29,7 @@ export default (app) => {
     })
 
     app.get('/api/t/:tid/stats/team', checkStatsCache(statsConstants.TEAM_STANDINGS), (req, res) => {
-        let report = new StatsReport(req.params.tid);
+        let report = new StatsReportManager(req.params.tid);
         report.generateTeamReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.TEAM_STANDINGS, result);
@@ -37,7 +39,7 @@ export default (app) => {
     })
 
     app.get('/api/t/:tid/stats/teamfull', checkStatsCache(statsConstants.TEAM_FULL_STANDINGS), (req, res) => {
-        let report = new StatsReport(req.params.tid);
+        let report = new StatsReportManager(req.params.tid);
         report.generateTeamFullReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.TEAM_FULL_STANDINGS, result);
@@ -47,7 +49,7 @@ export default (app) => {
     })
 
     app.get('/api/t/:tid/stats/playerfull', checkStatsCache(statsConstants.INDIVIDUAL_FULL), (req, res) => {
-        let report = new StatsReport(req.params.tid);
+        let report = new StatsReportManager(req.params.tid);
         report.generatePlayerFullReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.INDIVIDUAL_FULL, result);
@@ -57,7 +59,7 @@ export default (app) => {
     })
 
     app.get('/api/t/:tid/stats/roundreport', checkStatsCache(statsConstants.ROUND_REPORT), (req, res) => {
-        let report = new StatsReport(req.params.tid);
+        let report = new StatsReportManager(req.params.tid);
         report.generateRoundReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.ROUND_REPORT, result);
