@@ -3,14 +3,7 @@ import db from './../../data-access/match';
 import Team from './team';
 import playerUtil from './../../helpers/player-util';
 
-import matchEventEmitter, { events } from './../../subscribers/match-event-emitter-subscriber';
-import MatchChangeEvent from './../../events/MatchChangeEvent';
-
-const bufferMatchEventEmittion = ({ tournamentId, matchId }) => {
-    setTimeout(() => {
-        matchEventEmitter.emit(events.MATCH_CHANGE_EVENT, new MatchChangeEvent(matchId, tournamentId));
-    }, 2000);
-}
+import { events, bufferTournamentStatsChangedEmittion } from './../../subscribers/match-event-emitter-subscriber';
 
 export default {
 
@@ -61,10 +54,8 @@ export default {
             db.addToTournament(tournamentId, matchInfo, user, idOfExistingMatch ? true : false)
                 .then(result => {
                     resolve(result);
-                    bufferMatchEventEmittion({
+                    bufferTournamentStatsChangedEmittion({
                         tournamentId,
-                        matchId: matchInfo.id,
-                        phases,
                     });
                 })
                 .catch(error => reject(error));

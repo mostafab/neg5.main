@@ -10,7 +10,8 @@ CREATE TABLE tournament_stat_report (
   last_updated_at timestamp DEFAULT NOW() NOT NULL,
 
   PRIMARY KEY (id),
-  FOREIGN KEY (tournament_id) REFERENCES tournament(id),
+  FOREIGN KEY (tournament_id) REFERENCES tournament(id) ON DELETE CASCADE,
+  FOREIGN KEY (tournament_id, phase_id) REFERENCES tournament_phase(tournament_id, id) ON DELETE CASCADE, 
   UNIQUE(tournament_id, phase_id, report_type)
 );
 
