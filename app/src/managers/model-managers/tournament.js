@@ -1,5 +1,6 @@
 import shortid from 'shortid';
 import db from '../../data-access/tournament';
+import { bufferTournamentStatsChangedEmittion } from '../../subscribers/match-event-emitter-subscriber';
 
 export default {
 
@@ -214,7 +215,10 @@ export default {
     removePhase: (tournamentId, phaseId) => {
         return new Promise((resolve, reject) => {
             db.deleteTournamentPhase(tournamentId, phaseId)
-                .then(result => resolve(result))
+                .then(result => {
+                    resolve(result)
+                    bufferTournamentStatsChangedEmittion(tournamentId);
+                })
                 .catch(error => reject(error));
         })
     },
@@ -227,21 +231,4 @@ export default {
         })
     }
     
-}
-
-function defaultPointScheme() {
-    return [
-        {
-            value: 10,
-            type: 'Base'
-        },
-        {
-            value: 15,
-            type: 'Power'
-        },
-        {
-            value: -5,
-            type: 'Neg'
-        }
-    ]
 }

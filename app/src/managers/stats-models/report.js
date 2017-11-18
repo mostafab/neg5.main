@@ -20,23 +20,18 @@ export class StatsReportManager {
 
     async addOrUpdate(phaseId = null, reportType, statistics) {
         let reportAlreadyExists = false;
-        console.log(`Attempting to add or update ${reportType} for phase ${phaseId}`);
         try {
             await db.fetchReport(this.tournamentId, phaseId, reportType);
-            console.log(`report already exists for ${phaseId} of report type ${reportType}`);
             reportAlreadyExists = true;
         } catch (err) {
             if (err.name !== 'ReferenceError') {
                 throw err;
             }
-            console.log(`no existing row for ${phaseId} of report type ${reportType}`)
         }
         let result;
         if (reportAlreadyExists) {
-            console.log('Updating existng report');
             result = await db.update(this.tournamentId, phaseId, reportType, statistics);
         } else {
-            console.log('adding stats report');
             result = await db.add(this.tournamentId, phaseId, reportType, statistics);
         }
         return statReportMapper(result);
@@ -61,9 +56,9 @@ export class StatsReportManager {
     generateAndSaveTeamReport(phaseId = null) {
         return new Promise((resolve, reject) => {
             db.generateTeamReport(this.tournamentId, phaseId)
-                .then(async result => {
-                    const stats = await this.addOrUpdate(phaseId, StatReportType.TEAM, result);
-                    resolve(stats);
+                .then(result => {
+                    resolve(result);
+                    this.addOrUpdate(phaseId, StatReportType.TEAM, result); 
                 })
                 .catch(error => reject(error));
         })
@@ -72,9 +67,9 @@ export class StatsReportManager {
     generateAndSaveIndividualReport(phaseId = null) {
         return new Promise((resolve, reject) => {
             db.generateIndividualReport(this.tournamentId, phaseId)
-                .then(async result => {
-                    const stats = await this.addOrUpdate(phaseId, StatReportType.INDIVIDUAL, result);
-                    resolve(stats);
+                .then(result => {
+                    resolve(result);
+                    this.addOrUpdate(phaseId, StatReportType.INDIVIDUAL, result);
                 })
                 .catch(error =>{console.log(error); reject(error)});
         })
@@ -84,8 +79,8 @@ export class StatsReportManager {
         return new Promise((resolve, reject) => {
             db.generateTeamFullReport(this.tournamentId, phaseId)
                 .then(async result => {
-                    const stats = await this.addOrUpdate(phaseId, StatReportType.TEAM_FULL, result);
-                    resolve(stats);
+                    resolve(result);
+                    this.addOrUpdate(phaseId, StatReportType.TEAM_FULL, result);
                 })
                 .catch(error => reject(error));
         })
@@ -94,9 +89,9 @@ export class StatsReportManager {
     generateAndSavePlayerFullReport(phaseId = null) {
         return new Promise((resolve, reject) => {
             db.generatePlayerFullReport(this.tournamentId, phaseId)
-                .then(async result => {
-                    const stats = await this.addOrUpdate(phaseId, StatReportType.INDIVIDUAL_FULL, result);
-                    resolve(stats);
+                .then(result => {
+                    resolve(result);
+                    this.addOrUpdate(phaseId, StatReportType.INDIVIDUAL_FULL, result);
                 })
                 .catch(error => reject(error));
         })
@@ -105,9 +100,9 @@ export class StatsReportManager {
     generateAndSaveRoundReport(phaseId = null) {
         return new Promise((resolve, reject) => {
             db.generateRoundReport(this.tournamentId, phaseId)
-                .then(async result => {
-                    const stats = await this.addOrUpdate(phaseId, StatReportType.ROUND_REPORT, result);
-                    resolve(stats);
+                .then(result => {
+                    resolve(result);
+                    this.addOrUpdate(phaseId, StatReportType.ROUND_REPORT, result);
                 })
                 .catch(error => reject(error));
         })

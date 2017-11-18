@@ -3,7 +3,7 @@ import db from './../../data-access/match';
 import Team from './team';
 import playerUtil from './../../helpers/player-util';
 
-import { events, bufferTournamentStatsChangedEmittion } from './../../subscribers/match-event-emitter-subscriber';
+import { bufferTournamentStatsChangedEmittion } from './../../subscribers/match-event-emitter-subscriber';
 
 export default {
 
@@ -66,7 +66,12 @@ export default {
     deleteMatch: (tournamentId, gameId) => {
         return new Promise((resolve, reject) => {
             db.deleteTournamentMatch(tournamentId, gameId)
-                .then(result => resolve(result))
+                .then(result => {
+                    resolve(result)
+                    bufferTournamentStatsChangedEmittion({
+                        tournamentId,
+                    })
+                })
                 .catch(error => reject(error));
         })
     },

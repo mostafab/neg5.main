@@ -10,15 +10,25 @@ export const events = {
   TOURNAMENT_STAT_CHANGE_EVENT: 'tournamentStatsChangedEvent',
 }
 
+const tournamentCalculationTimeouts = new Map();
+
 export const bufferTournamentStatsChangedEmittion = ({ tournamentId }) => {
-  setTimeout(() => {
+  console.log('Buffering stats calculations for tournament ' + tournamentId);
+  if (tournamentCalculationTimeouts.has(tournamentId)) {
+    clearTimeout(tournamentCalculationTimeouts.get(tournamentId));
+    tournamentCalculationTimeouts.delete(tournamentId);
+  }
+  const timeout = setTimeout(() => {
+      tournamentCalculationTimeouts.delete(tournamentId);
       tournamentStatsChangeEmitter.emit(events.TOURNAMENT_STAT_CHANGE_EVENT, new TournamentStatsChangeEvent(tournamentId));
   }, 2000);
+  tournamentCalculationTimeouts.set(tournamentId, timeout);
 }
 
 tournamentStatsChangeEmitter.on(events.TOURNAMENT_STAT_CHANGE_EVENT, recalculateStats);
 
 async function recalculateStats(statsChangeEvent) {
+  console.log('Received request to re-generate stats for tournament ' + statsChangeEvent.tournamentId);
   const statsReportManager = new StatsReportManager(statsChangeEvent.tournamentId);
   const tournamentPhases = await tournamentManager.getPhases(statsChangeEvent.tournamentId);
   for (const phase of tournamentPhases) {
