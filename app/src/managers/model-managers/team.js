@@ -55,8 +55,7 @@ export default {
             let filteredDivisions = divisions.filter(division => division);
             db.updateTeamDivisions(tournamentId, teamId, filteredDivisions)
                 .then(result => {
-                    resolve(result)
-                    bufferTournamentStatsChangedEmittion({ tournamentId });
+                    resolve(result);
                 })
                 .catch(error => reject(error));
         })

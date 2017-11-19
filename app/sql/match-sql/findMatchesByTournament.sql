@@ -5,7 +5,7 @@ SELECT  match_info.match_id, outer_team_result.tournament_id,
          
         match_info.round, match_info.room, match_info.moderator,
         match_info.packet, match_info.tossups_heard, match_info.added_by,
-        match_info.phases, match_info.scoresheet
+        match_info.phases
 
 FROM
 (
