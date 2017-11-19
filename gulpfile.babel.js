@@ -47,6 +47,9 @@ gulp.task('minify-js', () => {
     .pipe(gulp.dest('app/public/javascript'));
 });
 
+/**
+ * @deprecated Don't use this. Use webpack.
+ */
 gulp.task('minify-css', () => {
   gulp.src('app/public/css/v2/*.css')
       .pipe(concat('bundle.css'))
@@ -54,10 +57,13 @@ gulp.task('minify-css', () => {
       .pipe(gulp.dest('app/public/css/min'));
 });
 
+/**
+ * @deprecated Don't use this. Use webpack.
+ */
 gulp.task('watch', () => {
   gulp.watch(['app/src/**/*.js'], ['babel-server']);
   gulp.watch(['app/public/javascript/es6/**/*.js'], ['babel-client']);
   gulp.watch(['app/public/css/v2/*.css'], ['minify-css']);
 });
 
-gulp.task('default', ['babel-server', 'minify-css', 'watch']);
+gulp.task('default', ['babel-server']);
