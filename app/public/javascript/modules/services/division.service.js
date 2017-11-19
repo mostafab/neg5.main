@@ -109,13 +109,10 @@ export default class DivisionService {
 
   resetNewDivision() {
     this.newDivision.name = '';
-    this.newDivision.phaseName = '';
-    this.newDivision.phaseId = '';
   }
 
   isValidNewDivision() {
     return this.newDivision.name.trim().length > 0
-      && this.newDivision.phaseName
       && this.newDivision.phaseName;
   }
 

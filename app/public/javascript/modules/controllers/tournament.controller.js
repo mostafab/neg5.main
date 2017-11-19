@@ -144,7 +144,7 @@ export default class TournamentController {
       this.toastPromise = this.$timeout(() => {
         this.$scope.toastMessage = null;
         this.toastPromise = null;
-      }, 3000);
+      }, 1500);
     }
     this.$scope.toastMessage = {
       message,
