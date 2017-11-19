@@ -1,6 +1,6 @@
-import {StatsReport} from './../../models/stats-models/report';
-import Qbj from './../../models/stats-models/qbj';
-import Match from './../../models/sql-models/match';
+import {StatsReportManager} from './../../managers/stats-models/report';
+import QbjManager from './../../managers/stats-models/qbj';
+import MatchManager from './../../managers/model-managers/match';
 
 import {hasToken} from './../../auth/middleware/token';
 import {accessToTournament} from './../../auth/middleware/tournament-access';
@@ -14,11 +14,14 @@ import RoundReportHtml from './../../html-stats/round-report';
 import { checkStatsCache, addStatsToCache } from './../../cache/middleware/check-stats-cache';
 import statsConstants from './../../cache/constants';
 
+import checkStatsTable from './../../middleware/check-stats-table';
+import StatReportType from './../../enums/stat-report-type';
+
 export default (app) => {
     
     app.get('/api/t/:tid/stats/player', checkStatsCache(statsConstants.INDIVIDUAL_STANDINGS), (req, res) => {
-        let report = new StatsReport(req.params.tid)
-        report.getIndividualReport(req.query.phase || null)
+        let report = new StatsReportManager(req.params.tid)
+        report.generateAndSaveIndividualReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.INDIVIDUAL_STANDINGS, result)
                 res.json({result, success: true})
@@ -27,8 +30,8 @@ export default (app) => {
     })
 
     app.get('/api/t/:tid/stats/team', checkStatsCache(statsConstants.TEAM_STANDINGS), (req, res) => {
-        let report = new StatsReport(req.params.tid);
-        report.getTeamReport(req.query.phase || null)
+        let report = new StatsReportManager(req.params.tid);
+        report.generateAndSaveTeamReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.TEAM_STANDINGS, result);
                 res.json({result, success: true})
@@ -37,8 +40,8 @@ export default (app) => {
     })
 
     app.get('/api/t/:tid/stats/teamfull', checkStatsCache(statsConstants.TEAM_FULL_STANDINGS), (req, res) => {
-        let report = new StatsReport(req.params.tid);
-        report.getTeamFullReport(req.query.phase || null)
+        let report = new StatsReportManager(req.params.tid);
+        report.generateAndSaveTeamFullReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.TEAM_FULL_STANDINGS, result);
                 res.json({result, success: true})
@@ -46,19 +49,18 @@ export default (app) => {
             .catch(error => res.status(500).send({error, success: false}))
     })
 
-    app.get('/api/t/:tid/stats/playerfull', checkStatsCache(statsConstants.INDIVIDUAL_FULL), (req, res) => {
-        let report = new StatsReport(req.params.tid);
-        report.getPlayerFullReport(req.query.phase || null)
+    app.get('/api/t/:tid/stats/playerfull', checkStatsTable(StatReportType.INDIVIDUAL_FULL), (req, res) => {
+        let report = new StatsReportManager(req.params.tid);
+        report.generateAndSavePlayerFullReport(req.query.phase || null)
             .then(result => {
-                addStatsToCache(req, statsConstants.INDIVIDUAL_FULL, result);
                 res.json({result, success: true});
             })
             .catch(error => res.status(500).send({error, success: false}))
     })
 
     app.get('/api/t/:tid/stats/roundreport', checkStatsCache(statsConstants.ROUND_REPORT), (req, res) => {
-        let report = new StatsReport(req.params.tid);
-        report.getRoundReport(req.query.phase || null)
+        let report = new StatsReportManager(req.params.tid);
+        report.generateAndSaveRoundReport(req.query.phase || null)
             .then(result => {
                 addStatsToCache(req, statsConstants.ROUND_REPORT, result);
                 res.json({result, success: true})
@@ -67,7 +69,7 @@ export default (app) => {
     })
 
     app.get('/api/t/:tid/qbj', (req, res) => {
-        Qbj.createQBJObject(req.params.tid)
+        QbjManager.createQBJObject(req.params.tid)
             .then(qbj => {
                 res.setHeader('content-type', 'application/vnd.quizbowl.qbj+json')
                 res.send({ ...qbj });        
@@ -76,7 +78,7 @@ export default (app) => {
     })
     
     app.get('/api/t/:tid/scoresheets', hasToken, accessToTournament, (req, res) => {
-        Match.getScoresheets(req.params.tid)
+        MatchManager.getScoresheets(req.params.tid)
             .then(result => res.json({result, success: true}))
             .catch(error => res.status(500).send({error, success: false}));
     })

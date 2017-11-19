@@ -3,7 +3,6 @@
 import { hasToken } from './../auth/middleware/token';
 import { accessToTournament } from './../auth/middleware/tournament-access';
 import { findTournament } from './../auth/middleware/tournament';
-import Tournament from './../models/sql-models/tournament';
 
 import slug from './../helpers/slug';
 

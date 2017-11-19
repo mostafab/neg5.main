@@ -3,7 +3,7 @@ import {statsNavigationBarHtml} from './html-utils';
 
 export default (tournamentId, phaseId = null) => new Promise((resolve, reject) => {
     
-    const teamStandingsPromise = statsDB.teamReport(tournamentId, phaseId);
+    const teamStandingsPromise = statsDB.generateTeamReport(tournamentId, phaseId);
     
     teamStandingsPromise
         .then(results => {

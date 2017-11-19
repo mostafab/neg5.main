@@ -3,6 +3,8 @@ import db from './../../data-access/match';
 import Team from './team';
 import playerUtil from './../../helpers/player-util';
 
+import { bufferTournamentStatsChangedEmittion } from './../../subscribers/match-event-emitter-subscriber';
+
 export default {
 
     findByTournament: (tournamentId) => {
@@ -21,7 +23,7 @@ export default {
         })
     },
 
-    addToTournament: (tournamentId, gameInfo, user, matchId = undefined) => {
+    addToTournament: (tournamentId, gameInfo, user, idOfExistingMatch = undefined) => {
         return new Promise((resolve, reject) => {
             let {
                 scoresheet = null,
@@ -36,8 +38,8 @@ export default {
 
             if (!phases || !teams || phases.length === 0) return reject(new Error('Phases and teams are both required'));
             
-            let matchInfo = match({
-                id: matchId,
+            const matchInfo = buildMatch({
+                id: idOfExistingMatch,
                 moderator,
                 notes,
                 packet,
@@ -49,8 +51,13 @@ export default {
                 scoresheet
             })
             
-            db.addToTournament(tournamentId, matchInfo, user, matchId ? true : false)
-                .then(result => resolve(result))
+            db.addToTournament(tournamentId, matchInfo, user, idOfExistingMatch ? true : false)
+                .then(result => {
+                    resolve(result);
+                    bufferTournamentStatsChangedEmittion({
+                        tournamentId,
+                    });
+                })
                 .catch(error => reject(error));
 
         });
@@ -59,7 +66,12 @@ export default {
     deleteMatch: (tournamentId, gameId) => {
         return new Promise((resolve, reject) => {
             db.deleteTournamentMatch(tournamentId, gameId)
-                .then(result => resolve(result))
+                .then(result => {
+                    resolve(result)
+                    bufferTournamentStatsChangedEmittion({
+                        tournamentId,
+                    })
+                })
                 .catch(error => reject(error));
         })
     },
@@ -78,7 +90,7 @@ export default {
 
 }
 
-function match({id = shortid.generate(), moderator, notes, packet, phases, room, round, teams, tuh, scoresheet}) {
+function buildMatch({id = shortid.generate(), moderator, notes, packet, phases, room, round, teams, tuh, scoresheet}) {
     return {
         id,
         moderator: moderator === null ? null : moderator.trim(),

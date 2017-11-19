@@ -43,10 +43,6 @@ export default () => {
   morgan.token('currentUser', (req, res) => {
     return req.currentUser || 'no-user-attached';
   });
-
-  if (process.env.OWN_NODE_ENV !== 'PROD') {
-    app.use(morgan(MORGAN_REQUEST_LOGGING_FORMAT));
-  }
   app.use(bodyParser.urlencoded({
     extended: true,
   }));
