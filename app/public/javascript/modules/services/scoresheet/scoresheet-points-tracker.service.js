@@ -54,7 +54,7 @@ export default class ScoresheetPointsTrackerService {
       score += game.currentCycle.bonuses.filter(b =>
         b === teamId).length * this.pointScheme.bonusPointValue;
     }
-    return score;
+    return score || 0;
   }
 
   getTeamBonusPointsForCycle(teamId, cycleIndex) {

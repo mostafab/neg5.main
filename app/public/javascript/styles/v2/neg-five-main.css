@@ -397,7 +397,7 @@ th.nf-label {
     cursor: pointer;
 }
 
-table.sortable-table > thead > tr > th:hover {
+table.sortable-table > thead > tr > th.sortable:hover {
     cursor: pointer;
 }
 

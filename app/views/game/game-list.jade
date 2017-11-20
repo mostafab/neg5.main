@@ -10,10 +10,10 @@ div(ng-show='!Game.loadedGame.id')
         table(class="table table-condensed nf-shadow no-margin font-size-medium sortable-table")
             thead
                 tr
-                    th(class="table-head" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse' style='width:50px') Round
+                    th(class="table-head sortable" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse' style='width:50px') Round
                     th(class="table-head") Phase(s)
-                    th(class="table-head" ng-click='Game.sortType = "teams.one.name"; Game.sortReverse = !Game.sortReverse') Team 1
-                    th(class="table-head" ng-click='Game.sortType = "teams.two.name"; Game.sortReverse = !Game.sortReverse') Team 2
+                    th(class="table-head sortable" ng-click='Game.sortType = "teams.one.name"; Game.sortReverse = !Game.sortReverse') Team 1
+                    th(class="table-head sortable" ng-click='Game.sortType = "teams.two.name"; Game.sortReverse = !Game.sortReverse') Team 2
                     th(class='table-head' style='width:200px') Notes
             tbody
                 tr(class='nf-list-item nf-white' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | matchSearch:Game.gameQuery track by game.id' ng-click='Game.loadGame(game.id)')
