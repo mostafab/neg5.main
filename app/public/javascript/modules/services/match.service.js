@@ -275,6 +275,7 @@ export default class MatchService {
       team_2_score,
       team_1_name,
       team_2_name,
+      notes,
       phases }) => (
       {
         id,
@@ -292,6 +293,7 @@ export default class MatchService {
             name: team_2_name,
           },
         },
+        notes,
         phases: phases.reduce((obj, current) => {
           obj[current.phase_id] = true;
           return obj;

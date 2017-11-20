@@ -7,19 +7,22 @@ div(ng-show='!Game.loadedGame.id')
             input(type="text" class="form-control nf-input" placeholder="Filter By Round or Team" ng-model='Game.gameQuery')
 
     div(class="nf-panel" style='margin-bottom:10px')
-        table(class="table table-condensed nf-shadow no-margin font-size-medium")
+        table(class="table table-condensed nf-shadow no-margin font-size-medium sortable-table")
             thead
                 tr
-                    th(class="table-head" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse') Round
+                    th(class="table-head" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse' style='width:50px') Round
                     th(class="table-head") Phase(s)
-                    th(class="table-head") Team 1
-                    th(class="table-head") Team 2
+                    th(class="table-head" ng-click='Game.sortType = "teams.one.name"; Game.sortReverse = !Game.sortReverse') Team 1
+                    th(class="table-head" ng-click='Game.sortType = "teams.two.name"; Game.sortReverse = !Game.sortReverse') Team 2
+                    th(class='table-head' style='width:200px') Notes
             tbody
                 tr(class='nf-list-item nf-white' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | matchSearch:Game.gameQuery track by game.id' ng-click='Game.loadGame(game.id)')
                     td(ng-bind='game.round')
                     td
                         p(ng-repeat='phase in Game.phases track by phase.id' ng-if='game.phases[phase.id] === true' ng-bind='phase.name')
-                    td(ng-repeat='team in Game.teams track by team.id' ng-if='team.id === game.teams.one.id' ng-bind='team.name + " (" + game.teams.one.score + ")"')
-                    td(ng-repeat='team in Game.teams track by team.id' ng-if='team.id === game.teams.two.id' ng-bind='team.name + " (" + game.teams.two.score + ")"')
-            
+                    td(ng-bind='game.teams.one.name + " (" + game.teams.one.score + ")"')
+                    td(ng-bind='game.teams.two.name + " (" + game.teams.two.score + ")"')
+                    td(title='{{game.notes}}')
+                        span(ng-bind='game.notes | limitTo:35')
+                        span(ng-if='game.notes.length > 35') ...
 

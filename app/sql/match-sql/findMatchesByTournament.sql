@@ -5,7 +5,7 @@ SELECT  match_info.match_id, outer_team_result.tournament_id,
          
         match_info.round, match_info.room, match_info.moderator,
         match_info.packet, match_info.tossups_heard, match_info.added_by,
-        match_info.phases
+        match_info.phases, match_info.notes
 
 FROM
 (
@@ -89,10 +89,10 @@ FROM
             M.round, 
             M.room, 
             M.moderator, 
-            M.packet, 
+            M.packet,
+            M.notes, 
             M.tossups_heard, 
             M.added_by,
-            COALESCE(M.scoresheet, '{}') as scoresheet,
             array_agg(json_build_object('phase_id', P.id, 'phase_name', P.name)) AS phases
             
         FROM  
