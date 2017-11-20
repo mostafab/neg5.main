@@ -93,7 +93,6 @@ export default {
 }
 
 function buildMatch({id = shortid.generate(), moderator, notes, packet, phases, room, round, teams, tuh, serialId, scoresheet}) {
-    console.log(arguments);
     return {
         id,
         moderator: moderator === null ? null : moderator.trim(),
