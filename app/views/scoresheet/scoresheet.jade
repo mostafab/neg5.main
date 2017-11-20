@@ -12,9 +12,9 @@
                         .panel.nf-panel
                             .nf-panel-heading.center    
                                 | {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}} ({{CycleCtrl.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
-                                p.nf-margin.warning-text(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) > CycleCtrl.rules.maxActive') 
+                                p.nf-margin.warning-text.font-size-medium(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) > CycleCtrl.rules.maxActive') 
                                     | # active more than max allowed active players.
-                                p.nf-margin.warning-text(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) === 0') 
+                                p.nf-margin.warning-text.font-size-medium(ng-show='Scoresheet.game.teams[0].teamInfo.id && CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) === 0') 
                                     | No active players.
                             .panel-body.nf-panel-body.nf-white.relative(style='position:relative')
                                 .input-group.nf-margin.responsive(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'not-visible' : !player.active}")
@@ -58,9 +58,9 @@
                         .panel.nf-panel
                             .nf-panel-heading.center 
                                 | {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}} ({{CycleCtrl.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
-                                p.warning-text.nf-margin(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) > Scoresheet.rules.maxActive') 
+                                p.warning-text.nf-margin.font-size-medium(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) > Scoresheet.rules.maxActive') 
                                     | # active more than max allowed active players.
-                                p.nf-margin.warning-text(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) === 0') 
+                                p.nf-margin.warning-text.font-size-medium(ng-show='Scoresheet.game.teams[1].teamInfo.id && CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) === 0') 
                                     | No active players.
                             .panel-body.nf-panel-body.nf-white.relative
                                 .input-group.nf-margin.responsive(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'not-visible' : !player.active}")

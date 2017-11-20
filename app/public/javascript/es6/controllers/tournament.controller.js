@@ -17,7 +17,7 @@
             }
             $scope.toastMessage = null;
             
-            const timeToastShows = 3000;
+            const timeToastShows = 2000;
 
             let toastPromise = null;
             $scope.toast = ({message, success = null, hideAfter = false}) => {

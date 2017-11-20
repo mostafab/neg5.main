@@ -346,10 +346,10 @@ input[type="color"]:focus,
 th.nf-label, .label.nf-label, label.nf-label > p, .nf-panel-heading * label.nf-label, 
 .nf-panel-heading > label.nf-label, .nf-panel-heading > label.nf-label > p {
     position: relative;
-    float: left;
+    /* float: left; */
     font-size: 1.375rem;
     letter-spacing: 1px;
-    color: #919496;
+    color: #585858;
     font-weight: 400;
     /* text-transform: uppercase; */
 }
@@ -390,6 +390,14 @@ th.nf-label {
 }
 .nf-list-item:hover > td {
     color: #5ab8f8; 
+    cursor: pointer;
+}
+.nf-list-item:hover > td > * {
+    color: #5ab8f8; 
+    cursor: pointer;
+}
+
+table.sortable-table > thead > tr > th.sortable:hover {
     cursor: pointer;
 }
 
@@ -815,7 +823,7 @@ tr > .table-head {
     font-size: 16px; /* IE8 Fallback */
     display: inline-block;
     min-width: 30rem;
-    padding: 2.2rem 3.4rem;
+    /* padding: 2.2rem 3.4rem; */
     border-radius: 1px;
     text-align: left;
     color: #fff;

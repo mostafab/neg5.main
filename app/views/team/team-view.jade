@@ -18,7 +18,7 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                         .row
                             .col-lg-3.col-md-4.col-sm-4
                                 .input-group.nf-margin
-                                    span.input-group-addon.no-border.nf-label Team Name
+                                    label.label.input-group-addon.no-border.nf-label Team Name
                             .col-lg-9.col-md-8.col-sm-8
                                 .col-lg-12
                                     .input-group.nf-margin
@@ -35,7 +35,7 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                         .row
                             .col-lg-3.col-md-4.col-sm-4
                                 .input-group.nf-margin
-                                    span.input-group-addon.no-border.nf-label Divisions
+                                    label.label.input-group-addon.no-border.nf-label Divisions
                             .col-lg-9.col-md-8.col-sm-8
                                 .col-lg-12(ng-repeat='phase in Team.phases')
                                     .input-group.nf-margin
@@ -49,7 +49,7 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                         .row
                             .col-lg-3.col-md-4.col-sm-4
                                 .input-group.nf-margin
-                                    span.input-group-addon.no-border.nf-label Players ({{Team.currentTeam.players.length}})
+                                    label.label.input-group-addon.no-border.nf-label Players ({{Team.currentTeam.players.length}})
                             .col-lg-9.col-md-8.col-sm-8
                                 .col-lg-12(ng-repeat='player in Team.currentTeam.players')
                                     .row
@@ -73,7 +73,7 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                         .row
                             .col-lg-3.col-md-4.col-sm-4
                                 .input-group.nf-margin
-                                    span.input-group-addon.no-border.nf-label New Player
+                                    label.label.input-group-addon.no-border.nf-label New Player
                             .col-lg-9.col-md-8.col-sm-8
                                 .col-lg-12
                                     .input-group.nf-margin
@@ -82,7 +82,7 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                                             i.fa.fa-check
 
         .panel-footer.nf-panel-footer.nf-white
-            h5.nf-label Added by: {{Team.currentTeam.addedBy}}
+            h5.label.nf-label Added by: {{Team.currentTeam.addedBy}}
 
 div#deleteTeamModal.modal.nf-modal
     .modal-dialog
