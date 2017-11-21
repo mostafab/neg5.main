@@ -147,6 +147,7 @@ function matchQbjArrayFactory(matches) {
             location: match.room,
             moderator: match.moderator,
             notes: match.notes,
+            serial: match.serial_id,
             match_teams: match.teams.map(t => {
                 return {
                     team: {
