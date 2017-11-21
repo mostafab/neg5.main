@@ -19,7 +19,6 @@ export default class MatchService {
   postGame(tournamentId) {
     return this.$q((resolve, reject) => {
       const formattedGame = MatchService.formatGame(this.currentGame);
-      console.log(formattedGame);
       this.MatchHttpService.postMatch(tournamentId, formattedGame)
         .then(() => {
           this.getGames(tournamentId);
