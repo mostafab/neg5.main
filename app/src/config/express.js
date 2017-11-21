@@ -60,8 +60,9 @@ export default () => {
   app.set('views', path.join(__dirname, '../../views'));
   app.set('view engine', 'jade');
 
-  const cacheTime = process.env.NODE_ENV === 'production' ? ONE_DAY_MS : 0;
+  const cacheTime = process.env.NODE_ENV === 'production' ? parseInt(configuration.STATIC_ASSETS_CACHE_TIME_MS) || ONE_DAY_MS : 0;
   app.use(express.static(path.join(__dirname, '../../public'), { maxAge: cacheTime }));
+  log.INFO('Set static cache time of: ' + cacheTime + 'ms');
 
   app.use((request, response, next) => {
     if (process.env.NODE_ENV === 'production') {
