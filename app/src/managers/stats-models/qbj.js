@@ -9,7 +9,9 @@ const versionNumber = "1.2";
 const highestAllowedDifference = 1;
 
 export default {
-
+    /**
+     * This needs to be changed to not be blocking the event loop.
+     */
     createQBJObject: (tournamentId, currentUser = null) => {
         return new Promise((resolve, reject) => {
             const qbjObj = {
@@ -147,6 +149,7 @@ function matchQbjArrayFactory(matches) {
             location: match.room,
             moderator: match.moderator,
             notes: match.notes,
+            serial: match.serial_id,
             match_teams: match.teams.map(t => {
                 return {
                     team: {

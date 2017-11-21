@@ -387,6 +387,17 @@
                                         div(class="col-lg-12 col-md-12 col-sm-12")
                                             div(class="row")
                                                 div(class="col-md-6 col-sm-6")
+                                                    label(class="label nf-label btn-block" style='float:right') Serial ID
+                                                div(class="col-md-6 col-sm-6")
+                                                    input(type="text" class="form-control nf-input " name="serialId" placeholder="Serial ID", 
+                                                        ng-model='Scoresheet.game.serialId',
+                                                        ng-class="{'nf-error' : Scoresheet.scoresheetForm.serialId.$invalid}"
+                                                    )
+                                    br
+                                    div(class="row")
+                                        div(class="col-lg-12 col-md-12 col-sm-12")
+                                            div(class="row")
+                                                div(class="col-md-6 col-sm-6")
                                                     label(class="label nf-label btn-block" style='float:right' title='Select all phases that you want this game to count for.') Phases* ({{Scoresheet.game.phases.length}})
                                                         p.warning-text(ng-show='Scoresheet.scoresheetForm.phases.$invalid') Select a phase(s).
                                                 div(class="col-md-6 col-sm-6")

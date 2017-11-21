@@ -83,6 +83,7 @@ export default class MatchService {
             packet: game.packet,
             room: game.room,
             round: game.round,
+            serialId: game.serial_id,
             teams: game.teams.map(MatchService.mapMatchTeamFunction).sort((thisTeam, nextTeam) => {
               return teamOrderValues[thisTeam.id] - teamOrderValues[nextTeam.id]
             }),
@@ -233,6 +234,7 @@ export default class MatchService {
       moderator: null,
       packet: null,
       notes: null,
+      serialId: null,
     };
   }
 

@@ -114,6 +114,7 @@ export default class ScoresheetService {
       phases: scoresheet.phases,
       room: scoresheet.room,
       round: scoresheet.round,
+      serialId: scoresheet.serialId,
       tuh: scoresheet.currentCycle.number - 1,
       teams: scoresheet.teams.map((team) => {
         return {
@@ -193,6 +194,7 @@ export default class ScoresheetService {
       moderator: null,
       phases: [],
       room: null,
+      serialId: null,
     };
   }
 

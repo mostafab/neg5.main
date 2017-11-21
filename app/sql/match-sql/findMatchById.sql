@@ -13,6 +13,7 @@ FROM
     M.tossups_heard,
     M.notes,
     M.added_by,
+    M.serial_id,
     match_teams.teams
 
     FROM

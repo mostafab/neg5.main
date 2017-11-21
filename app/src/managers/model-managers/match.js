@@ -33,7 +33,8 @@ export default {
                 phases, 
                 room = null, 
                 round = 0, 
-                teams, 
+                teams,
+                serialId = null, 
                 tuh = 20} = gameInfo;
 
             if (!phases || !teams || phases.length === 0) return reject(new Error('Phases and teams are both required'));
@@ -48,6 +49,7 @@ export default {
                 round,
                 teams,
                 tuh,
+                serialId,
                 scoresheet
             })
             
@@ -90,7 +92,7 @@ export default {
 
 }
 
-function buildMatch({id = shortid.generate(), moderator, notes, packet, phases, room, round, teams, tuh, scoresheet}) {
+function buildMatch({id = shortid.generate(), moderator, notes, packet, phases, room, round, teams, tuh, serialId, scoresheet}) {
     return {
         id,
         moderator: moderator === null ? null : moderator.trim(),
@@ -101,6 +103,7 @@ function buildMatch({id = shortid.generate(), moderator, notes, packet, phases, 
         round,
         teams,
         tuh,
-        scoresheet
+        scoresheet,
+        serialId: serialId ? serialId.trim() : null,
     }
 }
