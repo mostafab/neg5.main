@@ -232,3 +232,20 @@ export default {
     }
     
 }
+
+function defaultPointScheme() {
+    return [
+        {
+            value: 10,
+            type: 'Base'
+        },
+        {
+            value: 15,
+            type: 'Power'
+        },
+        {
+            value: -5,
+            type: 'Neg'
+        }
+    ]
+}
