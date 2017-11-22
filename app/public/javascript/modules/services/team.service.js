@@ -370,8 +370,6 @@ export default class TeamService {
         name: '',
       },
     };
-
-    console.log(formattedTeam);
     return formattedTeam;
   }
 
