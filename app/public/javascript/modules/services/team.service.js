@@ -357,7 +357,7 @@ export default class TeamService {
           newName: p.player_name,
           id: p.player_id,
           addedBy: p.added_by,
-          games: p.games,
+          totalTossupsHeard: p.total_tossups_heard,
         }
       )),
       mappedDivisions: divisions.reduce((aggr, current) => {
@@ -370,6 +370,8 @@ export default class TeamService {
         name: '',
       },
     };
+
+    console.log(formattedTeam);
     return formattedTeam;
   }
 
