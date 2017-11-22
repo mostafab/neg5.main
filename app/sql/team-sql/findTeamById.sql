@@ -7,7 +7,7 @@ LEFT JOIN
 (
     SELECT 
     P.team_id, 
-    array_agg(json_build_object('player_name', P.name, 'player_id', P.id, 'added_by', P.added_by, 'games', COALESCE(player_games.games_counted, 0))) as players
+    array_agg(json_build_object('player_name', P.name, 'player_id', P.id, 'added_by', P.added_by, 'total_tossups_heard', COALESCE(player_games.total_tossups_heard, 0))) as players
 
     FROM
 
@@ -18,7 +18,7 @@ LEFT JOIN
     (
         SELECT 
         PPM.player_id, 
-        COUNT(*)::integer as games_counted
+        SUM(tossups_heard)::integer as total_tossups_heard
         FROM player_plays_in_tournament_match PPM
         WHERE PPM.tournament_id = $1
         GROUP BY PPM.player_id
@@ -35,7 +35,7 @@ LEFT JOIN
 ON T.id = team_players.team_id
 
 INNER JOIN 
-                                                                                                                -- Find all divisions
+                                                                                                               -- Find all divisions
 (
 
     SELECT 
