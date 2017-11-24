@@ -60,7 +60,7 @@ export default {
     }),
 
     findByName: query => new Promise((resolve, reject) => {
-        db.findByName(query.trim().toLowerCase())
+        db.findByName(query.trim())
             .then(result => resolve(result))
             .catch(err => reject(err));
     }),

@@ -110,9 +110,10 @@ export default {
       .catch(err => reject(err));
   }),
 
-  findByName: name => new Promise((resolve, reject) => {
+  findByName: query => new Promise((resolve, reject) => {
     const params = {
-      searchName: `${name}%`,
+      searchName: `${query.toLowerCase()}%`,
+      originalQuery: query,
     };
     readOnlyQuery(tournament.findByName, params, qm.any)
       .then(tournaments => resolve(tournaments))
