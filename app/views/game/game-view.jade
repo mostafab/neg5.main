@@ -119,6 +119,8 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                         div(class="row")
                             div(class="col-md-6 col-sm-6 col-xs-12")
                                 label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text' : Game.editGameForm.overtimetu1.$invalid}") TUs with no bonuses
+                                    span.nf-margin(tooltip message='Number of tossups that did not have corresponding bonuses (eg. # of overtime tossups)')
+                                            i.fa.fa-question
                             div(class="col-md-6 col-sm-6 col-xs-12")
                                 input(type="number" min='0' class="form-control nf-input " title='Tossups answered correctly that didn\'t lead to bonuses.' name="overtimetu1" placeholder="Tossups answered correctly that didn\'t lead to bonuses."
                                     ng-model='Game.loadedGame.teams[0].overtime'
@@ -129,6 +131,8 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                                 input(type="number" min='0' title='Tossups answered correctly that didn\'t lead to bonuses.' class="form-control nf-input " name="overtimetu2" placeholder="Tossups answered correctly that didn\'t lead to bonuses." ng-model='Game.loadedGame.teams[1].overtime' ng-class="{'error-text' : Game.editGameForm.overtimetu2.$invalid}")
                             div(class="col-md-6 col-sm-6 col-xs-12")
                                 label(class="label nf-label btn-block" style='float:right' ng-class="{'error-text' : Game.editGameForm.overtimetu2.$invalid}") TUs with no bonuses
+                                    span.nf-margin(tooltip message='Number of tossups that did not have corresponding bonuses (eg. # of overtime tossups)')
+                                            i.fa.fa-question
 
                 br
 

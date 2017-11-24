@@ -295,6 +295,8 @@
                                                 .col-md-6.col-sm-6
                                                     label.nf-label.btn-block
                                                         p TUs with no bonuses
+                                                        span.nf-margin(tooltip message='Number of tossups that did not have corresponding bonuses (eg. # of overtime tossups)')
+                                                            i.fa.fa-question
                                                 .col-md-6.col-sm-6
                                                     input.form-control.nf-input(type='number' min='0' max='{{Scoresheet.game.currentCycle.number - 1}}' placeholder='Tossups answered correctly that didn\'t lead to bonuses.', 
                                                         ng-model='Scoresheet.game.teams[0].overtime',
@@ -324,7 +326,9 @@
                                                     )
                                                 .col-md-6.col-sm-6
                                                     label.nf-label.btn-block 
-                                                        p TUs with no bonuses                         
+                                                        p TUs with no bonuses
+                                                        span.nf-margin(tooltip message='Number of tossups that did not have corresponding bonuses (eg. # of overtime tossups)')
+                                                            i.fa.fa-question                         
                                     br
                                     br
                                     
