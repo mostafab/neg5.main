@@ -12,7 +12,7 @@ export default () => {
         }
         const $elem = $(angular.element(elem));
         $elem.addClass(CLASSNAME);
-        $($elem).tooltip({
+        $elem.tooltip({
           trigger: 'click',
           title,
         });
