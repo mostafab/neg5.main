@@ -50,6 +50,7 @@ import DivisionService from './modules/services/division.service';
 import CollaboratorService from './modules/services/collaborator.service';
 import QBJService from './modules/services/qbj.service';
 import StatsService from './modules/services/stats.service';
+
 import SlugService from './modules/services/util/slug.service';
 
 import QBJHttpService from './modules/services/http/qbj-http.service';
@@ -71,6 +72,7 @@ import MatchSearchFilter from './modules/filters/match-search.filter';
 import DivisionPhaseFilter from './modules/filters/division-phase.filter';
 
 import KeepNameScrollDirective from './modules/directives/keep-name-scroll.directive';
+import ToolTipDirective from './modules/directives/tooltip.directive';
 
 angular.module('IndexApp', [ngCookies, ngAnimate])
   .config(config)
@@ -119,7 +121,8 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .controller('ScoresheetTableController', ScoresheetTableController)
   .filter('preventSameMatchTeams', PreventSameMatchTeamFilter)
   .filter('matchSearch', MatchSearchFilter)
-  .filter('divisionPhase', DivisionPhaseFilter);
+  .filter('divisionPhase', DivisionPhaseFilter)
+  .directive('tooltip', ToolTipDirective);
 
 // angular.module('statsApp', [ngCookies, ngAnimate])
 //   .config(config)

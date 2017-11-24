@@ -384,9 +384,7 @@ th.nf-label {
 }
 
 .nf-list-item {
-    /* border: 0px solid black; */
     padding: 15px;
-    /*font-size: 1.3em;*/
 }
 .nf-list-item:hover > td {
     color: #5ab8f8; 
@@ -398,6 +396,10 @@ th.nf-label {
 }
 
 table.sortable-table > thead > tr > th.sortable:hover {
+    cursor: pointer;
+}
+
+.nf-tooltip:hover {
     cursor: pointer;
 }
 
