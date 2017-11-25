@@ -4,6 +4,9 @@ block titleContent
 
 block content        
     
+    script.
+        __NF_TOURNAMENT_ID__="#{tournamentId}"
+
     div(ng-app='tournamentApp')
         div(ng-controller='TournamentCtrl as Tournament')
             title(ng-bind='tournamentInfo.name + " - " + Tournament.tab.substring(0, 1).toUpperCase() + Tournament.tab.substring(1) + " | Neg 5"')

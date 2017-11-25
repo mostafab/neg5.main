@@ -1,7 +1,12 @@
 import angular from 'angular';
+import Emittable from './../util/emittable';
 
-export default class MatchService {
+import MatchActions from './../actions/match.actions';
+
+export default class MatchService extends Emittable {
   constructor($q, TeamService, TournamentService, MatchHttpService) {
+    super();
+
     this.$q = $q;
     this.MatchHttpService = MatchHttpService;
     this.TournamentService = TournamentService;
@@ -47,6 +52,7 @@ export default class MatchService {
         .then((matches) => {
           const formattedMatches = MatchService.formatAllGames(matches);
           angular.copy(formattedMatches, this.games);
+          this.emit(MatchActions.matchesReceived, { matches: formattedMatches });
         })
         .catch(error => reject(error));
     });
@@ -56,8 +62,9 @@ export default class MatchService {
     return this.$q((resolve, reject) => {
       this.MatchHttpService.deleteMatch(tournamentId, matchId)
         .then((deletedMatchId) => {
-          this.removeMatchFromArray(deletedMatchId);
+          const match = this.removeMatchFromArray(deletedMatchId);
           resolve();
+          this.emit(MatchActions.matchDeleted, { match });
         })
         .catch(error => reject(error));
     });
@@ -209,8 +216,11 @@ export default class MatchService {
   removeMatchFromArray(matchId) {
     const index = this.games.findIndex(game => game.id === matchId);
     if (index !== -1) {
+      const match = this.games[index];
       this.games.splice(index, 1);
+      return match;
     }
+    throw new Error(`No match for given match id: ${matchId}`);
   }
 
   static newGame() {

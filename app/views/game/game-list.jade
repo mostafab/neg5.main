@@ -6,23 +6,36 @@ div(ng-show='!Game.loadedGame.id')
                 i(class='fa fa-refresh')
             input(type="text" class="form-control nf-input" placeholder="Filter By Round or Team" ng-model='Game.gameQuery')
 
-    div(class="nf-panel" style='margin-bottom:10px')
-        table(class="table table-condensed nf-shadow no-margin font-size-medium sortable-table")
-            thead
-                tr
-                    th(class="table-head sortable" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse' style='width:50px') Round
-                    th(class="table-head") Phase(s)
-                    th(class="table-head sortable" ng-click='Game.sortType = "teams.one.name"; Game.sortReverse = !Game.sortReverse') Team 1
-                    th(class="table-head sortable" ng-click='Game.sortType = "teams.two.name"; Game.sortReverse = !Game.sortReverse') Team 2
-                    th(class='table-head' style='width:200px') Notes
-            tbody
-                tr(class='nf-list-item nf-white' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | matchSearch:Game.gameQuery track by game.id' ng-click='Game.loadGame(game.id)')
-                    td(ng-bind='game.round')
-                    td
-                        p(ng-repeat='phase in Game.phases track by phase.id' ng-if='game.phases[phase.id] === true' ng-bind='phase.name')
-                    td(ng-bind='game.teams.one.name + " (" + game.teams.one.score + ")"')
-                    td(ng-bind='game.teams.two.name + " (" + game.teams.two.score + ")"')
-                    td(title='{{game.notes}}')
-                        span(ng-bind='game.notes | limitTo:35')
-                        span(ng-if='game.notes.length > 35') ...
+    .row
+        .col-lg-9.col-md-9.col-sm-12
+            div(class="nf-panel" style='margin-bottom:10px')
+                table(class="table table-condensed nf-shadow no-margin font-size-medium sortable-table")
+                    thead
+                        tr
+                            th(class="table-head sortable" ng-click='Game.sortType = "round"; Game.sortReverse = !Game.sortReverse' style='width:50px') Round
+                            th(class="table-head") Phase(s)
+                            th(class="table-head sortable" ng-click='Game.sortType = "teams.one.name"; Game.sortReverse = !Game.sortReverse') Team 1
+                            th(class="table-head sortable" ng-click='Game.sortType = "teams.two.name"; Game.sortReverse = !Game.sortReverse') Team 2
+                            th(class='table-head' style='width:200px') Notes
+                    tbody
+                        tr(class='nf-list-item nf-white' ng-repeat='game in Game.games | orderBy:Game.sortType:Game.sortReverse | matchSearch:Game.gameQuery track by game.id' ng-click='Game.loadGame(game.id)')
+                            td(ng-bind='game.round')
+                            td
+                                p(ng-repeat='phase in Game.phases track by phase.id' ng-if='game.phases[phase.id] === true' ng-bind='phase.name')
+                            td(ng-bind='game.teams.one.name + " (" + game.teams.one.score + ")"')
+                            td(ng-bind='game.teams.two.name + " (" + game.teams.two.score + ")"')
+                            td(title='{{game.notes}}')
+                                span(ng-bind='game.notes | limitTo:35')
+                                span(ng-if='game.notes.length > 35') ...
 
+        .col-lg-3.col-md-3.hidden-sm
+            div.MatchDetailsPane(data-spy='affix' data-offset-top='50' ng-controller='MatchKeyDetailsController as MDetailsCtrl')
+                .nf-panel(style='margin-bottom:10px')
+                    .nf-panel-heading
+                        label.nf-label Overall Match Details
+                    .panel-body.nf-panel-body
+                        p.nf-label Total Matches:
+                            label.label.nf-label {{ MDetailsCtrl.MatchKeyDetailsService.numMatches }}
+                        p.nf-label Matches per Round
+                        p.nf-label(ng-repeat='(round, num) in MDetailsCtrl.MatchKeyDetailsService.roundToNumMatches') {{ round }} :
+                            label.label.nf-label  {{ num }}

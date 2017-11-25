@@ -30,6 +30,7 @@ import PhaseController from './modules/controllers/phase.controller';
 import StatisticsController from './modules/controllers/statistics.controller';
 import ConfigController from './modules/controllers/config.controller';
 import DivisionController from './modules/controllers/division.controller';
+import MatchKeyDetailsController from './modules/controllers/match-key-details.controller';
 
 import CollaboratorSearchController from './modules/controllers/collaborator-search.controller';
 import CollaboratorListController from './modules/controllers/collaborator-list.controller';
@@ -60,6 +61,7 @@ import MatchHttpService from './modules/services/http/match-http.service';
 import TeamHttpService from './modules/services/http/team-http.service';
 import CollaboratorHttpService from './modules/services/http/collaborator-http.service';
 import StatsHttpService from './modules/services/http/stats-http.service';
+import MatchKeyDetailsService from './modules/services/match-key-details.service';
 
 import ScoresheetService from './modules/services/scoresheet/scoresheet.service';
 import ScoresheetCycleService from './modules/services/scoresheet/scoresheet-cycle.service';
@@ -104,10 +106,12 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('ScoresheetCycleService', ScoresheetCycleService)
   .service('ScoresheetPointsTrackerService', ScoresheetPointsTrackerService)
   .service('ScoresheetTableService', ScoresheetTableService)
+  .service('MatchKeyDetailsService', MatchKeyDetailsService)
   .service('SlugService', SlugService)
   .factory('MatchUtilFactory', MatchUtilFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)
+  .controller('MatchKeyDetailsController', MatchKeyDetailsController)
   .controller('TeamCtrl', TeamController)
   .controller('StatisticsCtrl', StatisticsController)
   .controller('ConfigCtrl', ConfigController)
@@ -123,14 +127,4 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .filter('matchSearch', MatchSearchFilter)
   .filter('divisionPhase', DivisionPhaseFilter)
   .directive('tooltip', ToolTipDirective);
-
-// angular.module('statsApp', [ngCookies, ngAnimate])
-//   .config(config)
-//   .controller('PublicStatsController', StatsDisplayController)
-//   .service('StatsService', StatsService)
-//   .service('StatsHttpService', StatsHttpService)
-//   .service('PhaseService', PhaseService)
-//   .service('PhaseHttpService', PhaseHttpService)
-//   .service('TournamentService', TournamentService)
-//   .directive('keepNameScroll', KeepNameScrollDirective)
 
