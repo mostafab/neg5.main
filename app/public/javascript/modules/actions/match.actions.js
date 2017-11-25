@@ -1,0 +1,1 @@
+export const matchesReceived = (prefix = '') => `${prefix}:matchesReceived`;

@@ -1,7 +1,12 @@
 import angular from 'angular';
+import Emittable from './../util/emittable';
 
-export default class MatchService {
+import { matchesReceived } from './../actions/match.actions';
+
+export default class MatchService extends Emittable {
   constructor($q, TeamService, TournamentService, MatchHttpService) {
+    super();
+
     this.$q = $q;
     this.MatchHttpService = MatchHttpService;
     this.TournamentService = TournamentService;
@@ -47,6 +52,7 @@ export default class MatchService {
         .then((matches) => {
           const formattedMatches = MatchService.formatAllGames(matches);
           angular.copy(formattedMatches, this.games);
+          this.emit(matchesReceived('MatchService'), { matches: formattedMatches });
         })
         .catch(error => reject(error));
     });

@@ -34,4 +34,13 @@ div(ng-show='!Game.loadedGame.id')
                     .nf-panel-heading
                         label.nf-label Key Match Details
                     .panel-body.nf-panel-body
-                        label.label.nf-label Number of Matches: {{ MDetailsCtrl.matches.length }}
+                        p
+                            label.label.nf-label Total Matches: {{ MDetailsCtrl.MatchKeyDetailsService.numMatches }}
+                        br
+                        p
+                            label.label.nf-label # matches by round
+                        .row(ng-repeat='(round, num) in MDetailsCtrl.MatchKeyDetailsService.roundToNumMatches')
+                            .col-lg-3
+                                label.label.nf-label {{ round }}:
+                            .col-lg-6
+                                label.label.nf-label  {{ num }}
