@@ -8,7 +8,7 @@ export default class MatchKeyDetailsService {
   }
 
   bindListeners() {
-    this.MatchService.on(matchesReceived('MatchService'), this._onReceivedMatches.bind(this));
+    this.MatchService.on(matchesReceived, this._onReceivedMatches.bind(this));
   }
 
   _onReceivedMatches(payload) {
@@ -16,11 +16,10 @@ export default class MatchKeyDetailsService {
     this.numMatches = matches.length;
 
     this.roundToNumMatches = matches.reduce((aggr, current) => {
-      aggr[current.round] ? aggr[current.round]++ : aggr[current.round] = 1;
+      const key = current.round === null ? 'N/A' : current.round;
+      aggr[key] ? aggr[key]++ : aggr[key] = 1;
       return aggr;
     }, {});
-
-    console.log(this.roundToNumMatches);
   }
 }
 

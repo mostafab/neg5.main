@@ -37,7 +37,7 @@ module.exports = app => {
   });
 
   app.get('/t/:tid', hasToken, accessToTournament, (req, res, next) => {
-    res.render("tournament/tournament-view", { statsBaseUrl })
+    res.render("tournament/tournament-view", { statsBaseUrl, tournamentId: req.params.tid })
   })
 
   app.get('/t/:tid/stats/:page(team|player|teamfull|playerfull|roundreport)/', (req, res) => {
@@ -45,6 +45,6 @@ module.exports = app => {
   });
 
   app.get("/t/:tid/:slug", hasToken, accessToTournament, (req, res, next) => {
-    res.render("tournament/tournament-view", { statsBaseUrl })
+    res.render("tournament/tournament-view", { statsBaseUrl, tournamentId: req.params.tid })
   });
 };

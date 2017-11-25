@@ -343,6 +343,14 @@ input[type="color"]:focus,
     background: none;
 }
 
+p.nf-label {
+    color: #585858;
+}
+
+p.nf-label > .nf-label {
+    color: #919496;
+}
+
 th.nf-label, .label.nf-label, label.nf-label > p, .nf-panel-heading * label.nf-label, 
 .nf-panel-heading > label.nf-label, .nf-panel-heading > label.nf-label > p {
     position: relative;
@@ -1001,4 +1009,32 @@ Switch
 
 .modal.nf-modal .nf-modal-message {
     line-height: 1.5;
+}
+
+.MatchDetailsPane.affix {
+    top: 10%;
+}
+
+@media (min-width: 1000px) {
+    .MatchDetailsPane {
+        width: 200px;
+    }
+}
+
+@media (min-width: 1100px) {
+    .MatchDetailsPane {
+        width: 240px;   
+    }
+}
+
+@media (min-width: 1300px) {
+    .MatchDetailsPane {
+        width: 280px;
+    }
+}
+
+@media (min-width: 1550px) {
+    .MatchDetailsPane {
+        width: 360px;
+    }
 }

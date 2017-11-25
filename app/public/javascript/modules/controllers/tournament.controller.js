@@ -47,7 +47,7 @@ export default class TournamentController {
     this.teams = this.TeamService.teams;
     this.games = this.MatchService.games;
 
-    this.$scope.tournamentId = $window.location.pathname.split('/')[2];
+    this.$scope.tournamentId = __NF_TOURNAMENT_ID__;
     this.$scope.tournamentContext = {
       admin: false,
       owner: false,

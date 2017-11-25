@@ -7,7 +7,7 @@ div(ng-show='!Game.loadedGame.id')
             input(type="text" class="form-control nf-input" placeholder="Filter By Round or Team" ng-model='Game.gameQuery')
 
     .row
-        .col-lg-10.col-md-10.col-sm-12
+        .col-lg-9.col-md-9.col-sm-12
             div(class="nf-panel" style='margin-bottom:10px')
                 table(class="table table-condensed nf-shadow no-margin font-size-medium sortable-table")
                     thead
@@ -28,19 +28,14 @@ div(ng-show='!Game.loadedGame.id')
                                 span(ng-bind='game.notes | limitTo:35')
                                 span(ng-if='game.notes.length > 35') ...
 
-        .col-lg-2.col-md-2.hidden-sm
-            div(data-spy='affix' data-offset-top='50' ng-controller='MatchKeyDetailsController as MDetailsCtrl')
+        .col-lg-3.col-md-3.hidden-sm
+            div.MatchDetailsPane(data-spy='affix' data-offset-top='50' ng-controller='MatchKeyDetailsController as MDetailsCtrl')
                 .nf-panel(style='margin-bottom:10px')
                     .nf-panel-heading
-                        label.nf-label Key Match Details
+                        label.nf-label Overall Match Details
                     .panel-body.nf-panel-body
-                        p
-                            label.label.nf-label Total Matches: {{ MDetailsCtrl.MatchKeyDetailsService.numMatches }}
-                        br
-                        p
-                            label.label.nf-label # matches by round
-                        .row(ng-repeat='(round, num) in MDetailsCtrl.MatchKeyDetailsService.roundToNumMatches')
-                            .col-lg-3
-                                label.label.nf-label {{ round }}:
-                            .col-lg-6
-                                label.label.nf-label  {{ num }}
+                        p.nf-label Total Matches:
+                            label.label.nf-label {{ MDetailsCtrl.MatchKeyDetailsService.numMatches }}
+                        p.nf-label Matches per Round
+                        p.nf-label(ng-repeat='(round, num) in MDetailsCtrl.MatchKeyDetailsService.roundToNumMatches') {{ round }} :
+                            label.label.nf-label  {{ num }}
