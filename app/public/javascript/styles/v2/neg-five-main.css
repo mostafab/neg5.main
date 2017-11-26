@@ -1011,6 +1011,14 @@ Switch
     line-height: 1.5;
 }
 
+.KeyTeamDetails b {
+    padding: 10px;
+}
+
+.KeyTeamDetails .team-name {
+    color: #919496;
+}
+
 .MatchDetailsPane.affix {
     top: 10%;
 }

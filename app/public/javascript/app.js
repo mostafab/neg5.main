@@ -31,6 +31,7 @@ import StatisticsController from './modules/controllers/statistics.controller';
 import ConfigController from './modules/controllers/config.controller';
 import DivisionController from './modules/controllers/division.controller';
 import MatchKeyDetailsController from './modules/controllers/match-key-details.controller';
+import TeamKeyDetailsController from './modules/controllers/team-key-details.controller';
 
 import CollaboratorSearchController from './modules/controllers/collaborator-search.controller';
 import CollaboratorListController from './modules/controllers/collaborator-list.controller';
@@ -62,6 +63,7 @@ import TeamHttpService from './modules/services/http/team-http.service';
 import CollaboratorHttpService from './modules/services/http/collaborator-http.service';
 import StatsHttpService from './modules/services/http/stats-http.service';
 import MatchKeyDetailsService from './modules/services/match-key-details.service';
+import TeamKeyDetailsService from './modules/services/team-key-details.service';
 
 import ScoresheetService from './modules/services/scoresheet/scoresheet.service';
 import ScoresheetCycleService from './modules/services/scoresheet/scoresheet-cycle.service';
@@ -107,12 +109,14 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('ScoresheetPointsTrackerService', ScoresheetPointsTrackerService)
   .service('ScoresheetTableService', ScoresheetTableService)
   .service('MatchKeyDetailsService', MatchKeyDetailsService)
+  .service('TeamKeyDetailsService', TeamKeyDetailsService)
   .service('SlugService', SlugService)
   .factory('MatchUtilFactory', MatchUtilFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)
   .controller('MatchKeyDetailsController', MatchKeyDetailsController)
   .controller('TeamCtrl', TeamController)
+  .controller('TeamKeyDetailsController', TeamKeyDetailsController)
   .controller('StatisticsCtrl', StatisticsController)
   .controller('ConfigCtrl', ConfigController)
   .controller('PhaseController', PhaseController)

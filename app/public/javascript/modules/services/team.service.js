@@ -1,7 +1,11 @@
 import angular from 'angular';
+import Emittable from './../util/emittable';
 
-export default class TeamService {
+import teamActions from './../actions/team.actions';
+
+export default class TeamService extends Emittable {
   constructor($q, TeamHttpService) {
+    super();
     this.$q = $q;
     this.TeamHttpService = TeamHttpService;
 
@@ -91,6 +95,7 @@ export default class TeamService {
         .then((teams) => {
           const formattedTeams = TeamService.formatTeams(teams);
           angular.copy(formattedTeams, this.teams);
+          this.emit(teamActions.teamsReceived, { teams: formattedTeams });
           resolve(formattedTeams);
         })
         .catch(error => reject(error));
@@ -135,6 +140,7 @@ export default class TeamService {
           .then(({ id, name }) => {
             this.updateTeamNameInArray(id, name);
             this.resetCurrentTeam(name);
+            this.emit(teamActions.teamsReceived, { teams: this.teams });
             return resolve(name);
           })
           .catch(error => reject(error));
@@ -161,6 +167,7 @@ export default class TeamService {
       this.TeamHttpService.updateTeamDivisions(tournamentId, teamId, divisions)
         .then(() => {
           this.updateTeamDivisionsInArray(teamId, phaseDivisionMap);
+          this.emit(teamActions.teamsReceived, { teams: this.teams });
           resolve();
         })
         .catch(error => reject(error));
@@ -252,6 +259,7 @@ export default class TeamService {
       this.TeamHttpService.deleteTeam(tournamentId, teamId)
         .then((deletedTeam) => {
           this.deleteTeamFromArray(deletedTeam.id);
+          this.emit(teamActions.teamsReceived, { teams: this.teams });
           resolve(deletedTeam);
         })
         .catch(error => reject(error));

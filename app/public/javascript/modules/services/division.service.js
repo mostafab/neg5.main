@@ -1,7 +1,11 @@
 import angular from 'angular';
+import Emittable from './../util/emittable';
 
-export default class DivisionService {
+import divisionActions from './../actions/divisions.actions';
+
+export default class DivisionService extends Emittable {
   constructor($q, DivisionHttpService, PhaseService) {
+    super();
     this.$q = $q;
     this.DivisionHttpService = DivisionHttpService;
     this.PhaseService = PhaseService;
@@ -21,6 +25,7 @@ export default class DivisionService {
         .then((foundDivisions) => {
           const formatted = DivisionService.formatDivisions(foundDivisions);
           angular.copy(formatted, this.divisions);
+          this.emit(divisionActions.divisionsReceived, { divisions: formatted });
           resolve(formatted);
         })
         .catch(err => reject(err));
@@ -35,6 +40,7 @@ export default class DivisionService {
         this.DivisionHttpService.postDivision(tournamentId, divisionName, phaseId)
           .then((newDivision) => {
             this.addDivisionToArray(newDivision);
+            this.emit(divisionActions.divisionsReceived, { divisions: this.divisions });
             resolve(newDivision);
           })
           .catch(err => reject(err));
@@ -50,6 +56,7 @@ export default class DivisionService {
         this.DivisionHttpService.editDivision(tournamentId, division.id, division.newName)
           .then(({ id, name }) => {
             this.updateDivisionInArray(id, name);
+            this.emit(divisionActions.divisionsReceived, { divisions: this.divisions });
             resolve(name);
           })
           .catch(err => reject(err));
