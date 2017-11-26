@@ -14,3 +14,6 @@ export const mapTeamsToDivisions = teams => teams.reduce((map, current) => {
   })
   return map;
 }, {});
+
+export const getTotalPlayers = teams => teams.reduce((sum, current) => sum + current.players.length, 0);
+

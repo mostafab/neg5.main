@@ -4,10 +4,16 @@ div(ng-class="{'col-lg-3 col-md-3 col-sm-3 col-xs-12': !Team.currentTeam.id, 'hi
           .nf-panel-heading
               label.nf-label Overall Team Details
           .panel-body.nf-panel-body
-              div(ng-repeat='phase in TDetailsCtrl.TeamKeyDetailsService.keyTeamPhaseDetails')
-                  b.phase-name {{ phase.name }} {{ phase.divisions.length === 0 ? '(No Divisions Entered)' : ''}}
+              .row
+                    .col-lg-12
+                      p.nf-label Total Teams: {{ TDetailsCtrl.TeamKeyDetailsService.numTeams }}
+                    .col-lg-12
+                      p.nf-label Total Players: {{ TDetailsCtrl.TeamKeyDetailsService.numPlayers }}
+              hr
+              div.phase-container(ng-repeat='phase in TDetailsCtrl.TeamKeyDetailsService.keyTeamPhaseDetails')
+                  b.phase-name {{ phase.name }} {{ phase.divisions.length === 0 ? '(No Divisions)' : ''}}
                   .row(ng-repeat='division in phase.divisions | orderBy:"name"')
                       .col-lg-6
-                          p.nf-label {{ division.name }} {{ division.teams.length === 0 ? '(No Teams Entered)' : ''}}
+                          p.nf-label {{ division.name }} {{ division.teams.length === 0 ? '(No Teams)' : ''}}
                       .col-lg-6
                           p.nf-label.team-name(ng-repeat='team in division.teams | orderBy:"name"') {{ team.name }}

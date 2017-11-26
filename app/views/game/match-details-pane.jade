@@ -1,0 +1,11 @@
+.col-lg-3.col-md-3.hidden-sm.hidden-xs
+  div.MatchDetailsPane(ng-controller='MatchKeyDetailsController as MDetailsCtrl')
+      .nf-panel(style='margin-bottom:10px')
+          .nf-panel-heading
+              label.nf-label Overall Match Details
+          .panel-body.nf-panel-body
+              p.nf-label Total Matches:
+                  label.label.nf-label {{ MDetailsCtrl.MatchKeyDetailsService.numMatches }}
+              p.nf-label Matches per Round
+              p.nf-label(ng-repeat='(round, num) in MDetailsCtrl.MatchKeyDetailsService.roundToNumMatches') {{ round }} :
+                  label.label.nf-label  {{ num }}

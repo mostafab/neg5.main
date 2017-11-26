@@ -1019,10 +1019,14 @@ Switch
     color: #919496;
 }
 
+.KeyTeamDetails .phase-container {
+    margin-bottom: 5px;
+}
+
 .MatchDetailsPane.affix {
     top: 10%;
 }
-
+/* 
 @media (min-width: 1000px) {
     .MatchDetailsPane {
         width: 200px;
@@ -1045,4 +1049,4 @@ Switch
     .MatchDetailsPane {
         width: 360px;
     }
-}
+} */

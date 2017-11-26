@@ -17,7 +17,7 @@ div(class="row")
                     tr(class='nf-list-item nf-white' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id' ng-click='Team.findTeam(team)')
                         td {{team.name}}
                         td
-                            h5(ng-repeat='phase in Team.phases') {{phase.name + ' : ' + Team.getDivisionNameInPhase(team.divisions[phase.id])}}
+                            p(ng-repeat='phase in Team.phases') {{phase.name + ' : ' + Team.getDivisionNameInPhase(team.divisions[phase.id])}}
 
     include ./key-team-details
     include ./team-view

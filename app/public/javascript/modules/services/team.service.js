@@ -219,22 +219,35 @@ export default class TeamService extends Emittable {
   addPlayer(tournamentId, teamId, newPlayerName) {
     return this.$q((resolve, reject) => {
       this.TeamHttpService.addPlayer(tournamentId, teamId, newPlayerName)
-        .then(newPlayer => resolve(newPlayer))
+        .then(newPlayer => {
+          const formatted = {
+            id: newPlayer.id,
+            name: newPlayer.name,
+          }
+          this.teams.find(team => team.id === newPlayer.team_id).players.push(formatted);
+          this.emit(teamActions.addedPlayer, formatted);
+          resolve(newPlayer);
+        })
         .catch(error => reject(error));
     });
   }
 
-  deletePlayer(tournamentId, playerId) {
+  deletePlayer(tournamentId, playerId, teamId) {
     return this.$q((resolve, reject) => {
       this.TeamHttpService.deletePlayer(tournamentId, playerId)
-        .then(deletedPlayerId => resolve(deletedPlayerId))
+        .then(deletedPlayerId => {
+          const matchingTeam = this.teams.find(team => team.id === teamId);
+          matchingTeam.players = matchingTeam.players.filter(p => p.id !== playerId);
+          this.emit(teamActions.deletedPlayer, { playerId });
+          resolve(deletedPlayerId)
+        })
         .catch(error => reject(error));
     });
   }
 
   deletePlayerOnCurrentTeam(tournamentId, player) {
     return this.$q((resolve, reject) => {
-      this.deletePlayer(tournamentId, player.id)
+      this.deletePlayer(tournamentId, player.id, this.currentTeam.id)
         .then((deletedPlayerId) => {
           this.removePlayerFromCurrentTeamArray(deletedPlayerId);
           resolve(deletedPlayerId);
@@ -348,6 +361,10 @@ export default class TeamService extends Emittable {
           phaseMap[current.phase_id] = current.division_id;
           return phaseMap;
         }, {}),
+        players: team.players.map(p => ({
+          name: p.player_name,
+          id: p.player_id,
+        })),
       };
     });
   }
