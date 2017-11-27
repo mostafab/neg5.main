@@ -58,7 +58,7 @@ export default (app) => {
     })    
 
   app.route('/api/t/:tid/rules')
-      .put(hasToken, directorAccessToTournament, (req, res) => {
+      .put(hasToken, adminAccessToTournament, (req, res) => {
           TournamentManager.updateRules(req.params.tid, req.body.rules)
               .then(result => res.json({result, success: true}))
               .catch(error => res.status(500).send({error, success: false}));
@@ -94,12 +94,12 @@ export default (app) => {
             .then(result => res.json({ result: result.tournament.tossup_point_scheme, success: true }))
             .catch(err => res.status(500).send({ error: err, success: false}));
       })
-      .post(hasToken, directorAccessToTournament, (req, res) => {
+      .post(hasToken, adminAccessToTournament, (req, res) => {
           TournamentManager.addTossupPointValue(req.params.tid, req.body)
               .then(result => res.json({result, success: true}))
               .catch(error => res.status(500).send({error, success: false}));
       })
-      .put(hasToken, directorAccessToTournament, (req, res) => {
+      .put(hasToken, adminAccessToTournament, (req, res) => {
           TournamentManager.updateTossupPointValues(req.params.tid, req.body.pointValues)
               .then(result => res.json({result, success: true}))
               .catch(error => res.status(500).send({error}))
@@ -135,26 +135,26 @@ export default (app) => {
               .then(result => res.json({result, success: true}))
               .catch(error => res.status(500).send({error, success: false}));
       })
-      .post(hasToken, directorAccessToTournament, (req, res) => {
+      .post(hasToken, adminAccessToTournament, (req, res) => {
           TournamentManager.addPhase(req.params.tid, req.body.name)
               .then(result => res.json({result, success: true}))
               .catch(error => res.status(500).send({error, success: false}));
       })
 
   app.route('/api/t/:tid/phases/:phaseId')
-      .put(hasToken, directorAccessToTournament, (req, res) => {
+      .put(hasToken, adminAccessToTournament, (req, res) => {
           TournamentManager.updatePhase(req.params.tid, req.params.phaseId, req.body.newName)
               .then(result => res.json({result, success: true}))
               .catch(error => res.status(500).send({error, success: false}));
       })
-      .delete(hasToken, directorAccessToTournament, (req, res) => {
+      .delete(hasToken, adminAccessToTournament, (req, res) => {
           TournamentManager.removePhase(req.params.tid, req.params.phaseId)
               .then(result => res.json({result, success: true}))
               .catch(error => res.status(500).send({error, success: false}));
       })
 
   app.route('/api/t/:tid/phases/:phaseId/active')
-      .put(hasToken, directorAccessToTournament, (req, res) => {
+      .put(hasToken, adminAccessToTournament, (req, res) => {
           TournamentManager.setActivePhase(req.params.tid, req.params.phaseId)
               .then(result => res.json({result, success: true}))
               .catch(error => res.status(500).send({error, success: false}));
