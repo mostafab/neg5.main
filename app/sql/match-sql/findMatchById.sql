@@ -1,4 +1,4 @@
-SELECT *
+SELECT match_information.*, COALESCE(match_phases.phases, '{}') as phases
 FROM
 
 (
@@ -117,7 +117,7 @@ FROM
 
 ) as match_information
 
-INNER JOIN 
+LEFT JOIN
 
 (
     SELECT

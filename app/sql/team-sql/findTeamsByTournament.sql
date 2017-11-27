@@ -37,7 +37,7 @@ INNER JOIN
 
 (
     SELECT T.id as team_id, T.tournament_id,
-        array_agg(json_build_object('player_name', P.name, 'player_id', P.id)) FILTER (WHERE P.name IS NOT NULL) as players
+        COALESCE(array_agg(json_build_object('player_name', P.name, 'player_id', P.id)) FILTER (WHERE P.name IS NOT NULL), '{}') as players
         
     FROM
     

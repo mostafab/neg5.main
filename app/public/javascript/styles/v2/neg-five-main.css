@@ -1019,8 +1019,33 @@ Switch
     color: #919496;
 }
 
+.KeyTeamDetails .team-name:first-child {
+    padding-top: 0;
+}
+
+.KeyTeamDetails .phase-container hr {
+    margin-bottom: 5px;
+}
+
 .KeyTeamDetails .phase-container {
     margin-bottom: 5px;
+}
+
+.KeyTeamDetails .division-name {
+    padding-bottom: 0;
+    padding-top: 0;
+    font-weight: 600;
+}
+
+@media (max-width: 1200px) {
+    .KeyTeamDetails .division-name {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+}
+
+.KeyTeamDetails .div-container {
+    padding-left: 15px;
 }
 
 .MatchDetailsPane.affix {

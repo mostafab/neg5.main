@@ -75,11 +75,14 @@ export default class PhaseService extends Emittable {
         .then(({ name, id }) => {
           this.removePhaseFromArray(id);
           this.emit(phaseActions.phasesReceived, { phases: this.phases });
-          if (this.phases.length > 0 && id === this.activePhase.id) {
-            this.updateActivePhase(tournamentId, this.phases[0].id)
+          if ((this.phases.length > 0 && id === this.activePhase.id) // We're removing the currently active phase, so we need to reset the active phase to a remaining phase.
+              || (this.phases.length === 1 && this.phases[0].id !== this.activePhase.id)) { // Left with one phase that is not active, so make it active.
+                this.updateActivePhase(tournamentId, this.phases[0].id)
               .then(() => resolve(name));
-          } else {
+          } else if (this.phases.length === 0) {
             this.updateActivePhaseObject(null);
+            resolve(name);
+          } else {
             resolve(name);
           }
         })
