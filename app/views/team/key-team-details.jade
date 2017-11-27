@@ -14,12 +14,13 @@ div(ng-class="{'col-lg-4 col-md-4 col-sm-4 col-xs-12': !Team.currentTeam.id, 'hi
               hr
               div.phase-container(ng-repeat='phase in TDetailsCtrl.TeamKeyDetailsService.keyTeamPhaseDetails')
                   b.phase-name {{ phase.name }} {{ phase.divisions.length === 0 ? '(No Divisions)' : ''}}
-                  hr
+                  br
+                  br
                   .row(ng-repeat='division in phase.divisions | orderBy:"name"')
                       .div-container
                         .col-lg-6
-                            p.nf-label.division-name {{ division.name }} {{ division.teams.length === 0 ? '(No Teams)' : ''}}
+                            p.nf-label.division-name {{ division.name }} ({{ division.teams.length || 'No Teams'}})
                         .col-lg-6
                             p.nf-label.team-name(ng-repeat='team in division.teams | orderBy:"name"') {{ team.name }}
-                        hr
+                  hr
                         

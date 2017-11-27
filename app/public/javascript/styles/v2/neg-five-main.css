@@ -1029,6 +1029,7 @@ Switch
 
 .KeyTeamDetails .phase-container {
     margin-bottom: 5px;
+    margin-top: 20px;
 }
 
 .KeyTeamDetails .division-name {
@@ -1041,6 +1042,9 @@ Switch
     .KeyTeamDetails .division-name {
         margin-bottom: 10px;
         margin-top: 10px;
+    }
+    .KeyTeamDetails .phase-name {
+        margin-top: 20px;
     }
 }
 
