@@ -11,7 +11,7 @@
                         form(name='Config.editConfigurationRules' novalidate ng-class='{"disabled": Config.savingRules}')
                             .row.nf-margin
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingRules === false')
-                                    button.nf-button.btn-md.btn.button-outline.button-outline-blue(style='float:left' title='Edit' ng-if='tournamentContext.owner' ng-show='Config.editingRules === false' ng-click='Config.editingRules = true')
+                                    button.nf-button.btn-md.btn.button-outline.button-outline-blue(style='float:left' title='Edit' ng-if='tournamentContext.admin' ng-show='Config.editingRules === false' ng-click='Config.editingRules = true')
                                         i.fa.fa-pencil
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingRules === true')
                                     button.nf-button.btn-md.btn.button-outline.button-outline-red(style='float:left' ng-show='Config.editingRules === true' title='Cancel' ng-click='Config.editingRules = false; Config.resetRules()')
@@ -19,7 +19,7 @@
                                     button.nf-button.btn-md.btn.button-outline.button-outline-green(type='submit' ng-show='Config.editingRules === true' title='Save' ng-click='Config.saveRules()')
                                         i.fa.fa-check
                                         
-                            .row.nf-margin(ng-if='tournamentContext.owner')
+                            .row.nf-margin
                                 .row.nf-margin
                                     .col-lg-8.col-sm-9.col-md-6
                                         .input-group
@@ -36,7 +36,7 @@
                                                 label(for="bouncebacks" class="nf-green")
 
         .row(ng-controller='PhaseController as Phase')
-            div(ng-if='tournamentContext.owner === true')
+            div(ng-if='tournamentContext.admin')
                 div(class='col-md-12 col-sm-12 col-lg-12 col-xs-12')
                         div(class="panel nf-panel panel-default")
                             div(class="collapsable nf-panel-heading") 
@@ -86,7 +86,7 @@
 
         
 
-    .col-lg-6(ng-if='tournamentContext.owner === true')                   
+    .col-lg-6                   
     
         div(class="panel panel-default nf-panel")
             div(class="collapsable nf-panel-heading") 
@@ -179,7 +179,7 @@
                                             i.fa.fa-check
 
         .row(ng-controller='DivisionController as Division')
-            div(ng-if='tournamentContext.owner === true')
+            div(ng-if='tournamentContext.admin === true')
                 .col-lg-12.col-md-12.col-sm-12.col-xs-12
                     div(class="panel panel-default nf-panel")
                         div(class="collapsable nf-panel-heading") 
