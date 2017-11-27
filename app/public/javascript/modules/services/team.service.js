@@ -1,7 +1,11 @@
 import angular from 'angular';
+import Emittable from './../util/emittable';
 
-export default class TeamService {
+import teamActions from './../actions/team.actions';
+
+export default class TeamService extends Emittable {
   constructor($q, TeamHttpService) {
+    super();
     this.$q = $q;
     this.TeamHttpService = TeamHttpService;
 
@@ -91,6 +95,7 @@ export default class TeamService {
         .then((teams) => {
           const formattedTeams = TeamService.formatTeams(teams);
           angular.copy(formattedTeams, this.teams);
+          this.emit(teamActions.teamsReceived, { teams: formattedTeams });
           resolve(formattedTeams);
         })
         .catch(error => reject(error));
@@ -135,6 +140,7 @@ export default class TeamService {
           .then(({ id, name }) => {
             this.updateTeamNameInArray(id, name);
             this.resetCurrentTeam(name);
+            this.emit(teamActions.teamsReceived, { teams: this.teams });
             return resolve(name);
           })
           .catch(error => reject(error));
@@ -161,6 +167,7 @@ export default class TeamService {
       this.TeamHttpService.updateTeamDivisions(tournamentId, teamId, divisions)
         .then(() => {
           this.updateTeamDivisionsInArray(teamId, phaseDivisionMap);
+          this.emit(teamActions.teamsReceived, { teams: this.teams });
           resolve();
         })
         .catch(error => reject(error));
@@ -212,22 +219,35 @@ export default class TeamService {
   addPlayer(tournamentId, teamId, newPlayerName) {
     return this.$q((resolve, reject) => {
       this.TeamHttpService.addPlayer(tournamentId, teamId, newPlayerName)
-        .then(newPlayer => resolve(newPlayer))
+        .then(newPlayer => {
+          const formatted = {
+            id: newPlayer.id,
+            name: newPlayer.name,
+          }
+          this.teams.find(team => team.id === newPlayer.team_id).players.push(formatted);
+          this.emit(teamActions.addedPlayer, formatted);
+          resolve(newPlayer);
+        })
         .catch(error => reject(error));
     });
   }
 
-  deletePlayer(tournamentId, playerId) {
+  deletePlayer(tournamentId, playerId, teamId) {
     return this.$q((resolve, reject) => {
       this.TeamHttpService.deletePlayer(tournamentId, playerId)
-        .then(deletedPlayerId => resolve(deletedPlayerId))
+        .then(deletedPlayerId => {
+          const matchingTeam = this.teams.find(team => team.id === teamId);
+          matchingTeam.players = matchingTeam.players.filter(p => p.id !== playerId);
+          this.emit(teamActions.deletedPlayer, { playerId });
+          resolve(deletedPlayerId)
+        })
         .catch(error => reject(error));
     });
   }
 
   deletePlayerOnCurrentTeam(tournamentId, player) {
     return this.$q((resolve, reject) => {
-      this.deletePlayer(tournamentId, player.id)
+      this.deletePlayer(tournamentId, player.id, this.currentTeam.id)
         .then((deletedPlayerId) => {
           this.removePlayerFromCurrentTeamArray(deletedPlayerId);
           resolve(deletedPlayerId);
@@ -252,6 +272,7 @@ export default class TeamService {
       this.TeamHttpService.deleteTeam(tournamentId, teamId)
         .then((deletedTeam) => {
           this.deleteTeamFromArray(deletedTeam.id);
+          this.emit(teamActions.teamsReceived, { teams: this.teams });
           resolve(deletedTeam);
         })
         .catch(error => reject(error));
@@ -340,6 +361,10 @@ export default class TeamService {
           phaseMap[current.phase_id] = current.division_id;
           return phaseMap;
         }, {}),
+        players: team.players.map(p => ({
+          name: p.player_name,
+          id: p.player_id,
+        })),
       };
     });
   }

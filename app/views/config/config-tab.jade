@@ -79,7 +79,7 @@
                                                                 i.fa.fa-times   
                                                             span.btn.input-group-addon.nf-button.button-outline.button-outline-green.no-border(ng-click='Phase.editPhase(phase)' ng-show='phase.editing' title='Save')
                                                                 i.fa.fa-check  
-                                                     .col-lg-2.col-md-2.col-sm-2.col-xs-2
+                                                     .col-lg-2.col-md-2.col-sm-2.col-xs-2(ng-if='Phase.phases.length > 1')
                                                         .input-group
                                                             span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
                                                                 i.fa.fa-trash

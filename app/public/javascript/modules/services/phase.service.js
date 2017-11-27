@@ -1,7 +1,11 @@
 import angular from 'angular';
+import Emittable from './../util/emittable';
 
-export default class PhaseService {
+import phaseActions from './../actions/phase.actions';
+
+export default class PhaseService extends Emittable {
   constructor($q, TournamentService, PhaseHttpService) {
+    super();
     this.$q = $q;
     this.TournamentService = TournamentService;
     this.PhaseHttpService = PhaseHttpService;
@@ -20,6 +24,7 @@ export default class PhaseService {
           .then((addedPhase) => {
             this.addNewPhaseToArray(addedPhase);
             this.resetNewPhase();
+            this.emit(phaseActions.phasesReceived, { phases: this.phases });
             if (this.phases.length === 1) {
               this.updateActivePhase(tournamentId, addedPhase.id)
                 .then(resolve(addedPhase.name))
@@ -41,6 +46,7 @@ export default class PhaseService {
         this.PhaseHttpService.editPhase(tournamentId, phase.id, phase.newName)
           .then(({ id, name }) => {
             this.updatePhaseInArray(id, name);
+            this.emit(phaseActions.phasesReceived, { phases: this.phases });
             resolve(name);
           })
           .catch(err => reject(err));
@@ -56,6 +62,7 @@ export default class PhaseService {
         .then((gottenPhases) => {
           const formatted = PhaseService.formatPhases(gottenPhases);
           angular.copy(formatted, this.phases);
+          this.emit(phaseActions.phasesReceived, { phases: formatted });
           resolve(formatted);
         })
         .catch(err => reject(err));
@@ -67,11 +74,15 @@ export default class PhaseService {
       this.PhaseHttpService.deletePhase(tournamentId, phaseId)
         .then(({ name, id }) => {
           this.removePhaseFromArray(id);
-          if (this.phases.length > 0 && id === this.activePhase.id) {
-            this.updateActivePhase(tournamentId, this.phases[0].id)
+          this.emit(phaseActions.phasesReceived, { phases: this.phases });
+          if ((this.phases.length > 0 && id === this.activePhase.id) // We're removing the currently active phase, so we need to reset the active phase to a remaining phase.
+              || (this.phases.length === 1 && this.phases[0].id !== this.activePhase.id)) { // Left with one phase that is not active, so make it active.
+                this.updateActivePhase(tournamentId, this.phases[0].id)
               .then(() => resolve(name));
-          } else {
+          } else if (this.phases.length === 0) {
             this.updateActivePhaseObject(null);
+            resolve(name);
+          } else {
             resolve(name);
           }
         })

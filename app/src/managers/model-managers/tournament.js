@@ -217,7 +217,7 @@ export default {
             db.deleteTournamentPhase(tournamentId, phaseId)
                 .then(result => {
                     resolve(result)
-                    bufferTournamentStatsChangedEmittion(tournamentId);
+                    bufferTournamentStatsChangedEmittion({ tournamentId });
                 })
                 .catch(error => reject(error));
         })
