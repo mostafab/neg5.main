@@ -16,6 +16,7 @@
     "angular": "^1.5.8",
     "angular-animate": "^1.5.8",
     "angular-cookies": "^1.5.8",
+    "axios": "^0.17.1",
     "babel-core": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-stage-0": "^6.24.1",

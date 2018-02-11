@@ -36,6 +36,7 @@ export default {
   match: {
     findByTournament: getSQL('match-sql/findMatchesByTournament.sql'),
     findById: getSQL('match-sql/findMatchById.sql'),
+    findAllForStats: getSQL('match-sql/findAllForStats.sql'),
     add: {
       addMatch: getSQL('match-sql/transactions/addMatch/addMatchInfoToTournament.sql'),
       addMatchPhases: getSQL('match-sql/transactions/addMatch/addMatchPhases.sql'),
@@ -47,6 +48,7 @@ export default {
   },
   team: {
     findByTournament: getSQL('team-sql/findTeamsByTournament.sql'),
+    findAllForStats: getSQL('team-sql/findTeamsByTournamentForStats.sql'),
     findById: getSQL('team-sql/findTeamById.sql'),
     add: {
       addTeam: getSQL('team-sql/transactions/addTeam/addTeamToTournament.sql'),

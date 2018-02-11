@@ -33,6 +33,17 @@ export default {
       })
       .catch(error => reject(error));
   }),
+  
+  findAllForStats: async tournamentId => {
+    const params = {
+      tournamentId,
+    }
+    try {
+      return await query(teamSQL.findAllForStats, params, qm.any)
+    } catch (err) {
+      throw err;
+    }
+  },
 
   findById: (tournamentId, teamId) => new Promise((resolve, reject) => {
     const params = [tournamentId, teamId];
