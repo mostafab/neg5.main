@@ -3,6 +3,8 @@ import db from './../../data-access/match';
 import Team from './team';
 import playerUtil from './../../helpers/player-util';
 
+import generateId from './../../helpers/id';
+
 import { bufferTournamentStatsChangedEmittion } from './../../subscribers/match-event-emitter-subscriber';
 
 export default {
@@ -92,7 +94,7 @@ export default {
 
 }
 
-function buildMatch({id = shortid.generate(), moderator, notes, packet, phases, room, round, teams, tuh, serialId, scoresheet}) {
+function buildMatch({id = generateId(), moderator, notes, packet, phases, room, round, teams, tuh, serialId, scoresheet}) {
     return {
         id,
         moderator: moderator === null ? null : moderator.trim(),
