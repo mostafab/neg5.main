@@ -1,6 +1,7 @@
 import shortid from 'shortid';
 import db from './../../data-access/team';
 import { bufferTournamentStatsChangedEmittion } from '../../subscribers/match-event-emitter-subscriber';
+import generateId from './../../helpers/id';
 
 export default {
 
@@ -30,12 +31,12 @@ export default {
 
     addToTournament: (tournamentId, {name, players = [], divisions = []}, user) => {
         return new Promise((resolve, reject) => {
-            const teamId = shortid.generate();
+            const teamId = generateId();
             let formattedTeamName = name.trim();
             let formattedPlayers = players.map(player => {
                 return {
                     teamId,
-                    id: shortid.generate(),
+                    id: generateId(),
                     name: player.name.trim()
                 }
             });

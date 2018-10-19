@@ -2,6 +2,7 @@ import shortid from 'shortid';
 import db from './../../data-access/player';
 
 import { bufferTournamentStatsChangedEmittion } from './../../subscribers/match-event-emitter-subscriber';
+import generateId from './../../helpers/id';
 
 export default {
 
@@ -10,7 +11,7 @@ export default {
             if (!name || name.trim().length === 0) {
                 return reject(new Error('Invalid player name: ' + name))
             }
-            let player = {id: shortid.generate(), name: name.trim()}
+            let player = { id: generateId(), name: name.trim()}
             db.addTournamentPlayer(tournamentId, teamId, player, currentUser)
                 .then(result => resolve(result))
                 .catch(error => reject(error));

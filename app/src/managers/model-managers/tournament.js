@@ -2,6 +2,8 @@ import shortid from 'shortid';
 import db from '../../data-access/tournament';
 import { bufferTournamentStatsChangedEmittion } from '../../subscribers/match-event-emitter-subscriber';
 
+import generateId from './../../helpers/id';
+
 export default {
 
     create: ({name, date = null, questionSet = null, comments = null, location = null, tossupScheme = defaultPointScheme()}, username) => {
@@ -170,7 +172,7 @@ export default {
     addDivision: (tournamentId, divisionName, phaseId) => {
         return new Promise((resolve, reject) => {
             if (!divisionName || !divisionName.trim()) return reject(new Error('Invalid division name: ' + divisionName));
-            let divisionId = shortid.generate();
+            let divisionId = generateId();
             db.addTournamentDivision(tournamentId, divisionName.trim(), divisionId, phaseId)
                 .then(result => resolve(result))
                 .catch(error => reject(error));
@@ -205,7 +207,7 @@ export default {
     addPhase: (tournamentId, name) => {
         return new Promise((resolve, reject) => {
             let phaseName = name.trim();
-            let id = shortid.generate();
+            let id = generateId();
             db.addTournamentPhase(tournamentId, id, phaseName)
                 .then(result => resolve(result))
                 .catch(error => reject(error));

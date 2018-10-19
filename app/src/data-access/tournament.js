@@ -2,6 +2,8 @@ import shortid from 'shortid';
 import { readOnlyQuery, query, transaction, queryTypeMap as qm, txMap as tm } from '../database/db';
 import sql from '../database/sql';
 
+import generateId from './../helpers/id';
+
 const { tournament, collaborator, division, phase, account } = sql;
 
 const PLACEHOLDER_PHASE_NAME = 'Default Phase';
@@ -25,7 +27,7 @@ export default {
     const tournamentParams = [id, name, date, questionSet, comments, location, username];
     const { tournamentIds, values,
       types } = buildTournamentPointSchemeInsertQuery(tossupScheme, id);
-    const phaseId = shortid.generate();
+    const phaseId = generateId();
     const queriesArray = [];
     queriesArray.push(
       {
