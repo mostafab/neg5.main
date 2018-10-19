@@ -1,23 +1,16 @@
 'use strict';
 
 import db from '../../data-access/stats';
-import matchManager from './../model-managers/match';
-import teamManager from './../model-managers/team';
-import tournamentManager from './../model-managers/tournament';
 import StatReportType from './../../enums/stat-report-type';
 import statReportMapper from './../../mappers/stat-report-mapper';
-
-import StatsInternalClient from './../../client/stats-client';
 
 export class StatsReportManager {
 
     constructor(tournamentId) {
         this.tournamentId = tournamentId;
-        this.statsClient = new StatsInternalClient();
     }
 
     async fetchReport(phaseId = null, reportType) {
-        console.log(reportType);
         try {
             return statReportMapper(await db.fetchReport(this.tournamentId, phaseId, reportType));
         } catch (err) {
@@ -113,18 +106,6 @@ export class StatsReportManager {
                 })
                 .catch(error => reject(error));
         })
-    }
-
-    async getFullIndividualStats(phaseId = null) {
-        const matches = await matchManager.findAllForStats(this.tournamentId);
-        const teams = await teamManager.findForStats(this.tournamentId);
-        const tournamentInfo = await tournamentManager.findById(this.tournamentId);
-        return await this.statsClient.getFullIndividualStats(this.tournamentId, {
-            phaseId,
-            matches,
-            teams,
-            tossupValues: tournamentInfo.tournament.tossup_point_scheme,
-        });
     }
 
 }

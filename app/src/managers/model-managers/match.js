@@ -25,22 +25,6 @@ export default {
         })
     },
 
-    findAll: (tournamentId) => {
-        return new Promise((resolve, reject) => {
-            db.findById(tournamentId, null, true)
-                .then(result => resolve(result))
-                .catch(err => reject(err));
-        })
-    },
-
-    findAllForStats: (tournamentId) => {
-        return new Promise((resolve, reject) => {
-            db.findAllForStats(tournamentId, null, true)
-                .then(result => resolve(result))
-                .catch(err => reject(err));
-        })
-    },
-
     addToTournament: (tournamentId, gameInfo, user, idOfExistingMatch = undefined) => {
         return new Promise((resolve, reject) => {
             let {

@@ -13,14 +13,6 @@ export default {
         })
     },
 
-    findForStats: async tournamentId => {
-        try {
-            return await db.findAllForStats(tournamentId);
-        } catch (err) {
-            throw err;
-        }
-    },
-
     findById: (tournamentId, teamId) => {
         return new Promise((resolve, reject) => {
             db.findById(tournamentId, teamId)

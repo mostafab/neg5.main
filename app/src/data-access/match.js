@@ -27,13 +27,6 @@ export default {
         .catch(error => reject(error));
   }),
 
-  findAllForStats: (tournamentId) => new Promise((resolve, reject) => {
-    const params = [tournamentId];
-    query(matchSQL.findAllForStats, params, qm.any)
-        .then(foundMatches => resolve(foundMatches))
-        .catch(error => reject(error));
-  }),
-
   addToTournament: (tournamentId, matchInformation, user, replacing = false) =>
     new Promise((resolve, reject) => {
       const { id: matchId, moderator, notes, packet, phases,
