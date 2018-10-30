@@ -95,8 +95,8 @@ export default class PhaseService extends Emittable {
   }
 
   isValidPhaseName(phaseName) {
-    const formatted = phaseName ? phaseName.toLowerCase().trim() : null;
-    return formatted.length > 0
+    const formatted = phaseName ? phaseName.toLowerCase().trim() : ''
+    return formatted
       && !this.phases.some(p => p.name.toLowerCase() === formatted);
   }
 

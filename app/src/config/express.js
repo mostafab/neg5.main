@@ -6,6 +6,8 @@ import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
 
+import httpProxy from 'express-http-proxy';
+
 import log from './../helpers/log';
 
 import accountApi from '../routes/api/account';
@@ -28,6 +30,8 @@ const getStatsBaseUrl = () => {
   return configuration[STATS_BASE_URL_PREFIX + env];
 }
 
+const NEG5_API_HOST_PROP = 'NEG5_API_HOST';
+
 const ONE_DAY_MS = 1000 * 60 * 60 * 24;
 
 export default () => {
@@ -38,7 +42,10 @@ export default () => {
   }
 
   app.set('STATS_BASE_URL', getStatsBaseUrl());
+  app.set(NEG5_API_HOST_PROP, process.env.NEG5_API_BASE_URL);
+
   log.INFO('STATS_BASE_URL : ' + app.get('STATS_BASE_URL'));
+  log.INFO('NEG5_API_HOST: ' + app.get(NEG5_API_HOST_PROP));
 
   morgan.token('currentUser', (req, res) => {
     return req.currentUser || 'no-user-attached';
@@ -52,6 +59,9 @@ export default () => {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
+  app.use('/neg5-api', httpProxy(app.get(NEG5_API_HOST_PROP), {
+    proxyReqPathResolver: req => `/neg5-api${req.url}`
+  }));
   app.use(cookieParser());
   app.use(bodyParser.json());
   app.use(compression());

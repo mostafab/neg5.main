@@ -32,8 +32,8 @@ export default class PhaseHttpService {
   getPhases(tournamentId) {
     return this.$q((resolve, reject) => {
       const token = this.$cookies.get('nfToken');
-      this.$http.get(`/api/t/${tournamentId}/phases?token=${token}`)
-        .then(({ data }) => resolve(data.result))
+      this.$http.get(`/neg5-api/tournaments/${tournamentId}/phases`)
+        .then(({ data }) => resolve(data))
         .catch(error => reject(error));
     });
   }
