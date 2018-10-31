@@ -1,11 +1,12 @@
-div(id='add-game-div')
+div.AddMatch(id='add-game-div')
     div(class="panel panel-default nf-panel")
         .nf-panel-heading
             .row 
-                .col-lg-11.col-sm-11.col-md-11.col-xs-12
+                .col-lg-12.col-sm-12.col-md-12.col-xs-12
                     label.nf-label Add a Match
-                .col-lg-1.col-md-1.col-sm-1.col-xs-12
-                    span.nf-button.button-outline.button-outline-blue.btn.right(role='button' ng-click='Game.resetForm()') Reset
+                    span
+                        button.right.btn.btn-md.Button.primary(type="submit" ng-disabled='Game.newGameForm.$invalid') Save
+                        span.Button.secondary.btn.right.reset-game-button(role='button' ng-click='Game.resetForm()') Reset
         .panel-body.nf-panel-body
 
                 form(name="Game.newGameForm" novalidate ng-submit='Game.addGame()' ng-class='{"disabled": Game.savingNewGame}')
@@ -218,5 +219,4 @@ div(id='add-game-div')
                                     textarea(class="form-control nf-input " name="notes" placeholder="Notes" style='min-height:200px' ng-model='Game.currentGame.notes')
                     
                     hr
-                    
-                    button(type="submit" class="btn btn-md button-outline button-outline-green nf-button" ng-disabled='Game.newGameForm.$invalid') Add Game Information
+                

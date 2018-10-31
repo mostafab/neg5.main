@@ -174,10 +174,10 @@
                                                     a(title='Set as Base' ng-click='Config.newPointValue.type = "Base"') Base
                                                     a(title='Set as Neg' ng-click='Config.newPointValue.type = "Neg"') Neg
                                     .col-lg-2.col-md-2
-                                        button.nf-button.button-outline.button-outline-green.btn(type='submit')
+                                        button.Button.primary.btn(type='submit')
                                             i.fa.fa-check
 
-        .row(ng-controller='DivisionController as Division')
+        .row.divisions(ng-controller='DivisionController as Division')
             div(ng-if='tournamentContext.admin === true')
                 .col-lg-12.col-md-12.col-sm-12.col-xs-12
                     div(class="panel panel-default nf-panel")
@@ -196,14 +196,14 @@
                                                 .input-group
                                                     span.form-control.nf-input.nf-gray(ng-show='!division.editing' ng-bind='division.name')
                                                     input.form-control.nf-input(type='text' ng-model='division.newName' ng-show='division.editing')
-                                                    span.btn.input-group-addon.nf-button.no-border.button-outline.button-outline-blue(ng-show='!division.editing && tournamentContext.admin === true' ng-click='division.editing = true' title='Edit')
+                                                    span.btn.input-group-addon.no-border.Button.primary(ng-show='!division.editing && tournamentContext.admin === true' ng-click='division.editing = true' title='Edit')
                                                         i.fa.fa-pencil
-                                                    span.btn.input-group-addon.nf-button.no-border.button-outline.button-outline-red(ng-show='division.editing' ng-click='division.newName = division.name; division.editing = false' title='Cancel')
+                                                    span.btn.input-group-addon.Button.secondary(ng-show='division.editing' ng-click='division.newName = division.name; division.editing = false' title='Cancel')
                                                         i.fa.fa-times
-                                                    span.btn.input-group-addon.nf-button.no-border.button-outline.button-outline-green(ng-show='division.editing' ng-click='Division.saveDivision(division)' title='Save')
+                                                    span.btn.input-group-addon.no-border.Button.primary(ng-show='division.editing' ng-click='Division.saveDivision(division)' title='Save')
                                                         i.fa.fa-check
                                             .col-lg-2.col-md-2.col-sm-2(ng-show='division.editing' ng-if='tournamentContext.admin === true')
-                                                span.btn.input-group-addon.nf-button.no-border.button-outline.button-outline-red(title='Remove {{division.name}}' ng-click='Division.removeDivision(division)')
+                                                span.btn.Button.primary(title='Remove {{division.name}}' ng-click='Division.removeDivision(division)')
                                                     i.fa.fa-trash
 
                                 .nf-margin
@@ -219,6 +219,6 @@
                                                 ul.dropdown-menu.nf-dropdown(aria-role='menu' title='Pick division name.')
                                                     li
                                                         a(ng-repeat='phase in Division.phases' title='{{phase.name}}' ng-click='Division.newDivision.phaseName = phase.name; Division.newDivision.phaseId = phase.id' ng-bind='phase.name')
-                                                span.input-group-addon.nf-button.btn.button-outline.button-outline-green(ng-click='Division.addNewDivision()' ng-class='{"disabled": Division.savingNewDivision}' )
+                                                span.input-group-addon.btn.Button.primary(ng-click='Division.addNewDivision()' ng-class='{"disabled": Division.savingNewDivision}' )
                                                     i.fa.fa-check
     

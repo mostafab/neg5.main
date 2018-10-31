@@ -1,18 +1,16 @@
-//TODO Change the errors in here to be error-text 
-
-div(class="panel nf-panel" ng-show='Game.loadedGame.id')
+div.panel.nf-panel.GameView(ng-show='Game.loadedGame.id')
     .nf-panel-heading
         .row
             .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                button.nf-button.nf-orange.btn-md.btn(ng-click='Game.emptyLoadedGame()')
+                button.Button.secondary.btn-md.btn(ng-click='Game.emptyLoadedGame()')
                     i.fa.fa-arrow-left
-                button.nf-button.btn-md.btn.nf-blue(ng-click='Game.loadedGame.editing = true' ng-show='!Game.loadedGame.editing' ng-if='tournamentContext.admin')
+                button.btn-md.btn.Button.primary.secondary-button(ng-click='Game.loadedGame.editing = true' ng-show='!Game.loadedGame.editing' ng-if='tournamentContext.admin')
                     i.fa.fa-pencil
-                button.nf-button.btn-md.btn.nf-red(ng-click='Game.resetLoadedGame(); Game.loadedGame.editing = false' ng-show='Game.loadedGame.editing' ng-if='tournamentContext.admin')
-                    i.fa.fa-times
                 
             .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                button.nf-button.nf-red.btn-md.btn.right(title='Delete Game.' ng-if='tournamentContext.admin' data-toggle='modal' data-target='#deleteMatchModal')
+                button.btn.btn-md.Button.primary.right.secondary-button(type="submit" ng-if='tournamentContext.admin' ng-disabled='Game.editGameForm.$invalid' ng-click='Game.editLoadedGame()' ng-show='Game.loadedGame.editing')
+                    | Save Changes
+                button.Button.secondary.btn-md.btn.right(title='Delete Game.' ng-if='tournamentContext.admin' data-toggle='modal' data-target='#deleteMatchModal')
                     i.fa.fa-trash
 
     .nf-panel-body.panel-body
@@ -230,24 +228,22 @@ div(class="panel nf-panel" ng-show='Game.loadedGame.id')
                                 textarea(class="form-control nf-input " name="notes" placeholder="Notes" style='min-height:200px' ng-model='Game.loadedGame.notes')
                 
                 hr
-                
-                button(type="submit" class="btn btn-md nf-green nf-button" ng-if='tournamentContext.admin' ng-disabled='Game.editGameForm.$invalid' ng-click='Game.editLoadedGame()' ng-show='Game.loadedGame.editing') Save Changes
     
     .nf-panel-footer.panel-footer.nf-gray.no-border
         h5(ng-bind='"Added by: " + Game.loadedGame.addedBy')
 
-div#deleteMatchModal.modal.nf-modal
-    .modal-dialog
-        .modal-content
-            .modal-header
-                button.close(type='button' data-dismiss='modal' aria-hidden='true') &times;
-                h4.modal-title Delete Match
-            .modal-body
-                h5.nf-modal-message
-                    | Are you sure you want to delete this match between {{Game.loadedGame.teams[0].teamInfo.name}} and {{Game.loadedGame.teams[1].teamInfo.name}}?
-                    | You will not be able to recover it after deletion.
-            .modal-footer
-                button.nf-button.nf-gray.btn.btn-md(type='button' data-dismiss='modal' ng-disabled='Game.deletingMatch') Cancel
-                button.nf-button.btn.nf-red(type='button' ng-click='Game.deleteGame()' ng-disabled='Game.deletingMatch') Yes, delete
-                span.modal-spinner(ng-show='Game.deletingMatch')
-                    i.fa.fa-circle-o-notch.fa-spin.fa-2x.fa-fw
+    div#deleteMatchModal.modal.nf-modal
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type='button' data-dismiss='modal' aria-hidden='true') &times;
+                    h4.modal-title Delete Match
+                .modal-body
+                    h5.nf-modal-message
+                        | Are you sure you want to delete this match between {{Game.loadedGame.teams[0].teamInfo.name}} and {{Game.loadedGame.teams[1].teamInfo.name}}?
+                        | You will not be able to recover it after deletion.
+                .modal-footer
+                    button.Button.secondary.btn-md.btn(type='button' data-dismiss='modal' ng-disabled='Game.deletingMatch') Cancel
+                    button.Button.primary.btn.secondary-button(type='button' ng-click='Game.deleteGame()' ng-disabled='Game.deletingMatch') Yes, delete
+                    span.modal-spinner(ng-show='Game.deletingMatch')
+                        i.fa.fa-circle-o-notch.fa-spin.fa-2x.fa-fw

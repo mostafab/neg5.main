@@ -1,7 +1,7 @@
 div(class="row")
     div(class="col-lg-4 col-md-4 col-sm-12" style="margin-bottom:20px;")
         .input-group
-            span(class='input-group-addon button-outline button-outline-blue nf-button btn' title='Refresh teams' ng-click='Team.getTournamentTeams()')
+            span.input-group-addon.btn.Button.primary(title='Refresh teams' ng-click='Team.getTournamentTeams()')
                 i(class='fa fa-refresh')
             input(type="text" class="form-control nf-input search btn-shadow" placeholder="Filter by team name." ng-model='Team.teamQuery')
 

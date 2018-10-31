@@ -1,6 +1,7 @@
 .Button {
   border-radius: 2px;
 }
+
 .Button.primary {
   border: 1px solid #004dc8;
   background-color: #004dc8;

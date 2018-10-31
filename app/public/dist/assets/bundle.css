@@ -200,10 +200,22 @@ span {
 
 .ConfigurationTab .point-scheme .save-scheme {
   margin-left: 2rem;
+}.MatchesTab .GameView .secondary-button {
+  margin-left: 2rem;
+}
+.MatchesTab .reset-game-button {
+  margin-right: 2rem;
+}.TeamsTab .AddTeam .add-player-container {
+  margin-top: 2rem;
+}
+
+.TeamsTab .AddTeam .phase-container {
+  margin-bottom: 1rem;
 }
 .Button {
   border-radius: 2px;
 }
+
 .Button.primary {
   border: 1px solid #004dc8;
   background-color: #004dc8;

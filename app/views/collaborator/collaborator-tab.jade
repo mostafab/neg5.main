@@ -1,11 +1,11 @@
-.row
+.row.CollaboratorTab
     .col-lg-5.col-sm-12.col-md-6(ng-if='tournamentContext.admin === true' ng-controller='CollaboratorSearchCtrl as CollabSearch')
         div(class="col-md-12 col-sm-12 col-lg-12")
             .input-group
                 span.input-group-addon(tooltip data-placement="right" message='Normal collaborators have access to only the overview, matches, teams, and scoresheet tabs. Granting someone admin permissions will grant them access to the configuration and collaborators tabs.')
                     i.fa.fa-question
                 input(type="text" ng-model='CollabSearch.searchQuery.query' class="form-control nf-input" ng-keyup='CollabSearch.handleKeyPress($event)' placeholder="Search for other users by email or name.")
-                span.input-group-addon.nf-button.no-border.btn.button-outline.button-outline-blue(ng-click='CollabSearch.resetSearch()')
+                span.input-group-addon.no-border.btn.Button.primary(ng-click='CollabSearch.resetSearch()')
                     | Reset 
             
         div(style='margin-top:75px' class='collab-search-results')
@@ -22,7 +22,7 @@
             .input-group
                 span.input-group-addon.btn(ng-click='!tournamentContext.owner || CollabList.toggleAdmin(collab)' ng-class="{'nf-green' : collab.admin, 'nf-gray' : !collab.admin}" title='{{tournamentContext.owner ? "Toggle admin priviledges" : ""}}') {{collab.admin ? 'A' : ''}}
                 div.nf-white.nf-input.form-control.btn.readonly(ng-bind='collab.username')
-                span.input-group-addon.button-outline.button-outline-red.no-border(role='button' ng-click='CollabList.removeCollaborator(collab.username)' ng-if='tournamentContext.owner === true')
+                span.input-group-addon.Button.primary.no-border(role='button' ng-click='CollabList.removeCollaborator(collab.username)' ng-if='tournamentContext.owner === true')
                     i.fa.fa-trash
             
             br
