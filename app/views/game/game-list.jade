@@ -1,14 +1,15 @@
 div(ng-show='!Game.loadedGame.id')
 
-    div(class="row")
-        div(class="input-group col-lg-4 col-md-4 col-sm-12" style="margin-left:20px;margin-bottom:20px;")
-            span(class='input-group-addon btn nf-button button-outline button-outline-blue' title='Reload games' ng-click='Game.getGames()')
-                i(class='fa fa-refresh')
-            input(type="text" class="form-control nf-input" placeholder="Filter By Round or Team" ng-model='Game.gameQuery')
+    .row
+        div(class="col-lg-4 col-md-4 col-sm-12" style="margin-bottom:20px;")
+            .input-group
+                span.input-group-addon.btn.Button.primary(title='Reload games' ng-click='Game.getGames()')
+                    i(class='fa fa-refresh')
+                input(type="text" class="form-control nf-input" placeholder="Filter By Round or Team" ng-model='Game.gameQuery')
 
     .row
         .col-lg-9.col-md-9.col-sm-12
-            div(class="nf-panel" style='margin-bottom:10px')
+            div.Panel.table-responsive(style='margin-bottom:10px')
                 table(class="table table-condensed nf-shadow no-margin font-size-medium sortable-table")
                     thead
                         tr

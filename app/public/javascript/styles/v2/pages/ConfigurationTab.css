@@ -1,0 +1,20 @@
+.ConfigurationTab .general .save {
+  margin-left: 2rem;
+}
+
+.ConfigurationTab .phases .delete-phase {
+  float: right;
+}
+
+.ConfigurationTab .point-scheme .save-scheme {
+  margin-left: 2rem;
+}
+
+.ConfigurationTab .general .bounceback-checkbox {
+  margin-top: .7rem;
+  margin-left: 2rem;
+}
+
+.ConfigurationTab .phases .phase-checkbox {
+  margin-top: 1rem;
+}

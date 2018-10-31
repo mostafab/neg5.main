@@ -1,0 +1,38 @@
+.Notice {
+  display: flex;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  background: white;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(51,51,51,.3);
+}
+
+.Notice > * {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.Notice.info > .icon {
+  background-color: #004DC8;
+  color: white;
+}
+
+.Notice.success > .icon {
+  background-color: #26a69a;
+  color: white;
+}
+
+.Notice.warning > .icon {
+  background-color: #f9a825;
+  color: white;
+}
+
+.Notice .notice-label {
+  font-size: 1.375rem;
+  font-weight: 500;
+  vertical-align: text-top;
+  flex-grow: 1;
+  line-height: 1.5;
+}

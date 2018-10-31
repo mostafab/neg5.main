@@ -77,7 +77,7 @@ block content
                                                     span.input-group-addon.btn.btn-md.nf-button(ng-class='{"nf-red" : Index.newUser.passwordConfirm !== Index.newUser.password, "nf-green" : Index.newUser.passwordConfirm === Index.newUser.password}')
                                                         
                                             .row
-                                                button(type="submit" class="btn btn-md nf-button button-outline button-outline-green")
+                                                button.btn.btn-md.Button.primary(type="submit")
                                                     | Register
                                             
                                             br
@@ -103,7 +103,7 @@ block content
                                                 span(ng-class='{"nf-red" : loginForm.password.$invalid && !loginForm.password.$pristine, "nf-green" : loginForm.password.$valid}' class="input-group-addon btn-md nf-button")
                                                     //- i.fa.fa-lock
                                         .row
-                                            button.inline(type="submit" class="btn btn-md nf-button button-outline button-outline-green")
+                                            button.inline.Button.btn.btn-md.primary(type="submit")
                                                 | Login
                                         br
                                         
