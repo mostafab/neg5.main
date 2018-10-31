@@ -1,6 +1,6 @@
-.row
+.row.ConfigurationTab
     .col-lg-6
-        div(class="panel panel-default nf-panel")
+        div.general(class="panel panel-default nf-panel")
             div(class="collapsable nf-panel-heading")
                 .row
                     .col-lg-11.col-sm-11.col-md-11.col-xs-11 
@@ -11,12 +11,12 @@
                         form(name='Config.editConfigurationRules' novalidate ng-class='{"disabled": Config.savingRules}')
                             .row.nf-margin
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingRules === false')
-                                    button.nf-button.btn-md.btn.button-outline.button-outline-blue(style='float:left' title='Edit' ng-if='tournamentContext.admin' ng-show='Config.editingRules === false' ng-click='Config.editingRules = true')
+                                    button.btn-md.btn.Button.primary(style='float:left' ng-if='tournamentContext.admin' ng-show='Config.editingRules === false' ng-click='Config.editingRules = true')
                                         i.fa.fa-pencil
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingRules === true')
-                                    button.nf-button.btn-md.btn.button-outline.button-outline-red(style='float:left' ng-show='Config.editingRules === true' title='Cancel' ng-click='Config.editingRules = false; Config.resetRules()')
+                                    button.btn-md.btn.Button.secondary(style='float:left' ng-show='Config.editingRules === true' title='Cancel' ng-click='Config.editingRules = false; Config.resetRules()')
                                         i.fa.fa-times
-                                    button.nf-button.btn-md.btn.button-outline.button-outline-green(type='submit' ng-show='Config.editingRules === true' title='Save' ng-click='Config.saveRules()')
+                                    button.btn-md.btn.Button.primary.save(type='submit' ng-show='Config.editingRules === true' title='Save' ng-click='Config.saveRules()')
                                         i.fa.fa-check
                                         
                             .row.nf-margin
@@ -35,7 +35,7 @@
                                                 input(id='bouncebacks' type="checkbox" name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks')
                                                 label(for="bouncebacks" class="nf-green")
 
-        .row(ng-controller='PhaseController as Phase')
+        .row.phases(ng-controller='PhaseController as Phase')
             div(ng-if='tournamentContext.admin')
                 div(class='col-md-12 col-sm-12 col-lg-12 col-xs-12')
                         div(class="panel nf-panel panel-default")
@@ -54,7 +54,7 @@
                                             .col-lg-12.col-md-12.col-sm-12.col-xs-12
                                                 div(class='input-group' style='margin-bottom:10px')
                                                     input(type='text' placeholder='Enter New Phase Name Here' class="form-control nf-input" ng-model='Phase.newPhase.name' ng-keyup='!($event.which === 13) || Phase.addPhase()')
-                                                    span(class='nf-button btn input-group-addon button-outline button-outline-green' ng-click='Phase.addPhase()' ng-class="{'disabled': Phase.savingNewPhase}")
+                                                    span.btn.input-group-addon.Button.primary(ng-click='Phase.addPhase()' ng-class="{'disabled': Phase.savingNewPhase}")
                                                         i(class='fa fa-plus')
                                     
                                     div(class="col-md-12 col-sm-12 col-lg-12 col-xs-12")
@@ -64,8 +64,8 @@
                                                     .col-lg-8.col-md-8.col-sm-8.col-xs-8
                                                         .input-group
                                                             span.form-control.nf-input.nf-gray.input-group-addon.phase-name(ng-show='!phase.editing' ng-bind='phase.name')
-                                                            span.btn.input-group-addon.nf-button.button-outline.button-outline-blue.no-border(ng-click='phase.editing = true' ng-show='!phase.editing' title='Edit')
-                                                                i.fa.fa-pencil 
+                                                            span.btn.input-group-addon.Button.primary.no-border(ng-click='phase.editing = true' ng-show='!phase.editing')
+                                                                i.fa.fa-pencil
                                                     .col-lg-4.col-md-4.col-sm-4.col-xs-4
                                                         div.material-switch.pull-right(style='padding-left:10px')
                                                             input(id='{{ phase.id }}' type="checkbox" name='{{ phase.id }}' ng-checked='phase.id === Phase.activePhase.id' ng-click='Phase.updateActivePhase(phase)' ng-disabled='Phase.phases.length === 1 && Phase.activePhase.id')
@@ -75,19 +75,18 @@
                                                     .col-lg-10.col-md-10.col-sm-10.col-xs-10
                                                         .input-group
                                                             input(type='text' class='form-control nf-input' ng-model='phase.newName' ng-show='phase.editing')
-                                                            span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-click='phase.newName = phase.name; phase.editing = false' ng-show='phase.editing' title='Cancel')
+                                                            span.btn.input-group-addon.Button.secondary.no-border(ng-click='phase.newName = phase.name; phase.editing = false' ng-show='phase.editing')
                                                                 i.fa.fa-times   
-                                                            span.btn.input-group-addon.nf-button.button-outline.button-outline-green.no-border(ng-click='Phase.editPhase(phase)' ng-show='phase.editing' title='Save')
+                                                            span.btn.input-group-addon.Button.primary.no-border(ng-click='Phase.editPhase(phase)' ng-show='phase.editing')
                                                                 i.fa.fa-check  
                                                      .col-lg-2.col-md-2.col-sm-2.col-xs-2(ng-if='Phase.phases.length > 1')
-                                                        .input-group
-                                                            span.btn.input-group-addon.nf-button.button-outline.button-outline-red.no-border(ng-show='phase.editing' title='Delete Phase.' ng-click='Phase.removePhase(phase)')
+                                                        div
+                                                            span.btn.Button.primary.no-border.delete-phase(ng-show='phase.editing' ng-click='Phase.removePhase(phase)')
                                                                 i.fa.fa-trash
 
         
 
-    .col-lg-6                   
-    
+    .col-lg-6.point-scheme                   
         div(class="panel panel-default nf-panel")
             div(class="collapsable nf-panel-heading") 
                 .row
@@ -99,12 +98,12 @@
                         form(name='Config.editPointSchemeForm' ng-submit='Config.editPointScheme()' novalidate ng-class='{"disabled": Config.savingPointScheme}')
                             .row.nf-margin(ng-if='Config.games.length === 0')
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingPointScheme === false')
-                                    span.nf-button.btn-md.btn.button-outline.button-outline-blue(style='float:left' title='Edit' ng-if='Config.games.length === 0' ng-click='Config.editingPointScheme = true')
+                                    span.btn-md.btn.Button.primary(style='float:left' title='Edit' ng-if='Config.games.length === 0' ng-click='Config.editingPointScheme = true')
                                         i.fa.fa-pencil
                                 .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingPointScheme === true')
-                                    span.nf-button.btn-md.btn.button-outline.button-outline-red(style='float:left' title='Cancel' ng-click='Config.resetPointSchemeCopyToOriginal(); Config.editingPointScheme = false')
+                                    span.btn-md.btn.Button.secondary(style='float:left' title='Cancel' ng-click='Config.resetPointSchemeCopyToOriginal(); Config.editingPointScheme = false')
                                         i.fa.fa-times
-                                    button.nf-button.btn-md.btn.button-outline.button-outline-green(type='submit' title='Save')
+                                    button.btn-md.btn.Button.primary.save-scheme(type='submit' title='Save')
                                         i.fa.fa-check
                                         
                             .row.nf-margin(ng-show='Config.editingPointScheme' ng-if='Config.games.length === 0')
@@ -126,7 +125,7 @@
                                                     a(title='Set as Neg' ng-click='ps.type = "Neg"') Neg
                                     .col-lg-2.col-sm-2
                                         .input-group
-                                            span.nf-button.button-outline.button-outline-red.btn.btn-md(ng-click='Config.removeFromPointSchemeCopy(ps)')
+                                            span.Button.primary.btn.btn-md(ng-click='Config.removeFromPointSchemeCopy(ps)')
                                                 i.fa.fa-trash
                                                 
                             .row.nf-margin(ng-show='Config.editingPointScheme === false')                        

@@ -1,0 +1,11 @@
+.ConfigurationTab .general .save {
+  margin-left: 2rem;
+}
+
+.ConfigurationTab .phases .delete-phase {
+  float: right;
+}
+
+.ConfigurationTab .point-scheme .save-scheme {
+  margin-left: 2rem;
+}

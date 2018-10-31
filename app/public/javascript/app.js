@@ -9,6 +9,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
  */
 // import 'bootswatch/sandstone/bootstrap.min.css';
 import './styles/v2/index.css';
+import './styles/v2/pages-index.css';
 import './styles/v2/neg-five-main.css';
 import './styles/v2/reset.css';
 import './styles/v2/style.css';

@@ -1,3 +1,5 @@
+@import './components/index.css';
+
 .nf-background-main {
     background-color: #F8F8F8;
 }
@@ -306,6 +308,12 @@ li > a:hover {
     -webkit-transition: 0s border; 
     -moz-transition: 0s border; 
     transition: 0s border; 
+}
+.nf-input.display {
+    border: none;
+    background: white;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 textarea:focus,
@@ -1055,27 +1063,12 @@ Switch
 .MatchDetailsPane.affix {
     top: 10%;
 }
-/* 
-@media (min-width: 1000px) {
-    .MatchDetailsPane {
-        width: 200px;
-    }
-}
 
-@media (min-width: 1100px) {
-    .MatchDetailsPane {
-        width: 240px;   
-    }
+/* .Button {
+    border-radius: 2px;
 }
-
-@media (min-width: 1300px) {
-    .MatchDetailsPane {
-        width: 280px;
-    }
-}
-
-@media (min-width: 1550px) {
-    .MatchDetailsPane {
-        width: 360px;
-    }
+.Button.primary {
+    border: 1px solid #004dc8;
+    background-color: #004dc8;
+    color: white;
 } */
