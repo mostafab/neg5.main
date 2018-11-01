@@ -24,11 +24,11 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                                     .input-group.nf-margin
                                         span.form-control.nf-input.nf-gray(ng-show='!Team.currentTeam.editingName') {{Team.currentTeam.name}}
                                         input.form-control.nf-input(ng-show='Team.currentTeam.editingName' ng-model='Team.currentTeam.newName' ng-keyup='!($event.which === 13) || Team.saveCurrentTeamName()')
-                                        span.input-group-addon.nf-button.btn.no-border.nf-blue(ng-if='tournamentContext.admin' ng-click='Team.currentTeam.editingName = true' ng-show='!Team.currentTeam.editingName')
+                                        span.input-group-addon.Button.primary.btn.no-border(ng-if='tournamentContext.admin' ng-click='Team.currentTeam.editingName = true' ng-show='!Team.currentTeam.editingName')
                                             i.fa.fa-pencil
-                                        span.input-group-addon.nf-button.btn.no-border.nf-red(ng-if='tournamentContext.admin' ng-click='Team.resetCurrentTeam()' ng-show='Team.currentTeam.editingName')
+                                        span.input-group-addon.Button.secondary.btn(ng-if='tournamentContext.admin' ng-click='Team.resetCurrentTeam()' ng-show='Team.currentTeam.editingName')
                                             i.fa.fa-times
-                                        span.input-group-addon.nf-button.btn.no-border.nf-green(ng-if='tournamentContext.admin' ng-click='Team.saveCurrentTeamName();' ng-show='Team.currentTeam.editingName')
+                                        span.input-group-addon.Button.primary.btn(ng-if='tournamentContext.admin' ng-click='Team.saveCurrentTeamName();' ng-show='Team.currentTeam.editingName')
                                             i.fa.fa-check
                     
                     .col-lg-12.nf-margin
@@ -58,15 +58,15 @@ div(ng-show='Team.currentTeam.id' ng-class='{"col-lg-12" : !Team.currentTeam.id,
                                                 span.form-control.nf-input.nf-gray(ng-show='!player.editing') 
                                                     p.inline {{player.name}} 
                                                 input.form-control.nf-input(ng-if='tournamentContext.admin' ng-show='player.editing' ng-model='player.newName' ng-keyup='!($event.which === 13) || Team.savePlayerNameOnCurrentTeam(player)')
-                                                span.input-group-addon.nf-button.btn.no-border.nf-blue(ng-if='tournamentContext.admin' ng-click='player.editing = true' ng-show='!player.editing')
+                                                span.input-group-addon.Button.primary.btn(ng-if='tournamentContext.admin' ng-click='player.editing = true' ng-show='!player.editing')
                                                     i.fa.fa-pencil
-                                                span.input-group-addon.nf-button.btn.no-border.nf-red(ng-if='tournamentContext.admin' ng-click='player.editing = false;player.newName = player.name' ng-show='player.editing')
+                                                span.input-group-addon.Button.secondary.btn(ng-if='tournamentContext.admin' ng-click='player.editing = false;player.newName = player.name' ng-show='player.editing')
                                                     i.fa.fa-times
-                                                span.input-group-addon.nf-button.btn.no-border.nf-green(ng-if='tournamentContext.admin' ng-click='Team.savePlayerNameOnCurrentTeam(player)' ng-show='player.editing')
+                                                span.input-group-addon.Button.primary.btn(ng-if='tournamentContext.admin' ng-click='Team.savePlayerNameOnCurrentTeam(player)' ng-show='player.editing')
                                                     i.fa.fa-check
                                         .col-lg-2.col-md-2.col-sm-2(ng-if='player.totalTossupsHeard === 0')
                                             .input-group.nf-margin
-                                                span.input-group-addon.nf-button.btn.no-border.nf-red(ng-click='Team.removeCurrentTeamPlayer(player)' ng-if='tournamentContext.admin' ng-show='!player.editing' title='Remove {{player.name}}. Will fail if this player has participated in a match.')
+                                                span.Button.secondary.btn(ng-click='Team.removeCurrentTeamPlayer(player)' ng-if='tournamentContext.admin' ng-show='!player.editing' title='Remove {{player.name}}. Will fail if this player has participated in a match.')
                                                     i.fa.fa-trash
 
                     .col-lg-12.nf-margin

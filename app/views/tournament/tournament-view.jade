@@ -11,7 +11,7 @@ block content
         div(ng-controller='TournamentCtrl as Tournament')
             title(ng-bind='tournamentInfo.name + " - " + Tournament.tab.substring(0, 1).toUpperCase() + Tournament.tab.substring(1) + " | Neg 5"')
             
-            nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top.no-fixed-sm.nf-blue(role='navigation')
+            nav.navbar.navbar-default.top-nav-bar.no-fixed-sm.nf-blue(role='navigation')
                 .navbar-header
                     button.navbar-toggle(type='button' data-toggle='collapse' data-target='#tournament-list')
                         span.sr-only Toggle navigation
@@ -34,6 +34,18 @@ block content
                 
                         li.center(ng-click='Tournament.tab = "scoresheet"' ng-class='{"active": Tournament.tab === "scoresheet"}')
                             a(class='btn-md' ng-click='Tournament.tab = "scoresheet"') Scoresheet
+
+                        li.dropdown.Dropdown
+                            - var __NF_STATS_URL__ = statsBaseUrl + '/t/{{::tournamentId}}/{{Tournament.slugify()}}/stats'
+                            a.dropdown-toggle(data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+                                | More 
+                                span.caret
+                            ul.dropdown-menu.Dropdown(ng-controller='StatisticsCtrl as Statistics')
+                                li
+                                    a(href=__NF_STATS_URL__ target="_blank") Stats
+                                li(ng-click='Statistics.downloadQBJ()')
+                                    a.qbj-button(href='#') QBJ
+                                        i.fa.fa-download
 
                     ul.nav.navbar-nav.navbar-right(style='margin:0')                                
                         li

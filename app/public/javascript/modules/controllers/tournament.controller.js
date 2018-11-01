@@ -15,6 +15,11 @@ const MATCH_TAB_KEY = 'matchTab';
 const TEAM_TAB_KEY = 'teamTab';
 
 export default class TournamentController {
+
+  static get $inject() {
+    return ['$scope', '$window', '$timeout', '$cookies', 'TournamentService', 'TeamService', 'MatchService', 'SlugService'];
+  }
+
   constructor($scope, $window, $timeout, $cookies, TournamentService, TeamService, MatchService, SlugService) {
     this.$scope = $scope;
     this.$window = $window;
@@ -74,27 +79,23 @@ export default class TournamentController {
 
   editTournament() {
     if (this.editTournamentForm.$valid) {
-      const toastConfig = {
-        message: 'Editing tournament',
-      };
-      this.$scope.toast(toastConfig);
       this.sendingRequest = true;
       this.TournamentService.edit(this.$scope.tournamentId, this.tournamentInfoCopy)
         .then((data) => {
           this.copyToOriginalTournamentObject(data);
           this.resetOverview();
           this.editing = false;
-          toastConfig.message = 'Edited tournament.';
-          toastConfig.success = true;
         })
         .catch(() => {
-          toastConfig.message = 'Failed to update tournament.';
-          toastConfig.success = false;
+          const toastConfig = {
+            message: 'Failed to update tournament.',
+            success: false,
+            hideAfter: true,
+          };
+          this.$scope.toast(toastConfig);
         })
         .finally(() => {
-          toastConfig.hideAfter = true;
           this.sendingRequest = false;
-          this.$scope.toast(toastConfig);
         });
     }
   }
@@ -158,4 +159,4 @@ export default class TournamentController {
   }
 }
 
-TournamentController.$inject = ['$scope', '$window', '$timeout', '$cookies', 'TournamentService', 'TeamService', 'MatchService', 'SlugService'];
+// TournamentController.$inject = ['$scope', '$window', '$timeout', '$cookies', 'TournamentService', 'TeamService', 'MatchService', 'SlugService'];

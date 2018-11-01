@@ -22,7 +22,7 @@
             .input-group
                 span.input-group-addon.btn(ng-click='!tournamentContext.owner || CollabList.toggleAdmin(collab)' ng-class="{'nf-green' : collab.admin, 'nf-gray' : !collab.admin}" title='{{tournamentContext.owner ? "Toggle admin priviledges" : ""}}') {{collab.admin ? 'A' : ''}}
                 div.nf-white.nf-input.form-control.btn.readonly(ng-bind='collab.username')
-                span.input-group-addon.Button.primary.no-border(role='button' ng-click='CollabList.removeCollaborator(collab.username)' ng-if='tournamentContext.owner === true')
+                span.input-group-addon.Button.secondary.no-border(role='button' ng-click='CollabList.removeCollaborator(collab.username)' ng-if='tournamentContext.owner === true')
                     i.fa.fa-trash
             
             br

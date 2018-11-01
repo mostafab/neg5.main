@@ -40,7 +40,7 @@ div(class="panel panel-default nf-panel AddTeam")
                         div(ng-repeat='player in Team.newTeam.players' style='margin:3px')
                             div(class='input-group input-md')
                                 input(type='text' class='form-control nf-input input-md' autocomplete='off' placeholder='Player {{$index + 1}}' ng-model='Team.newTeam.players[$index].name')
-                                span(role='button' class='input-group-addon button-outline button-outline-red btn btn-md nf-button' ng-click='Team.removePlayerSlot($index)')
+                                span.Button.secondary.input-group-addon.btn.btn-md(role='button' ng-click='Team.removePlayerSlot($index)')
                                     i(class='fa fa-times')
                         div.add-player-container
                             span.btn.btn-sm.Button.primary(role="button" ng-click='Team.addPlayer()' style='margin:0px')
