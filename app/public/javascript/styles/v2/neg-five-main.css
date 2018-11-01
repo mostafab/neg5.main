@@ -559,22 +559,12 @@ ol.nf-breadcrumb a.active {
 }
 
 .not-visible, .inactive-player {
-    /*display: none !important;*/
     opacity: .35;
     pointer-events: none;
 }
 
 .green-text {
     color:#00e676 !important;
-}
-
-.player-table > tbody > tr > td:nth-child(2):hover {
-    cursor: pointer;
-    color: #5ab8f8;
-}
-
-.player-table > tbody > tr > td:not(.active-player):nth-child(2) {
-    text-decoration-line: line-through;
 }
 
 .no-border {

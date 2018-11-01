@@ -291,6 +291,68 @@ span {
   background-color: white;
   color: #98978b;
 }
+.Checkbox {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.Checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.Checkbox .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: white;
+  border: 1px solid #aeb7bf;
+  border-radius: 2px;
+}
+
+.Checkbox:hover input ~ .checkmark {
+  background-color: white;
+}
+
+
+.Checkbox input:checked ~ .checkmark {
+  background-color: white;
+}
+
+.Checkbox .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.Checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.Checkbox .checkmark:after {
+  left: 10px;
+  top: 6px;
+  width: 5px;
+  height: 10px;
+  border: 1px solid #3e454c;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 
 
 .nf-background-main {
@@ -852,22 +914,12 @@ ol.nf-breadcrumb a.active {
 }
 
 .not-visible, .inactive-player {
-    /*display: none !important;*/
     opacity: .35;
     pointer-events: none;
 }
 
 .green-text {
     color:#00e676 !important;
-}
-
-.player-table > tbody > tr > td:nth-child(2):hover {
-    cursor: pointer;
-    color: #5ab8f8;
-}
-
-.player-table > tbody > tr > td:not(.active-player):nth-child(2) {
-    text-decoration-line: line-through;
 }
 
 .no-border {

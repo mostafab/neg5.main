@@ -120,7 +120,7 @@
 
                 .row(ng-show='Scoresheet.game.onTossup && Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
-                        button.Button.secondary.btn.btn-block.no-margin(type='button' ng-click='CycleCtrl.lastCycle()' ng-disabled='Scoresheet.game.currentCycle.number <= 1') Back One Cycle
+                        button.Button.secondary.btn.btn-block.no-margin(type='button' ng-click='CycleCtrl.lastCycle()' ng-if='Scoresheet.game.currentCycle.number > 1') Back One Cycle
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
                         button.Button.secondary.btn.btn-block.no-margin(type='button' ng-click='CycleCtrl.nextCycle()') Dead Tossup / Next Tossup
             br            
@@ -130,15 +130,18 @@
                     div.table-responsive.nf-table(ng-show="Scoresheet.game.teams[0].teamInfo")
                         table.table.table-condensed.responsive-font.player-table
                             thead
-                                th.table-head
+                                th.table-head In play?
                                 th.table-head(ng-bind='Scoresheet.game.teams[0].teamInfo.name')
                                 th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='tv.value')
                                 th.table-head.center Pts
                                 th.table-head.center TUH
                             tbody
                                 tr.nf-white(ng-repeat='player in Scoresheet.game.teams[0].players')
-                                    td.pad(ng-class="{'nf-green': player.active }")
-                                    td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state' ng-bind='player.name' ng-class="{'active-player': player.active}")
+                                    td.pad
+                                        .Checkbox
+                                            input(type='checkbox' ng-checked='player.active')
+                                            span.checkmark(ng-click='player.active = !player.active')
+                                    td.pad(ng-bind='player.name' ng-class="{'active-player': player.active}")
                                     td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='TrackerCtrl.getNumberOfTossupTypeForPlayer(Scoresheet.game, player, tv)')
                                     td.pad.center(ng-bind='TrackerCtrl.getPlayerTotalPoints(player)')
                                     td.pad.center
@@ -152,14 +155,17 @@
                     div.table-responsive.nf-table(ng-show="Scoresheet.game.teams[1].teamInfo")
                         table.table.table-condensed.responsive-font.player-table
                             thead
-                                th.table-head
+                                th.table-head In play?
                                 th.table-head(ng-bind='Scoresheet.game.teams[1].teamInfo.name')
                                 th.table-head.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='tv.value')
                                 th.table-head.center Pts
                                 th.table-head.center TUH
                             tbody
                                 tr.nf-white(ng-repeat='player in Scoresheet.game.teams[1].players')
-                                    td.pad(ng-class="{'nf-green': player.active }")
+                                    td.pad
+                                        .Checkbox
+                                            input(type='checkbox' ng-checked='player.active')
+                                            span.checkmark(ng-click='player.active = !player.active')
                                     td.pad(ng-click='player.active = !player.active' title='Toggle active/inactive state' ng-bind='player.name' ng-class="{'active-player': player.active}")
                                     td.pad.center(ng-repeat='tv in Scoresheet.pointScheme.tossupValues | orderBy:"value":true' ng-bind='TrackerCtrl.getNumberOfTossupTypeForPlayer(Scoresheet.game, player, tv)')
                                     td.pad.center(ng-bind='TrackerCtrl.getPlayerTotalPoints(player)')
