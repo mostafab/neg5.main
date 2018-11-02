@@ -13,6 +13,7 @@ import './styles/v2/pages-index.css';
 import './styles/v2/neg-five-main.css';
 import './styles/v2/reset.css';
 import './styles/v2/style.css';
+import './styles/v2/common.css';
 
 /**
  * Import Angular dependencies

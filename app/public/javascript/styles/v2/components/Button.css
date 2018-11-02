@@ -12,3 +12,10 @@
   background-color: white;
   color: #004dc8;
 }
+
+.Button:disabled {
+  color: #8B949D;
+  background-color: #EDF0F2;
+  border-color: #DFE2E6;
+  pointer-events: none;
+}
