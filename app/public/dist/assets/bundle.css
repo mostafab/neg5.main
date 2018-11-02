@@ -2216,4 +2216,11 @@ Sidebar
 .button-container .Button:nth-child(n+2):last-child {
   margin-left: 2rem;
 }
+
+.nf-input:disabled {
+  color: #8B949D;
+  background-color: #EDF0F2;
+  border-color: #DFE2E6;
+  pointer-events: none;
+}
 /*# sourceMappingURL=bundle.css.map*/
