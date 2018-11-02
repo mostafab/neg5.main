@@ -20,12 +20,12 @@
                                 .input-group.nf-margin.responsive(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'not-visible' : !player.active}")
                                     div.player-name
                                         div.player-arrows(style='position:absolute;z-index:10' ng-if='Scoresheet.game.teams[0].players.length > 1')
-                                            span.input-group-addon.btn.nf-button.nf-blue.no-border(style='position:absolute;margin:0', 
+                                            span.input-group-addon.btn.Button.primary.no-border(style='position:absolute;margin:0', 
                                                 ng-click='CycleCtrl.swapPlayers(Scoresheet.game.teams[0].players, $index, $index - 1)',
                                                 title='Switch {{player.name}} and {{$first ? Scoresheet.game.teams[0].players[Scoresheet.game.teams[0].players.length - 1].name : Scoresheet.game.teams[0].players[$index - 1].name}}'
                                             ) 
                                                 i.fa.fa-arrow-up(style='position:absolute;top:20%;font-size:0.8em;right:25%')
-                                            span.input-group-addon.btn.nf-button.nf-orange.no-border(style='position:absolute;margin:0;top:22px', 
+                                            span.input-group-addon.btn.Button.secondary.no-border(style='position:absolute;margin:0;top:22px', 
                                                 ng-click='CycleCtrl.swapPlayers(Scoresheet.game.teams[0].players, $index, $index + 1)',
                                                 title='Switch {{player.name}} and {{$last ? Scoresheet.game.teams[0].players[0].name : Scoresheet.game.teams[0].players[$index + 1].name}}'
                                             ) 
@@ -66,12 +66,12 @@
                                 .input-group.nf-margin.responsive(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'not-visible' : !player.active}")
                                     div.player-name
                                         div.player-arrows(style='position:absolute;z-index:10' ng-if='Scoresheet.game.teams[1].players.length > 1')
-                                            span.input-group-addon.btn.nf-button.nf-blue.no-border(style='position:absolute;margin:0', 
+                                            span.input-group-addon.btn.Button.primary.no-border(style='position:absolute;margin:0', 
                                                 ng-click='CycleCtrl.swapPlayers(Scoresheet.game.teams[1].players, $index, $index - 1)',
                                                 title='Switch {{player.name}} and {{$first ? Scoresheet.game.teams[1].players[Scoresheet.game.teams[1].players.length - 1].name : Scoresheet.game.teams[1].players[$index - 1].name}}'
                                             ) 
                                                 i.fa.fa-arrow-up(style='position:absolute;top:20%;font-size:0.8em;right:25%')
-                                            span.input-group-addon.btn.nf-button.nf-orange.no-border(style='position:absolute;margin:0;top:22px', 
+                                            span.input-group-addon.btn.Button.secondary.no-border(style='position:absolute;margin:0;top:22px', 
                                                 ng-click='CycleCtrl.swapPlayers(Scoresheet.game.teams[1].players, $index, $index + 1)', 
                                                 title='Switch {{player.name}} and {{$last ? Scoresheet.game.teams[1].players[0].name : Scoresheet.game.teams[1].players[$index + 1].name}}'    
                                             ) 
