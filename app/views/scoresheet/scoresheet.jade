@@ -168,18 +168,16 @@
                                             name='{{"player" + player.id + "_tuh"}}' min='{{TrackerCtrl.getNumberOfAnswersForPlayer(player)}}' max='{{Scoresheet.game.currentCycle.number - 1}}',
                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}",  
                                             ng-model='player.tuh' autocomplete='off')            
-            
-            .row(ng-if='!Scoresheet.game.teams[0].teamInfo && !Scoresheet.game.teams[1].teamInfo')
-                .col-lg-6.col-md-6.col-sm-6
-                    button.Button.primary.button.btn.btn-block(type='button' ng-click='Scoresheet.loadLastSavedScoresheet()') Load Last Scoresheet
 
         div(ng-controller='ScoresheetTableController as ScoresheetTable')
             .col-lg-6.col-md-6.col-sm-12(ng-if='!Scoresheet.game.teams[0].teamInfo.id || !Scoresheet.game.teams[1].teamInfo.id')
                 .row
                     .panel.nf-panel.relative.panel-default
                         .panel-body.nf-panel-body
-                            p.nf-label.left
-                                | Choose two teams to load a scoresheet.
+                            p.nf-label
+                                | Choose two teams to load a new scoresheet.
+                            p.nf-label
+                                a(href="#" ng-click='Scoresheet.loadLastSavedScoresheet()') Or load your last scoresheet.
             .col-lg-6.col-md-6.col-sm-12(ng-if='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
                 .row
                     .panel.nf-panel.relative
@@ -191,7 +189,7 @@
                                     div.right
                                         button.Button.secondary.button.btn.btn-sm.new-scoresheet(type='button' ng-click='Scoresheet.resetScoresheet()'
                                             ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
-                                            | New Scoresheet
+                                            | Reset / New Scoresheet
                                         a.btn.btn-sm.Button.primary.complete-match(data-toggle='modal' data-target='#myModal') Complete match
                             thead
                                 th(colspan='{{Scoresheet.game.teams[0].players.length + Scoresheet.game.teams[1].players.length + 5}}')

@@ -8,3 +8,13 @@
   border-color: #DFE2E6;
   pointer-events: none;
 }
+
+a {
+  color: #1784c7;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0ca3fa;
+  text-decoration: none;
+}

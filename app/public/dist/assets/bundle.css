@@ -354,7 +354,7 @@ span {
   top: 6px;
   width: 5px;
   height: 10px;
-  border: 1px solid #3e454c;
+  border: 1px solid #004dc8;
   border-width: 0 3px 3px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
@@ -2222,5 +2222,15 @@ Sidebar
   background-color: #EDF0F2;
   border-color: #DFE2E6;
   pointer-events: none;
+}
+
+a {
+  color: #1784c7;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0ca3fa;
+  text-decoration: none;
 }
 /*# sourceMappingURL=bundle.css.map*/
