@@ -200,6 +200,11 @@ span {
 
 .ConfigurationTab .point-scheme .save-scheme {
   margin-left: 2rem;
+}
+
+.ConfigurationTab .general .bounceback-checkbox {
+  margin-top: .7rem;
+  margin-left: 2rem;
 }.MatchesTab .GameView .secondary-button {
   margin-left: 2rem;
 }
@@ -359,6 +364,12 @@ span {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}.Table > tbody > tr > td {
+  border-top: 1px solid #e7e7e7;
+}.Dialog .modal-content {
+  box-shadow: none;
+}input[type] {
+  border-radius: 1px;
 }
 
 
@@ -524,10 +535,6 @@ input.error-text.ng-touched {
     text-transform: none;
 }
 
-table.player-table * td:first-child:hover {
-    cursor: pointer;
-}
-
 .relative {
     position: relative;
 }
@@ -537,8 +544,10 @@ table.player-table * td:first-child:hover {
 }
 
 form.readonly-form * input, form.readonly-form * select, form.readonly-form * textarea {
+    color: #8B949D;
+    background-color: #EDF0F2;
+    border-color: #DFE2E6;
     pointer-events: none;
-    background: #F8F8F8;
 }
 
 .navbar-collapse * li > a, .navbar-right * li > a {
@@ -995,30 +1004,6 @@ div.name {
         position: fixed;
     }
 }
-
-/* @media (min-width: 1921px) {
-    .responsive-font {
-        font-size: 1.3em;
-    }
-}
-
-@media (min-width: 1600px) and (max-width: 1920px) {
-    .responsive-font {
-        font-size: 1.1em;
-    }
-}
-
-@media (max-width: 1599px) and (min-width: 1351px) {
-    .responsive-font {
-        font-size: .85em;
-    }
-}
-
-@media (max-width: 1350px) {
-    .responsive-font {
-        font-size: .8em;
-    }
-} */
 
 .nf-panel-heading.stat-header {
     margin-bottom: 0px;

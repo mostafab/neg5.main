@@ -9,3 +9,8 @@
 .ConfigurationTab .point-scheme .save-scheme {
   margin-left: 2rem;
 }
+
+.ConfigurationTab .general .bounceback-checkbox {
+  margin-top: .7rem;
+  margin-left: 2rem;
+}

@@ -5,7 +5,7 @@
                 .row
                     .col-lg-11.col-sm-11.col-md-11.col-xs-11 
                         label.nf-label General
-            div(class="panel-body tournament-panel nf-panel-body")
+            div(class="panel-body tournament-panel nf-panel-body general")
                 .row
                     div(class="col-md-12 col-sm-12 col-lg-12 col-xl-9")
                         form(name='Config.editConfigurationRules' novalidate ng-class='{"disabled": Config.savingRules}')
@@ -31,9 +31,12 @@
                                         .input-group
                                             span.input-group-addon.nf-button.no-border.point-label Bouncebacks?
                                             div.form-control.nf-input.nf-gray(ng-show='Config.editingRules === false') {{Config.rules.bouncebacks ? 'Yes' : 'No'}}  
-                                            .material-switch.form-control(ng-show='Config.editingRules === true')
-                                                input(id='bouncebacks' type="checkbox" name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks')
-                                                label(for="bouncebacks" class="nf-green")
+                                            //- .material-switch.form-control(ng-show='Config.editingRules === true')
+                                            //-     input(id='bouncebacks' type="checkbox" name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks')
+                                            //-     label(for="bouncebacks" class="nf-green")
+                                            .Checkbox.bounceback-checkbox(ng-show='Config.editingRules === true')
+                                                input(id ='bouncebacks' type='checkbox' name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks')
+                                                span.checkmark(ng-click="Config.rulesCopy.bouncebacks = !Config.rulesCopy.bouncebacks")
 
         .row.phases(ng-controller='PhaseController as Phase')
             div(ng-if='tournamentContext.admin')

@@ -67,24 +67,14 @@ div.TournamentTab
                             .row.nf-margin
                                 label(class='label nf-label col-xs-4 col-lg-3') Hidden
                                 div(class="col-xs-8 col-sm-8 col-lg-3" ng-class='{"form-group" : Tournament.editing === true}')
-                                    input(type='checkbox' class='form-control nf-input input-sm' ng-model='Tournament.tournamentInfoCopy.hidden' ng-show='Tournament.editing === true')
+                                    .Checkbox(ng-show='Tournament.editing === true')
+                                        input(type='checkbox' ng-model="Tournament.tournamentInfoCopy.hidden" ng-show='Tournament.editing === true')
+                                        span.checkmark(ng-click="Tournament.tournamentInfoCopy.hidden = !Tournament.tournamentInfoCopy.hidden")
                                     label(class='white nf-label' ng-show='Tournament.editing === false' ng-bind='tournamentInfo.hidden ? "Yes" : "No"')
 
                         .row.nf-margin
                             div(class="col-md-12 col-lg-12")
                                 label(class="label nf-label col-xs-4 col-sm-4 col-lg-3") Comments
                                 div(class="col-xs-8 col-sm-8 col-lg-9" ng-class='{"form-group" : Tournament.editing === true}')
-                                    textarea(name="tournament_description" class="form-control nf-input" rows="10" ng-model='Tournament.tournamentInfoCopy.comments' ng-show='Tournament.editing === true')
+                                    textarea(name="tournament_description" class="form-control nf-input" rows="5" ng-model='Tournament.tournamentInfoCopy.comments' ng-show='Tournament.editing === true')
                                     label(class='white nf-label preserve-white-space' ng-show='Tournament.editing === false' ng-bind='tournamentInfo.comments')
-
-
-    //- div(class="panel panel-default nf-panel" ng-controller='StatisticsCtrl as Statistics')
-    //-     .nf-panel-heading
-    //-         .row 
-    //-             .col-lg-6.col-sm-12.col-md-6.col-xs-12
-    //-                 label.nf-label Stats
-    //-             .col-md-6.col-sm-12.col-lg-6.col-xs-12
-    //-                 - var __NF_STATS_URL__ = statsBaseUrl + '/t/{{::tournamentId}}/{{Tournament.slugify()}}/stats'
-    //-                 a.Button.primary(target="_blank" href=__NF_STATS_URL__ class="stat-link btn" data-stats-type='team') Go to Stats
-    //-                 button.Button.primary.btn.btn-md.qbj-button(ng-click='Statistics.downloadQBJ()') QBJ
-    //-                     i.fa.fa-download
