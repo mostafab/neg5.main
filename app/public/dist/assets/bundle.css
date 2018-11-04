@@ -263,6 +263,28 @@ span {
 .ScoresheetTab .scoresheet .complete-match {
   margin-left: 2rem;
 }
+
+.ScoresheetTab .match-dialog .match-summary-table {
+  border: 1px solid #e7e7e7;
+}
+
+.ScoresheetTab .match-dialog .match-summary-table th, .ScoresheetTab .match-dialog .match-summary-table td {
+  text-align: center;
+  font-weight: 400;
+  font-size: 1.375rem;
+  letter-spacing: 1px;
+  color: #585858;
+  font-weight: 400;
+}
+
+.ScoresheetTab .match-dialog .match-summary-table td {
+  border-top: 1px solid #e7e7e7;
+}
+
+.ScoresheetTab .match-dialog .tossups-heard-label {
+  padding-top: 1rem;
+  margin-bottom: 1rem;
+}
 .Button {
   border-radius: 2px;
 }
