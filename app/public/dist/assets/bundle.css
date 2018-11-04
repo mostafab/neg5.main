@@ -272,7 +272,6 @@ span {
   text-align: center;
   font-weight: 400;
   font-size: 1.375rem;
-  letter-spacing: 1px;
   color: #585858;
   font-weight: 400;
 }
@@ -284,6 +283,17 @@ span {
 .ScoresheetTab .match-dialog .tossups-heard-label {
   padding-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.ScoresheetTab .match-dialog .nf-panel-heading {
+  border-bottom: none;
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.ScoresheetTab .scoresheet-tooltip a {
+  margin-left: 3px;
 }
 .Button {
   border-radius: 2px;
@@ -392,6 +402,36 @@ span {
   box-shadow: none;
 }input[type] {
   border-radius: 1px;
+}.Notice {
+  display: flex;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  background: white;
+}
+
+.Notice > * {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.Notice.info > .icon {
+  background-color: #004DC8;
+  color: white;
+}
+
+.Notice.success > .icon {
+  background-color: #26a69a;
+  color: white;
+}
+
+.Notice .notice-label {
+  font-size: 1.375rem;
+  font-weight: 500;
+  vertical-align: text-top;
+  flex-grow: 1;
+  line-height: 1.5;
 }
 
 
@@ -755,12 +795,9 @@ p.nf-label > .nf-label {
 th.nf-label, .label.nf-label, label.nf-label > p, .nf-panel-heading * label.nf-label, 
 .nf-panel-heading > label.nf-label, .nf-panel-heading > label.nf-label > p {
     position: relative;
-    /* float: left; */
     font-size: 1.375rem;
-    letter-spacing: 1px;
     color: #585858;
     font-weight: 400;
-    /* text-transform: uppercase; */
 }
 
 .nf-table.table-responsive {

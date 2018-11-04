@@ -360,12 +360,9 @@ p.nf-label > .nf-label {
 th.nf-label, .label.nf-label, label.nf-label > p, .nf-panel-heading * label.nf-label, 
 .nf-panel-heading > label.nf-label, .nf-panel-heading > label.nf-label > p {
     position: relative;
-    /* float: left; */
     font-size: 1.375rem;
-    letter-spacing: 1px;
     color: #585858;
     font-weight: 400;
-    /* text-transform: uppercase; */
 }
 
 .nf-table.table-responsive {

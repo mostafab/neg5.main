@@ -54,7 +54,6 @@
   text-align: center;
   font-weight: 400;
   font-size: 1.375rem;
-  letter-spacing: 1px;
   color: #585858;
   font-weight: 400;
 }
@@ -66,4 +65,15 @@
 .ScoresheetTab .match-dialog .tossups-heard-label {
   padding-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.ScoresheetTab .match-dialog .nf-panel-heading {
+  border-bottom: none;
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.ScoresheetTab .scoresheet-tooltip a {
+  margin-left: 3px;
 }

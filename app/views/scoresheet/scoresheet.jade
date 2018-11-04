@@ -172,12 +172,13 @@
         div(ng-controller='ScoresheetTableController as ScoresheetTable')
             .col-lg-6.col-md-6.col-sm-12(ng-if='!Scoresheet.game.teams[0].teamInfo.id || !Scoresheet.game.teams[1].teamInfo.id')
                 .row
-                    .panel.nf-panel.relative.panel-default
-                        .panel-body.nf-panel-body
-                            p.nf-label
-                                | Choose two teams to load a new scoresheet.
-                            p.nf-label
-                                a(href="#" ng-click='Scoresheet.loadLastSavedScoresheet()') Or load your last scoresheet.
+                    .Notice.info.scoresheet-tooltip
+                        .icon
+                            .fa.fa-info-circle
+                        .notice-label
+                            p
+                                | Choose two teams to create a new scoresheet, or
+                                a(href="#" ng-click='Scoresheet.loadLastSavedScoresheet()') load your last scoresheet.
             .col-lg-6.col-md-6.col-sm-12(ng-if='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
                 .row
                     .panel.nf-panel.relative
@@ -296,13 +297,18 @@
                             .modal-body.nf-white
                                 .panel(style='border:none')
                                     .nf-panel-heading
-                                        .row
-                                            .col-lg-12.col-sm-12.col-md-12
-                                                label.nf-label Match Summary
-                                                p.nf-label(ng-if="!Scoresheet.game.submitted") Verify that the below information is correct and fill in required fields before clicking "Submit"
-                                                p.nf-label(ng-if="Scoresheet.game.submitted")
-                                                    | Your match has been submitted! If you need to undo your submission, click "Undo Submission".
-                                                    | Otherwise, close this window and start a new scoresheet.
+                                        .Notice.info.scoresheet-tooltip(ng-if="!Scoresheet.game.submitted")
+                                            .icon
+                                                .fa.fa-info-circle
+                                            .notice-label
+                                                p Verify that the below information is correct and fill in required fields before clicking "Submit"
+
+                                        .Notice.success.scoresheet-tooltip(ng-if="Scoresheet.game.submitted")
+                                            .icon
+                                                .fa.fa-check
+                                            .notice-label
+                                                | Your match has been submitted! If you need to undo your submission, click "Undo Submission".
+                                                | Otherwise, close this window and start a new scoresheet.
                                     .nf-panel-body.panel-body.nf-white
                                         .row
                                             table.Table.table.table-condensed.table-responsive.table-bordered.match-summary-table
