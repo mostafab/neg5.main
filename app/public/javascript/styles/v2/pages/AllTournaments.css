@@ -1,0 +1,7 @@
+.AllTournaments .card-wrapper a:hover {
+  color: black;
+}
+
+.AllTournaments .tournament-card p {
+  font-size: 1.5rem;
+}

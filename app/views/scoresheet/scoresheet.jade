@@ -9,13 +9,19 @@
                             ng-disabled='Scoresheet.game.currentCycle.number > 1'    
                         )
                             option(disabled value='') Choose a Team
-                        .panel.nf-panel
-                            .nf-panel-heading.center    
+                        .panel.nf-panel.team-panel
+                            .nf-panel-heading.center  
                                 | {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}} ({{CycleCtrl.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
-                                p.nf-margin.warning-text.font-size-medium(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) > CycleCtrl.rules.maxActive') 
-                                    | # active more than max allowed active players.
-                                p.nf-margin.warning-text.font-size-medium(ng-show='Scoresheet.game.teams[0].teamInfo.id && CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) === 0') 
-                                    | No active players.
+                                .Notice.warning.player-tooltip(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) > CycleCtrl.rules.maxActive')
+                                    .icon
+                                        .fa.fa-exclamation-circle
+                                    .notice-label
+                                        p Number of active players more than max allowed active players.
+                                .Notice.warning.player-tooltip(ng-show='Scoresheet.game.teams[0].teamInfo.id && CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) === 0')
+                                    .icon
+                                        .fa.fa-exclamation-circle
+                                    .notice-label
+                                        p No active players.
                             .panel-body.nf-panel-body.nf-white.relative(style='position:relative')
                                 .input-group.answer-buttons.nf-margin.responsive(ng-repeat='player in Scoresheet.game.teams[0].players' ng-class="{'not-visible' : !player.active}")
                                     div.player-name
@@ -55,13 +61,19 @@
                         )
                             option(disabled value='') Choose a Team
                         
-                        .panel.nf-panel
+                        .panel.nf-panel.team-panel
                             .nf-panel-heading.center 
                                 | {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}} ({{CycleCtrl.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
-                                p.warning-text.nf-margin.font-size-medium(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) > Scoresheet.rules.maxActive') 
-                                    | # active more than max allowed active players.
-                                p.nf-margin.warning-text.font-size-medium(ng-show='Scoresheet.game.teams[1].teamInfo.id && CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) === 0') 
-                                    | No active players.
+                                .Notice.warning.player-tooltip(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) > CycleCtrl.rules.maxActive')
+                                    .icon
+                                        .fa.fa-exclamation-circle
+                                    .notice-label
+                                        p Number of active players more than max allowed active players.
+                                .Notice.warning.player-tooltip(ng-show='Scoresheet.game.teams[1].teamInfo.id && CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) === 0')
+                                    .icon
+                                        .fa.fa-exclamation-circle
+                                    .notice-label
+                                        p No active players.
                             .panel-body.nf-panel-body.nf-white.relative
                                 .input-group.nf-margin.responsive(ng-repeat='player in Scoresheet.game.teams[1].players' ng-class="{'not-visible' : !player.active}")
                                     div.player-name
@@ -191,7 +203,7 @@
                                         button.Button.secondary.button.btn.btn-sm.new-scoresheet(type='button' ng-click='Scoresheet.resetScoresheet()'
                                             ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
                                             | Reset / New Scoresheet
-                                        button.btn.btn-sm.Button.primary.complete-match(data-toggle='modal' data-target='#myModal' ng-disabled='Scoresheet.game.currentCycle.number <= 1') Complete match
+                                        button.btn.btn-sm.Button.primary.complete-match(type="button" data-toggle='modal' data-target='#myModal' ng-disabled='Scoresheet.game.currentCycle.number <= 1') Complete match
                             thead
                                 th(colspan='{{Scoresheet.game.teams[0].players.length + Scoresheet.game.teams[1].players.length + 5}}')
                                     div.button-container                                

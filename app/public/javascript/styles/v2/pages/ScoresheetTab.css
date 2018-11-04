@@ -77,3 +77,11 @@
 .ScoresheetTab .scoresheet-tooltip a {
   margin-left: 3px;
 }
+
+.ScoresheetTab .team-panel .nf-panel-heading {
+  font-size: 1.5rem;
+}
+
+.ScoresheetTab .team-panel .player-tooltip {
+  margin-top: 1rem;
+}

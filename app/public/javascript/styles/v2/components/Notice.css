@@ -22,6 +22,11 @@
   color: white;
 }
 
+.Notice.warning > .icon {
+  background-color: #f9a825;
+  color: white;
+}
+
 .Notice .notice-label {
   font-size: 1.375rem;
   font-weight: 500;

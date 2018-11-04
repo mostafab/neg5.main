@@ -295,6 +295,20 @@ span {
 .ScoresheetTab .scoresheet-tooltip a {
   margin-left: 3px;
 }
+
+.ScoresheetTab .team-panel .nf-panel-heading {
+  font-size: 1.5rem;
+}
+
+.ScoresheetTab .team-panel .player-tooltip {
+  margin-top: 1rem;
+}.AllTournaments .card-wrapper a:hover {
+  color: black;
+}
+
+.AllTournaments .tournament-card p {
+  font-size: 1.5rem;
+}
 .Button {
   border-radius: 2px;
 }
@@ -423,6 +437,11 @@ span {
 
 .Notice.success > .icon {
   background-color: #26a69a;
+  color: white;
+}
+
+.Notice.warning > .icon {
+  background-color: #f9a825;
   color: white;
 }
 
