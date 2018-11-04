@@ -289,7 +289,8 @@
                     .modal-dialog.modal-lg
                         .modal-content.nf-modal-content
                             .modal-header.nf-gray(style='border-bottom:none')
-                                button.btn.Button.secondary(data-dismiss='modal') Close
+                                button.btn.Button.secondary(data-dismiss='modal')
+                                    .fa.fa-times
                                 button.Button.primary.btn.right(type='submit' ng-disabled='Scoresheet.game.currentCycle.number === 1' ng-show='!Scoresheet.game.submitted')
                                     | Submit
                                 button.Button.secondary.btn.right(type='button' ng-show='Scoresheet.game.submitted' ng-click='Scoresheet.revertScoresheetSubmission()')
