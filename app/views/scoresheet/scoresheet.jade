@@ -269,7 +269,7 @@
                                                 i.fa.fa-check
                                     td.center 
                                         | {{Scoresheet.game.currentCycle.number > $index ? ScoresheetTable.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[0].teamInfo.id, $index) : '&nbsp;'}}
-                                    td.center(ng-bind='$index + 1')
+                                    td.center.tuh(ng-bind='$index + 1')
                                     td.center
                                         | {{Scoresheet.game.currentCycle.number > $index ? ScoresheetTable.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[1].teamInfo.id, $index) : '&nbsp;'}}
                                     td.center.player-cell.right-team.right-bonus
