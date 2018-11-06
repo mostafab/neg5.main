@@ -1,0 +1,7 @@
+.CollaboratorTab .collaborators-list thead th:first-child {
+  width: 10%;
+}
+
+.CollaboratorTab .collaborators-list td {
+  border-top: 1px solid #e7e7e7;
+}

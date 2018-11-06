@@ -1,28 +1,51 @@
 .row.CollaboratorTab
     .col-lg-5.col-sm-12.col-md-6(ng-if='tournamentContext.admin === true' ng-controller='CollaboratorSearchCtrl as CollabSearch')
-        div(class="col-md-12 col-sm-12 col-lg-12")
-            .input-group
-                span.input-group-addon(tooltip data-placement="right" message='Normal collaborators have access to only the overview, matches, teams, and scoresheet tabs. Granting someone admin permissions will grant them access to the configuration and collaborators tabs.')
-                    i.fa.fa-question
-                input(type="text" ng-model='CollabSearch.searchQuery.query' class="form-control nf-input" ng-keyup='CollabSearch.handleKeyPress($event)' placeholder="Search for other users by email or name.")
-                span.input-group-addon.no-border.btn.Button.primary(ng-click='CollabSearch.resetSearch()')
-                    | Reset 
+        .input-group
+            span.input-group-addon(tooltip data-placement="right" message='Normal collaborators have access to only the overview, matches, teams, and scoresheet tabs. Granting someone admin permissions will grant them access to the configuration and collaborators tabs.')
+                i.fa.fa-question
+            input(type="text" ng-model='CollabSearch.searchQuery.query' class="form-control nf-input" ng-keyup='CollabSearch.handleKeyPress($event)' placeholder="Search for other users by email or name.")
+            span.input-group-addon.no-border.btn.Button.primary(ng-click='CollabSearch.resetSearch()')
+                | Reset 
             
-        div(style='margin-top:75px' class='collab-search-results')
-            .col-lg-12.col-md-12.col-sm-12(ng-repeat='result in CollabSearch.searchResults | orderBy: "username" track by $index')
-                .input-group
-                    div.form-control.nf-input.nf-white(ng-bind='result.username')
-                    span.input-group-addon.no-border.btn.nf-button.button-outline.button-outline-green(ng-click='CollabSearch.addCollaborator(result.username, true)') Add as Admin
-                    span.input-group-addon.no-border.nf-button.button-outline.button-outline-blue.btn(ng-click='CollabSearch.addCollaborator(result.username, false)') Add
-                br
+        div(class='collab-search-results')
+            .panel.nf-panel(ng-if='CollabSearch.searchResults.length > 0')
+                .table-responsive
+                    table.Table.table.table-condensed.responsive-font.table-bordered
+                        thead
+                            th.table-head Username
+                            th.table-head
+                            th.table-head
+                        tbody
+                            tr(ng-repeat='result in CollabSearch.searchResults | orderBy: "username" track by $index')
+                                td(ng-bind='result.username')
+                                td
+                                    button.Button.btn.btn-sm.primary(ng-click='CollabSearch.addCollaborator(result.username, true)') Add as admin
+                                td
+                                    button.Button.secondary.btn.btn-sm(ng-click='CollabSearch.addCollaborator(result.username, false)') Add
                 
     .col-lg-7.col-sm-12.col-md-6(ng-controller='CollaboratorListCtrl as CollabList' ng-if='tournamentContext.admin === true')
-
-        .col-lg-6.col-md-6.col-sm-12(ng-repeat='collab in CollabList.collaborators | orderBy:["username"]')
-            .input-group
-                span.input-group-addon.btn(ng-click='!tournamentContext.owner || CollabList.toggleAdmin(collab)' ng-class="{'nf-green' : collab.admin, 'nf-gray' : !collab.admin}" title='{{tournamentContext.owner ? "Toggle admin priviledges" : ""}}') {{collab.admin ? 'A' : ''}}
-                div.nf-white.nf-input.form-control.btn.readonly(ng-bind='collab.username')
-                span.input-group-addon.Button.secondary.no-border(role='button' ng-click='CollabList.removeCollaborator(collab.username)' ng-if='tournamentContext.owner === true')
-                    i.fa.fa-trash
-            
-            br
+        .Notice.info.scoresheet-tooltip(ng-if='CollabList.collaborators.length <= 0')
+            .icon
+                .fa.fa-info-circle
+            .notice-label
+                p You don't have any collaborators added yet.
+        .panel.nf-panel.collaborators-list(ng-if='CollabList.collaborators.length > 0')
+            table.table.table-condensed.table-responsive.responsive-font.table-bordered
+                thead
+                    th.table-head Admin
+                    th.table-head Username
+                    th.table-head(ng-if='tournamentContext.owner === true')
+                tbody
+                    tr(ng-repeat='collab in CollabList.collaborators | orderBy:["username"]')
+                        td
+                            p(ng-if='!tournamentContext.owner') {{ collab.admin ? 'Yes' : 'No'}}
+                            .Checkbox(ng-if='tournamentContext.owner')
+                                input(type='checkbox' ng-checked='collab.admin')
+                                span.checkmark(ng-click='CollabList.toggleAdmin(collab)')
+                        td(ng-bind='collab.username')
+                        td(ng-if='tournamentContext.owner === true')
+                            button.Button.btn.btn-sm.secondary.no-border(
+                                role='button'
+                                ng-click='CollabList.removeCollaborator(collab.username)'
+                            )
+                                i.fa.fa-times

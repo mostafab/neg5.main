@@ -187,7 +187,7 @@ form.readonly-form * input, form.readonly-form * select, form.readonly-form * te
 #tab-holder {
     padding-left:0px;
     padding-right:10px;
-    padding-top: 20px;
+    padding-top: 40px;
 }
 
 @media (max-width: 767px) {
