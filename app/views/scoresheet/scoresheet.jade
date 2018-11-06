@@ -9,7 +9,7 @@
                             ng-disabled='Scoresheet.game.currentCycle.number > 1'    
                         )
                             option(disabled value='') Choose a Team
-                        .panel.nf-panel.team-panel
+                        .Panel.team-panel
                             .nf-panel-heading.center  
                                 | {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}} ({{CycleCtrl.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
                                 .Notice.warning.player-tooltip(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) > CycleCtrl.rules.maxActive')
@@ -61,7 +61,7 @@
                         )
                             option(disabled value='') Choose a Team
                         
-                        .panel.nf-panel.team-panel
+                        .Panel
                             .nf-panel-heading.center 
                                 | {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}} ({{CycleCtrl.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
                                 .Notice.warning.player-tooltip(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) > CycleCtrl.rules.maxActive')
@@ -107,7 +107,7 @@
                                         
                 .row(ng-show='!Scoresheet.game.onTossup')
                     .col-lg-12.col-md-12.col-sm-12
-                        .panel.nf-panel
+                        .Panel
                             .nf-panel-heading.center 
                                 | Bonus {{Scoresheet.game.currentCycle.number}} for {{Scoresheet.getTeam(Scoresheet.game.currentCycle.answers[Scoresheet.game.currentCycle.answers.length - 1].teamId).teamInfo.name }}
                             .panel-body.nf-panel-body.nf-white
@@ -133,7 +133,7 @@
 
             .row(ng-controller='ScoresheetPointsTrackerCtrl as TrackerCtrl')
                 .col-lg-6.col-md-12.col-sm-12
-                    div.table-responsive.nf-table(ng-show="Scoresheet.game.teams[0].teamInfo")
+                    div.table-responsive.nf-table.Panel(ng-show="Scoresheet.game.teams[0].teamInfo")
                         table.Table.table.table-condensed.responsive-font.player-table
                             thead
                                 th.table-head In play?
@@ -158,7 +158,7 @@
                                             title='{{ Scoresheet.scoresheetForm["player" + player.id + "_tuh"].$valid ? "" : ("This player must have at least " + TrackerCtrl.getNumberOfAnswersForPlayer(player) + " TUH and at most " + (Scoresheet.game.currentCycle.number - 1)) + " TUH" }}')
 
                 .col-lg-6.col-md-12.col-sm-12
-                    div.table-responsive.nf-table(ng-show="Scoresheet.game.teams[1].teamInfo")
+                    div.table-responsive.nf-table.Panel(ng-show="Scoresheet.game.teams[1].teamInfo")
                         table.table.table-condensed.responsive-font.player-table.Table
                             thead
                                 th.table-head In play?
@@ -193,8 +193,8 @@
                                 a(href="#" ng-click='Scoresheet.loadLastSavedScoresheet()') load your last scoresheet.
             .col-lg-6.col-md-6.col-sm-12(ng-if='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
                 .row
-                    .panel.nf-panel.relative
-                        table.table.table-condensed.table-responsive.responsive-font.table-bordered.scoresheet(ng-controller='ScoresheetCycleController as CycleCtrl')
+                    .Panel
+                        table.Table.table.table-condensed.table-responsive.responsive-font.scoresheet(ng-controller='ScoresheetCycleController as CycleCtrl')
                             thead
                                 th(colspan='{{Scoresheet.game.teams[0].players.length + Scoresheet.game.teams[1].players.length + 5}}')
                                     p.nf-label.left

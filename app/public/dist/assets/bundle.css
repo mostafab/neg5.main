@@ -416,7 +416,7 @@ span {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
-}.Table > tbody > tr > td {
+}table.Table > tbody > tr > td, table.Table > thead > tr > th {
   border-top: 1px solid #e7e7e7;
 }.Dialog .modal-content {
   box-shadow: none;
@@ -457,6 +457,14 @@ span {
   vertical-align: text-top;
   flex-grow: 1;
   line-height: 1.5;
+}.Panel {
+  border-top: 1px solid #c4c9cf;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px 0 rgba(51,51,51,.3);
+  border-right: 1px solid #c4c9cf;
+  border-bottom: none;
+  background-color: #ffffff;
+  margin-bottom: 20px;
 }
 
 

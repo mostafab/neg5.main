@@ -1,6 +1,6 @@
 .row.ConfigurationTab
     .col-lg-6
-        div.general(class="panel panel-default nf-panel")
+        div.general.Panel
             div(class="collapsable nf-panel-heading")
                 .row
                     .col-lg-11.col-sm-11.col-md-11.col-xs-11 
@@ -38,7 +38,7 @@
         .row.phases(ng-controller='PhaseController as Phase')
             div(ng-if='tournamentContext.admin')
                 div(class='col-md-12 col-sm-12 col-lg-12 col-xs-12')
-                        div(class="panel nf-panel panel-default")
+                        div.Panel
                             div(class="collapsable nf-panel-heading") 
                                 .row
                                     .col-lg-6.col-md-6.col-sm-12.col-xs-12
@@ -87,7 +87,7 @@
         
 
     .col-lg-6.point-scheme                   
-        div(class="panel panel-default nf-panel")
+        div.Panel
             div(class="collapsable nf-panel-heading") 
                 .row
                     .col-lg-11.col-sm-11.col-md-11.col-xs-11 
@@ -180,7 +180,7 @@
         .row.divisions(ng-controller='DivisionController as Division')
             div(ng-if='tournamentContext.admin === true')
                 .col-lg-12.col-md-12.col-sm-12.col-xs-12
-                    div(class="panel panel-default nf-panel")
+                    div.Panel
                         div(class="collapsable nf-panel-heading") 
                             .row
                                 .col-lg-11.col-sm-11.col-md-11.col-xs-11 
