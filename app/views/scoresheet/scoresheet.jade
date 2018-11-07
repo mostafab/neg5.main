@@ -181,8 +181,9 @@
                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}",  
                                             ng-model='player.tuh' autocomplete='off')            
 
-        .col-lg-6.col-md-6.col-sm-12(ng-controller='ScoresheetTableController as ScoresheetTable')
-                .Notice.info.scoresheet-tooltip(ng-if='!Scoresheet.game.teams[0].teamInfo.id || !Scoresheet.game.teams[1].teamInfo.id')
+        div(ng-controller='ScoresheetTableController as ScoresheetTable')
+            .col-lg-6.col-md-6.col-sm-12(ng-if='!Scoresheet.game.teams[0].teamInfo.id || !Scoresheet.game.teams[1].teamInfo.id')
+                .Notice.info.scoresheet-tooltip
                     .icon
                         .fa.fa-info-circle
                     .notice-label
