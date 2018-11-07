@@ -181,20 +181,17 @@
                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm['player' + player.id + '_tuh'].$invalid}",  
                                             ng-model='player.tuh' autocomplete='off')            
 
-        div(ng-controller='ScoresheetTableController as ScoresheetTable')
-            .col-lg-6.col-md-6.col-sm-12(ng-if='!Scoresheet.game.teams[0].teamInfo.id || !Scoresheet.game.teams[1].teamInfo.id')
-                .row
-                    .Notice.info.scoresheet-tooltip
-                        .icon
-                            .fa.fa-info-circle
-                        .notice-label
-                            p
-                                | Choose two teams to create a new scoresheet, or
-                                a(href="#" ng-click='Scoresheet.loadLastSavedScoresheet()') load your last scoresheet.
+        .col-lg-6.col-md-6.col-sm-12(ng-controller='ScoresheetTableController as ScoresheetTable')
+                .Notice.info.scoresheet-tooltip(ng-if='!Scoresheet.game.teams[0].teamInfo.id || !Scoresheet.game.teams[1].teamInfo.id')
+                    .icon
+                        .fa.fa-info-circle
+                    .notice-label
+                        p
+                            | Choose two teams to create a new scoresheet, or
+                            a(href="#" ng-click='Scoresheet.loadLastSavedScoresheet()') load your last scoresheet.
             .col-lg-6.col-md-6.col-sm-12(ng-if='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
-                .row
-                    .Panel
-                        table.Table.table.table-condensed.table-responsive.responsive-font.scoresheet(ng-controller='ScoresheetCycleController as CycleCtrl')
+                    .Panel.table-responsive
+                        table.Table.table.table-condensed.responsive-font.scoresheet(ng-controller='ScoresheetCycleController as CycleCtrl')
                             thead
                                 th(colspan='{{Scoresheet.game.teams[0].players.length + Scoresheet.game.teams[1].players.length + 5}}')
                                     p.nf-label.left
