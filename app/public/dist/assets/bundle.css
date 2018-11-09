@@ -216,7 +216,16 @@ span {
 
 .TeamsTab .AddTeam .phase-container {
   margin-bottom: 1rem;
-}.ScoresheetTab .power-button {
+}.ScoresheetTab .cycle-buttons {
+  display: flex;
+}
+
+.ScoresheetTab .cycle-buttons .tossup-label {
+  text-align: center;
+  border: none;
+}
+
+.ScoresheetTab .power-button {
   color: #26a69a;
   border: 1px solid #26a69a;
   background-color: white;

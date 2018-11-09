@@ -4,9 +4,19 @@
             div(ng-controller='ScoresheetCycleController as CycleCtrl')
                 .row.tossup-cycle-container(ng-show='CycleCtrl.game.onTossup')
                     .col-lg-12.col-sm-12.col-md-12.col-xs-12(ng-if='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id')
-                        .Panel
-                            .nf-panel-heading.center
+                        .Panel.cycle-buttons
+                            .form-control.tossup-label
                                 | Tossup {{Scoresheet.game.currentCycle.number}}
+                            button.Button.secondary.btn(
+                                type='button'
+                                ng-click='CycleCtrl.lastCycle()'
+                                ng-disabled='!Scoresheet.game.onTossup || !Scoresheet.game.teams[0].teamInfo || !Scoresheet.game.teams[1].teamInfo || Scoresheet.game.currentCycle.number <= 1'
+                            ) Back One Cycle
+                            button.Button.secondary.btn(
+                                type='button'
+                                ng-click='CycleCtrl.nextCycle()'
+                                ng-disabled='!Scoresheet.game.onTossup || !Scoresheet.game.teams[0].teamInfo || !Scoresheet.game.teams[1].teamInfo'
+                            ) Dead Tossup / Next Tossup
                     .col-lg-6.col-md-6.col-sm-6.col-xs-6
                         select.form-control.nf-input.scoresheet-team(required ng-options='team as team.name group by CycleCtrl.scoresheetSelectGroup(team) for team in CycleCtrl.teams | preventSameMatchTeams:Scoresheet.game.teams[1].teamInfo.id | orderBy:"name"', 
                             ng-model='Scoresheet.game.teams[0].teamInfo' ng-change='CycleCtrl.loadTeamPlayers(Scoresheet.game.teams[0])',
@@ -208,20 +218,6 @@
                                             ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
                                             | Reset / New Scoresheet
                                         button.btn.btn-sm.Button.primary.complete-match(type="button" data-toggle='modal' data-target='#myModal' ng-disabled='Scoresheet.game.currentCycle.number <= 1') Complete match
-                            thead
-                                th(colspan='{{Scoresheet.game.teams[0].players.length + Scoresheet.game.teams[1].players.length + 5}}')
-                                    div.button-container                                
-                                        button.Button.secondary.btn-sm.btn(
-                                            type='button'
-                                            ng-click='CycleCtrl.lastCycle()'
-                                            ng-disabled='!Scoresheet.game.onTossup || !Scoresheet.game.teams[0].teamInfo || !Scoresheet.game.teams[1].teamInfo || Scoresheet.game.currentCycle.number <= 1'
-                                        ) Back One Cycle
-                                        button.Button.secondary.btn.btn-sm(
-                                            type='button'
-                                            ng-click='CycleCtrl.nextCycle()'
-                                            ng-disabled='!Scoresheet.game.onTossup || !Scoresheet.game.teams[0].teamInfo || !Scoresheet.game.teams[1].teamInfo'
-                                        ) Dead Tossup / Next Tossup
-                                        
                             thead.table-header
                                 th.center.nf-label.team-name(
                                     colspan='{{Scoresheet.game.teams[0].players.length}}'
