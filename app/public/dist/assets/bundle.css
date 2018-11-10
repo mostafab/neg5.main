@@ -225,6 +225,15 @@ span {
   border: none;
 }
 
+@media (max-width: 1000px) {
+  .ScoresheetTab .cycle-buttons {
+    display: block;
+  }
+  .ScoresheetTab .cycle-buttons button {
+    width: 50%;
+  }
+}
+
 .ScoresheetTab .power-button {
   color: #26a69a;
   border: 1px solid #26a69a;
@@ -311,6 +320,18 @@ span {
 
 .ScoresheetTab .team-panel .player-tooltip {
   margin-top: 1rem;
+}
+
+.ScoresheetTab .scoresheet .edit-icon {
+  color: #004dc8;
+  background-color: white;
+  display: none;
+  border: 1px solid #004dc8;
+  position: absolute;
+}
+
+.ScoresheetTab .scoresheet .edit-icon-container:hover .edit-icon {
+  display: inline-block;
 }.AllTournaments .card-wrapper a:hover {
   color: black;
 }
