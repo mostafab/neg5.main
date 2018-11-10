@@ -115,3 +115,15 @@
 .ScoresheetTab .scoresheet .edit-icon-container:hover .edit-icon {
   display: inline-block;
 }
+
+.ScoresheetTab .current-bonus-table:not(.both-teams) > thead > tr > th:first-child {
+  width: 25%;
+}
+
+.ScoresheetTab .current-bonus-table.both-teams > thead > tr > th:first-child {
+  width: 10%
+}
+
+.ScoresheetTab .current-bonus-table.both-teams > thead > tr > th {
+  width: 45%;
+}
