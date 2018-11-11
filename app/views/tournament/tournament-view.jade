@@ -43,8 +43,9 @@ block content
                             ul.dropdown-menu.Dropdown(ng-controller='StatisticsCtrl as Statistics')
                                 li
                                     a(href=__NF_STATS_URL__ target="_blank") Stats
+                                        i.fa.fa-external-link(style='margin-left:5px')
                                 li(ng-click='Statistics.downloadQBJ()')
-                                    a.qbj-button(href='#') QBJ
+                                    a.qbj-button(href='#') Export as QBJ
                                         i.fa.fa-download
 
                     ul.nav.navbar-nav.navbar-right(style='margin:0')                                

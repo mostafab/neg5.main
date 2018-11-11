@@ -22,7 +22,6 @@ import passport from './passport/passport';
 
 const indexRoute = require('../routes/index');
 
-const MORGAN_REQUEST_LOGGING_FORMAT = ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :currentUser';
 const STATS_BASE_URL_PREFIX = 'STATS_BASE_URL_';
 
 const getStatsBaseUrl = () => {
