@@ -32,7 +32,7 @@ div.Panel.GameView(ng-show='Game.loadedGame.id')
                 div(class="row")
                     
                     div(class="col-lg-6 col-md-6 col-sm-6")
-                        div(class='panel-default nf-panel')
+                        .Panel.table-responsive
                             table(class='table')                                   
                                 thead
                                     tr
@@ -59,7 +59,7 @@ div.Panel.GameView(ng-show='Game.loadedGame.id')
                                             div(tabindex="-1" class='form-control readonly input-sm' ng-bind='Game.MatchUtil.pointSum(player.points)')
                                         
                     div(class="col-lg-6 col-md-6 col-sm-6")
-                        div(class='panel-default nf-panel')
+                        .Panel.table-responsive
                             table(class='table')                                   
                                 thead
                                    tr

@@ -33,7 +33,7 @@ block content
                                     .row
                                         .col-lg-4.col-md-5.col-sm-5
                                             div
-                                                .nf-panel(style='margin-bottom:10px')
+                                                .Panel.nf-panel(style='margin-bottom:10px')
                                                     .nf-panel-heading
                                                         .row 
                                                             .col-lg-11.col-sm-11.col-md-11.col-xs-11
@@ -51,7 +51,7 @@ block content
                                                 input.form-control.nf-input(type='text' placeholder='Filter your tournaments' ng-model='Home.query.name')
                                             hr
                                             div
-                                                .nf-panel.card-wrapper(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | filter:Home.query:strict | orderBy:"name"')
+                                                .Panel.nf-panel.card-wrapper(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | filter:Home.query:strict | orderBy:"name"')
                                                     a.tournament-card(href='/t/{{tournament.id}}/{{Home.getTournamentSlug(tournament)}}')
                                                         .nf-panel-heading
                                                             .row 

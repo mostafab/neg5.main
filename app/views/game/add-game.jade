@@ -26,7 +26,7 @@ div.AddMatch(id='add-game-div')
                     div(class="row")
                         
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            div(class='panel-default nf-panel')
+                            div.Panel.table-responsive
                                 table(class='table')                                   
                                     thead
                                         tr
@@ -50,7 +50,7 @@ div.AddMatch(id='add-game-div')
                                                 div(tabindex="-1" class='form-control readonly input-sm' ng-bind='Game.MatchUtil.pointSum(player.points)')
                         
                         div(class="col-lg-6 col-md-6 col-sm-6")
-                            div(class='panel-default nf-panel')
+                            .Panel.table-responsive
                                 table(class='table')                                   
                                     thead
                                         tr
