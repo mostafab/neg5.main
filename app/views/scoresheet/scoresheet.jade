@@ -220,6 +220,22 @@
                         p
                             | Choose two teams to create a new scoresheet, or
                             a(href="#" ng-click='Scoresheet.loadLastSavedScoresheet()') load your last scoresheet.
+
+            .col-lg-6.col-md-6.col-sm-12
+                .Notice.warning(ng-if='Scoresheet.game.lastSavedAt && !Scoresheet.game.submitted')
+                    .icon
+                        .fa.fa-info-circle
+                    .notice-label
+                        p
+                            | Remember to submit this match by clicking 'Complete Match' after the game is done.
+
+                .Notice.success(ng-if='Scoresheet.game.submitted')
+                    .icon
+                        .fa.fa-check
+                    .notice-label
+                        p
+                            | This scoresheet has been submitted.
+
             .col-lg-6.col-md-6.col-sm-12(ng-if='Scoresheet.game.teams[0].teamInfo.id && Scoresheet.game.teams[1].teamInfo.id' style='overflow:auto')
                     .Panel.table-responsive
                         table.Table.table.table-condensed.responsive-font.scoresheet(ng-controller='ScoresheetCycleController as CycleCtrl')

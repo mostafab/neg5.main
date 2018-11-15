@@ -38,10 +38,10 @@ export default class TournamentController {
       if (validTabs.indexOf(tab) !== -1) {
         this.tab = location.hash.substr(1);
       } else {
-        this.tab = localStorage.getItem(TOURNAMENT_TAB_KEY) || 'overview';
+        this.tab = 'overview';
       }
     } else {
-      this.tab = localStorage.getItem(TOURNAMENT_TAB_KEY) || 'overview';
+      this.tab = 'overview';
     }
     this.matchTab = localStorage.getItem(MATCH_TAB_KEY) || 'add';
     this.teamTab = localStorage.getItem(TEAM_TAB_KEY) || 'add';

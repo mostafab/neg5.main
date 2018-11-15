@@ -20,6 +20,8 @@ import playerApi from '../routes/api/player';
 import configuration from './configuration';
 import passport from './passport/passport';
 
+import { getToken } from './../auth/middleware/token';
+
 const indexRoute = require('../routes/index');
 
 const STATS_BASE_URL_PREFIX = 'STATS_BASE_URL_';
@@ -59,7 +61,7 @@ export default () => {
     next();
   });
   app.use('/neg5-api', httpProxy(app.get(NEG5_API_HOST_PROP), {
-    proxyReqPathResolver: req => `/neg5-api${req.url}`
+    proxyReqPathResolver: req => `/neg5-api${req.url}`,
   }));
   app.use(cookieParser());
   app.use(bodyParser.json());

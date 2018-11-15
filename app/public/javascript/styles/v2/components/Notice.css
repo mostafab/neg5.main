@@ -4,6 +4,8 @@
   border: 1px solid #e0e0e0;
   border-radius: 2px;
   background: white;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(51,51,51,.3);
 }
 
 .Notice > * {

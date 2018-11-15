@@ -18,3 +18,9 @@ export const hasToken = (req, res, next) => {
     return res.status(403).send({ message: 'This route requires authorization.', success: false });
   }
 };
+
+export function getToken(httpReq) {
+  const headers = httpReq.headers;
+  console.log(headers);
+  return headers.cookie;
+}

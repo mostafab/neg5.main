@@ -92,6 +92,10 @@
   padding-right: 0;
 }
 
+.ScoresheetTab .scoresheet-tooltip {
+  margin-bottom: 1rem;
+}
+
 .ScoresheetTab .scoresheet-tooltip a {
   margin-left: 3px;
 }
