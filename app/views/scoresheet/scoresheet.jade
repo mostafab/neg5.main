@@ -241,13 +241,13 @@
                         table.Table.table.table-condensed.responsive-font.scoresheet(ng-controller='ScoresheetCycleController as CycleCtrl')
                             thead
                                 th(colspan='{{Scoresheet.game.teams[0].players.length + Scoresheet.game.teams[1].players.length + 5}}')
-                                    p.nf-label.left
-                                        | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'short'}}
-                                    div.right
+                                    div.left
                                         button.Button.secondary.button.btn.btn-sm.new-scoresheet(type='button' ng-click='Scoresheet.resetScoresheet()'
                                             ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
                                             | New Scoresheet
                                         button.btn.btn-sm.Button.primary.complete-match(type="button" data-toggle='modal' data-target='#myModal' ng-disabled='Scoresheet.game.currentCycle.number <= 1') {{ Scoresheet.game.submitted ? 'Undo Submission' : 'Complete Match' }}
+                                    p.nf-label.right
+                                        | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'short'}}
                             thead.table-header
                                 th.center.nf-label.team-name(
                                     colspan='{{Scoresheet.game.teams[0].players.length}}'
