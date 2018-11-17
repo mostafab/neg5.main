@@ -289,13 +289,14 @@
                                             | {{Scoresheet.game.currentCycle.number > $index ? ScoresheetTable.getTeamBonusPointsForCycle(Scoresheet.game.teams[0].teamInfo.id, $index) : '&nbsp;'}}
                                         div(ng-if='cycle.editingBonus && (Scoresheet.rules.bouncebacks || ScoresheetTable.getTeamThatGotTossup(cycle) === Scoresheet.game.teams[0].teamInfo.id)')
                                             .nf-margin(ng-repeat='part in Scoresheet.range(Scoresheet.pointScheme.partsPerBonus) track by $index')
-                                                button.Button.btn.btn-sm.nf-gray.no-border( 
+                                                button.Button.btn.btn-sm.nf-gray.no-border(
+                                                    type='button' 
                                                     ng-class="{'nf-green' : cycle.bonusesCopy[$index] === Scoresheet.game.teams[0].teamInfo.id}",
                                                     ng-click='ScoresheetTable.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[0].teamInfo, cycle.bonusesCopy)')  
                                                     | + {{Scoresheet.pointScheme.bonusPointValue}}
-                                            button.btn.btn-sm.Button.secondary.nf-margin(ng-click='cycle.editingBonus = false')
+                                            button.btn.btn-sm.Button.secondary.nf-margin(ng-click='cycle.editingBonus = false' type='button')
                                                 i.fa.fa-times
-                                            button.btn.btn-sm.Button.primary.nf-margin(ng-click='ScoresheetTable.editCycleBonuses(cycle)')
+                                            button.btn.btn-sm.Button.primary.nf-margin(ng-click='ScoresheetTable.editCycleBonuses(cycle)' type='button')
                                                 i.fa.fa-check
                                     td.center 
                                         | {{Scoresheet.game.currentCycle.number > $index ? ScoresheetTable.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[0].teamInfo.id, $index) : '&nbsp;'}}
@@ -307,13 +308,14 @@
                                             | {{Scoresheet.game.currentCycle.number > $index ? ScoresheetTable.getTeamBonusPointsForCycle(Scoresheet.game.teams[1].teamInfo.id, $index) : '&nbsp;'}}
                                         div(ng-if='cycle.editingBonus && (Scoresheet.rules.bouncebacks || ScoresheetTable.getTeamThatGotTossup(cycle) === Scoresheet.game.teams[1].teamInfo.id)')
                                             .nf-margin(ng-repeat='part in Scoresheet.range(Scoresheet.pointScheme.partsPerBonus) track by $index')
-                                                button.btn.btn-sm.Button.nf-gray.no-border( 
+                                                button.btn.btn-sm.Button.nf-gray.no-border(
+                                                    type='button' 
                                                     ng-class="{'nf-green' : cycle.bonusesCopy[$index] === Scoresheet.game.teams[1].teamInfo.id}",
                                                     ng-click='ScoresheetTable.setTeamThatGotBonusPartCurrentCycle($index, Scoresheet.game.teams[1].teamInfo, cycle.bonusesCopy)')  
                                                     | + {{Scoresheet.pointScheme.bonusPointValue}}
-                                            button.btn.btn-sm.Button.secondary.nf-margin(ng-click='cycle.editingBonus = false')
+                                            button.btn.btn-sm.Button.secondary.nf-margin(ng-click='cycle.editingBonus = false' type='button')
                                                 i.fa.fa-times
-                                            button.btn.btn-sm.Button.primary.nf-margin(ng-click='ScoresheetTable.editCycleBonuses(cycle)')
+                                            button.btn.btn-sm.Button.primary.nf-margin(ng-click='ScoresheetTable.editCycleBonuses(cycle)' type='button')
                                                 i.fa.fa-check
 
                                     td.center(ng-repeat='player in Scoresheet.game.teams[1].players') 
