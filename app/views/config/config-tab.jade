@@ -45,7 +45,7 @@
                                         h4.left 
                                             label.nf-label Phases 
                                     .col-lg-6.col-md-6.col-sm-12.col-xs-12
-                                        label.nf-label(title='Active phase is used to choose correct divisions when viewing stats for all games.' ng-bind='"Active/Default Phase: " + (Phase.activePhase.name || "None")')
+                                        label.nf-label(title='Active phase is used to choose correct divisions when viewing stats for all games.' ng-bind='"Current Phase: " + (Phase.activePhase.name || "None")')
 
                             div(class="nf-panel-body panel-body")
                                 .row
@@ -67,9 +67,12 @@
                                                             span.btn.input-group-addon.Button.primary.no-border(ng-click='phase.editing = true' ng-show='!phase.editing')
                                                                 i.fa.fa-pencil
                                                     .col-lg-4.col-md-4.col-sm-4.col-xs-4
-                                                        div.material-switch.pull-right(style='padding-left:10px')
-                                                            input(id='{{ phase.id }}' type="checkbox" name='{{ phase.id }}' ng-checked='phase.id === Phase.activePhase.id' ng-click='Phase.updateActivePhase(phase)' ng-disabled='Phase.phases.length === 1 && Phase.activePhase.id')
-                                                            label(for="{{ phase.id }}" class="nf-green")
+                                                        .Checkbox.phase-checkbox
+                                                            input(id='{{phase.id}}' type="checkbox" name='{{ phase.id }}' ng-checked='phase.id === Phase.activePhase.id' ng-disabled='Phase.phases.length === 1 && Phase.activePhase.id')
+                                                            span.checkmark(ng-click='Phase.updateActivePhase(phase)')
+                                                        //- div.material-switch.pull-right(style='padding-left:10px')
+                                                        //-     input(id='{{ phase.id }}' type="checkbox" name='{{ phase.id }}' ng-checked='phase.id === Phase.activePhase.id' ng-click='Phase.updateActivePhase(phase)' ng-disabled='Phase.phases.length === 1 && Phase.activePhase.id')
+                                                        //-     label(for="{{ phase.id }}" class="nf-green")
                                             .col-lg-12.col-md-12.col-sm-12.col-xs-12(ng-show='phase.editing')
                                                 .row
                                                     .col-lg-10.col-md-10.col-sm-10.col-xs-10
@@ -110,7 +113,7 @@
                                 .row.nf-margin(ng-repeat='ps in Config.pointSchemeCopy.tossupValues track by ps.value')
                                     .col-lg-8.col-sm-9.col-md-6
                                         .input-group
-                                            span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle(
+                                            span.input-group-addon.no-border.point-label.dropdown-toggle(
                                                 ng-class="{'nf-green': ps.type === 'Power', 'nf-blue' : ps.type === 'Base', 'nf-red' : ps.type === 'Neg'}",
                                                 data-toggle='dropdown'
                                             ) {{ps.type}}
@@ -132,7 +135,7 @@
                                 .row.nf-margin(ng-repeat='ps in Config.pointScheme.tossupValues | orderBy:"value":true track by ps.value')
                                     .col-lg-8.col-sm-9.col-md-6
                                         .input-group
-                                            span.input-group-addon.nf-button.no-border.point-label(
+                                            span.input-group-addon.no-border.point-label(
                                                 ng-class="{'nf-green': ps.type === 'Power', 'nf-blue' : ps.type === 'Base', 'nf-red' : ps.type === 'Neg'}"
                                             ) {{ps.type}}
                                             div.form-control.nf-input.nf-gray {{ps.value}}   
@@ -141,14 +144,14 @@
                                 .row.nf-margin
                                     .col-lg-8.col-sm-9.col-md-6
                                         .input-group
-                                            span.input-group-addon.nf-button.no-border.point-label Bonus Part Value
+                                            span.input-group-addon.no-border.point-label Bonus Part Value
                                             div.form-control.nf-input.nf-gray(ng-show='Config.editingPointScheme === false') {{Config.pointScheme.bonusPointValue}}  
                                             input.form-control.nf-input(required type='number' min='0' name='bonusPointValue' ng-model='Config.pointSchemeCopy.bonusPointValue' ng-show='Config.editingPointScheme === true') 
                             .row.nf-margin
                                 .row.nf-margin
                                     .col-lg-8.col-sm-9.col-md-6
                                         .input-group
-                                            span.input-group-addon.nf-button.no-border.point-label Parts Per Bonus
+                                            span.input-group-addon.no-border.point-label Parts Per Bonus
                                             div.form-control.nf-input.nf-gray(ng-show='Config.editingPointScheme === false') {{Config.pointScheme.partsPerBonus}}  
                                             input.form-control.nf-input(required type='number' min='1' name='partsPerBonus' ng-model='Config.pointSchemeCopy.partsPerBonus' ng-show='Config.editingPointScheme === true')
 
@@ -184,7 +187,7 @@
                         div(class="collapsable nf-panel-heading") 
                             .row
                                 .col-lg-11.col-sm-11.col-md-11.col-xs-11 
-                                    label.nf-label Brackets
+                                    label.nf-label Pools
                         div(class="panel-body tournament-panel nf-panel-body")
                             .row
                                 div(class="clearfix col-md-12 col-sm-12 col-lg-12" ng-repeat='phase in Division.phases')

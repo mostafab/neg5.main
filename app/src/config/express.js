@@ -51,6 +51,7 @@ export default () => {
   morgan.token('currentUser', (req, res) => {
     return req.currentUser || 'no-user-attached';
   });
+  app.use(morgan());
   app.use(bodyParser.urlencoded({
     extended: true,
   }));

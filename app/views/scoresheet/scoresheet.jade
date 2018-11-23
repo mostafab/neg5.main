@@ -227,7 +227,7 @@
                         .fa.fa-info-circle
                     .notice-label
                         p
-                            | Remember to submit this match by clicking 'Complete Match' after the game is done.
+                            | Remember to submit this scoresheet by clicking 'Submit Scoresheet' after the round is over.
 
                 .Notice.success(ng-if='Scoresheet.game.submitted')
                     .icon
@@ -245,7 +245,7 @@
                                         button.Button.secondary.button.btn.btn-sm.new-scoresheet(type='button' ng-click='Scoresheet.resetScoresheet()'
                                             ng-if='Scoresheet.game.teams[0].teamInfo && Scoresheet.game.teams[1].teamInfo')
                                             | New Scoresheet
-                                        button.btn.btn-sm.Button.primary.complete-match(type="button" data-toggle='modal' data-target='#myModal' ng-disabled='Scoresheet.game.currentCycle.number <= 1') {{ Scoresheet.game.submitted ? 'Undo Submission' : 'Complete Match' }}
+                                        button.btn.btn-sm.Button.primary.complete-match(type="button" data-toggle='modal' data-target='#myModal' ng-disabled='Scoresheet.game.currentCycle.number <= 1') {{ Scoresheet.game.submitted ? 'Undo Submission' : 'Submit Scoresheet' }}
                                     p.nf-label.right
                                         | Last Saved At: {{Scoresheet.game.lastSavedAt || 'Not Saved' | date:'short'}}
                             thead.table-header
@@ -405,7 +405,8 @@
                                                     div(class="col-md-6 col-sm-6")
                                                         label(class="label nf-label btn-block" style='float:right') Round
                                                     div(class="col-md-6 col-sm-6")
-                                                        input(type="number" min='0' class="form-control nf-input " name="round" 
+                                                        input(type="number" min='1' class="form-control nf-input " name="round"
+                                                            required 
                                                             ng-model='Scoresheet.game.round',
                                                             ng-class="{'nf-error' : Scoresheet.scoresheetForm.round.$invalid}"
                                                         )

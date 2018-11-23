@@ -205,6 +205,10 @@ span {
 .ConfigurationTab .general .bounceback-checkbox {
   margin-top: .7rem;
   margin-left: 2rem;
+}
+
+.ConfigurationTab .phases .phase-checkbox {
+  margin-top: 1rem;
 }.MatchesTab .GameView .secondary-button {
   margin-left: 2rem;
 }
