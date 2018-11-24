@@ -9,4 +9,8 @@ export default class PoolsController {
     this.TeamService = TeamService;
     this.PhaseService = PhaseService;
   }
+
+  onDropTeam(team, division) {
+    console.log(division);
+  }
 };

@@ -12,9 +12,9 @@
                           .Panel
                               .panel-heading.nf-panel-heading
                                   label.nf-label Unassigned
-                              .panel-body
+                              .panel-body(dnd-list dnd-drop='PoolsController.onDropTeam(item, null)' dnd-allowed-types='[phase.id]')
                                   ul
-                                      li.team(ng-repeat='team in PoolsController.TeamService.teams' ng-if='!team.divisions[phase.id]')
+                                      li.team(ng-repeat='team in PoolsController.TeamService.teams' ng-if='!team.divisions[phase.id]' dnd-draggable='team' dnd-type='phase.id')
                                           | {{ team.name }}
                           input(type='text' class="form-control nf-input" placeholder='New phase')
                       .col-lg-8.col-md-8.col-sm-8.col-xs-12
@@ -24,8 +24,12 @@
                                       .Panel
                                           .panel-heading.nf-panel-heading
                                               label.nf-label {{ div.name }}
-                                          .panel-body
+                                          .panel-body(dnd-list dnd-drop='PoolsController.onDropTeam(item, div)' dnd-allowed-types='[phase.id]')
                                               ul
-                                                  li.team(ng-repeat='team in PoolsController.TeamService.teams' ng-if='team.divisions[phase.id] === div.id')
+                                                  li.team(ng-repeat='team in PoolsController.TeamService.teams'
+                                                    ng-if='team.divisions[phase.id] === div.id'
+                                                    dnd-draggable='team'
+                                                    dnd-type='phase.id'
+                                                  )
                                                       | {{ team.name }}
                                   .clearfix(ng-if='$index % 2 === 1')

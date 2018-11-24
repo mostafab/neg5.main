@@ -20,6 +20,8 @@ import './styles/v2/common.css';
 import angular from 'angular';
 import ngCookies from 'angular-cookies';
 import ngAnimate from 'angular-animate';
+import ngDragAndDrop from 'angular-drag-and-drop-lists';
+
 import config from './modules/config';
 
 import IndexController from './modules/controllers/index.controller';
@@ -86,7 +88,7 @@ angular.module('HomeApp', [ngCookies, ngAnimate])
   .service('SlugService', SlugService)
   .controller('HomeController', HomeController);
 
-angular.module('tournamentApp', [ngCookies, ngAnimate])
+angular.module('tournamentApp', [ngCookies, ngAnimate, 'dndLists'])
   .config(config)
   .service('TournamentService', TournamentService)
   .service('MatchService', MatchService)
