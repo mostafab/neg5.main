@@ -16,6 +16,7 @@
                                   ul
                                       li.team(ng-repeat='team in PoolsController.TeamService.teams' ng-if='!team.divisions[phase.id]')
                                           | {{ team.name }}
+                          input(type='text' class="form-control nf-input" placeholder='New phase')
                       .col-lg-8.col-md-8.col-sm-8.col-xs-12
                           .row
                               div(ng-repeat='div in PoolsController.DivisionService.divisions' ng-if='div.phaseId === phase.id')
