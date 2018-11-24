@@ -18,3 +18,34 @@
 .ConfigurationTab .phases .phase-checkbox {
   margin-top: 1rem;
 }
+
+.ConfigurationTab .pools .phase-container {
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.ConfigurationTab .pools .phase-container .holder {
+  display: flex;
+}
+
+.ConfigurationTab .pools .phase-container .holder > div:first-child {
+  width: 25%;
+}
+
+.ConfigurationTab .pools .phase-container .holder > div:last-child {
+  width: 75%;
+}
+
+.ConfigurationTab .pools .phase-container .team {
+  padding: 2rem;
+  border: 1px solid #e7e7e7;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.ConfigurationTab .pools .phase-container .team:hover {
+  border: 1px solid #5ab8f8;
+}
+
+.ConfigurationTab .pools .phase-container .phase-name {
+  padding-left: 1rem;
+}

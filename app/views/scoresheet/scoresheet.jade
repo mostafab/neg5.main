@@ -24,7 +24,7 @@
                             ng-if='!Scoresheet.game.teams[0].teamInfo.id || !Scoresheet.game.teams[1].teamInfo.id'   
                         )
                             option(disabled value='') Choose a Team
-                        .Panel.team-panel
+                        .Panel.team-panel(ng-if='Scoresheet.game.teams[0].teamInfo.id')
                             .nf-panel-heading.center  
                                 | {{Scoresheet.game.teams[0].teamInfo.name || 'Choose a Team'}} ({{CycleCtrl.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[0].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
                                 .Notice.warning.player-tooltip(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[0].players) > CycleCtrl.rules.maxActive')
@@ -77,7 +77,7 @@
                         )
                             option(disabled value='') Choose a Team
                         
-                        .Panel
+                        .Panel(ng-if='Scoresheet.game.teams[1].teamInfo.id')
                             .nf-panel-heading.center 
                                 | {{Scoresheet.game.teams[1].teamInfo.name || 'Choose a Team'}} ({{CycleCtrl.getTeamScoreUpToCycle(Scoresheet.game, Scoresheet.game.teams[1].teamInfo.id, Scoresheet.game.currentCycle.number - 1)}})
                                 .Notice.warning.player-tooltip(ng-show='CycleCtrl.getNumberOfActivePlayers(Scoresheet.game.teams[1].players) > CycleCtrl.rules.maxActive')

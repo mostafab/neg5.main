@@ -33,6 +33,7 @@ import ConfigController from './modules/controllers/config.controller';
 import DivisionController from './modules/controllers/division.controller';
 import MatchKeyDetailsController from './modules/controllers/match-key-details.controller';
 import TeamKeyDetailsController from './modules/controllers/team-key-details.controller';
+import PoolsController from './modules/controllers/pools.controller';
 
 import CollaboratorSearchController from './modules/controllers/collaborator-search.controller';
 import CollaboratorListController from './modules/controllers/collaborator-list.controller';
@@ -123,6 +124,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .controller('ScoresheetCycleController', ScoresheetCycleController)
   .controller('ScoresheetPointsTrackerCtrl', ScoresheetPointsTrackerController)
   .controller('ScoresheetTableController', ScoresheetTableController)
+  .controller('PoolsController', PoolsController)
   .filter('preventSameMatchTeams', PreventSameMatchTeamFilter)
   .filter('matchSearch', MatchSearchFilter)
   .filter('divisionPhase', DivisionPhaseFilter)
