@@ -1,0 +1,30 @@
+.col-lg-12.col-md-12.col-sm-12.col-xs-12.pools
+  div.Panel(ng-controller='PoolsController as PoolsController')
+      .nf-panel-heading
+          label.nf-label Team Pools
+      .panel-body.nf-panel-body.phase-container(ng-repeat='phase in PoolsController.PhaseService.phases')
+          div.holder
+              div
+                  p.phase-name.label.nf-label {{ phase.name }}
+              div
+                  .row
+                      .col-lg-4.col-md-4.col-sm-4.col-xs-12
+                          .Panel
+                              .panel-heading.nf-panel-heading
+                                  label.nf-label Unassigned
+                              .panel-body
+                                  ul
+                                      li.team(ng-repeat='team in PoolsController.TeamService.teams' ng-if='!team.divisions[phase.id]')
+                                          | {{ team.name }}
+                      .col-lg-8.col-md-8.col-sm-8.col-xs-12
+                          .row
+                              div(ng-repeat='div in PoolsController.DivisionService.divisions' ng-if='div.phaseId === phase.id')
+                                  .col-lg-6.col-md-6.col-sm-6.col-xs-12
+                                      .Panel
+                                          .panel-heading.nf-panel-heading
+                                              label.nf-label {{ div.name }}
+                                          .panel-body
+                                              ul
+                                                  li.team(ng-repeat='team in PoolsController.TeamService.teams' ng-if='team.divisions[phase.id] === div.id')
+                                                      | {{ team.name }}
+                                  .clearfix(ng-if='$index % 2 === 1')
