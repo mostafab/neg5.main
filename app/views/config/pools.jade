@@ -2,7 +2,7 @@
   div.Panel(ng-controller='PoolsController as PoolsController')
       .nf-panel-heading
           label.nf-label Team Pools
-      .panel-body.nf-panel-body.phase-container(ng-repeat='phase in PoolsController.PhaseService.phases')
+      .panel-body.nf-panel-body.phase-container(ng-repeat='phase in PoolsController.PhaseService.phases | orderBy:"name" track by phase.id')
           div.holder
               div
                   p.phase-name.label.nf-label {{ phase.name }}
@@ -14,19 +14,26 @@
                                   label.nf-label Unassigned
                               .panel-body(dnd-list dnd-drop='PoolsController.onDropTeam(item, phase, null)' dnd-allowed-types='[phase.id]')
                                   ul
-                                      li.team(ng-repeat='team in PoolsController.TeamService.teams' ng-if='!team.divisions[phase.id]' dnd-draggable='team' dnd-type='phase.id')
+                                      li.team(ng-repeat='team in PoolsController.TeamService.teams | orderBy:"name" track by team.id'
+                                        ng-if='!team.divisions[phase.id]'
+                                        dnd-draggable='team'
+                                        dnd-type='phase.id'
+                                      )
                                           | {{ team.name }}
-                          input(type='text' class="form-control nf-input" placeholder='New pool')
+                          .input-group
+                            input.form-control(type='text' class="form-control nf-input" placeholder='New pool' ng-model='PoolsController.DivisionService.newPools[phase.id].name')
+                            span.btn.Button.primary.input-group-addon(ng-click='PoolsController.addNewPool(phase.id)')
+                              i.fa.fa-plus
                       .col-lg-8.col-md-8.col-sm-8.col-xs-12
                           .row
-                              div(ng-repeat='div in PoolsController.DivisionService.divisions' ng-if='div.phaseId === phase.id')
+                              div(ng-repeat='div in PoolsController.DivisionService.divisions | orderBy:"name" track by div.id' ng-if='div.phaseId === phase.id')
                                   .col-lg-6.col-md-6.col-sm-6.col-xs-12
                                       .Panel
                                           .panel-heading.nf-panel-heading
                                               label.nf-label {{ div.name }}
                                           .panel-body(dnd-list dnd-drop='PoolsController.onDropTeam(item, phase, div)' dnd-allowed-types='[phase.id]')
                                               ul
-                                                  li.team(ng-repeat='team in PoolsController.TeamService.teams'
+                                                  li.team(ng-repeat='team in PoolsController.TeamService.teams | orderBy:"name" track by team.id'
                                                     ng-if='team.divisions[phase.id] === div.id'
                                                     dnd-draggable='team'
                                                     dnd-type='phase.id'

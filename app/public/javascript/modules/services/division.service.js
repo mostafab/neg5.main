@@ -1,4 +1,6 @@
 import angular from 'angular';
+import { get } from 'lodash';
+
 import Emittable from './../util/emittable';
 
 import divisionActions from './../actions/divisions.actions';
@@ -17,6 +19,8 @@ export default class DivisionService extends Emittable {
       phaseName: null,
       phaseId: null,
     };
+
+    this.newPools = {};
   }
 
   getDivisions(tournamentId) {
@@ -34,6 +38,9 @@ export default class DivisionService extends Emittable {
 
   addNewDivision(tournamentId, divisionName, phaseId) {
     return this.$q((resolve, reject) => {
+      if (!divisionName) {
+        return reject({ reason: 'Name is required. '});
+      }
       if (!this.isUniqueNewDivisionNameInPhase(divisionName, phaseId)) {
         reject({ reason: 'This division name is not unique within its phase.' });
       } else {
@@ -46,6 +53,14 @@ export default class DivisionService extends Emittable {
           .catch(err => reject(err));
       }
     });
+  }
+
+  addNewPool(tournamentId, phaseId) {
+    const poolName = get(this.newPools[phaseId], 'name');
+    return this.addNewDivision(tournamentId, poolName, phaseId)
+      .then(() => {
+        this.newPools[phaseId].name = '';
+      })
   }
 
   editDivision(tournamentId, division) {

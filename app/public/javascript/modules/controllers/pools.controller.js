@@ -19,4 +19,8 @@ export default class PoolsController {
     divisionMap[phase.id] = division ? division.id : null;
     this.TeamService.updateTeamDivisions(this.tournamentId, team.id, divisionMap, Object.values(divisionMap))
   }
+
+  addNewPool(phaseId) {
+    this.DivisionService.addNewPool(this.tournamentId, phaseId);
+  }
 };
