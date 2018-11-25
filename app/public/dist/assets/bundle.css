@@ -237,6 +237,15 @@ span {
 .ConfigurationTab .pools .pools-heading {
   display: flex;
   justify-content: space-between;
+}
+
+.ConfigurationTab .pools .team-target.dndDragover {
+  border: 1px solid #5ab8f8;
+}
+
+.ConfigurationTab .pools .team-target .dndPlaceholder {
+  list-style-type: none;
+  padding: 1.5rem;
 }.MatchesTab .GameView .secondary-button {
   margin-left: 2rem;
 }

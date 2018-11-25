@@ -22,7 +22,7 @@
                           .Panel
                               .panel-heading.nf-panel-heading
                                   label.nf-label Unassigned
-                              .panel-body(dnd-list dnd-drop='PoolsController.onDropTeam(item, phase, null)' dnd-allowed-types='[phase.id]')
+                              .panel-body.team-target(dnd-list dnd-drop='PoolsController.onDropTeam(item, phase, null)' dnd-allowed-types='[phase.id]')
                                   .row
                                       .col-lg-4.col-md-4.col-sm-4(
                                           ng-repeat='team in PoolsController.TeamService.teams | orderBy:"name" track by team.id'
@@ -40,7 +40,7 @@
                                       .Panel
                                           .panel-heading.nf-panel-heading
                                               label.nf-label {{ div.name }}
-                                          .panel-body(dnd-list dnd-drop='PoolsController.onDropTeam(item, phase, div)' dnd-allowed-types='[phase.id]')
+                                          .panel-body.team-target(dnd-list dnd-drop='PoolsController.onDropTeam(item, phase, div)' dnd-allowed-types='[phase.id]')
                                               ul
                                                   li.team(ng-repeat='team in PoolsController.TeamService.teams | orderBy:"name" track by team.id'
                                                     ng-if='team.divisions[phase.id] === div.id'
