@@ -5,8 +5,10 @@ import Emittable from './../util/emittable';
 
 import divisionActions from './../actions/divisions.actions';
 
+import { KEY as TournamentIdFactoryKey } from './../factories/tournament-id.factory';
+
 export default class DivisionService extends Emittable {
-  constructor($q, DivisionHttpService, PhaseService) {
+  constructor(tournamentId, $q, DivisionHttpService, PhaseService) {
     super();
     this.$q = $q;
     this.DivisionHttpService = DivisionHttpService;
@@ -21,6 +23,9 @@ export default class DivisionService extends Emittable {
     };
 
     this.newPools = {};
+    this.tournamentId = tournamentId;
+
+    this.getDivisions(this.tournamentId);
   }
 
   getDivisions(tournamentId) {
@@ -65,6 +70,9 @@ export default class DivisionService extends Emittable {
 
   editDivision(tournamentId, division) {
     return this.$q((resolve, reject) => {
+      if (!division.newName) {
+        return reject({ reason: 'Division name cannot be empty.' });
+      }
       if (!this.isUniqueNewDivisionNameInPhase(division.newName, division.phaseId)) {
         reject({ reason: 'This division name is not unique within its phase.' });
       } else {
@@ -126,11 +134,20 @@ export default class DivisionService extends Emittable {
     if (index !== -1) {
       this.divisions[index].name = newName;
       this.divisions[index].newName = newName;
+      this.divisions[index].editing = false;
     }
   }
 
   resetNewDivision() {
     this.newDivision.name = '';
+  }
+
+  resetEditingDivision(divisionId) {
+    const index = this.divisions.findIndex(d => d.id === divisionId);
+    const div = this.divisions[index];
+
+    this.divisions[index].newName = div.name;
+    this.divisions[index].editing = false;
   }
 
   isValidNewDivision() {
@@ -155,5 +172,5 @@ export default class DivisionService extends Emittable {
 
 }
 
-DivisionService.$inject = ['$q', 'DivisionHttpService', 'PhaseService'];
+DivisionService.$inject = [TournamentIdFactoryKey, '$q', 'DivisionHttpService', 'PhaseService'];
 

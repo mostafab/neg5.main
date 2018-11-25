@@ -27,4 +27,17 @@ export default class PoolsController {
   addNewPhase() {
     this.PhaseService.postPhase(this.tournamentId);
   }
+
+  resetDivision(divisionId) {
+    this.DivisionService.resetEditingDivision(divisionId);
+  }
+
+  editDivision(division) {
+    this.DivisionService.editDivision(this.tournamentId, division);
+  }
+
+  removeDivision(division) {
+    this.DivisionService.removeDivision(this.tournamentId, division.id)
+      .then(() => this.TeamService.getTeams(this.tournamentId));
+  }
 };

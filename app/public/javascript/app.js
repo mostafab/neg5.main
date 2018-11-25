@@ -71,6 +71,8 @@ import ScoresheetPointsTrackerService from './modules/services/scoresheet/scores
 import ScoresheetTableService from './modules/services/scoresheet/scoresheet-table.service';
 
 import MatchUtilFactory from './modules/factories/util/match-util.factory';
+import TournamentIdFactory, { KEY as TournamentIdFactoryKey } from './modules/factories/tournament-id.factory';
+
 import PreventSameMatchTeamFilter from './modules/filters/prevent-same-match-teams';
 import MatchSearchFilter from './modules/filters/match-search.filter';
 import DivisionPhaseFilter from './modules/filters/division-phase.filter';
@@ -111,6 +113,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate, 'dndLists'])
   .service('TeamKeyDetailsService', TeamKeyDetailsService)
   .service('SlugService', SlugService)
   .factory('MatchUtilFactory', MatchUtilFactory)
+  .factory(TournamentIdFactoryKey, TournamentIdFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)
   .controller('MatchKeyDetailsController', MatchKeyDetailsController)

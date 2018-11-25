@@ -55,3 +55,21 @@
   list-style-type: none;
   padding: 1.5rem;
 }
+
+.ConfigurationTab .pools .div-name {
+  justify-content: space-between;
+  display: flex;
+}
+
+.ConfigurationTab .pools .team-target ul {
+  margin-bottom: 1.5rem;
+}
+
+.ConfigurationTab .pools .editing-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfigurationTab .pools .editing-div > .input-group {
+  width: 70%;
+}
