@@ -23,18 +23,6 @@
   border-bottom: 1px solid #e7e7e7;
 }
 
-.ConfigurationTab .pools .phase-container .holder {
-  display: flex;
-}
-
-.ConfigurationTab .pools .phase-container .holder > div:first-child {
-  width: 25%;
-}
-
-.ConfigurationTab .pools .phase-container .holder > div:last-child {
-  width: 75%;
-}
-
 .ConfigurationTab .pools .phase-container .team {
   padding: 2rem;
   border: 1px solid #e7e7e7;
@@ -47,5 +35,14 @@
 }
 
 .ConfigurationTab .pools .phase-container .phase-name {
-  padding-left: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ConfigurationTab .pools .phase-container .phase-input {
+  margin-bottom: 2rem;
+}
+
+.ConfigurationTab .pools .pools-heading {
+  display: flex;
+  justify-content: space-between;
 }

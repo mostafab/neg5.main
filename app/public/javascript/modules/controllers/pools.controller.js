@@ -23,4 +23,8 @@ export default class PoolsController {
   addNewPool(phaseId) {
     this.DivisionService.addNewPool(this.tournamentId, phaseId);
   }
+
+  addNewPhase() {
+    this.PhaseService.postPhase(this.tournamentId);
+  }
 };
