@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export default class PhaseController {
   constructor($scope, PhaseService) {
     this.$scope = $scope;

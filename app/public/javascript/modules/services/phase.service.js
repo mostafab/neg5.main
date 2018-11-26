@@ -3,8 +3,10 @@ import Emittable from './../util/emittable';
 
 import phaseActions from './../actions/phase.actions';
 
+import { KEY as TournamentIdFactoryKey } from './../factories/tournament-id.factory';
+
 export default class PhaseService extends Emittable {
-  constructor($q, TournamentService, PhaseHttpService) {
+  constructor($q, TournamentService, PhaseHttpService, tournamentId) {
     super();
     this.$q = $q;
     this.TournamentService = TournamentService;
@@ -15,6 +17,10 @@ export default class PhaseService extends Emittable {
     this.newPhase = {
       name: '',
     };
+
+    this.tournamentId = tournamentId;
+    
+    this.getPhases(this.tournamentId);
   }
 
   postPhase(tournamentId, phaseName = this.newPhase.name) {
@@ -180,5 +186,5 @@ export default class PhaseService extends Emittable {
 
 }
 
-PhaseService.$inject = ['$q', 'TournamentService', 'PhaseHttpService'];
+PhaseService.$inject = ['$q', 'TournamentService', 'PhaseHttpService', TournamentIdFactoryKey];
 

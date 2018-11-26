@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export default class DivisionController {
   constructor($scope, DivisionService, PhaseService) {
     this.$scope = $scope;
