@@ -40,6 +40,12 @@ export default class PhaseService extends Emittable {
     });
   }
 
+  resetPhaseEditing(phaseId) {
+    const phase = this.phases.find(p => p.id === phaseId);
+    phase.newName = phase.name;
+    phase.editing = false;
+  }
+
   editPhase(tournamentId, phase) {
     return this.$q((resolve, reject) => {
       if (PhaseService.phaseWasChanged(phase) && this.isUniquePhaseName(phase)) {
@@ -120,6 +126,7 @@ export default class PhaseService extends Emittable {
     if (index !== -1) {
       this.phases[index].name = newPhaseName;
       this.phases[index].newName = newPhaseName;
+      this.phases[index].editing = false;
       if (this.activePhase.id === phaseId) {
         this.updateActivePhaseObject(phaseId);
       }

@@ -30,6 +30,28 @@
   cursor: pointer;
 }
 
+.ConfigurationTab .pools .phase-container .edit-phase {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfigurationTab .pools .phase-container .edit-phase .input-group {
+  width: 70%;
+}
+
+.ConfigurationTab .pools .phase-container .phase-display {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfigurationTab .pools .phase-container .phase-display .input-group {
+  width: 60%;
+}
+
+.ConfigurationTab .pools .phase-container .phase-display .Checkbox {
+  margin-top: 1rem;
+}
+
 .ConfigurationTab .pools .phase-container .team:hover {
   border: 1px solid #5ab8f8;
 }

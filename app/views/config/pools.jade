@@ -11,7 +11,31 @@
       .panel-body.nf-panel-body.phase-container(ng-repeat='phase in PoolsController.PhaseService.phases | orderBy:"name" track by phase.id')
           div.holder.row
               .col-lg-3.col-md-3.col-sm-4.col-xs-12
-                  p.phase-name {{ phase.name }}
+                  .phase-name
+                    div.phase-display
+                      .input-group(ng-if='!phase.editing')
+                        .form-control.nf-gray.input-group-addon {{ phase.name }}
+                        span.btn.input-group-addon.Button.secondary(role='button' ng-click='phase.editing = true')
+                            i.fa.fa-pencil
+                      .Checkbox(ng-if='!phase.editing')
+                        input(id='{{phase.id}}' type="checkbox" name='{{ phase.id }}'
+                          ng-checked='phase.id === PoolsController.PhaseService.activePhase.id'
+                          ng-disabled='PoolsController.PhaseService.phases.length === 1 && PoolsController.PhaseService.activePhase.id'
+                        )
+                        span.checkmark(ng-click='PoolsController.updateActivePhase(phase)')
+                        span Current
+                    
+                    div.edit-phase(ng-if='phase.editing')
+                      .input-group
+                        input.form-control(type='text' ng-model='phase.newName')
+                        span.btn.input-group-addon.Button.secondary(role='button' ng-click='PoolsController.resetPhase(phase.id)')
+                            i.fa.fa-times
+                        span.btn.input-group-addon.Button.primary(role='button' ng-click='PoolsController.editPhase(phase)')
+                          i.fa.fa-check
+                      
+                      span.btn.Button.secondary.btn(role='button' ng-if='PoolsController.PhaseService.phases.length > 1' ng-click='PoolsController.removePhase(phase)')
+                        i.fa.fa-trash
+                  
                   .input-group.phase-input
                     input.form-control(type='text' class="form-control nf-input" placeholder='New pool' ng-model='PoolsController.DivisionService.newPools[phase.id].name')
                     span.btn.Button.primary.input-group-addon(ng-click='PoolsController.addNewPool(phase.id)')

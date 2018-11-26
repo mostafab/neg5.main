@@ -222,6 +222,28 @@ span {
   cursor: pointer;
 }
 
+.ConfigurationTab .pools .phase-container .edit-phase {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfigurationTab .pools .phase-container .edit-phase .input-group {
+  width: 70%;
+}
+
+.ConfigurationTab .pools .phase-container .phase-display {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfigurationTab .pools .phase-container .phase-display .input-group {
+  width: 60%;
+}
+
+.ConfigurationTab .pools .phase-container .phase-display .Checkbox {
+  margin-top: 1rem;
+}
+
 .ConfigurationTab .pools .phase-container .team:hover {
   border: 1px solid #5ab8f8;
 }
@@ -528,6 +550,11 @@ span {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.Checkbox input:disabled + .checkmark {
+  background-color: #ECEFF1;
+  cursor: default;
 }table.Table > tbody > tr > td, table.Table > thead > tr > th {
   border-top: 1px solid #e7e7e7;
 }.Dialog .modal-content {
