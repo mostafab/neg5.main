@@ -7,11 +7,12 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 /**
  * Import css
  */
-// import 'bootswatch/sandstone/bootstrap.min.css';
 import './styles/v2/index.css';
+import './styles/v2/pages-index.css';
 import './styles/v2/neg-five-main.css';
 import './styles/v2/reset.css';
 import './styles/v2/style.css';
+import './styles/v2/common.css';
 
 /**
  * Import Angular dependencies
@@ -41,8 +42,6 @@ import ScoresheetPointsTrackerController from './modules/controllers/scoresheet/
 import ScoresheetCycleController from './modules/controllers/scoresheet/scoresheet-cycle.controller';
 import ScoresheetTableController from './modules/controllers/scoresheet/scoresheet-table.controller';
 
-import StatsDisplayController from './modules/controllers/stats-display.controller';
-
 import AuthService from './modules/services/auth.service';
 import TournamentService from './modules/services/tournament.service';
 import MatchService from './modules/services/match.service';
@@ -51,7 +50,6 @@ import PhaseService from './modules/services/phase.service';
 import DivisionService from './modules/services/division.service';
 import CollaboratorService from './modules/services/collaborator.service';
 import QBJService from './modules/services/qbj.service';
-import StatsService from './modules/services/stats.service';
 
 import SlugService from './modules/services/util/slug.service';
 
@@ -61,7 +59,6 @@ import DivisionHttpService from './modules/services/http/division-http.service';
 import MatchHttpService from './modules/services/http/match-http.service';
 import TeamHttpService from './modules/services/http/team-http.service';
 import CollaboratorHttpService from './modules/services/http/collaborator-http.service';
-import StatsHttpService from './modules/services/http/stats-http.service';
 import MatchKeyDetailsService from './modules/services/match-key-details.service';
 import TeamKeyDetailsService from './modules/services/team-key-details.service';
 
@@ -75,7 +72,6 @@ import PreventSameMatchTeamFilter from './modules/filters/prevent-same-match-tea
 import MatchSearchFilter from './modules/filters/match-search.filter';
 import DivisionPhaseFilter from './modules/filters/division-phase.filter';
 
-import KeepNameScrollDirective from './modules/directives/keep-name-scroll.directive';
 import ToolTipDirective from './modules/directives/tooltip.directive';
 
 angular.module('IndexApp', [ngCookies, ngAnimate])

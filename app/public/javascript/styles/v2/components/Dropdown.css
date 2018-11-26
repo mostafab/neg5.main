@@ -1,0 +1,20 @@
+.Dropdown > ul.dropdown-menu a {
+  font-size: 11px;
+  text-decoration: none;
+  text-transform: none;
+}
+
+.Dropdown > ul.dropdown-menu {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.Dropdown > ul.dropdown-menu a:hover {
+  color: #5ab8f8;
+  background-color: white;
+}
+
+.Dropdown > a.dropdown-toggle, .Dropdown.open > a.dropdown-toggle, .Dropdown.open > a.dropdown-toggle:hover {
+  background-color: white;
+  color: #98978b;
+}

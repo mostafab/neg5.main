@@ -5,7 +5,7 @@ block titleContent
 
 block content
     
-    div(ng-app='HomeApp')
+    div.AllTournaments(ng-app='HomeApp')
 
         div(ng-controller='HomeController as Home')
             nav.navbar.navbar-default.top-nav-bar.navbar-fixed-top(role='navigation')
@@ -16,8 +16,6 @@ block content
                         li
                             a(href="/tournaments")
                                 i.fa.fa-home.fa-2x
-                        //- li(class="list-element")
-                        //-     a(href="/account" style='color:white;') Account
                     ul(class="nav navbar-nav navbar-right" style='margin:0')
                         li(class="list-element")
                             a(href='#' ng-click='logout()')
@@ -33,7 +31,7 @@ block content
                                     .row
                                         .col-lg-4.col-md-5.col-sm-5
                                             div
-                                                .nf-panel(style='margin-bottom:10px')
+                                                .Panel.nf-panel(style='margin-bottom:10px')
                                                     .nf-panel-heading
                                                         .row 
                                                             .col-lg-11.col-sm-11.col-md-11.col-xs-11
@@ -42,7 +40,7 @@ block content
                                                         form(novalidate name='Home.newTournamentForm' ng-submit='Home.createNewTournament()')
                                                             input.form-control.nf-input(type='text' required placeholder='Name' ng-model='Home.newTournament.name' maxlength='50')
                                                             br
-                                                            button.nf-button.btn.button-outline.button-outline-green.right(type='submit' ng-disabled='Home.submittingForm')
+                                                            button.Button.primary.btn.right(type='submit' ng-disabled='Home.submittingForm')
                                                                 i.fa.fa-check
                                         
                                         
@@ -51,7 +49,7 @@ block content
                                                 input.form-control.nf-input(type='text' placeholder='Filter your tournaments' ng-model='Home.query.name')
                                             hr
                                             div
-                                                .nf-panel.card-wrapper(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | filter:Home.query:strict | orderBy:"name"')
+                                                .Panel.nf-panel.card-wrapper(style='margin-bottom:20px' ng-repeat='tournament in Home.tournaments | filter:Home.query:strict | orderBy:"name"')
                                                     a.tournament-card(href='/t/{{tournament.id}}/{{Home.getTournamentSlug(tournament)}}')
                                                         .nf-panel-heading
                                                             .row 

@@ -188,7 +188,7 @@ export default class ScoresheetService {
         bonuses: [],
       },
       onTossup: true,
-      round: 0,
+      round: null,
       packet: null,
       notes: null,
       moderator: null,
