@@ -28,14 +28,7 @@ export const bufferTournamentStatsChangedEmittion = ({ tournamentId }) => {
 tournamentStatsChangeEmitter.on(events.TOURNAMENT_STAT_CHANGE_EVENT, recalculateStats);
 
 async function recalculateStats(statsChangeEvent) {
-  console.log('Received request to re-generate stats for tournament ' + statsChangeEvent.tournamentId);
-  const statsReportManager = new StatsReportManager(statsChangeEvent.tournamentId);
-  const tournamentPhases = await tournamentManager.getPhases(statsChangeEvent.tournamentId);
-  for (const phase of tournamentPhases) {
-    const phaseId = phase.id;
-    statsReportManager.generateAndSavePlayerFullReport(phaseId);
-  }
-  statsReportManager.generateAndSavePlayerFullReport(null);
+  console.log('No-op for stats calculation: ' + statsChangeEvent.tournamentId);
 }
 
 export default tournamentStatsChangeEmitter;

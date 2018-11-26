@@ -37,5 +37,3 @@ style errors. Please follow the warnings as closely as you can.
 
 If you don't use Visual Studio Code, please use ESLint with the given
 ```eslintrc.json``` with your preferred text editor.  
-
-
