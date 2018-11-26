@@ -21,6 +21,8 @@ import angular from 'angular';
 import ngCookies from 'angular-cookies';
 import ngAnimate from 'angular-animate';
 import ngDragAndDrop from 'angular-drag-and-drop-lists';
+import { polyfill } from 'mobile-drag-drop';
+import {scrollBehaviourDragImageTranslateOverride} from "mobile-drag-drop/scroll-behaviour";
 
 import config from './modules/config';
 
@@ -78,6 +80,11 @@ import MatchSearchFilter from './modules/filters/match-search.filter';
 import DivisionPhaseFilter from './modules/filters/division-phase.filter';
 
 import ToolTipDirective from './modules/directives/tooltip.directive';
+
+polyfill({
+  // use this to make use of the scroll behaviour
+  dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
+});
 
 angular.module('IndexApp', [ngCookies, ngAnimate])
   .config(config)
