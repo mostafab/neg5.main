@@ -22,7 +22,7 @@
                           .Panel
                               .panel-heading.nf-panel-heading
                                   label.nf-label Unassigned
-                              .panel-body.team-target(dnd-list dnd-drop='PoolsController.onDropTeam(item, phase, null)' dnd-allowed-types='[phase.id]')
+                              .panel-body.team-target.unassigned(dnd-list dnd-drop='PoolsController.onDropTeam(item, phase, null)' dnd-allowed-types='[phase.id]')
                                   .row
                                       .col-lg-4.col-md-4.col-sm-4(
                                           ng-repeat='team in PoolsController.TeamService.teams | orderBy:"name" track by team.id'

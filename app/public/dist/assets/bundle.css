@@ -257,6 +257,12 @@ span {
   margin-bottom: 1.5rem;
 }
 
+@media (min-width: 768px) {
+  .ConfigurationTab .pools .team-target.unassigned .team {
+    margin-bottom: 1.5rem;
+  }
+}
+
 .ConfigurationTab .pools .editing-div {
   display: flex;
   justify-content: space-between;
