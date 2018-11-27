@@ -212,12 +212,12 @@ span {
 }
 
 .ConfigurationTab .pools .phase-container {
-  border-bottom: 1px solid #e7e7e7;
+  border-bottom: 1px solid #c4c9cf;
 }
 
 .ConfigurationTab .pools .phase-container .team {
   padding: 2rem;
-  border: 1px solid #e7e7e7;
+  border: 1px solid #c4c9cf;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -345,7 +345,7 @@ span {
 }
 
 .ScoresheetTab .scoresheet .header th.table-head {
-  border: 1px solid #e7e7e7;
+  border: 1px solid #c4c9cf;
 }
 
 .ScoresheetTab .scoresheet .not-current-cycle {
@@ -362,7 +362,7 @@ span {
 }
 
 .ScoresheetTab .scoresheet td {
-  border: 1px solid #e7e7e7;
+  border: 1px solid #c4c9cf;
 }
 
 .ScoresheetTab .scoresheet .complete-match {
@@ -370,7 +370,7 @@ span {
 }
 
 .ScoresheetTab .match-dialog .match-summary-table {
-  border: 1px solid #e7e7e7;
+  border: 1px solid #c4c9cf;
 }
 
 .ScoresheetTab .match-dialog .match-summary-table th, .ScoresheetTab .match-dialog .match-summary-table td {
@@ -382,7 +382,7 @@ span {
 }
 
 .ScoresheetTab .match-dialog .match-summary-table td {
-  border-top: 1px solid #e7e7e7;
+  border-top: 1px solid #c4c9cf;
 }
 
 .ScoresheetTab .match-dialog .tossups-heard-label {
@@ -447,7 +447,26 @@ span {
 }
 
 .CollaboratorTab .collaborators-list td {
-  border-top: 1px solid #e7e7e7;
+  border-top: 1px solid #c4c9cf;
+}.Rules .general .save {
+  margin-left: 2rem;
+}
+
+.Rules .phases .delete-phase {
+  float: right;
+}
+
+.Rules .point-scheme .save-scheme {
+  margin-left: 2rem;
+}
+
+.Rules .general .bounceback-checkbox {
+  margin-top: .7rem;
+  margin-left: 2rem;
+}
+
+.Rules .phases .phase-checkbox {
+  margin-top: 1rem;
 }
 .Button {
   border-radius: 2px;
@@ -556,7 +575,7 @@ span {
   background-color: #ECEFF1;
   cursor: default;
 }table.Table > tbody > tr > td, table.Table > thead > tr > th {
-  border-top: 1px solid #e7e7e7;
+  border-top: 1px solid #c4c9cf;
 }.Dialog .modal-content {
   box-shadow: none;
 }input[type] {
@@ -606,6 +625,26 @@ span {
   border-bottom: none;
   background-color: #ffffff;
   margin-bottom: 20px;
+}
+
+.Panel.sections .panel-body {
+  padding: 0;
+}
+
+.Panel.sections .panel-body > * {
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+}
+
+.Panel.sections .panel-body > .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.Panel.sections .panel-body > * > * {
+  border: 1px solid #c4c9cf;
+  padding: 15px;
 }
 
 
@@ -983,7 +1022,7 @@ th.nf-label, .label.nf-label, label.nf-label > p, .nf-panel-heading * label.nf-l
 }
 
 .nf-panel > table > thead, .nf-table > table > thead {
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px solid #c4c9cf;
 }
 
 .nf-panel {
@@ -1040,7 +1079,7 @@ table.sortable-table > thead > tr > th.sortable:hover {
     font-size: 1.2em;
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px solid #c4c9cf;
 }
 
 .tab-pane .nf-breadcrumb {
@@ -1246,7 +1285,7 @@ div.name {
 
 .point-label {
     min-width: 130px;
-    border: 1px solid #e7e7e7;
+    border: 1px solid #c4c9cf;
 }
 .point-label:not(.nf-green):not(.nf-blue):not(.nf-red) {
     background: white;
@@ -1342,7 +1381,7 @@ Redefine Bootstrap definitions
 }
 
 .input-group-addon:first-child {
-    border-right: 1px solid #e7e7e7;
+    border-right: 1px solid #c4c9cf;
 }
 
 .input-group-addon {

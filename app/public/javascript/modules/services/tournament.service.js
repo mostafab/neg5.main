@@ -72,6 +72,9 @@ export default class TournamentService {
           angular.copy(formattedRules, this.rules);
           angular.copy(formattedPointScheme, this.pointScheme);
 
+          this.resetPointSchemeCopyToOriginal();
+          this.resetRules();
+
           resolve({
             tournamentInfo: {
               name: info.name,
