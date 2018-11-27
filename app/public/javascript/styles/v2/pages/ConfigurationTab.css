@@ -27,7 +27,6 @@
   padding: 2rem;
   border: 1px solid #c4c9cf;
   border-radius: 2px;
-  cursor: pointer;
 }
 
 .ConfigurationTab .pools .phase-container .edit-phase {
@@ -52,8 +51,9 @@
   margin-top: 1rem;
 }
 
-.ConfigurationTab .pools .phase-container .team:hover {
+.ConfigurationTab .pools .phase-container .team:not([draggable='false']):hover {
   border: 1px solid #5ab8f8;
+  cursor: pointer;
 }
 
 .ConfigurationTab .pools .phase-container .phase-name {

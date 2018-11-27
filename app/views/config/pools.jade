@@ -3,7 +3,7 @@
       .nf-panel-heading
           div.pools-heading
             label.nf-label Team Pools
-            div
+            div(ng-if='tournamentContext.admin')
               .input-group
                 input.form-control(type='text' class="form-control nf-input" placeholder='Add new phase' ng-model='PoolsController.PhaseService.newPhase.name')
                 span.btn.Button.primary.input-group-addon(ng-click='PoolsController.addNewPhase()')
@@ -15,9 +15,9 @@
                     div.phase-display
                       .input-group(ng-if='!phase.editing')
                         .form-control.nf-gray.input-group-addon {{ phase.name }}
-                        span.btn.input-group-addon.Button.secondary(role='button' ng-click='phase.editing = true')
+                        span.btn.input-group-addon.Button.secondary(role='button' ng-click='phase.editing = true' ng-if='tournamentContext.admin')
                             i.fa.fa-pencil
-                      .Checkbox(ng-if='!phase.editing')
+                      .Checkbox(ng-if='!phase.editing && tournamentContext.admin')
                         input(id='{{phase.id}}' type="checkbox" name='{{ phase.id }}'
                           ng-checked='phase.id === PoolsController.PhaseService.activePhase.id'
                           ng-disabled='PoolsController.PhaseService.phases.length === 1 && PoolsController.PhaseService.activePhase.id'
@@ -25,7 +25,7 @@
                         span.checkmark(ng-click='PoolsController.updateActivePhase(phase)')
                         span Current
                     
-                    div.edit-phase(ng-if='phase.editing')
+                    div.edit-phase(ng-if='phase.editing && tournamentContext.admin')
                       .input-group
                         input.form-control(type='text' ng-model='phase.newName')
                         span.btn.input-group-addon.Button.secondary(role='button' ng-click='PoolsController.resetPhase(phase.id)')
@@ -36,7 +36,7 @@
                       span.btn.Button.secondary.btn(role='button' ng-if='PoolsController.PhaseService.phases.length > 1' ng-click='PoolsController.removePhase(phase)')
                         i.fa.fa-trash
                   
-                  .input-group.phase-input
+                  .input-group.phase-input(ng-if='tournamentContext.admin')
                     input.form-control(type='text' class="form-control nf-input" placeholder='New pool' ng-model='PoolsController.DivisionService.newPools[phase.id].name')
                     span.btn.Button.primary.input-group-addon(ng-click='PoolsController.addNewPool(phase.id)')
                       i.fa.fa-plus
@@ -46,7 +46,7 @@
                           .Panel
                               .panel-heading.nf-panel-heading
                                   label.nf-label Unassigned
-                              .panel-body.team-target.unassigned(dnd-list dnd-drop='PoolsController.onDropTeam(item, phase, null)' dnd-allowed-types='[phase.id]')
+                              .panel-body.team-target.unassigned(dnd-list dnd-disable-if='!tournamentContext.admin' dnd-drop='PoolsController.onDropTeam(item, phase, null)' dnd-allowed-types='[phase.id]')
                                   .row
                                       .col-lg-4.col-md-4.col-sm-4(
                                           ng-repeat='team in PoolsController.TeamService.teams | orderBy:"name" track by team.id'
@@ -55,6 +55,7 @@
                                         .team(
                                           dnd-draggable='team'
                                           dnd-type='phase.id'
+                                          dnd-disable-if='!tournamentContext.admin'
                                         )
                                           | {{ team.name }}
                       .col-lg-12.col-md-12.col-sm-12.col-xs-12
@@ -65,9 +66,9 @@
                                           .panel-heading.nf-panel-heading
                                               div.div-name(ng-if='!div.editing')
                                                 label.nf-label {{ div.name }}
-                                                button.Button.btn.secondary.btn-sm(type='button' ng-click='div.editing = true')
+                                                button.Button.btn.secondary.btn-sm(type='button' ng-click='div.editing = true' ng-if='tournamentContext.admin')
                                                   i.fa.fa-pencil
-                                              .editing-div(ng-if='div.editing')
+                                              .editing-div(ng-if='div.editing && tournamentContext.admin')
                                                 .input-group.input-group
                                                   input.form-control(type='text' class="form-control nf-input" placeholder='Add new phase' ng-model='div.newName')
                                                   span.btn.Button.secondary.input-group-addon(role='button' ng-click='PoolsController.resetDivision(div.id)')
@@ -77,12 +78,17 @@
 
                                                 span.btn.Button.secondary(role='button' ng-click='PoolsController.removeDivision(div)')
                                                   i.fa.fa-trash
-                                          .panel-body.team-target(dnd-list dnd-drop='PoolsController.onDropTeam(item, phase, div)' dnd-allowed-types='[phase.id]')
+                                          .panel-body.team-target(dnd-list
+                                            dnd-drop='PoolsController.onDropTeam(item, phase, div)'
+                                            dnd-allowed-types='[phase.id]'
+                                            dnd-disable-if='!tournamentContext.admin'
+                                          )
                                               ul
                                                   li.team(ng-repeat='team in PoolsController.TeamService.teams | orderBy:"name" track by team.id'
                                                     ng-if='team.divisions[phase.id] === div.id'
                                                     dnd-draggable='team'
                                                     dnd-type='phase.id'
+                                                    dnd-disable-if='!tournamentContext.admin'
                                                   )
                                                       | {{ team.name }}
                                           

@@ -23,7 +23,7 @@ block content
                     ul.nav.navbar-nav
                         li(class="center" ng-click='Tournament.tab = "overview"' ng-class="{'active': Tournament.tab === 'overview'}")
                             a(data-toggle="tab" class='tournament-tab btn-md') Overview
-                        li(class="center" ng-if='tournamentContext.admin' ng-click='Tournament.tab = "pools"' ng-class="{'active': Tournament.tab === 'pools'}")
+                        li(class="center" ng-click='Tournament.tab = "pools"' ng-class="{'active': Tournament.tab === 'pools'}")
                             a(data-toggle="tab" class='tournament-tab btn-md') Pools
                         li(class="center" ng-if='tournamentContext.admin' ng-click='Tournament.tab = "collaborator"' ng-class="{'active': Tournament.tab === 'collaborator'}")
                             a(data-toggle='tab' class='tournament-tab btn-md') Collaborators
