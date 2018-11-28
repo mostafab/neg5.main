@@ -65,21 +65,14 @@ export default class TeamController {
 
   findTeam(team) {
     if (team.id !== this.currentTeam.id) {
-      const toastConfig = {
-        message: `Loading team: ${team.name}`,
-      };
-      this.$scope.toast(toastConfig);
       this.TeamService.getTeamById(this.$scope.tournamentId, team.id)
-        .then((gottenTeam) => {
-          toastConfig.success = true;
-          toastConfig.message = `Loaded team: ${gottenTeam.name}`;
-        })
         .catch(() => {
+          const toastConfig = {
+            message: `Loading team: ${team.name}`,
+          };
           toastConfig.success = false;
-          toastConfig.message = `Could not load team: ${team.name}`;
-        })
-        .finally(() => {
           toastConfig.hideAfter = true;
+          toastConfig.message = `Could not load team: ${team.name}`;
           this.$scope.toast(toastConfig);
         });
     }

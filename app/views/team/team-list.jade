@@ -13,7 +13,7 @@ div(class="row")
                     tr
                         th(class="table-head sortable" ng-click='Team.teamSortType = "name"; Team.teamSortReverse = !Team.teamSortReverse') Team
                         th(class='table-head') Players
-                        th(class="table-head") Divisions
+                        th(class="table-head") Pools
                 tbody
                     tr(class='nf-list-item nf-white' ng-repeat='team in Team.teams | orderBy:Team.teamSortType:Team.teamSortReverse | filter:Team.teamQuery track by team.id' ng-click='Team.findTeam(team)')
                         td {{team.name}}
