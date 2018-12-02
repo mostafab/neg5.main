@@ -29,7 +29,7 @@
   border-radius: 2px;
 }
 
-.ConfigurationTab .pools .phase-container .edit-phase {
+.ConfigurationTab .pools .edit-phase {
   display: flex;
   justify-content: space-between;
 }
@@ -38,7 +38,7 @@
   width: 70%;
 }
 
-.ConfigurationTab .pools .phase-container .phase-display {
+.ConfigurationTab .pools .phase-display {
   display: flex;
   justify-content: space-between;
 }
