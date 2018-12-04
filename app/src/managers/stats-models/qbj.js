@@ -27,7 +27,7 @@ export default {
                 tournament = await tournamentDB.findTournamentById(tournamentId, currentUser, false);
             } catch (e) {
                 console.error('Error fetching tournament data for tournament ' + tournamentId, e);
-                reject(e);
+                return reject(e);
             }
             const tournamentQbj = tournamentQbjFactory(tournament.tournament);
             const registrations = registrationsArrayFactory(teams);
@@ -49,44 +49,6 @@ export default {
             qbjObj.objects.push(...matchObjects);
             
             resolve(qbjObj);
-            // console.log(teams);
-            // matchDB.getMatchesByTournament(tournamentId)
-            //     .then(matches => {
-            //         const matchPromises = createMatchPromises(tournamentId, matches);
-            //         Promise.all(
-            //             [
-            //                 teamDB.getTeamsByTournament(tournamentId), 
-            //                 tournamentDB.findTournamentById(tournamentId, currentUser, false),
-            //                 ...matchPromises
-            //             ])
-            //             .then(results => {
-            //                 const [teams, tournament, ...matches] = results;
-                            
-            //                 const tournamentQbj = tournamentQbjFactory(tournament.tournament);
-            //                 const registrations = registrationsArrayFactory(teams);
-            //                 const matchObjects = matchQbjArrayFactory(matches);
-                            
-            //                 tournamentQbj.registrations = registrations.map(r => {
-            //                     return {
-            //                         $ref: r.id
-            //                     }
-            //                 })
-            //                 tournamentQbj.phases = [
-            //                     {
-            //                         name: 'All Matches',
-            //                         rounds: separateMatchesByRound(matches)
-            //                     }
-            //                 ]
-                            
-            //                 qbjObj.objects.push(tournamentQbj);
-            //                 qbjObj.objects.push(...registrations);
-            //                 qbjObj.objects.push(...matchObjects);
-                            
-            //                 resolve(qbjObj);
-            //             })
-            //             .catch(err => reject(err))
-            //     })
-            //     .catch(error => reject(error));
         })
     }
 }
