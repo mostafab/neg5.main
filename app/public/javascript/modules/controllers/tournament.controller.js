@@ -2,7 +2,7 @@ import angular from 'angular';
 
 const validTabs = [
   'overview',
-  'config',
+  'pools',
   'collaborator',
   'match',
   'team',

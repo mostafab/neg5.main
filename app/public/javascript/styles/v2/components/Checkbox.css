@@ -60,3 +60,8 @@
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
+.Checkbox input:disabled + .checkmark {
+  background-color: #ECEFF1;
+  cursor: default;
+}

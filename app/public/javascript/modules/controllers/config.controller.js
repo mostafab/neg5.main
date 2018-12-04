@@ -18,8 +18,6 @@ export default class ConfigurationController {
     this.editingPointScheme = false;
     this.editingRules = false;
 
-    this.resetPointSchemeCopyToOriginal = this.TournamentService.resetPointSchemeCopyToOriginal;
-    this.resetRules = this.TournamentService.resetRules;
     this.removeFromPointSchemeCopy = this.TournamentService.removeFromPointSchemeCopy;
     this.minTossupValue = this.TournamentService.minTossupValue;
     this.maxTossupValue = this.TournamentService.maxTossupValue;
@@ -29,11 +27,6 @@ export default class ConfigurationController {
     this.savingRules = false;
     this.savingPointScheme = false;
     this.savingNewPointValue = false;
-
-    this.$timeout(() => {
-      this.resetPointSchemeCopyToOriginal();
-      this.resetRules();
-    }, 500);
   }
 
   saveRules() {
@@ -61,7 +54,7 @@ export default class ConfigurationController {
             this.savingRules = false;
           });
       } else {
-        this.resetRules();
+        this.TournamentService.resetRules();
         this.editingRules = false;
       }
     }

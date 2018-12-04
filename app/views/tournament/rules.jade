@@ -1,0 +1,121 @@
+div.Panel.Rules.sections(ng-controller='ConfigCtrl as Config')
+    .nf-panel-heading(class="collapsable nf-panel-heading")
+        label.nf-label Rules and Point Scheme
+    .panel-body.tournament-panel.nf-panel-body.general
+        .row
+            .col-lg-4.col-md-4.col-sm-12.col-xs-12
+                form(name='Config.editConfigurationRules' novalidate ng-class='{"disabled": Config.savingRules}')
+                    .row.nf-margin
+                        .col-lg-12.col-sm-12.col-md-12(ng-show='Config.editingRules === false')
+                            button.btn-md.btn.Button.secondary(style='float:left' ng-if='tournamentContext.admin' ng-show='Config.editingRules === false' ng-click='Config.editingRules = true')
+                                i.fa.fa-pencil
+                        .col-lg-12.col-sm-3.col-md-6(ng-show='Config.editingRules === true')
+                            button.btn-md.btn.Button.secondary(style='float:left' ng-show='Config.editingRules === true' title='Cancel' ng-click='Config.editingRules = false; Config.resetRules()')
+                                i.fa.fa-times
+                            button.btn-md.btn.Button.primary.save(type='submit' ng-show='Config.editingRules === true' title='Save' ng-click='Config.saveRules()')
+                                i.fa.fa-check
+                                
+                    .row.nf-margin
+                        .row.nf-margin
+                            .col-lg-12.col-sm-12.col-md-12
+                                .input-group
+                                    span.input-group-addon.nf-white.no-border.point-label Max Active Players Per Team
+                                    div.form-control.nf-input.nf-gray(ng-show='Config.editingRules === false') {{Config.rules.maxActive}}  
+                                    input.form-control.nf-input(required type='number' min='0' name='maxPlayersPerTeam' ng-model='Config.rulesCopy.maxActive' ng-show='Config.editingRules === true') 
+                        .row.nf-margin
+                            .col-lg-12.col-sm-12.col-md-12
+                                .input-group
+                                    span.input-group-addon.no-border.point-label Bouncebacks?
+                                    div.form-control.nf-input.nf-gray(ng-show='Config.editingRules === false') {{Config.rules.bouncebacks ? 'Yes' : 'No'}}  
+                                    .Checkbox.bounceback-checkbox(ng-show='Config.editingRules === true')
+                                        input(id ='bouncebacks' type='checkbox' name='bouncebacks' ng-model='Config.rulesCopy.bouncebacks')
+                                        span.checkmark(ng-click="Config.rulesCopy.bouncebacks = !Config.rulesCopy.bouncebacks")
+                                        
+            .col-lg-8.col-md-8.col-sm-12.col-xs-12.point-scheme
+                form(name='Config.editPointSchemeForm' ng-submit='Config.editPointScheme()' novalidate ng-class='{"disabled": Config.savingPointScheme}')
+                    .row.nf-margin(ng-if='Config.games.length === 0')
+                        .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingPointScheme === false')
+                            span.btn-md.btn.Button.secondary(style='float:left' title='Edit' ng-if='Config.games.length === 0 && tournamentContext.admin' ng-click='Config.editingPointScheme = true')
+                                i.fa.fa-pencil
+                        .col-lg-8.col-sm-3.col-md-6(ng-show='Config.editingPointScheme === true')
+                            span.btn-md.btn.Button.secondary(style='float:left' title='Cancel' ng-click='Config.resetPointSchemeCopyToOriginal(); Config.editingPointScheme = false')
+                                i.fa.fa-times
+                            button.btn-md.btn.Button.primary.save-scheme(type='submit' title='Save')
+                                i.fa.fa-check
+                                
+                    .row.nf-margin(ng-show='Config.editingPointScheme' ng-if='Config.games.length === 0 && tournamentContext.admin')
+                        .row.nf-margin(ng-repeat='ps in Config.pointSchemeCopy.tossupValues track by ps.value')
+                            .col-lg-8.col-sm-9.col-md-6
+                                .input-group
+                                    span.input-group-addon.no-border.point-label.dropdown-toggle(
+                                        ng-class="{'nf-green': ps.type === 'Power', 'nf-blue' : ps.type === 'Base', 'nf-red' : ps.type === 'Neg'}",
+                                        data-toggle='dropdown'
+                                    ) {{ps.type}}
+                                        i.fa.fa-caret-down
+                                    input.form-control.nf-input(type='number' ng-model='ps.value', 
+                                        min='{{ps.type !== "Neg" ? 0 : Number.NEGATIVE_INFINITY}}' max='{{ps.type === "Neg" ? 0 : Number.POSITIVE_INFINITY}}')                                            
+                                    
+                                    ul.dropdown-menu.nf-dropdown(aria-role='menu' title='Switch tossup answer type')
+                                        li
+                                            a(title='Set as Power' ng-click='ps.type = "Power"') Power
+                                            a(title='Set as Base' ng-click='ps.type = "Base"') Base
+                                            a(title='Set as Neg' ng-click='ps.type = "Neg"') Neg
+                            .col-lg-2.col-sm-2
+                                .input-group
+                                    span.Button.secondary.btn.btn-md(ng-click='Config.removeFromPointSchemeCopy(ps)')
+                                        i.fa.fa-trash
+                                        
+                    .row.nf-margin(ng-show='Config.editingPointScheme === false')                        
+                        .row.nf-margin(ng-repeat='ps in Config.pointScheme.tossupValues | orderBy:"value":true track by ps.value')
+                            .col-lg-8.col-sm-9.col-md-6
+                                .input-group
+                                    span.input-group-addon.no-border.point-label(
+                                        ng-class="{'nf-green': ps.type === 'Power', 'nf-blue' : ps.type === 'Base', 'nf-red' : ps.type === 'Neg'}"
+                                    ) {{ps.type}}
+                                    div.form-control.nf-input.nf-gray {{ps.value}}   
+                                                                              
+                    .row.nf-margin
+                        .row.nf-margin
+                            .col-lg-8.col-sm-9.col-md-6
+                                .input-group
+                                    span.input-group-addon.no-border.point-label Bonus Part Value
+                                    div.form-control.nf-input.nf-gray(ng-show='Config.editingPointScheme === false') {{Config.pointScheme.bonusPointValue}}  
+                                    input.form-control.nf-input(required type='number' min='0' name='bonusPointValue' ng-model='Config.pointSchemeCopy.bonusPointValue' ng-show='Config.editingPointScheme === true') 
+                    .row.nf-margin
+                        .row.nf-margin
+                            .col-lg-8.col-sm-9.col-md-6
+                                .input-group
+                                    span.input-group-addon.no-border.point-label Parts Per Bonus
+                                    div.form-control.nf-input.nf-gray(ng-show='Config.editingPointScheme === false') {{Config.pointScheme.partsPerBonus}}  
+                                    input.form-control.nf-input(required type='number' min='1' name='partsPerBonus' ng-model='Config.pointSchemeCopy.partsPerBonus' ng-show='Config.editingPointScheme === true')
+
+                br
+                br
+                br
+
+                form(name='Config.newPointValueForm'
+                  novalidate
+                  ng-submit='Config.addNewPointValue()'
+                  ng-show='Config.editingPointScheme === false'
+                  ng-if='Config.games.length === 0 && tournamentContext.admin'
+                  ng-class='{"disabled": Config.savingNewPointValue}'
+                )
+                    .row.nf-margin
+                        .row.nf-margin
+                            .col-lg-8.col-md-6.col-sm-9
+                                .input-group
+                                    span.input-group-addon.nf-button.no-border.point-label.dropdown-toggle(
+                                        ng-class="{'nf-green': Config.newPointValue.type === 'Power', 'nf-blue' : Config.newPointValue.type === 'Base', 'nf-red' : Config.newPointValue.type === 'Neg'}",
+                                        data-toggle='dropdown'
+                                    ) {{Config.newPointValue.type || 'Type'}}
+                                        i.fa.fa-caret-down
+                                    input.form-control.nf-input(type='number' name='val' min='{{Config.minTossupValue()}}' max='{{Config.maxTossupValue()}}' ng-model='Config.newPointValue.value' placeholder='New tossup point value' required)                                            
+                                    ul.dropdown-menu.nf-dropdown(aria-role='menu')
+                                        li
+                                            a(title='Reset' ng-click='Config.newPointValue.type = null' ng-show='Config.newPointValue.type !== null') Reset
+                                            a(title='Set as Power' ng-click='Config.newPointValue.type = "Power"') Power
+                                            a(title='Set as Base' ng-click='Config.newPointValue.type = "Base"') Base
+                                            a(title='Set as Neg' ng-click='Config.newPointValue.type = "Neg"') Neg
+                            .col-lg-2.col-md-2
+                                button.Button.primary.btn(type='submit')
+                                    i.fa.fa-check

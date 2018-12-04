@@ -18,3 +18,86 @@
 .ConfigurationTab .phases .phase-checkbox {
   margin-top: 1rem;
 }
+
+.ConfigurationTab .pools .phase-container {
+  border-bottom: 1px solid #c4c9cf;
+}
+
+.ConfigurationTab .pools .phase-container .team {
+  padding: 2rem;
+  border: 1px solid #c4c9cf;
+  border-radius: 2px;
+}
+
+.ConfigurationTab .pools .edit-phase {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfigurationTab .pools .phase-container .edit-phase .input-group {
+  width: 70%;
+}
+
+.ConfigurationTab .pools .phase-display {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfigurationTab .pools .phase-container .phase-display .input-group {
+  width: 60%;
+}
+
+.ConfigurationTab .pools .phase-container .phase-display .Checkbox {
+  margin-top: 1rem;
+}
+
+.ConfigurationTab .pools .phase-container .team:not([draggable='false']):hover {
+  border: 1px solid #5ab8f8;
+  cursor: pointer;
+}
+
+.ConfigurationTab .pools .phase-container .phase-name {
+  margin-bottom: 2rem;
+}
+
+.ConfigurationTab .pools .phase-container .phase-input {
+  margin-bottom: 2rem;
+}
+
+.ConfigurationTab .pools .pools-heading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfigurationTab .pools .team-target.dndDragover {
+  border: 1px solid #5ab8f8;
+}
+
+.ConfigurationTab .pools .team-target .dndPlaceholder {
+  list-style-type: none;
+  padding: 1.5rem;
+}
+
+.ConfigurationTab .pools .div-name {
+  justify-content: space-between;
+  display: flex;
+}
+
+.ConfigurationTab .pools .team-target ul {
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .ConfigurationTab .pools .team-target.unassigned .team {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.ConfigurationTab .pools .editing-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfigurationTab .pools .editing-div > .input-group {
+  width: 70%;
+}

@@ -1,7 +1,8 @@
 @import './pages/TournamentTab.css';
 @import './pages/ConfigurationTab.css';
-@import './pages//MatchesTab.css';
-@import './pages//TeamsTab.css';
+@import './pages/MatchesTab.css';
+@import './pages/TeamsTab.css';
 @import './pages/ScoresheetTab.css';
-@import './pages//AllTournaments.css';
+@import './pages/AllTournaments.css';
 @import './pages/CollaboratorTab.css';
+@import './pages/Rules.css';

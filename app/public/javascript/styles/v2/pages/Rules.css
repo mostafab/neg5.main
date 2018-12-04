@@ -1,0 +1,20 @@
+.Rules .general .save {
+  margin-left: 2rem;
+}
+
+.Rules .phases .delete-phase {
+  float: right;
+}
+
+.Rules .point-scheme .save-scheme {
+  margin-left: 2rem;
+}
+
+.Rules .general .bounceback-checkbox {
+  margin-top: .7rem;
+  margin-left: 2rem;
+}
+
+.Rules .phases .phase-checkbox {
+  margin-top: 1rem;
+}

@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export default class DivisionController {
   constructor($scope, DivisionService, PhaseService) {
     this.$scope = $scope;
@@ -12,12 +15,6 @@ export default class DivisionController {
 
     this.savingNewDivision = false;
     this.savingEditDivision = false;
-
-    this.getDivisions();
-  }
-
-  getDivisions() {
-    this.DivisionService.getDivisions(this.$scope.tournamentId);
   }
 
   addNewDivision() {

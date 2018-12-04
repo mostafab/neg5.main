@@ -20,6 +20,10 @@ import './styles/v2/common.css';
 import angular from 'angular';
 import ngCookies from 'angular-cookies';
 import ngAnimate from 'angular-animate';
+import ngDragAndDrop from 'angular-drag-and-drop-lists';
+import { polyfill } from 'mobile-drag-drop';
+import {scrollBehaviourDragImageTranslateOverride} from "mobile-drag-drop/scroll-behaviour";
+
 import config from './modules/config';
 
 import IndexController from './modules/controllers/index.controller';
@@ -33,6 +37,7 @@ import ConfigController from './modules/controllers/config.controller';
 import DivisionController from './modules/controllers/division.controller';
 import MatchKeyDetailsController from './modules/controllers/match-key-details.controller';
 import TeamKeyDetailsController from './modules/controllers/team-key-details.controller';
+import PoolsController from './modules/controllers/pools.controller';
 
 import CollaboratorSearchController from './modules/controllers/collaborator-search.controller';
 import CollaboratorListController from './modules/controllers/collaborator-list.controller';
@@ -68,11 +73,18 @@ import ScoresheetPointsTrackerService from './modules/services/scoresheet/scores
 import ScoresheetTableService from './modules/services/scoresheet/scoresheet-table.service';
 
 import MatchUtilFactory from './modules/factories/util/match-util.factory';
+import TournamentIdFactory, { KEY as TournamentIdFactoryKey } from './modules/factories/tournament-id.factory';
+
 import PreventSameMatchTeamFilter from './modules/filters/prevent-same-match-teams';
 import MatchSearchFilter from './modules/filters/match-search.filter';
 import DivisionPhaseFilter from './modules/filters/division-phase.filter';
 
 import ToolTipDirective from './modules/directives/tooltip.directive';
+
+polyfill({
+  // use this to make use of the scroll behaviour
+  dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
+});
 
 angular.module('IndexApp', [ngCookies, ngAnimate])
   .config(config)
@@ -85,7 +97,7 @@ angular.module('HomeApp', [ngCookies, ngAnimate])
   .service('SlugService', SlugService)
   .controller('HomeController', HomeController);
 
-angular.module('tournamentApp', [ngCookies, ngAnimate])
+angular.module('tournamentApp', [ngCookies, ngAnimate, 'dndLists'])
   .config(config)
   .service('TournamentService', TournamentService)
   .service('MatchService', MatchService)
@@ -108,6 +120,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .service('TeamKeyDetailsService', TeamKeyDetailsService)
   .service('SlugService', SlugService)
   .factory('MatchUtilFactory', MatchUtilFactory)
+  .factory(TournamentIdFactoryKey, TournamentIdFactory)
   .controller('TournamentCtrl', TournamentController)
   .controller('GameCtrl', MatchController)
   .controller('MatchKeyDetailsController', MatchKeyDetailsController)
@@ -123,6 +136,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate])
   .controller('ScoresheetCycleController', ScoresheetCycleController)
   .controller('ScoresheetPointsTrackerCtrl', ScoresheetPointsTrackerController)
   .controller('ScoresheetTableController', ScoresheetTableController)
+  .controller('PoolsController', PoolsController)
   .filter('preventSameMatchTeams', PreventSameMatchTeamFilter)
   .filter('matchSearch', MatchSearchFilter)
   .filter('divisionPhase', DivisionPhaseFilter)

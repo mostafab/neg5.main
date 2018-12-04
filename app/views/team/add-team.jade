@@ -23,12 +23,12 @@ div.Panel.AddTeam
 
                 .row
                     .col-lg-4.col-md-4.col-sm-4.hidden-xs
-                        label.label.nf-label.btn-block(style='float:right') Divisions
+                        label.label.nf-label.btn-block(style='float:right') Pools
                     .col-lg-8.col-md-8.col-sm-8.col-xs-12
                         .input-group.phase-container(ng-repeat='phase in Team.phases')
                             span.input-group-addon.no-border.point-label.nf-label(title='Pick a division for {{phase.name}}') {{phase.name}}
                             select.form-control.nf-input(ng-model='Team.newTeam.divisions[phase.id]' ng-options='div as div.name for div in Team.divisions | divisionPhase:phase.id | orderBy:"name"')
-                                option(value='') Select a division
+                                option(value='') Select a pool
 
                 br
 

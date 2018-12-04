@@ -3,8 +3,10 @@ import Emittable from './../util/emittable';
 
 import phaseActions from './../actions/phase.actions';
 
+import { KEY as TournamentIdFactoryKey } from './../factories/tournament-id.factory';
+
 export default class PhaseService extends Emittable {
-  constructor($q, TournamentService, PhaseHttpService) {
+  constructor($q, TournamentService, PhaseHttpService, tournamentId) {
     super();
     this.$q = $q;
     this.TournamentService = TournamentService;
@@ -15,6 +17,10 @@ export default class PhaseService extends Emittable {
     this.newPhase = {
       name: '',
     };
+
+    this.tournamentId = tournamentId;
+    
+    this.getPhases(this.tournamentId);
   }
 
   postPhase(tournamentId, phaseName = this.newPhase.name) {
@@ -38,6 +44,12 @@ export default class PhaseService extends Emittable {
         reject({ reason: 'Invalid or duplicate phase name.' });
       }
     });
+  }
+
+  resetPhaseEditing(phaseId) {
+    const phase = this.phases.find(p => p.id === phaseId);
+    phase.newName = phase.name;
+    phase.editing = false;
   }
 
   editPhase(tournamentId, phase) {
@@ -120,6 +132,7 @@ export default class PhaseService extends Emittable {
     if (index !== -1) {
       this.phases[index].name = newPhaseName;
       this.phases[index].newName = newPhaseName;
+      this.phases[index].editing = false;
       if (this.activePhase.id === phaseId) {
         this.updateActivePhaseObject(phaseId);
       }
@@ -173,5 +186,5 @@ export default class PhaseService extends Emittable {
 
 }
 
-PhaseService.$inject = ['$q', 'TournamentService', 'PhaseHttpService'];
+PhaseService.$inject = ['$q', 'TournamentService', 'PhaseHttpService', TournamentIdFactoryKey];
 

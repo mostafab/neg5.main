@@ -1,13 +1,18 @@
 import angular from 'angular';
 import Emittable from './../util/emittable';
 
+import phaseActions from './../actions/phase.actions';
 import teamActions from './../actions/team.actions';
 
+import { KEY as TournamentIdFactoryKey } from './../factories/tournament-id.factory';
+
 export default class TeamService extends Emittable {
-  constructor($q, TeamHttpService) {
+  constructor($q, TeamHttpService, PhaseService, tournamentId) {
     super();
     this.$q = $q;
     this.TeamHttpService = TeamHttpService;
+    this.PhaseService = PhaseService;
+    this.tournamentId = tournamentId;
 
     this.teams = [];
     this.currentTeam = {
@@ -30,6 +35,12 @@ export default class TeamService extends Emittable {
       ],
       divisions: {},
     };
+
+    this.bindListeners();
+  }
+
+  bindListeners() {
+    this.PhaseService.on(phaseActions.phasesReceived, () => this.getTeams(this.tournamentId));
   }
 
   addPlayerSlotToNewTeam() {
@@ -407,4 +418,4 @@ export default class TeamService extends Emittable {
   }
 }
 
-TeamService.$inject = ['$q', 'TeamHttpService'];
+TeamService.$inject = ['$q', 'TeamHttpService', 'PhaseService', TournamentIdFactoryKey];

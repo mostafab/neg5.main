@@ -7,3 +7,23 @@
   background-color: #ffffff;
   margin-bottom: 20px;
 }
+
+.Panel.sections .panel-body {
+  padding: 0;
+}
+
+.Panel.sections .panel-body > * {
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+}
+
+.Panel.sections .panel-body > .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.Panel.sections .panel-body > * > * {
+  border: 1px solid #c4c9cf;
+  padding: 15px;
+}

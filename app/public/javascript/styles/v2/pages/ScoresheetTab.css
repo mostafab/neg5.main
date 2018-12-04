@@ -40,7 +40,7 @@
 }
 
 .ScoresheetTab .scoresheet .header th.table-head {
-  border: 1px solid #e7e7e7;
+  border: 1px solid #c4c9cf;
 }
 
 .ScoresheetTab .scoresheet .not-current-cycle {
@@ -57,7 +57,7 @@
 }
 
 .ScoresheetTab .scoresheet td {
-  border: 1px solid #e7e7e7;
+  border: 1px solid #c4c9cf;
 }
 
 .ScoresheetTab .scoresheet .complete-match {
@@ -65,7 +65,7 @@
 }
 
 .ScoresheetTab .match-dialog .match-summary-table {
-  border: 1px solid #e7e7e7;
+  border: 1px solid #c4c9cf;
 }
 
 .ScoresheetTab .match-dialog .match-summary-table th, .ScoresheetTab .match-dialog .match-summary-table td {
@@ -77,7 +77,7 @@
 }
 
 .ScoresheetTab .match-dialog .match-summary-table td {
-  border-top: 1px solid #e7e7e7;
+  border-top: 1px solid #c4c9cf;
 }
 
 .ScoresheetTab .match-dialog .tossups-heard-label {

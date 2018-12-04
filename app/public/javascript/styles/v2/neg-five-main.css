@@ -374,7 +374,7 @@ th.nf-label, .label.nf-label, label.nf-label > p, .nf-panel-heading * label.nf-l
 }
 
 .nf-panel > table > thead, .nf-table > table > thead {
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px solid #c4c9cf;
 }
 
 .nf-panel {
@@ -431,7 +431,7 @@ table.sortable-table > thead > tr > th.sortable:hover {
     font-size: 1.2em;
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px solid #c4c9cf;
 }
 
 .tab-pane .nf-breadcrumb {
@@ -637,7 +637,7 @@ div.name {
 
 .point-label {
     min-width: 130px;
-    border: 1px solid #e7e7e7;
+    border: 1px solid #c4c9cf;
 }
 .point-label:not(.nf-green):not(.nf-blue):not(.nf-red) {
     background: white;
@@ -733,7 +733,7 @@ Redefine Bootstrap definitions
 }
 
 .input-group-addon:first-child {
-    border-right: 1px solid #e7e7e7;
+    border-right: 1px solid #c4c9cf;
 }
 
 .input-group-addon {
