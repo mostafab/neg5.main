@@ -5,6 +5,8 @@ import teamDB from './../../data-access/team';
 import matchDB from './../../data-access/match';
 import {levenshteinDistance, longestCommonSubsequence} from './../../helpers/string-functions';
 
+import TournamentSparkClient from './../../clients/TournamentSparkClient';
+
 const versionNumber = "1.2";
 const highestAllowedDifference = 1;
 
@@ -13,48 +15,40 @@ export default {
      * This needs to be changed to not be blocking the event loop.
      */
     createQBJObject: (tournamentId, currentUser = null) => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const qbjObj = {
                 version: versionNumber,
                 objects: []
             };
-            matchDB.getMatchesByTournament(tournamentId)
-                .then(matches => {
-                    const matchPromises = createMatchPromises(tournamentId, matches);
-                    Promise.all(
-                        [
-                            teamDB.getTeamsByTournament(tournamentId), 
-                            tournamentDB.findTournamentById(tournamentId, currentUser, false),
-                            ...matchPromises
-                        ])
-                        .then(results => {
-                            const [teams, tournament, ...matches] = results;
-                            
-                            const tournamentQbj = tournamentQbjFactory(tournament.tournament);
-                            const registrations = registrationsArrayFactory(teams);
-                            const matchObjects = matchQbjArrayFactory(matches);
-                            
-                            tournamentQbj.registrations = registrations.map(r => {
-                                return {
-                                    $ref: r.id
-                                }
-                            })
-                            tournamentQbj.phases = [
-                                {
-                                    name: 'All Matches',
-                                    rounds: separateMatchesByRound(matches)
-                                }
-                            ]
-                            
-                            qbjObj.objects.push(tournamentQbj);
-                            qbjObj.objects.push(...registrations);
-                            qbjObj.objects.push(...matchObjects);
-                            
-                            resolve(qbjObj);
-                        })
-                        .catch(err => reject(err))
-                })
-                .catch(error => reject(error));
+            let teams, matches, tournament;
+            try {
+                teams = await TournamentSparkClient.getTeams(tournamentId);
+                matches = await TournamentSparkClient.getMatches(tournamentId);
+                tournament = await tournamentDB.findTournamentById(tournamentId, currentUser, false);
+            } catch (e) {
+                console.error('Error fetching tournament data for tournament ' + tournamentId, e);
+                return reject(e);
+            }
+            const tournamentQbj = tournamentQbjFactory(tournament.tournament);
+            const registrations = registrationsArrayFactory(teams);
+            const matchObjects = matchQbjArrayFactory(matches);
+
+            tournamentQbj.registrations = registrations.map(r => {
+                return {
+                    $ref: r.id
+                }
+            })
+            tournamentQbj.phases = [
+                {
+                    name: 'All Matches',
+                    rounds: separateMatchesByRound(matches)
+                }
+            ]
+            qbjObj.objects.push(tournamentQbj);
+            qbjObj.objects.push(...registrations);
+            qbjObj.objects.push(...matchObjects);
+            
+            resolve(qbjObj);
         })
     }
 }
@@ -93,11 +87,11 @@ function registrationsArrayFactory(teams) {
     const seenTeams = {};
     
     let groupedTeams = teams.reduce((aggregate, currentTeam) => {
-        if (!seenTeams[currentTeam.team_id]) {
+        if (!seenTeams[currentTeam.id]) {
             const matchingTeams = teams.filter(t => {
                 return levenshteinDistance(currentTeam.name.toLowerCase(), t.name.toLowerCase()) <= highestAllowedDifference;
             });
-            matchingTeams.forEach(t => seenTeams[t.team_id] = true);
+            matchingTeams.forEach(t => seenTeams[t.id] = true);
             
             let teamName;
             if (matchingTeams.length > 1) {
@@ -126,14 +120,14 @@ function registrationsArrayFactory(teams) {
     return registrations;
 }
 
-function teamQbjFactory({name, team_id, players}) {
+function teamQbjFactory({name, id, players}) {
     return {
         name,
-        id: 'team_' + team_id,
+        id: 'team_' + id,
         players: players ? players.map(p => {
             return {
-                name: p.player_name,
-                id: 'player_' + p.player_id
+                name: p.name,
+                id: 'player_' + p.id
             }
         }) : []
     }
@@ -142,33 +136,33 @@ function teamQbjFactory({name, team_id, players}) {
 function matchQbjArrayFactory(matches) {
     const formattedMatches = matches.map(match => {
         return {
-            id: 'game_' + match.match_id,
+            id: 'game_' + match.id,
             type: 'Match',
-            tossups_read: match.tossups_heard,
-            overtime_tossups_read: match.teams.reduce((sum, t) => sum + t.overtime_tossups, 0),
+            tossups_read: match.tossupsHeard,
+            overtime_tossups_read: match.teams.reduce((sum, t) => sum + t.overtimeTossupsGotten, 0),
             location: match.room,
             moderator: match.moderator,
             notes: match.notes,
-            serial: match.serial_id,
+            serial: match.serialId,
             match_teams: match.teams.map(t => {
                 return {
                     team: {
-                        $ref: 'team_' + t.team_id
+                        $ref: 'team_' + t.teamId
                     },
                     points: t.score,
-                    bonus_bounceback_points: t.bounceback_points,
+                    bonus_bounceback_points: t.bouncebackPoints,
                     match_players: t.players.map(p => {
                         return {
                             player: {
-                                $ref: 'player_' + p.player_id
+                                $ref: 'player_' + p.playerId
                             },
-                            tossups_heard: p.tossups_heard,
-                            answer_counts: p.tossup_values.map(tv => {
+                            tossups_heard: p.tossupsHeard,
+                            answer_counts: p.answers.map(tv => {
                                 return {
                                     answer_type: {
-                                        value: tv.value
+                                        value: tv.tossupValue
                                     },
-                                    number: tv.number
+                                    number: tv.numberGotten
                                 }
                             })
                         }
@@ -198,7 +192,7 @@ function separateMatchesByRound(matches) {
             rounds.push({
                 name: 'Round ' + roundNumber,
                 matches: separatedRounds[roundNumber].map(m => {
-                    return {$ref: 'game_' + m.match_id}
+                    return {$ref: 'game_' + m.id}
                 })
             })
         }
