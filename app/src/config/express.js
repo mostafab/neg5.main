@@ -2,7 +2,6 @@ import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
 
@@ -19,8 +18,6 @@ import playerApi from '../routes/api/player';
 
 import configuration from './configuration';
 import passport from './passport/passport';
-
-import { getToken } from './../auth/middleware/token';
 
 const indexRoute = require('../routes/index');
 
@@ -51,7 +48,6 @@ export default () => {
   morgan.token('currentUser', (req, res) => {
     return req.currentUser || 'no-user-attached';
   });
-  app.use(morgan());
   app.use(bodyParser.urlencoded({
     extended: true,
   }));

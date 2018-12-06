@@ -13,4 +13,15 @@ export default class SparkClient {
       throw e;
     }
   }
+
+  async post(url) {
+    try {
+      return (await fetch(this.host + url, {
+        method: 'POST',
+      })).json();
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
 }

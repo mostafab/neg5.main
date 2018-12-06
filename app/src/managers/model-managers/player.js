@@ -1,7 +1,5 @@
-import shortid from 'shortid';
 import db from './../../data-access/player';
 
-import { bufferTournamentStatsChangedEmittion } from './../../subscribers/match-event-emitter-subscriber';
 import generateId from './../../helpers/id';
 
 export default {
@@ -26,7 +24,6 @@ export default {
             db.editPlayerName(tournamentId, playerId, name.trim())
                 .then(result => {
                     resolve(result);
-                    bufferTournamentStatsChangedEmittion({ tournamentId })
                 })
                 .catch(error => reject(error));
 
@@ -38,7 +35,6 @@ export default {
             db.deletePlayer(tournamentId, playerId)
                 .then(result => {
                     resolve(result);
-                    bufferTournamentStatsChangedEmittion({ tournamentId });
                 })
                 .catch(error => reject(error));
         })
