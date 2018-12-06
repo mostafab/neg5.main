@@ -1,6 +1,5 @@
 import shortid from 'shortid';
 import db from '../../data-access/tournament';
-import { bufferTournamentStatsChangedEmittion } from '../../subscribers/match-event-emitter-subscriber';
 
 import generateId from './../../helpers/id';
 
@@ -219,7 +218,6 @@ export default {
             db.deleteTournamentPhase(tournamentId, phaseId)
                 .then(result => {
                     resolve(result)
-                    bufferTournamentStatsChangedEmittion({ tournamentId });
                 })
                 .catch(error => reject(error));
         })

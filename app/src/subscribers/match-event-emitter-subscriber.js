@@ -1,8 +1,7 @@
 import TournamentStatsChangeEmitter from './../event-emitters/stats-change-emitter';
 import TournamentStatsChangeEvent from './../events/TournamentStatsChangeEvent';
-import { StatsReportManager as StatsReportManager } from './../managers/stats-models/report';
-import tournamentManager from './../managers/model-managers/tournament';
-import StatReportType from './../enums/stat-report-type';
+
+import TournamentSparkClient from './../clients/TournamentSparkClient';
 
 const tournamentStatsChangeEmitter = new TournamentStatsChangeEmitter();
 
@@ -21,14 +20,21 @@ export const bufferTournamentStatsChangedEmittion = ({ tournamentId }) => {
   const timeout = setTimeout(() => {
       tournamentCalculationTimeouts.delete(tournamentId);
       tournamentStatsChangeEmitter.emit(events.TOURNAMENT_STAT_CHANGE_EVENT, new TournamentStatsChangeEvent(tournamentId));
-  }, 2000);
+  }, 500);
   tournamentCalculationTimeouts.set(tournamentId, timeout);
 }
 
-tournamentStatsChangeEmitter.on(events.TOURNAMENT_STAT_CHANGE_EVENT, recalculateStats);
+tournamentStatsChangeEmitter.on(events.TOURNAMENT_STAT_CHANGE_EVENT, invalidateCache);
 
-async function recalculateStats(statsChangeEvent) {
-  console.log('No-op for stats calculation: ' + statsChangeEvent.tournamentId);
+async function invalidateCache(statsChangeEvent) {
+  const tournamentId = statsChangeEvent.tournamentId;
+  console.log('Sending request to invalidate stats for tournament ' + tournamentId);
+  try {
+    const result = await TournamentSparkClient.invalidateStats(tournamentId);
+    console.log(`Received response ${JSON.stringify(result)}`);
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 export default tournamentStatsChangeEmitter;

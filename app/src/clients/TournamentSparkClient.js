@@ -16,6 +16,10 @@ export class TournamentSparkClient extends SparkClient {
   getMatches(tournamentId) {
     return this.get(`/neg5-api/tournaments/${tournamentId}/matches`);
   }
+
+  invalidateStats(tournamentId) {
+    return this.post(`/neg5-api/tournaments/${tournamentId}/stats/invalidate`);
+  }
 }
 
 export default new TournamentSparkClient();
