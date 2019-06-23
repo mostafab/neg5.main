@@ -58,6 +58,7 @@ import QBJService from './modules/services/qbj.service';
 
 import SlugService from './modules/services/util/slug.service';
 
+import ScoresheetHttpService, { KEY as ScoresheetHttpServiceKey } from './modules/services/http/scoresheet-http.service';
 import QBJHttpService from './modules/services/http/qbj-http.service';
 import PhaseHttpService from './modules/services/http/phase-http.service';
 import DivisionHttpService from './modules/services/http/division-http.service';
@@ -119,6 +120,7 @@ angular.module('tournamentApp', [ngCookies, ngAnimate, 'dndLists'])
   .service('MatchKeyDetailsService', MatchKeyDetailsService)
   .service('TeamKeyDetailsService', TeamKeyDetailsService)
   .service('SlugService', SlugService)
+  .service(ScoresheetHttpServiceKey, ScoresheetHttpService)
   .factory('MatchUtilFactory', MatchUtilFactory)
   .factory(TournamentIdFactoryKey, TournamentIdFactory)
   .controller('TournamentCtrl', TournamentController)

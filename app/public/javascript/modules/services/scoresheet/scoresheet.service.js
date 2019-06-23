@@ -1,14 +1,20 @@
 import angular from 'angular';
 import ScoresheetPointsTrackerService from './scoresheet-points-tracker.service';
 
+import { KEY as ScoresheetHttpServiceKey } from './../http/scoresheet-http.service';
+
+import ScoresheetUtil from './../util/scoresheet-util';
+
 export default class ScoresheetService {
-  constructor($q, TournamentService, TeamHttpService, PhaseService, MatchService, TeamService) {
+  constructor($q, TournamentService, TeamHttpService, PhaseService, MatchService, TeamService, ScoresheetHttpService) {
     this.$q = $q;
     this.TournamentService = TournamentService;
     this.PhaseService = PhaseService;
     this.MatchService = MatchService;
     this.TeamService = TeamService;
     this.TeamHttpService = TeamHttpService;
+    this.ScoresheetHttpService = ScoresheetHttpService;
+
     this.ScoresheetPointsTrackerService =
       new ScoresheetPointsTrackerService(this, this.TournamentService);
 
@@ -68,9 +74,12 @@ export default class ScoresheetService {
     if (!tournamentId) {
       throw new Error('tournamentId param required.');
     }
-    this.game.lastSavedAt = new Date();
-    localStorage.setItem(`scoresheet_${tournamentId}`,
-      JSON.stringify(this.game));
+    const scoresheet = ScoresheetUtil.convertToScoresheetDto(tournamentId, this.game);
+    console.log(scoresheet);
+    this.ScoresheetHttpService.saveScoresheet(tournamentId, scoresheet);
+    // this.game.lastSavedAt = new Date();
+    // localStorage.setItem(`scoresheet_${tournamentId}`,
+    //   JSON.stringify(this.game));
   }
 
   revertScoresheetSubmission(tournamentId) {
@@ -217,6 +226,7 @@ ScoresheetService.$inject = [
   'PhaseService',
   'MatchService',
   'TeamService',
+  ScoresheetHttpServiceKey,
 ];
 
 

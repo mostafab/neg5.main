@@ -48,9 +48,6 @@ export default () => {
   morgan.token('currentUser', (req, res) => {
     return req.currentUser || 'no-user-attached';
   });
-  app.use(bodyParser.urlencoded({
-    extended: true,
-  }));
   // app.use(helmet());
   app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -59,6 +56,9 @@ export default () => {
   });
   app.use('/neg5-api', httpProxy(app.get(NEG5_API_HOST_PROP), {
     proxyReqPathResolver: req => `/neg5-api${req.url}`,
+  }));
+  app.use(bodyParser.urlencoded({
+    extended: true,
   }));
   app.use(cookieParser());
   app.use(bodyParser.json());
