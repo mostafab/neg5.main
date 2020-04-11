@@ -51,17 +51,16 @@ export default () => {
   app.use(bodyParser.urlencoded({
     extended: true,
   }));
-  // app.use(helmet());
   app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
+  app.use(bodyParser.json());
   app.use('/neg5-api', httpProxy(app.get(NEG5_API_HOST_PROP), {
     proxyReqPathResolver: req => `/neg5-api${req.url}`,
   }));
   app.use(cookieParser());
-  app.use(bodyParser.json());
   app.use(compression());
   app.use(passport.initialize());
 
