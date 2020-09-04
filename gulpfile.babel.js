@@ -15,9 +15,9 @@ gulp.task('babel-server', () => {
   b.on('error', (err) => {
     console.log(err.message);
   });
-  gulp.src(['app/src/**/*.js'])
-  .pipe(b)
-  .pipe(gulp.dest('app/build'));
+  return gulp.src(['app/src/**/*.js'])
+    .pipe(b)
+    .pipe(gulp.dest('app/build'));
 });
 
 /**
@@ -66,4 +66,4 @@ gulp.task('watch', () => {
   gulp.watch(['app/public/css/v2/*.css'], ['minify-css']);
 });
 
-gulp.task('default', ['babel-server']);
+gulp.task('default', gulp.series('babel-server'));
