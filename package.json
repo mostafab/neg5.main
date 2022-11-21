@@ -11,9 +11,6 @@
     "build": "gulp"
   },
   "author": "mostafa",
-  "engine": {
-    "node": ">=16.18.1"
-  },
   "license": "MIT",
   "dependencies": {
     "angular": "^1.5.8",
