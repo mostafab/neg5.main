@@ -11,7 +11,7 @@
     "build": "gulp"
   },
   "author": "mostafa",
-  "engine": {
+  "engines": {
     "node": ">=19.1.0"
   },
   "license": "MIT",
